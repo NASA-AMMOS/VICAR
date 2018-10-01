@@ -1,0 +1,374 @@
+process help=*
+PARM INP     TYPE=STRING  COUNT=(2:3)
+PARM OUT     TYPE=STRING  COUNT=1
+PARM CORREL  TYPE=KEYWORD COUNT=1 +
+  VALID=("ANNEAL","LINEAR","AMOEBA","LINAMO","ANNAMO", "KQKKOR") +
+  DEFAULT="LINAMO"
+PARM NLW     TYPE=INTEGER COUNT=1    DEFAULT=15
+PARM NSW     TYPE=INTEGER COUNT=1    DEFAULT=15
+PARM NLAREA  TYPE=INTEGER COUNT=1    DEFAULT=35
+PARM NSAREA  TYPE=INTEGER COUNT=1    DEFAULT=35
+PARM GRID    TYPE=INTEGER COUNT=1    DEFAULT=30
+PARM PERCENT TYPE=REAL    COUNT=1    DEFAULT=100.
+PARM QUALITY TYPE=REAL    COUNT=1    DEFAULT=.5
+PARM LIMIT   TYPE=INTEGER COUNT=1    DEFAULT=2000
+PARM COEFRANG TYPE=REAL   COUNT=4 DEFAULT=(.8,1.2,-.35,.35)
+PARM PRINT   TYPE=KEYWORD COUNT=1 +
+  VALID=("PRINT","NOPRINT") DEFAULT="NOPRINT"
+PARM ZERO   TYPE=KEYWORD COUNT=1 +
+  VALID=("ZERO","NOZERO") DEFAULT="NOZERO"
+PARM EXTEND  TYPE=KEYWORD COUNT=1 +
+  VALID=("EXTEND","NOEXTEND") DEFAULT="NOEXTEND"
+PARM ASCIIFILE TYPE=STRING COUNT=1 DEFAULT="NONE"
+end-proc
+
+.title
+TRACKER3
+
+.help
+PURPOSE:
+To acquire tiepoints between two images. Tiepoints can be on a sparse grid 
+or as close as every pixel. The program operates in batch mode only.
+There are two tiepoint acquisition strategies:
+
+1. To acquire points on a regular grid.
+2. To read tiepoint locations from an input tiepoint file and correlate these
+   locations only. Chaining of tiepoints is permitted.
+
+To edit tiepoints already in a tiepoint file you can use interactive program
+tptedt or batch program tptedt2.
+This program obsoletes TRACKER and TRACKER2
+
+.page
+EXECUTION STATEMENT:
+
+Creating a new grid of tiepoints:
+    tracker3 inp=(left,right) out=x 
+
+Reading initial tiepoint locations from a tiepoint file:
+    tracker3 inp=(left,right,x) out=y
+
+Chaining the same tiepoints through several images:
+    tracker3 inp=(a.img,b.img) out=t1.pts grid=40
+    tracker3 inp=(b.img,c.img,t1.pts) out=t2.pts 'extend
+    tracker3 inp=(c.img,d.img,t2.pts) out=t3.pts 'extend
+
+.page
+METHOD:
+  The program has two basic modes and a choice of 5 correlation schemes.
+
+Mode 1:
+   For two input files a grid is created on the first input image.
+A corresponding grid is created on the second input image at the same
+locations and each intersection is correlated. Only the right grid
+intersections are permitted to move.
+
+Mode 2:
+   For three input images the third input file is read and interpreted as 
+initial tiepoint locations. No grid is generated. Each tiepoint is
+assumed to consist of 4 numbers representing the first and second input
+image locations first(line,sample) coordinates and second(line,sample)
+coordinates. Either all 4 are read and applied to their respective images 
+or only the second pair is read (see EXTEND keyword). If only the second pair
+is read it will be copied and used on both images. This permits chaining
+of tiepoints through a movie sequence.
+
+  This program offers a suite of correlation schemes most of which provide
+the Gruen correlation method. This method permits distortion of the 
+correlation area in order to accomodate parallax, and can provide excellent
+accuracy in cases where linear correlators fail completely.
+  The Gruen scheme used here permits distortions between correlation areas of
+the form:
+newline=line*A+sample*B+C
+newsamp=line*D+sample*E+F
+The task of the correlator is to determine the coefficients A-F which permit 
+the best correlation value.
+  All the correlation schemes use the same figure of merit or objective
+function. This is a least squares fit between the template and the search
+area. The correlation value is the coefficient of determination for this fit.
+It ranges from 0 to 1. Zero means no correlation at all, and one means perfect
+correlation or anti-correlation.
+  The effect of the above is that two areas can correlate well even if the
+data has been:
+1. Multiplied, added to, or complemented (any linear intensity mapping 
+   is handled).
+2. Rotated, scaled, flipped, transposed, or skewed.
+
+The correlation options include:
+
+LINEAR    
+  This is a conventional image domain correlator performed on integral
+pixel boundaries followed by an interpolation to achieve sub pixel precision.
+No gruen correlation is available here.
+Best for large area searches where little rotation or scale differences
+occur. Best precision is 1/10 pixel. Fastest method.
+
+ANNEAL
+  This is an unconventional non-deterministic search based upon the annealing
+algorithm Metropolis. Best for large area searches where rotation and
+scale are unknown. Slowest method by far. User tailorable using the 
+parameters LIMIT and COEFRANG. Best precision is user determined.
+The default value of LIMIT should give a precision of about 1/20 pixel with
+clean data.
+
+AMOEBA
+  This is a deterministic downhill simplex search. Slightly slower than LINEAR.
+Provides the highest precision (to 1/100 pixel) and unlimited distortion 
+capability. 
+Limitation: The initial guess must be within the correlation peak or else 
+the tiepoint will be in error. This might mean that the 6 polynomial
+mapping coefficients should ALL be close to the correct result. The only
+way to assure this in extreme rotation cases is to use the ANNAMO mode.
+(This is not an easy problem even for humans.)
+
+LINAMO   (the default mode)
+  This uses the LINEAR mode first to get a starting position and finishes
+with the AMOEBA mode as the end game.
+
+ANNAMO
+  This uses the ANNEAL mode first to get a starting position and finishes
+with the AMOEBA mode as the end game.
+
+KQKKOR
+ This mode uses a correlation technique from 
+Ackermann F. (1984). Digital image correlation : performance and 
+potential application in photogrammetry. 
+
+ It is ultimately uses a least squares fit for 6 parameters described
+above. KQKKOR is also used in VICAR TP program. Tests showed that
+KQKKOR generally works faster than LINAMO technique. KQKKOR demonstrated 6 
+to 10 times improvement in speed over LINAMO. However, the number of matches
+produced by KQKKOR was less than number of matches produced by LINAMO
+by about 80%. On other hand KQKKOR returns less noisy tiepoints. If
+you have a lot of images to do the tracking, we recommend compare
+LINAMO and KQKKOR using samples from the sequence and decide which
+method works better. Be careful, if the template window size (nlw) is
+getting small ( < 5 pixels). Correlator might not have enough
+information to find the answer. 
+
+For those of you who wish to embed the Gruen correlator into their own C 
+programs just copy out of Tracker3 the subroutine Gruen and it's called
+routines into your source code. You only need the two #define statements
+# define MAX_LEFT_AREA n  ( n is the max template size dimension, ie: n by n)
+# define MAX_RIGHT_AREA m  ( m is the max search size dimension, ie: m by m)
+
+PROGRAM HISTORY
+
+Author: Jean Lorre
+Revisions:
+  2000-06-15 abi - Added KQKKOR correlation mode. 
+  2017-08-11 wlb - Removed DEBUG from imake.
+
+.page
+.LEVEL1
+.VARI INP
+First: left image.
+Second: right image.
+Third: tiepoints
+       (optional)
+
+.VARI OUT
+Output tiepoint
+file.
+
+.VARI ASCIIFILE
+Name of optional
+output
+ascii tiepoints
+file.
+
+.VARI CORREL
+The correlation
+scheme to use.
+LINEAR or
+AMOEBA or
+ANNEAL or
+LINAMO or
+ANNAMO
+
+.VARI NLW
+Number of lines in
+left image template.
+Odd number.
+
+.VARI NSW
+Number of samples in
+left image template.
+Odd number.
+
+.VARI NLAREA
+Number of lines in
+right image search 
+area.
+
+.VARI NSAREA
+Number of samples in
+right image search 
+area.
+
+.VARI GRID
+Grid interval in
+pixels.
+
+.VARI PERCENT
+Percentage of
+template used in
+correlation.
+
+.VARI LIMIT
+Number of cycles
+permitted in 
+annealing
+algorithm.
+annealing only.
+
+.VARI COEFRANG
+Range limits of the
+mapping polynomial.
+annealing only.
+
+.VARI PRINT
+Print tiepoints
+
+.VARI ZERO
+Reject areas with
+zero dn corners.
+
+.VARI QUALITY
+Edit poor quality
+correlations.
+
+.VARI EXTEND
+Specify which tiepoint
+column to use. For
+three input files.
+
+.LEVEL2
+
+.VARI INP
+The input images to acquire tiepoints from.
+
+First is the left or reference image.
+      If there is no third input this will have a regular grid. 
+Second is the right image.
+      If there is no third input this will have an irregular grid.
+Third is an optional tiepoints file to be used as initial input values.
+
+.VARI OUT
+Output tiepoint file .
+At the moment this is a mark file with 512 byte records and 32 tiepoints per
+record in the order left_line left_sample right_line right_sample, left_...
+all float format.
+
+.VARI ASCIIFILE
+Name of the optional output ascii tiepoints file. Default is no ascii file is
+produced. (Default name is "NONE").
+If created this file will be in the same order as the binary mark file
+but will contain one record per tiepoint. 
+All data will be in floating point format, possibly extended precision.
+It is intended that records will contain the following 9 columns:
+line1 samp1 line2 samp2 dn1 dn2 X Y Z
+Tracker3 will fill the first 6 columns:
+line1 samp1 line2 samp2 dn1 dn2
+Where line1 & samp1 are the left image coordinates.
+Where line2 & samp2 are the right image coordinates.
+Where dn1 & dn2 are the left & right intensities.
+
+.VARI CORREL
+The correlation scheme to use. Your options are:
+LINEAR (Exhaustive correlation on integral pixel boundaries).
+AMOEBA (Simplex deterministic downhill search method).
+ANNEAL (Annealing non-deterministic search method).
+LINAMO (LINEAR followed by AMOEBA).
+ANNAMO (ANNEAL followed by AMOEBA).
+
+See the method description.
+
+.VARI NLW
+Number of lines in the left image template.
+This is the reference area or correlation size.
+Should be an odd number.
+
+.VARI NSW
+Number of samples in the left image template.
+This is the reference area or correlation size.
+Should be an odd number.
+
+.VARI NLAREA
+Number of lines in the right image search area.
+Usually much larger than NLW.
+
+.VARI NSAREA
+Number of samples in the right image search area.
+Usually much larger than NSW.
+
+.VARI GRID
+Grid interval in pixels. This is the spacing between columns and rows of 
+pixels in the left or reference image. Only used when two input images
+are present.
+
+.VARI PERCENT
+Percentage of the template used in the correlation.
+
+If percent=100 then only one template is used to correlate with.
+
+If percent < 100 then five templates are used, the best one determining
+the tiepoint. Template 1 is the standard one. Templates 2-5 permit only
+the top,bottom,left,and right PERCENT of the template area to show.
+This permits blemishes to be ignored if they are on the edge of the 
+correlation area at the expense of five times the overhead.
+
+.VARI LIMIT
+Number of cycles permitted in the annealing algorithm. As a rule:
+
+1. The fewer cycles the less reliable the result.
+2. If ANNEAL is followed by AMOEBA then fewer cycles are needed.
+3. If the coefficient search range COEFRANG is large more cycles are needed.
+
+.VARI COEFRANG
+Range limits of the mapping polynomial for annealing options only.
+
+The polynomial mapping is of the form:
+rightline=  C1*leftsample+C2*leftline+C3
+rightsample=C4*leftsample+C5*leftline+C6
+If you specify: coefrang=(.8,1.2,-.35,.35) then
+-.35  < C1 < .35
+-.35  < C5 < .35
+.8    < C2 < 1.2
+.8    < C4 < 1.2
+Coefficient solutions will be restricted to this range.
+
+The defaults (above example) permit rotations either way of up to 
+about 20 degrees, and scaling of about 20 percent.
+ANNEAL and ANNAMO options only.
+
+.VARI QUALITY
+Only permit tiepoints to be placed into the output file if their correlation
+quality exceeds QUALITY. Quality is computed for each corralation and is
+a number from 0 (no correlation at all) to 1 (perfect correlation).
+
+.VARI ZERO
+Reject correlation areas if any of the corners are zero dn.
+This permits the zero region outside map projected images to be detected
+and not included in correlations.
+Whether zero is specified or not all areas which are of the same dn 
+(flat fields) are rejected anyway.
+
+.VARI PRINT
+Print tiepoints and their qualities.
+
+.VARI EXTEND
+If there are three input files the initial tiepoints will be obtained from 
+the third input. The default is to use the left and right tiepoint pairs for
+the first and second input files respectively. If however you wish to chain
+existing tiepoints through successive images (to track points ) the EXTEND
+option will place the right tiepoint side on the FIRST input file and then
+create a copy of this point for the second input file. For example, if you had
+a movie sequence with images a b c d you would first create a grid of
+points with:
+tracker3 inp=(a.img,b.img) out=t1.pts grid=40
+and then chain them through the other images with:
+tracker3 inp=(b.img,c.img,t1.pts) out=t2.pts 'extend
+tracker3 inp=(c.img,d.img,t2.pts) out=t3.pts 'extend
+
+.END
