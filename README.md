@@ -11,35 +11,35 @@ This release includes:
 - Pre-built binaries for 32- and 64-bit Linux(Red Hat 7.3) and Mac OS X 64-bit. 
 - A Docker Centos7 image that runs the 64-bit Linux binaries.
 - 24 new application programs: 
-classifier
-clusterer
-denoisetv
-destripe
-file2tcl
-gamma
-gtigeolo
-gtlabfix
-horizon
-ibisclst2
-ibisclst3
-mooresc
-randpixel
-rgb2ish
-sampler
-sc2rpc
-scinterp
-shadow
-shp2rast
-tclmath
-wedge
-wnr2005
-xyzpic2
-zipcol2
+classifier,
+clusterer,
+denoisetv,
+destripe,
+file2tcl,
+gamma,
+gtigeolo,
+gtlabfix,
+horizon,
+ibisclst2,
+ibisclst3,
+mooresc,
+randpixel,
+rgb2ish,
+sampler,
+sc2rpc,
+scinterp,
+shadow,
+shp2rast,
+tclmath,
+wedge,
+wnr2005,
+xyzpic2,
+zipcol2,
 - 4 new application programs were added in Vicar Open Source Core version 2.0 but were not listed
   previously:
-getzval
-gtappend
-gtmss
+getzval,
+gtappend,
+gtmss,
 vtiff3o
 - 13 anomalies, 27 bug fixes/improvements.
 - The .com files for GUI,P1,P2,P3 have been unpacked and the .com files have been eliminated.
