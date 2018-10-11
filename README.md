@@ -45,13 +45,7 @@ vtiff3o
 - The .com files for GUI,P1,P2,P3 have been unpacked and the .com files have been eliminated.
   There is a subdirectory per application, with all of that application's files.	
 - A new plugin that enables GDAL reading and writing of VICAR image files. 
-- New Use Case Examples:
-	o Landsat 7 Mosaic
-	o SRTM Mosaic
-	o Landsat 8 Multi-Spectral Analysis
-	o Landsat 8 Pan Sharpening
-	o Using ISIS with VICAR to Process Galileo Europa Imagery
-	o Neptune’s Satellite Proteus
+- New Use Case Examples:Landsat 7 Mosaic,SRTM Mosaic,Landsat 8 Multi-Spectral Analysis,Landsat 8 Pan Sharpening,Using ISIS with VICAR to Process Galileo Europa Imagery,Neptune’s Satellite Proteus
 
 For a full list of programs being released [click here](vos/docsource/vicar/VICAR_OS_contents_v3.0.pdf).
 
