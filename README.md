@@ -46,12 +46,12 @@ vtiff3o
   There is a subdirectory per application, with all of that application's files.	
 - A new plugin that enables GDAL reading and writing of VICAR image files. 
 - New Use Case Examples:
-* Landsat 7 Mosaic
-* SRTM Mosaic
-* Landsat 8 Multi-Spectral Analysis
-* Landsat 8 Pan Sharpening
-* Using ISIS with VICAR to Process Galileo Europa Imagery
-* Neptune’s Satellite Proteus
+	* Landsat 7 Mosaic
+	* SRTM Mosaic
+	* Landsat 8 Multi-Spectral Analysis
+	* Landsat 8 Pan Sharpening
+	* Using ISIS with VICAR to Process Galileo Europa Imagery
+	* Neptune’s Satellite Proteus
 
 For a full list of programs being released [click here](vos/docsource/vicar/VICAR_OS_contents_v3.0.pdf).
 
