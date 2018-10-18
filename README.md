@@ -10,6 +10,7 @@ This release includes:
 
 - Pre-built binaries for 32- and 64-bit Linux(Red Hat 7.3) and Mac OS X 64-bit. 
 - A Docker Centos7 image that runs the 64-bit Linux binaries.
+- A Docker Centos7 image preloaded with VOS 64-bit Linux(Red Hat 7.3).
 - 24 new application programs: 
 classifier,
 clusterer,
@@ -34,7 +35,7 @@ tclmath,
 wedge,
 wnr2005,
 xyzpic2,
-zipcol2,
+zipcol2
 - 4 new application programs were added in Vicar Open Source Core version 2.0 but were not listed
   previously:
 getzval,
