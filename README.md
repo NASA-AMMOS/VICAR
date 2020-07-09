@@ -9,8 +9,8 @@ Please visit the VICAR Open Source release homepage:
 This release includes:
 
 - Pre-built binaries for 32- and 64-bit Linux(Red Hat 7.3) and Mac OS X 64-bit. 
-- A Docker Centos7 image that runs the 64-bit Linux binaries.
-- A Docker Centos7 image preloaded with VOS 64-bit Linux(Red Hat 7.3).
+- A Docker Centos7 image that runs the 64-bit Linux binaries (Java 1.8).
+- A Docker Centos7 image preloaded with VOS 64-bit Linux(Red Hat 7.3) using Java 1.8.
 - 24 new application programs: 
 classifier,
 clusterer,
