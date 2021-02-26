@@ -1,0 +1,59 @@
+process help=*
+parm inp  type=string count=1
+parm out  type=string count=1
+parm list type=(string,99) count=1
+
+end-proc
+
+.title
+VICAR Program avgpix - computes average of input set of images
+
+.help
+PURPOSE:
+
+    AVGPIX reads a list of VICAR byte image filenames and calculates their average
+    DN. Zero-valued pixels are excluded from the averaging. The output is written
+    as a single byte image.
+
+EXECUTION:
+
+    avgpix INP=(A) OUT=(B) LIST=(C)
+     
+    A is an image used to generate the output file label. It should be included
+      in the input list file.
+    B is the output VICAR byte image.
+    C is a path to a text file of input image names to average.
+
+.PAGE
+OPERATION
+
+    AVGPIX reads a list of VICAR byte image filenames and calculates their average
+    DN. Zero-valued pixels are excluded from the averaging. The output is written
+    as a single byte image.
+   
+.PAGE
+WRITTEN BY:            W. Bunch
+
+COGNIZANT PROGRAMMER:  W. Bunch
+
+REVISIONS: 
+    2020-05-14 W. Bunch - Initial version.
+
+.level1
+.var inp
+Input vicar byte image.
+.var out
+Output vicar byte image.
+.var list
+Input text file list of filenames of input VICAR byte images to average.
+.level2
+.var inp
+Input vicar byte image.
+.var out
+Output vicar byte image.
+.var list
+Input text file list of filenames of input VICAR byte images to average.
+Note that each filename should be on a line of its own. Any line beginning
+with a hash character (#) will be ignored.
+
+.end

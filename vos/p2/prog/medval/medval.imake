@@ -1,0 +1,25 @@
+/***********************************************************************
+
+                     IMAKE FILE FOR PROGRAM medval
+
+   To Create the build file give the command:
+
+		$ vimake medval			(VMS)
+   or
+		% vimake medval			(Unix)
+
+
+************************************************************************/
+
+
+#define PROGRAM	medval
+
+#define MODULE_LIST medval.c
+
+#define MAIN_LANG_C
+#define USES_C
+
+#define LIB_RTL
+#define LIB_TAE
+#define LIB_P2SUB
+/************************* End of Imake file ***************************/

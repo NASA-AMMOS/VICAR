@@ -1,0 +1,74 @@
+gen out=A nl=300 ns=150 format=half linc=0 sinc=0 ival=50
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+gen out=B nl=300 ns=150 format=half linc=0 sinc=0 ival=150
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+mss inp=(A,B)  out=C
+Beginning VICAR task mss
+* OUTPUT CONTAINS   2INTERLEAVED DATA SETS **
+* ACTUAL OUTPUT RECORD LENGTH    300SAMPLES **
+srchedge inp=C out="tstsrchedge.img" angle=angle
+Beginning VICAR task srchedge
+SRCHEDGE version 2019-06-14
+list tstsrchedge.img sl=1 ss=146 nl=10 ns=10 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   HALF     samples are interpreted as HALFWORD data
+ Task:GEN       User:          Date_Time:                        
+ Task:SRCHEDGE  User:          Date_Time:                        
+     Samp     146   147   148   149   150   151   152   153   154   155
+   Line
+      1        50    50    50    50    50   150   150   150   150   150
+      2        50    50    50    50    50   150   150   150   150   150
+      3        50    50    50    50    50   150   150   150   150   150
+      4        50    50    50    50    50   150   150   150   150   150
+      5        50    50    50    50    50   150   150   150   150   150
+      6        50    50    50    50    50   150   150   150   150   150
+      7        50    50    50    50    50   150   150   150   150   150
+      8        50    50    50    50    50   150   150   150   150   150
+      9        50    50    50    50    50   150   150   150   150   150
+     10        50    50    50    50    50   150   150   150   150   150
+display angle
+
+angle=270.0
+
+gen out=A nl=300 ns=300 format=half linc=0 sinc=0 ival=50
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+f2 inp=A out=B function="(in1 + (100 * (line <= samp)))"
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 90000 TIMES
+srchedge inp=B out="tstsrchedge.img" angle=angle
+Beginning VICAR task srchedge
+SRCHEDGE version 2019-06-14
+list tstsrchedge.img sl=1 ss=1 nl=10 ns=10 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   HALF     samples are interpreted as HALFWORD data
+ Task:GEN       User:          Date_Time:                        
+ Task:SRCHEDGE  User:          Date_Time:                        
+     Samp       1     2     3     4     5     6     7     8     9    10
+   Line
+      1       150   150   150   150   150   150   150   150   150   150
+      2        50   150   150   150   150   150   150   150   150   150
+      3        50    50   150   150   150   150   150   150   150   150
+      4        50    50    50   150   150   150   150   150   150   150
+      5        50    50    50    50   150   150   150   150   150   150
+      6        50    50    50    50    50   150   150   150   150   150
+      7        50    50    50    50    50    50   150   150   150   150
+      8        50    50    50    50    50    50    50   150   150   150
+      9        50    50    50    50    50    50    50    50   150   150
+     10        50    50    50    50    50    50    50    50    50   150
+display angle
+
+angle=224.989259055
+
+disable-log

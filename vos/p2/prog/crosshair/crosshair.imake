@@ -1,0 +1,8 @@
+#define PROGRAM crosshair
+#define MODULE_LIST crosshair.c
+#define MAIN_LANG_C
+#define R2LIB
+#define USES_C
+#define LIB_TAE
+#define LIB_RTL
+

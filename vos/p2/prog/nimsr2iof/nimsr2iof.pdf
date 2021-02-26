@@ -1,0 +1,33 @@
+process HELP=*
+parm INP string
+parm OUT string 
+parm NOSPCVAL keyword count=0:1 valid=NOSPCVAL default=--
+end-proc
+.title
+Program NIMSR2IOF
+.help
+ NIMSR2IOF converts a NIMS radiance cube to "I/F", where the output
+ pixels contain:  IOF = pi * I / F(Solar),
+ where I = Radiance in the input cube;
+       F(Solar) = Solar flux, in the input cube label.
+
+ The input cube must be in floating-point format.
+
+ Written by:  L.W.Kamp,  2 Mar.1998
+
+History:
+  1998-03-02 lwk - initial version
+  1998-03-27 lwk - fix processing of "special values"
+  2000-11-15 lwk - check NS against buffer size
+  2002-11-14 lwk - added FORMAT to xlget call for unix port
+  2019-11-05 wlb - IDS-8142: Got test script working. Added log.
+
+.level1
+.var INP
+input cube file
+.var OUT
+output cube
+.var NOSPCVAL 
+set ISIS special
+values to zero
+.end

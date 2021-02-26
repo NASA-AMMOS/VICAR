@@ -1,0 +1,7 @@
+#define SUBROUTINE zvprintf
+
+#define MODULE_LIST zvprintf.c
+
+#define P2_SUBLIB
+#define MAIN_LANG_C
+#define USES_ANSI_C

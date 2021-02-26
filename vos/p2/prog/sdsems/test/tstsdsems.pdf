@@ -1,0 +1,38 @@
+procedure
+refgbl $echo
+local afidsroot  type=string
+local aftestdata type=string
+body
+let _onfail="continue"
+let $echo="yes"
+
+translog INP=AFIDS_ROOT TRANS=afidsroot
+translog INP=AFIDS_TESTDATA TRANS=aftestdata
+ush rm -f ct
+if (afidsroot = "")
+!MIPL
+    ush ln -fns /project/test_work/testdata/carto ct
+else
+!CARTLAB
+    if (aftestdata = "")
+        ush ln -fns /raid1/vicar_test_images/testdata/carto ct
+    else 
+        ush ln -fns $AFIDS_TESTDATA/vicar_test_images/testdata/carto ct
+    end-if
+end-if
+
+enable-log
+
+sdsems ct/sdsems_test.hlf out.hlf debline=50 debsamp=150
+
+! results differ slightly 32 vs 64-bit
+write "comparing with expected 32-bit output"
+difpic (ct/sdsems_test_out_32bit.hlf, out.hlf)
+write "comparing with expected 64-bit output"
+difpic (ct/sdsems_test_out.hlf, out.hlf)
+
+ush rm out.hlf ct
+
+disable-log
+
+end-proc

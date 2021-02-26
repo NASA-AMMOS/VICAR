@@ -1,0 +1,52 @@
+PROCESS HELP=*
+PARM INP TYPE=STRING
+PARM VAL TYPE=NAME
+PARM BINCNT TYPE=INTEGER DEFAULT=1000
+PARM SL INTEGER DEFAULT=1
+PARM SS INTEGER DEFAULT=1
+PARM NL INTEGER DEFAULT=0
+PARM NS INTEGER DEFAULT=0
+
+END-PROC
+
+.TITLE
+VICAR Program MEDVAL
+
+.HELP
+PURPOSE:
+
+MEDVAL accepts a VICAR image and estimates the median DN value by
+binning DNs.
+
+EXECUTION:
+
+Example
+	MEDVAL INP=A VAL=REALVAL
+
+.PAGE
+OPERATION:
+BYTE, HALF, FULL, REAL, and DOUB INP formats are supported. Output value is REAL.
+
+.PAGE
+HISTORY:
+
+  2018-07-03 W. Bunch - Initial version.
+  2020-12-21 W. Bunch - IDS-8686 - updated malloc include to stdlib.
+
+.LEVEL1
+.VARIABLE INP
+STRING - Input image file
+.VARIABLE VAL
+TAE Variable - Output median value
+.VARIABLE BINCNT
+INTEGER - Input number of DN bins used to calculate median
+
+.LEVEL2
+.VARIABLE INP
+INP specifies the input DEM image. Can be BYTE, HALF, FULL, REAL, or DOUB INP format.
+.VARIABLE VAL
+TAE Variable - Output median value. Must  be a REAL.
+.VARIABLE BINCNT
+INTEGER - Input number of DN bins used to calculate median. Default is 1000.
+
+.END

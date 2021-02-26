@@ -1,0 +1,77 @@
+PROCESS      HELP=*
+PARM INP       TYPE=(STRING) COUNT=1
+PARM OUT       TYPE=(STRING) COUNT=1
+PARM COMPRESS  TYPE=(STRING) COUNT=1 VALID=(NONE, BASIC, BASIC2) DEFAULT=NONE
+END-PROC
+
+.TITLE
+VICAR/IBIS Program "comprs"
+.HELP
+PURPOSE
+
+   This program creates a compressed output file by compressing
+the input file.  The compression type can by specified by specifying
+COMPRESS="NONE", COMPRESS="BASIC", or COMPRESS="BASIC2".  By
+specifying COMPRESS="NONE", it will create an uncompressed output
+file.  Compression type BASIC and BASIC2 are similar in algorithm
+and they only differ in the way the compressed indices are placed
+inside the compressed file.  NOTE: The user does not have to be
+concerned with the input compression type as this will be handled
+by the VICAR rtl.
+
+EXECUTION
+
+   The program simply reads a line from the input file and 
+writes it out to the output file using the compression type
+specified.
+
+EXAMPLES
+
+   comprs inp=x1 out=x2 compress=BASIC
+
+This command will compress x1 using BASIC compression method and
+create a compressed file called x2.
+
+   comprs inp=x1 out=x2 compress=NONE
+
+This command will uncompress x1 (it does not matter if x1 is
+compressed or not as we are only concerned with the output
+file) and create a file x2.
+
+RESTRICTIONS
+
+The size of image cannot be greater than 
+18,446,744,073,709,551,616 bytes.  64 bit long integer is
+used to keep track of EOL label position.
+
+Original Programmer: P. Kim, 14 May 2008
+
+Revisions:
+
+P. Kim	2009-07-08	Fixed format string size from 5 to 8
+rgd	2020-08-29	Added support for multiband images
+
+.LEVEL1
+.VARIABLE INP
+ Input image file
+.VARIABLE OUT
+ Output image file
+.VARIABLE COMPRESS
+ Compression type
+
+.LEVEL2
+.VARIABLE INP
+ Input image file.  May be compressed or not as you wish, the RTL automatically
+ detects and deals with it.
+
+.VARIABLE OUT
+ Output image file.  Will be compressed or not based on the COMPRESS parameter.
+
+.VARIABLE COMPRESS 
+
+ This variable specifies the output compression
+ type.  The valid choices are NONE (uncompressed)
+ BASIC and BASIC2.
+
+.END
+

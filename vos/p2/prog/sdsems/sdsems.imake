@@ -1,0 +1,25 @@
+/***********************************************************************
+
+                     IMAKE FILE FOR PROGRAM sdsems
+
+   To Create the build file give the command:
+
+		$ vimake sdsems			(VMS)
+   or
+		% vimake sdsems			(Unix)
+
+
+************************************************************************/
+
+
+#define PROGRAM	sdsems
+
+#define MODULE_LIST sdsems.c
+
+#define MAIN_LANG_C
+#define USES_C
+
+#define LIB_RTL
+#define LIB_TAE
+#define LIB_P2SUB
+/************************* End of Imake file ***************************/

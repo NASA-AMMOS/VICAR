@@ -1,0 +1,59 @@
+procedure
+refgbl $echo
+local rval type=real
+local afidsroot  type=string
+local aftestdata type=string
+body
+let _onfail="continue"
+let $echo="no"
+
+translog INP=AFIDS_ROOT TRANS=afidsroot
+translog INP=AFIDS_TESTDATA TRANS=aftestdata
+ush rm -f ct
+if (afidsroot = "")
+!MIPL
+    ush ln -fns /project/test_work/testdata/carto ct
+else
+!CARTLAB
+    if (aftestdata = "")
+        ush ln -fns /raid1/vicar_test_images/testdata/carto ct
+    else 
+        ush ln -fns $AFIDS_TESTDATA/vicar_test_images/testdata/carto ct
+    end-if
+end-if
+
+enable-log
+
+write "**** whole image ****"
+medval ct/medval_test.hlf val=rval bincnt=13
+
+write "**** lower half ****"
+medval ct/medval_test.hlf val=rval sl=20 nl=20 bincnt=13
+copy ct/medval_test.hlf temp.hlf sl=20 nl=20
+medval temp.hlf val=rval bincnt=13
+
+write "**** right half ****"
+medval ct/medval_test.hlf val=rval ss=50 ns=50 bincnt=13
+copy ct/medval_test.hlf temp.hlf ss=50 ns=50
+medval temp.hlf val=rval bincnt=13
+
+write "**** upper half ****"
+medval ct/medval_test.hlf val=rval nl=20 bincnt=13
+copy ct/medval_test.hlf temp.hlf nl=20
+medval temp.hlf val=rval bincnt=13
+
+write "**** left half ****"
+medval ct/medval_test.hlf val=rval ns=50 bincnt=13
+copy ct/medval_test.hlf temp.hlf ns=50
+medval temp.hlf val=rval bincnt=13
+
+write "**** median eq mean ***"
+gen x
+medval x val=rval
+hist x
+
+ush rm temp.hlf x ct
+
+disable-log
+
+end-proc

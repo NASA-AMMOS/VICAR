@@ -1,0 +1,1711 @@
+galgen INP=(/project/test_wor+
+k/testdata/mipl/gll/galt1.dat+
+,/project/test_work/te+
+stdata/mipl/gll/galt2.dat,/project/test_work/testd+
+ata/mipl/gll/gal+
+t3.dat,/project/test_work/testdata/mipl/gll/galt4.dat    +
+          /project/test_work/testdata/mipl/gll/galt5.dat,/project/test_work/testdata/mipl/gll/galt6.dat,/project/test_work/testdata+
+/mipl/gll/galt7.dat,/project/test_work/testdata/mipl/gll/galt8.dat              /project/test_work/testdata/mipl/gll/galt9.dat,/pro+
+ject/test_work/testdata/mipl/gll/galt10.dat)  out=(cal.100, sat.100, fit.100, rms.100, dc.100)  offsets=/project/test_work/testdata+
+/mipl/gll/goffsets.img   gain=100 light=3.54 shutter=(0,7,8,9,10,11,12,13,14,15)  'lfwpt error=(0,7) skip=4 numb=(3,3,3,3,3,3,3,3,3+
+,3)
+Beginning VICAR task galgen
+GALGEN version MAY 22, 2003
+... No Dark current file specified
+... 10 flat-field frames opened
+... 5 output calibration files opened
+... Files ready for processing
+No extended-dark-current correction
+Exposures in picoamp-milliseconds=
+            0.000E+00  1.180E+02  1.770E+02  2.360E+02  3.540E+02  4.720E+02  7.080E+02  9.440E+02  1.416E+03  1.888E+03
+Input picture scales=
+                    3          3          3          3          3          3          3          3          3          3
+... Parameter processing complete
+... Processing through line  100 completed
+... Processing through line  200 completed
+... Processing through line  300 completed
+... Processing through line  400 completed
+... Processing through line  500 completed
+... Processing through line  600 completed
+... Processing through line  700 completed
+... Processing through line  800 completed
+   1580 low-full-well pixels
+    434 pixels with bad fit
+GALGEN task completed
+blemgen (cal.100,sat.100,fit.100,rms.100,dc.100) blem.100.  +
+  minslope=.52 maxslope=72.8 mindc=-113.0 maxdc=17.08  +
+  minsat=15 maxerr=3 maxrms=1 'luminanc
+Beginning VICAR task blemgen
+BLEMGEN version 2019-08-22
+Total of 4049 blemishes found
+Energy unit = relative-foot-lambert-milliseconds
+Slope -- Mean=9.1345601118 Energy unit/DN   Sigma=0.1861
+ DC -- Mean=4.5911003511 DN   Sigma=0.3584
+Classifying blemishes...
+***** Blemish at line 2, sample 55 is not classified *****
+***** Blemish at line 2, sample 56 is not classified *****
+***** Blemish at line 2, sample 57 is not classified *****
+***** Blemish at line 2, sample 58 is not classified *****
+***** Blemish at line 2, sample 59 is not classified *****
+***** Blemish at line 2, sample 60 is not classified *****
+***** Blemish at line 2, sample 61 is not classified *****
+***** Blemish at line 2, sample 62 is not classified *****
+***** Blemish at line 2, sample 68 is not classified *****
+***** Blemish at line 2, sample 69 is not classified *****
+***** Blemish at line 2, sample 70 is not classified *****
+***** Blemish at line 2, sample 71 is not classified *****
+***** Blemish at line 2, sample 72 is not classified *****
+***** Blemish at line 2, sample 73 is not classified *****
+***** Blemish at line 2, sample 74 is not classified *****
+***** Blemish at line 2, sample 75 is not classified *****
+***** Blemish at line 2, sample 76 is not classified *****
+***** Blemish at line 2, sample 77 is not classified *****
+***** Blemish at line 2, sample 78 is not classified *****
+***** Blemish at line 2, sample 79 is not classified *****
+***** Blemish at line 2, sample 80 is not classified *****
+***** Blemish at line 2, sample 81 is not classified *****
+***** Blemish at line 2, sample 82 is not classified *****
+***** Blemish at line 2, sample 83 is not classified *****
+***** Blemish at line 2, sample 84 is not classified *****
+***** Blemish at line 2, sample 85 is not classified *****
+***** Blemish at line 2, sample 86 is not classified *****
+***** Blemish at line 2, sample 87 is not classified *****
+***** Blemish at line 2, sample 88 is not classified *****
+***** Blemish at line 2, sample 89 is not classified *****
+***** Blemish at line 2, sample 90 is not classified *****
+***** Blemish at line 2, sample 91 is not classified *****
+***** Blemish at line 2, sample 92 is not classified *****
+***** Blemish at line 2, sample 93 is not classified *****
+***** Blemish at line 2, sample 94 is not classified *****
+***** Blemish at line 2, sample 95 is not classified *****
+***** Blemish at line 2, sample 96 is not classified *****
+***** Blemish at line 2, sample 97 is not classified *****
+***** Blemish at line 2, sample 98 is not classified *****
+***** Blemish at line 2, sample 99 is not classified *****
+***** Blemish at line 2, sample 100 is not classified *****
+***** Blemish at line 2, sample 101 is not classified *****
+***** Blemish at line 2, sample 102 is not classified *****
+***** Blemish at line 2, sample 103 is not classified *****
+***** Blemish at line 2, sample 104 is not classified *****
+***** Blemish at line 2, sample 105 is not classified *****
+***** Blemish at line 2, sample 106 is not classified *****
+***** Blemish at line 2, sample 107 is not classified *****
+***** Blemish at line 2, sample 108 is not classified *****
+***** Blemish at line 2, sample 109 is not classified *****
+***** Blemish at line 2, sample 110 is not classified *****
+***** Blemish at line 2, sample 111 is not classified *****
+***** Blemish at line 2, sample 112 is not classified *****
+***** Blemish at line 2, sample 113 is not classified *****
+***** Blemish at line 2, sample 114 is not classified *****
+***** Blemish at line 2, sample 115 is not classified *****
+***** Blemish at line 2, sample 116 is not classified *****
+***** Blemish at line 2, sample 117 is not classified *****
+***** Blemish at line 2, sample 118 is not classified *****
+***** Blemish at line 2, sample 119 is not classified *****
+***** Blemish at line 2, sample 120 is not classified *****
+***** Blemish at line 2, sample 121 is not classified *****
+***** Blemish at line 2, sample 122 is not classified *****
+***** Blemish at line 2, sample 123 is not classified *****
+***** Blemish at line 2, sample 124 is not classified *****
+***** Blemish at line 2, sample 125 is not classified *****
+***** Blemish at line 2, sample 126 is not classified *****
+***** Blemish at line 2, sample 127 is not classified *****
+***** Blemish at line 2, sample 128 is not classified *****
+***** Blemish at line 2, sample 129 is not classified *****
+***** Blemish at line 2, sample 130 is not classified *****
+***** Blemish at line 2, sample 131 is not classified *****
+***** Blemish at line 2, sample 132 is not classified *****
+***** Blemish at line 2, sample 133 is not classified *****
+***** Blemish at line 2, sample 134 is not classified *****
+***** Blemish at line 2, sample 135 is not classified *****
+***** Blemish at line 2, sample 136 is not classified *****
+***** Blemish at line 2, sample 137 is not classified *****
+***** Blemish at line 2, sample 138 is not classified *****
+***** Blemish at line 2, sample 139 is not classified *****
+***** Blemish at line 2, sample 140 is not classified *****
+***** Blemish at line 2, sample 141 is not classified *****
+***** Blemish at line 2, sample 142 is not classified *****
+***** Blemish at line 2, sample 143 is not classified *****
+***** Blemish at line 2, sample 144 is not classified *****
+***** Blemish at line 2, sample 145 is not classified *****
+***** Blemish at line 2, sample 146 is not classified *****
+***** Blemish at line 2, sample 147 is not classified *****
+***** Blemish at line 2, sample 148 is not classified *****
+***** Blemish at line 2, sample 149 is not classified *****
+***** Blemish at line 2, sample 150 is not classified *****
+***** Blemish at line 2, sample 151 is not classified *****
+***** Blemish at line 2, sample 152 is not classified *****
+***** Blemish at line 2, sample 153 is not classified *****
+***** Blemish at line 2, sample 154 is not classified *****
+***** Blemish at line 2, sample 155 is not classified *****
+***** Blemish at line 2, sample 156 is not classified *****
+***** Blemish at line 2, sample 157 is not classified *****
+***** Blemish at line 2, sample 158 is not classified *****
+***** Blemish at line 2, sample 159 is not classified *****
+***** Blemish at line 2, sample 160 is not classified *****
+***** Blemish at line 2, sample 161 is not classified *****
+***** Blemish at line 2, sample 162 is not classified *****
+***** Blemish at line 2, sample 163 is not classified *****
+***** Blemish at line 2, sample 164 is not classified *****
+***** Blemish at line 2, sample 165 is not classified *****
+***** Blemish at line 2, sample 166 is not classified *****
+***** Blemish at line 2, sample 167 is not classified *****
+***** Blemish at line 2, sample 168 is not classified *****
+***** Blemish at line 2, sample 169 is not classified *****
+***** Blemish at line 2, sample 170 is not classified *****
+***** Blemish at line 2, sample 171 is not classified *****
+***** Blemish at line 2, sample 172 is not classified *****
+***** Blemish at line 2, sample 173 is not classified *****
+***** Blemish at line 2, sample 174 is not classified *****
+***** Blemish at line 2, sample 175 is not classified *****
+***** Blemish at line 2, sample 176 is not classified *****
+***** Blemish at line 2, sample 177 is not classified *****
+***** Blemish at line 2, sample 178 is not classified *****
+***** Blemish at line 2, sample 179 is not classified *****
+***** Blemish at line 2, sample 180 is not classified *****
+***** Blemish at line 2, sample 181 is not classified *****
+***** Blemish at line 2, sample 182 is not classified *****
+***** Blemish at line 2, sample 183 is not classified *****
+***** Blemish at line 2, sample 184 is not classified *****
+***** Blemish at line 2, sample 185 is not classified *****
+***** Blemish at line 2, sample 186 is not classified *****
+***** Blemish at line 2, sample 187 is not classified *****
+***** Blemish at line 2, sample 188 is not classified *****
+***** Blemish at line 2, sample 189 is not classified *****
+***** Blemish at line 2, sample 190 is not classified *****
+***** Blemish at line 2, sample 191 is not classified *****
+***** Blemish at line 2, sample 192 is not classified *****
+***** Blemish at line 2, sample 193 is not classified *****
+***** Blemish at line 2, sample 194 is not classified *****
+***** Blemish at line 2, sample 195 is not classified *****
+***** Blemish at line 2, sample 196 is not classified *****
+***** Blemish at line 2, sample 197 is not classified *****
+***** Blemish at line 2, sample 198 is not classified *****
+***** Blemish at line 2, sample 199 is not classified *****
+***** Blemish at line 2, sample 200 is not classified *****
+***** Blemish at line 2, sample 201 is not classified *****
+***** Blemish at line 2, sample 202 is not classified *****
+***** Blemish at line 2, sample 203 is not classified *****
+***** Blemish at line 2, sample 204 is not classified *****
+***** Blemish at line 2, sample 205 is not classified *****
+***** Blemish at line 2, sample 206 is not classified *****
+***** Blemish at line 2, sample 207 is not classified *****
+***** Blemish at line 2, sample 208 is not classified *****
+***** Blemish at line 2, sample 209 is not classified *****
+***** Blemish at line 2, sample 210 is not classified *****
+***** Blemish at line 2, sample 211 is not classified *****
+***** Blemish at line 2, sample 212 is not classified *****
+***** Blemish at line 2, sample 213 is not classified *****
+***** Blemish at line 2, sample 214 is not classified *****
+***** Blemish at line 2, sample 215 is not classified *****
+***** Blemish at line 2, sample 216 is not classified *****
+***** Blemish at line 2, sample 217 is not classified *****
+***** Blemish at line 2, sample 218 is not classified *****
+***** Blemish at line 2, sample 223 is not classified *****
+***** Blemish at line 2, sample 224 is not classified *****
+***** Blemish at line 2, sample 225 is not classified *****
+***** Blemish at line 2, sample 226 is not classified *****
+***** Blemish at line 2, sample 227 is not classified *****
+***** Blemish at line 3, sample 53 is not classified *****
+***** Blemish at line 3, sample 54 is not classified *****
+***** Blemish at line 3, sample 55 is not classified *****
+***** Blemish at line 3, sample 56 is not classified *****
+***** Blemish at line 3, sample 57 is not classified *****
+***** Blemish at line 3, sample 58 is not classified *****
+***** Blemish at line 3, sample 59 is not classified *****
+***** Blemish at line 3, sample 60 is not classified *****
+***** Blemish at line 3, sample 61 is not classified *****
+***** Blemish at line 3, sample 62 is not classified *****
+***** Blemish at line 3, sample 63 is not classified *****
+***** Blemish at line 3, sample 64 is not classified *****
+***** Blemish at line 3, sample 66 is not classified *****
+***** Blemish at line 3, sample 67 is not classified *****
+***** Blemish at line 3, sample 68 is not classified *****
+***** Blemish at line 3, sample 69 is not classified *****
+***** Blemish at line 3, sample 70 is not classified *****
+***** Blemish at line 3, sample 71 is not classified *****
+***** Blemish at line 3, sample 72 is not classified *****
+***** Blemish at line 3, sample 73 is not classified *****
+***** Blemish at line 3, sample 74 is not classified *****
+***** Blemish at line 3, sample 75 is not classified *****
+***** Blemish at line 3, sample 76 is not classified *****
+***** Blemish at line 3, sample 77 is not classified *****
+***** Blemish at line 3, sample 78 is not classified *****
+***** Blemish at line 3, sample 79 is not classified *****
+***** Blemish at line 3, sample 80 is not classified *****
+***** Blemish at line 3, sample 81 is not classified *****
+***** Blemish at line 3, sample 82 is not classified *****
+***** Blemish at line 3, sample 83 is not classified *****
+***** Blemish at line 3, sample 84 is not classified *****
+***** Blemish at line 3, sample 85 is not classified *****
+***** Blemish at line 3, sample 86 is not classified *****
+***** Blemish at line 3, sample 87 is not classified *****
+***** Blemish at line 3, sample 88 is not classified *****
+***** Blemish at line 3, sample 89 is not classified *****
+***** Blemish at line 3, sample 90 is not classified *****
+***** Blemish at line 3, sample 91 is not classified *****
+***** Blemish at line 3, sample 92 is not classified *****
+***** Blemish at line 3, sample 93 is not classified *****
+***** Blemish at line 3, sample 94 is not classified *****
+***** Blemish at line 3, sample 95 is not classified *****
+***** Blemish at line 3, sample 96 is not classified *****
+***** Blemish at line 3, sample 97 is not classified *****
+***** Blemish at line 3, sample 98 is not classified *****
+***** Blemish at line 3, sample 99 is not classified *****
+***** Blemish at line 3, sample 100 is not classified *****
+***** Blemish at line 3, sample 101 is not classified *****
+***** Blemish at line 3, sample 102 is not classified *****
+***** Blemish at line 3, sample 103 is not classified *****
+***** Blemish at line 3, sample 104 is not classified *****
+***** Blemish at line 3, sample 105 is not classified *****
+***** Blemish at line 3, sample 106 is not classified *****
+***** Blemish at line 3, sample 107 is not classified *****
+***** Blemish at line 3, sample 108 is not classified *****
+***** Blemish at line 3, sample 109 is not classified *****
+***** Blemish at line 3, sample 110 is not classified *****
+***** Blemish at line 3, sample 111 is not classified *****
+***** Blemish at line 3, sample 112 is not classified *****
+***** Blemish at line 3, sample 113 is not classified *****
+***** Blemish at line 3, sample 114 is not classified *****
+***** Blemish at line 3, sample 115 is not classified *****
+***** Blemish at line 3, sample 116 is not classified *****
+***** Blemish at line 3, sample 117 is not classified *****
+***** Blemish at line 3, sample 118 is not classified *****
+***** Blemish at line 3, sample 119 is not classified *****
+***** Blemish at line 3, sample 120 is not classified *****
+***** Blemish at line 3, sample 121 is not classified *****
+***** Blemish at line 3, sample 122 is not classified *****
+***** Blemish at line 3, sample 123 is not classified *****
+***** Blemish at line 3, sample 124 is not classified *****
+***** Blemish at line 3, sample 125 is not classified *****
+***** Blemish at line 3, sample 126 is not classified *****
+***** Blemish at line 3, sample 127 is not classified *****
+***** Blemish at line 3, sample 128 is not classified *****
+***** Blemish at line 3, sample 129 is not classified *****
+***** Blemish at line 3, sample 130 is not classified *****
+***** Blemish at line 3, sample 131 is not classified *****
+***** Blemish at line 3, sample 132 is not classified *****
+***** Blemish at line 3, sample 133 is not classified *****
+***** Blemish at line 3, sample 134 is not classified *****
+***** Blemish at line 3, sample 135 is not classified *****
+***** Blemish at line 3, sample 136 is not classified *****
+***** Blemish at line 3, sample 137 is not classified *****
+***** Blemish at line 3, sample 138 is not classified *****
+***** Blemish at line 3, sample 139 is not classified *****
+***** Blemish at line 3, sample 140 is not classified *****
+***** Blemish at line 3, sample 141 is not classified *****
+***** Blemish at line 3, sample 142 is not classified *****
+***** Blemish at line 3, sample 143 is not classified *****
+***** Blemish at line 3, sample 144 is not classified *****
+***** Blemish at line 3, sample 145 is not classified *****
+***** Blemish at line 3, sample 146 is not classified *****
+***** Blemish at line 3, sample 147 is not classified *****
+***** Blemish at line 3, sample 148 is not classified *****
+***** Blemish at line 3, sample 149 is not classified *****
+***** Blemish at line 3, sample 150 is not classified *****
+***** Blemish at line 3, sample 151 is not classified *****
+***** Blemish at line 3, sample 153 is not classified *****
+***** Blemish at line 3, sample 154 is not classified *****
+***** Blemish at line 3, sample 155 is not classified *****
+***** Blemish at line 3, sample 156 is not classified *****
+***** Blemish at line 3, sample 157 is not classified *****
+***** Blemish at line 3, sample 158 is not classified *****
+***** Blemish at line 3, sample 163 is not classified *****
+***** Blemish at line 3, sample 164 is not classified *****
+***** Blemish at line 3, sample 165 is not classified *****
+***** Blemish at line 3, sample 166 is not classified *****
+***** Blemish at line 3, sample 167 is not classified *****
+***** Blemish at line 3, sample 168 is not classified *****
+***** Blemish at line 3, sample 169 is not classified *****
+***** Blemish at line 3, sample 171 is not classified *****
+***** Blemish at line 3, sample 172 is not classified *****
+***** Blemish at line 3, sample 173 is not classified *****
+***** Blemish at line 3, sample 180 is not classified *****
+***** Blemish at line 3, sample 181 is not classified *****
+***** Blemish at line 3, sample 182 is not classified *****
+Number of permanent blemishes=       2550
+Number of low-full-well-pixels=       1499
+Total number of blemishes=       4049
+Histogram of low-full-well pixels
+ GRAY      FREQ   PERCENT   0        10        20        30        40        50        60        70        80        90       100
+
+   39         2    0.134    *         +         +         +         +         +         +         +         +         +         +
+
+   41         1    0.067    *         +         +         +         +         +         +         +         +         +         +
+
+   43         4    0.267    *         +         +         +         +         +         +         +         +         +         +
+   44         1    0.067    *         +         +         +         +         +         +         +         +         +         +
+
+   46         2    0.134    *         +         +         +         +         +         +         +         +         +         +
+   47         1    0.067    *         +         +         +         +         +         +         +         +         +         +
+
+   49         1    0.067    *         +         +         +         +         +         +         +         +         +         +
+
+   53         1    0.067    *         +         +         +         +         +         +         +         +         +         +
+
+   55         1    0.067    *         +         +         +         +         +         +         +         +         +         +
+   56         1    0.067    *         +         +         +         +         +         +         +         +         +         +
+   57         1    0.067    *         +         +         +         +         +         +         +         +         +         +
+
+   59         1    0.067    *         +         +         +         +         +         +         +         +         +         +
+
+   62         2    0.134    *         +         +         +         +         +         +         +         +         +         +
+   63         1    0.067    *         +         +         +         +         +         +         +         +         +         +
+
+   65         4    0.267    *         +         +         +         +         +         +         +         +         +         +
+   66         1    0.067    *         +         +         +         +         +         +         +         +         +         +
+
+   69         2    0.134    *         +         +         +         +         +         +         +         +         +         +
+
+   71         1    0.067    *         +         +         +         +         +         +         +         +         +         +
+
+   75         2    0.134    *         +         +         +         +         +         +         +         +         +         +
+   76         1    0.067    *         +         +         +         +         +         +         +         +         +         +
+   77         1    0.067    *         +         +         +         +         +         +         +         +         +         +
+
+   80         2    0.134    *         +         +         +         +         +         +         +         +         +         +
+   81         6    0.401    *         +         +         +         +         +         +         +         +         +         +
+   82         2    0.134    *         +         +         +         +         +         +         +         +         +         +
+   83         2    0.134    *         +         +         +         +         +         +         +         +         +         +
+   84         2    0.134    *         +         +         +         +         +         +         +         +         +         +
+
+   86         2    0.134    *         +         +         +         +         +         +         +         +         +         +
+   87         2    0.134    *         +         +         +         +         +         +         +         +         +         +
+
+   89         3    0.201    *         +         +         +         +         +         +         +         +         +         +
+
+   91         2    0.134    *         +         +         +         +         +         +         +         +         +         +
+   92         1    0.067    *         +         +         +         +         +         +         +         +         +         +
+   93         2    0.134    *         +         +         +         +         +         +         +         +         +         +
+
+   95         2    0.134    *         +         +         +         +         +         +         +         +         +         +
+
+  103         2    0.134    *         +         +         +         +         +         +         +         +         +         +
+
+  105         2    0.134    *         +         +         +         +         +         +         +         +         +         +
+  106         3    0.201    *         +         +         +         +         +         +         +         +         +         +
+  107         1    0.067    *         +         +         +         +         +         +         +         +         +         +
+  108         1    0.067    *         +         +         +         +         +         +         +         +         +         +
+  109         1    0.067    *         +         +         +         +         +         +         +         +         +         +
+
+  114         2    0.134    *         +         +         +         +         +         +         +         +         +         +
+
+  116         1    0.067    *         +         +         +         +         +         +         +         +         +         +
+
+  118         2    0.134    *         +         +         +         +         +         +         +         +         +         +
+
+  121         1    0.067    *         +         +         +         +         +         +         +         +         +         +
+  122         1    0.067    *         +         +         +         +         +         +         +         +         +         +
+
+  124         3    0.201    *         +         +         +         +         +         +         +         +         +         +
+
+  126         1    0.067    *         +         +         +         +         +         +         +         +         +         +
+  127         1    0.067    *         +         +         +         +         +         +         +         +         +         +
+
+  129         1    0.067    *         +         +         +         +         +         +         +         +         +         +
+
+  134         1    0.067    *         +         +         +         +         +         +         +         +         +         +
+  135         1    0.067    *         +         +         +         +         +         +         +         +         +         +
+
+  137         1    0.067    *         +         +         +         +         +         +         +         +         +         +
+  138         1    0.067    *         +         +         +         +         +         +         +         +         +         +
+  139         1    0.067    *         +         +         +         +         +         +         +         +         +         +
+  140         1    0.067    *         +         +         +         +         +         +         +         +         +         +
+
+  142         2    0.134    *         +         +         +         +         +         +         +         +         +         +
+
+  147         1    0.067    *         +         +         +         +         +         +         +         +         +         +
+
+  149         1    0.067    *         +         +         +         +         +         +         +         +         +         +
+
+  152         1    0.067    *         +         +         +         +         +         +         +         +         +         +
+
+  154         3    0.201    *         +         +         +         +         +         +         +         +         +         +
+  155         3    0.201    *         +         +         +         +         +         +         +         +         +         +
+  156        14    0.934    ***       +         +         +         +         +         +         +         +         +         +
+  157        70    4.670    ***********         +         +         +         +         +         +         +         +         +
+  158       483   32.222    ***************************************************************************     +         +         +
+  159       648   43.229    *****************************************************************************************************
+  160        99    6.605    ****************    +         +         +         +         +         +         +         +         +
+  161        21    1.401    ****      +         +         +         +         +         +         +         +         +         +
+  162         1    0.067    *         +         +         +         +         +         +         +         +         +         +
+  163         1    0.067    *         +         +         +         +         +         +         +         +         +         +
+  164         1    0.067    *         +         +         +         +         +         +         +         +         +         +
+
+  166         4    0.267    *         +         +         +         +         +         +         +         +         +         +
+  167         3    0.201    *         +         +         +         +         +         +         +         +         +         +
+  168         3    0.201    *         +         +         +         +         +         +         +         +         +         +
+  169         3    0.201    *         +         +         +         +         +         +         +         +         +         +
+  170         5    0.334    *         +         +         +         +         +         +         +         +         +         +
+  171         2    0.134    *         +         +         +         +         +         +         +         +         +         +
+
+  176         1    0.067    *         +         +         +         +         +         +         +         +         +         +
+
+  187         2    0.134    *         +         +         +         +         +         +         +         +         +         +
+  188         3    0.201    *         +         +         +         +         +         +         +         +         +         +
+  189         3    0.201    *         +         +         +         +         +         +         +         +         +         +
+  190        10    0.668    **        +         +         +         +         +         +         +         +         +         +
+  191        22    1.468    ****      +         +         +         +         +         +         +         +         +         +
+
+
+AVERAGE GRAY LEVEL =  0.1553E+03
+
+STANDARD DEVIATION =  0.1931E+02
+
+NUMBER OF ELEMENTS =      1499
+
+BLEMGEN done.
+  if ($syschar(1) = "VAX_VMS")
+  else
+    let s1   = "/project/test_work/testdata/cassini/iss/sum2.1"
+    let s2   = "/project/test_work/testdata/cassini/iss/sum2.2"
+    let s7   = "/project/test_work/testdata/cassini/iss/sum2.7"
+    let s8   = "/project/test_work/testdata/cassini/iss/sum2.8"
+    let s14  = "/project/test_work/testdata/cassini/iss/sum2.14"
+    let s15  = "/project/test_work/testdata/cassini/iss/sum2.15"
+    let s24  = "/project/test_work/testdata/cassini/iss/sum2.24"
+    let s25  = "/project/test_work/testdata/cassini/iss/sum2.25"
+    let s36  = "/project/test_work/testdata/cassini/iss/sum2.36"
+    let s37  = "/project/test_work/testdata/cassini/iss/sum2.37"
+    let sol  = "/project/test_work/testdata/cassini/iss/sol.dat"
+  end-if
+picsum (/project/test_work/testdata/cassini/iss/sum2.1 /project/test_work/testdata/cassini/iss/sum2.2 ) cgdc
+Beginning VICAR task picsum
+PICSUM version 14 Feb 2011
+GROUP_BLOCKS VALUE MISSING
+ALGORITHM VALUE MISSING
+BLOCK_TYPE VALUE MISSING
+QUANTIZATION_FACTOR_INDEX VALUE MISSING
+MISSING_LINES VALUE MISSING
+GROUP_BLOCKS VALUE MISSING
+ALGORITHM VALUE MISSING
+BLOCK_TYPE VALUE MISSING
+QUANTIZATION_FACTOR_INDEX VALUE MISSING
+MISSING_LINES VALUE MISSING
+SCLK=        1 CAM=ISSNA GAIN=100K  MODE=SUM2 EXP=      0 FILT1=RED   FILT2=CLR
+GROUP_BLOCKS VALUE MISSING
+ALGORITHM VALUE MISSING
+BLOCK_TYPE VALUE MISSING
+QUANTIZATION_FACTOR_INDEX VALUE MISSING
+MISSING_LINES VALUE MISSING
+SCLK=        2 CAM=ISSNA GAIN=100K  MODE=SUM2 EXP=      0 FILT1=RED   FILT2=CLR
+PICSUM task completed
+picsum (/project/test_work/testdata/cassini/iss/sum2.7 /project/test_work/testdata/cassini/iss/sum2.7 ) cg1
+Beginning VICAR task picsum
+PICSUM version 14 Feb 2011
+GROUP_BLOCKS VALUE MISSING
+ALGORITHM VALUE MISSING
+BLOCK_TYPE VALUE MISSING
+QUANTIZATION_FACTOR_INDEX VALUE MISSING
+MISSING_LINES VALUE MISSING
+GROUP_BLOCKS VALUE MISSING
+ALGORITHM VALUE MISSING
+BLOCK_TYPE VALUE MISSING
+QUANTIZATION_FACTOR_INDEX VALUE MISSING
+MISSING_LINES VALUE MISSING
+SCLK=        7 CAM=ISSNA GAIN=100K  MODE=SUM2 EXP=     33 FILT1=RED   FILT2=CLR
+GROUP_BLOCKS VALUE MISSING
+ALGORITHM VALUE MISSING
+BLOCK_TYPE VALUE MISSING
+QUANTIZATION_FACTOR_INDEX VALUE MISSING
+MISSING_LINES VALUE MISSING
+SCLK=        7 CAM=ISSNA GAIN=100K  MODE=SUM2 EXP=     33 FILT1=RED   FILT2=CLR
+PICSUM task completed
+picsum (/project/test_work/testdata/cassini/iss/sum2.14 /project/test_work/testdata/cassini/iss/sum2.15 ) cg2
+Beginning VICAR task picsum
+PICSUM version 14 Feb 2011
+GROUP_BLOCKS VALUE MISSING
+ALGORITHM VALUE MISSING
+BLOCK_TYPE VALUE MISSING
+QUANTIZATION_FACTOR_INDEX VALUE MISSING
+MISSING_LINES VALUE MISSING
+GROUP_BLOCKS VALUE MISSING
+ALGORITHM VALUE MISSING
+BLOCK_TYPE VALUE MISSING
+QUANTIZATION_FACTOR_INDEX VALUE MISSING
+MISSING_LINES VALUE MISSING
+SCLK=       14 CAM=ISSNA GAIN=100K  MODE=SUM2 EXP=     67 FILT1=RED   FILT2=CLR
+GROUP_BLOCKS VALUE MISSING
+ALGORITHM VALUE MISSING
+BLOCK_TYPE VALUE MISSING
+QUANTIZATION_FACTOR_INDEX VALUE MISSING
+MISSING_LINES VALUE MISSING
+SCLK=       15 CAM=ISSNA GAIN=100K  MODE=SUM2 EXP=     67 FILT1=RED   FILT2=CLR
+PICSUM task completed
+picsum (/project/test_work/testdata/cassini/iss/sum2.24 /project/test_work/testdata/cassini/iss/sum2.25 ) cg3
+Beginning VICAR task picsum
+PICSUM version 14 Feb 2011
+GROUP_BLOCKS VALUE MISSING
+ALGORITHM VALUE MISSING
+BLOCK_TYPE VALUE MISSING
+QUANTIZATION_FACTOR_INDEX VALUE MISSING
+MISSING_LINES VALUE MISSING
+GROUP_BLOCKS VALUE MISSING
+ALGORITHM VALUE MISSING
+BLOCK_TYPE VALUE MISSING
+QUANTIZATION_FACTOR_INDEX VALUE MISSING
+MISSING_LINES VALUE MISSING
+SCLK=       24 CAM=ISSNA GAIN=100K  MODE=SUM2 EXP=    133 FILT1=RED   FILT2=CLR
+GROUP_BLOCKS VALUE MISSING
+ALGORITHM VALUE MISSING
+BLOCK_TYPE VALUE MISSING
+QUANTIZATION_FACTOR_INDEX VALUE MISSING
+MISSING_LINES VALUE MISSING
+SCLK=       25 CAM=ISSNA GAIN=100K  MODE=SUM2 EXP=    133 FILT1=RED   FILT2=CLR
+PICSUM task completed
+picsum (/project/test_work/testdata/cassini/iss/sum2.36 /project/test_work/testdata/cassini/iss/sum2.37 ) cg4
+Beginning VICAR task picsum
+PICSUM version 14 Feb 2011
+GROUP_BLOCKS VALUE MISSING
+ALGORITHM VALUE MISSING
+BLOCK_TYPE VALUE MISSING
+QUANTIZATION_FACTOR_INDEX VALUE MISSING
+MISSING_LINES VALUE MISSING
+GROUP_BLOCKS VALUE MISSING
+ALGORITHM VALUE MISSING
+BLOCK_TYPE VALUE MISSING
+QUANTIZATION_FACTOR_INDEX VALUE MISSING
+MISSING_LINES VALUE MISSING
+SCLK=       36 CAM=ISSNA GAIN=100K  MODE=SUM2 EXP=    267 FILT1=RED   FILT2=CLR
+GROUP_BLOCKS VALUE MISSING
+ALGORITHM VALUE MISSING
+BLOCK_TYPE VALUE MISSING
+QUANTIZATION_FACTOR_INDEX VALUE MISSING
+MISSING_LINES VALUE MISSING
+SCLK=       37 CAM=ISSNA GAIN=100K  MODE=SUM2 EXP=    267 FILT1=RED   FILT2=CLR
+PICSUM task completed
+galgen (cg1,cg2,cg3,cg4) out=(cal,sat,err,rms,dc) dc=cgdc  +
+        offset=/project/test_work/testdata/cassini/iss/sol.dat light=5.1
+Beginning VICAR task galgen
+GALGEN version MAY 22, 2003
+... Dark current file specified
+...  4 flat-field frames opened
+... 5 output calibration files opened
+... Files ready for processing
+GROUP_BLOCKS VALUE MISSING
+ALGORITHM VALUE MISSING
+BLOCK_TYPE VALUE MISSING
+QUANTIZATION_FACTOR_INDEX VALUE MISSING
+MISSING_LINES VALUE MISSING
+GROUP_BLOCKS VALUE MISSING
+ALGORITHM VALUE MISSING
+BLOCK_TYPE VALUE MISSING
+QUANTIZATION_FACTOR_INDEX VALUE MISSING
+MISSING_LINES VALUE MISSING
+GROUP_BLOCKS VALUE MISSING
+ALGORITHM VALUE MISSING
+BLOCK_TYPE VALUE MISSING
+QUANTIZATION_FACTOR_INDEX VALUE MISSING
+MISSING_LINES VALUE MISSING
+GROUP_BLOCKS VALUE MISSING
+ALGORITHM VALUE MISSING
+BLOCK_TYPE VALUE MISSING
+QUANTIZATION_FACTOR_INDEX VALUE MISSING
+MISSING_LINES VALUE MISSING
+GROUP_BLOCKS VALUE MISSING
+ALGORITHM VALUE MISSING
+BLOCK_TYPE VALUE MISSING
+QUANTIZATION_FACTOR_INDEX VALUE MISSING
+MISSING_LINES VALUE MISSING
+No extended-dark-current correction
+Exposures in picoamp-milliseconds=
+            1.683E+02  3.417E+02  6.783E+02  1.362E+03
+GROUP_BLOCKS VALUE MISSING
+ALGORITHM VALUE MISSING
+BLOCK_TYPE VALUE MISSING
+QUANTIZATION_FACTOR_INDEX VALUE MISSING
+RADIANCE VALUE MISSING
+MISSING_LINES VALUE MISSING
+Input picture scales=
+                    2          2          2          2          2
+... Parameter processing complete
+... Processing through line  100 completed
+... Processing through line  200 completed
+... Processing through line  300 completed
+... Processing through line  400 completed
+... Processing through line  500 completed
+      0 low-full-well pixels
+      0 pixels with bad fit
+GALGEN task completed
+let $echo="no"
+Find none this time
+let $becho="yes"
+blemgen (cal,sat,err,rms,dc) blem  +
+  minslope=0 maxslope=50 mindc=-100 maxdc=500  +
+  minsat=0 maxerr=1000 maxrms=1000 'lumin
+Beginning VICAR task blemgen
+BLEMGEN version 2019-08-22
+Total of 0 blemishes found
+Energy unit = relative-foot-lambert-milliseconds
+Slope -- Mean=10.0452791002 Energy unit/DN   Sigma=0.5374
+ DC -- Mean=16.9222207665 DN   Sigma=3.4761
+Classifying blemishes...
+Number of permanent blemishes=          0
+Number of low-full-well-pixels=          0
+Total number of blemishes=          0
+Histogram of low-full-well pixels
+BLEMGEN done.
+let $echo="no"
+Find some based on slope
+let $becho="yes"
+blemgen (cal,sat,err,rms,dc) blem  +
+  minslope=5 maxslope=20 mindc=-100 maxdc=500  +
+  minsat=0 maxerr=1000 maxrms=1000 'lumin
+Beginning VICAR task blemgen
+BLEMGEN version 2019-08-22
+Total of 283 blemishes found
+Energy unit = relative-foot-lambert-milliseconds
+Slope -- Mean=10.0334160499 Energy unit/DN   Sigma=0.3979
+ DC -- Mean=16.9296692114 DN   Sigma=3.4705
+Classifying blemishes...
+Number of permanent blemishes=        283
+Number of low-full-well-pixels=          0
+Total number of blemishes=        283
+Histogram of low-full-well pixels
+BLEMGEN done.
+let $echo="no"
+Based on DC
+let $becho="yes"
+blemgen (cal,sat,err,rms,dc) blem  +
+  minslope=0 maxslope=50 mindc=-10 maxdc=30.  +
+  minsat=0 maxerr=1000 maxrms=1000 'lumin
+Beginning VICAR task blemgen
+BLEMGEN version 2019-08-22
+Total of 279 blemishes found
+Energy unit = relative-foot-lambert-milliseconds
+Slope -- Mean=10.0499890861 Energy unit/DN   Sigma=0.5179
+ DC -- Mean=16.8857044959 DN   Sigma=3.2815
+Classifying blemishes...
+Number of permanent blemishes=        279
+Number of low-full-well-pixels=          0
+Total number of blemishes=        279
+Histogram of low-full-well pixels
+BLEMGEN done.
+let $echo="no"
+Based on ERR
+let $becho="yes"
+blemgen (cal,sat,err,rms,dc) blem  +
+  minslope=0 maxslope=50 mindc=-100 maxdc=500  +
+  minsat=0 maxerr=30 maxrms=1000 'lumin
+Beginning VICAR task blemgen
+BLEMGEN version 2019-08-22
+Total of 273 blemishes found
+Energy unit = relative-foot-lambert-milliseconds
+Slope -- Mean=10.0498891793 Energy unit/DN   Sigma=0.5183
+ DC -- Mean=16.8860487368 DN   Sigma=3.2823
+Classifying blemishes...
+Number of permanent blemishes=        273
+Number of low-full-well-pixels=          0
+Total number of blemishes=        273
+Histogram of low-full-well pixels
+BLEMGEN done.
+let $echo="no"
+Based on RMS
+let $becho="yes"
+blemgen (cal,sat,err,rms,dc) blem  +
+  minslope=0 maxslope=50 mindc=-100 maxdc=500  +
+  minsat=0 maxerr=1000 maxrms=30 'lumin
+Beginning VICAR task blemgen
+BLEMGEN version 2019-08-22
+Total of 234 blemishes found
+Energy unit = relative-foot-lambert-milliseconds
+Slope -- Mean=10.0492298529 Energy unit/DN   Sigma=0.5211
+ DC -- Mean=16.8886006584 DN   Sigma=3.2889
+Classifying blemishes...
+Number of permanent blemishes=        234
+Number of low-full-well-pixels=          0
+Total number of blemishes=        234
+Histogram of low-full-well pixels
+BLEMGEN done.
+let $echo="no"
+Does it find Low Full Well pixels ok?
+Make 512 oddballs in the SAT file.
+let $becho="yes"
+f2 sat sat2 func="(LINE.EQ.SAMP)*(LINE/10-32766.5) + IN1"
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 262144 TIMES
+list sat2 (5,5,12,12) 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   HALF     samples are interpreted as HALFWORD data
+ Task:PICSUM    User:          Date_Time:                        
+ Task:F2        User:          Date_Time:                        
+     Samp       5     6     7     8     9    10    11    12    13    14    15    16
+   Line
+      5         1 32767 32767 32767 32767 32767 32767 32767 32767 32767 32767 32767
+      6     32767     1 32767 32767 32767 32767 32767 32767 32767 32767 32767 32767
+      7     32767 32767     1 32767 32767 32767 32767 32767 32767 32767 32767 32767
+      8     32767 32767 32767     1 32767 32767 32767 32767 32767 32767 32767 32767
+      9     32767 32767 32767 32767     1 32767 32767 32767 32767 32767 32767 32767
+     10     32767 32767 32767 32767 32767     2 32767 32767 32767 32767 32767 32767
+     11     32767 32767 32767 32767 32767 32767     2 32767 32767 32767 32767 32767
+     12     32767 32767 32767 32767 32767 32767 32767     2 32767 32767 32767 32767
+     13     32767 32767 32767 32767 32767 32767 32767 32767     2 32767 32767 32767
+     14     32767 32767 32767 32767 32767 32767 32767 32767 32767     2 32767 32767
+     15     32767 32767 32767 32767 32767 32767 32767 32767 32767 32767     2 32767
+     16     32767 32767 32767 32767 32767 32767 32767 32767 32767 32767 32767     2
+let $echo="no"
+Based on SAT
+let $becho="yes"
+blemgen (cal,sat2,err,rms,dc) blem  +
+  minslope=0 maxslope=50 mindc=-100 maxdc=500  +
+  minsat=25 maxerr=1000 maxrms=1000 'lumin
+Beginning VICAR task blemgen
+BLEMGEN version 2019-08-22
+Total of 512 blemishes found
+Energy unit = relative-foot-lambert-milliseconds
+Slope -- Mean=10.0452586254 Energy unit/DN   Sigma=0.5375
+ DC -- Mean=16.9218227737 DN   Sigma=3.4745
+Classifying blemishes...
+Number of permanent blemishes=        239
+Number of low-full-well-pixels=        273
+Total number of blemishes=        512
+Histogram of low-full-well pixels
+ GRAY      FREQ   PERCENT   0        10        20        30        40        50        60        70        80        90       100
+
+   25        10    3.664    *****************************************************************************************************
+   26        10    3.664    *****************************************************************************************************
+   27        10    3.664    *****************************************************************************************************
+   28        10    3.664    *****************************************************************************************************
+   29        10    3.664    *****************************************************************************************************
+   30        10    3.664    *****************************************************************************************************
+   31        10    3.664    *****************************************************************************************************
+   32        10    3.664    *****************************************************************************************************
+   33        10    3.664    *****************************************************************************************************
+   34        10    3.664    *****************************************************************************************************
+   35        10    3.664    *****************************************************************************************************
+   36        10    3.664    *****************************************************************************************************
+   37        10    3.664    *****************************************************************************************************
+   38        10    3.664    *****************************************************************************************************
+   39        10    3.664    *****************************************************************************************************
+   40        10    3.664    *****************************************************************************************************
+   41        10    3.664    *****************************************************************************************************
+   42        10    3.664    *****************************************************************************************************
+   43        10    3.664    *****************************************************************************************************
+   44        10    3.664    *****************************************************************************************************
+   45        10    3.664    *****************************************************************************************************
+   46        10    3.664    *****************************************************************************************************
+   47        10    3.664    *****************************************************************************************************
+   48        10    3.664    *****************************************************************************************************
+   49        10    3.664    *****************************************************************************************************
+   50        10    3.664    *****************************************************************************************************
+   51        10    3.664    *****************************************************************************************************
+   52         3    1.099    *******************************         +         +         +         +         +         +         +
+
+
+AVERAGE GRAY LEVEL =  0.3815E+02
+
+STANDARD DEVIATION =  0.7882E+01
+
+NUMBER OF ELEMENTS =       273
+
+BLEMGEN done.
+let $echo="no"
+Zero out all elements of blemish file but the CLASS
+convert to byte and histogram to see kinds of classes
+let $becho="yes"
+f2 blem b 'byte func="(MOD(SAMP,4).EQ.3)*IN1"
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 2048 TIMES
+hist b
+Beginning VICAR task hist
+*** HIST version 2017-08-08 ***
+
+Bin Width =        1.0
+          0     1538   **************************************************  1
+         14*     510   **************************************************  2
+
+AVERAGE GRAY LEVEL=3.486328
+STANDARD DEVIATION=6.054264
+NUMBER ELEMENTS=      2048
+MIN. DN=         0
+MAX. DN=        14
+
+let $echo="no"
+Find just the LFWP
+let $becho="yes"
+blemgen (cal,sat2,err,rms,dc) blem  +
+  minslope=0 maxslope=50 mindc=-100 maxdc=500  +
+  minsat=0 maxerr=1000 maxrms=1000 'lumin
+Beginning VICAR task blemgen
+BLEMGEN version 2019-08-22
+Total of 512 blemishes found
+Energy unit = relative-foot-lambert-milliseconds
+Slope -- Mean=10.0452586254 Energy unit/DN   Sigma=0.5375
+ DC -- Mean=16.9218227737 DN   Sigma=3.4745
+Classifying blemishes...
+Number of permanent blemishes=          0
+Number of low-full-well-pixels=        512
+Total number of blemishes=        512
+Histogram of low-full-well pixels
+ GRAY      FREQ   PERCENT   0        10        20        30        40        50        60        70        80        90       100
+
+    1         9    1.758    *******************************************************************************************         +
+    2        10    1.954    *****************************************************************************************************
+    3        10    1.954    *****************************************************************************************************
+    4        10    1.954    *****************************************************************************************************
+    5        10    1.954    *****************************************************************************************************
+    6        10    1.954    *****************************************************************************************************
+    7        10    1.954    *****************************************************************************************************
+    8        10    1.954    *****************************************************************************************************
+    9        10    1.954    *****************************************************************************************************
+   10        10    1.954    *****************************************************************************************************
+   11        10    1.954    *****************************************************************************************************
+   12        10    1.954    *****************************************************************************************************
+   13        10    1.954    *****************************************************************************************************
+   14        10    1.954    *****************************************************************************************************
+   15        10    1.954    *****************************************************************************************************
+   16        10    1.954    *****************************************************************************************************
+   17        10    1.954    *****************************************************************************************************
+   18        10    1.954    *****************************************************************************************************
+   19        10    1.954    *****************************************************************************************************
+   20        10    1.954    *****************************************************************************************************
+   21        10    1.954    *****************************************************************************************************
+   22        10    1.954    *****************************************************************************************************
+   23        10    1.954    *****************************************************************************************************
+   24        10    1.954    *****************************************************************************************************
+   25        10    1.954    *****************************************************************************************************
+   26        10    1.954    *****************************************************************************************************
+   27        10    1.954    *****************************************************************************************************
+   28        10    1.954    *****************************************************************************************************
+   29        10    1.954    *****************************************************************************************************
+   30        10    1.954    *****************************************************************************************************
+   31        10    1.954    *****************************************************************************************************
+   32        10    1.954    *****************************************************************************************************
+   33        10    1.954    *****************************************************************************************************
+   34        10    1.954    *****************************************************************************************************
+   35        10    1.954    *****************************************************************************************************
+   36        10    1.954    *****************************************************************************************************
+   37        10    1.954    *****************************************************************************************************
+   38        10    1.954    *****************************************************************************************************
+   39        10    1.954    *****************************************************************************************************
+   40        10    1.954    *****************************************************************************************************
+   41        10    1.954    *****************************************************************************************************
+   42        10    1.954    *****************************************************************************************************
+   43        10    1.954    *****************************************************************************************************
+   44        10    1.954    *****************************************************************************************************
+   45        10    1.954    *****************************************************************************************************
+   46        10    1.954    *****************************************************************************************************
+   47        10    1.954    *****************************************************************************************************
+   48        10    1.954    *****************************************************************************************************
+   49        10    1.954    *****************************************************************************************************
+   50        10    1.954    *****************************************************************************************************
+   51        10    1.954    *****************************************************************************************************
+   52         3    0.586    *******************************         +         +         +         +         +         +         +
+
+
+AVERAGE GRAY LEVEL =  0.2620E+02
+
+STANDARD DEVIATION =  0.1478E+02
+
+NUMBER OF ELEMENTS =       512
+
+BLEMGEN done.
+let $echo="no"
+Use all above criteria and output codes in blem file
+then do histogram of the codes to check the count of each
+let $becho="yes"
+blemgen (cal,sat2,err,rms,dc) blem  +
+  minslope=5 maxslope=20 mindc=-10 maxdc=30  +
+  minsat=25 maxerr=30 maxrms=30 'bc  'lumin
+Beginning VICAR task blemgen
+BLEMGEN version 2019-08-22
+Total of 1075 blemishes found
+Energy unit = relative-foot-lambert-milliseconds
+Slope -- Mean=10.0381014866 Energy unit/DN   Sigma=0.3708
+ DC -- Mean=16.8928510339 DN   Sigma=3.2752
+Classifying blemishes...
+Number of permanent blemishes=        804
+Number of low-full-well-pixels=        271
+Number of double column blemishes=          0
+Number of unclassified blemishes=          0
+ 
+Blemishes found by each criteria (slope,dc,sat,err,rms,lfwp)
+ 283 279 239 3 0 271
+
+Total number of blemishes=       1075
+Histogram of low-full-well pixels
+ GRAY      FREQ   PERCENT   0        10        20        30        40        50        60        70        80        90       100
+
+   25        10    3.691    *****************************************************************************************************
+   26        10    3.691    *****************************************************************************************************
+   27        10    3.691    *****************************************************************************************************
+   28        10    3.691    *****************************************************************************************************
+   29        10    3.691    *****************************************************************************************************
+   30        10    3.691    *****************************************************************************************************
+   31        10    3.691    *****************************************************************************************************
+   32        10    3.691    *****************************************************************************************************
+   33        10    3.691    *****************************************************************************************************
+   34        10    3.691    *****************************************************************************************************
+   35        10    3.691    *****************************************************************************************************
+   36        10    3.691    *****************************************************************************************************
+   37        10    3.691    *****************************************************************************************************
+   38        10    3.691    *****************************************************************************************************
+   39        10    3.691    *****************************************************************************************************
+   40        10    3.691    *****************************************************************************************************
+   41         9    3.322    *******************************************************************************************         +
+   42        10    3.691    *****************************************************************************************************
+   43        10    3.691    *****************************************************************************************************
+   44        10    3.691    *****************************************************************************************************
+   45        10    3.691    *****************************************************************************************************
+   46        10    3.691    *****************************************************************************************************
+   47        10    3.691    *****************************************************************************************************
+   48        10    3.691    *****************************************************************************************************
+   49        10    3.691    *****************************************************************************************************
+   50        10    3.691    *****************************************************************************************************
+   51        10    3.691    *****************************************************************************************************
+   52         2    0.739    *********************         +         +         +         +         +         +         +         +
+
+
+AVERAGE GRAY LEVEL =  0.3809E+02
+
+STANDARD DEVIATION =  0.7864E+01
+
+NUMBER OF ELEMENTS =       271
+
+BLEMGEN done.
+f2 blem bx func="(MOD(SAMP,4).EQ.3)*IN1" 'byte
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 4300 TIMES
+hist bx
+Beginning VICAR task hist
+*** HIST version 2017-08-08 ***
+
+Bin Width =        1.0
+          0     3225   **************************************************  1
+          1      283   **************************************************  2
+          2      279   *************************************************
+          4*     239   ******************************************
+          5        3
+          7*     271   ***********************************************
+
+AVERAGE GRAY LEVEL=0.862558
+STANDARD DEVIATION=1.891091
+NUMBER ELEMENTS=      4300
+MIN. DN=         0
+MAX. DN=         7
+
+let $echo="no"
+In above histogram:  level 0 - ignore
+                     level 1 - bad slopes
+                     level 2 - bad dc
+                     level 4 - bad SAT
+                     level 5 - bad ERR
+                     level 6 - bad RMS
+                     level 7 - Low Full Well
+Note:  some pixels may have satisfied more than on criteria, but
+       are finally bookkept in only one place
+ 
+Does it handle Low Full Well pixels in the halfword range?
+Make 512 oddballs in the SAT file ranging from 4 to 2048
+MINSAT=1028 will make 256 of them LFW pixels.
+let $becho="yes"
+f2 sat sat2 func="(LINE.EQ.SAMP)*(LINE*4-32767) + IN1"
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 262144 TIMES
+list sat2 (1,1,5,5) 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   HALF     samples are interpreted as HALFWORD data
+ Task:PICSUM    User:          Date_Time:                        
+ Task:F2        User:          Date_Time:                        
+     Samp       1     2     3     4     5
+   Line
+      1         4 32767 32767 32767 32767
+      2     32767     8 32767 32767 32767
+      3     32767 32767    12 32767 32767
+      4     32767 32767 32767    16 32767
+      5     32767 32767 32767 32767    20
+blemgen (cal,sat2,err,rms,dc) blem  +
+  minslope=0 maxslope=50 mindc=-100 maxdc=500  +
+  minsat=1028 maxerr=1000 maxrms=1000 'lumin
+Beginning VICAR task blemgen
+BLEMGEN version 2019-08-22
+Total of 512 blemishes found
+Energy unit = relative-foot-lambert-milliseconds
+Slope -- Mean=10.0452586254 Energy unit/DN   Sigma=0.5375
+ DC -- Mean=16.9218227737 DN   Sigma=3.4745
+Classifying blemishes...
+Number of permanent blemishes=        256
+Number of low-full-well-pixels=        256
+Total number of blemishes=        512
+Histogram of low-full-well pixels
+ GRAY      FREQ   PERCENT   0        10        20        30        40        50        60        70        80        90       100
+
+ 1028         1    0.391    *****************************************************************************************************
+
+ 1032         1    0.391    *****************************************************************************************************
+
+ 1036         1    0.391    *****************************************************************************************************
+
+ 1040         1    0.391    *****************************************************************************************************
+
+ 1044         1    0.391    *****************************************************************************************************
+
+ 1048         1    0.391    *****************************************************************************************************
+
+ 1052         1    0.391    *****************************************************************************************************
+
+ 1056         1    0.391    *****************************************************************************************************
+
+ 1060         1    0.391    *****************************************************************************************************
+
+ 1064         1    0.391    *****************************************************************************************************
+
+ 1068         1    0.391    *****************************************************************************************************
+
+ 1072         1    0.391    *****************************************************************************************************
+
+ 1076         1    0.391    *****************************************************************************************************
+
+ 1080         1    0.391    *****************************************************************************************************
+
+ 1084         1    0.391    *****************************************************************************************************
+
+ 1088         1    0.391    *****************************************************************************************************
+
+ 1092         1    0.391    *****************************************************************************************************
+
+ 1096         1    0.391    *****************************************************************************************************
+
+ 1100         1    0.391    *****************************************************************************************************
+
+ 1104         1    0.391    *****************************************************************************************************
+
+ 1108         1    0.391    *****************************************************************************************************
+
+ 1112         1    0.391    *****************************************************************************************************
+
+ 1116         1    0.391    *****************************************************************************************************
+
+ 1120         1    0.391    *****************************************************************************************************
+
+ 1124         1    0.391    *****************************************************************************************************
+
+ 1128         1    0.391    *****************************************************************************************************
+
+ 1132         1    0.391    *****************************************************************************************************
+
+ 1136         1    0.391    *****************************************************************************************************
+
+ 1140         1    0.391    *****************************************************************************************************
+
+ 1144         1    0.391    *****************************************************************************************************
+
+ 1148         1    0.391    *****************************************************************************************************
+
+ 1152         1    0.391    *****************************************************************************************************
+
+ 1156         1    0.391    *****************************************************************************************************
+
+ 1160         1    0.391    *****************************************************************************************************
+
+ 1164         1    0.391    *****************************************************************************************************
+
+ 1168         1    0.391    *****************************************************************************************************
+
+ 1172         1    0.391    *****************************************************************************************************
+
+ 1176         1    0.391    *****************************************************************************************************
+
+ 1180         1    0.391    *****************************************************************************************************
+
+ 1184         1    0.391    *****************************************************************************************************
+
+ 1188         1    0.391    *****************************************************************************************************
+
+ 1192         1    0.391    *****************************************************************************************************
+
+ 1196         1    0.391    *****************************************************************************************************
+
+ 1200         1    0.391    *****************************************************************************************************
+
+ 1204         1    0.391    *****************************************************************************************************
+
+ 1208         1    0.391    *****************************************************************************************************
+
+ 1212         1    0.391    *****************************************************************************************************
+
+ 1216         1    0.391    *****************************************************************************************************
+
+ 1220         1    0.391    *****************************************************************************************************
+
+ 1224         1    0.391    *****************************************************************************************************
+
+ 1228         1    0.391    *****************************************************************************************************
+
+ 1232         1    0.391    *****************************************************************************************************
+
+ 1236         1    0.391    *****************************************************************************************************
+
+ 1240         1    0.391    *****************************************************************************************************
+
+ 1244         1    0.391    *****************************************************************************************************
+
+ 1248         1    0.391    *****************************************************************************************************
+
+ 1252         1    0.391    *****************************************************************************************************
+
+ 1256         1    0.391    *****************************************************************************************************
+
+ 1260         1    0.391    *****************************************************************************************************
+
+ 1264         1    0.391    *****************************************************************************************************
+
+ 1268         1    0.391    *****************************************************************************************************
+
+ 1272         1    0.391    *****************************************************************************************************
+
+ 1276         1    0.391    *****************************************************************************************************
+
+ 1280         1    0.391    *****************************************************************************************************
+
+ 1284         1    0.391    *****************************************************************************************************
+
+ 1288         1    0.391    *****************************************************************************************************
+
+ 1292         1    0.391    *****************************************************************************************************
+
+ 1296         1    0.391    *****************************************************************************************************
+
+ 1300         1    0.391    *****************************************************************************************************
+
+ 1304         1    0.391    *****************************************************************************************************
+
+ 1308         1    0.391    *****************************************************************************************************
+
+ 1312         1    0.391    *****************************************************************************************************
+
+ 1316         1    0.391    *****************************************************************************************************
+
+ 1320         1    0.391    *****************************************************************************************************
+
+ 1324         1    0.391    *****************************************************************************************************
+
+ 1328         1    0.391    *****************************************************************************************************
+
+ 1332         1    0.391    *****************************************************************************************************
+
+ 1336         1    0.391    *****************************************************************************************************
+
+ 1340         1    0.391    *****************************************************************************************************
+
+ 1344         1    0.391    *****************************************************************************************************
+
+ 1348         1    0.391    *****************************************************************************************************
+
+ 1352         1    0.391    *****************************************************************************************************
+
+ 1356         1    0.391    *****************************************************************************************************
+
+ 1360         1    0.391    *****************************************************************************************************
+
+ 1364         1    0.391    *****************************************************************************************************
+
+ 1368         1    0.391    *****************************************************************************************************
+
+ 1372         1    0.391    *****************************************************************************************************
+
+ 1376         1    0.391    *****************************************************************************************************
+
+ 1380         1    0.391    *****************************************************************************************************
+
+ 1384         1    0.391    *****************************************************************************************************
+
+ 1388         1    0.391    *****************************************************************************************************
+
+ 1392         1    0.391    *****************************************************************************************************
+
+ 1396         1    0.391    *****************************************************************************************************
+
+ 1400         1    0.391    *****************************************************************************************************
+
+ 1404         1    0.391    *****************************************************************************************************
+
+ 1408         1    0.391    *****************************************************************************************************
+
+ 1412         1    0.391    *****************************************************************************************************
+
+ 1416         1    0.391    *****************************************************************************************************
+
+ 1420         1    0.391    *****************************************************************************************************
+
+ 1424         1    0.391    *****************************************************************************************************
+
+ 1428         1    0.391    *****************************************************************************************************
+
+ 1432         1    0.391    *****************************************************************************************************
+
+ 1436         1    0.391    *****************************************************************************************************
+
+ 1440         1    0.391    *****************************************************************************************************
+
+ 1444         1    0.391    *****************************************************************************************************
+
+ 1448         1    0.391    *****************************************************************************************************
+
+ 1452         1    0.391    *****************************************************************************************************
+
+ 1456         1    0.391    *****************************************************************************************************
+
+ 1460         1    0.391    *****************************************************************************************************
+
+ 1464         1    0.391    *****************************************************************************************************
+
+ 1468         1    0.391    *****************************************************************************************************
+
+ 1472         1    0.391    *****************************************************************************************************
+
+ 1476         1    0.391    *****************************************************************************************************
+
+ 1480         1    0.391    *****************************************************************************************************
+
+ 1484         1    0.391    *****************************************************************************************************
+
+ 1488         1    0.391    *****************************************************************************************************
+
+ 1492         1    0.391    *****************************************************************************************************
+
+ 1496         1    0.391    *****************************************************************************************************
+
+ 1500         1    0.391    *****************************************************************************************************
+
+ 1504         1    0.391    *****************************************************************************************************
+
+ 1508         1    0.391    *****************************************************************************************************
+
+ 1512         1    0.391    *****************************************************************************************************
+
+ 1516         1    0.391    *****************************************************************************************************
+
+ 1520         1    0.391    *****************************************************************************************************
+
+ 1524         1    0.391    *****************************************************************************************************
+
+ 1528         1    0.391    *****************************************************************************************************
+
+ 1532         1    0.391    *****************************************************************************************************
+
+ 1536         1    0.391    *****************************************************************************************************
+
+ 1540         1    0.391    *****************************************************************************************************
+
+ 1544         1    0.391    *****************************************************************************************************
+
+ 1548         1    0.391    *****************************************************************************************************
+
+ 1552         1    0.391    *****************************************************************************************************
+
+ 1556         1    0.391    *****************************************************************************************************
+
+ 1560         1    0.391    *****************************************************************************************************
+
+ 1564         1    0.391    *****************************************************************************************************
+
+ 1568         1    0.391    *****************************************************************************************************
+
+ 1572         1    0.391    *****************************************************************************************************
+
+ 1576         1    0.391    *****************************************************************************************************
+
+ 1580         1    0.391    *****************************************************************************************************
+
+ 1584         1    0.391    *****************************************************************************************************
+
+ 1588         1    0.391    *****************************************************************************************************
+
+ 1592         1    0.391    *****************************************************************************************************
+
+ 1596         1    0.391    *****************************************************************************************************
+
+ 1600         1    0.391    *****************************************************************************************************
+
+ 1604         1    0.391    *****************************************************************************************************
+
+ 1608         1    0.391    *****************************************************************************************************
+
+ 1612         1    0.391    *****************************************************************************************************
+
+ 1616         1    0.391    *****************************************************************************************************
+
+ 1620         1    0.391    *****************************************************************************************************
+
+ 1624         1    0.391    *****************************************************************************************************
+
+ 1628         1    0.391    *****************************************************************************************************
+
+ 1632         1    0.391    *****************************************************************************************************
+
+ 1636         1    0.391    *****************************************************************************************************
+
+ 1640         1    0.391    *****************************************************************************************************
+
+ 1644         1    0.391    *****************************************************************************************************
+
+ 1648         1    0.391    *****************************************************************************************************
+
+ 1652         1    0.391    *****************************************************************************************************
+
+ 1656         1    0.391    *****************************************************************************************************
+
+ 1660         1    0.391    *****************************************************************************************************
+
+ 1664         1    0.391    *****************************************************************************************************
+
+ 1668         1    0.391    *****************************************************************************************************
+
+ 1672         1    0.391    *****************************************************************************************************
+
+ 1676         1    0.391    *****************************************************************************************************
+
+ 1680         1    0.391    *****************************************************************************************************
+
+ 1684         1    0.391    *****************************************************************************************************
+
+ 1688         1    0.391    *****************************************************************************************************
+
+ 1692         1    0.391    *****************************************************************************************************
+
+ 1696         1    0.391    *****************************************************************************************************
+
+ 1700         1    0.391    *****************************************************************************************************
+
+ 1704         1    0.391    *****************************************************************************************************
+
+ 1708         1    0.391    *****************************************************************************************************
+
+ 1712         1    0.391    *****************************************************************************************************
+
+ 1716         1    0.391    *****************************************************************************************************
+
+ 1720         1    0.391    *****************************************************************************************************
+
+ 1724         1    0.391    *****************************************************************************************************
+
+ 1728         1    0.391    *****************************************************************************************************
+
+ 1732         1    0.391    *****************************************************************************************************
+
+ 1736         1    0.391    *****************************************************************************************************
+
+ 1740         1    0.391    *****************************************************************************************************
+
+ 1744         1    0.391    *****************************************************************************************************
+
+ 1748         1    0.391    *****************************************************************************************************
+
+ 1752         1    0.391    *****************************************************************************************************
+
+ 1756         1    0.391    *****************************************************************************************************
+
+ 1760         1    0.391    *****************************************************************************************************
+
+ 1764         1    0.391    *****************************************************************************************************
+
+ 1768         1    0.391    *****************************************************************************************************
+
+ 1772         1    0.391    *****************************************************************************************************
+
+ 1776         1    0.391    *****************************************************************************************************
+
+ 1780         1    0.391    *****************************************************************************************************
+
+ 1784         1    0.391    *****************************************************************************************************
+
+ 1788         1    0.391    *****************************************************************************************************
+
+ 1792         1    0.391    *****************************************************************************************************
+
+ 1796         1    0.391    *****************************************************************************************************
+
+ 1800         1    0.391    *****************************************************************************************************
+
+ 1804         1    0.391    *****************************************************************************************************
+
+ 1808         1    0.391    *****************************************************************************************************
+
+ 1812         1    0.391    *****************************************************************************************************
+
+ 1816         1    0.391    *****************************************************************************************************
+
+ 1820         1    0.391    *****************************************************************************************************
+
+ 1824         1    0.391    *****************************************************************************************************
+
+ 1828         1    0.391    *****************************************************************************************************
+
+ 1832         1    0.391    *****************************************************************************************************
+
+ 1836         1    0.391    *****************************************************************************************************
+
+ 1840         1    0.391    *****************************************************************************************************
+
+ 1844         1    0.391    *****************************************************************************************************
+
+ 1848         1    0.391    *****************************************************************************************************
+
+ 1852         1    0.391    *****************************************************************************************************
+
+ 1856         1    0.391    *****************************************************************************************************
+
+ 1860         1    0.391    *****************************************************************************************************
+
+ 1864         1    0.391    *****************************************************************************************************
+
+ 1868         1    0.391    *****************************************************************************************************
+
+ 1872         1    0.391    *****************************************************************************************************
+
+ 1876         1    0.391    *****************************************************************************************************
+
+ 1880         1    0.391    *****************************************************************************************************
+
+ 1884         1    0.391    *****************************************************************************************************
+
+ 1888         1    0.391    *****************************************************************************************************
+
+ 1892         1    0.391    *****************************************************************************************************
+
+ 1896         1    0.391    *****************************************************************************************************
+
+ 1900         1    0.391    *****************************************************************************************************
+
+ 1904         1    0.391    *****************************************************************************************************
+
+ 1908         1    0.391    *****************************************************************************************************
+
+ 1912         1    0.391    *****************************************************************************************************
+
+ 1916         1    0.391    *****************************************************************************************************
+
+ 1920         1    0.391    *****************************************************************************************************
+
+ 1924         1    0.391    *****************************************************************************************************
+
+ 1928         1    0.391    *****************************************************************************************************
+
+ 1932         1    0.391    *****************************************************************************************************
+
+ 1936         1    0.391    *****************************************************************************************************
+
+ 1940         1    0.391    *****************************************************************************************************
+
+ 1944         1    0.391    *****************************************************************************************************
+
+ 1948         1    0.391    *****************************************************************************************************
+
+ 1952         1    0.391    *****************************************************************************************************
+
+ 1956         1    0.391    *****************************************************************************************************
+
+ 1960         1    0.391    *****************************************************************************************************
+
+ 1964         1    0.391    *****************************************************************************************************
+
+ 1968         1    0.391    *****************************************************************************************************
+
+ 1972         1    0.391    *****************************************************************************************************
+
+ 1976         1    0.391    *****************************************************************************************************
+
+ 1980         1    0.391    *****************************************************************************************************
+
+ 1984         1    0.391    *****************************************************************************************************
+
+ 1988         1    0.391    *****************************************************************************************************
+
+ 1992         1    0.391    *****************************************************************************************************
+
+ 1996         1    0.391    *****************************************************************************************************
+
+ 2000         1    0.391    *****************************************************************************************************
+
+ 2004         1    0.391    *****************************************************************************************************
+
+ 2008         1    0.391    *****************************************************************************************************
+
+ 2012         1    0.391    *****************************************************************************************************
+
+ 2016         1    0.391    *****************************************************************************************************
+
+ 2020         1    0.391    *****************************************************************************************************
+
+ 2024         1    0.391    *****************************************************************************************************
+
+ 2028         1    0.391    *****************************************************************************************************
+
+ 2032         1    0.391    *****************************************************************************************************
+
+ 2036         1    0.391    *****************************************************************************************************
+
+ 2040         1    0.391    *****************************************************************************************************
+
+ 2044         1    0.391    *****************************************************************************************************
+
+ 2048         1    0.391    *****************************************************************************************************
+
+
+AVERAGE GRAY LEVEL =  0.1538E+04
+
+STANDARD DEVIATION =  0.2956E+03
+
+NUMBER OF ELEMENTS =       256
+
+BLEMGEN done.
+let $echo="no"
+Check blemish classifying.  Generating blemishes with known
+locations and therefore known classes.  After BLEMGEN, the
+classes are printed in order of blemish number.
+let $becho="yes"
+copy  cal c (101,101,11,7)
+Beginning VICAR task copy
+ COPY VERSION 12-JUL-1993
+copy  sat s (101,101,11,7)
+Beginning VICAR task copy
+ COPY VERSION 12-JUL-1993
+copy  err e (101,101,11,7)
+Beginning VICAR task copy
+ COPY VERSION 12-JUL-1993
+copy  rms r (101,101,11,7)
+Beginning VICAR task copy
+ COPY VERSION 12-JUL-1993
+copy  dc  d (101,101,11,7)
+Beginning VICAR task copy
+ COPY VERSION 12-JUL-1993
+genthis g nl=11 ns=7  +
+dn=(1,1,1,1,1,1,1, +
+    1,9,1,9,1,1,1, +
+    1,1,1,9,1,1,1, +
+    1,1,9,9,9,9,1, +
+    1,1,9,1,9,1,1, +
+    1,1,9,9,9,9,1, +
+    1,1,9,1,1,1,1, +
+    1,1,9,1,9,1,1, +
+    1,1,1,9,1,1,1, +
+    1,9,9,1,9,1,1, +
+    1,1,1,1,1,1,1)
+Beginning VICAR task genthis
+ GENTHIS VERSION 2
+ GENTHIS TASK COMPLETED
+let $echo="no"
+List out where the blemishes will be for class checking
+The 9's will become blemishes, the 1's won't
+let $becho="yes"
+list g 'dump 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GENTHIS   User:          Date_Time:                        
+   Line
+      1       1   1   1   1   1   1   1
+      2       1   9   1   9   1   1   1
+      3       1   1   1   9   1   1   1
+      4       1   1   9   9   9   9   1
+      5       1   1   9   1   9   1   1
+      6       1   1   9   9   9   9   1
+      7       1   1   9   1   1   1   1
+      8       1   1   9   1   9   1   1
+      9       1   1   1   9   1   1   1
+     10       1   9   9   1   9   1   1
+     11       1   1   1   1   1   1   1
+let $echo="no"
+The classes for these blemish locations should be:
+      15     13
+              8
+          1  25  4  3
+          8      8
+          5   2  5  6
+          9
+         12     11
+             10
+       7  3     14
+ 
+or when put in order of blemish number:
+ 15,13,8,1,25,4,3,8,8,5,2,5,6,9,12,11,10,7,3,14
+ 
+let $becho="yes"
+f2 (c,g) cal2 func=in1*in2
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 77 TIMES
+blemgen (cal2,s,e,r,d) blem.tmp  +
+  minslope=0 maxslope=50 mindc=-100 maxdc=500  +
+  minsat=0 maxerr=1000 maxrms=1000 'lumin
+Beginning VICAR task blemgen
+BLEMGEN version 2019-08-22
+Total of 20 blemishes found
+Energy unit = relative-foot-lambert-milliseconds
+Slope -- Mean=10.0136282068 Energy unit/DN   Sigma=0.1730
+ DC -- Mean=20.5693530702 DN   Sigma=1.0119
+Classifying blemishes...
+Number of permanent blemishes=         20
+Number of low-full-well-pixels=          0
+Total number of blemishes=         20
+Histogram of low-full-well pixels
+BLEMGEN done.
+let $echo="no"
+weed out all but class from blem file and list
+let $becho="yes"
+size blem.tmp t zoom=-2 'noin
+Beginning VICAR task size
+*** SIZE version 2017-11-21 ***
+      INPUT AREA=(    1,    1,    1,   80)
+     OUTPUT SIZE=      1 X     40
+ PICTURE SIZE SCALED BY      1*NL,     -2*NS
+ SIZE task completed
+local nsx integer
+form t ns=nsx
+Beginning VICAR task form
+FORM version 2-JAN-1995
+let nsx=nsx-1
+copy t u (1,2,1,39)
+Beginning VICAR task copy
+ COPY VERSION 12-JUL-1993
+size u v zoom=-2 'noin
+Beginning VICAR task size
+*** SIZE version 2017-11-21 ***
+      INPUT AREA=(    1,    1,    1,   39)
+     OUTPUT SIZE=      1 X     20
+ PICTURE SIZE SCALED BY      1*NL,     -2*NS
+ SIZE task completed
+list v 'dump 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   HALF     samples are interpreted as HALFWORD data
+ Task:PICSUM    User:          Date_Time:                        
+ Task:SIZE      User:          Date_Time:                        
+   Line
+      1        15    13     8     1    25     4     3     8     8     5     2     5     6     9    12
+               11    10     7     3    14
+let $echo="no"
+Check out 'RADIANCE
+let $becho="yes"
+blemgen (cal,sat,err,rms,dc) blem  +
+  minslope=0 maxslope=50 mindc=-100 maxdc=500  +
+  minsat=0 maxerr=1000 maxrms=1000
+Beginning VICAR task blemgen
+BLEMGEN version 2019-08-22
+Total of 0 blemishes found
+Energy unit = picoamp-milliseconds
+Slope -- Mean=10.0452791002 Energy unit/DN   Sigma=0.5374
+ DC -- Mean=16.9222207665 DN   Sigma=3.4761
+Classifying blemishes...
+Number of permanent blemishes=          0
+Number of low-full-well-pixels=          0
+Total number of blemishes=          0
+Histogram of low-full-well pixels
+BLEMGEN done.
+disable-log

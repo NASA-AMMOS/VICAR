@@ -1,0 +1,59 @@
+PROCESS HELP=*
+PARM INP TYPE=STRING
+PARM OUT TYPE=STRING
+PARM WX TYPE=REAL DEFAULT = 1000
+PARM WY TYPE=REAL DEFAULT = 1000
+PARM DEBLINE TYPE=INTEGER DEFAULT=0
+PARM DEBSAMP TYPE=INTEGER DEFAULT=0
+END-PROC
+.TITLE
+VICAR Program SDSEMS
+.HELP
+PURPOSE:
+
+SDSEMS accepts a DEM image and calculates its standard deviation of
+scene elevation relative to mean slope based on the Ancillary
+Geographic Product ATBD.
+
+EXECUTION:
+
+Example
+	SDSEMS INP=A OUT=B
+
+.PAGE
+OPERATION:
+BYTE, HALF, FULL, REAL, and DOUB INP formats are supported. OUT format is REAL.
+.page
+HISTORY:
+
+  2018-07-03 W. Bunch - Initial version.
+  2019-08-06 W. Bunch - IDS-7923 - Replaced sprintf calls.
+  2020-12-21 W. Bunch - IDS-8686 - Updated malloc include to stdlib.
+
+.LEVEL1
+.VARIABLE INP
+STRING - Input image files
+.VARIABLE OUT
+STRING - Output image file
+.VARIABLE WX
+STRING - Input pixel width in sample direction
+.VARIABLE WY
+STRING - Input pixel width in line direction
+.VARIABLE DEBLINE
+STRING - Debug pixel line number
+.VARIABLE DEBSAMP
+STRING - Debug pixel sample number
+.LEVEL2
+.VARIABLE INP
+INP specifies the input DEM image. Can be BYTE, HALF, FULL, REAL, or DOUB INP format.
+.VARIABLE OUT
+OUT specifies the output SDSEMS image in REAL format.
+.VARIABLE WX
+STRING - Input pixel width in sample direction in same units as INP DN.
+.VARIABLE WY
+STRING - Input pixel width in line direction in same units as INP DN.
+.VARIABLE DEBLINE
+STRING - Debug pixel line number. If specified, DEBSAMP must be specified. Intermediate stats will be displayed for this input pixel.
+.VARIABLE DEBSAMP
+STRING - Debug pixel sample number. If specified, DEBLINE must be specified. Intermediate stats will be displayed for this input pixel.
+.END
