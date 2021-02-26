@@ -18,7 +18,7 @@ C  RESSAR77  INP=(IN,RES,BLEM)  OUT
       COMMON/NPIX/NPIX
       integer NPIX
 
-      INTEGER*2 HLINE(4),VLINE(4),HORD(4)
+      INTEGER*2 HLINE(4)/0,0,0,0/,VLINE(4)/0,0,0,0/,HORD(4)/0,0,0,0/
       INTEGER*2 VRES(2,4)
       INTEGER*2 HRES(2,4)
       INTEGER*2 VRES2(2,4)
@@ -112,7 +112,7 @@ C     BE AFFECTED
       NPIX   = 0
 
 
-      CALL ifmessage ('RESSAR77 version 2016-02-24')
+      CALL ifmessage ('RESSAR77 version 2020-02-25')
 
 
       CALL XVPCNT('INP',NI)    ! get no of inputs
@@ -331,6 +331,13 @@ C
 
       REAL*4 THETA,DTHETA,R2,PI2/6.2831853072/
 C
+      integer index1, index2
+      DO 421 index1 = 1, 150
+         DO 422 index2 = 1, 3
+            PTBUF(index2, index1) = 0
+ 422    continue
+ 421  continue
+
       OFFSET = NLIC/2 + 11
 
 C     ....Compute starting and ending line of circle

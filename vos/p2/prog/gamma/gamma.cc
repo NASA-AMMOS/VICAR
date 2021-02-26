@@ -11,10 +11,14 @@
 #include "SimpleImage.h"
 #include "lbl_image_data.h"
 #include "lbl_derived_image.h"
+#include "lbl_identification.h"
 
 #include <stdlib.h>
 #include <cfloat>
 #include <math.h>
+
+#define PIG_MAX_FILENAME_SIZE 250
+
 //////////////////////////////////////////////////////////////////////////
 // Find and return the maximum value in an image.
 ///////////////////////////////////////////////////////////////
@@ -46,7 +50,7 @@ void simpleGammaCorrection(SimpleImage<double> *inp_img,
                            short int is_float);
 
 void main44() {
-    zvmessage("Gamma version 1.0.0", "");
+    zvmessage("Gamma version 1.0.1", "");
 
     char msg[256];
     char inp_filename[256], out_filename[256];
@@ -65,8 +69,8 @@ void main44() {
     zvopen(inp_unit[0], "op", "read", "u_format", "doub", "open_act", "sa", NULL);
     zvget(inp_unit[0], "nl", &inp_nl, "ns", &inp_ns, "nb", &inp_nb, NULL);
 
-    // validation for input image's band.
-    // only 1-band and 3-band input images are supported.
+    // Validation for input image's band.
+    // Only 1-band and 3-band input images are supported.
     if (inp_nb != 1 && inp_nb != 3) {
         sprintf(msg, "input images must be 1-band or 3-band. "
                 "However, %d-band input is provided", inp_nb);
@@ -150,7 +154,7 @@ void main44() {
     SimpleImage<double> out_img;
     out_img.alloc(inp_nb, inp_nl, inp_ns);
 
-    // init label routine ImageData for reading from input
+    // Init label routine ImageData for reading from input
     LblImageData_typ *InpImageData = new LblImageData_typ;
     LblImageData(inp_unit[0], LBL_READ, InpImageData, 1);
 
@@ -164,7 +168,7 @@ void main44() {
         maxin = max_in;
     } 
     if (maxin == 0.0 && InpImageData->SampleBitMask.Valid) {
-        // figure out the image's depth from sample_bit_mask label.
+        // Figure out the image's depth from sample_bit_mask label.
         char *bit_mask = InpImageData->SampleBitMask.Value;
         char *p = strtok(bit_mask, "#");
         char substr_bit_mask[32];
@@ -173,7 +177,7 @@ void main44() {
             p = strtok(NULL, "#");
         }
 
-        // convert binary to base 10 number.
+        // Convert binary to base 10 number.
         maxin = (double)strtol(substr_bit_mask, NULL, 2);
     }
     if (maxin == 0.0) {
@@ -185,27 +189,7 @@ void main44() {
     if (count == 1) maxout = max_out;
     if (maxout == 0.0) maxout = max_out_value;
 
-    /*
-    // Find out the depth of the input image 
-    double max_value;
-    if (InpImageData->SampleBitMask.Valid) {
-        // figure out the image's depth from sample_bit_mask label.
-        char *bit_mask = InpImageData->SampleBitMask.Value;
-        char *p = strtok(bit_mask, "#");
-        char substr_bit_mask[32];
-        while (p != NULL) {
-            strcpy(substr_bit_mask, p);
-            p = strtok(NULL, "#");
-        }
-        // convert binary to base 10 number.
-        max_value = (double)strtol(substr_bit_mask, NULL, 2);
-    } else {
-        // find out the nearest next power of 2 number for the maximum value  
-        max_value = getMax(&inp_img);
-        max_value = pow(2, ceil(log(max_value) / log(2)));
-    } */
-
-    // gamma correction
+    // Gamma correction
     if (do_srgb) {
         zvmessage("Gamma correction mode: sRGB", "");
         srgbGammaCorrection(&inp_img, &out_img, maxin, maxout, is_float);
@@ -215,7 +199,7 @@ void main44() {
                               do_inverse, is_float);
     }
 
-    // open output file
+    // Open output file
     zvunit(&out_unit[0], "OUT", 1, NULL);
     zvopen(out_unit[0], "op", "write", "u_ns", inp_ns, "u_nl", inp_nl, 
            "u_nb", inp_nb, "open_act", "sa", "u_org", "bsq", "u_format", "doub",
@@ -226,11 +210,11 @@ void main44() {
     out_band[1] = 2;
     out_band[2] = 3;
 
-    // init label routine DerivedImage for writing
+    // Init label routine DerivedImage for writing
     LblDerivedImage_typ DerivedImage;
     memset(&DerivedImage, 0, sizeof(LblDerivedImage_typ));
 
-    // write ENCODED_DISPLAY_GAMMA label
+    // Write ENCODED_DISPLAY_GAMMA label in DERIVED_IMAGE group
     if (do_srgb) {
         strcpy(DerivedImage.EncodedDisplayGamma.Value,"sRGB");
     } else {
@@ -239,55 +223,60 @@ void main44() {
         strcpy(DerivedImage.EncodedDisplayGamma.Value, exp_str);
     }
     DerivedImage.EncodedDisplayGamma.Valid = 1;
+
+    // Write INPUT_PRODUCT_ID label in DERIVED_IMAGE group by pulling 
+    // PRODUCT_ID from INP image. 
+    LblIdentification_typ *InpIdentification = new LblIdentification_typ; 
+    LblIdentification(inp_unit[0], LBL_READ, InpIdentification, 1);
+    if (InpIdentification->ProductId.Valid) { 
+        strcpy(DerivedImage.InputProductId[0].Value, 
+               InpIdentification->ProductId.Value); 
+        DerivedImage.InputProductId[0].Valid = 1;
+    }
     LblSetDerivedImage("DERIVED_IMAGE_PARMS");
     LblDerivedImageApi(out_unit[0], LBL_AUGMENT, &DerivedImage, 1);
 
-    // write SAMPLE_BIT_MASK label
+    // Write SAMPLE_BIT_MASK label in IMAGE_DATA group
     LblImageData_typ OutImageData;
     memset(&OutImageData, 0 , sizeof(LblImageData_typ));
     strcpy(OutImageData.SampleBitMask.Value, "2#11111111#");
     OutImageData.SampleBitMask.Valid = 1;
     LblImageData(out_unit[0], LBL_AUGMENT, &OutImageData, 1);
-   
-    // write output
-    for (int l = 0; l < inp_nl; l++) {
-        for (int b = 0; b < inp_nb; b++) {
-            zvwrit(out_unit[b], out_img.linePtr(b, l), "line", l + 1, "band", 
+
+    // Write PRODUCT_ID in IDENTIFICATION group.
+    // Product id is based on file's name basically we remove file's extension
+    // and directory path and the remaining string is the product id.
+    LblIdentification_typ OutIdentification;
+    memset(&OutIdentification, 0, sizeof(LblIdentification_typ));
+    zvget(out_unit[0], "name", out_filename, NULL);
+    char *fn = strrchr(out_filename, '/');
+    if (fn)
+        fn++;  // remove ";"
+    else
+        fn = out_filename;  // filename doesn't contain absolute directory path
+
+    int pos = strcspn(fn, ".");
+    strncpy(OutIdentification.ProductId.Value, fn, pos);
+    OutIdentification.ProductId.Value[pos] = '\0';
+    OutIdentification.ProductId.Valid = 1;
+    LblIdentification(out_unit[0], LBL_AUGMENT, &OutIdentification, 1);
+     
+    // Write output
+    for (int b = 0; b < inp_nb; b++) {
+        for (int l = 0; l < inp_nl; l++) {
+            zvwrit(out_unit[b], out_img.linePtr(b, l), "line", l + 1, "band",
                    out_band[b], "NSAMPS", inp_ns, NULL);
         }
-    } 
+    }
     zvmessage("Save output.", "");
 
-    // free memory
+    // Free memory
     inp_img.free();
     out_img.free();
     zvclose(inp_unit[0], NULL);
     zvclose(out_unit[0], NULL);
     delete InpImageData;
 }
-
-/*
-// Find the maximum value in an image.
-double getMax(SimpleImage<double> *image)
-{
-    int nb = image->getNB();
-    int nl = image->getNL();
-    int ns = image->getNS();
-    double max = -DBL_MAX;
-
-    for (int b = 0; b < nb; b++) {
-        for (int l = 0; l < nl; l++) {
-            for (int s = 0; s < ns; s++) {
-                double value = image->get(b, l, s);
-                if (value >= max) {
-                    max = value;
-                }
-            }
-        }
-    }
-
-    return max;
-} */
 
 // Scale a value from old range to a new range.
 double normalize(double value, double old_min, double old_max, double new_min, 
@@ -325,29 +314,29 @@ void srgbGammaCorrection(SimpleImage<double> *inp_img,
     for (int b = 0; b < nb; b++) {
         for (int l = 0; l < nl; l++) {
             for (int s = 0; s < ns; s++) {
-                // normalize to [0, 1]
+                // Normalize to [0, 1]
                 linear_v = inp_img->get(b, l, s);
                 linear_v = normalize(linear_v, 0.0, maxin, inter_min, inter_max);
 
-                // gamma correction
+                // Gamma correction
                 if (linear_v <= srgb_cutoff) {
                     srgb_v = srgb_constant * linear_v;
                 } else {
                     srgb_v = (1 + srgb_a) * pow(linear_v, srgb_gamma) - srgb_a;
                 } 
 
-                // clip srgb value to [0, 1]
+                // Clip srgb value to [0, 1]
                 if (srgb_v < inter_min) srgb_v = inter_min;
                 if (srgb_v > inter_max) srgb_v = inter_max;
 
-                // normalize srgb value to [0, final_max]
+                // Normalize srgb value to [0, final_max]
                 srgb_v = normalize(srgb_v, inter_min, inter_max, final_min, final_max);
 
-                // add 0.5 to integral types. The vicar runtime library (RTL)
+                // Add 0.5 to integral types. The vicar runtime library (RTL)
                 // will truncate it when writing output. 
                 if (!is_float) srgb_v += 0.5;
 
-                // save the srgb value in output image.
+                // Save the srgb value in output image.
                 out_img->set(b, l, s, srgb_v);
             }
         }
@@ -384,25 +373,25 @@ void simpleGammaCorrection(SimpleImage<double> *inp_img,
     for (int b = 0; b < nb; b++) {
         for (int l = 0; l < nl; l++) {
             for (int s = 0; s < ns; s++) {
-                // normalize input value to [0, 1]
+                // Normalize input value to [0, 1]
                 value = inp_img->get(b, l, s);
                 value = normalize(value, 0.0, maxin, inter_min, inter_max);
  
-                // gamma correction
+                // Gamma correction
                 value = pow(value, exp);
 
-                // clip the value to [0, 1]
+                // Clip the value to [0, 1]
                 if (value < inter_min) value = inter_min;
                 if (value > inter_max) value = inter_max;
 
-                // normalize the value to [0, final_max]
+                // Normalize the value to [0, final_max]
                 value = normalize(value, inter_min, inter_max, final_min, final_max);
 
-                // add 0.5 to integral types. The vicar runtime library (RTL)
+                // Add 0.5 to integral types. The vicar runtime library (RTL)
                 // will truncate it when writing output.
                 if (!is_float) value += 0.5;
 
-                // save the value in output image
+                // Save the value in output image
                 out_img->set(b, l, s, value);
             }
         }

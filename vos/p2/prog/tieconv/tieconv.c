@@ -8,13 +8,13 @@
 #include "defines.h"
 #include "ibisfile.h"
 #include "ibiserrs.h"
-
-/*#include "cartoMatUtils.h"
-#include "cartoSortUtils.h"
-#include "cartoLsqUtils.h"
+#include "zmabend.h"
+#include "zifmessage.h"
+#include "cartoMatUtils.h"
 #include "cartoMemUtils.h"
-#include "cartoVicarProtos.h"
-#include "cartoGridUtils.h"*/
+#include "cartoGridUtils.h"
+#include "cartoLsqUtils.h"
+#include "prnt.h"
 
 #define VORMAXPOLY      1000   /* MAX EDGES IN A SINGLE VORONOI POLYGON */
 #define MAXLSQ          400
@@ -342,33 +342,33 @@ void tgridxxx(int npoints,
 
 void main44(void)
 {
-   double *rpar;
-   int *con1,*con2,*con3;
+   double *rpar=NULL;
+   int *con1=NULL,*con2=NULL,*con3=NULL;
    
-   double tmaxx,tmaxy,tminx,tminy,x,y,xx,yy=0,*ptx,*pty;
+   double tmaxx,tmaxy,tminx,tminy,x,y,xx,yy=0,*ptx=NULL,*pty=NULL;
    double clsq[MAXLSQ10], clsqxy[MAXLSQ2], elsqxy[MAXLSQ2];
-   double csol[20],*optx,*opty;
+   double csol[20],*optx=NULL,*opty=NULL;
    double tab[4],work[16];
-   double **coeff,dx,dy,**vout;
+   double **coeff=NULL,dx,dy,**vout=NULL;
    double minx,miny,maxx,maxy,normlz[4];
-   float **pout,*rout,fac;
+   float **pout=NULL,*rout=NULL,fac;
    int cols[4];
    int zgeom,mgeom,abendl,abendg,lgeom,geomv,keystone,linear; /*booleans*/
    int quad,cubic,polynom; /*booleans*/
    int plot,printit;
    int found,null9;
    int nah = 30,nav = 30,npoint = 4,nrank = 6,nerr = 0;
-   int geoma = 1,lgeomlike = 0;
+   /* int geoma = 1; */ int lgeomlike = 0;
    char outnam[73],polystring[10];
    
-   int i,j,k,n,ier,inpcnt,status,unit,colcount,ibis,clen,ptr,record;
+   int i,j,k,n,ier=0,inpcnt,status=0,unit,colcount,ibis=0,clen,ptr=0,record;
    int irow,ntiepp,icnt,idef,nvt,nklsq,nlret;
-   int ntri,nah1,nav1,gridnah,gridnav=0,pcount,pdef;
+   int ntri=0,nah1,nav1,gridnah,gridnav=0,pcount,pdef;
    int ttri,ttrj1,minldf,maxldf,minsdf,maxsdf,coldef,tiepdef,nht,tiept;
-   int ix,itri,tri,isign,p,ibisOut,parmOut,ptr2,nout,outdf;
+   int ix,itri,tri,isign,p,ibisOut,parmOut,ptr2=0,nout,outdf;
    double eps,skinny,reject;
         
-   zifmessage("tieconv version Tue Mar 01 2011");
+   zifmessage("TIECONV version 2019-09-18");
    
    printit = zvptst("PRINT");
    
@@ -420,7 +420,7 @@ void main44(void)
    reject = 0.01;
    zvparm("reject",&reject,&icnt,&idef,1,0);
    reject = reject*reject;
-   geoma = zvptst("geoma");
+   /* geoma = zvptst("geoma"); */
    geomv = zvptst("geomv");
    mgeom = zvptst("mgeom");
    lgeom = zvptst("lgeom");

@@ -13,5 +13,6 @@
 
 
 #define LIB_TAE
+#define LIB_P1SUB
 #define LIB_P2SUB
 

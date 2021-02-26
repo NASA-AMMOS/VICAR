@@ -25,6 +25,7 @@ PARM OFORMAT  TYPE=KEYWORD  COUNT=0:1	VALID=(BYTE,HALF,REAL)+
 							DEFAULT=HALF
 PARM NOCORREC TYPE=KEYWORD  COUNT=0:1	VALID=NOCORREC	DEFAULT=--
 PARM NOCHECK  TYPE=KEYWORD  COUNT=0:1	VALID=NOCHECK	DEFAULT=--
+PARM FILTEQ   TYPE=KEYWORD  COUNT=0:1	VALID=FILTEQ	DEFAULT=--
 PARM NONEG    TYPE=KEYWORD  COUNT=0:1	VALID=NONEG	DEFAULT=--
 PARM MAXDN    TYPE=INTEGER  				DEFAULT=32767
 PARM LC       TYPE=KEYWORD  COUNT=0:1	VALID=LC	DEFAULT=--
@@ -280,6 +281,8 @@ TUTOR mode for a more complete description.
 	'NOCHECK	- Bypass matching of camera parameters; the calibration
 			  file must be the second input and the dark-current
 			  must be the third input.
+        'FILTEQ         - Equate NA camera filter indices 0 with 4 (CLEAR), 
+                          and 5 with 6 (GREEN)
 
 	OUTPUT IMAGE SCALE
 	------------------
@@ -366,30 +369,35 @@ Written by: Joel A. Mosher	Jan 78
 UCL Implementors: M.L. Kendall & R.F.T. BARREY	Jan 82
 Cognizant programmer: Gary Yagi
 Revisions:
-  1985-10-01 FFM  ...Change to VICAR2 I/O and convert subroutine
-	             LCOR from fortran to assembler
-  1988-02-01 GMY  ...Major code clean-up and enhancements:
-			0) Rewrite help file.
-			1) Add FIXVGR scale correction factors.
-			2) Delete redundant keywords SN,FP,HSAT,SUN
-			3) Delete null keyword FICOR
-			4) Fix OUTREAL keyword
-			5) Fix bug reading last Cal-File record.
-			6) Modified processing of negative DN (LCOR)
-			7) Delete FORMAT keyword
-			8) Fix bug in processing high-gain pictures
-			9) Accept input of summed dark-current frames.
-  1988-02-25 GMY  ...Fix SCAN=10, bad mode (FR 33244)
-  1988-06-07 GMY  ...Fix processing of EXPO keyword.
-  1988-12-21 GMY  ...Fix processing of parameters passed via procedures.
-  1992-05-24 GMY  ...Update test script (FR 64507)
-  1993-07-09 GMY  ...Check for input image with zero exposure (FR 79136)
-  1994-10-31 AMS  ...(CRI) Made portable for UNIX
-  1998-11-09 GMY  ...Updated test script to point to where test files are.
-  1999-05-24 GMY  ...Corrected problem with negative and 0 DNs.
-  2014-07-21 WLB  ...Initialized camera mode variables MODE and MODEDC to
-                     get consistent results between linux and sun.
-  2015-09-03 WLB  ...Replaced calls to entries with calls to subroutines.
+  1985-10-01 FFM - Change to VICAR2 I/O and convert subroutine
+	           LCOR from fortran to assembler
+  1988-02-01 GMY - Major code clean-up and enhancements:
+		     0) Rewrite help file.
+		     1) Add FIXVGR scale correction factors.
+		     2) Delete redundant keywords SN,FP,HSAT,SUN
+		     3) Delete null keyword FICOR
+		     4) Fix OUTREAL keyword
+		     5) Fix bug reading last Cal-File record.
+		     6) Modified processing of negative DN (LCOR)
+		     7) Delete FORMAT keyword
+		     8) Fix bug in processing high-gain pictures
+		     9) Accept input of summed dark-current frames.
+  1988-02-25 GMY - Fix SCAN=10, bad mode (FR 33244)
+  1988-06-07 GMY - Fix processing of EXPO keyword.
+  1988-12-21 GMY - Fix processing of parameters passed via procedures.
+  1992-05-24 GMY - Update test script (FR 64507)
+  1993-07-09 GMY - Check for input image with zero exposure (FR 79136)
+  1994-10-31 AMS - (CRI) Made portable for UNIX
+  1998-11-09 GMY - Updated test script to point to where test files are.
+  1999-05-24 GMY - Corrected problem with negative and 0 DNs.
+  2014-07-21 WLB - Initialized camera mode variables MODE and MODEDC to
+                   get consistent results between linux and sun.
+  2015-09-03 WLB - Replaced calls to entries with calls to subroutines.
+  2020-04-02 WLB - IDS-8166 - Added 'FILTEQ parm.
+                   Remaining warning at ficor77.f:96.36:
+                     CALL OPSCALE(ICAM,IFILT,IPLAN,ISPEED,MAXDN,NC,IBUG,
+                                                   1
+                     Warning: Type mismatch in argument 'speed' at (1); passed INTEGER(4) to REAL(4)
 
 RESTRICTIONS:
 
@@ -480,6 +488,10 @@ Maximum DN for output
 KEYWORD--OPTIONAL
 Suppresses matching
 of camera parameters
+.VARIABLE FILTEQ
+KEYWORD--OPTIONAL
+Equates NA camera filter indices
+0 with 4 (CLEAR), and 5 with 6 (GREEN)
 .VARIABLE NONEG
 KEYWORD--OPTIONAL
 Negative dn's set to zero
@@ -703,6 +715,15 @@ and the dark-current frame is assumed to be the third input file:
 If defaulted, "ficor77" will attempt the find a radiometric file from the
 same camera and filter, and a dark-current frame from the same camera and
 scan-rate.  The program will terminate (ABEND) if unsuccessful.
+.VARIABLE FILTEQ
+KEYWORD--OPTIONAL
+Equates NA camera filter indices 0 with 4 (CLEAR), and 5 with 6 (GREEN).
+Guided by VGRLABGEN.c:
+static char fpname[2][8][7] = {
+  {"CH4/JS ","BLUE ","CLEAR ","VIOLET ", /* WA FILTERS */
+   "SODIUM ","GREEN ","CH4/U ","ORANGE "},
+  {"CLEAR ","VIOLET ","BLUE ","ORANGE ", /* NA FILTERS */
+   "CLEAR ","GREEN ","GREEN ","UV " }}; 
 .VARIABLE DIV
 The DN values in the radiometric file are scaled by a factor n due to
 application of a low-pass filter (of unit weights) on the frames input to

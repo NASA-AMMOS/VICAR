@@ -10,7 +10,7 @@ extern "C" {
 
 #include "lbl_gen_api.h"
 
-#define  LBL_RMC_ITEMS	10
+#define  LBL_RMC_ITEMS	12
 #define  LBL_SOURCE_PROD_ID_ITEMS	3
 
   /******************************************************************************
@@ -80,6 +80,7 @@ extern "C" {
     LblApiTypeItem_typ		FrameType;
     LblApiTypeItem_typ		GeometryProjectionType;
     LblApiIdItem_typ		ImageId;
+    LblApiIdItem_typ		ImageId2;
     LblApiTimeItem_typ		ImageTime;
     LblApiTypeItem_typ		ImageType;
     LblApiIdItem_typ		InstrumentHostId[LBL_MAX_ITEMS];
@@ -109,7 +110,7 @@ extern "C" {
     LblApiIdItem_typ		ProducerId;
     LblApiLongNameItem_typ	ProducerInstitutionName;
     LblApiTimeItem_typ		ProductCreationTime;
-    LblApiIdItem_typ		ProductId;
+    LblApiNameItem_typ		ProductId;
     LblApiIdItem_typ		ProductVersionId;
     LblApiIdItem_typ		ReleaseId;
     LblApiIdItem_typ        RequestId;
@@ -119,7 +120,7 @@ extern "C" {
     LblApiNameItem_typ		SequenceName;
     LblApiIdItem_typ		SequenceVersionId;
     LblApiRealItem_typ		SolarLongitude;
-    LblApiIdItem_typ		SourceProductId[LBL_SOURCE_PROD_ID_ITEMS];
+    LblApiNameItem_typ		SourceProductId[LBL_SOURCE_PROD_ID_ITEMS];
     LblApiIntItem_typ		SpacecraftClockCntPartition;
     LblApiTimeItem_typ		SpacecraftClockStartCount;
     LblApiTimeItem_typ		SpacecraftClockStopCount;
@@ -139,6 +140,11 @@ extern "C" {
     LblApiIdItem_typ        MeshId;
     LblApiIdItem_typ        MosaicId;
     LblApiIdItem_typ        StereoMatchId;
+    LblApiIdItem_typ        ActivityId;
+    LblApiIntItem_typ       MarsYear;
+    LblApiRealItem_typ		MarsHelioCentricDistance;
+    LblApiTypeItem_typ		MarsHelioCentricDistanceUnit;
+    LblApiIdItem_typ      CameraProductId;
   } LblIdentification_typ;
 
 

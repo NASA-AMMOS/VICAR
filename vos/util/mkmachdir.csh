@@ -12,13 +12,6 @@ mkdir -m go-w -p $V2TOP/vicar_gdalplugin/install/$VICCPU
 if (-d $V2TOP/cas) mkdir -m go-w -p $V2TOP/cas/lib/$VICCPU
 if (-d $V2TOP/gui) mkdir -m go-w -p $V2TOP/gui/lib/$VICCPU
 if (-d $V2TOP/mars) mkdir -m go-w -p $V2TOP/mars/lib/$VICCPU
-if (-d $V2TOP/mdms) mkdir -m go-w -p $V2TOP/mdms/lib/$VICCPU
-if (-d $V2TOP/mdms) mkdir -m go-w -p $V2TOP/mdms/olb/$VICCPU
-mkdir -m go-w  $V2TOP/mdms/source/dbview/$VICCPU
-mkdir -m go-w  $V2TOP/mdms/source/dbq/$VICCPU
-mkdir -m go-w  $V2TOP/mdms/source/fei/$VICCPU
-mkdir -m go-w  $V2TOP/mdms/source/glblib/$VICCPU
-mkdir -m go-w  $V2TOP/mdms/source/lcllib/$VICCPU
 if (-d $V2TOP/p1) mkdir -m go-w -p $V2TOP/p1/lib/$VICCPU
 if (-d $V2TOP/p2) mkdir -m go-w -p $V2TOP/p2/lib/$VICCPU
 mkdir -m go-w  $V2TOP/p2/inc/$VICCPU

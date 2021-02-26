@@ -22,20 +22,6 @@
 		default:  printf( fmtStr,   "BAD FORMAT!" );break; \
 	}
 
-#define IBISFORMAT( str, fmtchar, colsize ) \
-	switch (tolower(fmtchar)) { \
-		case 'b': \
-		case 'h': \
-		case 'f': sprintf( str, "%%%dd",  (colsize));  break; \
-		case 'r': sprintf( str, "%%%d.2f",  (colsize));  break; \
-		case 'd': sprintf( str, "%%%d.2lf", (colsize));  break; \
-		case 'c': sprintf( str, " (%%-%d.2f,%%%d.2f)", \
-			((colsize)-4)/2, colsize - (4 + ((colsize)-4)/2) );\
-			 break; \
-		case 'a': sprintf( str, "%%%ds", (colsize));break; \
-		default:  sprintf( str, "%%%ds", (colsize));break; \
-	}
-
 ///////////////////////////////////////////////////
 typedef struct{
    int unit, handle;
@@ -143,5 +129,8 @@ void IBISHELPER_addColumn(IBISPrep *ibis2, char *format);
 /* Returns an IBISStruct* so that the data can   */
 /* be written out                                */
 IBISStruct* IBISHELPER_getIBISStruct(IBISPrep **prep);
+
+void IBISHELPER_lowerString(char *dest, char *source);
+
 
 #endif

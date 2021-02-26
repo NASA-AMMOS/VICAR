@@ -823,7 +823,7 @@ CARTReadDirectory(tif)
 	TIFFFieldInfo *fip;
 	u_short dircount;
 	long off;
-	int ok;
+	int ok=0;
 
 	dir=TIFFGetDirectoryEntries(tif,td->td_carto_ifd_offset,&dircount,0L);
 	if (!dir) {

@@ -379,6 +379,18 @@ static LblApiElement_typ	LabelTbl[] = {
 		LBL_OFFSET(LblSurfaceProjection_typ, ReferenceCoordSystemIndex[9].Valid),
 		LBL_NO_RETURN,	LBL_SIZE(ReferenceCoordSystemIndex[9].Value)},
 
+	{"REFERENCE_COORD_SYSTEM_INDEX",	"INT",		LBL_OPTIONAL,
+		LBL_CONTINUE,	1,	11,	LBL_NULL,
+		LBL_OFFSET(LblSurfaceProjection_typ, ReferenceCoordSystemIndex[10].Value),
+		LBL_OFFSET(LblSurfaceProjection_typ, ReferenceCoordSystemIndex[10].Valid),
+		LBL_NO_RETURN,	LBL_SIZE(ReferenceCoordSystemIndex[10].Value)},
+
+	{"REFERENCE_COORD_SYSTEM_INDEX",	"INT",		LBL_OPTIONAL,
+		LBL_CONTINUE,	1,	12,	LBL_NULL,
+		LBL_OFFSET(LblSurfaceProjection_typ, ReferenceCoordSystemIndex[11].Value),
+		LBL_OFFSET(LblSurfaceProjection_typ, ReferenceCoordSystemIndex[11].Valid),
+		LBL_NO_RETURN,	LBL_SIZE(ReferenceCoordSystemIndex[11].Value)},
+
 	{"REFERENCE_COORD_SYSTEM_NAME",		"STRING",	LBL_OPTIONAL,
 		LBL_NO_CONT,	1,	1,	LBL_NULL,
 		LBL_OFFSET(LblSurfaceProjection_typ, ReferenceCoordSystemName.Value),

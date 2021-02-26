@@ -15,6 +15,11 @@ else
    setenv CLASSPATH ${V2JAVA}
 endif
 
+# The /home/cmbld/.history file gives the Java Mac build heartburn
+# periodically so delete it in the beginning of a full java build.
+#
+rm -rf /home/cmbld/.history
+ 
 # Create output product directories if necessary
 
 if ( ! -e $V2HTML ) then
@@ -37,6 +42,7 @@ endif
 # Fetch all the externals
 
 $V2UTIL/java_fetch_externals.csh
+cp $V2EXT/maven-artifacts/jars/* $V2HTML/jars 
 
 #
 # Now add all of those jars into $CLASSPATH.  This is basically what vicset1
@@ -102,6 +108,19 @@ end
 # Now run javadoc on all the generated packages.
 
 $V2UTIL/java_build_javadoc.csh
+
+# Copy the contents of the pds4writer and vicario source jar to $V2JAVA
+#
+cd $V2EXT/maven-artifacts/src-jars/pds4writer
+jar xvf ../pds4writer-2.0.0-SNAPSHOT-sources.jar
+cd jpl/mipl
+cp -R 
+$V2JAVA/jpl/mipl/.
+#
+cd $V2EXT/maven-artifacts/src-jars/vicario
+jar xvf ../vicario-2.0.0-SNAPSHOT-sources.jar
+cd jpl/mipl
+cp -R io  $V2JAVA/jpl/mipl/.
 
 # The build is done...
 

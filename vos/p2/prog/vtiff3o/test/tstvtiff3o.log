@@ -3,54 +3,54 @@ write "each of the difpic calls should yield zero differences"
 each of the difpic calls should yield zero differences
 gen r 50 50
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 vtiff3o r r.tif
 Beginning VICAR task vtiff3o
-*** vtiff3o version 2017-08-15 ***
+VTIFF3O version 2019-09-05
 vtiff3o-tovic r.tif r1
 Beginning VICAR task vtiff3o
-*** vtiff3o version 2017-08-15 ***
+VTIFF3O version 2019-09-05
 difpic (r,r1)
 Beginning VICAR task difpic
 DIFPIC version 06Oct11
  NUMBER OF DIFFERENT PIXELS =   0
 vtiff3o r r.tif 'packbits
 Beginning VICAR task vtiff3o
-*** vtiff3o version 2017-08-15 ***
+VTIFF3O version 2019-09-05
 vtiff3o-tovic r.tif r1
 Beginning VICAR task vtiff3o
-*** vtiff3o version 2017-08-15 ***
+VTIFF3O version 2019-09-05
 difpic (r,r1)
 Beginning VICAR task difpic
 DIFPIC version 06Oct11
  NUMBER OF DIFFERENT PIXELS =   0
 vtiff3o r r.tif 'lzw
 Beginning VICAR task vtiff3o
-*** vtiff3o version 2017-08-15 ***
+VTIFF3O version 2019-09-05
 vtiff3o-tovic r.tif r1
 Beginning VICAR task vtiff3o
-*** vtiff3o version 2017-08-15 ***
+VTIFF3O version 2019-09-05
 difpic (r,r1)
 Beginning VICAR task difpic
 DIFPIC version 06Oct11
  NUMBER OF DIFFERENT PIXELS =   0
 vtiff3o r r.tif 'tiled
 Beginning VICAR task vtiff3o
-*** vtiff3o version 2017-08-15 ***
+VTIFF3O version 2019-09-05
 vtiff3o-tovic r.tif r1
 Beginning VICAR task vtiff3o
-*** vtiff3o version 2017-08-15 ***
+VTIFF3O version 2019-09-05
 difpic (r,r1)
 Beginning VICAR task difpic
 DIFPIC version 06Oct11
  NUMBER OF DIFFERENT PIXELS =   0
 vtiff3o r r.tif 'tiled 'lzw
 Beginning VICAR task vtiff3o
-*** vtiff3o version 2017-08-15 ***
+VTIFF3O version 2019-09-05
 vtiff3o-tovic r.tif r1
 Beginning VICAR task vtiff3o
-*** vtiff3o version 2017-08-15 ***
+VTIFF3O version 2019-09-05
 difpic (r,r1)
 Beginning VICAR task difpic
 DIFPIC version 06Oct11
@@ -62,10 +62,10 @@ F2 calculating every pixel
 FUNCTION EVALUATED 1024 TIMES
 vtiff3o (r,lut) lut.tif
 Beginning VICAR task vtiff3o
-*** vtiff3o version 2017-08-15 ***
+VTIFF3O version 2019-09-05
 vtiff3o-tovic lut.tif (r1,lut1)
 Beginning VICAR task vtiff3o
-*** vtiff3o version 2017-08-15 ***
+VTIFF3O version 2019-09-05
 *** no lookup table in TIFF ***
 difpic (r,r1)
 Beginning VICAR task difpic
@@ -78,18 +78,18 @@ DIFPIC version 06Oct11
  NUMBER OF DIFFERENT PIXELS =  38
 gen g 50 50 linc=0
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen b 50 50 sinc=0
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 vtiff3o (r,g,b) color.tif
 Beginning VICAR task vtiff3o
-*** vtiff3o version 2017-08-15 ***
+VTIFF3O version 2019-09-05
 vtiff3o-tovic  color.tif (r1,g1,b1)
 Beginning VICAR task vtiff3o
-*** vtiff3o version 2017-08-15 ***
+VTIFF3O version 2019-09-05
 difpic (r,r1)
 Beginning VICAR task difpic
 DIFPIC version 06Oct11
@@ -104,10 +104,10 @@ DIFPIC version 06Oct11
  NUMBER OF DIFFERENT PIXELS =   0
 vtiff3o (r,g,b) color.tif 'planar
 Beginning VICAR task vtiff3o
-*** vtiff3o version 2017-08-15 ***
+VTIFF3O version 2019-09-05
 vtiff3o-tovic  color.tif (r1,g1,b1)
 Beginning VICAR task vtiff3o
-*** vtiff3o version 2017-08-15 ***
+VTIFF3O version 2019-09-05
 difpic (r,r1)
 Beginning VICAR task difpic
 DIFPIC version 06Oct11
@@ -122,10 +122,10 @@ DIFPIC version 06Oct11
  NUMBER OF DIFFERENT PIXELS =   0
 vtiff3o (r,g,b) color.tif 'tiled
 Beginning VICAR task vtiff3o
-*** vtiff3o version 2017-08-15 ***
+VTIFF3O version 2019-09-05
 vtiff3o-tovic  color.tif (r1,g1,b1)
 Beginning VICAR task vtiff3o
-*** vtiff3o version 2017-08-15 ***
+VTIFF3O version 2019-09-05
 difpic (r,r1)
 Beginning VICAR task difpic
 DIFPIC version 06Oct11
@@ -140,10 +140,10 @@ DIFPIC version 06Oct11
  NUMBER OF DIFFERENT PIXELS =   0
 vtiff3o (r,g,b) color.tif 'planar 'tiled
 Beginning VICAR task vtiff3o
-*** vtiff3o version 2017-08-15 ***
+VTIFF3O version 2019-09-05
 vtiff3o-tovic  color.tif (r1,g1,b1)
 Beginning VICAR task vtiff3o
-*** vtiff3o version 2017-08-15 ***
+VTIFF3O version 2019-09-05
 difpic (r,r1)
 Beginning VICAR task difpic
 DIFPIC version 06Oct11
@@ -158,10 +158,10 @@ DIFPIC version 06Oct11
  NUMBER OF DIFFERENT PIXELS =   0
 vtiff3o (r,g,b) color.tif 'planar 'tiled 'lzw
 Beginning VICAR task vtiff3o
-*** vtiff3o version 2017-08-15 ***
+VTIFF3O version 2019-09-05
 vtiff3o-tovic  color.tif (r1,g1,b1)
 Beginning VICAR task vtiff3o
-*** vtiff3o version 2017-08-15 ***
+VTIFF3O version 2019-09-05
 difpic (r,r1)
 Beginning VICAR task difpic
 DIFPIC version 06Oct11
@@ -176,24 +176,24 @@ DIFPIC version 06Oct11
  NUMBER OF DIFFERENT PIXELS =   0
 gen a nl=500 ns=500
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 vtiff3o a a.tif 'tile tline=128 tsamp=128 'packbits
 Beginning VICAR task vtiff3o
-*** vtiff3o version 2017-08-15 ***
+VTIFF3O version 2019-09-05
 vtiff3o-tovic a.tif a1
 Beginning VICAR task vtiff3o
-*** vtiff3o version 2017-08-15 ***
+VTIFF3O version 2019-09-05
 difpic (a,a1)
 Beginning VICAR task difpic
 DIFPIC version 06Oct11
  NUMBER OF DIFFERENT PIXELS =   0
 vtiff3o-tovic a.tif a1 'dump
 Beginning VICAR task vtiff3o
-*** vtiff3o version 2017-08-15 ***
+VTIFF3O version 2019-09-05
 gen xxxim1 nl=10 ns=10
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gtgen in=xxxim1 'tiecnvrt  +
    geotiff=("GTModelTypeGeoKey=2(ModelTypeGeographic)",  +
@@ -242,23 +242,23 @@ The scale fraction is 1 /      9.8
 (assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
 vtiff3o xxxim1 xxxim1.tif
 Beginning VICAR task vtiff3o
-*** vtiff3o version 2017-08-15 ***
+VTIFF3O version 2019-09-05
 USING VICAR GEOTIFF LABEL TO CREATE, PARAMETERS IGNORED
 exporting GeoTIFF
 ush strings xxxim1.tif
 vtiff3o-tovic xxxim1.tif xxim2 'dump
 Beginning VICAR task vtiff3o
-*** vtiff3o version 2017-08-15 ***
+VTIFF3O version 2019-09-05
 gen color.vic nl=256 ns=256 nb=3 binc=2
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 vtiff3o-from color.vic color2.tif
 Beginning VICAR task vtiff3o
-*** vtiff3o version 2017-08-15 ***
+VTIFF3O version 2019-09-05
 vtiff3o-to color2.tif color2.vic
 Beginning VICAR task vtiff3o
-*** vtiff3o version 2017-08-15 ***
+VTIFF3O version 2019-09-05
 difpic (color.vic,color2.vic)
 Beginning VICAR task difpic
 DIFPIC version 06Oct11

@@ -1,6 +1,8 @@
 procedure
 refgbl $autousage
 body
+enable-log
+
 let $autousage="none"
 write ""
 write " First a BYTE image is GEN'ed and sized using SIZE and BICUBIC."
@@ -81,4 +83,5 @@ write " DOUBLE images cannot be tested in this manner."
 !write " (An order of magnitude near E-7 should be fine.)"
 !write ""
 !hist d 'nohist
+disable-log
 end-proc

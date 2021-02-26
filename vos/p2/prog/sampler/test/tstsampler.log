@@ -1,7 +1,7 @@
 sampler inp=(data/band1.vic,data/band2.vic,data/band3.vic,data/band4.vic,data/band5.vic) out=subsamples.ibis ngridx=200 ngridy=200 +
 seed=30
 Beginning VICAR task sampler
-sampler version 2017-08-11
+SAMPLER version 2019-09-06
 ibisstat subsamples.ibis 'sum cols=(1,2,3,4,5,6,7)
 Beginning VICAR task ibisstat
 IBISSTAT version 02-JAN-95

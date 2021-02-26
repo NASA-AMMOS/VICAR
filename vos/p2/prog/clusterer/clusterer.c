@@ -135,7 +135,7 @@ void setBoundingBox(SAMPLE** samples, double* mins, double* maxes, int nSamples,
 /**********************************************/
 void initializeCluster(CLUSTER* cluster, int id, double* mins, double* maxes, int nDim)
 {
-   int i, j;
+   int j;
    gsl_vector *means;
 
    cluster->c = CARTOCLASS_getClass();
@@ -150,15 +150,13 @@ void initializeCluster(CLUSTER* cluster, int id, double* mins, double* maxes, in
 /**********************************************/
 void binSamplesIntoClusters(CLUSTER** clusters, SAMPLE** samples, int nClusters, int nSamples)
 {
-   int i, j, minIndex;
+   int i, j, minIndex=0;
    double minDist;
    CLASS_TMP* tmp;
 
    tmp = CARTOCLASS_getClassTmp(clusters[0]->c->means->size);
-   //   printf("here1\n");
    for(i = 0; i < nClusters; i++) clusters[i]->nSamples = 0;
 
-   //   printf("here2\n");
    for(i = 0; i < nSamples; i++)
    {
       minDist = DBL_MAX;
@@ -168,36 +166,29 @@ void binSamplesIntoClusters(CLUSTER** clusters, SAMPLE** samples, int nClusters,
 
          if(!(clusters[j]->alive)) continue;
          dist = CARTOCLASS_getEuclideanDist(clusters[j]->c, samples[i]->dns, tmp);
-         //         printf("i: %d j: %d dist: %lf\n", i, j, dist);
          if(minDist > dist)
          {
             minDist = dist;
             minIndex = j;
          }
       }
-      //      printf("here3 minIndex: %d minDist: %lf nSamples: %d\n", minIndex, minDist, clusters[minIndex]->nSamples);
 
       clusters[minIndex]->samples[(clusters[minIndex]->nSamples)++] = samples[i];
    }
-   //   printf("here4\n");
 }
 
 /**********************************************/
 void calculateCentroid(CLUSTER* cluster)
 {
-   int i, j;
+  int i;
 
-   //   printf("calculateCentroid1\n");
    if(cluster->oldMeans == NULL) cluster->oldMeans = gsl_vector_alloc(cluster->c->means->size);
    gsl_vector_memcpy(cluster->oldMeans, cluster->c->means);
 
-   //   printf("calculateCentroid2\n");
    if(cluster->nSamples == 0) return;
    for(i = 0; i < cluster->c->means->size; i++) gsl_vector_set(cluster->c->means, i, 0.);
-   //   printf("calculateCentroid3\n");
    for(i = 0; i < cluster->nSamples; i++)
       gsl_vector_add(cluster->c->means, cluster->samples[i]->dns);
-   //   printf("calculateCentroid4\n");
    for(i = 0; i < cluster->c->means->size; i++)
       gsl_vector_set(cluster->c->means, i, gsl_vector_get(cluster->c->means, i)/(double)cluster->nSamples);
 }
@@ -218,24 +209,17 @@ double l2Norm1(gsl_vector *diff)
 int converged(CLUSTER** clusters, TMP *tmp, int nClusters, double convergenceThreshold, int iteration)
 {
    int i;
-   int changed;
-   double totalChanged;;
+   double totalChanged = 0.0;
 
-   totalChanged = 0.;
-   //   printf("inside converged 1\n");
    for(i = 0; i < nClusters; i++)
    {
-      //      printf("here 1\n");
       calculateCentroid(clusters[i]);
-      //      printf("here 2\n");
       gsl_vector_memcpy(tmp->diff, clusters[i]->c->means);
       gsl_vector_sub(tmp->diff, clusters[i]->oldMeans);
       tmp->deltas[i] = l2Norm1(tmp->diff);
       totalChanged += tmp->deltas[i];
-      //      printf("delta: %lf total changed: %lf\n", tmp->deltas[i], totalChanged);
    }
 
-   //   printf("inside converged 2\n");
    printf("iter: %d total changed: %lf theshold: %lf\n", iteration, totalChanged, convergenceThreshold);
    return totalChanged < convergenceThreshold;
 }
@@ -277,12 +261,10 @@ CLUSTER** getClusters(SAMPLE** samples, int nClusters, int nSamples, int nDim, T
    mins = (double*)malloc(sizeof(double)*nDim);
    maxes = (double*)malloc(sizeof(double)*nDim);
 
-   printf("setting bounding box\n");
    setBoundingBox(samples, mins, maxes, nSamples, nDim);
 
-   printf("initializing clusters\n");
    for(i = 0; i < nClusters; i++) initializeCluster(clusters[i], i+1, mins, maxes, nDim);
-   printf("binning clusters\n");
+
    binSamplesIntoClusters(clusters, samples, nClusters, nSamples);
    nIterations = 1;
    *convergedFlag = converged(clusters, tmp, nClusters, thresh, nIterations);
@@ -367,7 +349,7 @@ void outIBIS(CLUSTER **clusters, int nClusters, int nDim, int convergedFlag)
    out = IBISHELPER_getIBISStruct(&outPrep);
 
    printf("========================================\n");
-   sprintf(buf, "FINAL RESULT total num of clusters: %d converged: %s", nValidClusters, convergedFlag?"YES":"NO");
+   snprintf(buf, 200, "FINAL RESULT total num of clusters: %d converged: %s", nValidClusters, convergedFlag?"YES":"NO");
    zifmessage(buf);
    printf("========================================\n");
    rowIndex = 0;
@@ -379,8 +361,7 @@ void outIBIS(CLUSTER **clusters, int nClusters, int nDim, int convergedFlag)
       if(!validClusters[i]) continue;
 
       // write id
-      //      printf("Cluster %d\n", clusters[i]->c->id);
-      sprintf(tmpName, "CLASS %d", clusters[i]->c->id);
+      snprintf(tmpName, 20, "CLASS %d", clusters[i]->c->id);
       CARTOCLASS_setClassName(clusters[i]->c, tmpName);
       IBISHELPER_setString(out, index++, rowIndex, tmpName);
       IBISHELPER_setDouble(out, index++, rowIndex, clusters[i]->nSamples);
@@ -395,10 +376,8 @@ void outIBIS(CLUSTER **clusters, int nClusters, int nDim, int convergedFlag)
          for(k = 0; k <= j; k++)
          {
             IBISHELPER_setDouble(out, index++, rowIndex, gsl_matrix_get(clusters[i]->c->cov_matrix, j, k));
-            //            printf("%lf ", gsl_matrix_get(clusters[i]->c->cov_matrix, j, k));
          }
 
-      //      printf("\n");
       rowIndex++;
    }
 
@@ -415,16 +394,11 @@ void outIBIS(CLUSTER **clusters, int nClusters, int nDim, int convergedFlag)
 
    nSamples = 0;
    for(i = 0; i < nClusters; i++) if(validClusters[i]) nSamples += clusters[i]->nSamples;
-   //   printf("outIBIS 1\n");
    outPrep2 = IBISHELPER_openIBIS_out2("out", 2, nSamples);
-   //   printf("outIBIS 2\n");
    IBISHELPER_addColumn(outPrep2, "A12");
-   //   printf("outIBIS 3\n");
    nc = nDim + 3;
    for(i = 1; i < nc; i++) IBISHELPER_addColumn(outPrep2, "REAL");
-   //   printf("outIBIS 4\n");
    out = IBISHELPER_getIBISStruct(&outPrep2);
-   //   printf("outIBIS 5\n");
    rowIndex = 0;
    for(i = 0; i < nClusters; i++)
    {
@@ -433,36 +407,27 @@ void outIBIS(CLUSTER **clusters, int nClusters, int nDim, int convergedFlag)
       for(j = 0; j < clusters[i]->nSamples; j++)
       {
          IBISHELPER_setString(out, 0, rowIndex, clusters[i]->c->name);
-         //         printf("1 j: %d\n", j);
          SAMPLE *s = clusters[i]->samples[j];
-         //         printf("2 j: %d\n", j);
          IBISHELPER_setDouble(out, 1, rowIndex, s->line);
-         //         printf("3 j: %d\n", j);
          IBISHELPER_setDouble(out, 2, rowIndex, s->samp);
-         //         printf("4 j: %d\n", j);
          for(k = 0; k < nDim; k++) IBISHELPER_setDouble(out, 3+k, rowIndex, gsl_vector_get(s->dns, k));
-         //         printf("5 j: %d\n", j);
          ++rowIndex;
       }
    }
-   //   printf("outIBIS 10\n");
    IBISHELPER_closeIBIS(&out);
-   //   printf("outIBIS 11\n");
    free(validClusters);
-   //   printf("outIBIS 12\n");
 }
 
 /**********************************************/
 void main44(void)
 {
-   int status, dumdef, dumcnt, nClusters, nSamples, nDim, i, maxIterations, convergedFlag;
+   int status, dumdef, dumcnt, nClusters, nSamples, nDim, maxIterations, convergedFlag;
    double thresh;
-   IBISStruct *out;
    SAMPLE **samples;
    CLUSTER **clusters;
    TMP *tmp;
 
-   zifmessage("clusterer version 2017-08-03");
+   zifmessage("CLUSTERER version 2019-08-22");
 
    status = zvp("NCLUSTERS", &nClusters, &dumcnt);
    if(status != 1) zmabend("Error while acquiring cluster count parameter.\n");
@@ -470,7 +435,6 @@ void main44(void)
    if(status != 1) zmabend("Error while acquiring max iterations.\n");
    status = zvparmd("CONVTHRESH", &thresh, &dumcnt, &dumdef, 1, 0);
    if(status != 1) zmabend("Error while acquiring convergence threshold parameter.\n");
-   //   printf("theshold: %lf\n", thresh);
 
    printf("getting samples\n");
    samples = readSamples(&nSamples, &nDim);

@@ -84,12 +84,17 @@ METHOD:
 	       declared by the user.
 
 HISTORY:
-Oct 24, 1997	RRD	Improved help section.  Fixed bug on Solaris by
-			changing variable cut from unsigned int to int.
-			Commented out line in fitpts that calculates sigma
-			because it generates DOMAIN error. 
-Jul 22, 1997	RRD	Ported to UNIX.
-Mar 28, 1996  Y Kwon	Wrote original version.
+  1996-03-28 Y Kwon - Wrote original version.
+  1997-07-22 RRD - Ported to UNIX.
+  1997-10-24 RRD - Improved help section.  Fixed bug on Solaris by
+		   changing variable cut from unsigned int to int.
+		   Commented out line in fitpts that calculates sigma
+		   because it generates DOMAIN error. 
+  2019-06-14 WLB - IDS-7924: Fixed formatting directive.
+                   Initialized variables.
+                   Commented out returning sigma value that is not
+                   calculated.
+                   Cleaned up misc. warnings.
 
 COGNIZANT PROGRAMMER:  Young Kwon
 

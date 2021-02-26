@@ -141,5 +141,12 @@ class GruenTransformAmoeba5 : public GruenTransform
 
 };
 
+
+class GruenTransformAmoeba5Bicubic : public GruenTransformAmoeba5
+{
+    public:
+       virtual TransformType getType() { return Amoeba5_bicubic; }
+};
+
 #endif
 

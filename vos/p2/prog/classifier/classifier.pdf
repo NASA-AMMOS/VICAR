@@ -25,8 +25,9 @@ PURPOSE
  ORIGINAL PROGRAMMER:   P. Kim  16 Sep 2011
 
  REVISIONS:
- 2016-10-20 WLB - Migrated to MIPL, enhanced test.
- 2017-08-03 WLB - Removed DEBUG from imake.
+  2016-10-20 WLB - Migrated to MIPL, enhanced test.
+  2017-08-03 WLB - Removed DEBUG from imake.
+  2019-08-22 WLB - Cleaned up some -Wall warnings.
 
 .LEVEL1
 .VARIABLE INP

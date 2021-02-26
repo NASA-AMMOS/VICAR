@@ -151,8 +151,10 @@ Sensing, 37(11):2494-2509, 2016.
 
 .PAGE:
 HISTORY:
-2017-09    Igor Yanovsky  Initial version by Igor Yanovsky
-2017-11    Revised to allow color imagery to be processed with a single call - Igor Yanovsky
+2017-09    Igor Yanovsky - Initial version by Igor Yanovsky.
+2017-11    Igor Yanovsky - Revised to allow color imagery to be processed with a single call.
+2019-06-13 Walt Bunch - IDS-7924: fixed format directives; cleaned up misc. warnings.
+2019-07-18 Walt Bunch - IDS-7923: replaced sprintf/zvmessage with zvnprintf.
 
 COGNIZANT PROGRAMMER: Igor Yanovsky
 

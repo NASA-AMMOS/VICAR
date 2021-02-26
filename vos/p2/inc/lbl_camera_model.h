@@ -68,6 +68,7 @@ typedef struct
     LblApiIntItem_typ       CameraSerialNumber;
 	LblApiIdItem_typ		GeometrySourceId;
 	LblApiIdItem_typ		FilterName;
+	LblApiIntItem_typ		FilterNumber;
 	LblApiDescItem_typ		ModelDesc;
 	LblApiNameItem_typ		ModelName;
 	LblApiTypeItem_typ		ModelType;

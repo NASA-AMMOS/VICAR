@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "xvmaininc.h"   
-#include <zvproto.h>
+#include "zvproto.h"
+#include "flight_label.h"
 #define OPEN 0x0001			/* File open? */
 #define MAX  50				/* Maximum number of tasks in label */
 #define ITC_COMPRSSD 1
@@ -37,17 +38,20 @@ Ported  to UNIX:        Wen-Piao  Lee
                         May 6, 1992
 
 *******************************************************************************/
-struct  node { char * str;  /* LINK list for output buffer */
-	       struct node * next;
-	     };
-typedef struct node NODE;
+struct  node {
+  char * str;  /* LINK list for output buffer */
+  struct node * next;
+};
+
 struct queue {NODE* head;
               NODE* tail;};
 typedef struct queue QUEUE;
 void enqueue(char* str, QUEUE l);
 
-NODE *flight_label( unit )
+NODE *flight_label(int unit)
+#if 0
 int unit;		/* Unit number of file whose label is listed	      */
+#endif
 {
  static char  asterisks[]="*******************";    /* Array of asterisks   */
  static char  lat_rad[5];
@@ -69,7 +73,6 @@ int	flags,		/* Flag to determine if file is open		*/
 	instances[MAX],	/* Array of instances				*/
 	nhist,		/* Number of tasks in VICAR label		*/
 	sta[60],	/* Array of VICAR command error messages	*/
-	status,		/* VICAR command error flag			*/
 	x,y,		/* Loop count variables				*/
         galsosdone,     /* 1 if input is a galsosed image.              */
 	i,		/* Index 					*/
@@ -154,7 +157,7 @@ strncpy(rate,asterisks,13);
 
 nhist = MAX;
 strcpy( task,"NONE" );
-status = zlhinfo(unit,tasks[0],instances,&nhist,"ULEN",15,"ERR_ACT","SA", NULL);
+zlhinfo(unit,tasks[0],instances,&nhist,"ULEN",15,"ERR_ACT","SA", NULL);
 for(x=0;x<nhist;x++)
  {
    if (!strncmp(tasks[x],"GALSOS",6)) galsosdone=1;

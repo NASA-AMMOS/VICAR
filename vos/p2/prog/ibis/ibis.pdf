@@ -95,11 +95,14 @@ is determined by the subcommand which is used.  For help on the
 parameters of IBIS-GEN, type -GEN (etc.). For general help on the 
 operation of the subcommand, type HELP GEN (etc.)
 .page
-REVISION HISTORY
+WRITTEN BY:            N. D. Ritter     Mar    1994
 
-   Written by:            N. D. Ritter     Mar    1994
-   Cognizant Programmer:  N. D. Ritter     Mar    1994
-   Latest revision:       2                Jun    1994
+COGNIZANT PROGRAMMER:  N. D. Ritter     Mar    1994
+
+REVISION HISTORY:
+  2019-05-28 WLB - Cleaned up declaration compiler warnings, test.
+  2019-09-31 WLB - IDS-7923 - Replaced sprintf calls with snprintf.
+
 .LEVEL1
 !
 .VAR gr1dim 

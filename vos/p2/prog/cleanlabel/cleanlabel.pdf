@@ -94,12 +94,13 @@ HISTORY
 	Author : Megan O'Shaughnessy  9-21-1989
 	Revised :
 
-	MOS, 10-11-1991
-	Fixed FR 70991, dereferenced unit number in calls to XVSIGNAL, in 
-	keeping with changes to that subroutine.
-        Made portable for UNIX   RNR(CRI)   5-25-94
-            For SUN "close_files" proc changed to "cclose_files" to avoid 
-            improper linking. 
+	1991-10-11 MOS - Fixed FR 70991, dereferenced unit number in calls to XVSIGNAL, in 
+	                 keeping with changes to that subroutine.
+        1994-05-25 RNR(CRI) - Made portable for UNIX.
+                              For SUN "close_files" proc changed to "cclose_files" to avoid 
+                              improper linking. 
+        2019-07-18 WLB - IDS-7923: replaced sprintf with snprintf. Misc cleanup.
+
 !------------------------------------------------------------------------------
 .level1
 .variable inp

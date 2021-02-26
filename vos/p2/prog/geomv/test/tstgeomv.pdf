@@ -3,6 +3,8 @@ refgbl $echo
 parm version string def="ibis-1"
 parm org string def="column"
 body
+enable-log
+
 !let _onfail="continue"
 let $echo="yes"
 
@@ -12,10 +14,12 @@ let $echo="yes"
 
 ! Now generate BYTE input data set
  
+write "******** BYTE TESTS ********"
+
 gen mgtest 10 10 SINC=40 LINC=40
  
 ! Verify existence of input file
-list mgtest
+list mgtest 'nousrtim
 
 !  Try some copies.
 !  Check case of grid bigger than image.
@@ -32,7 +36,7 @@ geomv mgtest mgenlarg +
                 20.,1.,10.,1.,20.,20.,10.,10.)
 
 ! Print it out
-list mgenlarg
+list mgenlarg 'nousrtim
 
  
 ! Perform 45 degree rotation clockwise with 1.4 times enlargement
@@ -42,7 +46,7 @@ geomv mgtest mgrotat +
                 20.,1.,15.,5.,20.,20.,5.,15.)
 
 ! Print it out
-list mgrotat
+list mgrotat 'nousrtim
 
 
 !   SUBSET OF ABOVE CASE, THIS WAS AN ERROR CASE UNTIL FIXED 05/00
@@ -56,7 +60,7 @@ GEOMV xxxim1 xxxim3 sl=7 ss=1 +
          TIEPOINT=(1.,1.,5.,-5.,1.,20.,-5.,5.,+
                 20.,1.,15.,5.,20.,20.,5.,15.)
  
-list xxxim3 'zer
+list xxxim3 'zer 'nousrtim
 
 
 
@@ -91,12 +95,12 @@ geomv mgtest mgrotat +
    INTERP=NOIN
 
 ! Print it out
-list mgrotat
+list mgrotat 'nousrtim
 
 
 ! Perform the same operation, but without interpolation
 gen mgtest 10 10 SINC=64 LINC=64
-list mgtest
+list mgtest 'nousrtim
 geomv mgtest mgrotat + 
    SIZE=(1,1,20,20)+
    TIEPOINT=(1.,1.,5.,-5.,1.,20.,-5.,5.,+
@@ -104,14 +108,14 @@ geomv mgtest mgrotat +
    'ZNOIN
 
 ! Print it out
-list mgrotat
+list mgrotat 'nousrtim
  
 ! Now generate BYTE input data set
  
 gen mgtest2 1000 1000 SINC=1 LINC=1
  
 ! Verify existence of input file
-list mgtest2 SIZE=(1,1,15,15)
+list mgtest2 SIZE=(1,1,15,15) 'nousrtim
  
 ! DO LONG THIN CASE WITH 45 DEG ROTATION.
 
@@ -121,8 +125,10 @@ geomv mgtest2 mgenthin +
             2.,1.,1001.,2.,2.,1000.,2.,1001.)
 
 ! Print it out
-list mgenthin 'NOEJECT
+list mgenthin 'NOEJECT 'nousrtim
  
+
+write "******** HALF TESTS ********"
 
 ! Now do simple tests for half
 ! Now generate HALF input data set
@@ -130,7 +136,7 @@ list mgenthin 'NOEJECT
 gen mgtest 10 10 SINC=40 LINC=40 'HALF
  
 ! Verify existence of input file
-list mgtest
+list mgtest 'nousrtim
  
 
 !  Try some copies.
@@ -148,7 +154,7 @@ geomv mgtest mgenlarg +
                 20.,1.,10.,1.,20.,20.,10.,10.)
  
 ! Print it out
-list mgenlarg
+list mgenlarg 'nousrtim
  
 ! Perform 45 degree rotation clockwise with 1.4 times enlargement
 geomv mgtest mgrotat + 
@@ -157,10 +163,12 @@ geomv mgtest mgrotat +
                 20.,1.,15.,5.,20.,20.,5.,15.)
 
 ! Print it out
-list mgrotat
+list mgrotat 'nousrtim
 
 
-! big case with offsets
+write "******** MORE BYTE TESTS ********"
+
+! big BYTE case with offsets
 gen mgtest2 1000 1000 SINC=3 LINC=7
 
 geomv mgtest2 mgenthin + 
@@ -168,12 +176,12 @@ geomv mgtest2 mgenthin +
    TIEPOINT=(1.,1.,7.,7.,1.,1000.,1.,1022.,+
             1000.,1.,970.,22.,1000.,1000.,1050.,1060.)
 
-list mgenthin linc=199 sinc=199
+list mgenthin linc=199 sinc=199 'nousrtim
 
 ! ibis file grid input
 
 
-! small grid small image testing ibis file pass to geomv
+! small BYTE grid small image testing ibis file pass to geomv
 
 gen mgtest2 400 400 SINC=3 LINC=7
 ibis-gen a version=&version org=&org  datacol=(1,2,3,4) +
@@ -189,7 +197,7 @@ tieconv INP=a COLS=(1,2,3,4)  OUT=b +
 geomv INP=(mgtest2,b) OUT=mgenlarg + 
    SIZE=(1,1,400,400)
 
-list mgenlarg linc=39 sinc=39
+list mgenlarg linc=39 sinc=39 'nousrtim
 
 ! parms file use by GEOMV... have to use the MGEOM version to
 ! get a parms file since GEOMV keyword to tieconv produces an IBIS
@@ -209,10 +217,10 @@ tieconv INP=a COLS=(1,2,3,4)  OUT=b +
 
 geomv INP=mgtest OUT=mgenlarg PARMS=b + 
    SIZE=(1,1,10,10)
-list mgenlarg
+list mgenlarg 'nousrtim
 
 
-! ibis file grid input large grid and large image
+! ibis file grid input large grid and large BYTE image
 
 gen mgtest2 1000 1000 SINC=3 LINC=7
 ibis-gen a version=&version org=&org  datacol=(1,2,3,4) +
@@ -228,7 +236,119 @@ tieconv INP=a COLS=(1,2,3,4)  OUT=b +
 geomv INP=(mgtest2,b) OUT=mgenlarg + 
    SIZE=(1,1,1000,1000)
 
-list mgenlarg linc=199 sinc=199
+list mgenlarg linc=199 sinc=199 'nousrtim
+
+write "******** FULL TESTS ********"
+
+! Now do simple tests for full
+! Now generate FULL input data set
+ 
+gen mgtest 10 10 SINC=40 LINC=40 'FULL
+ 
+! Verify existence of input file
+list mgtest 'nousrtim
+ 
+
+!  Try some copies.
+!  Check case of grid bigger than image.
+geomv mgtest mgtest1 + 
+   TIEPOINT=(1.,1.,1.,1.,   1.,20.,1.,20.,+
+            20.,1.,20.,1., 20.,20.,20.,20.)
+difpic (mgtest1 mgtest)
+
+
+! Perform simple enlargement to 2X size
+geomv mgtest mgenlarg + 
+   SIZE=(1,1,20,20)   +
+   TIEPOINT=(1.,1.,1.,1.,1.,20.,1.,10.,+
+                20.,1.,10.,1.,20.,20.,10.,10.)
+ 
+! Print it out
+list mgenlarg 'nousrtim
+ 
+! Perform 45 degree rotation clockwise with 1.4 times enlargement
+geomv mgtest mgrotat + 
+   SIZE=(1,1,20,20)  +
+   TIEPOINT=(1.,1.,5.,-5.,1.,20.,-5.,5.,+
+                20.,1.,15.,5.,20.,20.,5.,15.)
+
+! Print it out
+list mgrotat 'nousrtim
+
+write "******** REAL TESTS ********"
+
+! Now do simple tests for real
+! Now generate REAL input data set
+ 
+gen mgtest 10 10 SINC=40 LINC=40 'REAL
+ 
+! Verify existence of input file
+list mgtest 'nousrtim
+ 
+
+!  Try some copies.
+!  Check case of grid bigger than image.
+geomv mgtest mgtest1 + 
+   TIEPOINT=(1.,1.,1.,1.,   1.,20.,1.,20.,+
+            20.,1.,20.,1., 20.,20.,20.,20.)
+difpic (mgtest1 mgtest)
+
+
+! Perform simple enlargement to 2X size
+geomv mgtest mgenlarg + 
+   SIZE=(1,1,20,20)   +
+   TIEPOINT=(1.,1.,1.,1.,1.,20.,1.,10.,+
+                20.,1.,10.,1.,20.,20.,10.,10.)
+ 
+! Print it out
+list mgenlarg 'nousrtim
+ 
+! Perform 45 degree rotation clockwise with 1.4 times enlargement
+geomv mgtest mgrotat + 
+   SIZE=(1,1,20,20)  +
+   TIEPOINT=(1.,1.,5.,-5.,1.,20.,-5.,5.,+
+                20.,1.,15.,5.,20.,20.,5.,15.)
+
+! Print it out
+list mgrotat 'nousrtim
+
+write "******** DOUB TESTS ********"
+
+! Now do simple tests for doub
+! Now generate DOUB input data set
+ 
+gen mgtest 10 10 SINC=40 LINC=40 'DOUB
+ 
+! Verify existence of input file
+list mgtest 'nousrtim
+ 
+
+!  Try some copies.
+!  Check case of grid bigger than image.
+geomv mgtest mgtest1 + 
+   TIEPOINT=(1.,1.,1.,1.,   1.,20.,1.,20.,+
+            20.,1.,20.,1., 20.,20.,20.,20.)
+difpic (mgtest1 mgtest)
+
+
+! Perform simple enlargement to 2X size
+geomv mgtest mgenlarg + 
+   SIZE=(1,1,20,20)   +
+   TIEPOINT=(1.,1.,1.,1.,1.,20.,1.,10.,+
+                20.,1.,10.,1.,20.,20.,10.,10.)
+ 
+! Print it out
+list mgenlarg 'nousrtim
+ 
+! Perform 45 degree rotation clockwise with 1.4 times enlargement
+geomv mgtest mgrotat + 
+   SIZE=(1,1,20,20)  +
+   TIEPOINT=(1.,1.,5.,-5.,1.,20.,-5.,5.,+
+                20.,1.,15.,5.,20.,20.,5.,15.)
+
+! Print it out
+list mgrotat 'nousrtim
 
 theend>
+disable-log
 end-proc

@@ -38,7 +38,7 @@ c                  the tests are now for DN>THRESH instead of DN>=THRESH.
 
 C   INITIALIZE VARIABLES
 
-      CALL XVMESSAGE(' FASTMOS version 02-Oct-2012', ' ') 
+      CALL XVMESSAGE('FASTMOS version 2018-12-18', ' ') 
 
       IB=0
       MTYP=0
@@ -267,7 +267,6 @@ C   SET UP FOR MOSAICING LOOP.
         l0 = i
       endif
 
-      CALL FASTFILL(NPIXEL*NI,L0,INBUF) !ZERO ALL INPUT BUFFS
       DO IDSRN = 1, NI
          OFF(3,IDSRN) = OFF(3,IDSRN) - MAX( 0, OFF(1,IDSRN) )
 
@@ -309,6 +308,8 @@ c      RESET OFF() from BACK UP OFFBACK()
        END DO
 
       DO 1000 I=1,NL
+         CALL FASTFILL(NPIXEL*NI,L0,INBUF) !ZERO ALL INPUT BUFFS FOR THIS LINE
+
          LINEOUT = LINEOUT + 1
          DO IDSRN = 1, NI
 

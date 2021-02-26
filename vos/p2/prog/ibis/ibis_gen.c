@@ -9,7 +9,7 @@
  ***                                                                  ***
  ************************************************************************/
  
-int new_file(void)
+void new_file(void)
 {
 	int outunit,status;
 	int out;
@@ -24,12 +24,12 @@ int new_file(void)
 	char *fmt_ptr=(char *)0;
 	char *mode;
 	
- 	status=zvunit( &outunit, "out", 1, NULL);
-	if (status!=1) zvsignal( outunit, status, 1);
+ 	status=zvunit(&outunit, "out", 1, NULL);
+	if (status!=1) zvsignal(outunit, status, 1);
 
-	zvp("nr", &nr, &def ); if (!nr) nr=10;
-	zvp("nc", &nc, &def ); if (!nc) nc=10;
-	zvp("deffmt", def_fmt, &def );
+	zvp("nr", &nr, &def); if (!nr) nr=10;
+	zvp("nc", &nc, &def); if (!nc) nc=10;
+	zvp("deffmt", def_fmt, &def);
 	if (!def_fmt[0] || def_fmt[0]==' ') strcpy(def_fmt,IFMT_REAL);
 
 	/* Create the Formatting string */
@@ -39,7 +39,7 @@ int new_file(void)
 	if (!def && count && strlen((char *) colformat)) 
 	{
 		fmt_ptr=(char *)colformat;
-		zvp("fmtcols", fmt_cols, &def );
+		zvp("fmtcols", fmt_cols, &def);
 		if (count > nc) nc = count;
 		if (fmt_cols[0] || count < nc)
 		{
@@ -61,10 +61,10 @@ int new_file(void)
 	else mode=IMODE_OWRITE;
   
 	/* Create the output file unit, or abort on error */
-	zvpone( "org", org, 1, 0 );
+	zvpone("org", org, 1, 0);
 
 	status = IBISFileUnit(outunit, &out, mode, nc, nr, fmt_ptr, org);
-	if (status!=1) IBISSignalU( outunit, status, 1);
+	if (status!=1) IBISSignalU(outunit, status, 1);
 
 	/* Set up subfile type */
 	zvp("type",type,&def);
@@ -75,25 +75,23 @@ int new_file(void)
 	if (def_fmt[0] && def_fmt[0]!=' ')
 	{
 	   status=IBISFileSet(out,IFILE_FMT_DEFAULT,def_fmt,0);
-	   if (status!=1) IBISSignalU( outunit, status, 1);
+	   if (status!=1) IBISSignalU(outunit, status, 1);
 	}
 
 	/* Create and open the file */
 	status = IBISFileUnitOpen(out);
-	if (status!=1) IBISSignalU( outunit, status, 1);
+	if (status!=1) IBISSignalU(outunit, status, 1);
 	
 	/* Write out data ? */
-	status = write_data(out,nr,nc);
-	if (status!=1) IBISSignalU( outunit, status, 1);
+	status = write_data(out);
+	if (status!=1) IBISSignalU(outunit, status, 1);
 
 	/* close up shop */
-	
-	status = IBISFileClose( out, 0 );
-	if (status != 1) IBISSignalU( outunit, status, 1);
+	status = IBISFileClose(out, 0);
+	if (status != 1) IBISSignalU(outunit, status, 1);
 }
 
-int write_data(ibis)
-int ibis;
+int write_data(int ibis)
 {
 	int status=1;
 	int ncols,def,indexcol;
@@ -142,7 +140,7 @@ int ibis;
 		
 		for (row=1,dptr=data;row<=nrows;row++,dptr+=ncols)
 		{
-		   status = IBISRecordWrite(record,(char *)dptr,row);
+	   status = IBISRecordWrite(record,(char *)dptr,row);
 		   if (status !=1) goto failure;
 		}
 		

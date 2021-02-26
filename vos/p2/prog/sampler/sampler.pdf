@@ -33,6 +33,7 @@ PURPOSE
  REVISIONS:
   2016-10-20 WLB - Migrated to MIPL, enhanced test case and documentation.
   2017-08-11 WLB - Removed DEBUG from imake.
+  2019-09-06 WLB - IDS-7922 - Initialized some variables; cleaned up -Wall warnings.
 
 .LEVEL1
 .VARIABLE INP

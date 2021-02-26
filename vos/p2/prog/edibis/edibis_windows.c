@@ -83,7 +83,7 @@ int batch;
 	strcpy(keypad_mode,"\033[?1h\033=");
 #endif
 
-	printf(keypad_mode);  /* use "keypad()" for SYSV */
+	printf("%s", keypad_mode);  /* use "keypad()" for SYSV */
 
 	initscr();
 	noecho(); /* don't echo chars on terminal */

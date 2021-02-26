@@ -77,12 +77,16 @@ contiguous values will be recognized.
 
 Dynamic allocation is used so the columns can be of any length.
 
-	WRITTEN BY		A. L. Zobrist		 1 Dec 1975
-	COGNIZANT PROGRAMMER	K. F. Evans
-	REVISION		1			26 Jul 1978
-        Made portable for UNIX  A. Scop (CRI)            2 Jan 1995
-        rewritten in C          A. L. Zobrist            7 Jun 2000
-Thu Jan  3 2008 wlb switched to USES_ANSI_C AND LIB_CARTO; misc cleanup  
+WRITTEN BY		A. L. Zobrist		 1 Dec 1975
+COGNIZANT PROGRAMMER	K. F. Evans
+
+REVISIONS
+
+  1978-07-26 K. F. Evans - 1
+  1995-01-02 A. Scop (CRI) - Made portable for UNIX
+  2000-06-07 A. L. Zobrist - rewritten in C
+  2008-01-03 W. L. Bunch - switched to USES_ANSI_C AND LIB_CARTO; misc cleanup  
+  2019-08-07 W. L. Bunch - IDS-7922 - initialized some variables
 
 .LEVEL1
 .VARIABLE INP

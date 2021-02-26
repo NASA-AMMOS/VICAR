@@ -2,6 +2,8 @@ procedure
 refgbl $echo
 refgbl $syschar
 body
+enable-log
+
 let _onfail="continue"
 let $echo="yes"
 if ($syschar(1) = "UNIX")
@@ -18,4 +20,6 @@ else
   dcl type tstreset.dat
 end-if
 let $echo="no"
+
+disable-log
 end-proc

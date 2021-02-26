@@ -63,9 +63,10 @@ As fast as VICAR can read and write the lines.
  COGNIZANT PROGRAMMER:   Barbara McGuffie    29 Oct 1999
  
  REVISION HISTORY
-  1999-10-29 AZ  Initial version
-  2008-01-03 WLB Switched to USES_ANSI_C AND LIB_CARTO; misc cleanup  
-  2015-09-10 WLB Fixed headers for MIPL build
+  1999-10-29 AZ  - Initial version
+  2008-01-03 WLB - Switched to USES_ANSI_C AND LIB_CARTO; misc cleanup  
+  2015-09-10 WLB - Fixed headers for MIPL build
+  2019-09-05 WLB - IDS-7922 - Initialized some variables; cleaned up -Wall warnings
   
 .LEVEL1
 .VARIABLE INP

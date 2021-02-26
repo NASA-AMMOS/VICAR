@@ -2,6 +2,8 @@ procedure
 refgbl $echo
 refgbl $autousage
 body 
+enable-log
+
 let _onfail="continue"
 let $echo="yes"
 !
@@ -14,5 +16,6 @@ comment "***** Answer Comment: prompt with <RETURN> *****"
 comment
 comment "***** Answer next Comment: prompt with some text + <RETURN> *****"
 comment
-!
+
+disable-log
 end-proc

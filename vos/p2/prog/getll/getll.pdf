@@ -52,9 +52,11 @@ unavailability of the specified CKNAME.
 .page
 REVISION HISTORY
 
-When       Who What
----------- --- ---------------------------------------------------------------
-08/01/1996 SMC Initial Release
+1996-08-01 SMC - Initial Release
+2019-07-23 WLB - IDS-7923: Removed sprintf calls. Cleaned up some
+           warnings. Left 45 lines of -Wall warnings. Commented out
+           VGR tests from tstgll.pdf because it seems that the spice
+           kernels don't support the tests.
 
 .level1
 .var INP

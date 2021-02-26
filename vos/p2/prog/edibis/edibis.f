@@ -58,7 +58,7 @@ C--------------------------------------------------------------------------
 C          EDIBIS EXECUTABLE CODE STARTS HERE
 C--------------------------------------------------------------------------
 
-	call xvmessage ("edibis - version Jan 29, 2015 - WLB"," ")
+	call xvmessage ("EDIBIS version 2019-06-13"," ")
 	CALL FILESETUP		! Open files, do transfers, etc.
 
 	CALL INITIALIZE		! Initialize variables and screen

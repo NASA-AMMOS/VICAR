@@ -83,7 +83,7 @@ then
          if [ "`uname -m`" == "x86_64" ]
          then
 ##### uncomment the below to enable mac64_osx...
-            if [ -z "${V2_FORCE_32+x}" ]
+           if [ -z "${V2_FORCE_32+x}" ]
             then
                echo "mac64_osx"
                exit

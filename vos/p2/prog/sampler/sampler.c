@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "zifmessage.h"
+#include "zmabend.h"
 #include "gsl/gsl_vector.h"
 #include "ImageUtils.h"
 #include "ibishelper.h"
@@ -52,7 +53,7 @@ VICAR_IMAGE** getVicarImages(int cnt)
 void readSamples(LINKEDLIST *samples, VICAR_IMAGE **inps, int nDim, int nSamples)
 {
    int i, j;
-   struct node *n, *prev;
+   struct node *n;
    SAMPLE *s, *prevS;
 
    n = samples->head;
@@ -64,7 +65,7 @@ void readSamples(LINKEDLIST *samples, VICAR_IMAGE **inps, int nDim, int nSamples
    }
    for(i = 1; i < samples->size; i++)
    {
-      prev = n;
+      /* prev = n; */
       n = n->next;
       prevS = s;
       s = (SAMPLE*)(n->data);
@@ -129,7 +130,6 @@ LINKEDLIST* getStratifiedSamples(VICAR_IMAGE **inps, int nDim, int nGridX, int n
 {
    LINKEDLIST *samples, *sortedSamples;
    int gridX, gridY, i;
-   SAMPLE **readSampleIndices;
 
    gridX = inps[0]->ns/nGridX;
    gridY = inps[0]->nl/nGridY;
@@ -213,16 +213,15 @@ void outIBIS(LINKEDLIST *samples, int nDim, int nr)
 void main44(void)
 {
    long seed;
-   int status, i, inpCnt, dumdef, dumcnt;
+   int status, inpCnt=0, dumdef, dumcnt;
    int nGridX, nGridY;
    char sampleType[20];
    char lowerType[20];
-   VICAR_IMAGE **inps;
-   IBISStruct *out;
-   LINKEDLIST *samples;
+   VICAR_IMAGE **inps=NULL;
+   LINKEDLIST *samples=NULL;
    //   struct node **nodeArray;
 
-   zifmessage("sampler version 2017-08-11");
+   zifmessage("SAMPLER version 2019-09-06");
 
    status = zvpcnt("inp", &inpCnt);
    if(status != 1) zmabend("Error getting input count.\n");

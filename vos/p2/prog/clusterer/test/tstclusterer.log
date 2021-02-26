@@ -1,13 +1,14 @@
 sampler inp=(data/band1.vic,data/band2.vic,data/band3.vic,data/band4.vic,data/band5.vic) out=subsamples.ibis ngridx=200 ngridy=200 +
 seed=30
 Beginning VICAR task sampler
-sampler version 2016-10-20
+sampler version 2017-08-11
 clusterer subsamples.ibis (subclusters.ibis, classifiedsubsamples.ibis) nclusters=20 conv=0.1 maxi=200
 Beginning VICAR task clusterer
-clusterer version 2017-08-03
+CLUSTERER version 2019-08-22
 FINAL RESULT total num of clusters: 10 converged: YES
 ibis-l subclusters.ibis
 Beginning VICAR task ibis
+IBIS version 2019-07-31
  
 Number of Rows:10  Number of Columns: 23      
 File Version:IBIS-2  Organization:ROW  SubType:NONE

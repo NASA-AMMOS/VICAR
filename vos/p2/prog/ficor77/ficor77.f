@@ -23,17 +23,24 @@ C      COMMON/C1/WORK(10000)		!A large work area
       INTEGER*4 MODE, MODEDC            !Camera mode and dark-current camera mode
       INTEGER*4 SLO,SSO,IBUG,IUNIT,NLO,NSO,NSI,IPLAN,OUNIT,MAXDN
       INTEGER*4 NONEGS,ICAM,IUNITC,IFLT,IUNITD,IGAIN,IDCGAIN
-      INTEGER*4 IND,NLC,NSC,ISPEED,IFILT,A1,A2,BADSCALE
-      INTEGER*4 MSP,MUP,NSP,NNP,ITOT,IFDS,L
-      REAL*4 FSCALE,DIV,DCSCALE
+      INTEGER*4 IND,NLC,NSC,ISPEED,IFILT
+      LOGICAL BADSCALE
+      INTEGER*4 MSP,MUP,NSP,NNP,ITOT,IFDS,L,FILTEQ
+      REAL*4 A1,A2,FSCALE,DIV,DCSCALE
       CHARACTER*7 PNAME			!Planet-of-encounter
       CHARACTER*8 DATE			!Version date of SCF
       LOGICAL XVPTST
 C
-      CALL IFMESSAGE('FICOR77 version Sep 3 2015')
+      CALL IFMESSAGE('FICOR77 version 2020-04-02')
 C
       IBUG = 0
       IF (XVPTST('DBUG')) IBUG=1	!Set flag for diagnostic messages
+C
+      FILTEQ = 0
+      IF (XVPTST('FILTEQ')) THEN
+          CALL XVMESSAGE('Equating NA filter 0 with 4, and 5 with 6',' ')
+          FILTEQ = 1
+      END IF
 C
 C     ...Open input and get frame information
       CALL IPOPEN(iunit,ipic,mode,slo,sso,nlo,nso,nsi,*999)
@@ -49,10 +56,24 @@ C     ...Get user-specified camera parameters
       MODEDC = 0		! initialize to invalid value
       CALL CPARAM(ipic,idark,mode,modedc,*999)
       ICAM = IPIC(6)		!Camera serial number
+
+C     From able77v2.f:
+C              6      CAMERA SERIAL NUMBER,IE
+C                     FOR VOYAGER 2,  WIDE ANGLE,CAMERA S/N IS 4
+C                     FOR VOYAGER 2,NARROW ANGLE,CAMERA S/N IS 5
+C                     FOR VOYAGER 1,  WIDE ANGLE,CAMERA S/N IS 6
+C                     FOR VOYAGER 1,NARROW ANGLE,CAMERA S/N IS 7
+
+      IF(FILTEQ.EQ.1.AND.(ICAM.EQ.5.OR.ICAM.EQ.7)) THEN !If NA camera
+	 IF(IPIC(4).EQ.4) IPIC(4)=0 ! CLEAR
+	 IF(IPIC(4).EQ.6) IPIC(4)=5 ! GREEN
+      ENDIF
+
       IFILT = IPIC(4)		!Filter position
+
 C
 C     ...Search input file list for calibration and DC files
-      CALL FSEARCH(IPIC,MODE,idark,modedc,iunitc,iunitd,div,*999)
+      CALL FSEARCH(IPIC,MODE,idark,modedc,iunitc,iunitd,div,filteq,*999)
 C
 C     ...Scale DNs of input image and DC.
       IGAIN = IPIC(8)		!Gain-state (0=low,1=high)
@@ -325,12 +346,13 @@ C          On input IDARK contains the parameters as pecified by the
 C          user (=0 if unspecified).  On output, any missing values
 C	   are filled from the dark-current frame label.
 C
-      SUBROUTINE FSEARCH(IPIC,MODE,idark,modedc,iunitc,iunitd,div,*)
+      SUBROUTINE FSEARCH(IPIC,MODE,idark,modedc,iunitc,iunitd,div,
+     +filteq,*)
       IMPLICIT NONE
 
       INTEGER*4 IPIC(10),IDARK(10),IFILT,ISCAN,ICAM,IGAIN,NOCH,NI,MAXC
       INTEGER*4 IPCDF,IDC,MAXD,I,IUNITX,IND,NLABX,NSX,N,IMODE,J,MODEDC
-      INTEGER*4 MODEDCX,IUNITD,IUNITC,MODE
+      INTEGER*4 MODEDCX,IUNITD,IUNITC,MODE,FILTEQ
       REAL*4 DIV
 
       COMMON/C4/LABEL		!Temporary storage for labels
@@ -379,6 +401,11 @@ C     ...Here if input is a calibration file
       IF(PCDF.GT.0) GOTO 5	  !Skip if we already have a match
       READ (LABEL(109:109),8000) ITEST(6)    !Extract camera serial number,
       READ (LABEL(137:137),8000) ITEST(4)    !filter position,
+
+      IF(FILTEQ.EQ.1.AND.(ITEST(6).EQ.5.OR.ITEST(6).EQ.7)) THEN !If NA camera
+	 IF(ITEST(4).EQ.4) ITEST(4)=0 ! CLEAR
+	 IF(ITEST(4).EQ.6) ITEST(4)=5 ! GREEN
+      ENDIF
       READ (LABEL(227:228),8100) ITEST(5)    !scan-rate,
       READ (LABEL(238:238),8000) ITEST(8)    !gain-state from label
 8000  FORMAT(I1)
@@ -413,7 +440,7 @@ C
       N = 31
       IF (ICAM.NE.ITEST(6)) N=N-16	!Check camera serial number,
       IF (ISCAN.NE.ITEST(5)) N=N-4	!and scan-rate.
-      IF (ICAM.NE.4.AND.ICAM.NE.6) GOTO 4 !If wide-angle camera,
+      IF (ICAM.NE.4.AND.ICAM.NE.6) GOTO 4 !If not wide-angle camera,
       IF (IMODE.EQ.MODE) GOTO 4		!check also for operating mode.
       IF (MODE.EQ.5.OR.IMODE.EQ.5.OR.	!If mode disagrees, mark down
      &    MODE.EQ.7.OR.IMODE.EQ.7) N=N-1!if BSIMAN or BOTSIM
@@ -800,8 +827,8 @@ C
 
       CHARACTER*8 date		!Version date of SCF table used.
 
-      INTEGER*4 SUNIT,ICNT,IND,IFILT,ICAM,IPLAN
-      REAL*4 VERSION,FSCALE,A1
+      INTEGER*4 VERSION,SUNIT,ICNT,IND,IFILT,ICAM,IPLAN
+      REAL*4 FSCALE,A1
       CHARACTER*256 SCFNAME	!Filename of SCF
 
 C     ...Open Scale Correction File

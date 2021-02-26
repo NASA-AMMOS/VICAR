@@ -153,6 +153,12 @@ static LblApiElement_typ    LabelTbl[] = {
      LBL_OFFSET(LblIdentification_typ, ImageId.Valid),
      LBL_NO_RETURN, LBL_SIZE(ImageId.Value)},
 
+    {"IMAGE_ID_2",                "STRING",   LBL_OPTIONAL,
+     LBL_NO_CONT,   1,  1,  LBL_NULL,
+     LBL_OFFSET(LblIdentification_typ, ImageId2.Value),
+     LBL_OFFSET(LblIdentification_typ, ImageId2.Valid),
+     LBL_NO_RETURN, LBL_SIZE(ImageId2.Value)},
+
     {"IMAGE_TIME",              "STRING",   LBL_OPTIONAL,
      LBL_NO_CONT,   1,  1,  LBL_NULL,
      LBL_OFFSET(LblIdentification_typ, ImageTime.Value),
@@ -560,6 +566,17 @@ static LblApiElement_typ    LabelTbl[] = {
      LBL_OFFSET(LblIdentification_typ, RoverMotionCounter[9].Valid),
      LBL_NO_RETURN,  LBL_SIZE(RoverMotionCounter[9].Value)},
 
+     {"ROVER_MOTION_COUNTER",        "INT",      LBL_OPTIONAL,
+     LBL_CONTINUE,   1,  11,  LBL_NULL,
+     LBL_OFFSET(LblIdentification_typ, RoverMotionCounter[10].Value),
+     LBL_OFFSET(LblIdentification_typ, RoverMotionCounter[10].Valid),
+     LBL_NO_RETURN,  LBL_SIZE(RoverMotionCounter[10].Value)},
+
+     {"ROVER_MOTION_COUNTER",        "INT",      LBL_OPTIONAL,
+     LBL_CONTINUE,   1,  12,  LBL_NULL,
+     LBL_OFFSET(LblIdentification_typ, RoverMotionCounter[11].Value),
+     LBL_OFFSET(LblIdentification_typ, RoverMotionCounter[11].Valid),
+     LBL_NO_RETURN,  LBL_SIZE(RoverMotionCounter[11].Value)},
 
     {"ROVER_MOTION_COUNTER_NAME",       "STRING",   LBL_OPTIONAL,
      LBL_NO_CONT,   1,  1,  LBL_NULL,
@@ -620,6 +637,18 @@ static LblApiElement_typ    LabelTbl[] = {
      LBL_OFFSET(LblIdentification_typ, RoverMotionCounterName[9].Value),
      LBL_OFFSET(LblIdentification_typ, RoverMotionCounterName[9].Valid),
      LBL_NO_RETURN,  LBL_SIZE(RoverMotionCounterName[9].Value)},
+
+    {"ROVER_MOTION_COUNTER_NAME",       "STRING",   LBL_OPTIONAL,
+     LBL_CONTINUE,   1,  11,  LBL_NULL,
+     LBL_OFFSET(LblIdentification_typ, RoverMotionCounterName[10].Value),
+     LBL_OFFSET(LblIdentification_typ, RoverMotionCounterName[10].Valid),
+     LBL_NO_RETURN,  LBL_SIZE(RoverMotionCounterName[10].Value)},
+
+    {"ROVER_MOTION_COUNTER_NAME",       "STRING",   LBL_OPTIONAL,
+     LBL_CONTINUE,   1,  12,  LBL_NULL,
+     LBL_OFFSET(LblIdentification_typ, RoverMotionCounterName[11].Value),
+     LBL_OFFSET(LblIdentification_typ, RoverMotionCounterName[11].Valid),
+     LBL_NO_RETURN,  LBL_SIZE(RoverMotionCounterName[11].Value)},
 
     {"SEQ_ID,SEQUENCE_ID",          "STRING",   LBL_OPTIONAL,
      LBL_NO_CONT,   1,  1,  LBL_NULL,
@@ -772,6 +801,36 @@ static LblApiElement_typ    LabelTbl[] = {
      LBL_OFFSET(LblIdentification_typ, StereoMatchId.Value),
      LBL_OFFSET(LblIdentification_typ, StereoMatchId.Valid),
      LBL_NO_RETURN,  LBL_SIZE(StereoMatchId.Value)},
+
+    {"ACTIVITY_ID",              "STRING",   LBL_OPTIONAL,
+     LBL_NO_CONT,   1,  1,  LBL_NULL,
+     LBL_OFFSET(LblIdentification_typ, ActivityId.Value),
+     LBL_OFFSET(LblIdentification_typ, ActivityId.Valid),
+     LBL_NO_RETURN, LBL_SIZE(ActivityId.Value)},
+
+    {"MARS_YEAR",     "INT",      LBL_OPTIONAL,
+     LBL_NO_CONT,   1,  1,  LBL_NULL,
+     LBL_OFFSET(LblIdentification_typ, MarsYear.Value),
+     LBL_OFFSET(LblIdentification_typ, MarsYear.Valid),
+     LBL_NO_RETURN, LBL_SIZE(MarsYear.Value)},
+
+    {"MARS_HELIOCENTRIC_DISTANCE",            "REAL",     LBL_OPTIONAL,
+     LBL_NO_CONT,   1,  1,  LBL_NULL,
+     LBL_OFFSET(LblIdentification_typ, MarsHelioCentricDistance.Value),
+     LBL_OFFSET(LblIdentification_typ, MarsHelioCentricDistance.Valid),
+     LBL_NO_RETURN, LBL_SIZE(MarsHelioCentricDistance.Value)},
+
+    {"MARS_HELIOCENTRIC_DISTANCE__UNIT",      "STRING",       LBL_OPTIONAL,
+     LBL_NO_CONT,    1,      1,      LBL_NULL,
+     LBL_OFFSET(LblIdentification_typ, MarsHelioCentricDistanceUnit.Value),
+     LBL_OFFSET(LblIdentification_typ, MarsHelioCentricDistanceUnit.Valid),
+     LBL_NO_RETURN,  LBL_SIZE(MarsHelioCentricDistanceUnit.Value)},
+
+    {"CAMERA_PRODUCT_ID",                     "STRING",   LBL_OPTIONAL,
+     LBL_NO_CONT,   1,  1,  LBL_NULL,
+     LBL_OFFSET(LblIdentification_typ, CameraProductId.Value),
+     LBL_OFFSET(LblIdentification_typ, CameraProductId.Valid),
+     LBL_NO_RETURN, LBL_SIZE(CameraProductId.Value)},
 
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
 

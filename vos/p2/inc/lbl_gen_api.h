@@ -115,7 +115,7 @@ extern "C" {
 #define  LBL_QUATERNION_ARRAY	  4
 #define  LBL_TRANSFORM_ARRAY	 12
 #define  LBL_RGB_ITEMS		  3
-#define  LBL_COORD_SYS_INDEX	  10
+#define  LBL_COORD_SYS_INDEX	  12
 
 #define  LBL_OFFSET(x,y)	((int)(uintptr_t)(&(((x *)0)->y)))
 

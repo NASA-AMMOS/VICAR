@@ -324,6 +324,8 @@ int	LblProcessor(
                          Label->NameKeyword,     Label->NameValue, NULL);
         } else 
         {
+          MaxLength = 0;
+          MaxElements = 0;
           status = zlinfo(Cntrl->FileUnit, Label->Type, Keyword,
                           LabelFormat, &MaxLength, &MaxElements,
                           "INSTANCE",    Instance,

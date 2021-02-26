@@ -3,6 +3,8 @@ procedure
 refgbl $echo
 refgbl $syschar
 body
+enable-log
+
 let $echo="yes"
 local path type=string init="wms_test_work:[testdata.mipl.gll]"
 if ($syschar(1) = "UNIX")
@@ -46,5 +48,9 @@ addnoise a3d b3d rate=20 seed=9699691
 despike b3d c3d
 f2 (a3d,c3d) diff func="abs(in1-in2)"
 hist diff 'nohist
+
+ush rm a3d b3d byte c3d d n nr diff
+
+disable-log
 
 end-proc

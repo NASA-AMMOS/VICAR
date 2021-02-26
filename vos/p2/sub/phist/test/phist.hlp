@@ -57,14 +57,15 @@ Original Programmer: H. J. Frieden, 2 June 1974
 Current Cognizant Programmer: Lucas W. Kamp, 1 May 1983
 Source Language: Fortran
 Revision:
-  11 Jul 97  T. Huang  ...Changed GRAY index from a 4-character display
-                          to a 5-character display for Cassini support.
-                          Cassini has data range (-4095..4095).
-                       ...Modified tphist.imake to use ANSI C.  This allows
-                          tzphist.c to be compiled under HP.
-  24 Oct 96  S. Chang  ...Fixed histogram legend display.  (FR89363)
-   1 SEP 93  D. Knight ...Ported to Unix
-  14 Jan 89  G. Yagi   ...Reduce spikes of it results in 0 max frequency.
-  21 JUN 84  C. Avis   ...ADDED '.'S TO PRNT CALLS
-  18 MAY 83  L. Kamp   ...CONVERTED TO VAX.
-  04 MAR 75  G. Yagi   ...Added four optional arguements, calls to ARGQ and MVE.
+  1975-03-04 G. Yagi - Added four optional arguements, calls to ARGQ and MVE
+  1983-05-18 L. Kamp - CONVERTED TO VAX
+  1984-06-21 C. Avis - ADDED '.'S TO PRNT CALLS
+  1989-01-14 G. Yagi - Reduce spikes of it results in 0 max frequency
+  1993-09-01 D. Knight - Ported to Unix
+  1996-10-24 S. Chang - Fixed histogram legend display.  (FR89363)
+  1997-07-11 T. Huang - Changed GRAY index from a 4-character display
+                        to a 5-character display for Cassini support.
+                        Cassini has data range (-4095..4095).
+                        Modified tphist.imake to use ANSI C.  This allows
+                        tzphist.c to be compiled under HP.
+  2019-08-22 W. Bunch - IDS-7922 - Added phist.h

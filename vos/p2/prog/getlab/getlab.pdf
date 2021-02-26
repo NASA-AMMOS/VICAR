@@ -105,6 +105,10 @@ REVISION HISTORY:
                        retrieval of property label info.
   2008-06    rgd - Added ELEMENT keyword.
   2018-01-04 WLB - Fixed multi-string-value bug.
+  2018-10-25 WLB - Fixed REAL type handling bug.
+  2019-06-13 WLB - IDS-7925: Null-terminated a buffer.
+                   IDS-7922: Initialized some variables.
+                   Misc warnings cleanup.
 
 .LEVEL1
 .VARIABLE INP

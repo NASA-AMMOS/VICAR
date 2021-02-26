@@ -1,51 +1,30 @@
-                Version 5C/16C
-
-      ***********************************************************
-      *                                                         *
-      * VICAR Supervisor version 5C, TAE V5.2                   *
-      *   Debugger is now supported on all platforms            *
-      *   USAGE command now implemented under Unix              *
-      *                                                         *
-      * VRDI and VIDS now support X-windows and Unix            *
-      * New X-windows display program: xvd (for all but VAX/VMS)*
-      *                                                         *
-      * VICAR Run-Time Library version 16C                      *
-      *   '+' form of temp filename now avail. on all platforms *
-      *   ANSI C now fully supported                            *
-      *                                                         *
-      * See B.Deen(RGD059) with problems                        *
-      *                                                         *
-      ***********************************************************
-
-  --- Type NUT for the New User Tutorial ---
-
-  --- Type MENU for a menu of available applications ---
-
 ibis-gen xx1 NC=3 NR=4 deffmt=DOUB
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c1=@index"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c1=@index
 
 4 records in
 
 mf4 xx1 f="c2=c1+2"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c2=c1+2
 
 4 records in
 
 mf4 xx1 f="c3=@sqrt(c2)"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c3=@sqrt(c2)
 
 4 records in
 
 ibis-list xx1 csiz=(16,16,16) cfor="%16.14f %16.14f %16.14f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:4  Number of Columns: 3       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -60,15 +39,17 @@ Rows: 1:4
 4.00000000000000 6.00000000000000 2.44948974278318
 ibis-gen xx1 NC=2 NR=100 deffmt=DOUB
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c1=@rand$c2=c1$@rsum(c2)"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c1=@rand$c2=c1$@rsum(c2)
 
 100 records in
 
 ibis-list xx1 csiz=(16,16) cfor="%16.14f%16.9f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:100  Number of Columns: 2       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -194,15 +175,17 @@ Rows: 91:100
 0.77431364557135    53.451685059
 ibis-gen xx1 NC=2 NR=100 deffmt=DOUB
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c1=@rand$c2=c1$@rsum(c2)" seed=1
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c1=@rand$c2=c1$@rsum(c2)
 
 100 records in
 
 ibis-list xx1 csiz=(16,16) cfor="%16.14f%16.9f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:100  Number of Columns: 2       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -328,22 +311,24 @@ Rows: 91:100
 0.38885687887097    52.006138922
 ibis-gen xx1 NC=5 NR=1
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c1=35.0$c2=-121.0$c3=35.0$c4=-122.0"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c1=35.0$c2=-121.0$c3=35.0$c4=-122.0
 
 1 records in
 
 mf4 xx1 f="@dist(c1,c2,c3,c4,c5)"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = @dist(c1,c2,c3,c4,c5)
 
 1 records in
 
 ibis-list xx1
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 5       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -357,16 +342,18 @@ ibis-gen xx1 nr=1 nc=2 format=("A10","A12","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aaaaabbbbb") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1  +
  f="c1='bc'$c2=@cat(@trim(c1,' '),'xxxxxx')$c3=@cos(c3)$c1=@ucase(c1)"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c1='bc'$c2=@cat(@trim(c1,' '),'xxxxxx')$c3=@cos(c3)$c1=@ucase(c1)
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16) cfor="%16s %16s %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 3       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -380,15 +367,17 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c3=c3+@sQrt(70)$c4=c3"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c3=c3+@sQrt(70)$c4=c3
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -402,15 +391,17 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="C3=70$c4=(c3+@index+@rand+100)$c3=@sQrt(c4)"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = C3=70$c4=(c3+@index+@rand+100)$c3=@sQrt(c4)
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -424,15 +415,17 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c3=(5||3)"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c3=(5||3)
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -446,15 +439,17 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c3=(5&3)"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c3=(5&3)
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -468,15 +463,17 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c3=5^3"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c3=5^3
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -490,15 +487,17 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c3=2.1^15.0"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c3=2.1^15.0
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -512,15 +511,17 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c3=2.1^15.01"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c3=2.1^15.01
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -534,15 +535,17 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c4=(c3>=0)*@sqrt(c3)"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c4=(c3>=0)*@sqrt(c3)
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -556,15 +559,17 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c2='b'"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c2='b'
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -578,15 +583,17 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c3=35.0$c4=-122.0$c4=@max(c3,c4)"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c3=35.0$c4=-122.0$c4=@max(c3,c4)
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -600,15 +607,17 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c2=@trim(c1,'e')"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c2=@trim(c1,'e')
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -622,16 +631,18 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1  +
  f="c1='bc'$c2=@cat(@trim(c1,' '),'xxxxxx')$c3=@cos(c3)$c1=@ucase(c1)"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c1='bc'$c2=@cat(@trim(c1,' '),'xxxxxx')$c3=@cos(c3)$c1=@ucase(c1)
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -645,15 +656,17 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c2=@break(c1,'db')"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c2=@break(c1,'db')
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -667,15 +680,17 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c2=@fstr(c1,7)"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c2=@fstr(c1,7)
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -689,15 +704,17 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c2=@bstr(c1,7)"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c2=@bstr(c1,7)
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -711,15 +728,17 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c2=@adelete(c1,'bd')"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c2=@adelete(c1,'bd')
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -733,15 +752,17 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c2=@sdelete(c1,'bb')"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c2=@sdelete(c1,'bb')
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -755,15 +776,17 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c2=@sdelete(c1,'bc')"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c2=@sdelete(c1,'bc')
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -777,15 +800,17 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c2=@replace(c1,'bb=qqq')"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c2=@replace(c1,'bb=qqq')
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -799,15 +824,17 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c2=@replace(c1,'bc=qqq')"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c2=@replace(c1,'bc=qqq')
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -821,15 +848,17 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c3=@strlen(c1)"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c3=@strlen(c1)
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -843,15 +872,17 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c3=@strlen('abc')"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c3=@strlen('abc')
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -865,15 +896,17 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c3=@streq(c1,'aabbccddee')"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c3=@streq(c1,'aabbccddee')
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -887,15 +920,17 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c3=@streq(c1,'aabbccddeef')"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c3=@streq(c1,'aabbccddeef')
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -909,15 +944,17 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c3=@strsub(c1,'bb')"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c3=@strsub(c1,'bb')
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -931,15 +968,17 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c3=@strsub(c1,'bc')"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c3=@strsub(c1,'bc')
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -953,15 +992,17 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c2=@rjust(c1,12)"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c2=@rjust(c1,12)
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -975,15 +1016,17 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c2=@ljust(c1,12)"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c2=@ljust(c1,12)
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -997,15 +1040,17 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c3=@num('23456')"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c3=@num('23456')
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -1019,15 +1064,17 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c3=@num('23456.7890123')"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c3=@num('23456.7890123')
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -1041,15 +1088,17 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c2=@i2str(1234567890)"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c2=@i2str(1234567890)
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -1063,15 +1112,17 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c2=@i2str(-75)"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c2=@i2str(-75)
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -1085,15 +1136,17 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c2=@f2str(47.55555,2)"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c2=@f2str(47.55555,2)
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -1107,15 +1160,17 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c3=@pos(c1,'bb')"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c3=@pos(c1,'bb')
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -1129,15 +1184,17 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c3=@pos(c1,'bc')"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c3=@pos(c1,'bc')
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -1151,15 +1208,17 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c3=@pos(c1,'^a')"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c3=@pos(c1,'^a')
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -1173,15 +1232,17 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c3=@pos(c1,'b*d')"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c3=@pos(c1,'b*d')
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -1195,15 +1256,17 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c3=@pos(c1,'e%')"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c3=@pos(c1,'e%')
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -1217,15 +1280,17 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c3=@pos(c1,'b?c')"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c3=@pos(c1,'b?c')
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -1239,15 +1304,17 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c2=@strpat(c1,'bbc')"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c2=@strpat(c1,'bbc')
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -1261,15 +1328,17 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c2=@strpat(c1,'^a')"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c2=@strpat(c1,'^a')
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -1283,15 +1352,17 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c2=@strpat(c1,'b*d')"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c2=@strpat(c1,'b*d')
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -1305,15 +1376,17 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c2=@strpat(c1,'e%')"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c2=@strpat(c1,'e%')
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -1327,15 +1400,17 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c2=@strpat(c1,'b?c')"
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c2=@strpat(c1,'b?c')
 
 1 records in
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -1349,9 +1424,10 @@ ibis-gen xx1 nr=1 nc=3 format=("A10","A12","DOUB","DOUB")  +
       data=(0.00001) datacols=(3)  +
       string=("aabbccddee") strcols=(1)
 Beginning VICAR task ibis
+IBIS version 2019-05-28
 mf4 xx1 f="c3=(1+2)*(3+4)+(5*6)" debug=1
 Beginning VICAR task mf4
-mf4 version Jun 18, 2010 (64-bit)- RJB
+MF4 version 2019-08-01
 function string = c3=(1+2)*(3+4)+(5*6)
 
 cptr = 0
@@ -1370,6 +1446,7 @@ loop 0 ---------
 
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 Beginning VICAR task ibis
+IBIS version 2019-05-28
  
 Number of Rows:1  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE

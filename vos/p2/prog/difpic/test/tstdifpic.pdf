@@ -351,6 +351,8 @@ disp retval
 
 disable-log
 
+ush rm a b ci cr difpica difpicb difpicc difpicd
+
 !'retval' should equal '31'
 let $echo="no"
 

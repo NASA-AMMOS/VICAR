@@ -33,11 +33,14 @@ Cognizant Engineer:     S.V.Hwan
 References:             PIC software, Todd Litwin, February 1993,
                         Caltech copyright (C) 1993
 Modifications:
-SVH     22 July 1994    Moved PICS related routines to seperate file
-CRI     05 Sept 1994    MSTP S/W Conversion (VICAR Porting)
-RGD     28 Sept 2000    Added BAND parameter
-AXC     15 May  2001    Modified pic_read.c routine to process multiband image
-                        on VMS system (AR-105427)
+  1994-07-22 SVH - Moved PICS related routines to seperate file
+  1994-09-05 MSTP - S/W Conversion (VICAR Porting)
+  2000-09-28 RGD - Added BAND parameter
+  2001-05-15 AXC - Modified pic_read.c routine to process multiband image
+             on VMS system (AR-105427)
+  2019-06-14 WLB - IDS-7924 - Fixed format directives
+             Cleaned up misc. warnings
+  2019-09-06 WLB - IDS-7922 - Initialized some variables.
 
 .LEVEL1
 .VARI PIC_INP

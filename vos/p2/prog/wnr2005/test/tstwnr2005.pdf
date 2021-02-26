@@ -17,31 +17,31 @@ fft22 z.img fftz.img
 !
 ! blur the image
 wnr2005 inp=(fftz.img,ffty.img) out=ffts.img 'direct
-list ffty.img
+list ffty.img 'nousrtim
 fft22 inp=ffts.img out=blur.img 'inverse format=half
 !xvd blur.img
 !
 ! restore the image
 wnr2005 inp=(ffts.img,ffty.img) out=fftss.img 'wiener
-list ffty.img
+list ffty.img 'nousrtim
 fft22 inp=fftss.img out=restored.img 'inverse format=half
 !xvd restored.img
 !
 ! restoration using symmetric psf approximation.
 wnr2005 inp=(ffts.img,fftz.img) out=fftss.img 'amplitude
-list fftz.img
+list fftz.img 'nousrtim
 fft22 inp=fftss.img out=symmetricrestoration.img 'inverse format=half
 !xvd symmetricrestoration.img
 !
 ! create a restoration kernel
 wnr2005 inp=(ffts.img,fftz.img) out=fftss.img 'ratio
-list fftz.img
+list fftz.img 'nousrtim
 fft22 inp=fftss.img out=kernel.img 'inverse format=real
 !xvd kernel.img
 !
 ! deconvolve with the kernel
 wnr2005 inp=(ffts.img,fftss.img) out=ffts.img 'direct
-list fftss.img
+list fftss.img 'nousrtim
 fft22 inp=ffts.img out=restwk.img 'inverse format=half
 !xvd restwk.img
 !

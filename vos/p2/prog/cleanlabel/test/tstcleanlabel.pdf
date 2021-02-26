@@ -1,6 +1,8 @@
 procedure 
 refgbl $autousage
 body
+enable-log
+
 let $autousage="none"
 !------------------------------------------------------------------------------
 !generate test images
@@ -13,7 +15,7 @@ label-add inp=source.img out=source.img +
 label-add inp=source.img out=source.img +
     items = "PLANET='neptune', FUNC='in1*0', SLAT=45., SLON=70., FORMAT='byte'"
 
-label-l source.img
+label-list source.img 'nousrtim
 copy source.img prod5.img
 copy source.img prod6.img
 
@@ -21,26 +23,29 @@ copy source.img prod6.img
 ! test the program
 !------------------------------------------------------------------------------
 cleanlabel inp=source.img out=prod1.img keywords=-- mode=keeplast
-label-l prod1.img
+label-list prod1.img 'nousrtim
 
 cleanlabel inp=source.img out=prod2.img keywords=-- mode=keepfrst
-label-l prod2.img
+label-list prod2.img 'nousrtim
 
 cleanlabel inp=source.img out=prod3.img keywords=(PLANET,SLON) mode=keeplast
-label-l prod3.img
+label-list prod3.img 'nousrtim
 
 cleanlabel inp=source.img out=prod4.img keywords=(PLANET,SLON) mode=keepfrst
-label-l prod4.img
+label-list prod4.img 'nousrtim
 
 cleanlabel inp=prod5.img out=-- keywords=-- mode=keeplast
-label-l prod5.img
+label-list prod5.img 'nousrtim
 
 cleanlabel inp=prod6.img out=-- keywords=(PLANET,SLON) mode=keepfrst
-label-l prod6.img
+label-list prod6.img 'nousrtim
 
 !------------------------------------------------------------------------------
 ! test the keyword error logic
 !------------------------------------------------------------------------------
+write "**** Should complain about missing FRED, GEORGE here ****"
 cleanlabel inp=prod6.img out=-- keywords=(FRED, GEORGE) mode=keepfrst
-label-list prod6.img
+label-list prod6.img 'nousrtim
+
+disable-log
 end-proc

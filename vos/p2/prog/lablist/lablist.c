@@ -1,8 +1,10 @@
 #include <stdio.h> 
-#include  "vicmain_c"
-#include  "defines.h"
+#include "vicmain_c"
+#include "defines.h"
 #include <string.h>
 #include <stdlib.h>
+#include "zvprintf.h"
+#include "flight_label.h"
 
 /*	DEFINE GLOBAL CONSTANTS						*/
 #define MAXTASKS         60
@@ -14,6 +16,17 @@
 #define return_if_error(A)	zvsignal(A,stay,0); if(stay<=0) return
 #define continue_if_error(A)	zvsignal(A,stay,0); if(stay<=0) continue
 #define break_if_error(A)	zvsignal(A,stay,0); if(stay<=0) break
+
+static void print_header_systemlabel(int u, char s[]);
+static void determine_label(int u, int *type, char task[]);
+static void general_label(int u, char task[]);
+static void history_tasks(int unit, char tasks[MAXTASKS][MAX_LABEL_KEY_SIZE + 1],
+			  int instances[MAXTASKS], int numoftasks,
+			  char extent[], int type);
+static void print_history_labels(int unit, char tasks[MAXTASKS][MAX_LABEL_KEY_SIZE+1],
+				 int instances[MAXTASKS], int numoftasks, int type); 
+struct multival;
+static void print_keyword_value(char key[MAX_LABEL_KEY_SIZE + 1], struct multival *info, char form[32]);
 
 /************************************************************************
 
@@ -64,6 +77,8 @@ struct  multival {	/* Structure to hold pertinent information for   */
 	int allocsize;
                 } info;
 
+static int nousrtim = 0;
+
 /*	MAIN PROGRAM							  */
 void main44(void)
 {
@@ -78,12 +93,16 @@ char		extent[8],	/* String to hold user parameter	     */
 char    tasks[MAXTASKS][MAX_LABEL_KEY_SIZE + 1];
 /*  =======================================================  */
 
-zvmessage("LABLIST version:  JULY-1996 ","");
+zvmessage("LABLIST version 2019-08-01","");
 
 numoftasks=MAXTASKS;			/* Initialize maximum # of tasks      */
 
 stay = zvp("INP", file, &count);      /* Obtain input file name  */
 stay = zvp("EXTENT",extent,&count);   /* Obtain user parameter	      */
+
+  /* suppress printing of username and datetime from label */
+  nousrtim = zvptst("nousrtim");
+
 ii = 1;
 stay = zvunit(&unit,"INP",ii, NULL);    /* Determine unit number of file name */
 stay = zvopen(unit,"OPEN_ACT","SA", NULL);	/* Open file; if error, abort LABLIST */
@@ -111,26 +130,25 @@ if(numoftasks>1 || type==2)		/* Print processing history	     */
 	Purpose:	To print the output header and the system label
 			information.					     */
 
-print_header_systemlabel(u,s)
+void print_header_systemlabel(int u, char s[])
+#if 0
 int u;				/* Unit number of file		             */
 char s[];			/* Input file name		             */
+#endif
 {
 int	nb,			/* Number of bands in image	             */
 	nl,			/* Number of lines in image	             */
 	ns;			/* Number of samples in image                */
 char	org[10];		/* Image data organization (BSQ,BIP,or BIL)  */
 
-sprintf(line,"\nLABEL FOR FILE:");
-zvmessage(line, "");
-sprintf(line,"%s",s);
-zvmessage(line,"");
+zvnprintf(WIDTH,"\nLABEL FOR FILE:");
+zvnprintf(WIDTH,"%s",s);
 
 stay = zvget(u,"FORMAT",frmat,"NL",&nl,"NS",&ns,"NB",&nb,"ORG",org, NULL);
 return_if_error(u);
 
-sprintf(line,"%s FORMAT  NB=%2d  NL=%5d  NS=%5d  FILE ORGANIZATION=%s",
+zvnprintf(WIDTH,"%s FORMAT  NB=%2d  NL=%5d  NS=%5d  FILE ORGANIZATION=%s",
 	frmat,nb,nl,ns,org);
-zvmessage(line, "");
 }
 
 
@@ -140,7 +158,8 @@ zvmessage(line, "");
 	Purpose:	Determine the type of label for a file with a 
 			given unit number.				     */
 
-determine_label(u,type,task)
+void determine_label(int u, int *type, char task[])
+#if 0
 int 	u,					/* Unit number of file	     */
 	*type;					/* Pointer to type of file   */
 						/*	TYPE:		     */
@@ -151,6 +170,7 @@ int 	u,					/* Unit number of file	     */
 						/*	    (ICT compressed) */
 						/*      3 = Unrecognizable   */
 char	task[];					/* Task name		     */
+#endif
 {
 char 	value[90];				/* String to accept values   */
 						/*	from ZLGET call      */ 
@@ -176,9 +196,11 @@ else	/* If there is an error, unknown label message will be printed. */
 
 	Purpose:	To print all labels identified by LABxx label item.
 									     */
-general_label(u, task)
+void general_label(int u, char task[])
+#if 0
 int u;			/* unit number of file whose label will be listed    */
 char task[];		/* task/program name				     */
+#endif
 {
 int	n,		/* loop control variable			     */
 	numoflabels;	/* number of labels in project label		     */
@@ -195,14 +217,13 @@ stay = zlget(u,"HISTORY","NLABS",&numoflabels, "HIST",task, NULL);
 for(n=2;n<=numoflabels;n++)     /* Print all labels  */
 	{
 	strcpy(label,"LAB");
-	sprintf(numlabels,"%d",n);
+	snprintf(numlabels,3,"%d",n);
 	if(n<10)
 		strcat(label,"0");
 	strcat(label,numlabels);  /* Produce label keyword  */
 	stay = zlget(u,"HISTORY",label,data,"HIST",task, NULL);
 	break_if_error(u);      /* Exit loop if Zlget error exists  */
-	sprintf(line,"%.71s",data);	 /* Print labels		     */
-	zvmessage(line, "");
+	zvnprintf(WIDTH,"%.71s",data);	 /* Print labels		     */
 	}
 }
 
@@ -215,7 +236,10 @@ for(n=2;n<=numoflabels;n++)     /* Print all labels  */
 			is displayed.  If no user parameter is specified, a 
 			listing of just program names is displayed.
 									      */
-history_tasks(unit,tasks,instances,numoftasks,extent,type)
+void history_tasks(int unit, char tasks[MAXTASKS][MAX_LABEL_KEY_SIZE + 1],
+		   int instances[MAXTASKS], int numoftasks,
+		   char extent[], int type)
+#if 0
 int 	unit,			/* Unit number of file			      */
 	type,			/* Label type				      */
 	instances[MAXTASKS],  	/* Array of instances of task/program names   */
@@ -223,6 +247,7 @@ int 	unit,			/* Unit number of file			      */
 char    extent[];               /* User parameter (f,F,full,FULL or NULL)     */
 char    tasks[MAXTASKS][MAX_LABEL_KEY_SIZE + 1];
 /*  struct char8 tasks[MAXTASKS];*/	/* Structure of task/program names    */
+#endif
 {
 int	count,			/* Loop control variable		      */
 	length,			/* Output buffer length			      */
@@ -243,9 +268,9 @@ else
 	for(count=start;count<numoftasks;count++)   /* Print all programs in  */
 		{			            /* processing history.    */
 		if(count==start)			
-			sprintf(bufline,"%.8s",&tasks[count][0]);
+		  snprintf(bufline,MAXLINEWIDTH,"%.8s",&tasks[count][0]);
 		else
-			sprintf(line," - %.8s",&tasks[count][0]);
+		  snprintf(line,WIDTH," - %.8s",&tasks[count][0]);
 		length=strlen(bufline)+strlen(line);	/* Calculate output   */
 		if(length>75)				/* string length.     */
 			{
@@ -265,13 +290,16 @@ else
 	Purpose:	Print all history labels, with proper formatting
 			of keyword/value pairs.
 									      */
-print_history_labels(unit,tasks,instances,numoftasks,type)
+void print_history_labels(int unit, char tasks[MAXTASKS][MAX_LABEL_KEY_SIZE+1],
+			  int instances[MAXTASKS], int numoftasks, int type)
+#if 0
 int	instances[MAXTASKS],   /* Array of instances for tasks/programs      */
 	numoftasks,		/* Number of task names			      */
 	type,			/* Project label type number(=2 label unknown)*/
 	unit;			/* Unit number of file			      */
 /* struct char8 task[MAXTASKS]; */ /* Array of structures of task names      */
-char    tasks[MAXTASKS][MAX_LABEL_KEY_SIZE+1] ;
+char    tasks[MAXTASKS][MAX_LABEL_KEY_SIZE+1];
+#endif
 {
 int	count,		/* Loop control variable	  		      */
 	dummy,		/* Dummy variable for use in VICAR command	      */
@@ -322,10 +350,15 @@ for(count=start;count<numoftasks;count++) 		/* Print all tasks    */
  	if(stay<=0 && info.data!=NULL) 	free(info.data);  
 	return_if_error(unit);
 	
-	sprintf(line, 			 /* Print task header		      */
-		"---- TASK: %-14.8sUSER: %s\t%s ----",&tasks[count][0],
+	if (nousrtim)
+	  zvnprintf(WIDTH, 			 /* Print task header		      */
+		    "---- TASK: %-14.8sUSER: %s\t%s ----",&tasks[count][0],
+                    "","");
+	else
+	  zvnprintf(WIDTH, 			 /* Print task header		      */
+		    "---- TASK: %-14.8sUSER: %s\t%s ----",&tasks[count][0],
                     user,time);
-	zvmessage(line, "");
+
 
 /* Set keyword to current task       */
 	stay = zlinfo(unit,"HISTORY","TASK",&forma[0],&dummy,&info.nelements,
@@ -385,17 +418,16 @@ if(strlen(bufline) != 0)
 
 	Purpose:	Print keyword/value(s) pairs for respective task labels.
 									      */
-print_keyword_value(key,info,form)
-char 	key[MAX_LABEL_KEY_SIZE + 1] ,   /* Keyword	*/
+void print_keyword_value(char key[MAX_LABEL_KEY_SIZE + 1], struct multival *info, char form[32])
+#if 0
+char 	key[MAX_LABEL_KEY_SIZE + 1],    /* Keyword	*/
 	form[32];			/* Pointer to format of label item    */
 struct multival *info;			/* Structure of type multival	      */
+#endif
 {
 int	i,				/* Loop control variable	      */
 	length;				/* Output string buffer size	      */
-int     l1, l2;
 
-l2 = strlen(key) ;
-l1= strlen(info->data);
 length = strlen(key)	/* Calculate length of keyword and data + one element */
  	+ strlen(info->data) + 8;
 

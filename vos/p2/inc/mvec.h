@@ -14,12 +14,12 @@
 extern "C" {
 #endif
 
-#define mve_sint_ptr(p) (( int *) p)
+#define mve_sint_ptr(p) (( long int *) p)
 #define mve_svdim(p)    *mve_sint_ptr((p-2))
 #define mve_srdim(p)    mve_svdim(p)
 #define mve_scdim(p)    *mve_sint_ptr((p-4))
 
-#define mve_int_ptr(p) ((int *) p)
+#define mve_int_ptr(p) ((long int *) p)
 #define mve_vdim(p)    *mve_int_ptr((p-1))
 #define mve_rdim(p)    mve_vdim(p)
 #define mve_cdim(p)    *mve_int_ptr((p-2))
@@ -33,7 +33,7 @@ typedef float       *mve_fvectr;
 typedef mve_fvectr  *mve_fmatrix;
 
 
-mve_sivectr mve_Sivectr       ( int  n);
+mve_sivectr mve_Sivectr       ( long int  n);
 void        mve_rm_sivectr    ( mve_sivectr  *v_ptr);
 mve_sivectr mve_check_sivectr ( mve_sivectr v, int n);
 

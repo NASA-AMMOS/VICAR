@@ -3,9 +3,10 @@
  **      Uses new IBIS-2 Subroutine Library.
  **/
 
+#include <string.h>
 #include "vicmain_c"
 #include "ibis_local.h"
-#include <string.h>
+#include "zifmessage.h"
 
 static char *subcmd[]={
 	"gen",
@@ -33,6 +34,8 @@ void main44(void)
     int count,def,cmd;
     char command[20],*str;
     
+    zifmessage("IBIS version 2019-07-31");
+
     /* get the global parm */
     zvp( "gr1dim", &gr1dim, &def);
     

@@ -113,16 +113,16 @@ TBDs:
 #include "vicmain_c"                                    /* Vicar */
 #include <stdlib.h>
 #include "zifmessage.h"
-					/*	ERROR HANDLING MACROS	     */
+/*	ERROR HANDLING MACROS	     */
 #define return_if_error(A)	zvsignal(A,vstat,0);	if(vstat<=0) return
 #define continue_if_error(A)	zvsignal(A,vstat,0);	if(vstat<=0) continue
 #define break_if_error(A)	zvsignal(A,vstat,0);	if(vstat<=0) break
 #define fill_9s_error(A)	if(vstat<=0) strcpy(A,"999999999999")
 #define zero_if_error(A)        if(vstat<=0) *(A)=0
 
-	/*	DEFINE GLOBAL CONSTANTS	     */
+/*	DEFINE GLOBAL CONSTANTS	     */
 /*#define FALSE 			0
-#define TRUE 			1 (these are in mp_routines.h) */
+  #define TRUE 			1 (these are in mp_routines.h) */
 #define TOISIS 			1
 #define TOVICAR 		0
 #define LABELMEMORY		84000
@@ -155,91 +155,91 @@ int uwaves;		/* flag for user-specified wavelengths */
 char wavunit[20];
 
 struct vitems {			/* VICAR label items or CATALOG fields   */
-  double projitem1,		/* 1st std. prll. LAMB; Ref. lat OBLQ   */
-	projitem2,		/* 2nd std. prll. LAMB; Ref. lon OBLQ   */
-	radii[3],		/* A, B, and C axes lengths		*/
-	rotation,		/* Map projection rotation in degrees   */
-	scale,			/* Projection scale in KM/PIXEL		*/
-	cscale,			/* camera scale (pixels/mm)		*/
-	focal,			/* focal length (mm)			*/
-	oaline,			/* line of optical axis intercept	*/
-	oasamp,			/* sample of optical axis intercept	*/
-	center_line,		/* line of MM projection tiepoint	*/
-	center_samp,		/* sample of MM projection tiepoint	*/
-	center_lat,		/* latitude of MM projection tiepoint	*/
-	center_lon,		/* longitude of MM projection tiepoint	*/
-	ssc_line,		/* line of subspacecraft point		*/
-	ssc_samp,		/* sample of subspacecraft point	*/
-	ssc_lat,		/* latitude of ssc point		*/
-	ssc_lon,		/* longitude of ssc point		*/
-	range;			/* spacecraft-to-planet range		*/
+double projitem1,		/* 1st std. prll. LAMB; Ref. lat OBLQ   */
+  projitem2,		/* 2nd std. prll. LAMB; Ref. lon OBLQ   */
+  radii[3],		/* A, B, and C axes lengths		*/
+  rotation,		/* Map projection rotation in degrees   */
+  scale,			/* Projection scale in KM/PIXEL		*/
+  cscale,			/* camera scale (pixels/mm)		*/
+  focal,			/* focal length (mm)			*/
+  oaline,			/* line of optical axis intercept	*/
+  oasamp,			/* sample of optical axis intercept	*/
+  center_line,		/* line of MM projection tiepoint	*/
+  center_samp,		/* sample of MM projection tiepoint	*/
+  center_lat,		/* latitude of MM projection tiepoint	*/
+  center_lon,		/* longitude of MM projection tiepoint	*/
+  ssc_line,		/* line of subspacecraft point		*/
+  ssc_samp,		/* sample of subspacecraft point	*/
+  ssc_lat,		/* latitude of ssc point		*/
+  ssc_lon,		/* longitude of ssc point		*/
+  range;			/* spacecraft-to-planet range		*/
   float	max_range,		/* S/C - Planet maximum distance	*/
-	min_range,		/* S/C - Planet minimum distance	*/
-	min_sun_d,		/* S/C - Sun minimum distance		*/
-	max_sun_d,		/* S/C - Sun maximum distance		*/
-	min_cb_d,		/* S/C - Central body minimum distance	*/
-	max_cb_d,		/* S/C - Central body maximum distance	*/
-	b_ssc_lat,		/* latitude of starting sub-s/c point	*/
-	b_ssc_lon,		/* longitude of starting sub-s/c  point	*/
-	e_ssc_lat,		/* latitude of ending sub-s/c point	*/
-	e_ssc_lon,		/* longitude of ending sub-s/c point	*/
-	b_ssl_lat,		/* latitude of starting sub-sol point	*/
-	b_ssl_lon,		/* longitude of starting sub-sol point	*/
-	e_ssl_lat,		/* latitude of ending sub-sol point	*/
-	e_ssl_lon,		/* longitude of ending sub-sol point	*/
-	min_lat,		/* Minimum latitude of MM cube		*/
-	min_lon,		/* Minimum longitude of MM cube		*/
-	max_lat,		/* Maximum latitude of MM cube		*/
-	max_lon,		/* Maximum longitude of MM cube		*/
-	cen_lon,		/* center longitude of MM cube		*/
-	inci_angle,		/* Photometric angles			*/
-	emis_angle,		
-	phas_angle,		
-	phot_cut,		/* phot.func. cutoff wavelength		*/
-	minn_exp,		/* exponent for Minnaert phot.func. 	*/
-	azimuth_sun,		/* Azimuth of sun in planet's coordina. */
-	azimuth_sc,		/* Azimuth of spacecraft in planet's co */
-	slant_dist_base,	/* Slant distance base for GEOCUBE	*/
-	slant_dist_mult,	/* Slant distance multiplier		*/
-	solarflux[MAXBANDS];	/* Solar flux vector 			*/
+    min_range,		/* S/C - Planet minimum distance	*/
+    min_sun_d,		/* S/C - Sun minimum distance		*/
+    max_sun_d,		/* S/C - Sun maximum distance		*/
+    min_cb_d,		/* S/C - Central body minimum distance	*/
+    max_cb_d,		/* S/C - Central body maximum distance	*/
+    b_ssc_lat,		/* latitude of starting sub-s/c point	*/
+    b_ssc_lon,		/* longitude of starting sub-s/c  point	*/
+    e_ssc_lat,		/* latitude of ending sub-s/c point	*/
+    e_ssc_lon,		/* longitude of ending sub-s/c point	*/
+    b_ssl_lat,		/* latitude of starting sub-sol point	*/
+    b_ssl_lon,		/* longitude of starting sub-sol point	*/
+    e_ssl_lat,		/* latitude of ending sub-sol point	*/
+    e_ssl_lon,		/* longitude of ending sub-sol point	*/
+    min_lat,		/* Minimum latitude of MM cube		*/
+    min_lon,		/* Minimum longitude of MM cube		*/
+    max_lat,		/* Maximum latitude of MM cube		*/
+    max_lon,		/* Maximum longitude of MM cube		*/
+    cen_lon,		/* center longitude of MM cube		*/
+    inci_angle,		/* Photometric angles			*/
+    emis_angle,		
+    phas_angle,		
+    phot_cut,		/* phot.func. cutoff wavelength		*/
+    minn_exp,		/* exponent for Minnaert phot.func. 	*/
+    azimuth_sun,		/* Azimuth of sun in planet's coordina. */
+    azimuth_sc,		/* Azimuth of spacecraft in planet's co */
+    slant_dist_base,	/* Slant distance base for GEOCUBE	*/
+    slant_dist_mult,	/* Slant distance multiplier		*/
+    solarflux[MAXBANDS];	/* Solar flux vector 			*/
   int	native_times[2][3],	/* RIM.MF.RTI- start and stop	*/
-	sdband,sdgeo;		/* cube/cocube band #s for STD_DEV	*/
+    sdband,sdgeo;		/* cube/cocube band #s for STD_DEV	*/
   char	obsnote[338],		/* Observation note			*/
-	projection[41],		/* map projection type 			*/
-	target[20],		/* Target body name			*/
-	targetcode[4],		/* Target body code 			*/
-	obsname[13],		/* observation name			*/
-	phase_name[50],		/* mission phase name			*/
-	proj_name[20],		/* project name				*/
-	ins_name[20],		/* instrument name			*/
-	prod_id[30],		/* product id 				*/
-	dataname[35],		/* data type of cube, for label */
-	dataunits[35],		/* units of cube, for label */
-	event_start_time[25],	/* Event start time in PDS format	*/
-	event_stop_time[25],	/* Event stop time in PDS format	*/
-	photofunc[25];		/* photometric function name		*/
+    projection[41],		/* map projection type 			*/
+    target[20],		/* Target body name			*/
+    targetcode[4],		/* Target body code 			*/
+    obsname[13],		/* observation name			*/
+    phase_name[50],		/* mission phase name			*/
+    proj_name[20],		/* project name				*/
+    ins_name[20],		/* instrument name			*/
+    prod_id[30],		/* product id 				*/
+    dataname[35],		/* data type of cube, for label */
+    dataunits[35],		/* units of cube, for label */
+    event_start_time[25],	/* Event start time in PDS format	*/
+    event_stop_time[25],	/* Event stop time in PDS format	*/
+    photofunc[25];		/* photometric function name		*/
 }	v;			/* Pointer to VITEMS structure		*/
 
 int	numofbytes,		/* Number of bytes in PDS label		*/
-	objptr[NUMOFPTRS],	/* pointer to objects			*/
-	lsef,			/* Label search END flag		*/
-	size,			/* Number of bytes in buffer	      	*/
-	inunit,			/* Input file's unit number   		*/
-	outunit,		/* Output file's unit number	   	*/
-	sideunit,		/* Sideplane file's unit number	   	*/
-	backunit,		/* Backplane file's unit number	   	*/
-	bottunit,		/* Bottomplane file's unit number 	*/
-	s1unit,s2unit,s3unit,	/* above get mapped to these dep'g on ORG */
-	bytes,			/* Number of bytes/pixel 	     	*/
-	flint,			/* float/int flag when 4 bytes/pixel    */
-	vstat,			/* status variable for VICAR   	 	*/
-	labend;			/* Pointer to end of label */
-char 	*bufpoint,		/* Pointer for PDS item parsing 	*/
-	*histpoint,		/* Pointer for History object   	*/
-	*inptr,			/* Input file pointer 	     		*/
-	*outptr,		/* Output file pointer          	*/
-	value[8][7],		/* Object pointers	             	*/
-	line[120],lineb[80];	/* character string buffers	      	*/
+  objptr[NUMOFPTRS],	/* pointer to objects			*/
+  lsef,			/* Label search END flag		*/
+  size,			/* Number of bytes in buffer	      	*/
+  inunit,			/* Input file's unit number   		*/
+  outunit,		/* Output file's unit number	   	*/
+  sideunit,		/* Sideplane file's unit number	   	*/
+  backunit,		/* Backplane file's unit number	   	*/
+  bottunit,		/* Bottomplane file's unit number 	*/
+  s1unit,s2unit,s3unit,	/* above get mapped to these dep'g on ORG */
+  bytes,			/* Number of bytes/pixel 	     	*/
+  flint,			/* float/int flag when 4 bytes/pixel    */
+  vstat,			/* status variable for VICAR   	 	*/
+  labend;			/* Pointer to end of label */
+char 	*bufpoint=NULL,		/* Pointer for PDS item parsing 	*/
+  *histpoint=NULL,        /* Pointer for History object   	*/
+  *inptr=NULL,		/* Input file pointer 	     		*/
+  *outptr=NULL,		/* Output file pointer          	*/
+  value[8][7],		/* Object pointers	             	*/
+  line[120],lineb[80];	/* character string buffers	      	*/
 
 int pgraphic;			/* planetographic latitudes? */
 
@@ -259,7 +259,7 @@ char format[8];			/* data format of Vicar input */
 char forg[8];			/* file org (BSQ, BIL, ...) */
 int n1, n2, n3;			/* core dimensions in storage order */
 int ns, inl, nb;		/* core dimensions */
-int n1suf, n2suf, n3suf;	/* suffix plane dimensions */
+int n1suf=0, n2suf=0, n3suf;	/* suffix plane dimensions */
 int suftyp;			/* suffix format: 0=INT, 1=REAL */
 int cocub;			/* flag for presence of V/NIMSCMM co-cube */
 int nbkpln;			/* # of planes in co-cube */
@@ -278,7 +278,7 @@ float dpoint[100], epherr[100];
 char message[80];		/* buffer for zvmessage */
 
 char viclab[20001];		/* buffer for entire vicar label */
-int viclabsize;
+int viclabsize=0;
 
 #define FUNCTION		/* delimit modules */
 
@@ -290,8 +290,8 @@ void main44(void)
 
   /* inform user of Program version & update VERSION_DATE for label */
   zifmessage("   ");
-  zifmessage("*** VISISX Version 2018-02-27 ***");
-  strcpy( verdat, "2005-10-29");
+  zifmessage("VISISX version 2019-08-07");
+  strcpy( verdat, "2019-06-14");
 
   free(malloc(4096*4096));		/* 	Guarantee sufficient memory  */
 
@@ -309,13 +309,13 @@ FUNCTION create_PDSlabel(nrecs,nlabrecs,nhistrecs,cubefile)
 /*
  * Create PDS label for ISIS cube file.
  */
-int	*nhistrecs,		/* 	Number of records in history object   */
-	*nlabrecs,		/* 	Number of PDS label records	      */
-	*nrecs;			/* 	Number of records for cube file	      */
-char	cubefile[100];	/* 	Input files to generate cube          */
+     int	*nhistrecs,		/* 	Number of records in history object   */
+     *nlabrecs,		/* 	Number of PDS label records	      */
+     *nrecs;			/* 	Number of records for cube file	      */
+     char	cubefile[100];	/* 	Input files to generate cube          */
 {
   int additionalbytes, bufptr, count, delim, index, object, labelbytes, nsi,
-   i, ibk, j, len1, len2, len3, quoted, x, y, y1, z;
+    i=0, ibk, j, len1, len2, len3, quoted, x, y, y1, z=0;
   float arval, pixelsperdegree, sav;
   char cc, bp_type[11], dtype[4], geoplane[31], notes[7][80], tstr[50], obuf[338];
   char *hpoint;
@@ -323,7 +323,7 @@ char	cubefile[100];	/* 	Input files to generate cube          */
 
   struct tm *ptr;
 
-	/* Allocate memory for buffer */
+  /* Allocate memory for buffer */
   bufpoint = (char *)calloc(LABELMEMORY,sizeof(char));	
   if( bufpoint==NULL )
     zmabend( "Memory allocation error in create_PDSlabel routine");
@@ -346,9 +346,9 @@ char	cubefile[100];	/* 	Input files to generate cube          */
   strcat(bufpoint,"\r\n\r\n AXES = 3\r\n");
 
   if (!strcmp(forg,"BSQ")) 
-   strcat(bufpoint," AXIS_NAME = (SAMPLE,LINE,BAND)\r\n\r\n");
+    strcat(bufpoint," AXIS_NAME = (SAMPLE,LINE,BAND)\r\n\r\n");
   else if (!strcmp(forg,"BIL"))
-   strcat(bufpoint," AXIS_NAME = (SAMPLE,BAND,LINE)\r\n\r\n");
+    strcat(bufpoint," AXIS_NAME = (SAMPLE,BAND,LINE)\r\n\r\n");
 
   strcat(bufpoint,"/*  Core description */\r\n\r\n");
   if (!strcmp(forg,"BSQ")) 
@@ -439,10 +439,10 @@ char	cubefile[100];	/* 	Input files to generate cube          */
 	strcat(bufpoint," CORE_NULL =                  ");
 	strcat( bufpoint, NULL_IEEE);
 	strcat( bufpoint, "\r\n");
-    } }
+      } }
     else {
       /* ?? TBD */
-  } }
+    } }
 
   /* only backplanes allowed in TOISIS mode: */
   if (backunit<0)
@@ -497,31 +497,31 @@ char	cubefile[100];	/* 	Input files to generate cube          */
 
       if (!strcmp(hostname,"AXP-VMS")) {
 	write_PDS_aline(bufpoint,'C'," BAND_SUFFIX_VALID_MINIMUM ",
-	 VALID_MIN_VAX,nbkpln);
+			VALID_MIN_VAX,nbkpln);
 	write_PDS_aline(bufpoint,'C'," BAND_SUFFIX_LOW_REPR_SAT  ",
-	 LOW_REPR_SAT_VAX,nbkpln);
+			LOW_REPR_SAT_VAX,nbkpln);
 	write_PDS_aline(bufpoint,'C'," BAND_SUFFIX_LOW_INSTR_SAT ",
-	 LOW_INSTR_SAT_VAX,nbkpln);
+			LOW_INSTR_SAT_VAX,nbkpln);
 	write_PDS_aline(bufpoint,'C'," BAND_SUFFIX_HIGH_INSTR_SAT",
-	 HIGH_INSTR_SAT_VAX,nbkpln);
+			HIGH_INSTR_SAT_VAX,nbkpln);
 	write_PDS_aline(bufpoint,'C'," BAND_SUFFIX_HIGH_REPR_SAT ",
-	 HIGH_REPR_SAT_VAX,nbkpln);
+			HIGH_REPR_SAT_VAX,nbkpln);
 	write_PDS_aline(bufpoint,'C'," BAND_SUFFIX_NULL          ",
-	 NULL_VAX,nbkpln);
+			NULL_VAX,nbkpln);
       }
       else {
 	write_PDS_aline(bufpoint,'C'," BAND_SUFFIX_VALID_MINIMUM ",
-	 VALID_MIN_IEEE,nbkpln);
+			VALID_MIN_IEEE,nbkpln);
 	write_PDS_aline(bufpoint,'C'," BAND_SUFFIX_LOW_REPR_SAT  ",
-	 LOW_REPR_SAT_IEEE,nbkpln);
+			LOW_REPR_SAT_IEEE,nbkpln);
 	write_PDS_aline(bufpoint,'C'," BAND_SUFFIX_LOW_INSTR_SAT ",
-	 LOW_INSTR_SAT_IEEE,nbkpln);
+			LOW_INSTR_SAT_IEEE,nbkpln);
 	write_PDS_aline(bufpoint,'C'," BAND_SUFFIX_HIGH_INSTR_SAT",
-	 HIGH_INSTR_SAT_IEEE,nbkpln);
+			HIGH_INSTR_SAT_IEEE,nbkpln);
 	write_PDS_aline(bufpoint,'C'," BAND_SUFFIX_HIGH_REPR_SAT ",
-	 HIGH_REPR_SAT_IEEE,nbkpln);
+			HIGH_REPR_SAT_IEEE,nbkpln);
 	write_PDS_aline(bufpoint,'C'," BAND_SUFFIX_NULL          ",
-	 NULL_IEEE,nbkpln);
+			NULL_IEEE,nbkpln);
       }
 
       if (nbkpln==2) {
@@ -563,11 +563,11 @@ char	cubefile[100];	/* 	Input files to generate cube          */
         strcat(bufpoint,line);
         sprintf(line," STD_DEV_SELECTED_BACKPLANE = %d\r\n\r\n", v.sdgeo);
         strcat(bufpoint,line);
-  } } }
+      } } }
 
-	/* Get current date and time -- use date part only
-	 * for PRODUCT_CREATION_DATE, then add time for
-	 * DATE_TIME (below) */
+  /* Get current date and time -- use date part only
+   * for PRODUCT_CREATION_DATE, then add time for
+   * DATE_TIME (below) */
   lt = time(NULL);
   ptr = localtime(&lt);
   if((*ptr).tm_year>99) {
@@ -585,7 +585,7 @@ char	cubefile[100];	/* 	Input files to generate cube          */
 
   /* The following items are required by VMS ISIS:
    * (but also turn out to be useful for scaled data) */
-  sprintf( line," CORE_BASE = 0.0\r\n CORE_MULTIPLIER = %f\r\n", core_mult);
+  snprintf( line,120," CORE_BASE = 0.0\r\n CORE_MULTIPLIER = %f\r\n", core_mult);
   strcat( bufpoint, line);
   strcat(bufpoint,"/* Core scaling is:  True_value = base + (multiplier *");
   strcat(bufpoint," stored_value) */\r\n");
@@ -595,7 +595,7 @@ char	cubefile[100];	/* 	Input files to generate cube          */
 
   if (!htask) goto map_lab;
 
-strcat(bufpoint,"/*  Data description: general */\r\n\r\n");
+  strcat(bufpoint,"/*  Data description: general */\r\n\r\n");
 
   if (!strncmp( v.proj_name, "CAS",3))
     strcat(bufpoint," MISSION_NAME = \"CASSINI-HUYGENS\"\r\n");
@@ -608,30 +608,30 @@ strcat(bufpoint,"/*  Data description: general */\r\n\r\n");
   sprintf(line," TARGET_NAME = %s\r\n",v.target);
   strcat(bufpoint,line);
 
-	/* ISIS "INSTRUMENT_NAME" is too verbose for Vicar, we just
-	 * carry the ID ... */
+  /* ISIS "INSTRUMENT_NAME" is too verbose for Vicar, we just
+   * carry the ID ... */
   sprintf(line," INSTRUMENT_ID = %s\r\n",v.ins_name);
   strcat(bufpoint,line);
 
   if (!strncmp( v.proj_name, "CAS",3)) {
     sprintf(line," NATIVE_START_TIME = \"%d.%05d\"\r\n",
-     v.native_times[0][0],v.native_times[0][1]);
+	    v.native_times[0][0],v.native_times[0][1]);
     strcat(bufpoint,line);
     sprintf(line," NATIVE_STOP_TIME = \"%d.%05d\"\r\n\r\n", 
-     v.native_times[1][0],v.native_times[1][1]);
+	    v.native_times[1][0],v.native_times[1][1]);
     strcat(bufpoint,line);
   }
   else if (!strncmp( v.proj_name, "GAL",3)) {
     sprintf(line," NATIVE_START_TIME = \"%d.%02d.%d\"\r\n",
-     v.native_times[0][0],v.native_times[0][1],v.native_times[0][2]);
+	    v.native_times[0][0],v.native_times[0][1],v.native_times[0][2]);
     strcat(bufpoint,line);
     sprintf(line," NATIVE_STOP_TIME = \"%d.%02d\"\r\n\r\n", 
-     v.native_times[1][0],v.native_times[1][1]);
+	    v.native_times[1][0],v.native_times[1][1]);
     strcat(bufpoint,line);
   }
 
-	/* write START_TIME after NATIVE_START_TIME, per the
-	 * special code in TOVICAR  mode ... */
+  /* write START_TIME after NATIVE_START_TIME, per the
+   * special code in TOVICAR  mode ... */
   if (v.event_start_time[0] != 0) {
     sprintf(line," START_TIME = \"%s\"\r\n",v.event_start_time);	
     strcat(bufpoint,line);
@@ -739,7 +739,7 @@ strcat(bufpoint,"/*  Data description: general */\r\n\r\n");
   sprintf(line," MAXIMUM_CENTRAL_BODY_DISTANCE = %9.2f\r\n\r\n",v.max_cb_d);
   strcat(bufpoint,line);
 
-bandbins:
+ bandbins:
   strcat(bufpoint," GROUP = BAND_BIN\r\n\r\n");
   strcat(bufpoint,"/*  Spectral axis description */\r\n\r\n");
   write_PDS_line(bufpoint,'I',"  BAND_BIN_ORIGINAL_BAND",orbands,nb,4);
@@ -747,7 +747,7 @@ bandbins:
   strcat(bufpoint,"  BAND_BIN_UNIT = MICROMETER\r\n");
   strcat(bufpoint," END_GROUP = BAND_BIN\r\n\r\n");
 
-map_lab:
+ map_lab:
   if (!maplabs) goto endqub;
 
   strcat(bufpoint," GROUP = IMAGE_MAP_PROJECTION\r\n");
@@ -772,16 +772,16 @@ map_lab:
   sprintf(line,"  MAP_RESOLUTION = %6.3f\r\n",pixelsperdegree);
   strcat(bufpoint,line);
 
-	/* any items obtained from the VICAR "MAP00x" labels must be
-	 * corrected to planetographic lat. if requested */
+  /* any items obtained from the VICAR "MAP00x" labels must be
+   * corrected to planetographic lat. if requested */
 
- if (strcmp(v.projection,"POINT_PERSPECTIVE")==0) {
+  if (strcmp(v.projection,"POINT_PERSPECTIVE")==0) {
     sprintf(line,"  SUB_SPACECRAFT_LATITUDE = %6.2f\r\n",v.ssc_lat);
     strcat(bufpoint,line);
     sprintf(line,"  SUB_SPACECRAFT_LONGITUDE = %6.2f\r\n",v.ssc_lon);
     strcat(bufpoint,line);
-	/* subtract 1 because PDS definition is relative to (1,1) &
-	 * switch signs for Unix ISIS ...  */
+    /* subtract 1 because PDS definition is relative to (1,1) &
+     * switch signs for Unix ISIS ...  */
     sav = 1.-v.ssc_line;
     sprintf(line,"  LINE_SUB_SPACECRAFT_OFFSET = %6.2f\r\n",sav);
     strcat(bufpoint,line);
@@ -797,8 +797,8 @@ map_lab:
     sprintf(line,"  SAMPLE_OPTICAL_AXIS_OFFSET = %6.2f\r\n",sav);
     strcat(bufpoint,line);
 
-	/* for POV, scale is in pixels/mm in focal plane, and
-	 * the focal length in mm is also required: */
+    /* for POV, scale is in pixels/mm in focal plane, and
+     * the focal length in mm is also required: */
     sprintf(line,"  FOCAL_LENGTH = %5.1f\r\n",v.focal);
     strcat(bufpoint,line);
     sprintf(line,"  FOCAL_PLANE_SCALE = %6.3f\r\n",v.cscale);
@@ -877,9 +877,9 @@ map_lab:
     strcat(bufpoint,line);
   }
   if( strcmp(v.projection,"POLAR_ORTHOGRAPHIC")==0 ||
-   strcmp(v.projection,"POINT_PERSPECTIVE")==0 ||
-   strcmp(v.projection,"OBLIQUE_ORTHOGRAPHIC")==0 ||
-   strcmp(v.projection,"OBLIQUE_STEREOGRAPHIC")==0 ) {
+      strcmp(v.projection,"POINT_PERSPECTIVE")==0 ||
+      strcmp(v.projection,"OBLIQUE_ORTHOGRAPHIC")==0 ||
+      strcmp(v.projection,"OBLIQUE_STEREOGRAPHIC")==0 ) {
     sprintf(line,"  MAP_PROJECTION_ROTATION = %6.2f\r\n",v.rotation);
     strcat(bufpoint,line);
   }
@@ -892,18 +892,18 @@ map_lab:
 
   strcat(bufpoint," END_GROUP = IMAGE_MAP_PROJECTION\r\n\r\n");
 
-endqub:
+ endqub:
   strcat(bufpoint,"END_OBJECT = QUBE\r\nEND\r\n");
 
-	/* Generate history obj buff*/
+  /* Generate history obj buff*/
   histpoint = (char *)calloc(HISTMEMORY,sizeof( char )); 
   if( histpoint==NULL )
     zmabend(" Memory allocation error for history object");
 
   /* check if we need a group for VIMSCMM: */
-/*  TBD ...
-  if (vcmm_flag) {
-*/
+  /*  TBD ...
+      if (vcmm_flag) {
+  */
 
   if (histfile) {
     hfile = fopen(hfilnam,"r");
@@ -925,7 +925,7 @@ endqub:
   }
   else
     strcpy(histpoint," GROUP = VISISX\r\n");
-    /* 1st byte seems to get lost, hence the blank ... */
+  /* 1st byte seems to get lost, hence the blank ... */
 
   sprintf(line,"  VERSION_DATE = %s\r\n", verdat);
   strcat(histpoint,line);
@@ -938,7 +938,7 @@ endqub:
       if (!strncmp( &viclab[i], "TASK=", 5)) {
         y = z = i;
         break;
-    } }
+      } }
     if (y) {
       strcat(histpoint,"  VICAR_HISTORY = (\"");
       /* break up Vicar history label into comma-separated list of
@@ -978,11 +978,11 @@ endqub:
 	    y1 = -1;	/* skip the comma itself */
 	  }
 	  y1++;
-      } }
+	} }
       /* last item */
       strncpy(&histpoint[x],&viclab[y],y1);
       strncpy(&histpoint[x+y1],"\")\r\n\0",4);
-  } }
+    } }
 
   if (!histfile) {
     strcat(histpoint,"  GROUP = PARAMETERS\r\n");
@@ -1004,7 +1004,7 @@ endqub:
 
   labelbytes = strlen(bufpoint);
   additionalbytes = BUFFERSIZE - labelbytes%BUFFERSIZE 
-		  + LBL_BLANK_RECORDS*BUFFERSIZE;
+    + LBL_BLANK_RECORDS*BUFFERSIZE;
   for (y=0;y<additionalbytes;y++)
     strcat(bufpoint," ");
   labelbytes = strlen(bufpoint);	/* Calc # of label records   	*/
@@ -1050,53 +1050,53 @@ FUNCTION determine_month( month, string )
 /*
  * Determine month number string from month name.
  */
-char	month[],
-	string[];
+     char	month[],
+     string[];
 {
 
-switch( string[0] )	
-	{
-	case 'J': 	if( string[1] == 'A' )
-				strcpy(month,"01");
-			else
-				if( string[2] == 'N' )
-					strcpy(month,"06");
-				else
-					strcpy(month,"07");
-			break;
+  switch( string[0] )	
+    {
+    case 'J': 	if( string[1] == 'A' )
+	strcpy(month,"01");
+      else
+	if( string[2] == 'N' )
+	  strcpy(month,"06");
+	else
+	  strcpy(month,"07");
+      break;
 
-	case 'F':	strcpy(month,"02");
-			break;	
+    case 'F':	strcpy(month,"02");
+      break;	
 
-	case 'M':	if( string[2] == 'R' )
-				strcpy(month,"03");
-			else
-				strcpy(month,"05");
-			break;	
+    case 'M':	if( string[2] == 'R' )
+	strcpy(month,"03");
+      else
+	strcpy(month,"05");
+      break;	
 
-	case 'A':	if( string[1] == 'P' )
-				strcpy(month,"04");
-			else
-				strcpy(month,"08");
-			break;	
+    case 'A':	if( string[1] == 'P' )
+	strcpy(month,"04");
+      else
+	strcpy(month,"08");
+      break;	
 
-	case 'S':	strcpy(month,"09");
-			break;	
+    case 'S':	strcpy(month,"09");
+      break;	
 
-	case 'O':	strcpy(month,"10");
-			break;	
+    case 'O':	strcpy(month,"10");
+      break;	
 
-	case 'N':	strcpy(month,"11");
-			break;	
+    case 'N':	strcpy(month,"11");
+      break;	
 
-	case 'D':	strcpy(month,"12");
-			break;	
+    case 'D':	strcpy(month,"12");
+      break;	
 
-	/* otherwise, assume input is numeric */
-	default:	strncpy(month,&string[1],2);
-			month[2] = '\0';
-			break;	
-	}
+      /* otherwise, assume input is numeric */
+    default:	strncpy(month,&string[1],2);
+      month[2] = '\0';
+      break;	
+    }
 }
 
 
@@ -1106,7 +1106,7 @@ FUNCTION fill_if_error(string,type)
  * Replace string with " " if status of VICAR zlget is < 1; check for
  * blank strings and substitute ' ' or " ".
  */
-char string[],type[];
+     char string[],type[];
 {
   int x, y;
 
@@ -1136,35 +1136,35 @@ int FUNCTION find_keyword(keyword,buf,labptr,endptr)
 /*
  * Find the keyword and prepare for reading its value 
  */
-char	keyword[],buf[];			/* Item to be found          */
-int	*labptr;				/* Pointer to label element  */
-int	*endptr;				/* end of label to search    */
+     char	keyword[],buf[];			/* Item to be found          */
+     int	*labptr;				/* Pointer to label element  */
+     int	*endptr;				/* end of label to search    */
 {						/* Local Variables           */
-int	count,					/* Counter/index             */
-	found,					/* Item found indicator      */
-	keylength,				/* Item name length	     */	
-	startptr;				/* Value passed as labptr  */
+  int	count,					/* Counter/index             */
+    found,					/* Item found indicator      */
+    keylength,				/* Item name length	     */	
+    startptr;				/* Value passed as labptr  */
 
-startptr  = *labptr;				/* Record starting pointer   */
-found     = FALSE;				/* Item not found yet        */
-keylength = strlen(keyword);			/* Determine itemname length */
-while( !found && *labptr < *endptr ) {
-  count  = 0;
-  while( buf[*labptr] != keyword[count] )
+  startptr  = *labptr;				/* Record starting pointer   */
+  found     = FALSE;				/* Item not found yet        */
+  keylength = strlen(keyword);			/* Determine itemname length */
+  while( !found && *labptr < *endptr ) {
+    count  = 0;
+    while( buf[*labptr] != keyword[count] )
+      if ( *labptr >= *endptr || incrm_check_buffer( labptr ) == 0 ) return 0;
     if ( *labptr >= *endptr || incrm_check_buffer( labptr ) == 0 ) return 0;
-  if ( *labptr >= *endptr || incrm_check_buffer( labptr ) == 0 ) return 0;
-  count++;
+    count++;
 
-  while( buf[*labptr] == keyword[count] && count < keylength )
-    if ( *labptr >= *endptr || incrm_check_buffer( labptr ) == 0 ) return 0;
-    else count++;
+    while( buf[*labptr] == keyword[count] && count < keylength )
+      if ( *labptr >= *endptr || incrm_check_buffer( labptr ) == 0 ) return 0;
+      else count++;
 
-  if( count == keylength && ( buf[*labptr] == ' ' || buf[*labptr] == '=' ||
-   buf[*labptr] == '\r' ) )
-    found = TRUE;
-}
+    if( count == keylength && ( buf[*labptr] == ' ' || buf[*labptr] == '=' ||
+				buf[*labptr] == '\r' ) )
+      found = TRUE;
+  }
 
-return 1;
+  return 1;
 }
 
 
@@ -1175,36 +1175,36 @@ int FUNCTION find_keyword_str(keyword,buf,labptr,endptr)
  * has been included in the string in order to guarantee that a character
  * string value is found (for cases of ambiguous keywords such as START_TIME)
  */
-char	keyword[],buf[];			/* Item to be found          */
-int	*labptr;				/* Pointer to label element  */
-int	*endptr;				/* end of label to search    */
+     char	keyword[],buf[];			/* Item to be found          */
+     int	*labptr;				/* Pointer to label element  */
+     int	*endptr;				/* end of label to search    */
 {						/* Local Variables           */
-int	count,					/* Counter/index             */
-	found,					/* Item found indicator      */
-	keylength,				/* Item name length	     */	
-	startptr;				/* Value passed as labptr  */
+  int	count,					/* Counter/index             */
+    found,					/* Item found indicator      */
+    keylength,				/* Item name length	     */	
+    startptr;				/* Value passed as labptr  */
 
-startptr  = *labptr;				/* Record starting pointer   */
-found     = FALSE;				/* Item not found yet        */
-keylength = strlen(keyword);			/* Determine itemname length */
-while( !found && *labptr < *endptr ) {
-  count  = 0;
-  while( buf[*labptr] != keyword[count] )
+  startptr  = *labptr;				/* Record starting pointer   */
+  found     = FALSE;				/* Item not found yet        */
+  keylength = strlen(keyword);			/* Determine itemname length */
+  while( !found && *labptr < *endptr ) {
+    count  = 0;
+    while( buf[*labptr] != keyword[count] )
+      if ( *labptr >= *endptr || incrm_check_buffer( labptr ) == 0 ) return 0;
     if ( *labptr >= *endptr || incrm_check_buffer( labptr ) == 0 ) return 0;
-  if ( *labptr >= *endptr || incrm_check_buffer( labptr ) == 0 ) return 0;
-  count++;
+    count++;
 
-  while( buf[*labptr] == keyword[count] && count < keylength )
-    if ( *labptr >= *endptr || incrm_check_buffer( labptr ) == 0 ) return 0;
-    else count++;
+    while( buf[*labptr] == keyword[count] && count < keylength )
+      if ( *labptr >= *endptr || incrm_check_buffer( labptr ) == 0 ) return 0;
+      else count++;
 
-  if( count == keylength && buf[(*labptr)-1] == '\"' ) {
-    found = TRUE;
-    (*labptr)--;
+    if( count == keylength && buf[(*labptr)-1] == '\"' ) {
+      found = TRUE;
+      (*labptr)--;
+    }
   }
-}
 
-return 1;
+  return 1;
 }
 
 
@@ -1213,9 +1213,9 @@ int FUNCTION get_integer_value(intitem,buf,labptr)
 /*
  * Get integer value.	
  */
-int	*intitem,				/* Integer value pointer     */
-	*labptr;				/* Label element pointer     */
-char 	buf[];					/* PDS label buffer	     */
+     int	*intitem,				/* Integer value pointer     */
+     *labptr;				/* Label element pointer     */
+     char 	buf[];					/* PDS label buffer	     */
 
 {						/* Local Variables           */
   char	integer[12];				/* String for integer        */
@@ -1225,28 +1225,28 @@ char 	buf[];					/* PDS label buffer	     */
   sign = 1;		/* initialize as positive */
   memset( integer, 0, 12 );
 
-	/* Find first digit/sign */
+  /* Find first digit/sign */
   while (!isdigit(buf[*labptr]) && buf[*labptr] != '+' &&
-   buf[*labptr] != '-') {
+	 buf[*labptr] != '-') {
     lsef = incrm_check_buffer(labptr);
     if (lsef == 0) return 0;
   }
   if (buf[*labptr]=='-') sign = -1;
 
-	/* space past sign: */
+  /* space past sign: */
   if (buf[*labptr]=='-' || buf[*labptr]=='+') {
     lsef = incrm_check_buffer(labptr);
     if (lsef == 0) return 0;
   }
  
-	/* Continue until last digit is found */
+  /* Continue until last digit is found */
   while (isdigit(buf[*labptr])) {
     integer[count++]=buf[*labptr];
     lsef = incrm_check_buffer(labptr);
     if (lsef == 0) return 0;
   }
 
-	/* Convert string into INT */
+  /* Convert string into INT */
   *intitem = sign*atoi(integer);
   return 1;
 }
@@ -1325,9 +1325,9 @@ FUNCTION get_label_items()
     /* don't add 1 because the MP items are NOT relative to (1,1) -- in
      * contrast to the label items! */
     /*v.ssc_line++;
-    v.ssc_samp++;
-    v.oaline++;
-    v.oasamp++;*/
+      v.ssc_samp++;
+      v.oaline++;
+      v.oasamp++;*/
   }
   else {
     lsef = mpGetValues( mpo, mpMAP_SCALE, &v.scale, "");
@@ -1348,10 +1348,10 @@ FUNCTION get_label_items()
     }
     else if (!strcmp(v.projection,"LAMBERT_CONFORMAL"))
       lsef = mpGetValues( mpo, mpFIRST_STANDARD_PARALLEL, &v.projitem1, "");
-      lsef = mpGetValues( mpo, mpSECOND_STANDARD_PARALLEL, &v.projitem2, "");
+    lsef = mpGetValues( mpo, mpSECOND_STANDARD_PARALLEL, &v.projitem2, "");
   }
 
-nonmap:
+ nonmap:
 
   /* check if VIMSCMM is in the history labels -- normally this should be
    * equivalent to checking TASKNAM, but it's possible for these to differ,
@@ -1366,13 +1366,13 @@ nonmap:
   if (vcmm_flag) { /* gather some useful parameters for PDS History ... */
 
     vstat = zlget(inunit,"HISTORY","SPKERNLS",spkerns,"HIST","VIMSCMM",
-     "ULEN", 101, "NELEMENT", -1, "NRET", &nspk, NULL);
+		  "ULEN", 101, "NELEMENT", -1, "NRET", &nspk, NULL);
 
     vstat = zlget(inunit,"HISTORY","CKERNEL",ckern,"HIST","VIMSCMM", NULL);
     icker = (vstat>0);
 
     vstat = zlget(inunit,"HISTORY","DPOINT",dpoint,"HIST","VIMSCMM",
-     "NELEMENT", -1, "NRET", &ndpnt, NULL);
+		  "NELEMENT", -1, "NRET", &ndpnt, NULL);
 
     nepherr = 0;
     vstat = zlget(inunit,"HISTORY","EPHERRSC",&epherr[0],"HIST","VIMSCMM", NULL);
@@ -1385,7 +1385,7 @@ nonmap:
 
   if (!uwaves) {
     vstat = zlget(inunit,"HISTORY","WAVLNTHS",waves,"NRET",&nb1,
-     "NELEMENT",-1,"HIST",tasknam, NULL);
+		  "NELEMENT",-1,"HIST",tasknam, NULL);
     if (vstat>0 && nb!=nb1) zmabend(" incorrect # of wavelengths!");
   }
 
@@ -1394,7 +1394,7 @@ nonmap:
 
   /* some ISIS programs require this keyword: */
   vstat = zlget(inunit,"HISTORY","ORIGBANDS",orbands,"NELEMENT",nb,
-   "HIST",tasknam, NULL);
+		"HIST",tasknam, NULL);
   if (vstat<=0) for( j=0; j<nb; j++) orbands[j] = j+1;
 
   vstat = zlget(inunit,"HISTORY","OBSNOTE",v.obsnote,"HIST",tasknam, NULL);
@@ -1446,7 +1446,7 @@ nonmap:
   else {
     vstat = zlget(inunit,"HISTORY","LATITUDE_TYPE",lattyp,"HIST",tasknam, NULL);
     if (vstat<=0)
-     vstat = zlget(inunit,"HISTORY","LAT_TYPE",lattyp,"HIST",tasknam, NULL);
+      vstat = zlget(inunit,"HISTORY","LAT_TYPE",lattyp,"HIST",tasknam, NULL);
     if (!strcmp(lattyp,"PLANETOGRAPHIC")) pgraphic = 1;
     else pgraphic = 0;
   }
@@ -1570,7 +1570,7 @@ nonmap:
   }
 
   vstat = zlget(inunit,"HISTORY","BEG_SCLK",integers,"HIST",tasknam,
-      "NELEMENT",3, NULL);
+		"NELEMENT",3, NULL);
   if( vstat == 1 ) {
     v.native_times[0][0] = integers[0];
     v.native_times[0][1] = integers[1];
@@ -1583,7 +1583,7 @@ nonmap:
   }
 
   vstat = zlget(inunit,"HISTORY","END_SCLK",integers,"HIST",tasknam,
-      "NELEMENT",2, NULL);
+		"NELEMENT",2, NULL);
   if( vstat == 1 ) {
     v.native_times[1][0] = integers[0];
     v.native_times[1][1] = integers[1];
@@ -1617,16 +1617,16 @@ nonmap:
            strcmp(v.target,"PASIPHAE")==0 || strcmp(v.target,"SINOPE")==0 ||
            strcmp(v.target,"METIS")==0 || strcmp(v.target,"ELARA")==0 )
     strcpy(v.targetcode,"J");
-    /*strcpy(v.targetcode,"JSA");  /* JSA has been disapproved */
+  /*strcpy(v.targetcode,"JSA");  /* JSA has been disapproved */
   else if( strcmp(v.target,"GASPRA")==0 || strcmp(v.target,"IDA")==0 )
     strcpy(v.targetcode,"A");
   else if( strcmp(v.target,"RING")==0 )
     strcpy(v.targetcode,"J");
-    /*strcpy(v.targetcode,"JR");*/
+  /*strcpy(v.targetcode,"JR");*/
   else    
     strcpy(v.targetcode,"J");  /* includes JR & JSA & CAL */
 
-closfil:
+ closfil:
   zvclose(inunit, NULL);
 
   /* check if backplanes needed: */
@@ -1642,7 +1642,7 @@ closfil:
 
   vstat = zvopen(backunit,"OP","READ","OPEN_ACT","SA","IO_ACT","SA", NULL);
   vstat = zvget(backunit,"NL",&bnl,"NS",&bns,"NB",&nbkpln,"FORMAT",format,"ORG",
-   borg, NULL);
+		borg, NULL);
   if (strncmp(format,"REAL",4) || strcmp(borg,"BSQ") || bnl!=inl || bns!=ns) {
     zifmessage(" Co-cube must be REAL BSQ and with same NL,NS as cube!");
     backunit = -1;
@@ -1660,7 +1660,7 @@ closfil:
       if (4*ns*i != BUFFERSIZE) i++;
       /* allocate twice as much as needed, just to be safe ... */
       fdata = (float *)malloc(2*i*ns*sizeof(float));
-  } }
+    } }
   zvclose(backunit, NULL);
 }
 
@@ -1670,9 +1670,9 @@ int FUNCTION get_real_value(realitem,buf,labptr)
 /*
  * Get a fixed-point or floating point value from an ASCII string
  */
-float	*realitem;				/* Real value pointer        */
-int	*labptr;				/* Label element pointer     */
-char	buf[];					/* PDS label buffer   	     */
+     float	*realitem;				/* Real value pointer        */
+     int	*labptr;				/* Label element pointer     */
+     char	buf[];					/* PDS label buffer   	     */
 {
   char	number[33];
   int	a,b;
@@ -1688,7 +1688,7 @@ char	buf[];					/* PDS label buffer   	     */
   /* read the number into buffer: */
   a=0;
   while (isdigit(buf[*labptr]) || buf[*labptr]=='-' || buf[*labptr]=='+' 
-   || buf[*labptr]=='.' || buf[*labptr]=='e' || buf[*labptr]=='E' ) {
+	 || buf[*labptr]=='.' || buf[*labptr]=='e' || buf[*labptr]=='E' ) {
     number[a++] = buf[*labptr];
     lsef = incrm_check_buffer(labptr);
     if (lsef == 0 || a>=32) return 0;
@@ -1702,9 +1702,9 @@ int FUNCTION get_double_value(doubleitem,buf,labptr)
 /*
  * Get a double precision point value from an ASCII string
  */
-double	*doubleitem;				/* Real value pointer        */
-int	*labptr;				/* Label element pointer     */
-char	buf[];					/* PDS label buffer   	     */
+     double	*doubleitem;				/* Real value pointer        */
+     int	*labptr;				/* Label element pointer     */
+     char	buf[];					/* PDS label buffer   	     */
 {
   char	number[33];
   int	a,b;
@@ -1720,7 +1720,7 @@ char	buf[];					/* PDS label buffer   	     */
   /* read the number into buffer: */
   a=0;
   while (isdigit(buf[*labptr]) || buf[*labptr]=='-' || buf[*labptr]=='+' 
-   || buf[*labptr]=='.' || buf[*labptr]=='e' || buf[*labptr]=='E' ) {
+	 || buf[*labptr]=='.' || buf[*labptr]=='e' || buf[*labptr]=='E' ) {
     number[a++] = buf[*labptr];
     lsef = incrm_check_buffer(labptr);
     if (lsef == 0 || a>=32) return 0;
@@ -1737,9 +1737,9 @@ FUNCTION get_recinfo(nlabs,nhrecs,nrecs)
  * Also reads the ISIS cube label and history objects into
  * memory buffers.
  */
-int	*nlabs,					/* Number of label records   */
-	*nhrecs,				/* Number of history records */
-	*nrecs;					/* Number of file records    */
+     int	*nlabs,					/* Number of label records   */
+     *nhrecs,				/* Number of history records */
+     *nrecs;					/* Number of file records    */
 {
   char 	buffer[BUFFERSIZE];			/* First 512 characters      */
 						/* of the PDS label	     */
@@ -1748,10 +1748,10 @@ int	*nlabs,					/* Number of label records   */
   int 	object, index, nsidp, nbotp;
   int	nsi,nbp;				/* Number of spectral index  */
   int i;
-						/* images and backplanes     */
+  /* images and backplanes     */
   /* Open ISIS cube file */
   vstat = zvopen( inunit, "OPEN_ACT", "SA", "IO_ACT", "SA", "OP", "READ",
-   "U_NS", BUFFERSIZE, "U_NL", 100, "COND", "NOLABELS", NULL);
+		  "U_NS", BUFFERSIZE, "U_NL", 100, "COND", "NOLABELS", NULL);
 
   /* Read first 512 bytes of the PDS label */
   zvread(inunit,buffer,"NSAMPS",BUFFERSIZE, NULL);
@@ -1770,11 +1770,11 @@ int	*nlabs,					/* Number of label records   */
 
   /* Reopen input file with the ADDRESS option */
   vstat = zvopen(inunit,"OPEN_ACT","SA","IO_ACT","SA","OP","READ",
-   "U_NS", BUFFERSIZE, "U_NL", *nrecs, "COND","NOLABELS","ADDRESS",&inptr, NULL);
+		 "U_NS", BUFFERSIZE, "U_NL", *nrecs, "COND","NOLABELS","ADDRESS",&inptr, NULL);
 
-	/* first allocate enough buffer to hold label -- then
-	 * search for end of history object and re-allocate 
-	 * enough to hold both */
+  /* first allocate enough buffer to hold label -- then
+   * search for end of history object and re-allocate 
+   * enough to hold both */
 
   numofbytes = (*nlabs) * BUFFERSIZE;	/* # bytes in PDS label object */
   bufpoint = (char *)calloc(numofbytes,sizeof(char));	
@@ -1859,7 +1859,7 @@ int	*nlabs,					/* Number of label records   */
   flint = 0;
   if (ihost>0 && bytes==4) {
     if (!strncmp(&buffer[3],"INT",3) || !strncmp(&buffer[4],"INT",3))
-     flint = 1;
+      flint = 1;
   }
 
   /* SUFFIX planes: */
@@ -1885,7 +1885,7 @@ int	*nlabs,					/* Number of label records   */
         else if (!strncmp(&buffer[3],"REAL",3) || !strncmp(&buffer[4],"REAL",3))
 	  suftyp = 1;
         else zifmessage(" unsupported SUFFIX_ITEM_TYPE");
-  } } }
+      } } }
 
   /* check with VICAR suffix-plane images and assign units to
    * dimensions: */
@@ -1947,14 +1947,14 @@ int FUNCTION get_string_value( buf, maxlen, lptr)
  * ends it;  note that this definition is NOT the same as that used for
  * strings in function keyword_value()!
  */
-char *buf;
-int maxlen, *lptr;
+     char *buf;
+     int maxlen, *lptr;
 {
   int i;
 
   for (i=0; i<maxlen; i++) buf[i] = 0;		/* intialize */
 
-	/* find beginning of string: */
+  /* find beginning of string: */
   while (bufpoint[*lptr] == '\r' || bufpoint[*lptr] == '\n' ||
          bufpoint[*lptr] == '/' || bufpoint[*lptr] == ',' ||
          bufpoint[*lptr] == '"' || bufpoint[*lptr] == '=' || 
@@ -1963,7 +1963,7 @@ int maxlen, *lptr;
     if (lsef == 0) return 0;
   }
 
-	/* find end  of string: */
+  /* find end  of string: */
   i = 0;
   while (bufpoint[*lptr] != '\r' && bufpoint[*lptr] != '\n' &&
          bufpoint[*lptr] != '/'  && bufpoint[*lptr] != ',' &&
@@ -1990,14 +1990,14 @@ int FUNCTION get_qstring_value( buf, maxlen, lptr)
  * by quotation marks ("), which are not themselves returned as part
  * of the string
  */
-char *buf;
-int maxlen, *lptr;
+     char *buf;
+     int maxlen, *lptr;
 {
   int i;
 
   for (i=0; i<maxlen; i++) buf[i] = 0;		/* intialize */
 
-	/* find beginning of string: */
+  /* find beginning of string: */
   while (bufpoint[*lptr] != '"') {
     lsef = incrm_check_buffer( lptr);
     if (lsef == 0) return 0;
@@ -2025,7 +2025,7 @@ int FUNCTION incrm_check_buffer(a)
  * Increment buffer index and check against maximum number of bytes in 
  * the PDS label
  */
-int *a;
+     int *a;
 {
   (*a)++;
   if (*a < numofbytes)
@@ -2056,166 +2056,166 @@ int FUNCTION keyword_value(unit,pdsitem,type,vicaritem)
 /*
  * Copy keyword/value pairs of PDS label to VICAR label.
  */
-char 	pdsitem[],				  /* PDS item name           */
-	type[],				  /* Type of label item: R/I/T/C     */
-	vicaritem[];				  /* VICAR item name         */
-int	unit;					  /* Unit number of output   */
+     char 	pdsitem[],				  /* PDS item name           */
+     type[],				  /* Type of label item: R/I/T/C     */
+     vicaritem[];				  /* VICAR item name         */
+     int	unit;					  /* Unit number of output   */
 
 {					/* Local Variables                   */
-int	count,				/* Counter/index		     */
-	vlen,
-	found,				/* Item found indicator              */
-	intitem[MAXBANDS],		/* Array of integer values           */
-	itemlength,			/* Item name length 		     */
-	labptr,			/* Pointer to label character        */
-	nlines;				/* Number of lines in input file     */
-float	realitem[MAXBANDS];		/* Array of real values 	     */
-double	doubleitem[MAXBANDS];		/* Array of double values 	     */
-char 	prevval,			/* Previous buffer character	     */
-	stritem[MAXBANDS][101];
+  int	count,				/* Counter/index		     */
+    vlen,
+    found,				/* Item found indicator              */
+    intitem[MAXBANDS],		/* Array of integer values           */
+    itemlength,			/* Item name length 		     */
+    labptr,			/* Pointer to label character        */
+    nlines;				/* Number of lines in input file     */
+  float	realitem[MAXBANDS];		/* Array of real values 	     */
+  double	doubleitem[MAXBANDS];		/* Array of double values 	     */
+  char 	prevval,			/* Previous buffer character	     */
+    stritem[MAXBANDS][101];
 
-labptr = count = 0;
-prevval = 0;
-memset( line, 0, 120);
-vlen = strlen(vicaritem)-1;
+  labptr = count = 0;
+  prevval = 0;
+  memset( line, 0, 120);
+  vlen = strlen(vicaritem)-1;
 
-lsef = find_keyword("^QUBE",bufpoint,&labptr,&labend);
-if (lsef == 0) goto notfound;
-
-lsef = find_keyword(pdsitem,bufpoint,&labptr,&labend);
-if (lsef == 0) goto notfound;
-
-	/* (need to check specially for "-" sign, else this does
-	 * not get passed on to get_real_value:) */
-while(bufpoint[labptr]!='(' && bufpoint[labptr]!='\"' &&
-  bufpoint[labptr]!='-' && isalnum(bufpoint[labptr])==0)
-  {
-  lsef = incrm_check_buffer(&labptr);
+  lsef = find_keyword("^QUBE",bufpoint,&labptr,&labend);
   if (lsef == 0) goto notfound;
-  }
-switch(bufpoint[labptr])
-{
-case '(':    /* Array of values - Real, Integer, or String */  
-  if (type[0]=='D') {
-    while ( bufpoint[ labptr]!=')' ) {
-       lsef = get_double_value( &doubleitem[count++], bufpoint, &labptr);
-       if (lsef == 0) goto notfound;
-    }
-    zladd( unit, "HISTORY", vicaritem, doubleitem,  "FORMAT", "DOUB",
-     "NELEMENT", count, NULL);
-  }  
-  else if (type[0]=='R') {
-    while ( bufpoint[ labptr]!=')' ) {
-       lsef = get_real_value( &realitem[count++], bufpoint, &labptr);
-       if (lsef == 0) goto notfound;
-    }
-    zladd( unit, "HISTORY", vicaritem, realitem,  "FORMAT", "REAL",
-     "NELEMENT", count, NULL);
-  }
-  else if (type[0]=='I') {
-    while ( bufpoint[labptr]!=')' ) {
-      lsef = get_integer_value( &intitem[count++], bufpoint, &labptr);
-      if (lsef == 0) goto notfound;
-    }
-    zladd( unit, "HISTORY", vicaritem, intitem,  "FORMAT", "INT",
-     "NELEMENT", count, NULL);
-  }
-  else {	/* default type = 'S' */
-    lsef = incrm_check_buffer(&labptr);	/* step past the '(' */
-    if (lsef == 0) goto notfound;
-    while ( bufpoint[labptr] != ')' ) {
-      lsef = get_string_value( stritem[count++], 100, &labptr);
-      if (lsef == 0) goto notfound;
-      if ( bufpoint[labptr] != ')' ) 
-	lsef = incrm_check_buffer(&labptr);	/* step past terminator */
-      if (lsef == 0) goto notfound;
-    }
-    zladd( unit, "HISTORY", vicaritem, stritem,  "FORMAT", "STRING",
-     "NELEMENT", count, "ULEN", 101, NULL);
-  }
-  break;
 
-case '\"':    /* Value is a line comment 'Now is the time . . .'   */
-  lsef = incrm_check_buffer(&labptr);
+  lsef = find_keyword(pdsitem,bufpoint,&labptr,&labend);
   if (lsef == 0) goto notfound;
-  while(bufpoint[labptr]!='\"')
+
+  /* (need to check specially for "-" sign, else this does
+   * not get passed on to get_real_value:) */
+  while(bufpoint[labptr]!='(' && bufpoint[labptr]!='\"' &&
+	bufpoint[labptr]!='-' && isalnum(bufpoint[labptr])==0)
     {
-    if(bufpoint[labptr]!='\'')
-      line[count++]=bufpoint[labptr];
-    lsef = incrm_check_buffer(&labptr);  
-    if (lsef == 0) goto notfound;
-    }
-  zladd(unit,"HISTORY",vicaritem,line,"FORMAT","STRING", NULL);
-  break;
-
-default:    /* Value is not a line comment or array of values    */
-
-  switch(type[0]) {    /* Check for REAL, INT, TIME, or STRING type  */
-
-  case 'D':
-    lsef = get_double_value(&doubleitem[0],bufpoint,&labptr);
-    if (lsef == 0) goto notfound;
-    zladd(unit,"HISTORY",vicaritem,realitem,"FORMAT","DOUB", NULL);
-    break;
-
-  case 'R':
-    lsef = get_real_value(&realitem[0],bufpoint,&labptr);
-    if (lsef == 0) goto notfound;
-    zladd(unit,"HISTORY",vicaritem,realitem,"FORMAT","REAL", NULL);
-    break;
-
-  case 'I': 
-    lsef = get_integer_value(&intitem[0],bufpoint,&labptr);
-    if (lsef == 0) goto notfound;
-    zladd(unit,"HISTORY",vicaritem,intitem,"FORMAT","INT", NULL);
-    break;
-
-  case 'T': 
-    prevval=' ';
-    while(bufpoint[labptr]!='\r' &&
-        (bufpoint[labptr]!='*' && prevval!='/')) {
-      if(isdigit(bufpoint[labptr])!=FALSE || 
-          bufpoint[labptr] == '.') {
-	if(count>1 && vicaritem[vlen]!='K' && vicaritem[vlen]!='T')
-	  line[count-2]=bufpoint[labptr];
-	else
-	  line[count]=bufpoint[labptr];
-      }
-      else {		/* punctuation becomes spaces, Month gets extra 0 */
-	if (count==4) {		/* start of Month string */
-	  line[count++] = ' ';
-	  line[count] = '0';
-	}
-	else line[count] = ' ';
-      }
-      count++;
-      prevval=bufpoint[labptr];
       lsef = incrm_check_buffer(&labptr);
       if (lsef == 0) goto notfound;
     }
-    zladd(unit,"HISTORY",vicaritem,line,"FORMAT","STRING", NULL);
-    break;
+  switch(bufpoint[labptr])
+    {
+    case '(':    /* Array of values - Real, Integer, or String */  
+      if (type[0]=='D') {
+	while ( bufpoint[ labptr]!=')' ) {
+	  lsef = get_double_value( &doubleitem[count++], bufpoint, &labptr);
+	  if (lsef == 0) goto notfound;
+	}
+	zladd( unit, "HISTORY", vicaritem, doubleitem,  "FORMAT", "DOUB",
+	       "NELEMENT", count, NULL);
+      }  
+      else if (type[0]=='R') {
+	while ( bufpoint[ labptr]!=')' ) {
+	  lsef = get_real_value( &realitem[count++], bufpoint, &labptr);
+	  if (lsef == 0) goto notfound;
+	}
+	zladd( unit, "HISTORY", vicaritem, realitem,  "FORMAT", "REAL",
+	       "NELEMENT", count, NULL);
+      }
+      else if (type[0]=='I') {
+	while ( bufpoint[labptr]!=')' ) {
+	  lsef = get_integer_value( &intitem[count++], bufpoint, &labptr);
+	  if (lsef == 0) goto notfound;
+	}
+	zladd( unit, "HISTORY", vicaritem, intitem,  "FORMAT", "INT",
+	       "NELEMENT", count, NULL);
+      }
+      else {	/* default type = 'S' */
+	lsef = incrm_check_buffer(&labptr);	/* step past the '(' */
+	if (lsef == 0) goto notfound;
+	while ( bufpoint[labptr] != ')' ) {
+	  lsef = get_string_value( stritem[count++], 100, &labptr);
+	  if (lsef == 0) goto notfound;
+	  if ( bufpoint[labptr] != ')' ) 
+	    lsef = incrm_check_buffer(&labptr);	/* step past terminator */
+	  if (lsef == 0) goto notfound;
+	}
+	zladd( unit, "HISTORY", vicaritem, stritem,  "FORMAT", "STRING",
+	       "NELEMENT", count, "ULEN", 101, NULL);
+      }
+      break;
 
-  default:  	/* type = 'S' assumed */
-    while (bufpoint[labptr]!='\r' &&
-           bufpoint[labptr]!=' '  && bufpoint[labptr]!='*' &&
-           bufpoint[labptr]!='\'' && prevval!='/') {
-      line[count++]=bufpoint[labptr];
-      prevval=bufpoint[labptr];
+    case '\"':    /* Value is a line comment 'Now is the time . . .'   */
       lsef = incrm_check_buffer(&labptr);
-       if (lsef == 0) goto notfound; 
-    }
-    if(prevval=='/')
-      line[count-1]=' ';
-    zladd(unit,"HISTORY",vicaritem,line,"FORMAT","STRING", NULL);
-    break;
-  }
-  break;
-}
-memset( line, 0, 120);
-return 1;
+      if (lsef == 0) goto notfound;
+      while(bufpoint[labptr]!='\"')
+	{
+	  if(bufpoint[labptr]!='\'')
+	    line[count++]=bufpoint[labptr];
+	  lsef = incrm_check_buffer(&labptr);  
+	  if (lsef == 0) goto notfound;
+	}
+      zladd(unit,"HISTORY",vicaritem,line,"FORMAT","STRING", NULL);
+      break;
 
-notfound:
+    default:    /* Value is not a line comment or array of values    */
+
+      switch(type[0]) {    /* Check for REAL, INT, TIME, or STRING type  */
+
+      case 'D':
+	lsef = get_double_value(&doubleitem[0],bufpoint,&labptr);
+	if (lsef == 0) goto notfound;
+	zladd(unit,"HISTORY",vicaritem,realitem,"FORMAT","DOUB", NULL);
+	break;
+
+      case 'R':
+	lsef = get_real_value(&realitem[0],bufpoint,&labptr);
+	if (lsef == 0) goto notfound;
+	zladd(unit,"HISTORY",vicaritem,realitem,"FORMAT","REAL", NULL);
+	break;
+
+      case 'I': 
+	lsef = get_integer_value(&intitem[0],bufpoint,&labptr);
+	if (lsef == 0) goto notfound;
+	zladd(unit,"HISTORY",vicaritem,intitem,"FORMAT","INT", NULL);
+	break;
+
+      case 'T': 
+	prevval=' ';
+	while(bufpoint[labptr]!='\r' &&
+	      (bufpoint[labptr]!='*' && prevval!='/')) {
+	  if(isdigit(bufpoint[labptr])!=FALSE || 
+	     bufpoint[labptr] == '.') {
+	    if(count>1 && vicaritem[vlen]!='K' && vicaritem[vlen]!='T')
+	      line[count-2]=bufpoint[labptr];
+	    else
+	      line[count]=bufpoint[labptr];
+	  }
+	  else {		/* punctuation becomes spaces, Month gets extra 0 */
+	    if (count==4) {		/* start of Month string */
+	      line[count++] = ' ';
+	      line[count] = '0';
+	    }
+	    else line[count] = ' ';
+	  }
+	  count++;
+	  prevval=bufpoint[labptr];
+	  lsef = incrm_check_buffer(&labptr);
+	  if (lsef == 0) goto notfound;
+	}
+	zladd(unit,"HISTORY",vicaritem,line,"FORMAT","STRING", NULL);
+	break;
+
+      default:  	/* type = 'S' assumed */
+	while (bufpoint[labptr]!='\r' &&
+	       bufpoint[labptr]!=' '  && bufpoint[labptr]!='*' &&
+	       bufpoint[labptr]!='\'' && prevval!='/') {
+	  line[count++]=bufpoint[labptr];
+	  prevval=bufpoint[labptr];
+	  lsef = incrm_check_buffer(&labptr);
+	  if (lsef == 0) goto notfound; 
+	}
+	if(prevval=='/')
+	  line[count-1]=' ';
+	zladd(unit,"HISTORY",vicaritem,line,"FORMAT","STRING", NULL);
+	break;
+      }
+      break;
+    }
+  memset( line, 0, 120);
+  return 1;
+
+ notfound:
   sprintf( message, " Keyword %s not found in cube label", pdsitem);
   zifmessage( message);
   return 0;
@@ -2228,8 +2228,8 @@ FUNCTION process_parms(direction,cubefile)
  * Process all user parameters (except for a few which are used in ToVicar
  * mode only) and determine direction of transformation.
  */
-int *direction;				/* Direction of transform    */
-char cubefile[100];			/* Input files to CUBE	     */
+     int *direction;				/* Direction of transform    */
+     char cubefile[100];			/* Input files to CUBE	     */
 {
   int i, iflag, j;
   char file[100];
@@ -2263,7 +2263,7 @@ char cubefile[100];			/* Input files to CUBE	     */
 
   vstat = zvopen(inunit,"OP","READ","OPEN_ACT","SA","IO_ACT","SA", NULL);
   vstat = zvget(inunit,"NL",&inl,"NS",&ns,"NB",&nb,"PIX_SIZE",&bytes,
-   "FORMAT",format,"ORG",forg,"HOST",hostname, NULL);
+		"FORMAT",format,"ORG",forg,"HOST",hostname, NULL);
   if (strcmp(forg,"BSQ") && strcmp(forg,"BIL")) 
     zmabend("Only BSQ and BIL formats supported");
   vstat = zvclose(inunit, NULL);
@@ -2274,7 +2274,7 @@ char cubefile[100];			/* Input files to CUBE	     */
     zvp( "BACK", file, &i);
     j = strlen( file);
     if (!strncmp( &file[j-3],"COC",3) || !strncmp( &file[j-3],"coc",3))
-     cocub = 1;
+      cocub = 1;
   }
 
   /* option to specify new wavelengths: */
@@ -2283,7 +2283,7 @@ char cubefile[100];			/* Input files to CUBE	     */
   if (i) { 
     if (i!=nb) zifmessage(" WAVES has incorrect number of items -- ignored\n");
     else uwaves = 1;
-} }
+  } }
 
 
 /***************************************************************************/
@@ -2291,171 +2291,171 @@ FUNCTION VICARlabels(nlabrecs,nhistrecs,nrecs)
 /*
  * Open VICAR outputs, generate format labels, and get object pointers.
  */
-int	*nlabrecs,			/* Number of label records	     */
-	*nhistrecs,			/* Number of history records	     */
-	*nrecs;				/* Number of cube file records	     */
+     int	*nlabrecs,			/* Number of label records	     */
+     *nhistrecs,			/* Number of history records	     */
+     *nrecs;				/* Number of cube file records	     */
 {
-int count, i, jnb, jnl, radtyp;
-char file[100];
+  int count, i, jnb, jnl, radtyp;
+  char file[100];
 
-get_recinfo(nlabrecs,nhistrecs,nrecs);	
+  get_recinfo(nlabrecs,nhistrecs,nrecs);	
 
-/* open the Core file: */
-if (bytes==1) 
-  vstat = zvopen(outunit,"OP","WRITE","U_FORMAT","HALF","O_FORMAT",
-	"BYTE","U_NL",inl,"U_NS",ns,"U_NB",nb,"U_ORG",forg,
-	"OPEN_ACT","SA","IO_ACT","SA", NULL);
-else if (bytes==2) 
-  vstat = zvopen(outunit,"OP","WRITE","U_FORMAT","HALF","O_FORMAT",
-	"HALF","U_NL",inl,"U_NS",ns,"U_NB",nb,"U_ORG",forg,
-	"OPEN_ACT","SA","IO_ACT","SA", NULL);
-else { 			/* (bytes==4) */
-  if (flint) vstat = zvopen(outunit,"OP","WRITE","U_FORMAT","REAL",
-   "O_FORMAT","FULL","U_NL",inl,"U_NS",ns,"U_NB",nb,"U_ORG",forg,
-   "OPEN_ACT","SA","IO_ACT","SA", NULL);
-  else vstat = zvopen(outunit,"OP","WRITE","U_FORMAT","REAL",
-   "O_FORMAT","REAL","U_NL",inl,"U_NS",ns,"U_NB",nb,"U_ORG",forg,
-   "OPEN_ACT","SA","IO_ACT","SA", NULL);
-}
-
-/* first gather map projection data and write a standard
- * Vicar MAPLABV2-format label:
- * (this call also writes other label items that cannot be
- * processed by keyword_value) */
-
-lsef = write_vlab( outunit, &radtyp);
-if (lsef == 0) zifmessage("*** Unable to write Vicar MAP label ***");
-
-/* other label items of possible interest */
-
-keyword_value(outunit,"SPACECRAFT_NAME","C","PROJECT");
-keyword_value(outunit,"MISSION_NAME","C","MISSION");
-keyword_value(outunit,"INSTRUMENT_ID","C","INSTRMNT");
-keyword_value(outunit,"MISSION_PHASE_NAME","C","PHASE");
-keyword_value(outunit,"TARGET_NAME","C","TARGET");
-
-keyword_value(outunit,"CORE_NAME","C","DATANAME");
-keyword_value(outunit,"CORE_UNIT","C","DATAUNIT");
-
-keyword_value(outunit,"EVENT_START_TIME","T","BEG_SCET");
-keyword_value(outunit,"EVENT_STOP_TIME","T","END_SCET");
-keyword_value(outunit,"EVENT_END_TIME","T","END_SCET");
-
-keyword_value( outunit, "MINIMUM_LATITUDE", "R", "MINLAT");
-keyword_value( outunit, "MAXIMUM_LATITUDE", "R", "MAXLAT");
-
-keyword_value( outunit, "MINIMUM_LONGITUDE", "R", "MINLON");
-keyword_value( outunit, "MAXIMUM_LONGITUDE", "R", "MAXLON");
-keyword_value( outunit, "EASTERNMOST_LONGITUDE", "R", "MINLON");
-keyword_value( outunit, "WESTERNMOST_LONGITUDE", "R", "MAXLON");
-
-keyword_value( outunit, "START_SUB_SPACECRAFT_LATITUDE", "R", "B_SSCLAT");
-keyword_value( outunit, "STOP_SUB_SPACECRAFT_LATITUDE", "R", "E_SSCLAT");
-keyword_value( outunit, "START_SUB_SOLAR_LATITUDE", "R", "B_SSLLAT");
-keyword_value( outunit, "STOP_SUB_SOLAR_LATITUDE", "R", "E_SSLLAT");
-
-keyword_value( outunit, "PHOTOMETRIC_CORRECTION_TYPE", "C","PHOT_FNC");
-keyword_value( outunit, "MINNAERT_EXPONENT", "R", "MINN_EXP");
-
-keyword_value( outunit, "INCIDENCE_ANGLE", "R", "INCI_ANG");
-keyword_value( outunit, "EMISSION_ANGLE", "R", "EMIS_ANG");
-keyword_value( outunit, "PHASE_ANGLE", "R", "PHAS_ANG");
-keyword_value( outunit, "SOLAR_AZIMUTH", "R", "SUN_AZI");
-keyword_value( outunit, "SUB_SPACECRAFT_AZIMUTH", "R", "SC_AZI");
-keyword_value( outunit, "MINIMUM_SLANT_DISTANCE", "R", "MINRANGE");
-keyword_value( outunit, "MAXIMUM_SLANT_DISTANCE", "R", "MAXRANGE");
-keyword_value( outunit, "MINIMUM_CENTRAL_BODY_DISTANCE", "R", "MIN_CB_D");
-keyword_value( outunit, "MAXIMUM_CENTRAL_BODY_DISTANCE", "R", "MAX_CB_D");
-
-	/* Cassini VIMS: */
-keyword_value( outunit, "X_OFFSET", "I", "X_OFFSET");
-keyword_value( outunit, "Z_OFFSET", "I", "Z_OFFSET");
-keyword_value( outunit, "INTERLINE_DELAY_DURATION", "R", "LINDELAY");
-keyword_value( outunit, "SAMPLING_MODE_ID", "C", "SPAT_RES");
-keyword_value( outunit, "SCAN_MODE_ID", "C", "SCANMODE");
-keyword_value( outunit, "INSTRUMENT_MODE_ID", "C", "INS_MODE");
-keyword_value( outunit, "SWATH_WIDTH", "I", "SWTH_WID");
-keyword_value( outunit, "SWATH_LENGTH", "I", "SWTH_LEN");
-keyword_value( outunit, "POWER_STATE_FLAG", "C", "PWR_STAT");
-keyword_value( outunit, "OVERWRITTEN_CHANNEL_FLAG", "C", "PWR_STAT");
-keyword_value( outunit, "SPECTRAL_EDITING_FLAG", "C", "SPEC_EDT");
-keyword_value( outunit, "SPECTRAL_SUMMING_FLAG", "C", "SPEC_SUM");
-keyword_value( outunit, "STAR_TRACKING", "C", "STAR_TRK");
-keyword_value( outunit, "PACKING", "C", "PACKING");
-
-        /* for mgs - bam 6/00 */
-
-keyword_value( outunit, "FIRST_LINE_SAMPLE", "I", "FIRST_LS");
-keyword_value( outunit, "LINE_EXPOSURE_DURATION", "R", "LINERate");
-keyword_value( outunit, "ORIGINAL_SPACECRAFT_CLOCK_COUNT", "C", "OSCCC");
-
-	/* read these as strings to avoid problem with floating-point
-	 * format (they are the only items written with "%g" format
-	 * -- needs to be fixed at some point -- TBD */
-keyword_value( outunit, "MIN_SPACECRAFT_SOLAR_DISTANCE", "C",
- "MINSUN_D");
-keyword_value( outunit, "MAX_SPACECRAFT_SOLAR_DISTANCE", "C",
- "MAXSUN_D");
-
-keyword_value( outunit, "BAND_BIN_UNIT", "C", "WAVUNIT");
-keyword_value( outunit, "BAND_BIN_CENTER", "R", "WAVLNTHS");
-keyword_value( outunit, "BAND_BIN_ORIGINAL_BAND", "I", "ORIGBANDS");
-
-zvclose(outunit, NULL);
-
-/* also, any suffix-plane files requested: */
-
-if (s1unit>0) {
-  if (!suftyp) 
-    vstat = zvopen(s1unit,"OP","WRITE","U_FORMAT","FULL","O_FORMAT",
-     "FULL","U_NS",n1suf,"U_NL",inl,"U_NB",nb,"U_ORG","BSQ",
-     "OPEN_ACT","SA","IO_ACT","SA", NULL);
-  else
-    vstat = zvopen(s1unit,"OP","WRITE","U_FORMAT","FULL","O_FORMAT",
-     "REAL","U_NS",n1suf,"U_NL",inl,"U_NB",nb,"U_ORG","BSQ",
-     "OPEN_ACT","SA","IO_ACT","SA", NULL);
-  zvclose(s1unit, NULL);
-}
-
-if (s2unit>0) {
-  if (!strcmp(forg,"BSQ")) {
-    jnl = n2suf;
-    jnb = nb;
+  /* open the Core file: */
+  if (bytes==1) 
+    vstat = zvopen(outunit,"OP","WRITE","U_FORMAT","HALF","O_FORMAT",
+		   "BYTE","U_NL",inl,"U_NS",ns,"U_NB",nb,"U_ORG",forg,
+		   "OPEN_ACT","SA","IO_ACT","SA", NULL);
+  else if (bytes==2) 
+    vstat = zvopen(outunit,"OP","WRITE","U_FORMAT","HALF","O_FORMAT",
+		   "HALF","U_NL",inl,"U_NS",ns,"U_NB",nb,"U_ORG",forg,
+		   "OPEN_ACT","SA","IO_ACT","SA", NULL);
+  else { 			/* (bytes==4) */
+    if (flint) vstat = zvopen(outunit,"OP","WRITE","U_FORMAT","REAL",
+			      "O_FORMAT","FULL","U_NL",inl,"U_NS",ns,"U_NB",nb,"U_ORG",forg,
+			      "OPEN_ACT","SA","IO_ACT","SA", NULL);
+    else vstat = zvopen(outunit,"OP","WRITE","U_FORMAT","REAL",
+			"O_FORMAT","REAL","U_NL",inl,"U_NS",ns,"U_NB",nb,"U_ORG",forg,
+			"OPEN_ACT","SA","IO_ACT","SA", NULL);
   }
-  else {	/* BIL */
-    jnb = n2suf;
-    jnl = inl;
-  }
-  if (!suftyp) 
-    vstat = zvopen(s2unit,"OP","WRITE","U_FORMAT","FULL","O_FORMAT",
-     "FULL","U_NS",ns+n1suf,"U_NL",jnl,"U_NB",jnb,"U_ORG","BSQ",
-     "OPEN_ACT","SA","IO_ACT","SA", NULL);
-  else
-    vstat = zvopen(s2unit,"OP","WRITE","U_FORMAT","FULL","O_FORMAT",
-     "REAL","U_NS",ns+n1suf,"U_NL",jnl,"U_NB",jnb,"U_ORG","BSQ",
-    "OPEN_ACT","SA","IO_ACT","SA", NULL);
-  zvclose(s2unit, NULL);
-}
 
-if (s3unit>0) {
-  if (!strcmp(forg,"BSQ")) {
-    jnl = inl+n2suf;
-    jnb = n3suf;
+  /* first gather map projection data and write a standard
+   * Vicar MAPLABV2-format label:
+   * (this call also writes other label items that cannot be
+   * processed by keyword_value) */
+
+  lsef = write_vlab( outunit, &radtyp);
+  if (lsef == 0) zifmessage("*** Unable to write Vicar MAP label ***");
+
+  /* other label items of possible interest */
+
+  keyword_value(outunit,"SPACECRAFT_NAME","C","PROJECT");
+  keyword_value(outunit,"MISSION_NAME","C","MISSION");
+  keyword_value(outunit,"INSTRUMENT_ID","C","INSTRMNT");
+  keyword_value(outunit,"MISSION_PHASE_NAME","C","PHASE");
+  keyword_value(outunit,"TARGET_NAME","C","TARGET");
+
+  keyword_value(outunit,"CORE_NAME","C","DATANAME");
+  keyword_value(outunit,"CORE_UNIT","C","DATAUNIT");
+
+  keyword_value(outunit,"EVENT_START_TIME","T","BEG_SCET");
+  keyword_value(outunit,"EVENT_STOP_TIME","T","END_SCET");
+  keyword_value(outunit,"EVENT_END_TIME","T","END_SCET");
+
+  keyword_value( outunit, "MINIMUM_LATITUDE", "R", "MINLAT");
+  keyword_value( outunit, "MAXIMUM_LATITUDE", "R", "MAXLAT");
+
+  keyword_value( outunit, "MINIMUM_LONGITUDE", "R", "MINLON");
+  keyword_value( outunit, "MAXIMUM_LONGITUDE", "R", "MAXLON");
+  keyword_value( outunit, "EASTERNMOST_LONGITUDE", "R", "MINLON");
+  keyword_value( outunit, "WESTERNMOST_LONGITUDE", "R", "MAXLON");
+
+  keyword_value( outunit, "START_SUB_SPACECRAFT_LATITUDE", "R", "B_SSCLAT");
+  keyword_value( outunit, "STOP_SUB_SPACECRAFT_LATITUDE", "R", "E_SSCLAT");
+  keyword_value( outunit, "START_SUB_SOLAR_LATITUDE", "R", "B_SSLLAT");
+  keyword_value( outunit, "STOP_SUB_SOLAR_LATITUDE", "R", "E_SSLLAT");
+
+  keyword_value( outunit, "PHOTOMETRIC_CORRECTION_TYPE", "C","PHOT_FNC");
+  keyword_value( outunit, "MINNAERT_EXPONENT", "R", "MINN_EXP");
+
+  keyword_value( outunit, "INCIDENCE_ANGLE", "R", "INCI_ANG");
+  keyword_value( outunit, "EMISSION_ANGLE", "R", "EMIS_ANG");
+  keyword_value( outunit, "PHASE_ANGLE", "R", "PHAS_ANG");
+  keyword_value( outunit, "SOLAR_AZIMUTH", "R", "SUN_AZI");
+  keyword_value( outunit, "SUB_SPACECRAFT_AZIMUTH", "R", "SC_AZI");
+  keyword_value( outunit, "MINIMUM_SLANT_DISTANCE", "R", "MINRANGE");
+  keyword_value( outunit, "MAXIMUM_SLANT_DISTANCE", "R", "MAXRANGE");
+  keyword_value( outunit, "MINIMUM_CENTRAL_BODY_DISTANCE", "R", "MIN_CB_D");
+  keyword_value( outunit, "MAXIMUM_CENTRAL_BODY_DISTANCE", "R", "MAX_CB_D");
+
+  /* Cassini VIMS: */
+  keyword_value( outunit, "X_OFFSET", "I", "X_OFFSET");
+  keyword_value( outunit, "Z_OFFSET", "I", "Z_OFFSET");
+  keyword_value( outunit, "INTERLINE_DELAY_DURATION", "R", "LINDELAY");
+  keyword_value( outunit, "SAMPLING_MODE_ID", "C", "SPAT_RES");
+  keyword_value( outunit, "SCAN_MODE_ID", "C", "SCANMODE");
+  keyword_value( outunit, "INSTRUMENT_MODE_ID", "C", "INS_MODE");
+  keyword_value( outunit, "SWATH_WIDTH", "I", "SWTH_WID");
+  keyword_value( outunit, "SWATH_LENGTH", "I", "SWTH_LEN");
+  keyword_value( outunit, "POWER_STATE_FLAG", "C", "PWR_STAT");
+  keyword_value( outunit, "OVERWRITTEN_CHANNEL_FLAG", "C", "PWR_STAT");
+  keyword_value( outunit, "SPECTRAL_EDITING_FLAG", "C", "SPEC_EDT");
+  keyword_value( outunit, "SPECTRAL_SUMMING_FLAG", "C", "SPEC_SUM");
+  keyword_value( outunit, "STAR_TRACKING", "C", "STAR_TRK");
+  keyword_value( outunit, "PACKING", "C", "PACKING");
+
+  /* for mgs - bam 6/00 */
+
+  keyword_value( outunit, "FIRST_LINE_SAMPLE", "I", "FIRST_LS");
+  keyword_value( outunit, "LINE_EXPOSURE_DURATION", "R", "LINERate");
+  keyword_value( outunit, "ORIGINAL_SPACECRAFT_CLOCK_COUNT", "C", "OSCCC");
+
+  /* read these as strings to avoid problem with floating-point
+   * format (they are the only items written with "%g" format
+   * -- needs to be fixed at some point -- TBD */
+  keyword_value( outunit, "MIN_SPACECRAFT_SOLAR_DISTANCE", "C",
+		 "MINSUN_D");
+  keyword_value( outunit, "MAX_SPACECRAFT_SOLAR_DISTANCE", "C",
+		 "MAXSUN_D");
+
+  keyword_value( outunit, "BAND_BIN_UNIT", "C", "WAVUNIT");
+  keyword_value( outunit, "BAND_BIN_CENTER", "R", "WAVLNTHS");
+  keyword_value( outunit, "BAND_BIN_ORIGINAL_BAND", "I", "ORIGBANDS");
+
+  zvclose(outunit, NULL);
+
+  /* also, any suffix-plane files requested: */
+
+  if (s1unit>0) {
+    if (!suftyp) 
+      vstat = zvopen(s1unit,"OP","WRITE","U_FORMAT","FULL","O_FORMAT",
+		     "FULL","U_NS",n1suf,"U_NL",inl,"U_NB",nb,"U_ORG","BSQ",
+		     "OPEN_ACT","SA","IO_ACT","SA", NULL);
+    else
+      vstat = zvopen(s1unit,"OP","WRITE","U_FORMAT","FULL","O_FORMAT",
+		     "REAL","U_NS",n1suf,"U_NL",inl,"U_NB",nb,"U_ORG","BSQ",
+		     "OPEN_ACT","SA","IO_ACT","SA", NULL);
+    zvclose(s1unit, NULL);
   }
-  else {	/* BIL */
-    jnb = nb+n2suf;
-    jnl = inl;
+
+  if (s2unit>0) {
+    if (!strcmp(forg,"BSQ")) {
+      jnl = n2suf;
+      jnb = nb;
+    }
+    else {	/* BIL */
+      jnb = n2suf;
+      jnl = inl;
+    }
+    if (!suftyp) 
+      vstat = zvopen(s2unit,"OP","WRITE","U_FORMAT","FULL","O_FORMAT",
+		     "FULL","U_NS",ns+n1suf,"U_NL",jnl,"U_NB",jnb,"U_ORG","BSQ",
+		     "OPEN_ACT","SA","IO_ACT","SA", NULL);
+    else
+      vstat = zvopen(s2unit,"OP","WRITE","U_FORMAT","FULL","O_FORMAT",
+		     "REAL","U_NS",ns+n1suf,"U_NL",jnl,"U_NB",jnb,"U_ORG","BSQ",
+		     "OPEN_ACT","SA","IO_ACT","SA", NULL);
+    zvclose(s2unit, NULL);
   }
-  if (!suftyp) 
-    vstat = zvopen(s3unit,"OP","WRITE","U_FORMAT","FULL","O_FORMAT",
-     "FULL","U_NS",n1+n1suf,"U_NL",jnl,"U_NB",jnb,"U_ORG","BSQ",
-     "OPEN_ACT","SA","IO_ACT","SA", NULL);
-  else
-    vstat = zvopen(s3unit,"OP","WRITE","U_FORMAT","FULL","O_FORMAT",
-     "REAL","U_NS",n1+n1suf,"U_NL",jnl,"U_NB",jnb,"U_ORG","BSQ",
-     "OPEN_ACT","SA","IO_ACT","SA", NULL);
-  zvclose(s3unit, NULL);
-}
+
+  if (s3unit>0) {
+    if (!strcmp(forg,"BSQ")) {
+      jnl = inl+n2suf;
+      jnb = n3suf;
+    }
+    else {	/* BIL */
+      jnb = nb+n2suf;
+      jnl = inl;
+    }
+    if (!suftyp) 
+      vstat = zvopen(s3unit,"OP","WRITE","U_FORMAT","FULL","O_FORMAT",
+		     "FULL","U_NS",n1+n1suf,"U_NL",jnl,"U_NB",jnb,"U_ORG","BSQ",
+		     "OPEN_ACT","SA","IO_ACT","SA", NULL);
+    else
+      vstat = zvopen(s3unit,"OP","WRITE","U_FORMAT","FULL","O_FORMAT",
+		     "REAL","U_NS",n1+n1suf,"U_NL",jnl,"U_NB",jnb,"U_ORG","BSQ",
+		     "OPEN_ACT","SA","IO_ACT","SA", NULL);
+    zvclose(s3unit, NULL);
+  }
 
 }
 
@@ -2465,7 +2465,7 @@ FUNCTION VICARtoISIS(cubefile)
 /*
  *Purpose: Generate ISIS Cube file
  */
-char 	cubefile[100];		/* Input file names		     */
+     char 	cubefile[100];		/* Input file names		     */
 {					/* 	LOCAL VARIABLES		     */
   int band, ln, nhistrecs, nlabrecs, nrecs, object, stat1, stat2, x, y, z,
     instances[20], file_indices[6], numtasks;
@@ -2497,42 +2497,42 @@ FUNCTION write_object(dir,nlrecs,nhrecs,nrecs)
  * Copies object files to ISIS cube file or appropriate 
  * VICAR files, depending on direction of processing requested.
  */
-int dir,	/* Direction of processing */
-  nlrecs,	/* Number of label records */
-  nhrecs,	/* Number of history records */
-  nrecs; 	/* Number of file records */
+     int dir,	/* Direction of processing */
+     nlrecs,	/* Number of label records */
+     nhrecs,	/* Number of history records */
+     nrecs; 	/* Number of file records */
 
 {
   int bnd, extrasamples, i, j, lin, ln, nbck, ncor, nr0, record, sample, size1,
-   x, x2, x3, y, y1, z;
+    x, x2, x3, y, y1, z;
   unsigned char buf[1000];  /* Object file buffer           */
   unsigned char outbuf[BUFFERSIZE];
   unsigned char *obuf;
-  char *bufptr, *s1ptr, *s2ptr, *s3ptr;
+  char *bufptr=NULL, *s1ptr=NULL, *s2ptr=NULL, *s3ptr=NULL;
   char intfmt[30], realfmt[30];
 
   if (dir==TOISIS) {  /* Copy object files to ISIS cube file    */
 
     /* Open ISIS cube file */
     vstat = zvopen(outunit,"U_FORMAT","BYTE","O_FORMAT","BYTE","OP","WRITE",
-     "OPEN_ACT","SA","IO_ACT","SA","U_NL",nrecs,"U_NS",BUFFERSIZE,"U_NB",1,
-     "U_ORG","BSQ","COND","NOLABELS", NULL);
+		   "OPEN_ACT","SA","IO_ACT","SA","U_NL",nrecs,"U_NS",BUFFERSIZE,"U_NB",1,
+		   "U_ORG","BSQ","COND","NOLABELS", NULL);
 
     for(x=0,ln=1;x<nlrecs;x++,ln++)  /* Write PDS label    */
       zvwrit(outunit,&bufpoint[x*BUFFERSIZE],"NSAMPS",BUFFERSIZE,
-       "LINE",ln, NULL);
+	     "LINE",ln, NULL);
     free( bufpoint );    /* Deallocate memory    */
 
     for( x=0;x<nhrecs;x++,ln++ )  /* Write History object    */
       zvwrit(outunit,&histpoint[x*BUFFERSIZE],"NSAMPS",BUFFERSIZE,
-       "LINE",ln, NULL);
+	     "LINE",ln, NULL);
     free( histpoint );    /* Deallocate memory    */
 
     /* if there's no cocube or ORG is BSQ, just copy input file contents
      * to ISIS CUBE object */
     if (!strcmp(forg,"BSQ") || backunit<0) {
       vstat = zvopen(inunit,"OP","READ","OPEN_ACT","SA","IO_ACT","SA",
-       "ADDRESS",&inptr, NULL);
+		     "ADDRESS",&inptr, NULL);
       size = inl*ns*nb*bytes;
       nr0 = size/BUFFERSIZE; 
       for (x=0; x<nr0; x++,ln++,inptr+=BUFFERSIZE) {
@@ -2545,10 +2545,10 @@ int dir,	/* Direction of processing */
 	if (s3unit<0) {
           memset( &outbuf[size], 0, BUFFERSIZE-size );
           zvwrit(outunit,outbuf,"NSAMPS",size,"LINE",ln, NULL);
-      } }
+	} }
       if (s3unit>0) {
         vstat = zvopen(s3unit,"OP","READ","OPEN_ACT","SA","IO_ACT","SA",
-         "ADDRESS",&inptr, NULL);
+		       "ADDRESS",&inptr, NULL);
         size1 = inl*ns*n3suf*bytes;
         extrasamples = 0;
         if (size > 0) {
@@ -2596,7 +2596,7 @@ int dir,	/* Direction of processing */
     for (lin=0; lin<inl; lin++) {
       for (bnd=0; bnd<nb; bnd++) {
 	zvread( inunit, &fdata[i], "LINE", lin+1, "SAMP", 1, "NSAMPS", ns,
-	 "BAND", bnd+1, NULL);
+		"BAND", bnd+1, NULL);
 	i += ns;
 	size += ns*4;
 	if (size>=BUFFERSIZE) {
@@ -2612,12 +2612,12 @@ int dir,	/* Direction of processing */
 	  i = size/4;
 	  if (size>0)
 	    for (x=0; x<i; x++) fdata[x] = fdata[j+x];
-      } }
+	} }
       ncor += i;
       nbck -= i;
       for (bnd=0; bnd<n2suf; bnd++) {
 	zvread( s2unit, &fdata[i], "LINE", lin+1, "SAMP", 1, "NSAMPS", ns,
-	 "BAND", bnd+1, NULL);
+		"BAND", bnd+1, NULL);
 	i += ns;
 	size += ns*4;
 	if (size>=BUFFERSIZE) {
@@ -2633,7 +2633,7 @@ int dir,	/* Direction of processing */
 	  i = size/4;
 	  if (size>0)
 	    for (x=0; x<i; x++) fdata[x] = fdata[j+x];
-      } }
+	} }
       ncor -= i;
       nbck += i;
     }
@@ -2644,7 +2644,7 @@ int dir,	/* Direction of processing */
       zvwrit(outunit,outbuf,"NSAMPS",BUFFERSIZE,"LINE",ln++, NULL);
     }
     sprintf( message, " %d words written to Core, %d to Backplanes\r\n",
-     ncor, nbck);
+	     ncor, nbck);
     zifmessage( message);
     zvclose(inunit, NULL);
     zvclose(s2unit, NULL);
@@ -2653,8 +2653,8 @@ int dir,	/* Direction of processing */
   else {   /* Copy ISIS cube file objects to VICAR file  */
 
     vstat = zvopen(inunit,"OPEN_ACT","SA","IO_ACT","SA","ADDRESS",&inptr,
-      "U_NS", BUFFERSIZE, "U_NL", nrecs,
-      "U_FORMAT","BYTE","O_FORMAT","BYTE","COND","NOLABELS", NULL);
+		   "U_NS", BUFFERSIZE, "U_NL", nrecs,
+		   "U_FORMAT","BYTE","O_FORMAT","BYTE","COND","NOLABELS", NULL);
 
     bufptr = inptr;  
 
@@ -2692,13 +2692,13 @@ int dir,	/* Direction of processing */
     inptr += (objptr[0]-1)*BUFFERSIZE;
 
     vstat = zvopen(outunit,"OP","UPDATE","OPEN_ACT","SA","IO_ACT","SA",
-       "LAB_ACT","SA","CLOS_ACT","SA","ADDRESS",&outptr, NULL);
+		   "LAB_ACT","SA","CLOS_ACT","SA","ADDRESS",&outptr, NULL);
 
     if (s1unit>0) vstat = zvopen(s1unit,"OP","UPDATE","OPEN_ACT","SA",
-     "IO_ACT","SA","LAB_ACT","SA","CLOS_ACT","SA","ADDRESS",&s1ptr, NULL);
+				 "IO_ACT","SA","LAB_ACT","SA","CLOS_ACT","SA","ADDRESS",&s1ptr, NULL);
 
     if (s2unit>0) vstat = zvopen(s2unit,"OP","UPDATE","OPEN_ACT","SA",
-     "IO_ACT","SA","LAB_ACT","SA","CLOS_ACT","SA","ADDRESS",&s2ptr, NULL);
+				 "IO_ACT","SA","LAB_ACT","SA","CLOS_ACT","SA","ADDRESS",&s2ptr, NULL);
 
     if (!n1suf && !n2suf) {
       size = n1*n2*n3*bytes;
@@ -2735,7 +2735,7 @@ int dir,	/* Direction of processing */
     /* 3rd dimension can be done at the end ... */
     if (s3unit>0) {
       vstat = zvopen(s3unit,"OP","UPDATE","OPEN_ACT","SA","IO_ACT","SA",
-       "LAB_ACT","SA","CLOS_ACT","SA","ADDRESS",&s3ptr, NULL);
+		     "LAB_ACT","SA","CLOS_ACT","SA","ADDRESS",&s3ptr, NULL);
       zmve( 1, (n1+n1suf)*(n2+n2suf)*n3suf*4, inptr, s3ptr, 1, 1);
       zvclose(s3unit, NULL);
     }
@@ -2757,22 +2757,22 @@ int dir,	/* Direction of processing */
       if (vstat<=0) zmabend(" invalid HOST!");
       zldel( outunit, "SYSTEM", "HOST", NULL);
       zladd( outunit, "SYSTEM", "HOST", hostname, "FORMAT", "STRING",
-       "NELEMENT", 1, "MODE", "REPLACE", NULL); 
+	     "NELEMENT", 1, "MODE", "REPLACE", NULL); 
       zldel( outunit, "SYSTEM", "INTFMT", NULL);
       zladd( outunit, "SYSTEM", "INTFMT", intfmt, "FORMAT", "STRING",
-       "NELEMENT", 1, "MODE", "REPLACE", NULL); 
+	     "NELEMENT", 1, "MODE", "REPLACE", NULL); 
       zldel( outunit, "SYSTEM", "REALFMT", NULL);
       zladd( outunit, "SYSTEM", "REALFMT", realfmt, "FORMAT", "STRING",
-       "NELEMENT", 1, "MODE", "REPLACE", NULL); 
+	     "NELEMENT", 1, "MODE", "REPLACE", NULL); 
       zldel( outunit, "SYSTEM", "BHOST", NULL);
       zladd( outunit, "SYSTEM", "BHOST", hostname, "FORMAT", "STRING",
-       "NELEMENT", 1, "MODE", "REPLACE", NULL); 
+	     "NELEMENT", 1, "MODE", "REPLACE", NULL); 
       zldel( outunit, "SYSTEM", "BINTFMT", NULL);
       zladd( outunit, "SYSTEM", "BINTFMT", intfmt, "FORMAT", "STRING",
-       "NELEMENT", 1, "MODE", "REPLACE", NULL); 
+	     "NELEMENT", 1, "MODE", "REPLACE", NULL); 
       zldel( outunit, "SYSTEM", "BREALFMT", NULL);
       zladd( outunit, "SYSTEM", "BREALFMT", realfmt, "FORMAT", "STRING",
-       "NELEMENT", 1, "MODE", "REPLACE", NULL); 
+	     "NELEMENT", 1, "MODE", "REPLACE", NULL); 
     }
   }
 }
@@ -2785,78 +2785,78 @@ FUNCTION write_PDS_aline(buf,type,labelitem,value,number)
  * This differs from write_PDS_line in that value points to a
  * single item, which is replicated in the label array.
  */
-char 	buf[],
-	type,
-	labelitem[];
-void	*value;
-int 	number;
+     char 	buf[],
+     type,
+     labelitem[];
+     void	*value;
+     int 	number;
 {
-int	x,y,z;
-char	strng[50],
-	ln[80];
-int	*ivalue;
-float	*fvalue;
-char 	*cvalue;
+  int	x,y,z;
+  char	strng[50],
+    ln[80];
+  int	*ivalue;
+  float	*fvalue;
+  char 	*cvalue;
 
-switch(type)	{
+  switch(type)	{
 
-case 'C':	/* String constant 	*/
-case 'c':	cvalue = value;
-		sprintf(ln,"%s = (",labelitem);
-		for( x = 0; x < number-1 ; x++ )
-			{
-			sprintf(strng,"%s,",cvalue);
-			strcat(ln,strng);
-			if( strlen(ln) > 60 )
-				{
-				strcat(ln,"\r\n");
-				strcat(buf,ln);
-				strcpy(ln,"     ");
-				}
-			}
-		sprintf(strng,"%s)\r\n",cvalue);
-		strcat(ln,strng);
-		strcat(buf,ln);
-		break;
+  case 'C':	/* String constant 	*/
+  case 'c':	cvalue = value;
+    sprintf(ln,"%s = (",labelitem);
+    for( x = 0; x < number-1 ; x++ )
+      {
+	sprintf(strng,"%s,",cvalue);
+	strcat(ln,strng);
+	if( strlen(ln) > 60 )
+	  {
+	    strcat(ln,"\r\n");
+	    strcat(buf,ln);
+	    strcpy(ln,"     ");
+	  }
+      }
+    sprintf(strng,"%s)\r\n",cvalue);
+    strcat(ln,strng);
+    strcat(buf,ln);
+    break;
 
-case 'I': 	/* Integer value 	*/
-case 'i':	ivalue = value;
-		sprintf(ln,"%s = (",labelitem);
-		for( x = 0; x < number-1 ; x++ )
-				{
-				sprintf(strng,"%d,",ivalue);
-				strcat(ln,strng);
-				if( strlen(ln) > 60 )
-					{
-					strcat(ln,"\r\n");
-					strcat(buf,ln);
-					strcpy(ln,"     ");
-					}
-				}
-		sprintf(strng,"%d)\r\n",ivalue);
-		strcat(ln,strng);
-		strcat(buf,ln);
-		break;
+  case 'I': 	/* Integer value 	*/
+  case 'i':	ivalue = value;
+    sprintf(ln,"%s = (",labelitem);
+    for( x = 0; x < number-1 ; x++ )
+      {
+	sprintf(strng,"%d,",(int)ivalue);
+	strcat(ln,strng);
+	if( strlen(ln) > 60 )
+	  {
+	    strcat(ln,"\r\n");
+	    strcat(buf,ln);
+	    strcpy(ln,"     ");
+	  }
+      }
+    sprintf(strng,"%d)\r\n",(int)ivalue);
+    strcat(ln,strng);
+    strcat(buf,ln);
+    break;
 
-default:
-case 'F': 	/* floating point value 	*/
-case 'f':	fvalue = value;
-		sprintf(ln,"%s = (",labelitem);
-		for( x = 0; x < number-1 ; x++ )
-				{
-				sprintf(strng,"%f,",*fvalue);
-				strcat(ln,strng);
-				if( strlen(ln) > 60 )
-					{
-					strcat(ln,"\r\n");
-					strcat(buf,ln);
-					strcpy(ln,"     ");
-					}
-				}
-		sprintf(strng,"%f)\r\n",*fvalue);
-		strcat(ln,strng);
-		strcat(buf,ln);
-		break;	}
+  default:
+  case 'F': 	/* floating point value 	*/
+  case 'f':	fvalue = value;
+    sprintf(ln,"%s = (",labelitem);
+    for( x = 0; x < number-1 ; x++ )
+      {
+	snprintf(strng,50,"%f,",*fvalue);
+	strcat(ln,strng);
+	if( strlen(ln) > 60 )
+	  {
+	    strcat(ln,"\r\n");
+	    strcat(buf,ln);
+	    strcpy(ln,"     ");
+	  }
+      }
+    snprintf(strng,50,"%f)\r\n",*fvalue);
+    strcat(ln,strng);
+    strcat(buf,ln);
+    break;	}
 }
 
 
@@ -2867,8 +2867,8 @@ FUNCTION write_PDS_cline( buf, item, value, num, slen)
  * Because of the lengths of some filenames, the buffers need
  * to exceed the normal PDS line length.
  */
-char buf[], item[], *value;
-int num, slen;
+     char buf[], item[], *value;
+     int num, slen;
 {
   int x,y,z;
   char strng[101], ln[101];
@@ -2914,11 +2914,11 @@ FUNCTION write_PDS_line(buf,type,labelitem,value,number,prec)
  * Write PDS label line to a given buffer for data types other than
  * character
  */
-char 	buf[],
-	type,
-	labelitem[];
-void	*value;
-int 	number,prec;
+     char 	buf[],
+     type,
+     labelitem[];
+     void	*value;
+     int 	number,prec;
 {
   int x, y, z, *ivalue;
   char strng[50], ln[80];
@@ -2926,47 +2926,47 @@ int 	number,prec;
 
   switch(type) {
 
-    case 'I': 	/* Integer value 	*/
-    case 'i':
-      ivalue = value;
-      if( number == 1 ) {
-	sprintf(strng,"%s = %d\r\n",labelitem,(*ivalue));
-	strcat(buf,strng);
-      }
-      else {
-	sprintf(ln,"%s = (",labelitem);
-	for( x = 0; x < number-1 ; x++ ) {
-	  sprintf(strng,"%d,",(*(ivalue+x)));
-	  strcat(ln,strng);
-	  if( strlen(ln) > 60 ) {
-	    strcat(ln,"\r\n");
-	    strcat(buf,ln);
-	    strcpy(ln,"     ");
-	  }
-	}
-	sprintf(strng,"%d)\r\n",(*(ivalue+x)));
+  case 'I': 	/* Integer value 	*/
+  case 'i':
+    ivalue = value;
+    if( number == 1 ) {
+      sprintf(strng,"%s = %d\r\n",labelitem,(*ivalue));
+      strcat(buf,strng);
+    }
+    else {
+      sprintf(ln,"%s = (",labelitem);
+      for( x = 0; x < number-1 ; x++ ) {
+	sprintf(strng,"%d,",(*(ivalue+x)));
 	strcat(ln,strng);
-	strcat(buf,ln);
+	if( strlen(ln) > 60 ) {
+	  strcat(ln,"\r\n");
+	  strcat(buf,ln);
+	  strcpy(ln,"     ");
+	}
       }
-      break;
+      sprintf(strng,"%d)\r\n",(*(ivalue+x)));
+      strcat(ln,strng);
+      strcat(buf,ln);
+    }
+    break;
 
-    default:
-    case 'F': 	/* floating point value 	*/
-    case 'f':	fvalue = value;
-      if( number == 1 ) {
+  default:
+  case 'F': 	/* floating point value 	*/
+  case 'f':	fvalue = value;
+    if( number == 1 ) {
+      if (prec<0)
+	sprintf(strng,"%s = %e\r\n",labelitem,(*fvalue));
+      else
+	sprintf(strng,"%s = %.*f\r\n",labelitem,prec,(*fvalue));
+      strcat(buf,strng);
+    }
+    else {
+      sprintf(ln,"%s = (",labelitem);
+      for( x = 0; x < number-1 ; x++ ) {
 	if (prec<0)
-	  sprintf(strng,"%s = %e\r\n",labelitem,(*fvalue));
+	  sprintf(strng,"%e,",(*(fvalue+x)));
 	else
-	  sprintf(strng,"%s = %.*f\r\n",labelitem,prec,(*fvalue));
-	strcat(buf,strng);
-      }
-      else {
-	sprintf(ln,"%s = (",labelitem);
-	for( x = 0; x < number-1 ; x++ ) {
-	  if (prec<0)
-	    sprintf(strng,"%e,",(*(fvalue+x)));
-	  else
-	    sprintf(strng,"%.*f,",prec,(*(fvalue+x)));
+	  sprintf(strng,"%.*f,",prec,(*(fvalue+x)));
 	strcat(ln,strng);
 	if( strlen(ln) > 60 ) {
 	  strcat(ln,"\r\n");
@@ -2993,32 +2993,32 @@ int FUNCTION write_vlab( unit, radtyp)
  * also process a few other labels here that cannot be directly
  * copied from PDS label using 'keyword_value'
  */
-int unit, *radtyp;
+     int unit, *radtyp;
 {
   int count, i, ival[3], lptr, lptr0, lptr1, lptr2, lptre = 0, lptrq, 
-   conv_lon, sflag, to_orig, x;
-  float ritem, sav;
+    conv_lon=0, sflag, to_orig, x;
+  float ritem=0, sav;
   double ditem;
   double temp;
   char buf[332], lattyp[15], projnam[15];
   struct { float rr[38]; int ii[2];} mdat;	/* for MAPLABV2 */
   MP mpo;
 
-	/* zero the map buffer just to be safe: */
+  /* zero the map buffer just to be safe: */
   for (i=0; i<38; i++) mdat.rr[i] = 0.0;
   for (i=0; i<2; i++) mdat.ii[i] = 0;
 
   lptr = lptrq = 0;
 
-	/* first set the pointer to start of map group in qube object: */
+  /* first set the pointer to start of map group in qube object: */
   lsef = find_keyword( "^QUBE", bufpoint, &lptrq, &labend);
   if (lsef == 0) zmabend(" QUBE object not found!");
   lptr0 = lptrq;
 
-	/* find end of label so we don't search thru entire file: */
+  /* find end of label so we don't search thru entire file: */
   lsef = find_keyword( "END_OBJECT = QUBE", bufpoint, &lptre, &labend);
 
-	/* find start of the map projection group: */
+  /* find start of the map projection group: */
   lsef = find_keyword( "IMAGE_MAP_PROJECTION", bufpoint, &lptr0, &lptre);
   if (lsef == 0) {
     vstat = 0;
@@ -3039,7 +3039,7 @@ int unit, *radtyp;
   if (strcmp(v.projection,"ORTHOGRAPHIC")==0) 
     strcpy(v.projection,"OBLIQUE_ORTHOGRAPHIC");
 
-	/* check if it's planetographic or planetocentric */
+  /* check if it's planetographic or planetocentric */
   lptr = lptr0;
   lsef = find_keyword( "COORDINATE_SYSTEM_NAME", bufpoint, &lptr, &lptre);
   if (lsef == 0) pgraphic = -1;
@@ -3063,14 +3063,14 @@ int unit, *radtyp;
     if (lsef && !strcmp(buf,"EAST")) conv_lon = 1;
   }
 
-	/* for the following keywords, find end of map proj. group: */
+  /* for the following keywords, find end of map proj. group: */
   lptr2 = lptr0;
   lsef = find_keyword( "END_GROUP = IMAGE_MAP_PROJECTION", bufpoint, &lptr2,
-   &lptre);
+		       &lptre);
 
-	/* then find all required keywords: */
+  /* then find all required keywords: */
 
-	/* all projections need radii: */
+  /* all projections need radii: */
   lptr = lptr0;
   lsef = find_keyword( "A_AXIS_RADIUS", bufpoint, &lptr, &lptr2);
   if (lsef) get_double_value( &v.radii[0], bufpoint, &lptr);
@@ -3109,7 +3109,7 @@ int unit, *radtyp;
 
     lptr = lptr0;
     lsef = find_keyword( "LINE_SUB_SPACECRAFT_OFFSET", bufpoint, &lptr,
-     &lptr2);
+			 &lptr2);
     if (lsef) {
       get_double_value( &v.ssc_line, bufpoint, &lptr);
       if (to_orig) v.ssc_line = -v.ssc_line;
@@ -3118,17 +3118,17 @@ int unit, *radtyp;
 
     lptr = lptr0;
     lsef = find_keyword( "SAMPLE_SUB_SPACECRAFT_OFFSET", bufpoint, &lptr,
-     &lptr2);
+			 &lptr2);
     if (lsef) {
       get_double_value( &v.ssc_samp, bufpoint, &lptr);
       if (to_orig) v.ssc_samp = -v.ssc_samp;
       v.ssc_samp++;	/* relative to (1,1) */
     }
 
-	/* allow old aliases for the above 2: */
+    /* allow old aliases for the above 2: */
     lptr = lptr0;
     lsef = find_keyword( "X_AXIS_SUB_SPACECRAFT_OFFSET", bufpoint, &lptr,
-     &lptr2);
+			 &lptr2);
     if (lsef) {
       get_double_value( &v.ssc_line, bufpoint, &lptr);
       v.ssc_line++;	/* relative to (1,1) */
@@ -3136,7 +3136,7 @@ int unit, *radtyp;
 
     lptr = lptr0;
     lsef = find_keyword( "Y_AXIS_SUB_SPACECRAFT_OFFSET", bufpoint, &lptr,
-     &lptr2);
+			 &lptr2);
     if (lsef) {
       get_double_value( &v.ssc_samp, bufpoint, &lptr);
       v.ssc_samp++;	/* relative to (1,1) */
@@ -3156,17 +3156,17 @@ int unit, *radtyp;
 
     lptr = lptr0;
     lsef = find_keyword( "SAMPLE_OPTICAL_AXIS_OFFSET", bufpoint, &lptr,
-     &lptr2);
+			 &lptr2);
     if (lsef) {
       get_double_value( &v.oasamp, bufpoint, &lptr);
       if (to_orig) v.oasamp = -v.oasamp;
       v.oasamp++;	/* relative to (1,1) */
     }
 
-	/* allow old aliases for the above 2: */
+    /* allow old aliases for the above 2: */
     lptr = lptr0;
     lsef = find_keyword( "X_AXIS_OPTICAL_AXIS_OFFSET", bufpoint, &lptr,
-     &lptr2);
+			 &lptr2);
     if (lsef) {
       get_double_value( &v.oaline, bufpoint, &lptr);
       v.oaline++;	/* relative to (1,1) */
@@ -3174,7 +3174,7 @@ int unit, *radtyp;
 
     lptr = lptr0;
     lsef = find_keyword( "Y_AXIS_OPTICAL_AXIS_OFFSET", bufpoint, &lptr, 
-     &lptr2);
+			 &lptr2);
     if (lsef) {
       get_double_value( &v.oasamp, bufpoint, &lptr);
       v.oasamp++;	/* relative to (1,1) */
@@ -3192,7 +3192,7 @@ int unit, *radtyp;
     lsef = find_keyword( "MAP_PROJECTION_ROTATION", bufpoint, &lptr, &lptr2);
     if (lsef) get_double_value( &v.rotation, bufpoint, &lptr);
 
-	/* stuff values into maplab buffer: */
+    /* stuff values into maplab buffer: */
     mdat.ii[0] = 16;
     mdat.rr[26] = v.focal;
     mdat.rr[27] = v.oaline;
@@ -3239,7 +3239,7 @@ int unit, *radtyp;
       v.center_samp++;
     }
 
-	/* allow old aliases for the above 2: */
+    /* allow old aliases for the above 2: */
     lptr = lptr0;
     lsef = find_keyword( "X_AXIS_PROJECTION_OFFSET", bufpoint, &lptr, &lptr2);
     if (lsef) get_double_value( &v.center_line, bufpoint, &lptr);
@@ -3253,11 +3253,11 @@ int unit, *radtyp;
     if( v.projection[0] == 'L' ) {	/* Lambert */
       lptr = lptr0;
       lsef = find_keyword( "FIRST_STANDARD_PARALLEL", bufpoint, &lptr,
-       &lptr2);
+			   &lptr2);
       if (lsef) get_double_value( &v.projitem1, bufpoint, &lptr);
       lptr = lptr0;
       lsef = find_keyword( "SECOND_STANDARD_PARALLEL", bufpoint, &lptr,
-       &lptr2);
+			   &lptr2);
       if (lsef) get_double_value( &v.projitem2, bufpoint, &lptr);
     }
 
@@ -3268,7 +3268,7 @@ int unit, *radtyp;
         strcmp(v.projection,"OBLIQUE_STEREOGRAPHIC")==0 ) {
       lptr = lptr0;
       lsef = find_keyword( "MAP_PROJECTION_ROTATION", bufpoint, &lptr,
-       &lptr2);
+			   &lptr2);
       if (lsef) get_double_value( &v.rotation, bufpoint, &lptr);
     }
 
@@ -3280,7 +3280,7 @@ int unit, *radtyp;
     if (!strcmp(v.projection,"'CYLINDRICAL_EQUAL-AREA'"))
       strcpy(v.projection,"NORMAL_CYLINDRICAL");
 
-	/* stuff values into maplab buffer: */
+    /* stuff values into maplab buffer: */
     if  (!strcmp( v.projection, "POLAR_ORTHOGRAPHIC")) mdat.ii[0] = 1;
     else if (!strcmp(v.projection,"OBLIQUE_ORTHOGRAPHIC")) mdat.ii[0]=2;
     else if (!strcmp(v.projection,"POLAR_STEREOGRAPHIC")) mdat.ii[0]=3;
@@ -3307,7 +3307,7 @@ int unit, *radtyp;
     mdat.rr[8] = v.rotation;
   }
 
-	/* write the Vicar map labels: */
+  /* write the Vicar map labels: */
   lsef = mpInit( &mpo);
   if (lsef!=mpSUCCESS) zmabend(" error initializing MP object");
   lsef = mpBuf2Mpo( &mdat, mpo);
@@ -3323,9 +3323,9 @@ int unit, *radtyp;
   lsef = mpLabelWrite( mpo, unit, "PROPERTY");
   if (lsef!=mpSUCCESS) zmabend(" error writing map labels");
 
-post_map:
+ post_map:
 
-	/* process other deviant label items: */
+  /* process other deviant label items: */
 
   lptr = lptrq;
   lsef = find_keyword( "OBSERVATION_NAME", bufpoint, &lptr, &lptre);
@@ -3339,7 +3339,7 @@ post_map:
     if (buf[0] == '\'') strncpy( buf, &buf[1], 12);
     buf[12] = '\0';
     zladd( unit, "HISTORY", "OBSNAME", buf, "FORMAT", "STRING", "NELEMENT",
-     1, NULL);
+	   1, NULL);
   }
 
   lptr = lptrq;
@@ -3375,13 +3375,13 @@ post_map:
     if (!strcmp( projnam, "GALILEO")) {
       i = sscanf( buf, "%d.%d", &ival[0], &ival[1]); 	/* RIM.MF */
       zladd( unit, "HISTORY", "BEG_SCLK", ival, "FORMAT", "INT", "NELEMENT",
-       2, NULL);
+	     2, NULL);
     }
     else zladd( unit, "HISTORY", "BEG_SCLK", buf, "FORMAT", "STRING", "NELEMENT",
-     1, NULL);
+		1, NULL);
     /* only if we found a start time ... start after preceding item */
     if (sflag) lsef = find_keyword_str( "NATIVE_STOP_TIME = \"", bufpoint,
-     &lptr, &lptre);
+					&lptr, &lptre);
     else lsef = find_keyword( "NATIVE_STOP_TIME", bufpoint, &lptr, &lptre);
     if (lsef == 0) {
       lptr = lptrq;
@@ -3394,11 +3394,11 @@ post_map:
       if (!strcmp( projnam, "GALILEO")) {
         i = sscanf( buf, "%d.%d", &ival[0], &ival[1]); 	/* RIM.MF */
         zladd( unit, "HISTORY", "END_SCLK", ival, "FORMAT", "INT", "NELEMENT",
-         2, NULL);
+	       2, NULL);
       }
       else
         zladd( unit, "HISTORY", "END_SCLK", buf, "FORMAT", "STRING", "NELEMENT",
-         1, NULL);
+	       1, NULL);
     }
   }
 
@@ -3413,7 +3413,7 @@ post_map:
   else {
     get_string_value( buf, 25, &lptr);
     zladd( unit, "HISTORY", "BEG_UTC", buf, "FORMAT", "STRING", "NELEMENT",
-     1, NULL);
+	   1, NULL);
     /* start looking after previous keywd: */
     lsef = find_keyword_str( "STOP_TIME = \"", bufpoint, &lptr, &lptre);
     if (lsef == 0) 
@@ -3421,12 +3421,12 @@ post_map:
     else {
       get_string_value( buf, 25, &lptr);
       zladd( unit, "HISTORY", "END_UTC", buf, "FORMAT", "STRING", "NELEMENT",
-       1, NULL);
-  } }
+	     1, NULL);
+    } }
 
   /* need to restrict to Cassini because of the LINE_EXPOSURE keyword: */ 
   if (!strncmp( projnam, "CASSINI",7))
-   keyword_value( outunit, "EXPOSURE_DURATION", "R", "EXPOSURE");
+    keyword_value( outunit, "EXPOSURE_DURATION", "R", "EXPOSURE");
 
   /* these all depend on Pos.Long.Direction: */
 

@@ -1,6 +1,8 @@
 procedure
 refgbl $echo
 body
+enable-log
+
 let _onfail="continue"
 let $echo="yes"     
 
@@ -16,6 +18,8 @@ write " > source nims_spicedefs"
 
 write " First, generate a DN (uncalibrated, halfword) cube: "
 
+! obsname has been removed from NIMSCMM2
+!        obsname=G7JNFEAP4101 obsext=A +
 NIMSCMM2 edr=/project/test_work/testdata/gll/g7jnfeap4101a.3 +
         cube=G7JNFEAP4101A.cub 'NOCAL +
         wtfil=wtfil  +
@@ -25,7 +29,6 @@ NIMSCMM2 edr=/project/test_work/testdata/gll/g7jnfeap4101a.3 +
         ikernel=/project/test_work/testdata/gll/nims_ikernel_mab.dat +
 	solfile=/project/test_work/testdata/gll/nims_solar.dat +
 	dbmfile=/project/test_work/testdata/gll/boom_obscuration.nim +
-        obsname=G7JNFEAP4101 obsext=A +
         prodnote="testbed EDR with simulated pointing"  +
         obsnote="testbed EDR with simulated pointing"  +
         target=GANYMEDE phase=GANYMEDE_7_ENCOUNTER +
@@ -34,21 +37,23 @@ NIMSCMM2 edr=/project/test_work/testdata/gll/g7jnfeap4101a.3 +
 
 WRITE "LIST SYSTEM LABEL OF CUBE"
 
-label-list G7JNFEAP4101A.cub 'system
+label-list G7JNFEAP4101A.cub 'system 'nousrtim
 
 write "CREATE 2-D HISTOGRAM FROM CUBE"
 
 hist2d G7JNFEAP4101A.cub hist1 out_nl=256 out_ns=68 'DN
 
-label-list hist1
-list hist1 linc=2 sinc=8
+label-list hist1 'nousrtim
+list hist1 linc=2 sinc=8 'nousrtim
 
 ! test REPLICATE keyword:
 hist2d G7JNFEAP4101A.cub hist2 out_nl=256 out_ns=408 'DN 'REPLICATE
-list hist2 linc=2 sinc=8
+list hist2 linc=2 sinc=8 'nousrtim
 
 write " Next, generate a calibrated, floating-point cube: "
 
+! obsname has been removed from NIMSCMM2
+!        obsname=G7JNFEAP4101 obsext=A +
 NIMSCMM2 edr=/project/test_work/testdata/gll/g7jnfeap4101a.3 +
         cube=G7JNFEAP4101A_2.cub +
         wtfil=wtfil  +
@@ -59,17 +64,16 @@ NIMSCMM2 edr=/project/test_work/testdata/gll/g7jnfeap4101a.3 +
         ikernel=/project/test_work/testdata/gll/nims_ikernel_mab.dat +
 	solfile=/project/test_work/testdata/gll/nims_solar.dat +
 	dbmfile=/project/test_work/testdata/gll/boom_obscuration.nim +
-        obsname=G7JNFEAP4101 obsext=A +
         prodnote="testbed EDR with simulated pointing"  +
         obsnote="testbed EDR with simulated pointing"  +
         target=GANYMEDE phase=GANYMEDE_7_ENCOUNTER +
         proj=pov slew_tol=-1. +
 	outsiz=(9,5)
-label-list G7JNFEAP4101A_2.cub 'system
+label-list G7JNFEAP4101A_2.cub 'system 'nousrtim
 ! specify RLIMIT here so it will work on Linux too:
 hist2d G7JNFEAP4101A_2.cub hist3 out_nl=256 out_ns=68 rlimit=-1.0e38
-label-list hist3
-list hist3 linc=2 sinc=8
+label-list hist3 'nousrtim
+list hist3 linc=2 sinc=8 'nousrtim
 
 
 write "The following is a test for byte input files."
@@ -85,7 +89,7 @@ hist2d image ramp1 out_nl=256 out_ns=256 'nolog
 hist2d image ramp2 out_nl=256 out_ns=256 'exclude
 hist2d image ramp3 out_nl=256 out_ns=256 limits=(1,255)
 difpic (ramp1,ramp2) a
-list a 'noeje 'nofeed
+list a 'noeje 'nofeed 'nousrtim
 difpic (ramp2,ramp3)
 
 write "The only difference between RAMP1 and RAMP4 should be"
@@ -98,14 +102,14 @@ write "should have zero values for all lines."
 write "****************************************************************"
 
 hist2d image ramp4 
-list ramp1 sl=250 ss=1 ns=10 'noeje 'nofeed
-list ramp4 sl=250 ss=1 ns=10 'noeje 'nofeed
+list ramp1 sl=250 ss=1 ns=10 'noeje 'nofeed 'nousrtim
+list ramp4 sl=250 ss=1 ns=10 'noeje 'nofeed 'nousrtim
 lablist ramp1 'full
 lablist ramp4 'full
 
 hist2d image ramp5 limits=(100,255)
-list ramp5 ss=95 ns=10 sl=250 'noeje 'nofeed
-list ramp5 ss=250 sl=1 nl=10 'noeje 'nofeed
+list ramp5 ss=95 ns=10 sl=250 'noeje 'nofeed 'nousrtim
+list ramp5 ss=250 sl=1 nl=10 'noeje 'nofeed 'nousrtim
 
 write "TEST ERROR CHECKING OF PARAMETERS"
 write "The following HIST2D call should produce ten error messages"
@@ -126,11 +130,11 @@ write "****************************************************************"
 
 gen image 5 5 512 format=half ival=-32768 sinc=0 linc=0 binc=128
 hist2d image ramp7 out_ns=256 
-list ramp7 linc=16 sl=16 sinc=32 'noeje 'nofeed
+list ramp7 linc=16 sl=16 sinc=32 'noeje 'nofeed 'nousrtim
 hist2d image ramp8 limits=(-32768,32767)
-list ramp8 linc=16 sl=16 sinc=32 'noeje 'nofeed
+list ramp8 linc=16 sl=16 sinc=32 'noeje 'nofeed 'nousrtim
 hist2d image ramp9 'exclude
-list ramp9 linc=16 sl=16 sinc=32 'noeje 'nofeed
+list ramp9 linc=16 sl=16 sinc=32 'noeje 'nofeed 'nousrtim
 
 write "RAMP10 should have three values of 255 on line 10 at samples"
 write "1, 2 and 3.  It should have two values of 255 on line 9 at"
@@ -139,7 +143,7 @@ write "****************************************************************"
 
 gen image 10 10 5 ival=0 linc=0 sinc=0 binc=10 'half
 hist2d image ramp10 out_nl=10 out_ns=10 
-list ramp10 'noeje 'nofeed
+list ramp10 'noeje 'nofeed 'nousrtim
 
 write "Check illegal formats:"
 gen image 10 10 5 'full
@@ -147,4 +151,5 @@ hist2d image dum
 gen image 10 10 5 'doub
 hist2d image dum
 
+disable-log
 end-proc

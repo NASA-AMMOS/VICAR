@@ -10,7 +10,9 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h> 
+#include <string.h>
 #include "vicmain_c"  
+#include "zifmessage.h"
 
 #define PI 3.1415926
 #define MAX(a,b) (a > b ? a : b)
@@ -36,30 +38,48 @@ int nl1,ns1,hzoom[2],zoom[2],nlw,nsw;
 typedef enum {Byte, Half, Full, Real, Double} PixelType;
 int ns3,nl3;
 
-/* unsigned char Extrap_Byte(unsigned char a, unsigned char b); */
+static void ExtrapolateLine(PixelType format, unsigned char *buf1, unsigned char *buf2, unsigned char *buf3);
+static void ExtrapByteLine(unsigned char *buf1, unsigned char *buf2, unsigned char *buf3);
+static void ExtrapHalfLine(short *buf1, short *buf2, short *buf3);
+static void ExtrapFullLine(long *buf1, long *buf2, long *buf3);
+static void ExtrapRealLine(float *buf1, float *buf2, float *buf3);
+static void ExtrapDoubleLine(double *buf1, double *buf2, double *buf3);
+static void ExtrapolateSamps(PixelType format, unsigned char *buf);
+static void ExtrapByteSamps(unsigned char *buf);
+static void ExtrapHalfSamps(short *buf);
+static void ExtrapFullSamps(long *buf);
+static void ExtrapRealSamps(float *buf);
+static void ExtrapDoubleSamps(double *buf);
+static void doByteInterp(unsigned char *ipixels[5], unsigned char *opixels, double *weights[], int interp_line);
+static void doHalfInterp(short *ipixels[5], short *opixels, double *weights[], int interp_line);
+static void doFullInterp(long *ipixels[5], long *opixels, double *weights[], int interp_line);
+static void doRealInterp(float *iipixels[], float *iopixels, double *weights[], int interp_line);
+static void doDoubleInterp(double *ipixels[5], double *opixels, double *weights[], int interp_line);
+static void GetWeights(double ***w, int nlw, int nsw, int zl, int zs);
+static unsigned char Extrap_Byte(unsigned char a, unsigned char b);
 
 void main44(void)
 {
   int line;
   double **weights;
-  unsigned char *ipixels[4], *buffers[4], *opixels, *tmp;
-  int iunit,ounit,cnt,stat;
+  unsigned char *ipixels[4], *opixels, *tmp;
+  int iunit,ounit,cnt;
   int width,interp_line;
   int first=1;
-  int lines_read,i,pixelBytes;
+  int lines_read,i,pixelBytes = 0;
   char formatStr[31];
-  PixelType format;
+  PixelType format = Byte;
   int el,es,size_changed;
   char message[80];
   int odometer;
 
-  extern nl,ns,nlo,nso,ss,sl,nli,nsi;
-  extern hzoom[2],zoom[2],nlw,nsw;
+  /* extern nl,ns,nlo,nso,ss,sl,nli,nsi; */
+  /* extern hzoom[2],zoom[2],nlw,nsw; */
        /* nl3 and ns3 now globally defined */
 
 /* Out put ported revision date */
 
-   zvmessage("BICUBIC version 01-JULY-94", "" );
+   zifmessage("BICUBIC version 2019-08-22");
 
 /* Get the zoom factor */
   zvp("ZOOM", zoom, &cnt);
@@ -271,9 +291,11 @@ void main44(void)
    and last two samples are not extrapolated since at this point they
    are undefined; the sample extrapolation routines take care of them. */
 
-ExtrapolateLine(format, buf1, buf2, buf3)
+void ExtrapolateLine(PixelType format, unsigned char *buf1, unsigned char *buf2, unsigned char *buf3)
+#if 0
      PixelType format;
      unsigned char *buf1, *buf2, *buf3;
+#endif
 {
   switch (format) {
   case Byte: ExtrapByteLine(buf1, buf2, buf3); break;
@@ -284,9 +306,10 @@ ExtrapolateLine(format, buf1, buf2, buf3)
   }
 }
 
-ExtrapByteLine(buf1, buf2, buf3)
+void ExtrapByteLine(unsigned char *buf1, unsigned char *buf2, unsigned char *buf3)
+#if 0
      unsigned char *buf1, *buf2, *buf3;
-    
+#endif    
 {
   int i;
 
@@ -294,9 +317,10 @@ ExtrapByteLine(buf1, buf2, buf3)
     buf3[i] = Extrap_Byte(buf1[i], buf2[i]);
 }
 
-ExtrapHalfLine(buf1, buf2, buf3)
+void ExtrapHalfLine(short *buf1, short *buf2, short *buf3)
+#if 0
      short *buf1, *buf2, *buf3;
-    
+#endif    
 {
   int i;
 
@@ -304,9 +328,10 @@ ExtrapHalfLine(buf1, buf2, buf3)
     buf3[i] = ExtrapHalf(buf1[i], buf2[i]);
 }
 
-ExtrapFullLine(buf1, buf2, buf3)
+void ExtrapFullLine(long *buf1, long *buf2, long *buf3)
+#if 0
      long *buf1, *buf2, *buf3;
-    
+#endif    
 {
   int i;
 
@@ -314,9 +339,10 @@ ExtrapFullLine(buf1, buf2, buf3)
     buf3[i] = ExtrapFull(buf1[i], buf2[i]);
 }
 
-ExtrapRealLine(buf1, buf2, buf3)
+void ExtrapRealLine(float *buf1, float *buf2, float *buf3)
+#if 0
      float *buf1, *buf2, *buf3;
-    
+#endif    
 {
   int i;
 
@@ -324,9 +350,10 @@ ExtrapRealLine(buf1, buf2, buf3)
     buf3[i] = ExtrapReal(buf1[i], buf2[i]);
 }
 
-ExtrapDoubleLine(buf1, buf2, buf3)
+void ExtrapDoubleLine(double *buf1, double *buf2, double *buf3)
+#if 0
      double *buf1, *buf2, *buf3;
-    
+#endif    
 {
   int i;
 
@@ -338,10 +365,11 @@ ExtrapDoubleLine(buf1, buf2, buf3)
    extrapolate the missing two pixels at either end of the line using a 
    linear extrapolation. */
 
-ExtrapolateSamps(format, buf)
+void ExtrapolateSamps(PixelType format, unsigned char *buf)
+#if 0
      PixelType format;
      unsigned char *buf;
-
+#endif
 {
   switch (format) {
   case Byte: ExtrapByteSamps(buf); break;
@@ -352,9 +380,10 @@ ExtrapolateSamps(format, buf)
   }
 }
 
-ExtrapByteSamps(buf)
+void ExtrapByteSamps(unsigned char *buf)
+#if 0
      unsigned char *buf;
-
+#endif
 {
   buf[1] = Extrap_Byte(buf[3], buf[2]);
   buf[0] = Extrap_Byte(buf[2], buf[1]);
@@ -362,9 +391,10 @@ ExtrapByteSamps(buf)
   buf[ns+3] = Extrap_Byte(buf[ns+1], buf[ns+2]);
 }
 
-ExtrapHalfSamps(buf)
+void ExtrapHalfSamps(short *buf)
+#if 0
      short *buf;
-
+#endif
 {
   buf[1] = ExtrapHalf(buf[3], buf[2]);
   buf[0] = ExtrapHalf(buf[2], buf[1]);
@@ -372,9 +402,10 @@ ExtrapHalfSamps(buf)
   buf[ns+3] = ExtrapHalf(buf[ns+1], buf[ns+2]);
 }
 
-ExtrapFullSamps(buf)
+void ExtrapFullSamps(long *buf)
+#if 0
      long *buf;
-
+#endif
 {
   buf[1] = ExtrapFull(buf[3], buf[2]);
   buf[0] = ExtrapFull(buf[2], buf[1]);
@@ -382,9 +413,10 @@ ExtrapFullSamps(buf)
   buf[ns+3] = ExtrapFull(buf[ns+1], buf[ns+2]);
 }
 
-ExtrapRealSamps(buf)
+void ExtrapRealSamps(float *buf)
+#if 0
      float *buf;
-
+#endif
 {
   buf[1] = ExtrapReal(buf[3], buf[2]);
   buf[0] = ExtrapReal(buf[2], buf[1]);
@@ -392,9 +424,10 @@ ExtrapRealSamps(buf)
   buf[ns+3] = ExtrapReal(buf[ns+1], buf[ns+2]);
 }
 
-ExtrapDoubleSamps(buf)
+void ExtrapDoubleSamps(double *buf)
+#if 0
      double *buf;
-
+#endif
 {
   buf[1] = ExtrapDouble(buf[3], buf[2]);
   buf[0] = ExtrapDouble(buf[2], buf[1]);
@@ -404,15 +437,16 @@ ExtrapDoubleSamps(buf)
 
 /* Interpolation routines. */
 
-doByteInterp(ipixels, opixels, weights, interp_line)
+void doByteInterp(unsigned char *ipixels[5], unsigned char *opixels, double *weights[], int interp_line)
+#if 0
      unsigned char *ipixels[5];
      unsigned char *opixels;
      double *weights[];
      int interp_line;
-
+#endif
 {
-  extern nl,ns,nlo,nso,ss,sl,nli,nsi;
-  extern hzoom[2],zoom[2],nlw,nsw;
+  /* extern nl,ns,nlo,nso,ss,sl,nli,nsi; */
+  /* extern hzoom[2],zoom[2],nlw,nsw; */
      /*  nl3,ns3 not included ( not found via extern -- also not used) */
 
 
@@ -454,15 +488,16 @@ doByteInterp(ipixels, opixels, weights, interp_line)
   }
 }
 
-doHalfInterp(ipixels, opixels, weights, interp_line)
+void doHalfInterp(short *ipixels[5], short *opixels, double *weights[], int interp_line)
+#if 0
      short *ipixels[5];
      short *opixels;
      double *weights[];
      int interp_line;
-
+#endif
 {
-  extern nl,ns,nlo,nso,ss,sl,nli,nsi;
-  extern hzoom[2],zoom[2],nlw,nsw;
+  /* extern nl,ns,nlo,nso,ss,sl,nli,nsi; */
+  /* extern hzoom[2],zoom[2],nlw,nsw; */
           /*  nl3,ns3 not included ( not found via extern -- also not used) */
 
   int start_s;
@@ -502,15 +537,16 @@ doHalfInterp(ipixels, opixels, weights, interp_line)
   }
 }
 
-doFullInterp(ipixels, opixels, weights, interp_line)
+void doFullInterp(long *ipixels[5], long *opixels, double *weights[], int interp_line)
+#if 0
      long *ipixels[5];
      long *opixels;
      double *weights[];
      int interp_line;
-
+#endif
 {
-  extern nl,ns,nlo,nso,ss,sl,nli,nsi;
-  extern hzoom[2],zoom[2],nlw,nsw;
+  /* extern nl,ns,nlo,nso,ss,sl,nli,nsi; */
+  /* extern hzoom[2],zoom[2],nlw,nsw; */
          /*  nl3,ns3 not included ( not found via extern -- also not used) */
 
   int start_s;
@@ -551,15 +587,16 @@ doFullInterp(ipixels, opixels, weights, interp_line)
   }
 }
 
-doRealInterp(ipixels, opixels, weights, interp_line)
+void doRealInterp(float *ipixels[], float *opixels, double *weights[], int interp_line)
+#if 0
      float *ipixels[5];
      float *opixels;
      double *weights[];
      int interp_line;
-
+#endif
 {
-  extern nl,ns,nlo,nso,ss,sl,nli,nsi;
-  extern hzoom[2],zoom[2],nlw,nsw;
+  /* extern nl,ns,nlo,nso,ss,sl,nli,nsi; */
+  /* extern hzoom[2],zoom[2],nlw,nsw; */
          /*  nl3,ns3 not included ( not found via extern -- also not used) */
 
   int start_s;
@@ -599,16 +636,17 @@ doRealInterp(ipixels, opixels, weights, interp_line)
   }
 }
 
-doDoubleInterp(ipixels, opixels, weights, interp_line)
+void doDoubleInterp(double *ipixels[5], double *opixels, double *weights[], int interp_line)
+#if 0
      double *ipixels[5];
      double *opixels;
      double *weights[];
      int interp_line;
-
+#endif
 {
-  extern nl,ns,nlo,nso,ss,sl,nli,nsi;
-  extern hzoom[2],zoom[2],nlw,nsw;
-        /*  nl3,ns3  not included ( not found via extern -- also not used) */
+  /* extern nl,ns,nlo,nso,ss,sl,nli,nsi; */
+  /* extern hzoom[2],zoom[2],nlw,nsw; */
+       /*  nl3,ns3  not included ( not found via extern -- also not used) */
 
   int start_s;
   int samp,which_samp;
@@ -647,13 +685,14 @@ doDoubleInterp(ipixels, opixels, weights, interp_line)
   }
 }
 
-GetWeights(w, nlw, nsw, zl, zs)
+void GetWeights(double ***w, int nlw, int nsw, int zl, int zs)
+#if 0
      double ***w;
      int nlw,nsw,zl,zs;
-
+#endif
 {
   int i, j, cnt;
-  double X, Y, sigX, sigY, varX, varY, wY;
+  double X, Y, wY;
   float b,c;
   double a1,b1,c1,d1,a2,b2,c2,d2;
 
@@ -706,9 +745,10 @@ GetWeights(w, nlw, nsw, zl, zs)
 }
 
 
-Extrap_Byte(a, b)
+unsigned char Extrap_Byte(unsigned char a, unsigned char b)
+#if 0
    unsigned char a, b;
-
+#endif
  /***************************************************************/
  /* Extrap_Byte                                                 */
  /*   Provides a portable replacement for the ExtrapByte macro  */

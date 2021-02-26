@@ -2,6 +2,8 @@ procedure
 refgbl $echo
 refgbl $autousage
 body
+enable-log
+
 let $autousage="none"
 let _onfail="continue"
 let $echo="no"
@@ -17,8 +19,8 @@ let $echo="no"
 write "*** List labels and contents in upper left corner"
 write " "
 let $echo="yes"
-label-list testvic
-list testvic nl=10 ns=10
+label-list testvic 'nousrtim
+list testvic nl=10 ns=10 'nousrtim
 
 let $echo="no"
 write "*** Convert test file into PICS format (pic file)"
@@ -36,8 +38,8 @@ let $echo="no"
 write "*** List labels and contents in upper left corner of result"
 write " "
 let $echo="yes"
-label-list testvic2
-list testvic2 nl=10 ns=10
+label-list testvic2 'nousrtim
+list testvic2 nl=10 ns=10 'nousrtim
 
 let $echo="no"
 write "*** Compare the two pictures"
@@ -55,8 +57,8 @@ let $echo="no"
 write "*** List labels and contents in with cropped size"
 write " "
 let $echo="yes"
-label-list testvic2
-list testvic2 nl=10 ns=10
+label-list testvic2 'nousrtim
+list testvic2 nl=10 ns=10 'nousrtim
 
 
 let $echo="no"
@@ -69,8 +71,8 @@ write "*** Convert 3D test file into PICS format (pic file)"
 write " "
 let $echo="yes"
 gen testvic3d 200 200 3
-label-list testvic3d
-list testvic3d nl=10 ns=10 
+label-list testvic3d 'nousrtim
+list testvic3d nl=10 ns=10  'nousrtim
 vic2pic testvic3d testpic3d
 
 let $echo="no"
@@ -83,8 +85,9 @@ let $echo="no"
 write "*** Compare the two pictures"
 write " "
 let $echo="yes"
-label-list testvic3d2
-list testvic3d2 nl=10 ns=10 
+label-list testvic3d2 'nousrtim
+list testvic3d2 nl=10 ns=10  'nousrtim
 difpic (testvic3d testvic3d2)
 
+disable-log
 end-proc

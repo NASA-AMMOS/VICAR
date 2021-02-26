@@ -228,7 +228,7 @@ c  10jan11 --lwk-- changed NAME to FILE in OPEN call for picky new linux compile
 C
 C_END
 C
-	LOGICAL*1 BOOM(720,170)
+	integer*1 BOOM(720,170)
 	CHARACTER*132 LABEL
 	character*80 filnam
 	integer iflag/0/

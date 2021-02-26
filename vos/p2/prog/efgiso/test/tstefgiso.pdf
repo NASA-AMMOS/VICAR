@@ -1,10 +1,18 @@
 procedure
 refgbl $echo
 body
+enable-log
+
 let $echo="yes"
 !
 ! for phobos
 efgiso out=(E.img,F.img,G.img,R.img) planet=phobos nl=180 ns=360
+
+list E.img sl=70 nl=40 ss=160 ns=40 'nousrtim
+list F.img sl=70 nl=40 ss=160 ns=40 'nousrtim
+list G.img sl=70 nl=40 ss=160 ns=40 'nousrtim
+list R.img sl=70 nl=40 ss=160 ns=40 'nousrtim
+
 !xvd E.img
 !xvd F.img
 !xvd G.img
@@ -40,5 +48,6 @@ efgiso out=(E.img,F.img,G.img,R.img) planet=phobos nl=180 ns=360
 !xvd SF.img
 !xvd SG.img
 !xvd SR.img
-!
+
+disable-log
 end-proc

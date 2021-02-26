@@ -52,7 +52,7 @@ First, the data sets are checked for GeoTIFF labels, and if they are
 present, a number of conditions must be satisfied or the program
 aborts:
 
-1.  any differences in mapping
+	1.  any differences in mapping
 2.  a difference in scale
 3.  a difference in image rotation with respect to North
 4.  an error of offset, the images must butt together geographically
@@ -76,10 +76,11 @@ As fast as VICAR can read and write the lines.
  COGNIZANT PROGRAMMER:   Barbara McGuffie    29 Oct 1999
  
  REVISION HISTORY
-  1999-10-29 AZ  Initial version
-  2007-12-29 WLB Switched to USES_ANSI_C AND LIB_CARTO; misc cleanup
-  2015-09-10 WLB Fixed headers for MIPL build
-  2016-01-13 WLB Replaced printfs with zifmessages
+  1999-10-29 AZ - Initial version
+  2007-12-29 WLB - Switched to USES_ANSI_C AND LIB_CARTO; misc cleanup
+  2015-09-10 WLB - Fixed headers for MIPL build
+  2016-01-13 WLB - Replaced printfs with zifmessages
+  2019-09-04 WLB - IDS-7922 - Initialized some variables.
   
 .LEVEL1
 .VARIABLE INP

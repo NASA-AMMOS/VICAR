@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "zvprintf.h"
 
 #define MTASKS 20			/* Max # of tasks for zlhinfo */
 #define LINES_PER_PAGE	53
@@ -49,6 +50,14 @@
 /*                  used to display real numbers (REAL, DOUB, COMP)     */
 /************************************************************************/
 
+static int data_type(char *type);
+static int pixel_size(char *type);
+static void movx(int itype, int type, int start, int end, int *ns, int inc, char *buf);
+static int all_zero(int type, char *buf, int ns);
+static void print_label(char *task, char *user, char *time);
+static void print_line(int type, int ns, char *buf, int header, int nspl, int pix_size, int accuracy, int col_width);
+static void print_one_line(int type, int ns, char *buf, int header, int accuracy, int col_width);
+
 void main44(void)
 {
   int i, status, unit, dum;
@@ -58,7 +67,7 @@ void main44(void)
   int binc, linc, sinc;
   int space;
   int shuffle, allzero, empty, tof, newstrip, inzero, newslice3;
-  int accuracy, nr_digits, col_width; /* # of digits to be displayed = NDIGITS */
+  int accuracy=0, nr_digits, col_width=0; /* # of digits to be displayed = NDIGITS */
   int nsi, nli, nbi;		/* # of samples, lines, bands in input image */
   int ssin, slin, sbin;		/* user given start sample, line, band       */
   int nsin, nlin, nbin;		/* user given # of samples, lines, bands     */
@@ -69,22 +78,26 @@ void main44(void)
   int sl3st, sl3n, sl3inc;
   int sl3ni;
   int sl1end;
-  int nspl1, nsx, nlx, llx, dumplines;
-  int ilx, sx, ssout, sstrip, estrip;
+  int nspl1, nsx, nlx, llx, dumplines=0;
+  int ilx, sx, sstrip, estrip;
   int b2, l2;
-  int slice1, slice2, slice3;
-  int t1, t2, dt, si, s1, nso, tx;
-  int oline;
+  int slice1, slice2=0, slice3;
+  int t1, t2, dt, si, s1, nso=0, tx;
+  int oline=0;
   int nl[3];
-  int itype, jtype;
-  int psout, psin;
-  char *buf;			/* pointer to data buffer */
-  char *n_cmd;
-  char *sl1_cmd, *sl2_cmd, *sl3_cmd;
+  int itype, jtype=0;
+  int psout=0, psin;
+  char *buf=NULL;			/* pointer to data buffer */
+  char *n_cmd=NULL;
+  char *sl1_cmd=NULL, *sl2_cmd=NULL, *sl3_cmd=NULL;
   char form[11], oform[11];
   char orgin[5], orgout[5];
-  char msgbuf[133];
-  char dmsg[80], temp[80];
+#define MSGBUF_SIZE 133
+  char msgbuf[MSGBUF_SIZE];
+#define DMSG_SIZE 80
+  char dmsg[DMSG_SIZE];
+#define TEMP_SIZE 80
+  char temp[TEMP_SIZE];
   char tasks[MTASKS][10];
   int inst[MTASKS];
   char user1[10], usern[10];
@@ -114,7 +127,7 @@ void main44(void)
 
   /************************************************************************/
 
-  zifmessage("list version 2017-03-29");
+  zifmessage("LIST version 2019-09-06");
 
   zveaction("SA", "");
 
@@ -139,9 +152,7 @@ void main44(void)
     if (!def)
       zvadd(unit, "u_nl", nl[0], "u_ns", nl[1], "u_nb", nl[2], NULL);
     else {  /* input file must have INSIZE param to figure out the size */
-      sprintf(msgbuf, " ** You must enter INSIZE if input file is unlabeled ** ");
-      zvmessage(msgbuf, "");
-      zabend();
+      zvnabend(MSGBUF_SIZE, " ** You must enter INSIZE if input file is unlabeled ** ");
     }
 
     zvparm("org", orgin, &count, &def, 0, 5);
@@ -161,9 +172,7 @@ void main44(void)
   itype = data_type(form);
   psin = pixel_size(form);	/* Pixel size in bytes of input data */
   if (psin <= 0) {
-    sprintf(msgbuf, " ** %s is an illegal input file format.", form);
-    zvmessage(msgbuf, "");
-    zabend();
+    zvnabend(MSGBUF_SIZE, " ** %s is an illegal input file format.", form);
   }
 
   /* Obtain output data format */
@@ -177,8 +186,7 @@ void main44(void)
     /* disable hex dump for double or comp inputs       BAM */
     if ( (itype == TYPE_DOUB || itype == TYPE_COMP) && jtype == TYPE_HEX )
       {
-	sprintf(msgbuf, " HEX DUMP disabled");
-	zvmessage(msgbuf, "");
+	zvnprintf(MSGBUF_SIZE, " HEX DUMP disabled");
 	if ( itype == TYPE_DOUB ) jtype = TYPE_DOUB;
 	if ( itype == TYPE_COMP ) jtype = TYPE_COMP;
       }
@@ -187,9 +195,7 @@ void main44(void)
     if ( jtype == 6 ) psout = psin;
 
     if (psout <= 0) {
-      sprintf(msgbuf, " ** %s is an illegal input file format.", oform);
-      zvmessage(msgbuf, "");
-      zabend();
+      zvnabend(MSGBUF_SIZE, " ** %s is an illegal input file format.", oform);
     }
   }
   else {		/* Format param not specified, so override with input*/
@@ -387,10 +393,10 @@ void main44(void)
   /* End parameter processing */
 
   if (nofeed)
-    sprintf(dmsg, "\n   %-8.8s samples are interpreted as %-8.8s data",
+    snprintf(dmsg, DMSG_SIZE, "\n   %-8.8s samples are interpreted as %-8.8s data",
 	    form, data[jtype]);
   else
-    sprintf(dmsg, "\f   %-8.8s samples are interpreted as %-8.8s data",
+    snprintf(dmsg, DMSG_SIZE, "\f   %-8.8s samples are interpreted as %-8.8s data",
 	    form, data[jtype]);
 
   if (display)
@@ -515,7 +521,7 @@ void main44(void)
     if (ilx == nlx)
       sx = llx;		/* last strip */
 
-    ssout = sl1st;
+    /* ssout = sl1st; */
     sstrip = slice1;
     estrip = sstrip + sx - 1;
 
@@ -600,8 +606,7 @@ void main44(void)
 	    if (newslice3 && (sl3ni != 1 || slice3 != 1)) {
 	      newslice3 = FALSE;
 	      zvmessage(" ***********", "");
-	      sprintf(msgbuf, "%s =%6d", band_heading, slice3);
-	      zvmessage(msgbuf, "");
+	      zvnprintf(MSGBUF_SIZE, "%s =%6d", band_heading, slice3);
 	      zvmessage(" ***********", "");
 	      oline += 3;
 	    }
@@ -636,7 +641,7 @@ void main44(void)
 		}
 
 	      for (tx = t1; tx <= t2; tx += dt) {
-		sprintf(temp, "%6d", tx);
+		snprintf(temp, TEMP_SIZE, "%6d", tx);
 		strncpy(msgbuf+si, temp, 6); 
 		si += outlen[jtype];
 	      }
@@ -649,8 +654,7 @@ void main44(void)
 	    if (jtype == TYPE_HEX)
 	      zvmessage(line_heading, "");
 	    else {
-	      sprintf(msgbuf, "  %s", line_heading);
-	      zvmessage(msgbuf, "");
+	      zvnprintf(MSGBUF_SIZE, "  %s", line_heading);
 	    }
 	    oline++;
 	  }		/* End of headings */
@@ -702,27 +706,21 @@ void main44(void)
 /* Print task, user, and date_time from an input file label		*/
 /************************************************************************/
 
-print_label(task, user, time)
-     char *task;
-     char *user;
-     char *time;
+void print_label(char *task, char *user, char *time)
+     /* char *task; */
+     /* char *user; */
+     /* char *time; */
 {
-  char line[80];
-
-  sprintf(line, " Task:%-8.8s  User:%-8.8s  Date_Time:%-24.24s", task, user, time);
-  zvmessage(line, "");
-
+  zvnprintf(80, " Task:%-8.8s  User:%-8.8s  Date_Time:%-24.24s", task, user, time);
 }
 
 /************************************************************************/
 /* Return type code for a given data type				*/
 /************************************************************************/
 
-int data_type(type)
-     char *type;
+int data_type(char *type)
+     /* char *type; */
 {
-  char line[80];
-
   if (strncmp(type, "HEX", 3) == 0)
     return TYPE_HEX;
   if (strncmp(type, "BYTE", 4) == 0)
@@ -742,20 +740,18 @@ int data_type(type)
   if (strncmp(type, "COMP", 4) == 0)
     return TYPE_COMP;
 
-  sprintf(line, " ** %-6.6s is an invalid data format.", type);
-  zvmessage(line, "");
+  zvnprintf(80, " ** %-6.6s is an invalid data format.", type);
 
+  return 0;
 }
 
 /************************************************************************/
 /* Return pixel size for a given data type				*/
 /************************************************************************/
 
-int pixel_size(type)
-     char *type;
+int pixel_size(char *type)
+     /* char *type; */
 {
-  char line[80];
-
   if (strncmp(type, "HEX", 3) == 0)
     return sizeof(unsigned char);
   if (strncmp(type, "BYTE", 4) == 0)
@@ -775,16 +771,17 @@ int pixel_size(type)
   if (strncmp(type, "COMP", 4) == 0)
     return sizeof(float) * 2;
 
-  sprintf(line, " ** %-6.6s is an invalid data format.", type);
-  zvmessage(line, "");
+  zvnprintf(80, " ** %-6.6s is an invalid data format.", type);
 
+  return 0;
 }
 
 /************************************************************************/
 /* Move a range of samples in a line buffer to the beginning of the buf	*/
 /************************************************************************/
 
-movx(itype, type, start, end, ns, inc, buf)
+void movx(int itype, int type, int start, int end, int *ns, int inc, char *buf)
+#if 0
      int itype;		/* input data type */
      int type;		/* jtype of buffer */
      int start;		/* start pixel offset */
@@ -792,9 +789,10 @@ movx(itype, type, start, end, ns, inc, buf)
      int *ns;		/* out: number of pixels moved */
      int inc;		/* increment */
      char *buf;		/* buffer */
+#endif
 {
   int i;
-  int hex;
+  int hex=0;
   unsigned char *bbuf;
   short int *sbuf;
   int *ibuf;
@@ -872,10 +870,12 @@ movx(itype, type, start, end, ns, inc, buf)
 /* Check to see if the buffer of the given type is all zero.		*/
 /************************************************************************/
 
-int all_zero(type, buf, ns)
+int all_zero(int type, char *buf, int ns)
+#if 0
      int type;		/* data type (jtype) */
      char *buf;		/* buffer */
      int ns;			/* number of pixels */
+#endif
 {
   int i;
   unsigned char *bbuf;
@@ -943,7 +943,8 @@ int all_zero(type, buf, ns)
 /* on the next line (without the header).				*/
 /************************************************************************/
 
-print_line(type, ns, buf, header, nspl, pix_size, accuracy, col_width)
+void print_line(int type, int ns, char *buf, int header, int nspl, int pix_size, int accuracy, int col_width)
+#if 0
      int type;			/* type of data */
      int ns;				/* number of samples */
      char *buf;			/* pixel buffer */
@@ -952,6 +953,7 @@ print_line(type, ns, buf, header, nspl, pix_size, accuracy, col_width)
      int pix_size;			/* size of pixels (only to avoid switch stmt) */
      int accuracy;                   /* # of precision digits */
      int col_width;                  /* width of output column*/
+#endif
 {
 
   while (ns > 0) {
@@ -968,18 +970,21 @@ print_line(type, ns, buf, header, nspl, pix_size, accuracy, col_width)
 /* Prints a line of data						*/
 /************************************************************************/
 
-print_one_line(type, ns, buf, header, accuracy, col_width)
+void print_one_line(int type, int ns, char *buf, int header, int accuracy, int col_width)
+#if 0
      int type;			/* type of data */
      int ns;				/* number of samples */
      char *buf;			/* pixel buffer */
      int header;			/* line number to print first (only if non-0) */
      int accuracy;                   /* # of precision digits */
      int col_width;                  /* width of output column*/
-
+#endif
 {
   int i, j;
-  char line[255];
-  char temp[80];
+  const int line_size = 255;
+  char line[line_size];
+  const int temp_size = 80;
+  char temp[temp_size];
   unsigned char *bbuf;
   short int *sbuf;
   int *ibuf;
@@ -990,7 +995,7 @@ print_one_line(type, ns, buf, header, accuracy, col_width)
   } *cbuf;
 
   if (header != 0)
-    sprintf(line, " %6d", header);
+    snprintf(line, line_size, " %6d", header);
   else
     strcpy(line, "       ");
 
@@ -1002,7 +1007,7 @@ print_one_line(type, ns, buf, header, accuracy, col_width)
     for (i=0; i<ns; i++) {		/* hex representation */
       if ((i % 4) == 0)
 	strcat(line, " ");
-      sprintf(temp, "%02X", bbuf[i]);
+      snprintf(temp, temp_size, "%02X", bbuf[i]);
       strcat(line, temp);
     }
     strcat(line, "  ");
@@ -1023,7 +1028,7 @@ print_one_line(type, ns, buf, header, accuracy, col_width)
     strcat(line, "    ");
     bbuf = (unsigned char *)buf;
     for (i=0; i<ns; i++) {
-      sprintf(temp, " %3d", bbuf[i]);
+      snprintf(temp, temp_size, " %3d", bbuf[i]);
       strcat(line, temp);
     }
     break;
@@ -1032,7 +1037,7 @@ print_one_line(type, ns, buf, header, accuracy, col_width)
     strcat(line, "    ");
     sbuf = (short int *)buf;
     for (i=0; i<ns; i++) {
-      sprintf(temp, "%6d", sbuf[i]);
+      snprintf(temp, temp_size, "%6d", sbuf[i]);
       strcat(line, temp);
     }
     break;
@@ -1041,7 +1046,7 @@ print_one_line(type, ns, buf, header, accuracy, col_width)
     strcat(line, "    ");
     ibuf = (int *)buf;
     for (i=0; i<ns; i++) {
-      sprintf(temp, "%11d", ibuf[i]);
+      snprintf(temp, temp_size, "%11d", ibuf[i]);
       strcat(line, temp);
     }
     break;
@@ -1051,7 +1056,7 @@ print_one_line(type, ns, buf, header, accuracy, col_width)
     strcat(line, "    ");
     fbuf = (float *)buf;
     for (i=0; i<ns; i++) {
-      sprintf(temp, " %*.*E",col_width, accuracy, fbuf[i]);
+      snprintf(temp, temp_size, " %*.*E",col_width, accuracy, fbuf[i]);
       strcat(line, temp);
     }
     break;
@@ -1060,7 +1065,7 @@ print_one_line(type, ns, buf, header, accuracy, col_width)
     strcat(line, "    ");
     dbuf = (double *)buf;
     for (i=0; i<ns; i++) {
-      sprintf(temp, " %*.*E", col_width, accuracy, dbuf[i]);
+      snprintf(temp, temp_size, " %*.*E", col_width, accuracy, dbuf[i]);
       strcat(line, temp);
     }
     break;
@@ -1069,9 +1074,9 @@ print_one_line(type, ns, buf, header, accuracy, col_width)
     strcat(line, "    ");
     cbuf = (struct complex *)buf;
     for (i=0; i<ns; i++) {
-      sprintf(temp, " %*.*E", col_width, accuracy, cbuf[i].r);
+      snprintf(temp, temp_size, " %*.*E", col_width, accuracy, cbuf[i].r);
       strcat(line, temp);
-      sprintf(temp, " %*.*E", col_width, accuracy, cbuf[i].i);
+      snprintf(temp, temp_size, " %*.*E", col_width, accuracy, cbuf[i].i);
       strcat(line, temp);
     }
     break;

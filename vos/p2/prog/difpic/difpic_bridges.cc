@@ -56,17 +56,17 @@ void print (const string& msg)
 extern "C" bool labeldifC()
 {
 	bool same=true;
-	int iunit1=-1, iunit2=-2, status=0;
+	int iunit1=-1, iunit2=-2;
 	try
 	{
 		const DifpicParameters * params = DifpicParameters::instance();
 		string differences;
 		if (params->labelDiffEnabled())
 		{
-			status = zvunit(&iunit1, const_cast< char *>("INP"), 1,NULL);
-			status = zvopen(iunit1,"OP", "READ", "OPEN_ACT", "SA","IO_ACT", "SA", NULL);
-			status = zvunit(&iunit2, const_cast<char*>("INP"), 2,NULL);
-			status = zvopen(iunit2,"OP", "READ", "OPEN_ACT", "SA","IO_ACT", "SA", NULL);
+			zvunit(&iunit1, const_cast< char *>("INP"), 1,NULL);
+			zvopen(iunit1,"OP", "READ", "OPEN_ACT", "SA","IO_ACT", "SA", NULL);
+			zvunit(&iunit2, const_cast<char*>("INP"), 2,NULL);
+			zvopen(iunit2,"OP", "READ", "OPEN_ACT", "SA","IO_ACT", "SA", NULL);
 			VicarImageLabel ld1(iunit1);
 			VicarImageLabel ld2(iunit2);
 
@@ -93,9 +93,9 @@ extern "C" bool labeldifC()
 		zvmessage(const_cast<char*>(e.what()),const_cast<char*>("Exception::labeldifC"));
 	}
 	if (iunit1!=-1)
-		status = zvclose(iunit1,NULL);
+		zvclose(iunit1,NULL);
 	if (iunit2!=-2)
-		status = zvclose(iunit2,NULL);
+		zvclose(iunit2,NULL);
 
 	return same;
 }
@@ -117,7 +117,7 @@ extern "C" void FTN_NAME2(labeldif, LABELDIF) (int *status)
 extern "C" bool histdifC()
 {
 	bool same=true;
-	int iunit1=-1, iunit2=-2, status=0;
+	int iunit1=-1, iunit2=-2;
 	try
 	{
 		const DifpicParameters * params = DifpicParameters::instance();
@@ -125,10 +125,10 @@ extern "C" bool histdifC()
 
 		if (params->historyDiffEnabled())
 		{
-			status = zvunit(&iunit1, const_cast<char*>("INP"), 1,NULL);
-			status = zvopen(iunit1,"OP", "READ", "OPEN_ACT", "SA","IO_ACT", "SA", NULL);
-			status = zvunit(&iunit2, const_cast<char*>("INP"), 2,NULL);
-			status = zvopen(iunit2,"OP", "READ", "OPEN_ACT", "SA","IO_ACT", "SA", NULL);
+			zvunit(&iunit1, const_cast<char*>("INP"), 1,NULL);
+			zvopen(iunit1,"OP", "READ", "OPEN_ACT", "SA","IO_ACT", "SA", NULL);
+			zvunit(&iunit2, const_cast<char*>("INP"), 2,NULL);
+			zvopen(iunit2,"OP", "READ", "OPEN_ACT", "SA","IO_ACT", "SA", NULL);
 			/*
 	VicarHistoryLabel ld1(iunit1);
 	VicarHistoryLabel ld2(iunit2);
@@ -148,9 +148,9 @@ extern "C" bool histdifC()
 		zvmessage(const_cast<char*>(e.what()),const_cast<char*>("Exception::histdifC"));
 	}
 	if (iunit1!=-1)
-		status = zvclose(iunit1,NULL);
+		zvclose(iunit1,NULL);
 	if (iunit2!=-2)
-		status = zvclose(iunit2,NULL);
+		zvclose(iunit2,NULL);
 	return same;
 }
 

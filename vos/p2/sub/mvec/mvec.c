@@ -43,7 +43,7 @@
 
 
 /* Create a vector of short int with length n */
-mve_sivectr mve_Sivectr ( int  n)
+mve_sivectr mve_Sivectr ( long int  n)
 {
   mve_sivectr v;
 
@@ -92,14 +92,14 @@ mve_sivectr mve_check_sivectr (mve_sivectr v, int n)
 mve_simatrix mve_Simatrix (  int  n,  int m)
 {
   mve_simatrix a;
-  int i, j;
+  long i, j;
 
-  a = (mve_simatrix) malloc ((n + 6) * sizeof (mve_sivectr));
+  a = (mve_simatrix) malloc ((n + 12) * sizeof (mve_sivectr));
   if (a == NULL) fprintf (stderr, "mve_Simatrix unable to allocate memory.");
-  a += 6;
+  a += 12;
   mve_srdim (a) = n;
   mve_scdim (a) = m;
-  *a = mve_Sivectr (n * m);
+  *a = mve_Sivectr ((long)n * (long)m);
   for (i = 0; i < n; i++)
     {
       a[i] = a[0] + i * m;
@@ -118,7 +118,7 @@ void mve_rm_simatrix ( mve_simatrix  *a_ptr)
     return;
 
   mve_rm_sivectr (a);
-  free (a - 6);
+  free (a - 12);
   
   *a_ptr = NULL;
   return;

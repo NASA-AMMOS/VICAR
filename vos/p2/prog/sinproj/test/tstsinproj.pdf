@@ -8,6 +8,8 @@ refgbl $syschar  !! Glogal variable for VAX_VMS or UNIX test
 refgbl $echo
 refgbl $autousage
 body
+enable-log
+
 let $autousage="none"
 let _onfail="continue"
 let $echo="no"
@@ -33,11 +35,11 @@ let $echo="no"
 write " Generation of GEN terrain"
 let $echo="yes"
 IF ($syschar(1) = "UNIX")
-   bin-init out=( terrain, weight )  +
-         filetype=gtei  oformat=half  +
-         lat_uc=90.0  lat_lc=-90.0  +
-         nl=128   ns=256   +
-         proj_lon=180.0  projsamp=128  
+!   bin-init out=(terrain,weight)  +
+!         filetype=gtei oformat=half +
+!         lat_uc=90.0 lat_lc=-90.0 +
+!         nl=128 ns=256 +
+!         proj_lon=180.0 projsamp=128
 
    gen out=gen8x16.out +
       nl=8     ns=16  format=half+
@@ -48,9 +50,12 @@ IF ($syschar(1) = "UNIX")
    label-switch inp=(terrain, size.out) +
                 out=terr.out
 
+   label-list terr.out 'nousrtim
+   list terr.out linc=10 sinc=10 'nousrtim
+
    ush rm gen8x16.out
    ush rm size.out
-   ush rm terrain
+!   ush rm terrain
 
    gen out=gen8x16.out +
        nl=8     ns=16  format=real+
@@ -61,11 +66,16 @@ IF ($syschar(1) = "UNIX")
    label-switch inp=(weight, size.out) +
                 out=wei.out
 
+   label-list wei.out 'nousrtim
+   list wei.out linc=10 sinc=10 'nousrtim
+
+   ush rm wei.out
    ush rm gen8x16.out
    ush rm size.out
-   ush rm weight
-!
+!   ush rm weight
+
 ELSE !! Must be VAX_VMS
+   barf
 !   
    bin-init out=( v2$scratch:terrain, v2$scratch:weight )  +
          filetype=gtei  oformat=half  +
@@ -116,9 +126,10 @@ let _onfail="continue"
 
 IF ($syschar(1) = "UNIX")
 
-   label-l terr.out
+   label-list terr.out 'nousrtim
    sinproj inp = terr.out out = tsta.out 
-   label-l tsta.out
+   label-list tsta.out 'nousrtim
+   list tsta.out linc=10 sinc=20 'nousrtim
 
    !----------------------------------------------------------------------------
    let $echo="no"
@@ -129,7 +140,8 @@ IF ($syschar(1) = "UNIX")
 
    sinproj inp = terr.out out = tstb.out  +
            ss = 75 ns = 100 
-   label-l tstb.out
+   label-list tstb.out 'nousrtim
+   list tstb.out linc=10 sinc=10 'nousrtim
 
    !----------------------------------------------------------------------------
    let $echo="no"
@@ -142,11 +154,13 @@ IF ($syschar(1) = "UNIX")
 
    sinproj inp = terr.out out = tstc.out  +
            lon_cl = 45  lon_cr = 90 
-   label-l tstc.out
+   label-list tstc.out 'nousrtim
+   list tstc.out linc=10 sinc=2 'nousrtim
 
    sinproj inp = terr.out out = tstc2.out  +
            lon_cl = 90  lon_cr = 135 
-   label-l tstc.out
+   label-list tstc2.out 'nousrtim
+   list tstc2.out linc=10 sinc=2 'nousrtim
 
    !----------------------------------------------------------------------------
    let $echo="no"
@@ -155,17 +169,21 @@ IF ($syschar(1) = "UNIX")
 
    sinproj inp = tstc.out out = tstd.out  +
                  sl = 25 nl = 100 
-   label-l tstd.out
+   label-list tstd.out 'nousrtim
+   list tstd.out linc=10 sinc=2 'nousrtim
    
    sinproj inp = tstc.out out = tste.out  +
                  lat_uc=45 lat_lc=15 
-   label-l tste.out
+   label-list tste.out 'nousrtim
+   list tste.out linc=2 sinc=2 'nousrtim
 
    sinproj inp = tstc.out out = tstg.out projsamp=15 
-   label-l tstg.out
+   label-list tstg.out 'nousrtim
+   list tstg.out linc=10 sinc=2 'nousrtim
 
    sinproj inp = tstc.out out = tsth.out proj_lon=80 
-   label-l tsth.out
+   label-list tsth.out 'nousrtim
+   list tsth.out linc=10 sinc=2 'nousrtim
 
    !----------------------------------------------------------------------------
    let $echo="no"
@@ -186,6 +204,7 @@ IF ($syschar(1) = "UNIX")
    sinproj inp = terr.out out = tstx.out projsamp=0 
    sinproj inp = terr.out out = tstx.out projsamp=-10 
 
+   ush rm terr.out
    ush rm tsta.out
    ush rm tstb.out
    ush rm tstc.out
@@ -197,9 +216,9 @@ IF ($syschar(1) = "UNIX")
 !
 ELSE !! Else must be VAX_VMS
 !   
-   label-l v2$scratch:terr.out
+   label-list v2$scratch:terr.out
    sinproj inp = v2$scratch:terr.out out = v2$scratch:tsta.out 
-   label-l v2$scratch:tsta.out
+   label-list v2$scratch:tsta.out
 
    !----------------------------------------------------------------------------
    let $echo="no"
@@ -210,7 +229,7 @@ ELSE !! Else must be VAX_VMS
 
    sinproj inp = v2$scratch:terr.out out = v2$scratch:tstb.out  +
            ss = 75 ns = 100 
-   label-l v2$scratch:tstb.out
+   label-list v2$scratch:tstb.out
 
    !----------------------------------------------------------------------------
    let $echo="no"
@@ -223,11 +242,11 @@ ELSE !! Else must be VAX_VMS
 
    sinproj inp = v2$scratch:terr.out out = v2$scratch:tstc.out  +
            lon_cl = 45  lon_cr = 90 
-   label-l v2$scratch:tstc.out
+   label-list v2$scratch:tstc.out
 
    sinproj inp = v2$scratch:terr.out out = v2$scratch:tstc2.out  +
            lon_cl = 90  lon_cr = 135 
-   label-l v2$scratch:tstc.out
+   label-list v2$scratch:tstc.out
 
    !----------------------------------------------------------------------------
    let $echo="no"
@@ -236,19 +255,19 @@ ELSE !! Else must be VAX_VMS
 
    sinproj inp = v2$scratch:tstc.out out = v2$scratch:tstd.out  +
                  sl = 25 nl = 100 
-   label-l v2$scratch:tstd.out
+   label-list v2$scratch:tstd.out
 
    sinproj inp = v2$scratch:tstc.out out = v2$scratch:tste.out  +
                  lat_uc=45 lat_lc=15 
-   label-l v2$scratch:tste.out
+   label-list v2$scratch:tste.out
 
    sinproj inp = v2$scratch:tstc.out out = v2$scratch:tstg.out +
            projsamp=15 
-   label-l v2$scratch:tstg.out
+   label-list v2$scratch:tstg.out
 
    sinproj inp = v2$scratch:tstc.out out = v2$scratch:tsth.out +
            proj_lon=80 
-   label-l v2$scratch:tsth.out
+   label-list v2$scratch:tsth.out
 
    !----------------------------------------------------------------------------
    let $echo="no"
@@ -285,4 +304,5 @@ END-IF !! Test for VAX_VMS or UNIX
 !
 let $echo="no"
 write " End SINPROJ test PDF"
+disable-log
 end-proc

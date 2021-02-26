@@ -55,6 +55,13 @@
  *========
  * Date         Who             Description
  * ============ =============== =============================================
+ * 18-Oct-2020  E. Sarkissian   Added INSTRUMENT_LIST_ID, CONFIGURATION_BITS,
+ *                              and CONFIGURATION_BAND
+ * 01-Oct-2019  Bob Deen        Added AverageFilterWindow
+ * 22-May-2019  Steven Lu       Added ColorDnScalingFactor and
+ *                              ColorDnScalingMethod.
+ * 01-May-2019  Steven Lu       Added RadiometricZenithScalingFactor, and
+ *                              RadiometricType.
  * 27-Mar-2018  Steven Lu       Added EncodedDisplayGamma
  * 02-Feb-2018  Steven Lu       Added ColorSpace, ColorComponent, and Illuminant
  * 21-Nov-2017	Bob Deen	Added TARGET_INSTRUMENT
@@ -225,6 +232,18 @@ static LblApiElement_typ	LabelTbl[] = {
                 LBL_OFFSET(LblDerivedImage_typ, ConfigurationBitId[7].Valid),
                 LBL_NO_RETURN,  LBL_SIZE(ConfigurationBitId[7].Value)},
 
+	{"CONFIGURATION_BITS",                  "INT",		LBL_OPTIONAL,
+		LBL_NO_CONT,	1,	1,	LBL_NULL,
+		LBL_OFFSET(LblDerivedImage_typ, ConfigurationBits.Value),
+		LBL_OFFSET(LblDerivedImage_typ, ConfigurationBits.Valid),
+		LBL_NO_RETURN,	LBL_SIZE(ConfigurationBits.Value)},
+
+	{"CONFIGURATION_BAND",                  "INT",		LBL_OPTIONAL,
+		LBL_NO_CONT,	1,	1,	LBL_NULL,
+		LBL_OFFSET(LblDerivedImage_typ, ConfigurationBand.Value),
+		LBL_OFFSET(LblDerivedImage_typ, ConfigurationBand.Valid),
+		LBL_NO_RETURN,	LBL_SIZE(ConfigurationBand.Value)},
+
 	{"DERIVED_IMAGE_TYPE",			"STRING",	LBL_OPTIONAL,
 		LBL_NO_CONT,	1,	1,	LBL_NULL,
 		LBL_OFFSET(LblDerivedImage_typ, DerivedImageType.Value),
@@ -344,6 +363,102 @@ static LblApiElement_typ	LabelTbl[] = {
                 LBL_OFFSET(LblDerivedImage_typ, InstrumentBandId[15].Value),
                 LBL_OFFSET(LblDerivedImage_typ, InstrumentBandId[15].Valid),
                 LBL_NO_RETURN,  LBL_SIZE(InstrumentBandId[15].Value)},   
+
+	{"INSTRUMENT_LIST_ID",                  "STRING",       LBL_OPTIONAL,
+                LBL_NO_CONT,    1,      1,      LBL_NULL,
+                LBL_OFFSET(LblDerivedImage_typ, InstrumentListId[0].Value),
+                LBL_OFFSET(LblDerivedImage_typ, InstrumentListId[0].Valid),
+                LBL_NO_RETURN,  LBL_SIZE(InstrumentListId[0].Value)},
+
+	{"INSTRUMENT_LIST_ID",                  "STRING",       LBL_OPTIONAL,
+                LBL_CONTINUE,   1,      2,      LBL_NULL,
+                LBL_OFFSET(LblDerivedImage_typ, InstrumentListId[1].Value),
+                LBL_OFFSET(LblDerivedImage_typ, InstrumentListId[1].Valid),
+                LBL_NO_RETURN,  LBL_SIZE(InstrumentListId[1].Value)},
+
+	{"INSTRUMENT_LIST_ID",                  "STRING",       LBL_OPTIONAL,
+                LBL_CONTINUE,   1,      3,      LBL_NULL,
+                LBL_OFFSET(LblDerivedImage_typ, InstrumentListId[2].Value),
+                LBL_OFFSET(LblDerivedImage_typ, InstrumentListId[2].Valid),
+                LBL_NO_RETURN,  LBL_SIZE(InstrumentListId[2].Value)},
+
+	{"INSTRUMENT_LIST_ID",                  "STRING",       LBL_OPTIONAL,
+                LBL_CONTINUE,   1,      4,      LBL_NULL,
+                LBL_OFFSET(LblDerivedImage_typ, InstrumentListId[3].Value),
+                LBL_OFFSET(LblDerivedImage_typ, InstrumentListId[3].Valid),
+                LBL_NO_RETURN,  LBL_SIZE(InstrumentListId[3].Value)},
+
+	{"INSTRUMENT_LIST_ID",                  "STRING",       LBL_OPTIONAL,
+                LBL_CONTINUE,   1,      5,      LBL_NULL,
+                LBL_OFFSET(LblDerivedImage_typ, InstrumentListId[4].Value),
+                LBL_OFFSET(LblDerivedImage_typ, InstrumentListId[4].Valid),
+                LBL_NO_RETURN,  LBL_SIZE(InstrumentListId[4].Value)},
+
+	{"INSTRUMENT_LIST_ID",                  "STRING",       LBL_OPTIONAL,
+                LBL_CONTINUE,   1,      6,      LBL_NULL,
+                LBL_OFFSET(LblDerivedImage_typ, InstrumentListId[5].Value),
+                LBL_OFFSET(LblDerivedImage_typ, InstrumentListId[5].Valid),
+                LBL_NO_RETURN,  LBL_SIZE(InstrumentListId[5].Value)},
+
+	{"INSTRUMENT_LIST_ID",                  "STRING",       LBL_OPTIONAL,
+                LBL_CONTINUE,   1,      7,      LBL_NULL,
+                LBL_OFFSET(LblDerivedImage_typ, InstrumentListId[6].Value),
+                LBL_OFFSET(LblDerivedImage_typ, InstrumentListId[6].Valid),
+                LBL_NO_RETURN,  LBL_SIZE(InstrumentListId[6].Value)},
+
+	{"INSTRUMENT_LIST_ID",                  "STRING",       LBL_OPTIONAL,
+                LBL_CONTINUE,   1,      8,      LBL_NULL,
+                LBL_OFFSET(LblDerivedImage_typ, InstrumentListId[7].Value),
+                LBL_OFFSET(LblDerivedImage_typ, InstrumentListId[7].Valid),
+                LBL_NO_RETURN,  LBL_SIZE(InstrumentListId[7].Value)},
+
+	{"INSTRUMENT_LIST_ID",                  "STRING",       LBL_OPTIONAL,
+                LBL_CONTINUE,   1,      9,      LBL_NULL,
+                LBL_OFFSET(LblDerivedImage_typ, InstrumentListId[8].Value),
+                LBL_OFFSET(LblDerivedImage_typ, InstrumentListId[8].Valid),
+                LBL_NO_RETURN,  LBL_SIZE(InstrumentListId[8].Value)},
+
+	{"INSTRUMENT_LIST_ID",                  "STRING",       LBL_OPTIONAL,
+                LBL_CONTINUE,   1,     10,      LBL_NULL,
+                LBL_OFFSET(LblDerivedImage_typ, InstrumentListId[9].Value),
+                LBL_OFFSET(LblDerivedImage_typ, InstrumentListId[9].Valid),
+                LBL_NO_RETURN,  LBL_SIZE(InstrumentListId[9].Value)},
+
+	{"INSTRUMENT_LIST_ID",                  "STRING",       LBL_OPTIONAL,
+                LBL_CONTINUE,   1,     11,      LBL_NULL,
+                LBL_OFFSET(LblDerivedImage_typ, InstrumentListId[10].Value),
+                LBL_OFFSET(LblDerivedImage_typ, InstrumentListId[10].Valid),
+                LBL_NO_RETURN,  LBL_SIZE(InstrumentListId[10].Value)},
+
+	{"INSTRUMENT_LIST_ID",                  "STRING",       LBL_OPTIONAL,
+                LBL_CONTINUE,   1,     12,      LBL_NULL,
+                LBL_OFFSET(LblDerivedImage_typ, InstrumentListId[11].Value),
+                LBL_OFFSET(LblDerivedImage_typ, InstrumentListId[11].Valid),
+                LBL_NO_RETURN,  LBL_SIZE(InstrumentListId[11].Value)},
+
+	{"INSTRUMENT_LIST_ID",                  "STRING",       LBL_OPTIONAL,
+                LBL_CONTINUE,   1,     13,      LBL_NULL,
+                LBL_OFFSET(LblDerivedImage_typ, InstrumentListId[12].Value),
+                LBL_OFFSET(LblDerivedImage_typ, InstrumentListId[12].Valid),
+                LBL_NO_RETURN,  LBL_SIZE(InstrumentListId[12].Value)},
+
+	{"INSTRUMENT_LIST_ID",                  "STRING",       LBL_OPTIONAL,
+                LBL_CONTINUE,   1,     14,      LBL_NULL,
+                LBL_OFFSET(LblDerivedImage_typ, InstrumentListId[13].Value),
+                LBL_OFFSET(LblDerivedImage_typ, InstrumentListId[13].Valid),
+                LBL_NO_RETURN,  LBL_SIZE(InstrumentListId[13].Value)},
+
+	{"INSTRUMENT_LIST_ID",                  "STRING",       LBL_OPTIONAL,
+                LBL_CONTINUE,   1,     15,      LBL_NULL,
+                LBL_OFFSET(LblDerivedImage_typ, InstrumentListId[14].Value),
+                LBL_OFFSET(LblDerivedImage_typ, InstrumentListId[14].Valid),
+                LBL_NO_RETURN,  LBL_SIZE(InstrumentListId[14].Value)},
+
+	{"INSTRUMENT_LIST_ID",                  "STRING",       LBL_OPTIONAL,
+                LBL_CONTINUE,   1,     16,      LBL_NULL,
+                LBL_OFFSET(LblDerivedImage_typ, InstrumentListId[15].Value),
+                LBL_OFFSET(LblDerivedImage_typ, InstrumentListId[15].Valid),
+                LBL_NO_RETURN,  LBL_SIZE(InstrumentListId[15].Value)},   
 
 	{"INVERSE_LUT_FILE_NAME",               "STRING",       LBL_OPTIONAL,
                 LBL_NO_CONT,    1,     1,       LBL_NULL,
@@ -651,6 +766,18 @@ static LblApiElement_typ	LabelTbl[] = {
 		LBL_OFFSET(LblDerivedImage_typ, ReferenceCoordSystemIndex[9].Valid),
 		LBL_NO_RETURN,	LBL_SIZE(ReferenceCoordSystemIndex[9].Value)},
 
+	{"REFERENCE_COORD_SYSTEM_INDEX",	"INT",		LBL_OPTIONAL,
+		LBL_CONTINUE,	1,	11,	LBL_NULL,
+		LBL_OFFSET(LblDerivedImage_typ, ReferenceCoordSystemIndex[10].Value),
+		LBL_OFFSET(LblDerivedImage_typ, ReferenceCoordSystemIndex[10].Valid),
+		LBL_NO_RETURN,	LBL_SIZE(ReferenceCoordSystemIndex[10].Value)},
+
+	{"REFERENCE_COORD_SYSTEM_INDEX",	"INT",		LBL_OPTIONAL,
+		LBL_CONTINUE,	1,	12,	LBL_NULL,
+		LBL_OFFSET(LblDerivedImage_typ, ReferenceCoordSystemIndex[11].Value),
+		LBL_OFFSET(LblDerivedImage_typ, ReferenceCoordSystemIndex[11].Valid),
+		LBL_NO_RETURN,	LBL_SIZE(ReferenceCoordSystemIndex[11].Value)},
+
 	{"REFERENCE_COORD_SYSTEM_SOLN_ID",	"STRING",	LBL_OPTIONAL,
 		LBL_NO_CONT,	1,	1,	LBL_NULL,
 		LBL_OFFSET(LblDerivedImage_typ, ReferenceCoordSystemSolnId.Value),
@@ -746,6 +873,105 @@ static LblApiElement_typ	LabelTbl[] = {
                 LBL_OFFSET(LblDerivedImage_typ, EncodedDisplayGamma.Value),
                 LBL_OFFSET(LblDerivedImage_typ, EncodedDisplayGamma.Valid),
                 LBL_NO_RETURN,  LBL_SIZE(EncodedDisplayGamma.Value)},
+
+	{"CORRELATION_PIXEL_COUNT",		"INT",		LBL_OPTIONAL,
+		LBL_NO_CONT,	1,	1,	LBL_NULL,
+		LBL_OFFSET(LblDerivedImage_typ, CorrelationPixelCount.Value),
+		LBL_OFFSET(LblDerivedImage_typ, CorrelationPixelCount.Valid),
+		LBL_NO_RETURN,	LBL_SIZE(CorrelationPixelCount.Value)},
+
+        {"CORRELATION_AVERAGE_SCALE",           "REAL",         LBL_OPTIONAL,
+                LBL_NO_CONT,    1,      1,      LBL_NULL,
+                LBL_OFFSET(LblDerivedImage_typ, CorrelationAverageScale.Value),
+                LBL_OFFSET(LblDerivedImage_typ, CorrelationAverageScale.Valid),
+                LBL_NO_RETURN, LBL_SIZE(CorrelationAverageScale.Value)},
+
+        {"CORRELATION_OVERLAP_PERCENTAGE",           "REAL",         LBL_OPTIONAL,
+                LBL_NO_CONT,    1,      1,      LBL_NULL,
+                LBL_OFFSET(LblDerivedImage_typ, CorrelationOverlapPercentage.Value),
+                LBL_OFFSET(LblDerivedImage_typ, CorrelationOverlapPercentage.Valid),
+                LBL_NO_RETURN, LBL_SIZE(CorrelationOverlapPercentage.Value)},
+
+        {"AVERAGE_FILTER_WINDOW",               "REAL",         LBL_OPTIONAL,
+                LBL_NO_CONT,    1,      1,      LBL_NULL,
+                LBL_OFFSET(LblDerivedImage_typ, AverageFilterWindow.Value),
+                LBL_OFFSET(LblDerivedImage_typ, AverageFilterWindow.Valid),
+                LBL_NO_RETURN, LBL_SIZE(AverageFilterWindow.Value)},
+
+        {"MIN_FILTER_WINDOW",                   "REAL",         LBL_OPTIONAL,
+                LBL_NO_CONT,    1,      1,      LBL_NULL,
+                LBL_OFFSET(LblDerivedImage_typ, MinFilterWindow.Value),
+                LBL_OFFSET(LblDerivedImage_typ, MinFilterWindow.Valid),
+                LBL_NO_RETURN, LBL_SIZE(MinFilterWindow.Value)},
+
+        {"MAX_FILTER_WINDOW",                   "REAL",         LBL_OPTIONAL,
+                LBL_NO_CONT,    1,      1,      LBL_NULL,
+                LBL_OFFSET(LblDerivedImage_typ, MaxFilterWindow.Value),
+                LBL_OFFSET(LblDerivedImage_typ, MaxFilterWindow.Valid),
+                LBL_NO_RETURN, LBL_SIZE(MaxFilterWindow.Value)},
+
+        {"RAD_ZENITH_SCALING_FACTOR",           "REAL",         LBL_OPTIONAL,
+                LBL_NO_CONT,    1,      1,      LBL_NULL,
+                LBL_OFFSET(LblDerivedImage_typ, 
+                                          RadiometricZenithScalingFactor.Value),
+                LBL_OFFSET(LblDerivedImage_typ, 
+                                          RadiometricZenithScalingFactor.Valid),
+                LBL_NO_RETURN,  LBL_SIZE(RadiometricZenithScalingFactor.Value)},
+
+        {"RADIOMETRIC_TYPE",                    "STRING",       LBL_OPTIONAL,
+                LBL_NO_CONT,    1,      1,      LBL_NULL,
+                LBL_OFFSET(LblDerivedImage_typ, RadiometricType.Value),
+                LBL_OFFSET(LblDerivedImage_typ, RadiometricType.Valid),
+                LBL_NO_RETURN,  LBL_SIZE(RadiometricType.Value)},
+
+        {"COLOR_DN_SCALING_FACTOR",             "REAL",         LBL_OPTIONAL,
+                LBL_NO_CONT,    1,      1,      LBL_NULL,
+                LBL_OFFSET(LblDerivedImage_typ, ColorDnScalingFactor.Value),
+                LBL_OFFSET(LblDerivedImage_typ, ColorDnScalingFactor.Valid),
+                LBL_NO_RETURN,  LBL_SIZE(ColorDnScalingFactor.Value)},
+
+        {"COLOR_DN_SCALING_METHOD",             "STRING",       LBL_OPTIONAL,
+                LBL_NO_CONT,    1,      1,      LBL_NULL,
+                LBL_OFFSET(LblDerivedImage_typ, ColorDnScalingMethod.Value),
+                LBL_OFFSET(LblDerivedImage_typ, ColorDnScalingMethod.Valid),
+                LBL_NO_RETURN,  LBL_SIZE(ColorDnScalingMethod.Value)},
+        {"ATMOSPHERIC_OPACITY",                 "REAL",         LBL_OPTIONAL,
+                LBL_NO_CONT,    1,      1,      LBL_NULL,
+                LBL_OFFSET(LblDerivedImage_typ, AtmosphericOpacity.Value),
+                LBL_OFFSET(LblDerivedImage_typ, AtmosphericOpacity.Valid),
+                LBL_NO_RETURN,  LBL_SIZE(AtmosphericOpacity.Value)},
+        {"ATMOSPHERIC_OPACITY_REFERENCE",       "REAL",         LBL_OPTIONAL,
+                LBL_NO_CONT,    1,      1,      LBL_NULL,
+                LBL_OFFSET(LblDerivedImage_typ, AtmosphericOpacityReference.Value),
+                LBL_OFFSET(LblDerivedImage_typ, AtmosphericOpacityReference.Valid),
+                LBL_NO_RETURN,  LBL_SIZE(AtmosphericOpacityReference.Value)},
+
+        {"SUPPLEMENTAL_MASK_FILE",	       "STRING",       LBL_OPTIONAL,
+                LBL_NO_CONT,    1,      1,      LBL_NULL,
+                LBL_OFFSET(LblDerivedImage_typ, SupplementalMaskFile.Value),
+                LBL_OFFSET(LblDerivedImage_typ, SupplementalMaskFile.Valid),
+                LBL_NO_RETURN,  LBL_SIZE(SupplementalMaskFile.Value)},
+
+        {"RESPONSIVITY_R",			"REAL",		LBL_OPTIONAL,
+                LBL_NO_CONT,    1,      1,      LBL_NULL,
+                LBL_OFFSET(LblDerivedImage_typ, ResponsivityR.Value),
+                LBL_OFFSET(LblDerivedImage_typ, ResponsivityR.Valid),
+                LBL_NO_RETURN,  LBL_SIZE(ResponsivityR.Value)},
+        {"RESPONSIVITY_G",			"REAL",		LBL_OPTIONAL,
+                LBL_NO_CONT,    1,      1,      LBL_NULL,
+                LBL_OFFSET(LblDerivedImage_typ, ResponsivityG.Value),
+                LBL_OFFSET(LblDerivedImage_typ, ResponsivityG.Valid),
+                LBL_NO_RETURN,  LBL_SIZE(ResponsivityG.Value)},
+        {"RESPONSIVITY_B",			"REAL",		LBL_OPTIONAL,
+                LBL_NO_CONT,    1,      1,      LBL_NULL,
+                LBL_OFFSET(LblDerivedImage_typ, ResponsivityB.Value),
+                LBL_OFFSET(LblDerivedImage_typ, ResponsivityB.Valid),
+                LBL_NO_RETURN,  LBL_SIZE(ResponsivityB.Value)},
+        {"RESPONSIVITY_PAN",			"REAL",		LBL_OPTIONAL,
+                LBL_NO_CONT,    1,      1,      LBL_NULL,
+                LBL_OFFSET(LblDerivedImage_typ, ResponsivityPan.Value),
+                LBL_OFFSET(LblDerivedImage_typ, ResponsivityPan.Valid),
+                LBL_NO_RETURN,  LBL_SIZE(ResponsivityPan.Value)},
 
 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
 

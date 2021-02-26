@@ -15,7 +15,7 @@ write "Generate a file with some labels first"
 Generate a file with some labels first
 gen t1 10 10
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 insert t1 t2
 Beginning VICAR task insert
@@ -36,7 +36,7 @@ write "Now list out the labels"
 Now list out the labels
 label-list t4 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File t4 ************
@@ -65,18 +65,18 @@ write "	-ADD -- add some label items to the existing file (nocopy)"
 	-ADD -- add some label items to the existing file (nocopy)
 label-add t4 items="slope=5.6, time=45 name='No name' mv=(1.2,3.5, 4.6,7.8,9)"
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 Keyword slope added
 Keyword time added
 Keyword name added
 Keyword mv added
 label-add t4 items="dslope=5.00000012"
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 Keyword dslope added
 label-list t4 'hist 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File t4 ************
@@ -100,12 +100,12 @@ DSLOPE=5.00000012
 ************************************************************
 label-add t4 items="comment='straight data copy' comment(2)='second comment'" task=insert inst=1
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 Keyword comment added
 Element 2 added to keyword comment
 label-list t4 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File t4 ************
@@ -138,18 +138,18 @@ DSLOPE=5.00000012
 ************************************************************
 label-add t4 items="proj=mercator center=(45,12.7) line=5 samp=5" property=tstmap
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 Keyword proj added
 Keyword center added
 Keyword line added
 Keyword samp added
 label-add t4 items="scale=10.0" prop=tstmap
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 Keyword scale added
 label-list t4 'prop 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File t4 ************
@@ -163,13 +163,13 @@ SCALE=10.0
 ************************************************************
 label-add t4 items="red=(1,2,3) green=(4,5,6) blue=(7,8,9)" prop=tstlut
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 Keyword red added
 Keyword green added
 Keyword blue added
 label-list t4 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File t4 ************
@@ -212,13 +212,13 @@ DSLOPE=5.00000012
 ************************************************************
 label-add t4 items="red=(11,12,13) green=(14,15,16) blue=(17,18,19)" prop=tstlut instance=2
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 Keyword red added
 Keyword green added
 Keyword blue added
 label-list t4 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File t4 ************
@@ -267,13 +267,13 @@ write " Update existing label"
  Update existing label
 label-add t4 items="proj=cylindrical samp=10 longitude=10.5" property=tstmap 'prop 'update
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 Keyword proj replaced
 Keyword samp replaced
 Keyword longitude replaced
 label-list t4 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File t4 ************
@@ -323,12 +323,12 @@ write " Now add items using data copy"
  Now add items using data copy
 label-add t4 t5 items="action=('LABEL-ADD', '-- copy option used') long=(1,4,5,6,7,8,9,10)"
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 Keyword action added
 Keyword long added
 label-list t5 'dump 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File t5 ************
@@ -376,7 +376,7 @@ GREEN=(14, 15, 16)
 BLUE=(17, 18, 19)
 TASK='GEN'
 USER='wlb'
-DAT_TIM='Thu Mar 30 13:34:41 2017'
+DAT_TIM='Fri Sep  6 11:06:25 2019'
 IVAL=0.0
 SINC=1.0
 LINC=1.0
@@ -384,16 +384,16 @@ BINC=1.0
 MODULO=0.0
 TASK='INSERT'
 USER='wlb'
-DAT_TIM='Thu Mar 30 13:34:41 2017'
+DAT_TIM='Fri Sep  6 11:06:25 2019'
 COMMENT=('straight data copy', 'second comment')
 TASK='STRETCH'
 USER='wlb'
-DAT_TIM='Thu Mar 30 13:34:41 2017'
+DAT_TIM='Fri Sep  6 11:06:25 2019'
 PARMS='AUTO-STRETCH:      1 to      0 and     18 to    255'
 PARMS2='ûÿ'
 TASK='INSERT'
 USER='wlb'
-DAT_TIM='Thu Mar 30 13:34:41 2017'
+DAT_TIM='Fri Sep  6 11:06:25 2019'
 SLOPE=5.6
 TIME=45
 NAME='No name'
@@ -401,24 +401,24 @@ MV=(1.2, 3.5, 4.6, 7.8, 9.0)
 DSLOPE=5.00000012
 TASK='LABEL'
 USER='wlb'
-DAT_TIM='Thu Mar 30 13:34:41 2017'
+DAT_TIM='Fri Sep  6 11:06:25 2019'
 ACTION=('LABEL-ADD', '-- copy option used')
 LONG=(1, 4, 5, 6, 7, 8, 9, 10)
  
 ************************************************************
 label-add t5 items="long(2)=(2,3)"
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 Elements 2 through 3 added to keyword long
 label-add t5 items="red(4)=4 green(4)=7 blue(4)=10" prop=tstlut
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 Element 4 added to keyword red
 Element 4 added to keyword green
 Element 4 added to keyword blue
 label-list t5 'dump 'pack 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File t5 ************
@@ -433,15 +433,15 @@ LONGITUDE=10.5  PROPERTY='TSTLUT'  RED=(1, 2, 3, 4)  GREEN=(4, 5, 6, 7)
 BLUE=(7, 8, 9, 10)  PROPERTY='TSTLUT'  RED=(11, 12, 13)  GREEN=(14, 15, 16)
 BLUE=(17, 18, 19)
 TASK='GEN'
-USER='wlb'  DAT_TIM='Thu Mar 30 13:34:41 2017'  IVAL=0.0  SINC=1.0
+USER='wlb'  DAT_TIM='Fri Sep  6 11:06:25 2019'  IVAL=0.0  SINC=1.0
 LINC=1.0  BINC=1.0  MODULO=0.0  TASK='INSERT'  USER='wlb'
-DAT_TIM='Thu Mar 30 13:34:41 2017'  COMMENT=('straight data copy', 
+DAT_TIM='Fri Sep  6 11:06:25 2019'  COMMENT=('straight data copy', 
 'second comment')  TASK='STRETCH'  USER='wlb'
-DAT_TIM='Thu Mar 30 13:34:41 2017'
+DAT_TIM='Fri Sep  6 11:06:25 2019'
 PARMS='AUTO-STRETCH:      1 to      0 and     18 to    255'  PARMS2='ûÿ'
-TASK='INSERT'  USER='wlb'  DAT_TIM='Thu Mar 30 13:34:41 2017'  SLOPE=5.6
+TASK='INSERT'  USER='wlb'  DAT_TIM='Fri Sep  6 11:06:25 2019'  SLOPE=5.6
 TIME=45  NAME='No name'  MV=(1.2, 3.5, 4.6, 7.8, 9.0)  DSLOPE=5.00000012
-TASK='LABEL'  USER='wlb'  DAT_TIM='Thu Mar 30 13:34:41 2017'
+TASK='LABEL'  USER='wlb'  DAT_TIM='Fri Sep  6 11:06:25 2019'
 ACTION=('LABEL-ADD', '-- copy option used')  LONG=(1, 2, 3, 4, 5, 6, 7, 8, 
 9, 10)
  
@@ -450,14 +450,14 @@ write " -CONCAT -- Add label sets to other images"
  -CONCAT -- Add label sets to other images
 gen t6
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 label-concat (t5,t6)
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 label-list t6 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File t6 ************
@@ -514,14 +514,14 @@ LONG=(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
 ************************************************************
 gen t6
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 label-concat (t5,t6) 'prop
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 label-list t6 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File t6 ************
@@ -558,14 +558,14 @@ MODULO=0.0
 ************************************************************
 gen t6
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 label-concat (t5,t6) task=stretch
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 label-list t6 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File t6 ************
@@ -590,14 +590,14 @@ PARMS2='ûÿ'
 ************************************************************
 gen t6
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 label-concat (t5,t6) t7 prop=tstlut instance=2
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 label-list t7 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File t7 ************
@@ -626,11 +626,11 @@ write " -DELETE -- Delete different items"
  -DELETE -- Delete different items
 label-delete t5 task=insert key=mv element=3 nelement=2
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 Elements 3 through 4 deleted from keyword MV
 label-list t5 'hist 'pack 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File t5 ************
@@ -649,7 +649,7 @@ ACTION=('LABEL-ADD', '-- copy option used')  LONG=(1, 2, 3, 4, 5, 6, 7, 8,
 ************************************************************
 label-delete t5 task=insert
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 Keyword COMMENT deleted
 History subset INSERT deleted
 Keyword SLOPE deleted
@@ -660,7 +660,7 @@ Keyword DSLOPE deleted
 History subset INSERT deleted
 label-list t5 'hist 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File t5 ************
@@ -680,7 +680,7 @@ LONG=(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
 ************************************************************
 label-delete t5 task=gen key=/ALL
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 Keyword IVAL deleted
 Keyword SINC deleted
 Keyword LINC deleted
@@ -688,7 +688,7 @@ Keyword BINC deleted
 Keyword MODULO deleted
 label-list t5 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File t5 ************
@@ -726,12 +726,12 @@ LONG=(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
 ************************************************************
 label-delete t5 key=(red,green) prop=tstlut element=1 nelement=1 instnces=2
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 Element 1 deleted from keyword RED
 Element 1 deleted from keyword GREEN
 label-list t5 'prop 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File t5 ************
@@ -754,7 +754,7 @@ BLUE=(17, 18, 19)
 ************************************************************
 label-delete t5 key=(red,green,blue) prop=tstlut element=1 nelement=1
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 Element 1 deleted from keyword RED
 Element 1 deleted from keyword GREEN
 Element 1 deleted from keyword BLUE
@@ -763,7 +763,7 @@ Element 1 deleted from keyword GREEN
 Element 1 deleted from keyword BLUE
 label-list t5 'prop 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File t5 ************
@@ -786,7 +786,7 @@ BLUE=(18, 19)
 ************************************************************
 label-delete t5 t6 key=/all prop=tstmap
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 Keyword CENTER deleted
 Keyword LINE deleted
 Keyword SCALE deleted
@@ -795,7 +795,7 @@ Keyword SAMP deleted
 Keyword LONGITUDE deleted
 label-list t6 'prop 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File t6 ************
@@ -812,7 +812,7 @@ BLUE=(18, 19)
 ************************************************************
 label-delete t6 'property
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 Property subset TSTMAP deleted
 Keyword RED deleted
 Keyword GREEN deleted
@@ -824,7 +824,7 @@ Keyword BLUE deleted
 Property subset TSTLUT deleted
 label-list t6 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File t6 ************
@@ -850,11 +850,11 @@ write " -REPLACE -- Replace specific label items"
  -REPLACE -- Replace specific label items
 label-repla t4 item="nl=5" 'sys
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 Keyword nl replaced
 label-list t4 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File t4 ************
@@ -902,11 +902,11 @@ DSLOPE=5.00000012
 ************************************************************
 label-repla t3 t4 "ival=9999" task=gen inst=1
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 Keyword ival replaced
 label-list t4 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File t4 ************
@@ -933,20 +933,20 @@ PARMS2='ûÿ'
 ************************************************************
 label-repla t5 item="long(5)=(50,60)"
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 Elements 5 through 6 replaced in keyword long
 label-repla t5 item="red(2)=30 green(2)=60" prop=tstlut
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 Element 2 replaced in keyword red
 Element 2 replaced in keyword green
 label-repla t5 item="blue(2)=(90,100)" prop=tstlut instance=2
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 Elements 2 through 3 replaced in keyword blue
 label-list t5 'pack 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File t5 ************
@@ -977,12 +977,12 @@ write " Now make everything single-valued by deleting elements > 1"
  Now make everything single-valued by deleting elements > 1
 label-delete t5 t6 key=/ALL element=2 nelement=-1 'hist
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 Element 2 deleted from keyword ACTION
 Elements 2 through 10 deleted from keyword LONG
 label-delete t6 key=/ALL element=2 nelement=-1 'prop
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 Element 2 deleted from keyword CENTER
 Elements 2 through 3 deleted from keyword RED
 Elements 2 through 3 deleted from keyword GREEN
@@ -990,7 +990,7 @@ Elements 2 through 3 deleted from keyword BLUE
 Elements 2 through 3 deleted from keyword BLUE
 label-list t6 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File t6 ************
@@ -1032,7 +1032,7 @@ Beginning VICAR task copy
  COPY VERSION 12-JUL-1993
 label-list t4 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File t4 ************
@@ -1061,12 +1061,12 @@ write " -REMOVE -- Remove the binary header"
  -REMOVE -- Remove the binary header
 label-remove t4 t1 'NOBINHEAD
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 write "	attempt to list should be successful"
 	attempt to list should be successful
 label-list t1 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File t1 ************
@@ -1096,12 +1096,12 @@ write " -REMOVE -- Remove the binary prefix"
  -REMOVE -- Remove the binary prefix
 label-remove t4 t1 'NOBINPREF
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 write "	attempt to list should be successful"
 	attempt to list should be successful
 label-list t1 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File t1 ************
@@ -1131,12 +1131,12 @@ write " -REMOVE -- Remove all the header"
  -REMOVE -- Remove all the header
 label-remove t4 t1
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 write "	attempt to list should cause an error"
 	attempt to list should cause an error
 label-list t1 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File t1 ************
@@ -1148,10 +1148,10 @@ write " -CREATE -- add a label then list it out"
  -CREATE -- add a label then list it out
 label-create t1 t6 nl=10 ns=10 comment="What a slick image"
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 label-list t6 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File t6 ************
@@ -1171,13 +1171,14 @@ write " -SWITCH -- gen a different size file then switch the labels"
  -SWITCH -- gen a different size file then switch the labels
 gen t1 5 5 linc=10
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
-list t1
+list t1 'nousrtim
 Beginning VICAR task list
+list version 2017-03-29
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Thu Mar 30 13:34:42 2017
+ Task:GEN       User:          Date_Time:                        
      Samp     1       3       5
    Line
       1       0   1   2   3   4
@@ -1187,13 +1188,14 @@ Beginning VICAR task list
       5      40  41  42  43  44
 label-switch (t5,t1) t2
 Beginning VICAR task label
-LABEL version 2017-03-30
-list t2
+LABEL version 2019-09-06
+list t2 'nousrtim
 Beginning VICAR task list
+list version 2017-03-29
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Thu Mar 30 13:34:41 2017
- Task:LABEL     User:wlb       Date_Time:Thu Mar 30 13:34:42 2017
+ Task:GEN       User:          Date_Time:                        
+ Task:LABEL     User:          Date_Time:                        
      Samp     1       3       5
    Line
       1       0   1   2   3   4
@@ -1203,7 +1205,7 @@ Beginning VICAR task list
       5      40  41  42  43  44
 label-list t2 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File t2 ************
@@ -1246,14 +1248,14 @@ write "Generate a 3-D file with some labels first"
 Generate a 3-D file with some labels first
 gen t1 10 10 3 'BIL
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 copy t1 t7
 Beginning VICAR task copy
  COPY VERSION 12-JUL-1993
 label-list t1 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File t1 ************
@@ -1277,7 +1279,7 @@ write "	attempt to list should be successful"
 	attempt to list should be successful
 label-list t2 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File t2 ************
@@ -1318,12 +1320,12 @@ write " -REMOVE -- Remove the binary prefix"
  -REMOVE -- Remove the binary prefix
 label-remove t1 t2 'NOBINPREF
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 write "	attempt to list should be successful"
 	attempt to list should be successful
 label-list t2 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File t2 ************
@@ -1348,12 +1350,12 @@ write " -REMOVE -- Remove the binary header and prefix"
  -REMOVE -- Remove the binary header and prefix
 label-remove t1 t2
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 write "	attempt to list should cause an error"
 	attempt to list should cause an error
 label-list t2 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File t2 ************
@@ -1365,10 +1367,10 @@ write " -CREATE -- add a label"
  -CREATE -- add a label
 label-create t2 t3 ns=10 nl=10 nb=3 org=BIL
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 label-list t3 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File t3 ************
@@ -1387,10 +1389,10 @@ write " -CREATE -- different host formats"
  -CREATE -- different host formats
 label-create t2 t3 ns=10 nl=10 nb=3 org=BIL host=VAX-VMS
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 label-list t3 'sys 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File t3 ************
@@ -1406,7 +1408,7 @@ LABEL version 2017-03-30
 ************************************************************
 label-list t3 'dump 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File t3 ************
@@ -1439,15 +1441,15 @@ EOCI1=0
 EOCI2=0
 TASK='LABEL'
 USER='wlb'
-DAT_TIM='Thu Mar 30 13:34:42 2017'
+DAT_TIM='Fri Sep  6 11:06:26 2019'
  
 ************************************************************
 label-create t2 t3 ns=10 nl=10 nb=3 org=BIL host=SUN-4
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 label-list t3 'sys 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File t3 ************
@@ -1463,7 +1465,7 @@ LABEL version 2017-03-30
 ************************************************************
 label-list t3 'dump 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File t3 ************
@@ -1496,22 +1498,22 @@ EOCI1=0
 EOCI2=0
 TASK='LABEL'
 USER='wlb'
-DAT_TIM='Thu Mar 30 13:34:42 2017'
+DAT_TIM='Fri Sep  6 11:06:26 2019'
  
 ************************************************************
 write " test handling long records. "
  test handling long records. 
 gen t1 10 200000
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 label-add t1 t4 items="slope=5.6"
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 Keyword slope added
 label-list t4 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File t4 ************
@@ -1537,7 +1539,7 @@ write "multi-input option and abend with -LIST"
 multi-input option and abend with -LIST
 label-list (t1 t2 t3 t4) 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File t1 ************
@@ -1605,7 +1607,7 @@ write "this should generate an error msg but no abend:"
 this should generate an error msg but no abend:
 label-list (t1 xxxx t3 t4) 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File t1 ************
@@ -1669,7 +1671,7 @@ write "this should generate an abend:"
 this should generate an abend:
 label-list xxxx  'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File xxxx ************
@@ -1680,7 +1682,7 @@ continue
 ush rm t1 t2 t3 t4 t5 t6 t7
 label-list "/project/test_work/testdata/gll/s0061000300.1" 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File /project/test_work/testdata/gll/s0061000300.1 ************
@@ -1745,12 +1747,12 @@ SOLRANGE=7.779091e+08
 ************************************************************
 label-remove "/project/test_work/testdata/gll/s0061000300.1" test.nolabel 'BINARY
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 write " attempt to list should cause error "
  attempt to list should cause error 
 label-list test.nolabel 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File test.nolabel ************
@@ -1760,10 +1762,10 @@ LABEL version 2017-03-30
 continue
 label-create test.nolabel test.vpds NL=800 NS=800 NLB=2 NBB=200 'BINARY
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 label-list test.vpds 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File test.vpds ************
@@ -1785,10 +1787,10 @@ DIFPIC version 06Oct11
 label-create test.nolabel test.binary nl=800 ns=800 nlb=2 nbb=200 'bin  +
 	bhost=vax-vms bltype="tstpds"
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 label-list test.binary 'sys 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File test.binary ************
@@ -1804,7 +1806,7 @@ LABEL version 2017-03-30
 ************************************************************
 label-list test.binary 'dump 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File test.binary ************
@@ -1837,16 +1839,16 @@ EOCI1=0
 EOCI2=0
 TASK='LABEL'
 USER='wlb'
-DAT_TIM='Thu Mar 30 13:34:43 2017'
+DAT_TIM='Fri Sep  6 11:06:27 2019'
  
 ************************************************************
 label-create test.nolabel test.binary nl=800 ns=800 nlb=2 nbb=200 'bin  +
 	bhost="vax-vms" brealfmt="vax" bltype="tstpds"
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 label-list test.binary 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File test.binary ************
@@ -1863,7 +1865,7 @@ LABEL version 2017-03-30
 ************************************************************
 label-list test.binary 'dump 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File test.binary ************
@@ -1896,22 +1898,22 @@ EOCI1=0
 EOCI2=0
 TASK='LABEL'
 USER='wlb'
-DAT_TIM='Thu Mar 30 13:34:43 2017'
+DAT_TIM='Fri Sep  6 11:06:27 2019'
  
 ************************************************************
 write "The following commands test the new binary features of LABEL"
 The following commands test the new binary features of LABEL
 label-add test.vpds test.added items="LIST=(1,2)"
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 Keyword LIST added
 label-add test.added items="test=binary" prop=tstprop
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 Keyword test added
 label-list test.added 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File test.added ************
@@ -1936,15 +1938,15 @@ DIFPIC version 06Oct11
  NUMBER OF DIFFERENT PIXELS =   0
 label-del test.added test.deleted keys="LIST" tasks="LABEL"
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 Keyword LIST deleted
 label-del test.deleted keys="TEST" prop=tstprop
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 Keyword TEST deleted
 label-list test.deleted 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File test.deleted ************
@@ -1968,10 +1970,10 @@ DIFPIC version 06Oct11
  NUMBER OF DIFFERENT PIXELS =   0
 label-switch (test.added,test.deleted) test.switch
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 label-list test.switch 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File test.switch ************

@@ -110,6 +110,5 @@ static void init_trans_inb();
 static void init_pixsizeb();
 
 void get_ssi_data_format();
-char ph2_aline[80];                /* For status messages, etc. One text line.   */
 
 /* end module */

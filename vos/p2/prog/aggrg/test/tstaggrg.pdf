@@ -28,6 +28,8 @@ local   aftestdata  type=string count=1
 refgbl $autousage
 refgbl $echo
 body
+enable-log
+
 let $autousage="none"
 let _onfail="stop"
 !check to see if mipl or cartlab for test images
@@ -85,4 +87,6 @@ ibis-list xxxagg4 cfor="%5d %5d %6s %5d %18.12f"
 let $echo="no"
 rm>
 ush rm ct
+
+disable-log
 end-proc

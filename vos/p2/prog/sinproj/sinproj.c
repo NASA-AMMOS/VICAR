@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "vicmain_c"
+#include "zifmessage.h"
 
 #define PI 	       3.14159265358979
 #define	MAXTASKS       200	/* Number of label levels to search */
@@ -27,7 +28,7 @@ void main44(void)
 {
    initialize_variables();
 
-   zifmessage ("SINPROJ version 31-OCT-94");
+   zifmessage ("SINPROJ version 2019-09-17");
 
    zveaction("SA", "");
 
@@ -135,8 +136,6 @@ void get_input_parms(void)
 
 void add_label_items(void)
 {
-   int status;
-
    /*----- adjust latitudes and longitudes to be at the edges of the pixels  */
    /*      instead of the centers,  which the program calculates from        */
 
@@ -145,12 +144,12 @@ void add_label_items(void)
    lat_uc += degppix/2;
    lat_lc -= degppix/2;
 
-   status = zladd(out,"HISTORY", "PROJ_LON", &proj_lon, "FORMAT","REAL", NULL);
-   status = zladd(out,"HISTORY", "LON_CL",   &lon_cl,   "FORMAT","REAL", NULL);
-   status = zladd(out,"HISTORY", "LON_CR",   &lon_cr,   "FORMAT","REAL", NULL);
-   status = zladd(out,"HISTORY", "LAT_UC",   &lat_uc,   "FORMAT","REAL", NULL);
-   status = zladd(out,"HISTORY", "LAT_LC",   &lat_lc,   "FORMAT","REAL", NULL);
-   status = zladd(out,"HISTORY", "PROJSAMP", &projsamp, "FORMAT","INT", NULL);
+   zladd(out,"HISTORY", "PROJ_LON", &proj_lon, "FORMAT","REAL", NULL);
+   zladd(out,"HISTORY", "LON_CL",   &lon_cl,   "FORMAT","REAL", NULL);
+   zladd(out,"HISTORY", "LON_CR",   &lon_cr,   "FORMAT","REAL", NULL);
+   zladd(out,"HISTORY", "LAT_UC",   &lat_uc,   "FORMAT","REAL", NULL);
+   zladd(out,"HISTORY", "LAT_LC",   &lat_lc,   "FORMAT","REAL", NULL);
+   zladd(out,"HISTORY", "PROJSAMP", &projsamp, "FORMAT","INT", NULL);
 
    return;
 }
@@ -163,7 +162,7 @@ void labelvalue(int unit, char *key, char *type, void *value, int size)
    int   instance[MAXTASKS],j;
    char  task[MAXTASKS][8];
    int   length;
-   int   status;
+   int   status = 0;
    int   numtask = MAXTASKS;
    char  message[81];
 

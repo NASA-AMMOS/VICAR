@@ -4,6 +4,8 @@ refgbl $autousage
 parm version string def="ibis-1"
 parm org string def="column"
 body
+enable-log
+
 !let _onfail="continue"
 let $autousage="none"
 let $echo="yes"
@@ -44,10 +46,10 @@ tieconv INP=a COLS=(1,2,3,4)  OUT=b2 +
 gen mgtest 10 10 SINC=40 LINC=40
 
 geomv (mgtest,b) mgtest2 SIZE=(1,1,10,10)
-list mgtest2
+list mgtest2 'nousrtim
 
 lgeom mgtest mgtest3 SIZE=(1,1,10,10) PARMS=b2
-list mgtest3
+list mgtest3 'nousrtim
 
 difpic (mgtest2,mgtest3)
 
@@ -130,4 +132,5 @@ ibis-list b2 'format
 !!  it is still experimental code.  See Al Zobrist or the Cart lab
 !!  for later versions.
 
+disable-log
 end-proc

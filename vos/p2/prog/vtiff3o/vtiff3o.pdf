@@ -187,6 +187,7 @@ REVISION HISTORY
    2017-02-28 WLB Added support for single-file, multi-band conversion.
    2017-06-02 WLB Removed unnecessary warning messages.
    2017-08-15 WLB Removed DEBUG from imake.
+   2019-09-05 WLB IDS-7922 - Initialized some variables; cleaned up -Wall warnings
 
 REFERENCES
 

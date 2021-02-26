@@ -279,6 +279,12 @@ COGNIZANT PROGRAMMER: W. L. Bunch
 REVISIONS:
   2015-02-24 WLB Removed VMS support. Added enable/disable-log to
                  tstnimscmm2.pdf. Fixed 64-bit bugs. Added missing headers.
+  2019-06-14 WLB IDS-7924 - Fixed erroneous format directives.
+  2019-08-01 WLB IDS-7923 - Replaced sprintf calls with zvnsprintf. Misc -Wall cleanup.
+                 There remain 291 incompatible pointer type warnings and 39
+		 implicit function definitions.
+  2019-09-06 WLB IDS-7922 - Initialized some variables.
+  2020-03-19 WLB IDS-8260 - Changed input buffer type for obscuration map from LOGICAL to INTEGER. Enhanced unit test.
 
 .LEVEL1
 

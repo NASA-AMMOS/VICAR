@@ -121,7 +121,8 @@ REFERENCES
 Original Programmer: A. L. Zobrist, 4 Aug. 1999
 Current Cognizant Programmer: B. A. McGuffie
 Revisions:
-  Fri Fri Jan 11 2008 wlb switched to USES_ANSI_C AND LIB_CARTO; misc cleanup
+  2008-01-11 WLB - switched to USES_ANSI_C AND LIB_CARTO; misc cleanup
+  2019-09-05 WLB - IDS-7922 - Initialized variable, cleaned up -Wall warnings
 
 .LEVEL1
 .VARI INP

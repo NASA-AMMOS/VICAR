@@ -38,6 +38,10 @@ HISTORY:
 9-1-98  J Lorre. 
 COGNIZANT PROGRAMMER:  Jean Lorre
 
+REVISIONS:
+  2019-07-17 WLB - IDS-7923: replaced sprintf/zvmessage calls with xvnprintf. Ignored 289 lines of -Wall warnings.
+  2019-08-07 WLB - IDS-7922: initialized some variables.
+
 .LEVEL1
 
 .VARI OUT

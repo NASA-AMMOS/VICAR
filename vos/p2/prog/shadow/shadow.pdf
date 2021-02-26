@@ -157,6 +157,9 @@ HISTORY:
 2016-05-04 Steven Lu Initial gammacorrection by Steven Lu.
 COGNIZANT PROGRAMMER: Steven Lu
 
+REVISIONS:
+  2019-08-06 Walt Bunch - IDS-7923 - Replaced sprintf calls, added enable-log to tst.pdf.
+
 .LEVEL1
 .VARI INP
 Input image. 

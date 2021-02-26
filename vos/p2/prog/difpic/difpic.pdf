@@ -152,27 +152,29 @@ RESTRICTIONS
  COGNIZANT PROGRAMMER:   Lucas Kamp
 
  REVISIONS:
-    12-91  SP   PORTED TO RUN ON BOTH UNIX AND VMS.
-     9-92  SP   Made buffer size 200000 bytes. Modified to handle 
+  1991-12    SP PORTED TO RUN ON BOTH UNIX AND VMS.
+  1992-09    SP Made buffer size 200000 bytes. Modified to handle 
                 all data formats.  CHANGED AVE VALS TO DISPLAY AS FLOAT.
                 CORRECTED "AVE DN OF PIX" TO "AVE VAL OF DIFFS"
-     3-93  SP   Modified to not use -2147483648 to work around Sun compiler.
+  1993-03    SP Modified to not use -2147483648 to work around Sun compiler.
                 Added ability to handle 3D files if SIZE field defaulted
                 and no output file specified.
-     7-94  SP   Allowed format="WORD" as alternative to HALF.
-     8-03  lwk  removed restrictions on NB, added SB parameter
-    11-03  lwk  added checks on size/format of input files
-    09-11  rrp  converted difpic to be a regular subroutine and not
-                a VICAR main44 subroutine. Modified the subroutine
-		to accept open input file unit numbers (instead of
-		opening the input files in the subroutine) and a return
-		status to indicate 0 if no differences are found or
-		1 if there are differences. Modiffed DPFPIC* subroutines
-		to return a status value as indicated above. Added new
-		parameters to this pdf for controlling the comparison of
-		labels, binary header, line prefix, for ignoring
-		label items and binary header fields, and the name of the
-		binary header fmt file and line prefix fmt files.
+  1994-07    SP Allowed format="WORD" as alternative to HALF.
+  2003-08    lwk removed restrictions on NB, added SB parameter
+  2003-11    lwk added checks on size/format of input files
+  2011-09    rrp converted difpic to be a regular subroutine and not
+                 a VICAR main44 subroutine. Modified the subroutine
+		 to accept open input file unit numbers (instead of
+		 opening the input files in the subroutine) and a return
+		 status to indicate 0 if no differences are found or
+		 1 if there are differences. Modiffed DPFPIC* subroutines
+		 to return a status value as indicated above. Added new
+		 parameters to this pdf for controlling the comparison of
+		 labels, binary header, line prefix, for ignoring
+		 label items and binary header fields, and the name of the
+		 binary header fmt file and line prefix fmt files.
+  2020-04-23 WLB Raised MAXBYTESPAR from 300000 to 500000.
+
 .LEVEL1
 .VARIABLE INP
 Input file names

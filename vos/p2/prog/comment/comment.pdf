@@ -95,8 +95,11 @@ RESTRICTIONS
 The comment text is limited to 79 characters.
 
 HISTORY
-02-JAN-95 CRS (CRI) Made portable for UNIX
-13-NOV-98 RRP       Changed ayear to be 4 digit.
+
+  1995-01-02 CRS (CRI) - Made portable for UNIX
+  1998-11-13 RRP - Changed ayear to be 4 digit.
+  2019-07-18 WLB - IDS-7923: replaced gets with fgets and sprintf with snprintf. Misc cleanup.
+
 .LEVEL1
 .VARIABLE MSG
 Message to display

@@ -2,6 +2,8 @@ procedure
 refgbl $echo
 refgbl $syschar
 body
+enable-log
+
 local PATH1 TYPE=STRING init="wms_test_work:[testdata.sitod1.test_data.images]"
 local PATH2 TYPE=STRING init="wms_test_work:[testdata.mipl.gll]"
 local PATH3 TYPE=STRING init="wms_test_work:[testdata.gll]"
@@ -24,30 +26,30 @@ let $echo="yes"
 Write " The Test Data are handled for both VMS and UNIX in this PDF. "
 
 tflight_label  &"path2"venus.img
-LABEL-LIST  &"path2"venus.img     
+LABEL-LIST  &"path2"venus.img     'nousrtim
 tflight_label  &"path2"venus2.img    
-LABEL-LIST  &"path2"venus2.img   
+LABEL-LIST  &"path2"venus2.img    'nousrtim
 tflight_label  &"path2"venus3.img    
-LABEL-LIST  &"path2"venus3.img    
+LABEL-LIST  &"path2"venus3.img     'nousrtim
 tflight_label  &"path1"s0061498500.1    
-LABEL-LIST  &"path1"s0061498500.1   
+LABEL-LIST  &"path1"s0061498500.1    'nousrtim
 tflight_label  &"path1"s0061510200.1    
-LABEL-LIST  &"path1"s0061510200.1    
+LABEL-LIST  &"path1"s0061510200.1     'nousrtim
 tflight_label  &"path1"s0061512000.1    
-LABEL-LIST  &"path1"s0061512000.1    
+LABEL-LIST  &"path1"s0061512000.1     'nousrtim
 tflight_label  &"path3"test_image_ict.udr	   
-LABEL-LIST  &"path3"test_image_ict.udr	   
+LABEL-LIST  &"path3"test_image_ict.udr	    'nousrtim
 tflight_label  &"path3"test_image_barc.udr	   
-LABEL-LIST  &"path3"test_image_barc.udr	   
+LABEL-LIST  &"path3"test_image_barc.udr	    'nousrtim
 tflight_label  &"path3"test_image_lossless.udr   
-LABEL-LIST  &"path3"test_image_lossless.udr  
+LABEL-LIST  &"path3"test_image_lossless.udr   'nousrtim
 
 !(FR 89354)
-label-list &"path5"s0165200300.20
+label-list &"path5"s0165200300.20 'nousrtim
 tflight_label  &"path5"s0165200300.20
 
 !placing a valid value for filter
-label-list &"path3"s1677721400.3
+label-list &"path3"s1677721400.3 'nousrtim
 label-replace &"path3"s1677721400.3 star.out "FILTER=3" TASK="TASK"
 tflight_label star.out
 
@@ -56,7 +58,7 @@ label-add star.out  stars.out "NSTARS = 5,+
 STAR1=(231,165,12,894),STAR2=(21,32,187,23),STAR3=(5,10,15,20),+
 STAR4=(1,2,3,5),STAR5=(9,4,8,3)" TASK="TASK"
 tflight_label stars.out
-label-list stars.out
+label-list stars.out 'nousrtim
 
 label-replace stars.out star.out "NSTARS = 4" TASK="TASK"
 tflight_label star.out 
@@ -81,26 +83,26 @@ tflight_label stars.out
 Write  "The file should not have an output: NON-SSI image "
 tflight_label INP= &"path4"mirandab.vio
 
-label-list &"path6"s0351305813.galsos
+label-list &"path6"s0351305813.galsos 'nousrtim
 tflight_label &"path6"s0351305813.galsos
 
 ! Y2K tests.  Check SCET value
-label-list &"PATH7"scet_jan_01_2000.img
+label-list &"PATH7"scet_jan_01_2000.img 'nousrtim
 tflight_label &"PATH7"scet_jan_01_2000.img
 
-label-list &"PATH7"scet_mar_01_2000.img
+label-list &"PATH7"scet_mar_01_2000.img 'nousrtim
 tflight_label &"PATH7"scet_mar_01_2000.img
 
-label-list &"PATH7"scet_dec_31_2000.img
+label-list &"PATH7"scet_dec_31_2000.img 'nousrtim
 tflight_label &"PATH7"scet_dec_31_2000.img
 
-label-list &"PATH7"scet_jan_01_2001.img
+label-list &"PATH7"scet_jan_01_2001.img 'nousrtim
 tflight_label &"PATH7"scet_jan_01_2001.img
 
-label-list &"PATH7"scet_mar_01_2001.img
+label-list &"PATH7"scet_mar_01_2001.img 'nousrtim
 tflight_label &"PATH7"scet_mar_01_2001.img
 
-label-list &"PATH7"scet_dec_31_2001.img
+label-list &"PATH7"scet_dec_31_2001.img 'nousrtim
 tflight_label &"PATH7"scet_dec_31_2001.img
 
 if ($syschar(1)="UNIX")
@@ -110,6 +112,14 @@ else
         dcl del stars.out;*
         dcl del star.out;*
 end-if
+
+disable-log
 end-proc
 
+.page
+PROGRAM HISTORY:
 
+Revisions:
+  2019-08-01 W. Bunch - IDS-7923 - Created flight_label.h for lablist.c.
+  	                Misc -Wall warning cleanup. Added NOUSRTIM param 
+			to help automated regression testing.

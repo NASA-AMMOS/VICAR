@@ -100,8 +100,7 @@ ssi_edr_line_typ *dest;
                 "NSAMPS", ns,
                 NULL);	
    if (status != SUCCESS) {
-     sprintf(ph2_aline,"get_gll_ph2_edr_ln> bad zvread, failing line = %d\n",line);
-     zvmessage(ph2_aline,0);
+     zvnprintf(80, "get_gll_ph2_edr_ln> bad zvread, failing line = %d\n", line);
    }
    zvsignal(unit,status,TRUE);
 
@@ -242,8 +241,8 @@ ssi_hdr_typ *dest;
 {
    unsigned char *buf,
                  *p;
-   int            recsize,i,status = SUCCESS,
-                  nrecs;   /* number of records to get */
+   int            recsize=0,i,status = SUCCESS,
+                  nrecs=0;   /* number of records to get */
 
    init_trans_inb(unit,byte_trans,half_trans,full_trans); 
    init_pixsizeb(unit,&byte_size,&half_size,&full_size);
@@ -374,8 +373,8 @@ ssi_hdr_typ *source;
 {
    unsigned char *buf, 
                  *p;
-   int            recsize,i,status = SUCCESS,
-                  nrecs;   /* number of records to get */
+   int            recsize=0,i,status = SUCCESS,
+                  nrecs=0;   /* number of records to get */
 
    init_trans_out(byte_trans,half_trans,full_trans);
    init_pixsizeb(unit,&byte_size,&half_size,&full_size);
@@ -757,33 +756,23 @@ int unit,
     *full_sz;
 {
    int status;
-   char ph2_aline[80];
  
    status = zvpixsizeb(byte_sz, "BYTE", unit);
    zvsignal(unit,status,TRUE);
-   if (byte_sz == 0) {
-     sprintf(ph2_aline,
-     "init_pixsizeb> error in byte pixel size determination, status %d",byte_sz);
-     zvmessage(ph2_aline,0);
-     zabend();
+   if (*byte_sz == 0) {
+     zvnabend(80, "init_pixsizeb> error in byte pixel size determination, status %d", status);
    }
 
    status = zvpixsizeb(half_sz, "HALF", unit);
    zvsignal(unit,status,TRUE);
-   if (half_sz == 0) {
-     sprintf(ph2_aline,
-    "init_pixsizeb> error in halfword pixel size determination, status %d",half_sz);
-     zvmessage(ph2_aline,0);
-     zabend();
+   if (*half_sz == 0) {
+     zvnabend(80, "init_pixsizeb> error in halfword pixel size determination, status %d", status);
    }
 
    status = zvpixsizeb(full_sz, "FULL", unit);
    zvsignal(unit,status,TRUE);
-   if (full_sz == 0) {
-     sprintf(ph2_aline,
-    "init_pixsizeb> error in fullword pixel size determination, status %d",full_sz);
-     zvmessage(ph2_aline,0);
-     zabend();
+   if (*full_sz == 0) {
+     zvnabend(80, "init_pixsizeb> error in fullword pixel size determination, status %d", status);
    }
 } /* end init_pixsizeb */
 

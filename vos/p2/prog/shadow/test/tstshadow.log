@@ -1,7 +1,6 @@
 shadow inp=/project/test_work/testdata/mer/1F483288473EFFCMUFP1214L0M1.IMG out=1F483288473EFFCMUFP1214L0M1_adaptive.IMG
 Beginning VICAR task shadow
-Shadow version 1.0.1
-
+SHADOW version 2019-08-06
 Image: /project/test_work/testdata/mer/1F483288473EFFCMUFP1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
@@ -14,8 +13,7 @@ Combine illumination image and reflectance image.
 Write output.
 shadow inp=/project/test_work/testdata/mer/1F490747543EFFCNY9P1214L0M1.IMG out=1F490747543EFFCNY9P1214L0M1_adaptive.IMG
 Beginning VICAR task shadow
-Shadow version 1.0.1
-
+SHADOW version 2019-08-06
 Image: /project/test_work/testdata/mer/1F490747543EFFCNY9P1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
@@ -28,8 +26,7 @@ Combine illumination image and reflectance image.
 Write output.
 shadow inp=/project/test_work/testdata/mer/1F483644096EFFCMX8P1214L0M1.IMG out=1F483644096EFFCMX8P1214L0M1_adaptive.IMG
 Beginning VICAR task shadow
-Shadow version 1.0.1
-
+SHADOW version 2019-08-06
 Image: /project/test_work/testdata/mer/1F483644096EFFCMX8P1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
@@ -42,8 +39,7 @@ Combine illumination image and reflectance image.
 Write output.
 shadow inp=/project/test_work/testdata/mer/1F498644828EFFCONGP1214L0M1.IMG out=1F498644828EFFCONGP1214L0M1_adaptive.IMG
 Beginning VICAR task shadow
-Shadow version 1.0.1
-
+SHADOW version 2019-08-06
 Image: /project/test_work/testdata/mer/1F498644828EFFCONGP1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
@@ -56,8 +52,7 @@ Combine illumination image and reflectance image.
 Write output.
 shadow inp=/project/test_work/testdata/mer/1F484710941EFFCNBHP1214L0M1.IMG out=1F484710941EFFCNBHP1214L0M1_adaptive.IMG
 Beginning VICAR task shadow
-Shadow version 1.0.1
-
+SHADOW version 2019-08-06
 Image: /project/test_work/testdata/mer/1F484710941EFFCNBHP1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
@@ -70,8 +65,7 @@ Combine illumination image and reflectance image.
 Write output.
 shadow inp=/project/test_work/testdata/mer/1F517554350EFFCQG7P1214L0M1.IMG out=1F517554350EFFCQG7P1214L0M1_adaptive.IMG
 Beginning VICAR task shadow
-Shadow version 1.0.1
-
+SHADOW version 2019-08-06
 Image: /project/test_work/testdata/mer/1F517554350EFFCQG7P1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
@@ -84,8 +78,7 @@ Combine illumination image and reflectance image.
 Write output.
 shadow inp=/project/test_work/testdata/mer/1F483288473EFFCMUFP1214L0M1.IMG out=1F483288473EFFCMUFP1214L0M1_global.IMG GAMMA=0.5
 Beginning VICAR task shadow
-Shadow version 1.0.1
-
+SHADOW version 2019-08-06
 Image: /project/test_work/testdata/mer/1F483288473EFFCMUFP1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
@@ -98,8 +91,7 @@ Combine illumination image and reflectance image.
 Write output.
 shadow inp=/project/test_work/testdata/mer/1F490747543EFFCNY9P1214L0M1.IMG out=1F490747543EFFCNY9P1214L0M1_global.IMG GAMMA=0.6
 Beginning VICAR task shadow
-Shadow version 1.0.1
-
+SHADOW version 2019-08-06
 Image: /project/test_work/testdata/mer/1F490747543EFFCNY9P1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
@@ -112,8 +104,7 @@ Combine illumination image and reflectance image.
 Write output.
 shadow inp=/project/test_work/testdata/mer/1F483644096EFFCMX8P1214L0M1.IMG out=1F483644096EFFCMX8P1214L0M1_global.IMG GAMMA=0.7
 Beginning VICAR task shadow
-Shadow version 1.0.1
-
+SHADOW version 2019-08-06
 Image: /project/test_work/testdata/mer/1F483644096EFFCMX8P1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
@@ -126,8 +117,7 @@ Combine illumination image and reflectance image.
 Write output.
 shadow inp=/project/test_work/testdata/mer/1F498644828EFFCONGP1214L0M1.IMG out=1F498644828EFFCONGP1214L0M1_global.IMG GAMMA=0.8
 Beginning VICAR task shadow
-Shadow version 1.0.1
-
+SHADOW version 2019-08-06
 Image: /project/test_work/testdata/mer/1F498644828EFFCONGP1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
@@ -140,8 +130,7 @@ Combine illumination image and reflectance image.
 Write output.
 shadow inp=/project/test_work/testdata/mer/1F484710941EFFCNBHP1214L0M1.IMG out=1F484710941EFFCNBHP1214L0M1_global.IMG GAMMA=0.9
 Beginning VICAR task shadow
-Shadow version 1.0.1
-
+SHADOW version 2019-08-06
 Image: /project/test_work/testdata/mer/1F484710941EFFCNBHP1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
@@ -154,8 +143,7 @@ Combine illumination image and reflectance image.
 Write output.
 shadow inp=/project/test_work/testdata/mer/1F517554350EFFCQG7P1214L0M1.IMG out=1F517554350EFFCQG7P1214L0M1_global.IMG GAMMA=1.0
 Beginning VICAR task shadow
-Shadow version 1.0.1
-
+SHADOW version 2019-08-06
 Image: /project/test_work/testdata/mer/1F517554350EFFCQG7P1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
@@ -169,8 +157,7 @@ Write output.
 shadow inp=/project/test_work/testdata/mer/1F483288473EFFCMUFP1214L0M1.IMG out=1F483288473EFFCMUFP1214L0M1_adaptive_sk.IMG sigma=0.+
 9 ksize=5
 Beginning VICAR task shadow
-Shadow version 1.0.1
-
+SHADOW version 2019-08-06
 Image: /project/test_work/testdata/mer/1F483288473EFFCMUFP1214L0M1.IMG
 
 Create gaussian 5 x 5 kernel with stand deviation equals 0.900000.
@@ -184,8 +171,7 @@ Write output.
 shadow inp=/project/test_work/testdata/mer/1F490747543EFFCNY9P1214L0M1.IMG out=1F490747543EFFCNY9P1214L0M1_adaptive_sk.IMG sigma=0.+
 7 ksize=3
 Beginning VICAR task shadow
-Shadow version 1.0.1
-
+SHADOW version 2019-08-06
 Image: /project/test_work/testdata/mer/1F490747543EFFCNY9P1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 0.700000.
@@ -199,8 +185,7 @@ Write output.
 shadow inp=/project/test_work/testdata/mer/1F483644096EFFCMX8P1214L0M1.IMG out=1F483644096EFFCMX8P1214L0M1_adaptive_sk.IMG sigma=1.+
 0 ksize=5
 Beginning VICAR task shadow
-Shadow version 1.0.1
-
+SHADOW version 2019-08-06
 Image: /project/test_work/testdata/mer/1F483644096EFFCMX8P1214L0M1.IMG
 
 Create gaussian 5 x 5 kernel with stand deviation equals 1.000000.
@@ -214,8 +199,7 @@ Write output.
 shadow inp=/project/test_work/testdata/mer/1F498644828EFFCONGP1214L0M1.IMG out=1F498644828EFFCONGP1214L0M1_adaptive_sk.IMG sigma=1.+
 1 ksize=3
 Beginning VICAR task shadow
-Shadow version 1.0.1
-
+SHADOW version 2019-08-06
 Image: /project/test_work/testdata/mer/1F498644828EFFCONGP1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.100000.
@@ -229,8 +213,7 @@ Write output.
 shadow inp=/project/test_work/testdata/mer/1F484710941EFFCNBHP1214L0M1.IMG out=1F484710941EFFCNBHP1214L0M1_adaptive_sk.IMG sigma=0.+
 8 ksize=7
 Beginning VICAR task shadow
-Shadow version 1.0.1
-
+SHADOW version 2019-08-06
 Image: /project/test_work/testdata/mer/1F484710941EFFCNBHP1214L0M1.IMG
 
 Create gaussian 7 x 7 kernel with stand deviation equals 0.800000.
@@ -244,8 +227,7 @@ Write output.
 shadow inp=/project/test_work/testdata/mer/1F517554350EFFCQG7P1214L0M1.IMG out=1F517554350EFFCQG7P1214L0M1_adaptive_sk.IMG sigma=0.+
 9 ksize=5
 Beginning VICAR task shadow
-Shadow version 1.0.1
-
+SHADOW version 2019-08-06
 Image: /project/test_work/testdata/mer/1F517554350EFFCQG7P1214L0M1.IMG
 
 Create gaussian 5 x 5 kernel with stand deviation equals 0.900000.
@@ -259,8 +241,7 @@ Write output.
 shadow inp=/project/test_work/testdata/mer/1F483288473EFFCMUFP1214L0M1.IMG out=1F483288473EFFCMUFP1214L0M1_adaptive.IMG out_illum=1+
 F483288473EFFCMUFP1214L0M1.illum
 Beginning VICAR task shadow
-Shadow version 1.0.1
-
+SHADOW version 2019-08-06
 Image: /project/test_work/testdata/mer/1F483288473EFFCMUFP1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
@@ -274,8 +255,7 @@ Write output.
 shadow inp=/project/test_work/testdata/mer/1F490747543EFFCNY9P1214L0M1.IMG out=1F490747543EFFCNY9P1214L0M1_adaptive.IMG out_illum=1+
 F490747543EFFCNY9P1214L0M1.illum
 Beginning VICAR task shadow
-Shadow version 1.0.1
-
+SHADOW version 2019-08-06
 Image: /project/test_work/testdata/mer/1F490747543EFFCNY9P1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
@@ -289,8 +269,7 @@ Write output.
 shadow inp=/project/test_work/testdata/mer/1F483644096EFFCMX8P1214L0M1.IMG out=1F483644096EFFCMX8P1214L0M1_adaptive.IMG out_illum=1+
 F483644096EFFCMX8P1214L0M1.illum
 Beginning VICAR task shadow
-Shadow version 1.0.1
-
+SHADOW version 2019-08-06
 Image: /project/test_work/testdata/mer/1F483644096EFFCMX8P1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
@@ -304,8 +283,7 @@ Write output.
 shadow inp=/project/test_work/testdata/mer/1F498644828EFFCONGP1214L0M1.IMG out=1F498644828EFFCONGP1214L0M1_adaptive.IMG out_illum=1+
 F498644828EFFCONGP1214L0M1.illum
 Beginning VICAR task shadow
-Shadow version 1.0.1
-
+SHADOW version 2019-08-06
 Image: /project/test_work/testdata/mer/1F498644828EFFCONGP1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
@@ -319,8 +297,7 @@ Write output.
 shadow inp=/project/test_work/testdata/mer/1F484710941EFFCNBHP1214L0M1.IMG out=1F484710941EFFCNBHP1214L0M1_adaptive.IMG out_illum=1+
 F484710941EFFCNBHP1214L0M1.illum
 Beginning VICAR task shadow
-Shadow version 1.0.1
-
+SHADOW version 2019-08-06
 Image: /project/test_work/testdata/mer/1F484710941EFFCNBHP1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
@@ -334,8 +311,7 @@ Write output.
 shadow inp=/project/test_work/testdata/mer/1F517554350EFFCQG7P1214L0M1.IMG out=1F517554350EFFCQG7P1214L0M1_adaptive.IMG out_illum=1+
 F517554350EFFCQG7P1214L0M1.illum
 Beginning VICAR task shadow
-Shadow version 1.0.1
-
+SHADOW version 2019-08-06
 Image: /project/test_work/testdata/mer/1F517554350EFFCQG7P1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
@@ -349,8 +325,7 @@ Write output.
 shadow inp=/project/test_work/testdata/mer/1F483288473EFFCMUFP1214L0M1.IMG out=1F483288473EFFCMUFP1214L0M1_adaptive.IMG out_reflect+
 =1F483288473EFFCMUFP1214L0M1.refl
 Beginning VICAR task shadow
-Shadow version 1.0.1
-
+SHADOW version 2019-08-06
 Image: /project/test_work/testdata/mer/1F483288473EFFCMUFP1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
@@ -364,8 +339,7 @@ Write output.
 shadow inp=/project/test_work/testdata/mer/1F490747543EFFCNY9P1214L0M1.IMG out=1F490747543EFFCNY9P1214L0M1_adaptive.IMG out_reflect+
 =1F490747543EFFCNY9P1214L0M1.refl
 Beginning VICAR task shadow
-Shadow version 1.0.1
-
+SHADOW version 2019-08-06
 Image: /project/test_work/testdata/mer/1F490747543EFFCNY9P1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
@@ -379,8 +353,7 @@ Write output.
 shadow inp=/project/test_work/testdata/mer/1F483644096EFFCMX8P1214L0M1.IMG out=1F483644096EFFCMX8P1214L0M1_adaptive.IMG out_reflect+
 =1F483644096EFFCMX8P1214L0M1.refl
 Beginning VICAR task shadow
-Shadow version 1.0.1
-
+SHADOW version 2019-08-06
 Image: /project/test_work/testdata/mer/1F483644096EFFCMX8P1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
@@ -394,8 +367,7 @@ Write output.
 shadow inp=/project/test_work/testdata/mer/1F498644828EFFCONGP1214L0M1.IMG out=1F498644828EFFCONGP1214L0M1_adaptive.IMG out_reflect+
 =1F498644828EFFCONGP1214L0M1.refl
 Beginning VICAR task shadow
-Shadow version 1.0.1
-
+SHADOW version 2019-08-06
 Image: /project/test_work/testdata/mer/1F498644828EFFCONGP1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
@@ -409,8 +381,7 @@ Write output.
 shadow inp=/project/test_work/testdata/mer/1F484710941EFFCNBHP1214L0M1.IMG out=1F484710941EFFCNBHP1214L0M1_adaptive.IMG out_reflect+
 =1F484710941EFFCNBHP1214L0M1.refl
 Beginning VICAR task shadow
-Shadow version 1.0.1
-
+SHADOW version 2019-08-06
 Image: /project/test_work/testdata/mer/1F484710941EFFCNBHP1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
@@ -424,8 +395,7 @@ Write output.
 shadow inp=/project/test_work/testdata/mer/1F517554350EFFCQG7P1214L0M1.IMG out=1F517554350EFFCQG7P1214L0M1_adaptive.IMG out_reflect+
 =1F517554350EFFCQG7P1214L0M1.refl
 Beginning VICAR task shadow
-Shadow version 1.0.1
-
+SHADOW version 2019-08-06
 Image: /project/test_work/testdata/mer/1F517554350EFFCQG7P1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
@@ -436,4 +406,4 @@ The program enters adaptive gamma brightness correction mode.
 Illumination image contrast enhancement.
 Combine illumination image and reflectance image.
 Write output.
-End-proc
+disable-log

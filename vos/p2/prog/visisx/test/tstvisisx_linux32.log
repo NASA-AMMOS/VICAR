@@ -2,11 +2,11 @@ write "This is the test file for Program VISISX"
 This is the test file for Program VISISX
 gen a.vic 100 100
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 label-l a.vic 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-05-28
 ************************************************************
  
         ************  File a.vic ************
@@ -83,7 +83,7 @@ OBJECT = QUBE
  CORE_ITEM_BYTES = 1
  CORE_ITEM_TYPE = PC_UNSIGNED_INTEGER
  SUFFIX_ITEMS = (0,0,0)
- PRODUCT_CREATION_DATE = 2018-02-27
+ PRODUCT_CREATION_DATE = 2019-06-14
  CORE_BASE = 0.0
  CORE_MULTIPLIER = 1.000000
 /* Core scaling is:  True_value = base + (multiplier * stored_value) */
@@ -119,11 +119,11 @@ END
  
 GROUP = VISISX
   VERSION_DATE = 2005-10-29
-  DATE_TIME = 2018-02-27T13:03:29
+  DATE_TIME = 2019-06-14T15:56:41
   NODE_NAME = "MIPL"
   VICAR_HISTORY = ("TASK='GEN'",
     "USER='wlb'",
-    "DAT_TIM='Tue Feb 27 13:03:29 2018'",
+    "DAT_TIM='Fri Jun 14 15:56:41 2019'",
     "IVAL=0.0",
     "SINC=1.0",
     "LINC=1.0",
@@ -194,7 +194,7 @@ Inverse mode:  VICAR files will be generated from ISIS cube
  Keyword MAX_SPACECRAFT_SOLAR_DISTANCE not found in cube label
 label-l a1.vic 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-05-28
 ************************************************************
  
         ************  File a1.vic ************
@@ -234,11 +234,11 @@ list version 2017-03-29
      54     102 103 104 105 106
 gen a.vic 100 100 'half
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 label-l a.vic 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-05-28
 ************************************************************
  
         ************  File a.vic ************
@@ -321,7 +321,7 @@ OBJECT = QUBE
  CORE_LOW_REPR_SATURATION =   -32767
  CORE_NULL =                  -32768
  SUFFIX_ITEMS = (0,0,0)
- PRODUCT_CREATION_DATE = 2018-02-27
+ PRODUCT_CREATION_DATE = 2019-06-14
  CORE_BASE = 0.0
  CORE_MULTIPLIER = 1.000000
 /* Core scaling is:  True_value = base + (multiplier * stored_value) */
@@ -355,11 +355,11 @@ END
  
 GROUP = VISISX
   VERSION_DATE = 2005-10-29
-  DATE_TIME = 2018-02-27T13:03:30
+  DATE_TIME = 2019-06-14T15:56:41
   NODE_NAME = "MIPL"
   VICAR_HISTORY = ("TASK='GEN'",
     "USER='wlb'",
-    "DAT_TIM='Tue Feb 27 13:03:30 2018'",
+    "DAT_TIM='Fri Jun 14 15:56:41 2019'",
     "IVAL=0.0",
     "SINC=1.0",
     "LINC=1.0",
@@ -430,7 +430,7 @@ Inverse mode:  VICAR files will be generated from ISIS cube
  Keyword MAX_SPACECRAFT_SOLAR_DISTANCE not found in cube label
 label-l a1.vic 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-05-28
 ************************************************************
  
         ************  File a1.vic ************
@@ -470,11 +470,11 @@ list version 2017-03-29
      54       102   103   104   105   106
 gen a.vic 100 100 'full
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 label-l a.vic 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-05-28
 ************************************************************
  
         ************  File a.vic ************
@@ -551,7 +551,7 @@ OBJECT = QUBE
  CORE_ITEM_BYTES = 4
  CORE_ITEM_TYPE = PC_INTEGER
  SUFFIX_ITEMS = (0,0,0)
- PRODUCT_CREATION_DATE = 2018-02-27
+ PRODUCT_CREATION_DATE = 2019-06-14
  CORE_BASE = 0.0
  CORE_MULTIPLIER = 1.000000
 /* Core scaling is:  True_value = base + (multiplier * stored_value) */
@@ -587,11 +587,11 @@ END
  
 GROUP = VISISX
   VERSION_DATE = 2005-10-29
-  DATE_TIME = 2018-02-27T13:03:30
+  DATE_TIME = 2019-06-14T15:56:42
   NODE_NAME = "MIPL"
   VICAR_HISTORY = ("TASK='GEN'",
     "USER='wlb'",
-    "DAT_TIM='Tue Feb 27 13:03:30 2018'",
+    "DAT_TIM='Fri Jun 14 15:56:42 2019'",
     "IVAL=0.0",
     "SINC=1.0",
     "LINC=1.0",
@@ -662,11 +662,11 @@ Inverse mode:  VICAR files will be generated from ISIS cube
  Keyword MAX_SPACECRAFT_SOLAR_DISTANCE not found in cube label
 gen a.vic 100 100 'real
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 label-l a.vic 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-05-28
 ************************************************************
  
         ************  File a.vic ************
@@ -749,7 +749,7 @@ OBJECT = QUBE
  CORE_LOW_REPR_SATURATION =   16#FF7FFFFC#
  CORE_NULL =                  16#FF7FFFFB#
  SUFFIX_ITEMS = (0,0,0)
- PRODUCT_CREATION_DATE = 2018-02-27
+ PRODUCT_CREATION_DATE = 2019-06-14
  CORE_BASE = 0.0
  CORE_MULTIPLIER = 1.000000
 /* Core scaling is:  True_value = base + (multiplier * stored_value) */
@@ -783,11 +783,11 @@ END
  
 GROUP = VISISX
   VERSION_DATE = 2005-10-29
-  DATE_TIME = 2018-02-27T13:03:30
+  DATE_TIME = 2019-06-14T15:56:42
   NODE_NAME = "MIPL"
   VICAR_HISTORY = ("TASK='GEN'",
     "USER='wlb'",
-    "DAT_TIM='Tue Feb 27 13:03:30 2018'",
+    "DAT_TIM='Fri Jun 14 15:56:42 2019'",
     "IVAL=0.0",
     "SINC=1.0",
     "LINC=1.0",
@@ -858,7 +858,7 @@ Inverse mode:  VICAR files will be generated from ISIS cube
  Keyword MAX_SPACECRAFT_SOLAR_DISTANCE not found in cube label
 label-l a1.vic 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-05-28
 ************************************************************
  
         ************  File a1.vic ************
@@ -906,11 +906,11 @@ write " "
  
 gen a.vic ns=10 nb=14 nl=18 'real 'bil
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 label-l a.vic 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-05-28
 ************************************************************
  
         ************  File a.vic ************
@@ -977,7 +977,7 @@ list version 2017-03-29
      16       2.500E+01   2.700E+01   2.900E+01   3.100E+01   3.300E+01
 gen back.vic ns=10 nb=2 nl=18 'real
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 list back.vic sinc=2 linc=3 'nousrtim
 Beginning VICAR task list
@@ -1063,7 +1063,7 @@ OBJECT = QUBE
  CORE_NULL =                  16#FF7FFFFB#
  SUFFIX_ITEMS = (0,2,0)
  SUFFIX_ITEM_TYPE = PC_REAL
- PRODUCT_CREATION_DATE = 2018-02-27
+ PRODUCT_CREATION_DATE = 2019-06-14
  CORE_BASE = 0.0
  CORE_MULTIPLIER = 1.000000
 /* Core scaling is:  True_value = base + (multiplier * stored_value) */
@@ -1097,11 +1097,11 @@ END
  
 GROUP = VISISX
   VERSION_DATE = 2005-10-29
-  DATE_TIME = 2018-02-27T13:03:30
+  DATE_TIME = 2019-06-14T15:56:42
   NODE_NAME = "MIPL"
   VICAR_HISTORY = ("TASK='GEN'",
     "USER='wlb'",
-    "DAT_TIM='Tue Feb 27 13:03:30 2018'",
+    "DAT_TIM='Fri Jun 14 15:56:42 2019'",
     "IVAL=0.0",
     "SINC=1.0",
     "LINC=1.0",
@@ -1172,7 +1172,7 @@ Inverse mode:  VICAR files will be generated from ISIS cube
  Keyword MAX_SPACECRAFT_SOLAR_DISTANCE not found in cube label
 label-l a1.vic 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-05-28
 ************************************************************
  
         ************  File a1.vic ************
@@ -1245,7 +1245,7 @@ list version 2017-03-29
      16       2.500E+01   2.700E+01   2.900E+01   3.100E+01   3.300E+01
 label-l back1.vic 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-05-28
 ************************************************************
  
         ************  File back1.vic ************

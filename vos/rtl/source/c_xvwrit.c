@@ -31,7 +31,7 @@ int c_xvwrit(int unit, char *buffer)
       }
    }
 
-#if RTL_USE_PROTO
+#if RTL_USE_COMPRESSION
    /* If compressed, call the compression write program. */
    if (COMPRESSED) {
       bufstate = (struct bufstate *)CURRENT_IP_VALUE(BUFSTATE);

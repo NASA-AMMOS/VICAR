@@ -546,7 +546,7 @@ double dot(const DoubleArray3D& D) const
     if((i < begin)||(i  > end))
     {
     printf("Array index %d out of bounds \n",coordinate);
-    printf("Offending index value %d : Acceptable Range [%d, %d] \n",i, begin, end);
+    printf("Offending index value %ld : Acceptable Range [%ld, %ld] \n",i, begin, end);
     }}
 #else
 static void boundsCheck(long, long, long, int){}
@@ -558,15 +558,15 @@ static void boundsCheck(long, long, long, int){}
     {
     if(Msize1 != Msize2)
     {
-		printf("1st Dimension Sizes Are Incompatable  %d != %d \n" , Msize1, Msize2);
+		printf("1st Dimension Sizes Are Incompatable  %ld != %ld \n" , Msize1, Msize2);
     }
 	if(Nsize1 != Nsize2)
     {
-		printf("2nd Dimension Sizes Are Incompatable  %d != %d \n" , Nsize1, Nsize2);
+		printf("2nd Dimension Sizes Are Incompatable  %ld != %ld \n" , Nsize1, Nsize2);
     }
 	if(Psize1 != Psize2)
     {
-		printf("3nd Dimension Sizes Are Incompatable  %d != %d \n" , Psize1, Psize2);
+		printf("3nd Dimension Sizes Are Incompatable  %ld != %ld \n" , Psize1, Psize2);
     }
     }
 #else

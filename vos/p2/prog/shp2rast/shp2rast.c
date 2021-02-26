@@ -9,6 +9,7 @@
 #include "zifmessage.h"
 #include "zmabend.h"
 #include "shapefil.h"
+#include "zvprintf.h"
 #include "gems.h"
 #include "concave.h"
 
@@ -18,9 +19,27 @@ static int margin = 0;
 
 #define halfPixelWidthInDegrees (1.0 / (2.0 * pixPerDeg))
 
-static int rasterColor;
+static int rasterColor = 0;
 void drawProc(int y, int xl, int xr) {
   memset (cell + y * (pixPerDeg + margin) + xl, rasterColor, sizeof (char) * (xr - xl + 1));
+}
+
+static void dotproc(int x, int y) {
+  if (x >=0 && y >= 0 && x < (pixPerDeg + margin) && y < (pixPerDeg + margin))
+    cell[y * (pixPerDeg + margin) + x] = rasterColor;
+}
+
+void drawLine(int nvert,		/* number of vertices */
+	      Point2 *points) {		/* vertices of polygon */
+  int vert, x1, x2, y1, y2;
+
+  for (vert = 0; vert < nvert - 1; ++vert) {
+    x1 = points[vert].x;
+    y1 = points[vert].y;
+    x2 = points[vert + 1].x;
+    y2 = points[vert + 1].y;
+    digline(x1, y1, x2, y2, dotproc);
+  }
 }
 
 void main44(void)
@@ -35,9 +54,7 @@ void main44(void)
   int nEntities, nShapetype;
   double xyzmMin [4], xyzmMax [4];
 
-  char msgBuf [1000];
-
-  char dataPresent [360 * 180];
+  char dataPresent [360 * 181];
 
   int entity;
   int vertex;
@@ -48,8 +65,9 @@ void main44(void)
 
   int minLat, maxLat, minLon, maxLon;
   int fg, bg;
+  int nofill;
 
-  zifmessage ("shp2rast version 2017-06-30");
+  zifmessage ("shp2rast version 2019-07-18");
 
   /* fetch params */
   zvparm ("shp", inpfilename, &parmct, &parmdf, 1, 99);
@@ -63,6 +81,7 @@ void main44(void)
   zvp ("bg", & bg, & parmct);
   zvp ("pixPerDeg", & pixPerDeg, & parmct);
   margin = zvptst("margin");
+  nofill = zvptst("nofill");
 
   cell = (char *) malloc(sizeof(char) * (pixPerDeg + margin) * (pixPerDeg + margin));
 
@@ -81,53 +100,50 @@ void main44(void)
   maxLon += 180;		/* ditto */
 
   /* open shape input */
-  if (! (shpHandle = SHPOpen (inpfilename, "rb"))) {
-    sprintf (msgBuf, "error opening %s for input", inpfilename);
-    zmabend (msgBuf);
-  }   
+  if (! (shpHandle = SHPOpen (inpfilename, "rb")))
+    zvnabend(1000, "error opening %s for input", inpfilename);
   
   SHPGetInfo (shpHandle, & nEntities, & nShapetype, xyzmMin, xyzmMax);
-  sprintf (msgBuf, "shp2rast: nEntities==%d", nEntities);
-  zifmessage (msgBuf);  
+  zvnprintf (1000, "shp2rast: nEntities==%d", nEntities);
 
   /* check shape type */
   switch (nShapetype) {
   case SHPT_NULL:
-    sprintf (msgBuf, "%s contains an unsupported shape entity type: NULL", inpfilename); zmabend (msgBuf);
+    zvnabend (1000, "%s contains an unsupported shape entity type: NULL", inpfilename);
   case SHPT_POINT:
-    sprintf (msgBuf, "%s contains an unsupported shape entity type: POINT", inpfilename); zmabend (msgBuf);
+    zvnabend (1000, "%s contains an unsupported shape entity type: POINT", inpfilename);
   case SHPT_ARC:
   case SHPT_POLYGON:
     break;
   case SHPT_MULTIPOINT:
-    sprintf (msgBuf, "%s contains an unsupported shape entity type: MULTIPOINT", inpfilename); zmabend (msgBuf);
+    zvnabend (1000, "%s contains an unsupported shape entity type: MULTIPOINT", inpfilename);
   case SHPT_POINTZ:
-    sprintf (msgBuf, "%s contains an unsupported shape entity type: POINTZ", inpfilename); zmabend (msgBuf);
+    zvnabend (1000, "%s contains an unsupported shape entity type: POINTZ", inpfilename);
   case SHPT_ARCZ:
-    sprintf (msgBuf, "%s contains an unsupported shape entity type: ARCZ", inpfilename); zmabend (msgBuf);
+    zvnabend (1000, "%s contains an unsupported shape entity type: ARCZ", inpfilename);
   case SHPT_POLYGONZ:
-    sprintf (msgBuf, "%s contains an unsupported shape entity type: POLYGONZ", inpfilename); zmabend (msgBuf);
+    zvnabend (1000, "%s contains an unsupported shape entity type: POLYGONZ", inpfilename);
   case SHPT_MULTIPOINTZ:
-    sprintf (msgBuf, "%s contains an unsupported shape entity type: MULTIPOINTZ", inpfilename); zmabend (msgBuf);
+    zvnabend (1000, "%s contains an unsupported shape entity type: MULTIPOINTZ", inpfilename);
   case SHPT_POINTM:
-    sprintf (msgBuf, "%s contains an unsupported shape entity type: POINTM", inpfilename); zmabend (msgBuf);
+    zvnabend (1000, "%s contains an unsupported shape entity type: POINTM", inpfilename);
   case SHPT_ARCM:
-    sprintf (msgBuf, "%s contains an unsupported shape entity type: ARCM", inpfilename); zmabend (msgBuf);
+    zvnabend (1000, "%s contains an unsupported shape entity type: ARCM", inpfilename);
   case SHPT_POLYGONM:
-    sprintf (msgBuf, "%s contains an unsupported shape entity type: POLYGONM", inpfilename); zmabend (msgBuf);
+    zvnabend (1000, "%s contains an unsupported shape entity type: POLYGONM", inpfilename);
   case SHPT_MULTIPOINTM:
-    sprintf (msgBuf, "%s contains an unsupported shape entity type: MULTIPOINTM", inpfilename); zmabend (msgBuf);
+    zvnabend (1000, "%s contains an unsupported shape entity type: MULTIPOINTM", inpfilename);
   case SHPT_MULTIPATCH:
-    sprintf (msgBuf, "%s contains an unsupported shape entity type: MULTIPATCH", inpfilename); zmabend (msgBuf);
+    zvnabend (1000, "%s contains an unsupported shape entity type: MULTIPATCH", inpfilename);
   default:
-    sprintf (msgBuf, "%s contains an unsupported shape entity type: UNKNOWN", inpfilename); zmabend (msgBuf);
+    zvnabend (1000, "%s contains an unsupported shape entity type: UNKNOWN", inpfilename);
   }
 
   if (nShapetype != SHPT_POLYGON && nShapetype != SHPT_ARC)
-    zmabend (msgBuf);
+    zmabend ("Input must contain either POLYGONs or ARCs");
 
   /* determine which 1x1 degree cells have data */
-  memset (dataPresent, 0, sizeof (char) * 360 * 180);
+  memset (dataPresent, 0, sizeof (char) * 360 * 181);
       
   /* for each polygon ... */
   for (entity = 0; entity < nEntities; entity ++) {
@@ -172,10 +188,8 @@ void main44(void)
 	i = 359;
       }
 
-      if (i < -1 || i > 360) {
-	sprintf (msgBuf, "index %d computed from lon %f\n", i, shpObject -> padfX [vertex]);
-	zmabend (msgBuf);
-      }
+      if (i < -1 || i > 360)
+	zvnabend (1000, "index %d computed from lon %f\n", i, shpObject -> padfX [vertex]);
 	     
       /* calculate the vertex's dataPresent y coordinate */
       tmp = shpObject -> padfY [vertex]
@@ -190,10 +204,8 @@ void main44(void)
 
       j = (int) tmp;
 
-      if (j < 0 || j > 180) {
-	sprintf (msgBuf, "index %d computed from lat %f\n", j, shpObject -> padfY [vertex]);
-	zmabend (msgBuf);
-      }
+      if (j < 0 || j > 180)
+	zvnabend (1000, "index %d computed from lat %f\n", j, shpObject -> padfY [vertex]);
 	     
       if (! dataPresent [i + j * 360])
 	/* printf ("entity %d vertex %d touching cell i:%d j:%d first at x:%lf y:%lf\n", entity, vertex, i - 180, j - 90, shpObject -> padfX [vertex], shpObject -> padfY [vertex]);*/
@@ -222,13 +234,10 @@ void main44(void)
 	  cellCount ++;
 	}
 
-    if (! cellCount) {
-      sprintf (msgBuf, "%s is completely outside the specified area", inpfilename);
-      zmabend (msgBuf);
-    }
+    if (! cellCount)
+      zvnabend (1000, "%s is completely outside the specified area", inpfilename);
 
-    sprintf (msgBuf, "shp2rast: %s touches %d cells with lon range %d:%d, lat range %d:%d", inpfilename, cellCount, minI - 180, maxI - 179, minJ - 90, maxJ - 89);
-    zifmessage (msgBuf);
+    zvnprintf (1000, "shp2rast: %s touches %d cells with lon range %d:%d, lat range %d:%d", inpfilename, cellCount, minI - 180, maxI - 179, minJ - 90, maxJ - 89);
   }
 
   {
@@ -245,7 +254,7 @@ void main44(void)
 	  memset (cell, bg, sizeof (char) * (pixPerDeg + margin) * (pixPerDeg + margin));
 
 	  /* compute file name */
-	  sprintf (outFileName, "%s%c%02d%c%03d%s", outfileprefix,
+	  snprintf (outFileName, 1000, "%s%c%02d%c%03d%s", outfileprefix,
 		   (j - 90) < 0 ? 's' : 'n', abs (j - 90),
 		   (i - 180) < 0 ? 'w' : 'e', abs (i - 180),
 		   outfilesuffix);
@@ -316,7 +325,6 @@ void main44(void)
 		      else	/* rasterize hole */
 			rasterColor = bg;
 		      
-		      concave (numPoints, points, & cellBoundaries, drawProc);
 		      /* start next part */
 		      numPoints = 0;
 		    }
@@ -350,26 +358,25 @@ void main44(void)
 		  rasterColor = bg;
 		else
 		  rasterColor = fg;
-		concave (numPoints, points, & cellBoundaries, drawProc);
+
+		/* the concave function should but does not draw the enclosing line, just the fill, so always draw the line */
+		drawLine (numPoints, points);
+		if (! nofill)
+		  concave (numPoints, points, & cellBoundaries, drawProc);
 	      }
 
 	      SHPDestroyObject (shpObject);
 	    }
 	  }
 
-	  sprintf (msgBuf, "shp2rast: creating %s", outFileName);
-	  zifmessage (msgBuf);
+	  zvnprintf (1000, "shp2rast: creating %s", outFileName);
 
 	  /* create output image */
-	  if (zvunit (& vunit, "U_NAME", 1, "U_NAME", outFileName, NULL) != 1) {
-	    sprintf (msgBuf, "zvunit failed on %s", outFileName);
-	    zmabend (msgBuf);
-	  }
+	  if (zvunit (& vunit, "U_NAME", 1, "U_NAME", outFileName, NULL) != 1)
+	    zvnabend (1000, "zvunit failed on %s", outFileName);
 
-	  if (zvopen (vunit, "U_NL", pixPerDeg + margin, "U_NS", pixPerDeg + margin, "OP", "WRITE", "OPEN_ACT", "SA", NULL) != 1) {
-	    sprintf (msgBuf, "zvopen failed on %s", outFileName);
-	    zmabend (msgBuf);
-	  }
+	  if (zvopen (vunit, "U_NL", pixPerDeg + margin, "U_NS", pixPerDeg + margin, "OP", "WRITE", "OPEN_ACT", "SA", NULL) != 1)
+	    zvnabend (1000, "zvopen failed on %s", outFileName);
 
 	  {
 	    int line;

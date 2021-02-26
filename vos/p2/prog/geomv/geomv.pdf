@@ -126,9 +126,9 @@ Each direction must be evenly spaced as well, but all values can
 br fractional.  The keywords NAH and NAV are ignored and the true
 values are calculated from the grid.
 
-The input image may either be byte or halfword data.  The data format is taken
-from the VICAR label of the input file.  The output image has the same data 
-format (byte or halfword) as the input image.  
+The input image may be BYTE, HALF, FULL, REAL, or DOUB data.  The data
+format is taken from the VICAR label of the input file.  The output
+image has the same data format as the input image.
 
 Truly large cases (I envision 100 GB) are done by computing a strip size
 that depends on the parameter VMEMSIZE.  VMEMSIZE is presently defaulted to
@@ -184,11 +184,15 @@ USED.
 .PAGE
 Original Programmer: A. L. Zobrist, 17 Jul. 1999
 Current Cognizant Programmer: A. L. Zobrist
-25 April 2007 Change to 2 dimensional arrays: A. L. Zobrist
-25 April 2007 Do strips if memory too small, handles huge cases: A. L. Zobrist
-25 April 2007 Add cubic convolution and cubic spline: A. L. Zobrist
-Fri Jan 11 2008 wlb switched to USES_ANSI_C AND LIB_CARTO; misc cleanup  
-Tue Nov 11 2008 wlb added printf to keep browser from timing out
+
+2007-04-25 ALZ - Change to 2 dimensional arrays.
+2007-04-25 ALZ - Do strips if memory too small, handles huge cases.
+2007-04-25 ALZ - Add cubic convolution and cubic spline: A. L. Zobrist.
+2008-01-11 WLB - Switched to USES_ANSI_C AND LIB_CARTO; misc cleanup.
+2008-11-11 WLB - Added printf to keep browser from timing out.
+2018-10-02 WLB - Converted to C++. Added support for FULL, REAL, DOUB input.
+2018-12-18 WLB - Stopped upcasing GeoTIFF data so ERDAS and GDAL won't break.
+2019-09-04 WLB - Initialized a variable.
 
 .LEVEL1
 .VARI INP
@@ -288,9 +292,9 @@ parameter to specify the size of the output picture.  It simply
 represents the number of lines for output.
 * See restrictions for more information
 .VARI NS
-NS can be used in conjunction with NS in place of the SIZE
+NS can be used in conjunction with NL in place of the SIZE
 parameter to specify the size of the output picture.  It simply
-represents the number of bytes for output.
+represents the number of samples for output.
 * See restrictions for more information
 .VARI INTERP
 This parameter has four valid keyword values: NOIN, BILIN,

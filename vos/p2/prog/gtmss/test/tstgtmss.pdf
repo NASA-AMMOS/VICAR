@@ -14,18 +14,18 @@ gen ba.img 4 3
 gen bb.img 4 2 ival=20
 gen bc.img 4 4 ival=40
 gtmss (ba.img, bb.img, bc.img) bd.img
-list bd.img
+list bd.img 'nousrtim
 
 gtmss (ba.img, bb.img, bc.img) bd.img SIZE=(1,1,2,3)
-list bd.img
+list bd.img 'nousrtim
 
 gtmss (ba.img, bb.img, bc.img) bd.img SIZE=(1,1,6,6)
-list bd.img
+list bd.img 'nousrtim
 
 ! try SL and SS not equal to 1.
 
 gtmss (ba.img, bb.img, bc.img) be.img SIZE=(2,2,2,1)
-list be.img
+list be.img 'nousrtim
  
 ! TRY HALFWORD DATA
 
@@ -34,12 +34,12 @@ gen hb.img 10 8  'HALF ival=20
 gen hc.img 10 10 'HALF ival=40
 
 gtmss (ha.img, hb.img, hc.img) hd.img 
-list hd.img
+list hd.img 'nousrtim
  
 ! try SL and SS not equal to 1.
 
 gtmss (ha.img, hb.img, hc.img) he.img SIZE=(2,3,8,5)
-list he.img
+list he.img 'nousrtim
 
 ! TRY REAL*4 DATA
 
@@ -48,13 +48,13 @@ gen rb.img 4 2  'REAL4 ival=20
 gen rc.img 4 3 'REAL4 ival=40
 
 gtmss (ra.img, rb.img, rc.img) rd.img 
-list rd.img
+list rd.img 'nousrtim
 
 
 ! try SL and SS not equal to 1.
 
 gtmss (ra.img, rb.img, rc.img) re.img SIZE=(2,2,2,1)
-list re.img 'REAL4
+list re.img 'REAL4 'nousrtim
 
 
 ! correctly mapped case using GeoTIFF labels
@@ -98,9 +98,9 @@ gtlist xxxim4
 gtmss (xxxim2,xxxim4) xxxim5 'overlap1
 gtlist xxxim5
 
-list xxxim2
-list xxxim4
-list xxxim5
+list xxxim2 'nousrtim
+list xxxim4 'nousrtim
+list xxxim5 'nousrtim
 
 ! incorrectly mapped case using GeoTIFF labels, nomapck allows
 

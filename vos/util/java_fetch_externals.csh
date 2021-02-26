@@ -663,8 +663,13 @@ if ($?J2_COMMONS_DIGESTER != 0) then
 endif
 
 # PDS_GENERATE_TOOL
-if ($?J2_PDS_GENERATE_TOOL != 0) then
-  cp $J2_PDS_GENERATE_TOOL/generate-0.9.1.jar $V2HTML/jars
+#if ($?J2_PDS_GENERATE_TOOL != 0) then
+#  cp $J2_PDS_GENERATE_TOOL/generate-0.17.0.jar $V2HTML/jars
+#endif
+
+# PDS_MI_LABEL
+if ($?J2_PDS_MI_LABEL != 0) then
+  cp $J2_PDS_MI_LABEL/mi-label-1.1.2.jar $V2HTML/jars
 endif
 
 # PDS4_TOOLS
@@ -791,5 +796,11 @@ endif
 
 chmod u+w $V2HTML/jars/*
 chmod a+r $V2HTML/jars/*
+
+# OWASP
+if ($J2_OWASP != 0) then
+   cp $J2_OWASP/encoder-1.2.2.jar $V2HTML/jars
+   cp $J2_OWASP/encoder-jsp-1.2.2.jar $V2HTML/jars
+endif
 
 # Done!

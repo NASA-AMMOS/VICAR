@@ -59,10 +59,10 @@ extern "C" {
  * 2003-01-13   P. Zamani       Added ArticulationDevInstrumentId
  *****************************************************************************/
 
-#define  LBL_ART_DEV_ANGLES		10
+#define  LBL_ART_DEV_ANGLES		14
 #define  LBL_ART_DEV_COUNTS		10
-#define  LBL_ART_DEV_LOCATION	10
-#define  LBL_ART_DEV_ORIENT	10
+#define  LBL_ART_DEV_LOCATION	        10
+#define  LBL_ART_DEV_ORIENT	        10
 typedef struct
 	{
 	LblApiIdItem_typ		ArticulationDeviceId;
@@ -83,10 +83,10 @@ typedef struct
 	LblApiIdItem_typ		ArticulationDevPosition_Id[LBL_POSITION_ARRAY];
 	LblApiNameItem_typ		ArticulationDevPositionName[LBL_POSITION_ARRAY];
 	LblApiIdItem_typ		ArticulationDeviceMode;
-	LblApiIntItem_typ		ArticulationDeviceTempCount[5];
-	LblApiRealItem_typ		ArticulationDeviceTemp[5];
-	LblApiNameItem_typ		ArticulationDeviceTempName[5];
-	LblApiTypeItem_typ		ArticulationDeviceTempUnit[5];
+	LblApiIntItem_typ		ArticulationDeviceTempCount[10];
+	LblApiRealItem_typ		ArticulationDeviceTemp[10];
+	LblApiNameItem_typ		ArticulationDeviceTempName[10];
+	LblApiTypeItem_typ		ArticulationDeviceTempUnit[10];
 	LblApiIdItem_typ		ArticulationDevInstrumentId;
 	LblApiRealVectorItem_typ	ArticulationDevVector;
 	LblApiNameItem_typ		ArticulationDevVectorName;
@@ -94,10 +94,14 @@ typedef struct
 	LblApiNameItem_typ		ContactSensorStateName[8];
 	LblApiIdItem_typ		ArticulationDeviceState[12];
 	LblApiNameItem_typ		ArticulationDeviceStateName[12];
+        LblApiIdItem_typ              ArticulationDeviceComponentState[12];
+        LblApiNameItem_typ              ArticulationDeviceComponentStateName[12];
 	LblApiIdItem_typ		InstrumentId;
 	LblApiIdItem_typ		SolutionId;
-    LblApiRealItem_typ      GravityAcceleration;
-    LblApiStringItem_typ	ArticulationDevicePhase;
+        LblApiRealItem_typ              GravityAcceleration;
+        LblApiStringItem_typ	        ArticulationDevicePhase;
+        LblApiRealItem_typ              DevicePoseQuaternion[4];
+	LblApiNameItem_typ		DevicePoseName;
 	} LblArticulation_typ;
 
 /***  Function prototypes  ***/

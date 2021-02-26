@@ -350,6 +350,38 @@ static LblApiElement_typ	LabelTbl[] = {
 		LBL_OFFSET(LblDerivedGeometry_typ, SurfaceFixedInstElevation.Valid),
 		LBL_NO_RETURN,	LBL_SIZE(SurfaceFixedInstElevation.Value)},
 
+        {"PHASE_ANGLE",            "REAL",         LBL_OPTIONAL,
+                LBL_NO_CONT,    1,      1,      LBL_NULL,
+                LBL_OFFSET(LblDerivedGeometry_typ, PhaseAngle.Value),
+                LBL_OFFSET(LblDerivedGeometry_typ, PhaseAngle.Valid),
+                LBL_NO_RETURN,  LBL_SIZE(PhaseAngle.Value)},
+
+        {"PHASE_ANGLE__UNIT",
+                "STRING",       LBL_OPTIONAL,
+                LBL_NO_CONT,    1,      1,      LBL_NULL,
+                LBL_OFFSET(LblDerivedGeometry_typ, PhaseAngleUnit.Value),
+                LBL_OFFSET(LblDerivedGeometry_typ, PhaseAngleUnit.Valid),
+                LBL_NO_RETURN,  LBL_SIZE(PhaseAngleUnit.Value)},
+
+        {"SOLAR_INCIDENCE_TARGET_ANG",            "REAL",         LBL_OPTIONAL,
+                LBL_NO_CONT,    1,      1,      LBL_NULL,
+                LBL_OFFSET(LblDerivedGeometry_typ, SolarIncidenceTargetAngle.Value),
+                LBL_OFFSET(LblDerivedGeometry_typ, SolarIncidenceTargetAngle.Valid),
+                LBL_NO_RETURN,  LBL_SIZE(SolarIncidenceTargetAngle.Value)},
+
+        {"SOLAR_INCIDENCE_TARGET_ANG__UNIT",
+                "STRING",       LBL_OPTIONAL,
+                LBL_NO_CONT,    1,      1,      LBL_NULL,
+                LBL_OFFSET(LblDerivedGeometry_typ, SolarIncidenceTargetAngleUnit.Value),
+                LBL_OFFSET(LblDerivedGeometry_typ, SolarIncidenceTargetAngleUnit.Valid),
+                LBL_NO_RETURN,  LBL_SIZE(SolarIncidenceTargetAngleUnit.Value)},
+
+        {"SOLAR_INCIDENCE_TARGET_ANG_NAME",              "STRING",       LBL_OPTIONAL,
+                LBL_NO_CONT,    1,      1,      LBL_NULL,
+                LBL_OFFSET(LblDerivedGeometry_typ, SolarIncidenceTargetAngleName.Value),
+                LBL_OFFSET(LblDerivedGeometry_typ, SolarIncidenceTargetAngleName.Valid),
+                LBL_NO_RETURN,  LBL_SIZE(SolarIncidenceTargetAngleName.Value)},
+
 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
 
 static LblApiProcess_typ	Label = {

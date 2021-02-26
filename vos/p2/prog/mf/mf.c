@@ -121,7 +121,7 @@ void main44(void)
 	int gr1dim,count; /* dimension for GRAPHICS-1 */
 	int code;
 
-	zifmessage("mf version 05-May-2011");
+	zifmessage("MF version 2019-09-06");
 
 	zvpcnt("function",&num_funcs);
 	zvunit(&unit,"inp",1,NULL);                 /*64-bit*/
@@ -478,10 +478,10 @@ void convert_fstring(char *instring,char *fstring,int *pincol,int *ncol,int nc)
  *****************************************************************************/
 void do_function_op(int ibis, char *fstring, int *pincol, int ncol, int *outcol,int code)
 {
-	int ier,nrow,row,outrow,rows_now,nc;
+	int ier,nrow,row=0,outrow,rows_now,nc;
 	int poly=0;
 	int status;
-	int record;
+	int record=0;
 	int skip;
 	int was_zero=1;
 	int gmode = graphics_mode || polycol;
@@ -614,9 +614,9 @@ int check_zero(float *buf,int ncol)
  
 void do_column_op(int ibis, int opnum,int *pincol,int outcol )
 {
-	int nrow,nc;
+	int nrow=0,nc;
 	int status;
-	float mean,sig,minval,maxval,first,xx;
+	float mean=0.0,sig=0.0,minval=0.0,maxval=0.0,first=0.0,xx=0.0;
 	
 	status = IBISFileGet(ibis,IFILE_NR,&nrow,1,1,0);
 	if (status!=1) IBISSignal(ibis,status,1);
@@ -666,7 +666,7 @@ void write_column_diff(int ibis, int incol, int outcol, int nrow);
 	{
 		case OpMean: write_column_value(ibis,outcol,nrow,mean); break;
 		case OpSigma:write_column_value(ibis,outcol,nrow,sig); break;
-/*		case OpSum:  write_column_value(ibis,outcol,nrow,mean*(float)nrow); break; /* cast - May 05, 2011 */
+/*		case OpSum:  write_column_value(ibis,outcol,nrow,mean*(float)nrow); break; / * cast - May 05, 2011 */
 		case OpSum: xx=mean*(float)nrow; write_column_value(ibis,outcol,nrow,xx); break;
 		case OpMin:  write_column_value(ibis,outcol,nrow,minval); break;
 		case OpMax:  write_column_value(ibis,outcol,nrow,maxval); break;

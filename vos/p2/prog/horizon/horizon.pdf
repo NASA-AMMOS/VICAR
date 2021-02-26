@@ -246,7 +246,8 @@ The algorithm of determining true and false horizon is shown below:
 
 .PAGE: 
 HISTORY:
-2016-04-05  Steven Lu  Initial horizon by Steven Lu.
+2016-04-05 Steven Lu  - Initial horizon by Steven Lu.
+2019-07-23 Walt Bunch - IDS-7923: Removed sprintfs. Cleaned up some warnings.
 
 COGNIZANT PROGRAMMER: Steven Lu
 

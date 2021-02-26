@@ -18,32 +18,17 @@ typedef struct{
 
 /*********************************************/
 LINKEDLIST* LinkedList_getLinkedList();
-
-/*********************************************/
 void LinkedList_setNodeArray(LINKEDLIST *list, struct node** array);
-
-/*********************************************/
 void LinkedList_addWithRank(LINKEDLIST *list, void *data, int rank);
-
-/*********************************************/
 void LinkedList_add(LINKEDLIST *list, void *data);
-
-/*********************************************/
 void* LinkedList_remove(LINKEDLIST *list, int index);
-
-/*********************************************/
 void LinkedList_free(LINKEDLIST **list);
-
-/*********************************************/
 LINKEDLIST* LinkedList_sortAscending(LINKEDLIST **list);
-
-/*********************************************/
 LINKEDLIST* LinkedList_bigMemSortAscending(LINKEDLIST **list);
-
-/*********************************************/
 struct node* LinkedList_getMinNode(LINKEDLIST *list);
-
-/*********************************************/
-//struct node* LinkedList_getNode(LINKEDLIST *list, int index);
+void LinkedList_addNode(LINKEDLIST *list, struct node *n);
+struct node* LinkedList_addCommon(LINKEDLIST *list, void *data);
+void LinkedList_removeNode(LINKEDLIST *list, struct node *n);
+void LinkedList_addLinkedLists(LINKEDLIST *list1, LINKEDLIST *list2);
 
 #endif

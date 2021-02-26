@@ -109,7 +109,12 @@ extern "C" {
     LblApiIntItem_typ              ImageDataSize;
     LblApiIntItem_typ              ErrorPixelLine;
     LblApiIntItem_typ              ErrorPixelSample;
-    //LblApiIntItem_typ
+    LblApiIntItem_typ              BootCount;
+    LblApiTimeItem_typ             DpCreationTime;
+    LblApiIntItem_typ              DpCmprsMode;
+    LblApiStringItem_typ           CommandDispatchSclk;
+    LblApiStringItem_typ           DpCmprsType;
+    LblApiTypeItem_typ              HdrExposureTimeDeltaUnit[7];
   } LblTelemetry_typ;
 
   int	LblTelemetry( int, int, LblTelemetry_typ *, int );

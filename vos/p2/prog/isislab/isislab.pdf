@@ -30,6 +30,7 @@ Revisions:
   2000-09-01 lwk - cleaned up code for non-NIMS-cube cases
   2005-11-02 lwk - removed references to specific objects (except for HISTORY)
   2017-08-08 wlb - removed DEBUG from imake
+  2019-09-05 wlb - IDS-7922 - Declared some variables; cleaned up -Wall warnings
 
 .LEVEL1
 .VARI INP

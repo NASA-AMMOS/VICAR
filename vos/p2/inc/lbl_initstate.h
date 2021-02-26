@@ -10,7 +10,7 @@ extern "C" {
 
 #include "lbl_gen_api.h"
 
-#define  LBL_RMC_ITEMS  10
+#define  LBL_RMC_ITEMS  12
 
 
 /******************************************************************************

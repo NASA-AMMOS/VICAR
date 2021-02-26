@@ -231,42 +231,53 @@ Written by: Justin F. McNeill, November 1989
 Cognizant Programmer: L.W.Kamp
 Revisions: 
 
-	Nov.1993	Fixed default lower LIMITS of -32752 for RAD/IOF case
-			PCA stuff removed (LWK)
+  1990-06    JFM - Addition of output size parameters OUT_NL & OUT_NS;
+                   write output file such that band and DN dimensions have a common
+                   origin; provide parameter to provide for replication of band samples
+                   to fit in 512 samples.
+  1990-07    JFM - Handling of IOF and RAD y-axis scales is provided.   
+  1990-08    JFM - Window label item revised to be
+                   (SL,SS,SB,NL,NS,NB). DN and LOG parameters added to help and
+                   tutor. Samplewidth problem corrected and negative halfword data
+                   properly handled. Ref. FRs 63221 & 63222 Improved error checking of
+                   user parameters. Revised test script. Solar flux units changed to
+                   WATT/CM**CM/MICRON/STER
+  1990-09    JFM - Code added to prevent division by zero. FR 63252     
+  1990-10    JFM - RAD_BASE offset for conversion of DN to IOF or RAD added in calculations. Test script revised.	     
+  1991-06    JFM - Per band radiance offset and scaling implemented.    
+  1991-09    LWK - Changed NELEMENTS to NELEMENT in XLGET per new Vicar exec; removed SUN_D check from RAD case.
+  1992-02    JFM - Program will handle merged mosaic cubes with or
+                   without per-band scaling. Interface with NIMSMASK (MAXDN)
+                   corrected. Test option added for development purposes. Histogram
+                   calculation for byte and halfword simplified. PCA added.
+  1992-05    JFM - Corrected upper limit of NIMS special values to -32752.
+  1993-11    LWK - Fixed default lower LIMITS of -32752 for RAD/IOF case PCA stuff removed
+  1994-02    LWK - Get solar flux from label instead of internal routine;
+                   flux units changed to uWatt/cm**2/micron/ster; added keyword
+                   SCALTYPE
+  1994-05    LWK - Fixed bug when radiance > maxs[35]
+  1995-01    LWK - Ported to Alpha
+  1995-02    LWK - Added BREAK_UM option
+  1995-04    LWK - Disable LOG option when maxfreq=1 (for TSTSYSNIMS2)
+  1995-06    LWK - Tweaked LOG scale for sparse histograms to allow points with freq=1 to appear
+  1995-11    LWK - Fixed retrieval of wavelengths from label
+  1996-08    LWK - Fixes for Phase-2 data:  allowed for non-integer sample replication factor
+  1997-07    LWK - Allow floating-point (Radiance) data
+  1997-10    LWK - Corrected error computing histogram scale for floating-point (Radiance) data
+  1998-01-26 LWK - Fixed floating-point scale yet again
+  1998-02-17 LWK - Fixed bug in floating-point scale for RAD mode
+  1998-05-14 LWK - Put in check & abend for empty cube (instead of letting pgm crash)
+  1998-05-27 LWK - Write BREAK_NO to label for IOF-only case too
+  1998-06-19 LWK - Set RAD_BASE/CONV when not in cube label
 
-	May 1992	Corrected upper limit of NIMS special values to 
-			-32752.
-	
-	Feb 1992	Program will handle merged mosaic cubes with or
-			without per-band scaling. Interface with NIMSMASK
-			(MAXDN) corrected. Test option added for
-			development purposes. Histogram calculation for
-			byte and halfword simplified. PCA added. (JFM)
-									     
-	Sept 1991	Changed NELEMENTS to NELEMENT in XLGET per new Vicar 
-			exec; removed SUN_D check from RAD case. (LWK)	     
-									     
-	June 1991	Per band radiance offset and scaling implemented.    
+  2003-05-26 LWK - Increased MAXBANDS from 408 to 1024 (one of the
+                   test cases has 512 -- failed in unix, but not vms!); made
+                   NIMS_SPEC_R a parameter (R_MIN); renamed "end[3]" to "xend[3]" to
+                   avoid conflict with system variable
+  2019-06-13 WLB - IDS-7924: Fixed format string error.
+                   Cleaned up misc. compiler warnings.
+  2019-07-23 WLB - IDS-7923: Removed sprintf calls.
 
-	Oct  1990   	RAD_BASE offset for conversion of DN to IOF or RAD   
-			added in calculations. Test script revised.	     
-									     
-	Sept 1990   	Code added to prevent division by zero. FR 63252     
-
-	Aug  1990 	Window label item revised to be (SL,SS,SB,NL,NS,NB). 
-		   	DN and LOG parameters added to help and tutor.       
-			Samplewidth problem corrected and negative halfword  
-			data properly handled.	Ref. FRs 63221 & 63222	     
-			Improved error checking of user parameters.          
-			Revised test script.				     
-			Solar flux units changed to WATT/CM**CM/MICRON/STER  
-									     
-	July 1990	Handling of IOF and RAD y-axis scales is provided.   
-								             
-	June 1990	Addition of output size parameters OUT_NL & OUT_NS;  
-			write output file such that band and DN dimensions   
-			have a common origin; provide parameter to provide   
-			for replication of band samples to fit in 512 samples.
 .LEVEL1
 .VARI INP
 Input image file name

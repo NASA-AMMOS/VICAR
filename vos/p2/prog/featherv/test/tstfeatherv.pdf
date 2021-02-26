@@ -6,6 +6,7 @@ body
 !let _onfail="continue"
 let $echo="no"
 
+enable-log
 
 !   TEST SCRIPT FOR featherv, really simple small case to see offsets
 !   also compare with fastmos to see offsets the same
@@ -13,8 +14,8 @@ let $echo="no"
 gen xim2 12 10 SINC=0 LINC=0 ival=10
 gen xim3 10 12 SINC=0 LINC=0 ival=110
 
-list xim2 'zeroes
-list xim3 'zeroes
+list xim2 'zeroes 'nousrtim
+list xim3 'zeroes 'nousrtim
 
 ibis-gen xxa nr=1 nc=6 format=("A10","FULL","FULL","FULL","FULL","DOUB") +
       data=(6,3,10,12,0.77) datacols=(2,3,4,5,6) +
@@ -30,11 +31,11 @@ ibis-list xxc 'format
 featherv (xim2,xim3,xxc) ximmos sl=1 ss=1 nl=17 ns=15 dfeather=4 +
    'factor 'progress 'noramp moorefac=1
 
-list ximmos 'zeroes
+list ximmos 'zeroes 'nousrtim
 
 fastmos (xim2,xim3) ximmos2 nl=17 ns=15 off1=(6,3) off2=(4,7)
 
-list ximmos2 'zeroes
+list ximmos2 'zeroes 'nousrtim
 
 
 ! case to test two pass ramp corrections, use small overlap, foursquare
@@ -48,18 +49,18 @@ geomv xim1 xim3 +
    TIEPOINT=(1.,1.,0.,0.,   1.,12.,0.,13.,+
             10.,1.,11.,0., 10.,12.,11.,13.)
 
-list xim2 'zeroes
-list xim3 'zeroes
+list xim2 'zeroes 'nousrtim
+list xim3 'zeroes 'nousrtim
 
 copy xim2 xim4
 copy xim3 xim5
 
-list xim4 'zeroes
-list xim5 'zeroes
+list xim4 'zeroes 'nousrtim
+list xim5 'zeroes 'nousrtim
 
 copy xim3 xim6    ! extra file for out of strip test
 
-list xim6 'zeroes
+list xim6 'zeroes 'nousrtim
 
 ibis-gen xxa nr=1 nc=16 format=("A10","FULL","FULL","FULL","FULL","DOUB", +
       "FULL","FULL","FULL","FULL","FULL","REAL","REAL","REAL","REAL","REAL") +
@@ -101,7 +102,7 @@ featherv (xim2,xim3,xim4,xim5,xim6,xxa) ximmos sl=3 ss=2 nl=20 ns=18 dfeather=4 
    'factor 'progress  rcols=(7,8,9,10,11,12,13,14,15,16) rmoore=1 +
    gorefac=0.5 rdkthr=1 rdiffthr=140 'ramp moorefac=1
 
-list ximmos 'zeroes
+list ximmos 'zeroes 'nousrtim
 
 ibis-list xxa 'format
 
@@ -119,7 +120,7 @@ featherv (xim2,xim3,xim4,xim5,xim6,xxa) ximmos3 sl=3 ss=2 nl=20 ns=18 dfeather=4
    'factor 'progress  rcols=(7,8,9,10,11,12,13,14,15,16) rmoore=1 +
    gorefac=0.5 rdkthr=1 rdiffthr=140 'noramp moorefac=1
 
-list ximmos3 'zeroes
+list ximmos3 'zeroes 'nousrtim
 
 ! now test the size parm feature, also case insensitive filenames
 
@@ -142,8 +143,8 @@ geomv xim1 xim3 +
    TIEPOINT=(1.,1.,0.,0.,   1.,12.,0.,13.,+
             10.,1.,11.,0., 10.,12.,11.,13.)
 
-list xim2 'zeroes
-list xim3 'zeroes
+list xim2 'zeroes 'nousrtim
+list xim3 'zeroes 'nousrtim
 
 ibis-gen xxa nr=1 nc=6 format=("A10","FULL","FULL","FULL","FULL","DOUB") +
       data=(11,3,10,12,0.77) datacols=(2,3,4,5,6) +
@@ -161,7 +162,7 @@ ibis-list xxc 'format
 featherv (xim2,xim3,xxc) ximmos sl=3 ss=2 nl=17 ns=15 dfeather=4 +
    'factor 'progress 'noramp moorefac=1
 
-list ximmos 'zeroes
+list ximmos 'zeroes 'nousrtim
 
 !   TEST SCRIPT FOR featherv, simple small case, top edge
 
@@ -175,8 +176,8 @@ geomv xim1 xim3 +
    TIEPOINT=(1.,1.,0.,0.,   1.,12.,0.,13.,+
             10.,1.,11.,0., 10.,12.,11.,13.)
 
-list xim2 'zeroes
-list xim3 'zeroes
+list xim2 'zeroes 'nousrtim
+list xim3 'zeroes 'nousrtim
 
 ibis-gen xxa nr=1 nc=6 format=("A10","FULL","FULL","FULL","FULL","DOUB") +
       data=(-2,4,10,12,0.77) datacols=(2,3,4,5,6) +
@@ -194,7 +195,7 @@ ibis-list xxc 'format
 featherv (xim2,xim3,xxc) ximmos sl=-1 ss=-1 nl=17 ns=15 dfeather=3 +
    'factor 'progress  'noramp moorefac=1
 
-list ximmos 'zeroes
+list ximmos 'zeroes 'nousrtim
 
 !   TEST SCRIPT FOR featherv, simple small case, right edge
 
@@ -207,8 +208,8 @@ geomv xim1 xim3 +
    TIEPOINT=(1.,1.,0.,0.,   1.,12.,0.,13.,+
             10.,1.,11.,0., 10.,12.,11.,13.)
 
-list xim2 'zeroes
-list xim3 'zeroes
+list xim2 'zeroes 'nousrtim
+list xim3 'zeroes 'nousrtim
 
 ibis-gen xxa nr=1 nc=6 format=("A10","FULL","FULL","FULL","FULL","DOUB") +
       data=(3,9,10,12,0.88) datacols=(2,3,4,5,6) +
@@ -226,7 +227,7 @@ ibis-list xxc 'format
 featherv (xim2,xim3,xxc) ximmos sl=-1 ss=-1 nl=17 ns=15 dfeather=4 +
    'factor 'progress  'noramp moorefac=1
 
-list ximmos 'zeroes
+list ximmos 'zeroes 'nousrtim
 
 
 !   TEST SCRIPT FOR featherv, simple small case, top edge
@@ -241,8 +242,8 @@ geomv xim1 xim3 +
    TIEPOINT=(1.,1.,0.,0.,   1.,12.,0.,13.,+
             10.,1.,11.,0., 10.,12.,11.,13.)
 
-list xim2 'zeroes
-list xim3 'zeroes
+list xim2 'zeroes 'nousrtim
+list xim3 'zeroes 'nousrtim
 
 ibis-gen xxa nr=1 nc=6 format=("A10","FULL","FULL","FULL","FULL","DOUB") +
       data=(-2,4,10,12,0.77) datacols=(2,3,4,5,6) +
@@ -260,7 +261,7 @@ ibis-list xxc 'format
 featherv (xim2,xim3,xxc) ximmos sl=-1 ss=-1 nl=17 ns=15 dfeather=3 +
    'factor 'progress  'noramp moorefac=1
 
-list ximmos 'zeroes
+list ximmos 'zeroes 'nousrtim
 
 
 
@@ -275,8 +276,8 @@ geomv xim1 xim3 +
    TIEPOINT=(1.,1.,0.,0.,   1.,12.,0.,13.,+
             10.,1.,11.,0., 10.,12.,11.,13.)
 
-list xim2 'zeroes
-list xim3 'zeroes
+list xim2 'zeroes 'nousrtim
+list xim3 'zeroes 'nousrtim
 
 ibis-gen xxa nr=1 nc=6 format=("A10","FULL","FULL","FULL","FULL","DOUB") +
       data=(3,-2,10,12,0.88) datacols=(2,3,4,5,6) +
@@ -294,7 +295,7 @@ ibis-list xxc 'format
 featherv (xim2,xim3,xxc) ximmos sl=-1 ss=-1 nl=17 ns=15 dfeather=4 +
    'factor 'progress  'noramp moorefac=1
 
-list ximmos 'zeroes
+list ximmos 'zeroes 'nousrtim
 
 
 !   TEST SCRIPT FOR featherv, simple small case, cloudout
@@ -308,8 +309,8 @@ geomv xim1 xim3 +
    TIEPOINT=(1.,1.,0.,0.,   1.,12.,0.,13.,+
             10.,1.,11.,0., 10.,12.,11.,13.)
 
-list xim2 'zeroes
-list xim3 'zeroes
+list xim2 'zeroes 'nousrtim
+list xim3 'zeroes 'nousrtim
 
 ibis-gen xxa nr=1 nc=6 format=("A10","FULL","FULL","FULL","FULL","DOUB") +
       data=(3,-2,10,12,0.88) datacols=(2,3,4,5,6) +
@@ -327,7 +328,7 @@ ibis-list xxc 'format
 featherv (xim2,xim3,xxc) ximmos sl=-1 ss=-1 nl=17 ns=15 dfeather=4 +
    'factor 'progress cloudout=60 'noramp moorefac=1
 
-list ximmos 'zeroes
+list ximmos 'zeroes 'nousrtim
 
 
 
@@ -342,8 +343,8 @@ geomv xim1 xim3 +
    TIEPOINT=(1.,1.,0.,0.,   1.,12.,0.,13.,+
             10.,1.,11.,0., 10.,12.,11.,13.)
 
-list xim2 'zeroes
-list xim3 'zeroes
+list xim2 'zeroes 'nousrtim
+list xim3 'zeroes 'nousrtim
 
 ibis-gen xxa nr=1 nc=6 format=("A10","FULL","FULL","FULL","FULL","DOUB") +
       data=(3,1,10,12,1.0) datacols=(2,3,4,5,6) +
@@ -361,17 +362,17 @@ ibis-list xxc 'format
 featherv (xim2,xim3,xxc) ximmos sl=-1 ss=-1 nl=17 ns=15 dfeather=4 +
    'factor 'progress 'edge nibble=2 'noramp moorefac=1
 
-list ximmos 'zeroes
+list ximmos 'zeroes 'nousrtim
 
 featherv (xim2,xim3,xxc) ximmos sl=-1 ss=-1 nl=17 ns=15 dfeather=4 +
    'factor 'progress 'edge lnibble=2 'noramp moorefac=1
 
-list ximmos 'zeroes
+list ximmos 'zeroes 'nousrtim
 
 featherv (xim2,xim3,xxc) ximmos sl=-1 ss=-1 nl=17 ns=15 dfeather=4 +
    'factor 'progress 'edge rnibble=2 'noramp moorefac=1
 
-list ximmos 'zeroes
+list ximmos 'zeroes 'nousrtim
 
 
 !   TEST SCRIPT FOR featherv, simple small case, thresh, thresh left-right 
@@ -386,8 +387,8 @@ geomv xim1 xim3 +
    TIEPOINT=(1.,1.,0.,0.,   1.,12.,0.,13.,+
             10.,1.,11.,0., 10.,12.,11.,13.)
 
-list xim2 'zeroes
-list xim3 'zeroes
+list xim2 'zeroes 'nousrtim
+list xim3 'zeroes 'nousrtim
 
 ibis-gen xxa nr=1 nc=6 format=("A10","FULL","FULL","FULL","FULL","DOUB") +
       data=(3,1,10,12,1.0) datacols=(2,3,4,5,6) +
@@ -405,21 +406,21 @@ ibis-list xxc 'format
 featherv (xim2,xim3,xxc) ximmos sl=-1 ss=-1 nl=17 ns=15 dfeather=4 +
    'factor 'progress 'edge nibble=2 nthresh=6 nseq=2 'noramp moorefac=1
 
-list ximmos 'zeroes
+list ximmos 'zeroes 'nousrtim
 
 featherv (xim2,xim3,xxc) ximmos sl=-1 ss=-1 nl=17 ns=15 dfeather=4 +
    'factor 'progress 'edge nibble=2 lthresh=6 nseq=2 'noramp moorefac=1
 
-list ximmos 'zeroes
+list ximmos 'zeroes 'nousrtim
 
 featherv (xim2,xim3,xxc) ximmos sl=-1 ss=-1 nl=17 ns=15 dfeather=4 +
    'factor 'progress 'edge nibble=2 rthresh=6 nseq=2 'noramp moorefac=1
 
-list ximmos 'zeroes
+list ximmos 'zeroes 'nousrtim
 featherv (xim2,xim3,xxc) ximmos sl=-1 ss=-1 nl=17 ns=15 dfeather=4 +
    'factor 'progress 'edge nibble=2 rthresh=6 nseq=2 nincr=2 'noramp moorefac=1
 
-list ximmos 'zeroes
+list ximmos 'zeroes 'nousrtim
 
 
 
@@ -434,8 +435,8 @@ geomv xim1 xim3 +
    TIEPOINT=(1.,1.,0.,0.,   1.,1200.,0.,1300.,+
             1000.,1.,1100.,0., 1000.,1200.,1100.,1300.)
 
-list xim2 'zeroes linc=100 sinc=100
-list xim3 'zeroes linc=100 sinc=100
+list xim2 'zeroes linc=100 sinc=100 'nousrtim
+list xim3 'zeroes linc=100 sinc=100 'nousrtim
 
 ibis-gen xxa nr=1 nc=6 format=("A10","FULL","FULL","FULL","FULL","DOUB") +
       data=(11,3,1000,1200,0.77) datacols=(2,3,4,5,6) +
@@ -453,7 +454,7 @@ ibis-list xxc 'format
 featherv (xim2,xim3,xxc) ximmos sl=3 ss=2 nl=1700 ns=1500 dfeather=40 +
    'factor 'progress  'noramp moorefac=1
 
-list ximmos 'zeroes  linc=100 sinc=100
+list ximmos 'zeroes  linc=100 sinc=100 'nousrtim
 
 ! case to test storage regeneration, maxcross=2
 
@@ -466,14 +467,14 @@ geomv xim1 xim3 +
    TIEPOINT=(1.,1.,0.,0.,   1.,12.,0.,13.,+
             10.,1.,11.,0., 10.,12.,11.,13.)
 
-list xim2 'zeroes
-list xim3 'zeroes
+list xim2 'zeroes 'nousrtim
+list xim3 'zeroes 'nousrtim
 
 copy xim2 xim4
 copy xim3 xim5
 
-list xim4 'zeroes
-list xim5 'zeroes
+list xim4 'zeroes 'nousrtim
+list xim5 'zeroes 'nousrtim
 
 ibis-gen xxa nr=1 nc=6 format=("A10","FULL","FULL","FULL","FULL","DOUB") +
       data=(2,3,10,12,1.0) datacols=(2,3,4,5,6) +
@@ -499,7 +500,7 @@ ibis-list xxb 'format
 featherv (xim2,xim3,xim4,xim5,xxb) ximmos sl=3 ss=2 nl=30 ns=15 dfeather=4 +
    'factor 'progress 'noramp moorefac=1
 
-list ximmos 'zeroes
+list ximmos 'zeroes 'nousrtim
 
 
 ! test case for 'ADD keyword
@@ -514,14 +515,14 @@ geomv xim1 xim3 +
    TIEPOINT=(1.,1.,0.,0.,   1.,12.,0.,13.,+
             10.,1.,11.,0., 10.,12.,11.,13.)
 
-list xim2 'zeroes
-list xim3 'zeroes
+list xim2 'zeroes 'nousrtim
+list xim3 'zeroes 'nousrtim
 
 copy xim2 xim4
 copy xim3 xim5
 
-list xim4 'zeroes
-list xim5 'zeroes
+list xim4 'zeroes 'nousrtim
+list xim5 'zeroes 'nousrtim
 
 ibis-gen xxa nr=1 nc=6 format=("A10","FULL","FULL","FULL","FULL","DOUB") +
       data=(2,3,10,12,-1) datacols=(2,3,4,5,6) +
@@ -549,7 +550,7 @@ ibis-list xxb 'format
 featherv (xim2,xim3,xim4,xim5,xxb) ximmos sl=3 ss=2 nl=30 ns=15 dfeather=4 +
    'add 'progress 'noramp moorefac=1
 
-list ximmos 'zeroes
+list ximmos 'zeroes 'nousrtim
 
 
 ! test case for 'ADDZMASK keyword
@@ -564,14 +565,14 @@ geomv xim1 xim3 +
    TIEPOINT=(1.,1.,0.,0.,   1.,12.,0.,13.,+
             10.,1.,11.,0., 10.,12.,11.,13.)
 
-list xim2 'zeroes
-list xim3 'zeroes
+list xim2 'zeroes 'nousrtim
+list xim3 'zeroes 'nousrtim
 
 copy xim2 xim4
 copy xim3 xim5
 
-list xim4 'zeroes
-list xim5 'zeroes
+list xim4 'zeroes 'nousrtim
+list xim5 'zeroes 'nousrtim
 
 ibis-gen xxa nr=1 nc=6 format=("A10","FULL","FULL","FULL","FULL","DOUB") +
       data=(2,3,10,12,-1) datacols=(2,3,4,5,6) +
@@ -599,7 +600,7 @@ ibis-list xxb 'format
 featherv (xim2,xim3,xim4,xim5,xxb) ximmos sl=3 ss=2 nl=30 ns=15 dfeather=4 +
    'addz 'progress 'noramp moorefac=1
 
-list ximmos 'zeroes
+list ximmos 'zeroes 'nousrtim
 
 
 
@@ -610,8 +611,8 @@ list ximmos 'zeroes
 gen xim1 13 13 SINC=0 LINC=0 ival=10
 gen xim2 13 13 SINC=0 LINC=0 ival=110
 
-list xim1 'zeroes
-list xim2 'zeroes
+list xim1 'zeroes 'nousrtim
+list xim2 'zeroes 'nousrtim
 
 ibis-gen xxa nr=1 nc=6 format=("A10","FULL","FULL","FULL","FULL","DOUB") +
       data=(2,2,13,13,1.0) datacols=(2,3,4,5,6) +
@@ -627,7 +628,7 @@ ibis-list xxc 'format
 featherv (xim1,xim2,xxc) ximmos size=(1,1,18,18) dfeather=12 +
    'factor 'progress 'noramp moorefac=3 
 
-list ximmos 'zeroes
+list ximmos 'zeroes 'nousrtim
 
 
 !   TEST SCRIPT FOR featherv, MOOREFAC=3, vertical
@@ -637,8 +638,8 @@ list ximmos 'zeroes
 gen xim1 13 13 SINC=0 LINC=0 ival=10
 gen xim2 13 13 SINC=0 LINC=0 ival=110
 
-list xim1 'zeroes
-list xim2 'zeroes
+list xim1 'zeroes 'nousrtim
+list xim2 'zeroes 'nousrtim
 
 ibis-gen xxa nr=1 nc=6 format=("A10","FULL","FULL","FULL","FULL","DOUB") +
       data=(2,2,13,13,1.0) datacols=(2,3,4,5,6) +
@@ -654,7 +655,7 @@ ibis-list xxc 'format
 featherv (xim1,xim2,xxc) ximmos size=(1,1,18,16) dfeather=12 +
    'factor 'progress 'noramp moorefac=3 
 
-list ximmos 'zeroes
+list ximmos 'zeroes 'nousrtim
 
 ! case to test two pass ramp corrections with MOOREFAC=3
 
@@ -667,18 +668,18 @@ geomv xim1 xim3 +
    TIEPOINT=(1.,1.,0.,0.,   1.,12.,0.,13.,+
             10.,1.,11.,0., 10.,12.,11.,13.)
 
-list xim2 'zeroes
-list xim3 'zeroes
+list xim2 'zeroes 'nousrtim
+list xim3 'zeroes 'nousrtim
 
 copy xim2 xim4
 copy xim3 xim5
 
-list xim4 'zeroes
-list xim5 'zeroes
+list xim4 'zeroes 'nousrtim
+list xim5 'zeroes 'nousrtim
 
 copy xim3 xim6    ! extra file for out of strip test
 
-list xim6 'zeroes
+list xim6 'zeroes 'nousrtim
 
 ibis-gen xxa nr=1 nc=16 format=("A10","FULL","FULL","FULL","FULL","DOUB", +
       "FULL","FULL","FULL","FULL","FULL","REAL","REAL","REAL","REAL","REAL") +
@@ -724,11 +725,11 @@ featherv (xim2,xim3,xim4,xim5,xim6,xxa) ximmos2 sl=3 ss=2 nl=20 ns=18 dfeather=6
    'factor 'progress  rcols=(7,8,9,10,11,12,13,14,15,16) rmoore=1 +
    gorefac=0.5 rdkthr=1 rdiffthr=140 'ramp moorefac=1
 
-list ximmos 'zeroes ns=16
-list ximmos2 'zeroes ns=16
+list ximmos 'zeroes ns=16 'nousrtim
+list ximmos2 'zeroes ns=16 'nousrtim
 
 f2 inp=(ximmos,ximmos2) out=ximmos3 func="abs(in1-in2)"
-list ximmos3 'zeroes ns=16
+list ximmos3 'zeroes ns=16 'nousrtim
 
 ibis-list xxa 'format
 
@@ -740,8 +741,8 @@ ibis-list xxa 'format
 gen xim1 13 13 SINC=1 LINC=10 ival=10
 gen xim2 13 13 SINC=1 LINC=10 ival=110
 
-list xim1 'zeroes
-list xim2 'zeroes
+list xim1 'zeroes 'nousrtim
+list xim2 'zeroes 'nousrtim
 
 ibis-gen xxa nr=1 nc=6 format=("A10","FULL","FULL","FULL","FULL","DOUB") +
       data=(2,2,13,13,1.0) datacols=(2,3,4,5,6) +
@@ -757,7 +758,7 @@ ibis-list xxc 'format
 featherv (xim1,xim2,xxc) ximmos size=(1,1,18,18) dfeather=12 +
    'factor 'progress 'noramp moorefac=3 
 
-list ximmos 'zeroes
+list ximmos 'zeroes 'nousrtim
 
 
 !   TEST SCRIPT FOR featherv, simple small case, leave out one input
@@ -774,8 +775,8 @@ geomv xim1 xim3 +
    TIEPOINT=(1.,1.,0.,0.,   1.,12.,0.,13.,+
             10.,1.,11.,0., 10.,12.,11.,13.)
 
-list xim2 'zeroes
-list xim3 'zeroes
+list xim2 'zeroes 'nousrtim
+list xim3 'zeroes 'nousrtim
 
 ibis-gen xxa nr=1 nc=6 format=("A10","FULL","FULL","FULL","FULL","DOUB") +
       data=(11,33,10,12,0.77) datacols=(2,3,4,5,6) +
@@ -793,7 +794,7 @@ ibis-list xxc 'format
 featherv (xim2,xxc) ximmos sl=3 ss=2 nl=17 ns=15 dfeather=4 +
    'factor 'progress 'noramp moorefac=1
 
-list ximmos 'zeroes
+list ximmos 'zeroes 'nousrtim
 
 
 !   GeoTIFF case, offsets and nl,ns are in ibis file
@@ -844,8 +845,8 @@ pixmap (xxa,xim3) mapcols=(3,4) pixcols=(1,2) 'pixtomap
 pixmap (xxa,ximmaster) mapcols=(3,4) pixcols=(5,6) 'maptopix
 ibis-list xxa
 
-list xim2 'zeroes
-list xim3 'zeroes
+list xim2 'zeroes 'nousrtim
+list xim3 'zeroes 'nousrtim
 
 gtlist ximmaster
 gtlist xim2
@@ -868,7 +869,7 @@ featherv (xim2,xim3,xxc,ximmaster) ximmos sl=3 ss=2 nl=17 ns=15 +
     dfeather=4 +
    'factor 'progress 'noramp moorefac=1 'geotiff toler=0.0000001
 
-list ximmos 'zeroes
+list ximmos 'zeroes 'nousrtim
 
 
 !   GeoTIFF case, no offsets in ibis file, standard vicar rotation
@@ -919,8 +920,8 @@ pixmap (xxa,xim3) mapcols=(3,4) pixcols=(1,2) 'pixtomap
 pixmap (xxa,ximmaster) mapcols=(3,4) pixcols=(5,6) 'maptopix
 ibis-list xxa
 
-list xim2 'zeroes
-list xim3 'zeroes
+list xim2 'zeroes 'nousrtim
+list xim3 'zeroes 'nousrtim
 
 gtlist ximmaster
 gtlist xim2
@@ -943,7 +944,7 @@ featherv (xim2,xim3,xxc,ximmaster) ximmos sl=3 ss=2 nl=17 ns=15 +
     dfeather=4 +
    'factor 'progress 'noramp moorefac=1 'geotiff toler=0.0000001
 
-list ximmos 'zeroes
+list ximmos 'zeroes 'nousrtim
 gtlist ximmos
 
 !   GeoTIFF case, no offsets in ibis file, now use area
@@ -995,8 +996,8 @@ pixmap (xxa,xim3) mapcols=(3,4) pixcols=(1,2) 'pixtomap
 pixmap (xxa,ximmaster) mapcols=(3,4) pixcols=(5,6) 'maptopix
 ibis-list xxa
 
-list xim2 'zeroes
-list xim3 'zeroes
+list xim2 'zeroes 'nousrtim
+list xim3 'zeroes 'nousrtim
 
 gtlist ximmaster
 gtlist xim2
@@ -1019,7 +1020,7 @@ featherv (xim2,xim3,xxc,ximmaster) ximmos sl=3 ss=2 nl=17 ns=15 +
     dfeather=4 +
    'factor 'progress 'noramp moorefac=1 'geotiff toler=0.0000001
 
-list ximmos 'zeroes
+list ximmos 'zeroes 'nousrtim
 gtlist ximmos
 
 ! base case for moorenbl, see second output with nibble
@@ -1033,14 +1034,14 @@ geomv xim1 xim3 +
    TIEPOINT=(1.,1.,0.,0.,   1.,12.,0.,13.,+
             10.,1.,11.,0., 10.,12.,11.,13.)
 
-list xim2 'zeroes
-list xim3 'zeroes
+list xim2 'zeroes 'nousrtim
+list xim3 'zeroes 'nousrtim
 
 copy xim2 xim4
 copy xim3 xim5
 
-list xim4 'zeroes
-list xim5 'zeroes
+list xim4 'zeroes 'nousrtim
+list xim5 'zeroes 'nousrtim
 
 ibis-gen xxa nr=1 nc=6 format=("A10","FULL","FULL","FULL","FULL","DOUB") +
       data=(2,3,10,12,0) datacols=(2,3,4,5,6) +
@@ -1065,10 +1066,12 @@ ibis-list xxb 'format
 
 featherv (xim2,xim3,xim4,xim5,xxb) ximmos sl=3 ss=2 nl=30 ns=15 dfeather=4 +
    'add 'progress 'noramp moorefac=1
-list ximmos 'zeroes sl=20
+list ximmos 'zeroes sl=20 'nousrtim
 
 featherv (xim2,xim3,xim4,xim5,xxb) ximmos sl=3 ss=2 nl=30 ns=15 dfeather=4 +
    'add 'progress 'noramp moorefac=1 moorenbl=1
-list ximmos 'zeroes sl=20
+list ximmos 'zeroes sl=20 'nousrtim
+
+disable-log
 
 end-proc

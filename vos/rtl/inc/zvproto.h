@@ -65,6 +65,7 @@ int   zvpixsizeb();
 int   zvpixsizeu();
 int   zvplabel();
 int   zvplabel2();
+int   zvslabel();
 int   zvpone();
 int   zvpopen();
 int   zvpout();
@@ -343,6 +344,11 @@ int zvplabel2(	int unit,
 		int mvlimit,
 		int doubleflag,
 		int incl_def);
+
+int zvslabel(   char *(*labels[]),
+                int *nlabels,
+                int mvlimit,
+                int incl_def);
 
 int zvpone(
 		char *name,

@@ -286,13 +286,14 @@ For more information, see the file timefastmos.pdf in fastmos.com.
  COGNIZANT PROGRAMMER:   Lucas Kamp
 
  REVISION HISTORY
-  93-4-7    SP   Made portable for UNIX.  Added PROGRESS parameter to
-                 print percentage DONE during execution.
-  03-8-14   NTT  Enabled for 3D (multi-banded) images
-2012-09-18  lwk  Enabled for real*4 data (converted all buffers to real*4).
-2012-10-02  lwk  made THRESH parameters consistent with old (integer) FASTMOS;
-                 because the default threshold is now 0.0 (used to be 1), the
-                 tests are now for DN>THRESH instead of DN>=THRESH.
+1993-04-07 SP  Made portable for UNIX.  Added PROGRESS parameter to
+               print percentage DONE during execution.
+2003-08-14 NTT Enabled for 3D (multi-banded) images
+2012-09-18 lwk Enabled for real*4 data (converted all buffers to real*4).
+2012-10-02 lwk made THRESH parameters consistent with old (integer) FASTMOS;
+               because the default threshold is now 0.0 (used to be 1), the
+               tests are now for DN>THRESH instead of DN>=THRESH.
+2018-12-18 WLB Fixed line buffer initialization bug.
 
 .page
  CHANGED BEHAVIOUR DUE TO CONVERSION TO REAL*4 (OCT.2012):

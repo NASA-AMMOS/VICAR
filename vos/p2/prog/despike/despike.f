@@ -29,7 +29,7 @@ c
       integer*4 lineout, bandout
       CHARACTER*3  ORGIN
 
-      call xvmessage('DESPIKE version 11-Oct-2005',' ')
+      call xvmessage('DESPIKE version 2020-06-16',' ')
 
       call xvparm('SCALE',scale,count,def,1)
       call xvparm('TOL',tol,count,def,1)
@@ -213,6 +213,7 @@ c     ...compute median for first sample of line
       iend = +1
 c     ....loop through the samples in middle of line
       do 100 s=2,ns-1
+c     jm1, j0, jp1 are index to previous, current, and next lines
       d1 = ibuf(s,jm1)		!update array d by inserting right-most column
       d2 = ibuf(s,j0)
       d3 = ibuf(s,jp1)
@@ -228,8 +229,8 @@ c     ....loop through the samples in middle of line
                d(n+2) = d1
             else		!d2 < d1 < d3
                d(n) = d2
-               d(n+1) = d3
-               d(n+2) = d1
+               d(n+1) = d1
+               d(n+2) = d3
             endif
          endif
       else

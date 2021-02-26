@@ -5,6 +5,8 @@
 #include "vicmain_c.h"
 #include "applic.h"
 #include "defines.h"
+#include "zifmessage.h"
+#include "zmabend.h"
 
 #include "cartoMemUtils.h"
 
@@ -113,14 +115,14 @@ void leftprop(ival,moorebuf,currix,i,tns)
 
 void main44(void)
 {
-   int i,j,k,ip,dmax,count,i_unit,nl,ns,o_unit2,outcnt;
-   int o_unit,dmaxp1,iline,previx,currix,status,numpix,*pixval;
-   short int ***inbuf,***moore,newmoore,prevmoore,*outbuf;
-   short int *readbuf,lookup[65536];
-   int *outbits;
+   int i,j,k,ip,dmax=0,count,i_unit,nl,ns=0,o_unit2,outcnt;
+   int o_unit=0,dmaxp1,iline=0,previx,currix,numpix,*pixval=NULL;
+   short int ***inbuf=NULL,***moore=NULL,newmoore,prevmoore,*outbuf=NULL;
+   short int *readbuf=NULL,lookup[65536];
+   int *outbits=NULL;
    char fmt_str[10];
    
-   zifmessage("mooresc version 2017-06-06");
+   zifmessage("MOORESC version 2019-09-06");
    
    /* fetch params */
    
@@ -135,8 +137,8 @@ void main44(void)
    
    /* open input image file */
 
-   status = zvunit( &i_unit, "INP", 1, NULL);
-   status = zvopen( i_unit, "OPEN_ACT", "SA", "IO_ACT", "SA",
+   zvunit( &i_unit, "INP", 1, NULL);
+   zvopen( i_unit, "OPEN_ACT", "SA", "IO_ACT", "SA",
       "U_FORMAT","HALF", NULL);
    zvget(i_unit,"FORMAT",fmt_str, NULL);
    if (strcmp(fmt_str,"BYTE")&&strcmp(fmt_str,"HALF")) 
@@ -165,20 +167,20 @@ void main44(void)
    
    /* open output image file */
    
-   status=zvunit(&o_unit,"OUT",1,NULL);
-   status=zvopen(o_unit,"U_NL",nl,"U_NS",ns,
+   zvunit(&o_unit,"OUT",1,NULL);
+   zvopen(o_unit,"U_NL",nl,"U_NS",ns,
 	"OP","WRITE","OPEN_ACT","SA","IO_ACT","SA",NULL);
    
    /* open second output image file, if count=2 */
    
-   status = zvpcnt("out",&outcnt);
+   zvpcnt("out",&outcnt);
    if (outcnt==2)
       {
       if (numpix<=8) strcpy(fmt_str,"BYTE");
          else if (numpix<=16) strcpy(fmt_str,"HALF");
          else strcpy(fmt_str,"FULL");
-      status=zvunit(&o_unit2,"OUT",2,NULL);
-      status=zvopen(o_unit2,"U_NL",nl,"U_NS",ns,"O_FORMAT",fmt_str,
+      zvunit(&o_unit2,"OUT",2,NULL);
+      zvopen(o_unit2,"U_NL",nl,"U_NS",ns,"O_FORMAT",fmt_str,
 	   "U_FORMAT","FULL","OP","WRITE","OPEN_ACT","SA","IO_ACT","SA",NULL);
       }
 
@@ -228,7 +230,7 @@ void main44(void)
          {
          if (ip==0) 
             {
-            status = zvread(i_unit,readbuf,"LINE",iline+1, NULL);
+            zvread(i_unit,readbuf,"LINE",iline+1, NULL);
             for (k=0;k<numpix;k++)
                for (j=0;j<ns;j++)
                   inbuf[k][currix][j] = 0;
