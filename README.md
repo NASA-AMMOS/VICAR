@@ -18,9 +18,9 @@ This release includes:
   medval
   nimsr2iof 
   sdsems
-- 19 anomalies, 72 bug fixes/improvements. For a full list, click here(vos/docsource/vicar/VOS4-Release-Notes.pdf).
+- 19 anomalies, 72 bug fixes/improvements. For a full list, [click here](vos/docsource/vicar/VOS4-Release-Notes.pdf).
 
-For a full list of programs being released [click here](vos/docsource/vicar/VICAR_OS_contents_v3.0.pdf).
+For a full list of programs being released [click here](vos/docsource/vicar/VICAR_OS_contents_v4.0.pdf).
 
 ## VICAR Discussion Forum
 
