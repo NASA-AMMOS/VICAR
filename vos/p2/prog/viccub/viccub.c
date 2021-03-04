@@ -43,6 +43,10 @@ buf=(char *)malloc(ns*sizeof(double));
 if(buf==NULL)
    my_abort("input images to large, memory problems !!");
 
+int bands[255];
+int band_count = 0;
+zvp("BAND", bands, &band_count);
+
 
 lauf=0;
 
@@ -59,7 +63,7 @@ if (status != 1)
    status=zvget(inunit,"nl",&inlines,"ns",&insampl, "nb", &nb,
                 "format", informat, NULL);
 
-   if (nb != 1) 
+   if (nb != 1 && band_count == 0) 
       {
       sprintf(outstring,"input image # %5d has more than 1 band",lauf);
       my_abort(outstring);
@@ -83,9 +87,13 @@ if (status != 1)
       my_abort(outstring);
       }
 
+   int band = 1;
+   if (lauf <= band_count)
+      band = bands[lauf-1];
+
    for (lauf_nl=1; lauf_nl <= nl; lauf_nl++)         
       {
-      status=zvread(inunit, buf,  NULL);
+      status=zvread(inunit, buf, "LINE", lauf_nl, "BAND", band, NULL);
       status=zvwrit(outunit, buf, NULL);
       }
    zvclose(inunit, NULL);

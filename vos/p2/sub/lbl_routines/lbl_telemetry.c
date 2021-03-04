@@ -417,6 +417,78 @@ static LblApiElement_typ    LabelTbl[] = {
     LBL_OFFSET(LblTelemetry_typ, ErrorPixelSample.Valid),
     LBL_NO_RETURN,	LBL_SIZE(ErrorPixelSample.Value)},
 
+    {"BOOT_COUNT",		"INT",		LBL_OPTIONAL,
+    LBL_NO_CONT,	1,	1,	LBL_NULL,
+    LBL_OFFSET(LblTelemetry_typ, BootCount.Value),
+    LBL_OFFSET(LblTelemetry_typ, BootCount.Valid),
+    LBL_NO_RETURN,	LBL_SIZE(BootCount.Value)},
+
+    {"DP_CREATION_TIME",       "STRING",   LBL_OPTIONAL,
+     LBL_NO_CONT,   1,  1,  LBL_NULL,
+     LBL_OFFSET(LblTelemetry_typ, DpCreationTime.Value),
+     LBL_OFFSET(LblTelemetry_typ, DpCreationTime.Valid),
+     LBL_NO_RETURN, LBL_SIZE(DpCreationTime.Value)},
+
+    {"DP_CMPRS_MODE",		"INT",		LBL_OPTIONAL,
+    LBL_NO_CONT,	1,	1,	LBL_NULL,
+    LBL_OFFSET(LblTelemetry_typ, DpCmprsMode.Value),
+    LBL_OFFSET(LblTelemetry_typ, DpCmprsMode.Valid),
+    LBL_NO_RETURN,	LBL_SIZE(DpCmprsMode.Value)},
+
+    {"COMMAND_DISPATCH_SCLK",       "STRING",   LBL_OPTIONAL,
+     LBL_NO_CONT,   1,  1,  LBL_NULL,
+     LBL_OFFSET(LblTelemetry_typ, CommandDispatchSclk.Value),
+     LBL_OFFSET(LblTelemetry_typ, CommandDispatchSclk.Valid),
+     LBL_NO_RETURN, LBL_SIZE(CommandDispatchSclk.Value)},
+
+    {"DATA_PRODUCT_COMPRESSION_TYPE",     "STRING",          LBL_OPTIONAL,
+    LBL_NO_CONT,        1,      1,      LBL_NULL,
+    LBL_OFFSET(LblTelemetry_typ, DpCmprsType.Value),
+    LBL_OFFSET(LblTelemetry_typ, DpCmprsType.Valid),
+    LBL_NO_RETURN,      LBL_SIZE(DpCmprsType.Value)},
+
+    {"HDR_EXPOSURE_TIME_DELTA__UNIT",               "INT",         LBL_OPTIONAL,
+        LBL_NO_CONT,    1,      1,      LBL_NULL,
+        LBL_OFFSET(LblTelemetry_typ, HdrExposureTimeDeltaUnit[0].Value),
+        LBL_OFFSET(LblTelemetry_typ, HdrExposureTimeDeltaUnit[0].Valid),
+        LBL_NO_RETURN,  LBL_SIZE(HdrExposureTimeDeltaUnit[0].Value)},
+
+    {"HDR_EXPOSURE_TIME_DELTA__UNIT",               "INT",         LBL_OPTIONAL,
+        LBL_NO_CONT,    1,      2,      LBL_NULL,
+        LBL_OFFSET(LblTelemetry_typ, HdrExposureTimeDeltaUnit[1].Value),
+        LBL_OFFSET(LblTelemetry_typ, HdrExposureTimeDeltaUnit[1].Valid),
+        LBL_NO_RETURN,  LBL_SIZE(HdrExposureTimeDeltaUnit[1].Value)},
+
+    {"HDR_EXPOSURE_TIME_DELTA__UNIT",               "INT",         LBL_OPTIONAL,
+        LBL_NO_CONT,    1,      3,      LBL_NULL,
+        LBL_OFFSET(LblTelemetry_typ, HdrExposureTimeDeltaUnit[2].Value),
+        LBL_OFFSET(LblTelemetry_typ, HdrExposureTimeDeltaUnit[2].Valid),
+        LBL_NO_RETURN,  LBL_SIZE(HdrExposureTimeDeltaUnit[2].Value)},
+
+    {"HDR_EXPOSURE_TIME_DELTA__UNIT",               "INT",         LBL_OPTIONAL,
+        LBL_NO_CONT,    1,      4,      LBL_NULL,
+        LBL_OFFSET(LblTelemetry_typ, HdrExposureTimeDeltaUnit[3].Value),
+        LBL_OFFSET(LblTelemetry_typ, HdrExposureTimeDeltaUnit[3].Valid),
+        LBL_NO_RETURN,  LBL_SIZE(HdrExposureTimeDeltaUnit[3].Value)},
+
+    {"HDR_EXPOSURE_TIME_DELTA__UNIT",               "INT",         LBL_OPTIONAL,
+        LBL_NO_CONT,    1,      5,      LBL_NULL,
+        LBL_OFFSET(LblTelemetry_typ, HdrExposureTimeDeltaUnit[4].Value),
+        LBL_OFFSET(LblTelemetry_typ, HdrExposureTimeDeltaUnit[4].Valid),
+        LBL_NO_RETURN,  LBL_SIZE(HdrExposureTimeDeltaUnit[4].Value)},
+
+    {"HDR_EXPOSURE_TIME_DELTA__UNIT",               "INT",         LBL_OPTIONAL,
+        LBL_NO_CONT,    1,      6,      LBL_NULL,
+        LBL_OFFSET(LblTelemetry_typ, HdrExposureTimeDeltaUnit[5].Value),
+        LBL_OFFSET(LblTelemetry_typ, HdrExposureTimeDeltaUnit[5].Valid),
+        LBL_NO_RETURN,  LBL_SIZE(HdrExposureTimeDeltaUnit[5].Value)},
+
+    {"HDR_EXPOSURE_TIME_DELTA__UNIT",               "INT",         LBL_OPTIONAL,
+        LBL_NO_CONT,    1,      7,      LBL_NULL,
+        LBL_OFFSET(LblTelemetry_typ, HdrExposureTimeDeltaUnit[6].Value),
+        LBL_OFFSET(LblTelemetry_typ, HdrExposureTimeDeltaUnit[6].Valid),
+        LBL_NO_RETURN,  LBL_SIZE(HdrExposureTimeDeltaUnit[6].Value)},
+
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
 
 static LblApiProcess_typ    Label = {

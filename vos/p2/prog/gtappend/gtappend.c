@@ -5,6 +5,8 @@
 #include "vicmain_c.h"
 #include "applic.h"
 #include "defines.h"
+#include "zifmessage.h"
+#include "zmabend.h"
 
 #include "cartoMemUtils.h"
 #include "cartoStrUtils.h"
@@ -26,18 +28,18 @@ static char msgBuf[10000];
 
 void main44(void)
 {
-   int i,img,iout,jout,inpcnt,vunit[48],inl[48],ins[48],pixsiz;
+   int i,img,iout,jout,inpcnt,vunit[48],inl[48],ins[48],pixsiz=0;
    int bignline,bignsamp=0,vsize[4],sizepcnt,sizedef,outnline;
    int tpixsiz=0,status,o_unit,dummy,outnsamp;
    int labnl,labns,len,rot1,rot2,gtfirst,tolerct,tolerdf;
    int sctype1,sctype2,mapck,lcount,overlap1;
    char *labelstr1,*labelstr2;
-   unsigned char *outbuf;
+   unsigned char *outbuf=NULL;
    double t[6],tinv[6],r[6],rinv[6],corner[4],rcorner[4];
    double toler,xcorner,ycorner,lcorner,offline;
    double scale11,scale12,scale21,scale22;
    
-   zifmessage("gtappend version 2016-01-13");
+   zifmessage("GTAPPEND version 2019-09-04");
    
    /* get some parms */
    

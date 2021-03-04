@@ -4,6 +4,7 @@ refgbl $becho
 refgbl $autousage
 refgbl $syschar
 body
+enable-log
 let $autousage="none"
 let _onfail="continue"
 !!!!!!!!!
@@ -164,8 +165,7 @@ write "Make 512 oddballs in the SAT file."
 let $echo="yes"
 let $becho="yes"
 f2 sat sat2 func="(LINE.EQ.SAMP)*(LINE/10-32766.5) + IN1"
-list sat2 (5,5,12,12)
-
+list sat2 (5,5,12,12) 'nousrtim
 
 let $echo="no"
 let $becho="no"
@@ -228,7 +228,7 @@ let $echo="yes"
 let $becho="yes"
 
 f2 sat sat2 func="(LINE.EQ.SAMP)*(LINE*4-32767) + IN1"
-list sat2 (1,1,5,5)
+list sat2 (1,1,5,5) 'nousrtim
 
 blemgen (cal,sat2,err,rms,dc) blem +
   minslope=0 maxslope=50 mindc=-100 maxdc=500 +
@@ -267,7 +267,7 @@ write "The 9's will become blemishes, the 1's won't"
 let $echo="yes"
 let $becho="yes"
 
-list g 'dump
+list g 'dump 'nousrtim
 
 let $echo="no"
 let $becho="no"
@@ -306,7 +306,7 @@ form t ns=nsx
 let nsx=nsx-1
 copy t u (1,2,1,&nsx)
 size u v zoom=-2 'noin
-list v 'dump
+list v 'dump 'nousrtim
 
 let $echo="no"
 let $becho="no"
@@ -318,5 +318,5 @@ blemgen (cal,sat,err,rms,dc) blem +
   minslope=0 maxslope=50 mindc=-100 maxdc=500 +
   minsat=0 maxerr=1000 maxrms=1000 
 
+disable-log
 end-proc
-

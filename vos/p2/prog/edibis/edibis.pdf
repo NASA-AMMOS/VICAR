@@ -284,48 +284,35 @@ Original Programmer:   Frank Evans	January 1987
 
 Cognizant Programmer:  Ray Bambery 
 
-Revision       8		02 September 2013
-
-       REVISION HISTORY
+REVISION HISTORY
             
-               Rev 8           RJB             02 September 2013
-               --- Changed mabend call to xvmessage + abend. Had
-                    some kind of buffer overrun on output with mabend
-               Rev 7           RJB             30 August 2013
-               --- Changed a variable that failed in AFIDS
-                   autotools make environment (VERSION to VERS) 
-
-               Rev 6           RJB             08 December 2012
-               --- Fixes edibis_windows.c and dibis_terminal.c
-                   For POSIX compliance with RedHat Linus 6.2 and 
-                   MacOSX 10.7.4
-
-               Rev 5           RJB             14 August 2011
-               --- Fixes for gcc 4.4.4 under Linux
-                   In SUBROUTINE CONVERT_STRING_TO_COMMAND
-                   had to add new call CALL FIND_ROWCOL
-                   THISROW and THISCOL are found from list directed read
-                   in gcc 4.4.4:
-                   READ (CMDLINE(CMDPOS:),*,ERR=332) THISCOL i
-                   does not detect properly the trailing ")" as a terminator
-                   It gives an error, where the older compilers evidently 
-                   recognized ")" as a proper terminator
-
-               REV 4           NDR             17 November 1994
-               --- Changed code to use direct IBIS2 routines
-                   for forward compatibility. Converted all
-                   FORTRAN I/O to C for portable coding.
-                   Added scripting and command-line features.
-                   and portable "curses" library windowing.
-
-               REV 3           NDR             4 February 1991
-               --- FIXED BUG CAUSING LOCKOUT WHEN "NEXT SCRN"
-                   KEYS HIT ON WYSE TERMINALS (FAILED IN INPUTKEY).
-                   Ref:   FR #66574 by C. Avis
-
-               REV 2           NDR             7 October 1987
-               --- ADDED SEARCH AND QUIT COMMANDS
-
+1987-10-07 NDR - ADDED SEARCH AND QUIT COMMANDS
+1991-02-04 NDR - FIXED BUG CAUSING LOCKOUT WHEN "NEXT SCRN"
+                 KEYS HIT ON WYSE TERMINALS (FAILED IN INPUTKEY).
+                 Ref:   FR #66574 by C. Avis
+1994-11-17 NDR - Changed code to use direct IBIS2 routines
+                 for forward compatibility. Converted all
+                 FORTRAN I/O to C for portable coding.
+                 Added scripting and command-line features.
+                 and portable "curses" library windowing.
+2011-08-14 RJB - Fixes for gcc 4.4.4 under Linux
+                 In SUBROUTINE CONVERT_STRING_TO_COMMAND
+                 had to add new call CALL FIND_ROWCOL
+                 THISROW and THISCOL are found from list directed read
+                 in gcc 4.4.4:
+                 READ (CMDLINE(CMDPOS:),*,ERR=332) THISCOL i
+                 does not detect properly the trailing ")" as a terminator
+                 It gives an error, where the older compilers evidently 
+                 recognized ")" as a proper terminator
+2012-12-08 RJB - Fixes edibis_windows.c and dibis_terminal.c
+                 For POSIX compliance with RedHat Linus 6.2 and 
+                 MacOSX 10.7.4
+2013-08-30 RJB - Changed a variable that failed in AFIDS
+                 autotools make environment (VERSION to VERS) 
+2013-09-02 RJB - Changed mabend call to xvmessage + abend. Had
+                 some kind of buffer overrun on output with mabend
+2019-06-13 WLB - IDS-7924: Switched to constant string format descriptor.
+                 Added logging to test script.
 
 .LEVEL1
 .VARIABLE INP

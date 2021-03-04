@@ -1,0 +1,77 @@
+**** whole image ****
+Beginning VICAR task medval
+MEDVAL version 2020-12-21
+Median:   84.92307
+**** lower half ****
+Beginning VICAR task medval
+MEDVAL version 2020-12-21
+Median:   65.30769
+Beginning VICAR task copy
+ COPY VERSION 12-JUL-1993
+Beginning VICAR task medval
+MEDVAL version 2020-12-21
+Median:   65.30769
+**** right half ****
+Beginning VICAR task medval
+MEDVAL version 2020-12-21
+Median:  102.30769
+Beginning VICAR task copy
+ COPY VERSION 12-JUL-1993
+Beginning VICAR task medval
+MEDVAL version 2020-12-21
+Median:  102.30769
+**** upper half ****
+Beginning VICAR task medval
+MEDVAL version 2020-12-21
+Median:  112.38461
+Beginning VICAR task copy
+ COPY VERSION 12-JUL-1993
+Beginning VICAR task medval
+MEDVAL version 2020-12-21
+Median:  112.38461
+**** left half ****
+Beginning VICAR task medval
+MEDVAL version 2020-12-21
+Median:   71.53846
+Beginning VICAR task copy
+ COPY VERSION 12-JUL-1993
+Beginning VICAR task medval
+MEDVAL version 2020-12-21
+Median:   71.53846
+**** median eq mean ***
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+Beginning VICAR task medval
+MEDVAL version 2020-12-21
+Median:    9.00000
+Beginning VICAR task hist
+*** HIST version 2017-08-08 ***
+
+Bin Width =        1.0
+          0        1   *****
+          1        2   ***********
+          2        3   ****************
+          3        4   **********************
+          4        5   ***************************
+          5        6   *********************************
+          6        7   **************************************
+          7        8   ********************************************
+          8        9   **************************************************  2
+          9       10   **************************************************  1
+         10        9   **************************************************
+         11        8   ********************************************
+         12        7   **************************************
+         13        6   *********************************
+         14        5   ***************************
+         15        4   **********************
+         16        3   ****************
+         17        2   ***********
+         18        1   *****
+
+AVERAGE GRAY LEVEL=9.000000
+STANDARD DEVIATION=4.062019
+NUMBER ELEMENTS=       100
+MIN. DN=         0
+MAX. DN=        18
+

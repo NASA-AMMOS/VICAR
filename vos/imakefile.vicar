@@ -20,13 +20,13 @@
 #   Targets for Integrated VICAR Build
 #
 all: make_dirs make_util make_stae make_shvic make_rtl make_gdalplugin make_vrdi make_motifapp
-all: make_mdms make_fei5 make_subs make_crumbs make_progs make_vids make_done 
+all: make_subs make_crumbs make_progs make_vids make_done 
 
 # split build into two builds because java has to be built after rtl and before gui 
 # Java can be built on solr or linux platforms. 
 
 v1: make_dirs make_util make_docs make_stae make_shvic make_rtl make_gdalplugin
-v2: make_vrdi make_motifapp make_mdms make_fei5 make_subs make_crumbs make_progs make_vids make_done
+v2: make_vrdi make_motifapp make_subs make_crumbs make_progs make_vids make_done
 
 #
 # Target for Open Source Build 
@@ -43,19 +43,13 @@ opensall: make_opensubs make_opensprogs make_vids make_done
 #
 
 core1: make_dirs make_util make_docs make_stae make_shvic make_rtl make_gdalplugin
-core2: make_vrdi make_motifapp make_mdms make_fei5 make_coresubs make_crumbs make_coreprogs make_vids make_done
+core2: make_vrdi make_motifapp make_coresubs make_crumbs make_coreprogs make_vids make_done
 
 coreall: make_dirs make_util make_stae make_shvic make_rtl make_gdalplugin make_vrdi make_motifapp
-coreall: make_mdms make_fei5 make_coresubs make_crumbs make_coreprogs make_vids make_done        
+coreall: make_coresubs make_crumbs make_coreprogs make_vids make_done        
 
 # Targets for Project Specific Builds
 #
-
-cas1:  make_dirs make_util make_docs make_stae make_shvic make_rtl
-cas2:  make_vrdi make_motifapp make_mdms make_fei5 make_subs make_progs make_done
-
-caslinux:  make_dirs make_util make_stae make_shvic make_rtl make_vrdi make_motifapp
-caslinux:  make_mdms make_fei5 make_subs make_progs make_done
 
 div1:  make_dirs make_util make_stae make_shvic make_rtl
 div2:  make_motifapp make_mdms make_p1 make_p2 make_div make_done
@@ -64,10 +58,10 @@ divall:  make_dirs make_util make_stae make_shvic make_rtl
 divall:  make_motifapp make_mdms make_p1 make_p2 make_div make_done
 
 mars1:  make_dirs make_util make_docs make_stae make_shvic make_rtl make_gdalplugin
-mars2:  make_vrdi make_motifapp make_mdms make_marssubs make_crumbs make_marsprogs make_vids make_done
+mars2:  make_vrdi make_motifapp make_marssubs make_crumbs make_marsprogs make_vids make_done
 
 marsall:  make_dirs make_util make_stae make_shvic make_rtl make_gdalplugin make_vrdi make_motifapp
-marsall:  make_mdms make_marssubs make_marsprogs make_vids make_done
+marsall:  make_marssubs make_crumbs make_marsprogs make_vids make_done
 
 phx1:  make_dirs make_util make_docs make_stae make_shvic make_rtl
 phx2:  make_vrdi make_motifapp make_mdms make_marssubs make_marsprogs make_vids make_done
@@ -89,10 +83,10 @@ dlr: make_dirs make_util make_stae make_shvic make_rtl make_motifapp
 dlr: make_subs make_progs make_done
 
 nsyt1: make_dirs make_util make_docs make_stae make_shvic make_rtl make_gdalplugin
-nsyt2: make_vrdi make_motifapp make_fileservice make_marssubs make_crumbs make_marsprogs make_vids make_done
+nsyt2: make_vrdi make_motifapp make_marssubs make_crumbs make_marsprogs make_vids make_done
 
 nsytall: make_dirs make_util make_stae make_shvic make_rtl make_gdalplugin make_vrdi make_motifapp
-nsytall: make_fileservice make_marssubs make_crumbs make_marsprogs make_vids make_done
+nsytall: make_marssubs make_crumbs make_marsprogs make_vids make_done
   
 #
  
@@ -175,10 +169,6 @@ make_motifapp:
 make_mdms:
 	-($(CD) $(V2TOP)/mdms/source/umake; make -f  makefile.mdms $(VICCPU))
 
-make_fei5:
-	-($(CD) $(V2TOP)/fei5; $(VSYSIMAKE) -f imakefile.fei5 -s Makefile.$(VICCPU))
-	-($(CD) $(V2TOP)/fei5; $(MAKE) Makefile.$(VICCPU))
-
 make_fileservice:
 	-($(CD) $(V2TOP)/mdms/source/FileService; make -f makefile.FileService)
 
@@ -198,9 +188,6 @@ make_p2:
 	($(CD) $(V2TOP)/p2; $(VSYSIMAKE) -f imakefile.p2 -s Makefile.$(VICCPU))
 	($(CD) $(V2TOP)/p2; $(MAKE) Makefile.$(VICCPU))
 
-make_cas:
-	($(CD) $(V2TOP)/cas; $(VSYSIMAKE) -f imakefile.cas -s Makefile.$(VICCPU))
-	($(CD) $(V2TOP)/cas; $(MAKE) Makefile.$(VICCPU))
 make_p3:
 	($(CD) $(V2TOP)/p3; $(VSYSIMAKE) -f imakefile.p3 -s Makefile.$(VICCPU))
 	($(CD) $(V2TOP)/p3; $(MAKE) Makefile.$(VICCPU))

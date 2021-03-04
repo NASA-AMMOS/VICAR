@@ -89,6 +89,7 @@ void list_task_headers(int unit,int nousrtim);
 void print_key_value_pair(char key[], struct multival *value, char *format);
 void flush_key_value_pair(void);
 
+void my_abort_int(char *str, int p1, char *p2);
 void my_abort3(char *str, char *p1, char *p2);
 void my_abort2(char *str, char *p1);
 
@@ -97,7 +98,7 @@ void main44(void)
   int count,def;
   char command[7];
     
-  zifmessage("LABEL version 2017-03-30");
+  zifmessage("LABEL version 2019-09-06");
 
   zvparm("_SUBCMD",command,&count,&def,0,0);
   switch (command[0])
@@ -145,7 +146,7 @@ void add_items(int action)
   /*  element_number -- Starting elem given in () after key name	*/
   /*								*/
 
-  int in_unit,out_unit,count,instance;
+  int in_unit=0,out_unit,count,instance;
   int data_copy;
   char form[12],set[33],message[80],type[12];
   char key[33], mode[12], set_opt[12];
@@ -254,8 +255,8 @@ void add_items(int action)
 	  p++;
 	  sscanf(p, "%d", &element_number);
 	  if (element_number == 0 || element_number < -1)
-	    my_abort3("Illegal starting element number of %d for keyword %s",
-		      (void *)element_number, key);
+	    my_abort_int("Illegal starting element number of %d for keyword %s",
+			 element_number, key);
 	  p += strspn(p, "1234567890+");	/* find closing parenthesis */
 	  p += strspn(p, " \t");		/* skip white space */
 	  if (*p != ')')
@@ -455,7 +456,7 @@ void add_items(int action)
   if (data_copy)
     {
       char *buf = NULL;
-      int rec_size;
+      int rec_size=0;
       status = zvget(in_unit, "RECSIZE", &rec_size, NULL);
       abort_on_error(in_unit);
       buf = (char *)malloc(rec_size);
@@ -541,12 +542,11 @@ char *parse_value(value, p, format, key, change_format)
 	    len = strcspn(p, ",)\' \t");
 	  p += len;
 	  if ((*p != '\'' && quote) || (*p == '\'' && !quote))
-	    my_abort3(
-		      "String for keyword %s, element %d improperly terminated",
-		      key, (void *)(nelem+1));
+	    my_abort_int("String for keyword %s, element %d improperly terminated",
+			 nelem+1, key);
 	  if (!quote && len == 0)
-	    my_abort3("Invalid value for keyword %s, element %d",
-		      key, (void *)(nelem+1));
+	    my_abort_int("Invalid value for keyword %s, element %d",
+			 nelem+1, key);
 
 	  if (value->data != NULL)
 	    {
@@ -566,8 +566,8 @@ char *parse_value(value, p, format, key, change_format)
 	  start = p;
 	  len = strspn(p, "1234567890+-.Ee");		/* find end of number */
 	  if (len == 0)
-	    my_abort3("Invalid value for keyword %s, element %d",
-		      key, (void *)(nelem+1));
+	    my_abort_int("Invalid value for keyword %s, element %d",
+			 nelem+1, key);
 	  p += len;
 	  savechar = *p;
 	  *p = '\0';				/* make the number a string */
@@ -610,9 +610,9 @@ char *parse_value(value, p, format, key, change_format)
 		}
 
 	      if (value->data != NULL && *format == 'R')
-		sscanf(start, "%f", value->data+(nelem*value->maxlength));
+		sscanf(start, "%f", (float*)(value->data+(nelem*value->maxlength)));
 	      else if (value->data != NULL && *format == 'D')
-		sscanf(start, "%lf", value->data+(nelem*value->maxlength));
+		sscanf(start, "%lf", (double*)(value->data+(nelem*value->maxlength)));
 	      else
 		{	/* not maxlen of 4 in case we change to string later */
 		  value->maxlength = MAX(value->maxlength, len+1);
@@ -630,7 +630,7 @@ char *parse_value(value, p, format, key, change_format)
 	      strcpy(format, "INT");
 
 	      if (value->data != NULL)
-		sscanf(start, "%d", value->data+(nelem*value->maxlength));
+		sscanf(start, "%d", (int*)(value->data+(nelem*value->maxlength)));
 	      else
 		{	/* not maxlen of 4 in case we change to string later */
 		  value->maxlength = MAX(value->maxlength, len+1);
@@ -654,7 +654,7 @@ char *parse_value(value, p, format, key, change_format)
 	      p++;
 	    }
 	  else if (*p == ',')		/* skip commas */
-	    *p++;
+	    p++;
 	  else if (*p == '\0')
 	    my_abort2("No closing parenthesis for multi-valued keyword %s",
 		      key);
@@ -669,6 +669,14 @@ char *parse_value(value, p, format, key, change_format)
     my_abort2("Extra closing parenthesis found for keyword %s", key);
 
   return p;
+}
+
+void my_abort_int(char *str, int p1, char *p2)
+{
+  char message[80];
+
+  sprintf(message, str, p1, p2);
+  zmabend(message);
 }
 
 void my_abort3(char *str, char *p1, char *p2)
@@ -1004,7 +1012,7 @@ void concat_labels(void)
   /*  instances	-- List of all src set instances from zlp/hinfo	*/
   /*  nsets_label	-- # of sets in source				*/
 
-  int source_unit, in_unit, out_unit;
+  int source_unit=0, in_unit=0, out_unit=0;
   int task_cnt, prop_cnt;
   int i, count, status;
   int data_copy, single_set;
@@ -1012,10 +1020,10 @@ void concat_labels(void)
   char type[12], set_opt[12];
   char set_name[MAX_LABEL_KEY_SIZE+1];
   char set_names[MAX_SETS][MAX_LABEL_KEY_SIZE+1];
-  int instance;
+  int instance=0;
   int instances[MAX_SETS];
   int nsets_label;
-  char *p;
+  char *p = NULL;
 
   /* Open input 1 (the source of the labels */
   status = zvunit(&source_unit, "INP", 1, NULL);
@@ -1139,7 +1147,7 @@ void concat_labels(void)
   if (data_copy)
     {
       char *buf = NULL;
-      int rec_size;
+      int rec_size = 0;
       status = zvget(in_unit, "RECSIZE", &rec_size, NULL);
       abort_on_error(in_unit);
       buf = (char *)malloc(rec_size);
@@ -1890,7 +1898,7 @@ void dump_all_items(int unit)
   /*	    treated as a string by the zlget calls.		*/
   /*								*/
 
-  int instances[MAX_TASKS],nhist,nprop,subset,length,dummy;
+  int instances[MAX_TASKS],nhist,nprop,subset,dummy;
   char key[MAX_LABEL_KEY_SIZE+1],format[12];
   struct multival value;
   char tasks[MAX_TASKS][MAX_LABEL_KEY_SIZE+1];
@@ -2088,7 +2096,7 @@ void list_history_items(int unit,int nousrtim)
   /*	    treated as a string by the zlget calls.		*/
   /*								*/
 
-  int instances[MAX_TASKS],number_of_tasks,subset,i,dummy;
+  int instances[MAX_TASKS],number_of_tasks,subset,dummy;
   char task_names[MAX_TASKS][MAX_LABEL_KEY_SIZE+1];
   char username[132],time[28],key[MAX_LABEL_KEY_SIZE+1],format[32];
   struct multival value;
@@ -2203,7 +2211,7 @@ void list_property_items(int unit)
   /*	    treated as a string by the zlget calls.		*/
   /*								*/
 
-  int instances[MAX_PROPS],number_of_props,subset,i,dummy;
+  int instances[MAX_PROPS],number_of_props,subset,dummy;
   char prop_names[MAX_PROPS][MAX_LABEL_KEY_SIZE+1];
   char key[MAX_LABEL_KEY_SIZE+1],format[32];
   struct multival value;
@@ -2417,9 +2425,6 @@ void remove_label(void)
   int samp;			/* image sample increment variable*/
   int band;			/* image band increment variable*/
 
-  int lblsize;		/* vicar label size		*/
-  int recsize;		/* record size of image file 	*/
-  int numll;			/* number of lines of vicar label */
   char org[32];
 
   struct       		/* Window into the input        */
@@ -2590,7 +2595,6 @@ void switch_labels(void)
   /* 								*/
   int input_1,input_2,output;		/* Unit numbers		*/
   int nl,ns,nb,nlb,nbb;		/* Size of output	*/
-  int i;				/* temp variable	*/
   char format[12];			/* format of output	*/
   char type[32];			/* type of output	*/
   char org[8];			/* ORG of output	*/

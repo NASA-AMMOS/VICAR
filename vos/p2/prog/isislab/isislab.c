@@ -14,14 +14,16 @@
  */
 
 #include <string.h>
+#include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
 #include <ctype.h>
 #include <math.h>
 #include "xvmaininc.h"
 #include "vicmain_c"
+#include "zifmessage.h"
+#include "zmabend.h"
 
-#define FUNCTION 
 #define MAXLEN 133	/* max. length of a label line */
 #define RECL 512	/* record length of PDS file */
 
@@ -30,14 +32,21 @@ char buf[RECL];
 int iun, recno;
 
 /****************************************************************************/
+static int find_keyword(char keyword[], int *bptr);
+static int get_ival(int *intitem, int *bptr);
+static int find_char(char keyword[], int *bptr);
+static void bigprnt(char *strng);
+static void read_recs(int nrec);
+static int incr(int *a);
+
 void main44(void)
 
 {
-  int bptr=0, i, j, k, hstart, nhist, nlab, nrec, stat;
+  int bptr=0, i, j, k, hstart=0, nhist=0, nlab, nrec, stat;
   char opt[8];
 
 	/* tell user the version */
-  zvmessage("*** ISISLAB version 2017-08-08 ***",0);
+  zifmessage("ISISLAB version 2019-09-05");
 
   stat = zvunit( &iun, "INP", 1, NULL);
 
@@ -124,11 +133,11 @@ listl:
 
 
 /***************************************************************************/
-FUNCTION read_recs( nrec)
+void read_recs(int nrec)
 /*
  * read 'nrec' records and print them out
  */
-int nrec;
+/* int nrec; */
 {
   int bptr, i, stat;
 
@@ -155,11 +164,11 @@ int nrec;
 
 
 /***************************************************************************/
-FUNCTION bigprnt( strng)
+void bigprnt(char *strng)
 /*
  * print a header
  */
-char *strng;
+/* char *strng; */
 {
   zvmessage(" ",0);
   zvmessage( strng,0);
@@ -168,22 +177,22 @@ char *strng;
 
 
 /***************************************************************************/
-int FUNCTION find_keyword( keyword, bptr)
+int find_keyword(char keyword[], int *bptr)
 /*
  * find keyword and prepare for value reading
  */
-char keyword[];
-int *bptr;
+/* char keyword[]; */
+/* int *bptr; */
 {
-  int count, found, keylength, startptr, stat;
+  int count, found, keylength;
 
-  startptr  = *bptr;			/* Record starting pointer   */
+  /*startptr  = *bptr;			/ * Record starting pointer   */
   found     = 0;				/* Item not found yet        */
   keylength = strlen(keyword);			/* Determine itemname length */
 
   while ( !found ) {
     count = 0;
-    stat = 1;
+    /* stat = 1; */
     while ( buf[*bptr] != keyword[count] )
       if ( incr( bptr ) == 0 ) return 0;
     if ( incr( bptr ) == 0 ) return 0;
@@ -203,21 +212,21 @@ int *bptr;
 
 
 /***************************************************************************/
-int FUNCTION find_char( keyword, bptr)
+int find_char(char keyword[], int *bptr)
 /*
  * find a 1-character keyword
  */
-char keyword[];
-int *bptr;
+/* char keyword[]; */
+/* int *bptr; */
 {
-  int found, keylength, startptr, stat;
+  int found, keylength;
 
-  startptr  = *bptr;			/* Record starting pointer   */
+  /*startptr  = *bptr;			/ * Record starting pointer   */
   found     = 0;			/* Item not found yet        */
   keylength = strlen(keyword);
   if (keylength>1) zmabend(" illegal call to find_char");
   while ( !found ) {
-    stat = 1;
+    /* stat = 1; */
     while ( buf[*bptr] != keyword[0] )
       if ( incr( bptr ) == 0 ) return 0;
     if ( incr( bptr ) == 0 ) return 0;
@@ -228,11 +237,11 @@ int *bptr;
 
 
 /*****************************************************************************/
-int FUNCTION get_ival( intitem, bptr)
+int get_ival(int *intitem, int *bptr)
 /*
  * get the next integer value after bptr
  */
-int *intitem, *bptr;
+/* int *intitem, *bptr; */
 
 {
   char integer[10];
@@ -260,21 +269,21 @@ int *intitem, *bptr;
 
 
 /*****************************************************************************/
-int FUNCTION incr( a)
+int incr(int *a)
 /*
  * increment pointer to buffer -- when full, read in a new record
  * and increment recno
  *
  * check if new record is all-blank or -zero, if so declare end
  */
-int *a;
+/* int *a; */
 {
-  int blnk, i, stat;
+  int blnk, i;
 
   (*a)++;
   if ( *a < RECL ) return 1;
   else {
-    stat = zvread( iun, buf, "NSAMPS", RECL, NULL);
+    zvread( iun, buf, "NSAMPS", RECL, NULL);
     *a = 0;
     recno++;
 	/* check for empty record: */

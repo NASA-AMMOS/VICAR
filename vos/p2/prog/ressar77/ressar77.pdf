@@ -77,21 +77,17 @@ PROGRAM HISTORY:
 WRITTEN BY: Gary Yagi      Aug. 27, 1980
 COGNIZANT PROGRAMMER: Gary Yagi, Aug 89
 REVISION:
- 10 Oct 02   GMY    Port to Linux (RESSAR77_LINUX)
-  5 Aug 89   GMY    Increase maximum number of blemishes to 1000.
- 16 JUN 89   GMY    Handle new format of blemish files created by BLEMFIX
-		    Rewrite help file.
-  9 JAN 89   SP     Changed to remove circles & blemishes even if reseaux are
-                    to be kept.  Prevent extrapolation limits going beyond
-                    edge of image for fiducials.
- 27 MAR 87   SP     Removed statement that changed ns incorrectly for halfword
-                    images.  Changed loop control from NLINE .GT. NS+NLIC TO
-                    NLINE .GT. NL+NLIC
- 29 OCT 86   SP     Corrected handling of defaults for camera and centers.
- 23 OCT 86   JRS    Converted to VICAR2 param I/O.  Image I/O already converted.
- 14 APR 83   CCA    Converted to vax
- 13 JAN 81   CCA    Implement 3rd input for blem removal
- 27 AUG 80   GMY    Initial release
+ 1980-08-27 GMY - Initial release
+ 1981-01-13 CCA - Implement 3rd input for blem removal
+ 1983-04-14 CCA - Converted to vax
+ 1986-10-23 JRS - Converted to VICAR2 param I/O.  Image I/O already converted.
+ 1986-10-29 SP  - Corrected handling of defaults for camera and centers.
+ 1987-03-27 SP  - Removed statement that changed ns incorrectly for halfword images.  Changed loop control from NLINE .GT. NS+NLIC TO NLINE .GT. NL+NLIC
+ 1989-01-09 SP  - Changed to remove circles & blemishes even if reseaux are to be kept.  Prevent extrapolation limits going beyond edge of image for fiducials.
+ 1989-06-16 GMY - Handle new format of blemish files created by BLEMFIX. Rewrite help file.
+ 1989-08-05 GMY - Increase maximum number of blemishes to 1000.
+ 2002-10-10 GMY - Port to Linux (RESSAR77_LINUX)
+ 2020-02-25 WLB - IDS-8247 - initialized some variables.
 
 .LEVEL1
 .VARIABLE INP

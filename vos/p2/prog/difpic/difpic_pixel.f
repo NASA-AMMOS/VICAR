@@ -43,7 +43,7 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 C============================================================================
 C
       integer   MAXBYTESPAR, STATUS
-      parameter (MAXBYTESPAR=200000)
+      parameter (MAXBYTESPAR=500000)
       BYTE      BUF1(MAXBYTESPAR),BUF2(MAXBYTESPAR)
 
 C  COMMON BLOCK - written only by MAIN44, read by subroutines.
@@ -53,14 +53,13 @@ C  COMMON BLOCK - written only by MAIN44, read by subroutines.
       CHARACTER*12 FORM1, FORM2
       CHARACTER*8 ORG1, ORG2
 
-      INTEGER  COUNT,DEFAULTED,TSTATUS
-      LOGICAL  DFPXFG, XVPTST
+      INTEGER  TSTATUS
 
 C============================================================================
 C
 C  OPEN DATA SETS
 
-C      call xvmessage('DIFPIC version 17Sep11', ' ')
+C      call xvmessage('DIFPIC version 17Sep11', ' ') See VicarImageUtil.cc
       STATUS=0
       TSTATUS=0
       CALL XVUNIT( INFILE1, 'INP', 1, IND, ' ' )
@@ -259,7 +258,7 @@ C      CALL XVMESSAGE('IN BYTE DIF PROGRAM',' ')
         IBO = IBO+1
       ENDDO
 
-      IF (NPOS.NE.0 .OR. NNEG.NE.O) STATUS=1
+      IF (NPOS.NE.0 .OR. NNEG.NE.0) STATUS=1
       IF (NPOS.NE.0)
      .  CALL PRNTREAL(FLOAT(IPTOT)/NPOS,' AVE VAL OF POS DIFFS=')
       CALL PRNTINT(NPOS,' NUMBER OF POS DIFF=')
@@ -363,7 +362,7 @@ C==================================================================
         IBO = IBO+1
       ENDDO
 
-      IF (NPOS.NE.0 .OR. NNEG.NE.O) STATUS=1
+      IF (NPOS.NE.0 .OR. NNEG.NE.0) STATUS=1
 
       IF(NPOS.NE.0)
      .  CALL PRNTREAL(IPTOT/NPOS,' AVE VAL OF POS DIFFS=')
@@ -476,7 +475,7 @@ C==================================================================
         IBO = IBO+1
       ENDDO
 
-      IF (NPOS.NE.0 .OR. NNEG.NE.O) STATUS=1
+      IF (NPOS.NE.0 .OR. NNEG.NE.0) STATUS=1
 
       IF(NPOS.NE.0)
      .  CALL PRNTREAL(IPTOT/NPOS,' AVE VAL OF POS DIFFS=')
@@ -570,7 +569,7 @@ C==================================================================
         IBO = IBO+1
       ENDDO
 
-      IF (NPOS.NE.0 .OR. NNEG.NE.O) STATUS=1
+      IF (NPOS.NE.0 .OR. NNEG.NE.0) STATUS=1
 
       IF(NPOS.NE.0) CALL PRNTREAL(IPTOT/NPOS,' AVE VAL OF POS DIFFS=')
       CALL PRNTINT(NPOS,' NUMBER OF POS DIFF=')
@@ -662,7 +661,7 @@ C==================================================================
         IBO = IBO+1
       ENDDO
 
-      IF (NPOS.NE.0 .OR. NNEG.NE.O) STATUS=1
+      IF (NPOS.NE.0 .OR. NNEG.NE.0) STATUS=1
 
       IF(NPOS.NE.0)
      .  CALL PRNTREAL(SNGL(IPTOT)/NPOS,' AVE VAL OF POS DIFFS=')
@@ -756,7 +755,7 @@ C==================================================================
         IBO = IBO+1
       ENDDO
 
-      IF (NPOS.NE.0 .OR. NNEG.NE.O) STATUS=1
+      IF (NPOS.NE.0 .OR. NNEG.NE.0) STATUS=1
       IF(NPOS.NE.0) CALL PRNT(10,1,IPTOT/NPOS,' AVE VAL OF POS DIFFS=')
       CALL PRNTINT(NPOS,' NUMBER OF POS DIFF=')
       IF(NNEG.NE.0) CALL PRNT(10,1,INTOT/NNEG,' AVE VAL OF NEG DIFFS=')

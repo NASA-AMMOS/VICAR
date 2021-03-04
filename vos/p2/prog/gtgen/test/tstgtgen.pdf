@@ -3,6 +3,8 @@ refgbl $echo
 parm version string def="ibis-1"
 parm org string def="column"
 body
+enable-log
+
 !let _onfail="continue"
 let $echo="yes"
 
@@ -15,7 +17,7 @@ gtgen out=xxxlab1 'tiecnvrt +
           "ModelTiePointTag=(2,103,0,350807.4,5316081.3,0.0)", +
           "GTRasterTypeGeoKey=1(RasterPixelIsArea)")
    
-list xxxlab1 'zeroes
+list xxxlab1 'zeroes 'nousrtim
 gtlist xxxlab1
 
 
@@ -29,7 +31,7 @@ gtgen inp=xxxim1 out=xxxim2 'tiecnvrt +
           "ModelTiePointTag=(200,0,0,351807.4,5317081.3,0.0)", +
           "GTRasterTypeGeoKey=1(RasterPixelIsArea)")
 
-label-list xxxim2
+label-list xxxim2 'nousrtim
 gtlist xxxim2
 
 ! add case
@@ -37,7 +39,7 @@ gtlist xxxim2
 gtgen inp=xxxim2 out=xxxim3 'add +
    geotiff=("PCSCitationGeoKey=""UTM Zone 60 N with WGS84""")
 
-label-list xxxim3
+label-list xxxim3 'nousrtim
 gtlist xxxim3
 
 ! label transfer case
@@ -46,7 +48,7 @@ gen xxxim4 nl=40 ns=40
 
 gtgen inp=(xxxim4,xxxim3) out=xxxim5
 
-label-list xxxim5
+label-list xxxim5 'nousrtim
 gtlist xxxim5
 
 ! testing the 'rectfit keyword, first a non-rect case
@@ -118,7 +120,7 @@ gtgen inp=xxxim1 out=xxxim2 'tiecnvrt +
           "ModelTiePointTag=(100,0,0,-109.,34.,0.0)", +
           "GTRasterTypeGeoKey=1(RasterPixelIsArea)")
 
-label-list xxxim2
+label-list xxxim2 'nousrtim
 
 ! continuing the add case, special case of adding tiecnvrt-tiepoints,
 ! the old mapping should be deleted
@@ -128,5 +130,7 @@ gtgen inp=xxxim2 out=xxxim3 'add 'tiecnvrt +
           "ModelTiePointTag=(0,50,0,-110.,33.,0.0)", +
           "ModelTiePointTag=(50,0,0,-109.,34.,0.0)")
 
-label-list xxxim3
+label-list xxxim3 'nousrtim
+
+disable-log
 end-proc

@@ -241,7 +241,7 @@ Compile Error: *_ARCH either not defined or not defined correctly!!!!!!!!!!!
 /* Turn this on to enable support for compression.  It doesn't control	*/
 /* any specific compression mechanism; it rather turns on or off the	*/
 /* infrastructure to even look for compression.				*/
-#define RTL_USE_COMPRESSION	0
+#define RTL_USE_COMPRESSION	1
 
 /************************************************************************/
 /* The following macros do NOT need to be redefined when compiling on a	*/
@@ -535,7 +535,7 @@ Compile Error: *_ARCH either not defined or not defined correctly!!!!!!!!!!!
 #endif
 
 #if X86_NT_ARCH		/* actually exists as _onexit() if needed */
-#deifne ON_EXIT_AVAIL_OS	0
+#define ON_EXIT_AVAIL_OS	0
 #endif
 
 /************************************************************************/

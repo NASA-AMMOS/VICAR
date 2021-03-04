@@ -1,10 +1,10 @@
 gen difpica 100 100 'byte
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen difpicb 100 100 ival=5 'byte
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 difpic (difpica,difpicb) difpicc 'mod
 Beginning VICAR task difpic
@@ -17,7 +17,7 @@ DIFPIC version 06Oct11
  % DIFF PIXELS=  100.000
 list difpicc (1,1,10,20) 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:GEN       User:          Date_Time:                        
@@ -45,7 +45,7 @@ DIFPIC version 06Oct11
  % DIFF PIXELS=  100.000
 list difpicc (1,1,10,20) 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:GEN       User:          Date_Time:                        
@@ -68,11 +68,11 @@ DIFPIC version 06Oct11
  NUMBER OF DIFFERENT PIXELS =  81
 gen difpica 100 100 'half
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen difpicb 100 100 ival=5 'half
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 difpic (difpica,difpicb) difpicc
 Beginning VICAR task difpic
@@ -85,7 +85,7 @@ DIFPIC version 06Oct11
  % DIFF PIXELS=  100.000
 list difpicc (1,1,10,20) 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
  Task:GEN       User:          Date_Time:                        
@@ -129,7 +129,7 @@ DIFPIC version 06Oct11
  % DIFF PIXELS=  100.000
 list difpicc (1,1,10,20) 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
  Task:GEN       User:          Date_Time:                        
@@ -171,11 +171,11 @@ DIFPIC version 06Oct11
  NUMBER OF DIFFERENCES =   0
 gen difpica 10 10 linc=2 sinc=2
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen difpicb 10 10 ival=6
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 difpic (difpica,difpicb) difpicc size=(2,3,8,6) 'mod
 Beginning VICAR task difpic
@@ -189,7 +189,7 @@ DIFPIC version 06Oct11
  % DIFF PIXELS=  91.6667
 list difpicc 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:GEN       User:          Date_Time:                        
@@ -210,11 +210,11 @@ DIFPIC version 06Oct11
  NUMBER OF DIFFERENT PIXELS =  44
 gen difpica 100 100 'full
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen difpicb 100 100 ival=5 'full
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 difpic (difpica,difpicb) difpicc
 Beginning VICAR task difpic
@@ -227,7 +227,7 @@ DIFPIC version 06Oct11
  % DIFF PIXELS=  100.000
 list difpicc (1,1,10,5) 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    FULL     samples are interpreted as FULLWORD data
  Task:GEN       User:          Date_Time:                        
@@ -255,7 +255,7 @@ DIFPIC version 06Oct11
  % DIFF PIXELS=  100.000
 list difpicc (1,1,9,5) 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    FULL     samples are interpreted as FULLWORD data
  Task:GEN       User:          Date_Time:                        
@@ -280,11 +280,11 @@ DIFPIC version 06Oct11
  NUMBER OF DIFFERENCES =   0
 gen difpica 100 100 'real4
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen difpicb 100 100 ival=5 'real4
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 difpic (difpica,difpicb) difpicc
 Beginning VICAR task difpic
@@ -297,7 +297,7 @@ DIFPIC version 06Oct11
  % DIFF PIXELS=  100.000
 list difpicc (1,1,10,5) 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    REAL     samples are interpreted as  REAL*4  data
  Task:GEN       User:          Date_Time:                        
@@ -325,7 +325,7 @@ DIFPIC version 06Oct11
  % DIFF PIXELS=  100.000
 list difpicc (1,1,9,5) 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    REAL     samples are interpreted as  REAL*4  data
  Task:GEN       User:          Date_Time:                        
@@ -350,11 +350,11 @@ DIFPIC version 06Oct11
  NUMBER OF DIFFERENCES =   0
 gen difpica 100 100 'real8
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen difpicb 100 100 ival=5 'real8
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 difpic (difpica,difpicb) difpicc
 Beginning VICAR task difpic
@@ -367,7 +367,7 @@ DIFPIC version 06Oct11
  % DIFF PIXELS=  100.000
 list difpicc (1,1,10,5) 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    DOUB     samples are interpreted as  REAL*8  data
  Task:GEN       User:          Date_Time:                        
@@ -395,7 +395,7 @@ DIFPIC version 06Oct11
  % DIFF PIXELS=  100.000
 list difpicc (1,1,9,5) 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    DOUB     samples are interpreted as  REAL*8  data
  Task:GEN       User:          Date_Time:                        
@@ -420,11 +420,11 @@ DIFPIC version 06Oct11
  NUMBER OF DIFFERENCES =   0
 gen difpica 100 100 'comp
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen difpicb 100 100 ival=5 'comp
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 difpic (difpica,difpicb) difpicc
 Beginning VICAR task difpic
@@ -437,7 +437,7 @@ DIFPIC version 06Oct11
  % DIFF PIXELS=  100.000
 list difpicc (1,1,10,5) 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    COMP     samples are interpreted as COMPLEX  data
  Task:GEN       User:          Date_Time:                        
@@ -465,7 +465,7 @@ DIFPIC version 06Oct11
  % DIFF PIXELS=  100.000
 list difpicc (1,1,9,5) 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    COMP     samples are interpreted as COMPLEX  data
  Task:GEN       User:          Date_Time:                        
@@ -490,11 +490,11 @@ DIFPIC version 06Oct11
  NUMBER OF DIFFERENCES =   0
 gen difpica 100 100 ival=0 linc=0 sinc=0 'byte
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen difpicb 100 100 ival= 255 linc=0 sinc=0 'byte
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 difpic (difpica,difpicb) difpicc
 Beginning VICAR task difpic
@@ -507,7 +507,7 @@ DIFPIC version 06Oct11
  % DIFF PIXELS=  100.000
 list difpicc (1,1,10,5) 'zero 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:GEN       User:          Date_Time:                        
@@ -535,7 +535,7 @@ DIFPIC version 06Oct11
  % DIFF PIXELS=  100.000
 list difpicc (1,1,9,5) 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:GEN       User:          Date_Time:                        
@@ -553,11 +553,11 @@ list version 2017-03-29
       9     255 255 255 255 255
 gen difpica 100 100 ival=-32768 'half
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen difpicb 100 100 ival= 32500 'half
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 difpic (difpica,difpicb) difpicc
 Beginning VICAR task difpic
@@ -570,7 +570,7 @@ DIFPIC version 06Oct11
  % DIFF PIXELS=  100.000
 list difpicc (1,1,10,5) 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
  Task:GEN       User:          Date_Time:                        
@@ -598,7 +598,7 @@ DIFPIC version 06Oct11
  % DIFF PIXELS=  100.000
 list difpicc (1,1,9,5) 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
  Task:GEN       User:          Date_Time:                        
@@ -616,11 +616,11 @@ list version 2017-03-29
       9     32767 32767 32767 32767 32767
 gen difpica 100 100 ival=-2147483648 'full
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen difpicb 100 100 ival= 2147483000 'full
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 difpic (difpica,difpicb) difpicc
 Beginning VICAR task difpic
@@ -633,7 +633,7 @@ DIFPIC version 06Oct11
  % DIFF PIXELS=  100.000
 list difpicc (1,1,10,5) 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    FULL     samples are interpreted as FULLWORD data
  Task:GEN       User:          Date_Time:                        
@@ -661,7 +661,7 @@ DIFPIC version 06Oct11
  % DIFF PIXELS=  100.000
 list difpicc (1,1,9,5) 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    FULL     samples are interpreted as FULLWORD data
  Task:GEN       User:          Date_Time:                        
@@ -681,11 +681,11 @@ write "Test difpic on multiband images"
 Test difpic on multiband images
 gen a 10 20 30 ORG="BSQ"
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen b 10 20 30 ORG="BSQ" ival=1
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 write "Should get 6000 differences."
 Should get 6000 differences.
@@ -695,11 +695,11 @@ DIFPIC version 06Oct11
  NUMBER OF DIFFERENT PIXELS =6000
 gen a 10 20 30 ORG="BIL" 'HALF
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen b 10 20 30 ORG="BIL" 'HALF ival=1
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 write "Should get 3000 differences."
 Should get 3000 differences.
@@ -710,11 +710,11 @@ DIFPIC version 06Oct11
  NUMBER OF DIFFERENCES =3000
 gen a 10 20 30 ORG="BIP" 'REAL
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen b 10 20 30 ORG="BIP" 'REAL ival=1
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 write "Should get error message about BIP files"
 Should get error message about BIP files
@@ -726,11 +726,11 @@ write "Test difpic on multiband images with output file"
 Test difpic on multiband images with output file
 gen difpica 40 40 10 'byte
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen difpicb 40 40 10 ival=5 'byte
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 difpic (difpica,difpicb) difpicc 'mod
 Beginning VICAR task difpic
@@ -743,7 +743,7 @@ DIFPIC version 06Oct11
  % DIFF PIXELS=  100.000
 list difpicc (1,1,10,20) nb=2 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:GEN       User:          Date_Time:                        
@@ -784,11 +784,11 @@ list version 2017-03-29
      10     251 251 251 251 251 251 251 251 251 251 251 251 251 251 251 251 251 251 251 251
 gen difpica 40 40 10 'half
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen difpicb 40 40 10 ival=5 'half
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 difpic (difpicb,difpica) difpicc
 Beginning VICAR task difpic
@@ -801,7 +801,7 @@ DIFPIC version 06Oct11
  % DIFF PIXELS=  100.000
 list difpicc (1,1,10,20) nb=2 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
  Task:GEN       User:          Date_Time:                        
@@ -880,11 +880,11 @@ list version 2017-03-29
      10         5     5     5     5     5
 gen difpica 40 40 10 'full
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen difpicb 40 40 10 ival=5 'full
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 difpic (difpica,difpicb) difpicc
 Beginning VICAR task difpic
@@ -897,7 +897,7 @@ DIFPIC version 06Oct11
  % DIFF PIXELS=  100.000
 list difpicc (1,1,10,5) nb=2 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    FULL     samples are interpreted as FULLWORD data
  Task:GEN       User:          Date_Time:                        
@@ -938,11 +938,11 @@ list version 2017-03-29
      10             -5         -5         -5         -5         -5
 gen difpica 40 40 10 'real4
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen difpicb 40 40 10 ival=5 'real4
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 difpic (difpica,difpicb) difpicc nb=4 sb=3
 Beginning VICAR task difpic
@@ -955,7 +955,7 @@ DIFPIC version 06Oct11
  % DIFF PIXELS=  100.000
 list difpicc (1,1,10,5) nb=2 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    REAL     samples are interpreted as  REAL*4  data
  Task:GEN       User:          Date_Time:                        
@@ -996,11 +996,11 @@ list version 2017-03-29
      10      -5.000E+00  -5.000E+00  -5.000E+00  -5.000E+00  -5.000E+00
 gen difpica 40 40 10 'real8
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen difpicb 40 40 10 ival=5 'real8
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 difpic (difpica,difpicb) difpicc
 Beginning VICAR task difpic
@@ -1013,7 +1013,7 @@ DIFPIC version 06Oct11
  % DIFF PIXELS=  100.000
 list difpicc (1,1,10,5) nb=2 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    DOUB     samples are interpreted as  REAL*8  data
  Task:GEN       User:          Date_Time:                        
@@ -1054,11 +1054,11 @@ list version 2017-03-29
      10      -5.000E+00  -5.000E+00  -5.000E+00  -5.000E+00  -5.000E+00
 gen difpica 40 40 10 'comp
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen difpicb 40 40 10 ival=5 'comp
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 difpic (difpica,difpicb) difpicc
 Beginning VICAR task difpic
@@ -1071,7 +1071,7 @@ DIFPIC version 06Oct11
  % DIFF PIXELS=  100.000
 list difpicc (1,1,10,5) nb=2 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    COMP     samples are interpreted as COMPLEX  data
  Task:GEN       User:          Date_Time:                        
@@ -1112,11 +1112,11 @@ list version 2017-03-29
      10      -5.000E+00   0.000E+00  -5.000E+00   0.000E+00  -5.000E+00   0.000E+00  -5.000E+00   0.000E+00  -5.000E+00   0.000E+00
 gen difpica 40 40 'comp
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen difpicb 40 40 ival=5 'comp
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 ccomp difpica (cr ci) 'rect 'forw
 Beginning VICAR task ccomp
@@ -1126,7 +1126,7 @@ Beginning VICAR task ccomp
 CCOMP version 18 Dec 2012 (64-bit) - rjb
 label-l difpica 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File difpica ************
@@ -1148,7 +1148,7 @@ MODULO=(0.0, 0.0)
 ************************************************************
 label-l difpicb 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File difpicb ************
@@ -1180,11 +1180,11 @@ DIFPIC version 06Oct11
  % DIFF PIXELS=  0.00000
 gen difpica 100 100
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen difpicb 10 10
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 difpic (difpica,difpicb) difpicc
 Beginning VICAR task difpic
@@ -1198,7 +1198,7 @@ DIFPIC version 06Oct11
  % DIFF PIXELS=  0.00000
 list difpicc  'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
  ** The specified window is all zero.
 let $echo="no"
 ******************************************************

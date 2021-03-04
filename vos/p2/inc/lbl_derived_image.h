@@ -53,6 +53,14 @@ extern "C" {
  *
  * Date		who		Description
  * -----------  --------------- ----------------------------------------------
+ * 18-Oct-2020  E. Sarkissian   Added InstrumentListId, ConfigurationBits,
+ *                              and ConfigurationBand
+ * 02-Feb-2020  Steven Lu       Added ATMOSPHERIC_OPACITY and 
+ *                              ATMOSPHERIC_OPACITY_REFERENCE.
+ * 22-May-2019  Steven Lu       Added ColorDnScalingFactor and 
+ *                              ColorDnScalingMethod.
+ * 01-May-2019  Steven Lu       Added RadiometricZenithScalingFactor, and 
+ *                              RadiometricType.
  * 27-Mar-2018  Steven Lu       Added EncodedDisplayGamma
  * 02-Feb-2018  Steven Lu       Added ColorSpace, ColorComponent, and Illuminant
  * 21-Nov-2017	Bob Deen	Added TargetInstrument
@@ -86,9 +94,12 @@ typedef struct
 	LblApiTypeItem_typ		BrightnessCorrectionType;
         LblApiIdItem_typ                ConfigurationBandId[LBL_BAND_ID_ELEMENTS];
         LblApiIdItem_typ                ConfigurationBitId[LBL_BIT_ID_ELEMENTS];
+	LblApiIntItem_typ		ConfigurationBits;
+	LblApiIntItem_typ		ConfigurationBand;
 	LblApiTypeItem_typ		DerivedImageType;
         LblApiIdItem_typ                InputProductId[LBL_INPUT_PROD_ID_ITEMS];
         LblApiIdItem_typ                InstrumentBandId[LBL_BAND_ID_ELEMENTS];
+        LblApiIdItem_typ                InstrumentListId[LBL_BAND_ID_ELEMENTS];
 	LblApiStringItem_typ		InverseLutFileName;
         LblApiNameItem_typ              PointingModelName;
         LblApiNameItem_typ              PointingCorrectionFileName;
@@ -121,6 +132,23 @@ typedef struct
         LblApiNameItem_typ              ColorComponent;
         LblApiNameItem_typ              Illuminant;
         LblApiStringItem_typ            EncodedDisplayGamma;
+	LblApiIntItem_typ		CorrelationPixelCount;
+	LblApiRealItem_typ		CorrelationAverageScale;
+        LblApiRealItem_typ              CorrelationOverlapPercentage;
+        LblApiRealItem_typ              AverageFilterWindow;
+        LblApiRealItem_typ              MinFilterWindow;
+        LblApiRealItem_typ              MaxFilterWindow;
+        LblApiRealItem_typ              RadiometricZenithScalingFactor;
+        LblApiTypeItem_typ              RadiometricType;
+        LblApiRealItem_typ              ColorDnScalingFactor;
+        LblApiTypeItem_typ              ColorDnScalingMethod;
+        LblApiRealItem_typ              AtmosphericOpacity;
+        LblApiRealItem_typ              AtmosphericOpacityReference;
+	LblApiNameItem_typ		SupplementalMaskFile;
+	LblApiRealItem_typ		ResponsivityR;
+	LblApiRealItem_typ		ResponsivityG;
+	LblApiRealItem_typ		ResponsivityB;
+	LblApiRealItem_typ		ResponsivityPan;
 	} LblDerivedImage_typ;
 
 /***  Function prototypes  ***/

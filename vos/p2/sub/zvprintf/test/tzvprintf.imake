@@ -1,0 +1,9 @@
+#define PROGRAM tzvprintf
+
+#define MODULE_LIST tzvprintf.c
+
+#define TEST
+#define MAIN_LANG_C
+#define USES_ANSI_C
+#define LIB_P2SUB
+#define LIB_RTL

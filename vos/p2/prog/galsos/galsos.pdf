@@ -533,6 +533,10 @@ Revisions:
   2002-02-22 GMY      Add reflectance and radiance coversion tables for G29.
   2010-12-13 LWK      Revised pgm to work on PDS REDRs only.
   2016-02-13 WLB      Added test logs for 32 and 64-bit Linux.
+  2019-06-13 WLB      IDS-7922: initialized variables;
+                      IDS-7925: null-terminated strings.
+                      IDS-7924: corrected format directives; fixed error checking logic.
+  2019-07-23 WLB      IDS-7923: removed calls to sprintf, misc cleanup, ignored 368 lines of -Wall warnings.
 
 .LEVEL1
 .VARIABLE INP

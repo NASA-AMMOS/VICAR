@@ -1,0 +1,69 @@
+procedure
+refgbl $echo
+refgbl $syschar
+body
+
+!   This is a test file for NIMSR2IOF
+
+let _onfail="continue"
+let $echo="yes"     
+
+enable-log
+
+ush ln -fs /project/test_work/testdata/gll/g7jnfeap4101a.3 edr_file
+ush ln -fs /project/test_work/testdata/gll/n0389703400.3 udr_file
+ush ln -fs /project/test_work/testdata/gll/g7jnfeap4101a.aacs aacs_file
+ush ln -fs /project/test_work/testdata/gll/s980326b.bsp spk_file
+ush ln -fs /project/test_work/testdata/gll/nims_ikernel_mab.dat ik_file
+ush ln -fs /project/test_work/testdata/gll/boom_obscuration.nim dbm_file
+ush ln -fs /project/test_work/testdata/gll/nims_solar.dat sol_file
+ush ln -fs /project/test_work/testdata/gll/nims98a_gs4_ref_g1_01.tab CAL_FILE
+ush ln -fs /project/test_work/testdata/gll/jup_sl9_ave.tab DARK_FILE
+
+nimscmm2 edr=edr_file +
+        cube=G7JNFEAP4101A.cub +
+        wtfil=wtfil  +
+        aacsfil=aacs_file  +
+        calfil=CAL_FILE +
+	spkernel=spk_file +
+	darkfil=DARK_FILE +
+        ikernel=ik_file solfile=sol_file +
+	dbmfile=dbm_file +
+        prodnote="testbed EDR with simulated pointing"  +
+        obsnote="testbed EDR with simulated pointing"  +
+        target=GANYMEDE phase=GANYMEDE_7_ENCOUNTER +
+        proj=pov slew_tol=-1. +
+	outsiz=(9,5)
+
+label-list G7JNFEAP4101A.cub 'nousrtim
+list G7JNFEAP4101A.cub nb=1  'nousrtim
+
+! test nimsr2iof with default:
+
+nimsr2iof G7JNFEAP4101A.cub G7JNFEAP4101A.iof
+label-list G7JNFEAP4101A.iof 'nousrtim
+list G7JNFEAP4101A.iof nb=1 'nousrtim
+
+! try the parameter:
+
+nimsr2iof G7JNFEAP4101A.cub G7JNFEAP4101A.iof 'NOSPCVAL
+label-list G7JNFEAP4101A.iof 'nousrtim
+list G7JNFEAP4101A.iof nb=1 'nousrtim
+
+ush rm edr_file
+ush rm udr_file
+ush rm aacs_file
+ush rm ik_file
+ush rm dbm_file
+ush rm CAL_FILE
+ush rm DARK_FILE
+ush rm G7JNFEAP4101A.cub
+ush rm G7JNFEAP4101A.iof
+ush rm sol_file
+ush rm spk_file
+ush rm wtfil
+ush rm G7JNFEAP4101A.COC
+
+disable-log
+
+end-proc

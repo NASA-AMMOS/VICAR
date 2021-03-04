@@ -1,0 +1,328 @@
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+Beginning VICAR task label
+LABEL version 2019-05-28
+Keyword PLANET added
+Keyword SLAT added
+Keyword SLON added
+Beginning VICAR task label
+LABEL version 2019-05-28
+Keyword PLANET added
+Keyword SLAT added
+Keyword SLON added
+Keyword FARENC added
+Beginning VICAR task label
+LABEL version 2019-05-28
+Keyword PLANET added
+Keyword FUNC added
+Keyword SLAT added
+Keyword SLON added
+Keyword FORMAT added
+Beginning VICAR task label
+LABEL version 2019-05-28
+************************************************************
+ 
+        ************  File source.img ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in BYTE format from a X86-64-LIN host
+                1 bands
+                10 lines per band
+                10 samples per line
+                0 lines of binary header
+                0 bytes of binary prefix per line
+---- Task: GEN -- User:  --  ----
+IVAL=0.0
+SINC=1.0
+LINC=1.0
+BINC=1.0
+MODULO=0.0
+PLANET='jupiter'
+SLAT=40.0
+SLON=50.0
+---- Task: LABEL -- User:  --  ----
+PLANET='saturn'
+SLAT=10.0
+SLON=20.0
+FARENC='farenc'
+---- Task: LABEL -- User:  --  ----
+PLANET='neptune'
+FUNC='in1*0'
+SLAT=45.0
+SLON=70.0
+FORMAT='byte'
+ 
+************************************************************
+Beginning VICAR task copy
+ COPY VERSION 12-JUL-1993
+Beginning VICAR task copy
+ COPY VERSION 12-JUL-1993
+Beginning VICAR task cleanlabel
+CLEANLABEL version 2019-07-18
+Beginning to clean source.img...
+ 2 instances of keyword   PLANET were cleaned
+ 2 instances of keyword     SLAT were cleaned
+ 2 instances of keyword     SLON were cleaned
+Cleaning completed successfully!!!
+Copying image to cleaned header...
+Beginning VICAR task label
+LABEL version 2019-05-28
+************************************************************
+ 
+        ************  File prod1.img ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in BYTE format from a X86-64-LIN host
+                1 bands
+                10 lines per band
+                10 samples per line
+                0 lines of binary header
+                0 bytes of binary prefix per line
+---- Task: GEN -- User:  --  ----
+IVAL=0.0
+SINC=1.0
+LINC=1.0
+BINC=1.0
+MODULO=0.0
+---- Task: LABEL -- User:  --  ----
+FARENC='farenc'
+---- Task: LABEL -- User:  --  ----
+PLANET='neptune'
+FUNC='in1*0'
+SLAT=45.0
+SLON=70.0
+FORMAT='byte'
+---- Task: CLEANLAB -- User:  --  ----
+ 
+************************************************************
+Beginning VICAR task cleanlabel
+CLEANLABEL version 2019-07-18
+Beginning to clean source.img...
+ 2 instances of keyword   PLANET were cleaned
+ 2 instances of keyword     SLAT were cleaned
+ 2 instances of keyword     SLON were cleaned
+Cleaning completed successfully!!!
+Copying image to cleaned header...
+Beginning VICAR task label
+LABEL version 2019-05-28
+************************************************************
+ 
+        ************  File prod2.img ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in BYTE format from a X86-64-LIN host
+                1 bands
+                10 lines per band
+                10 samples per line
+                0 lines of binary header
+                0 bytes of binary prefix per line
+---- Task: GEN -- User:  --  ----
+IVAL=0.0
+SINC=1.0
+LINC=1.0
+BINC=1.0
+MODULO=0.0
+PLANET='jupiter'
+SLAT=40.0
+SLON=50.0
+---- Task: LABEL -- User:  --  ----
+FARENC='farenc'
+---- Task: LABEL -- User:  --  ----
+FUNC='in1*0'
+FORMAT='byte'
+---- Task: CLEANLAB -- User:  --  ----
+ 
+************************************************************
+Beginning VICAR task cleanlabel
+CLEANLABEL version 2019-07-18
+Beginning to clean source.img...
+ 2 instances of keyword   PLANET were cleaned
+ 2 instances of keyword     SLON were cleaned
+Cleaning completed successfully!!!
+Copying image to cleaned header...
+Beginning VICAR task label
+LABEL version 2019-05-28
+************************************************************
+ 
+        ************  File prod3.img ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in BYTE format from a X86-64-LIN host
+                1 bands
+                10 lines per band
+                10 samples per line
+                0 lines of binary header
+                0 bytes of binary prefix per line
+---- Task: GEN -- User:  --  ----
+IVAL=0.0
+SINC=1.0
+LINC=1.0
+BINC=1.0
+MODULO=0.0
+SLAT=40.0
+---- Task: LABEL -- User:  --  ----
+SLAT=10.0
+FARENC='farenc'
+---- Task: LABEL -- User:  --  ----
+PLANET='neptune'
+FUNC='in1*0'
+SLAT=45.0
+SLON=70.0
+FORMAT='byte'
+---- Task: CLEANLAB -- User:  --  ----
+ 
+************************************************************
+Beginning VICAR task cleanlabel
+CLEANLABEL version 2019-07-18
+Beginning to clean source.img...
+ 2 instances of keyword   PLANET were cleaned
+ 2 instances of keyword     SLON were cleaned
+Cleaning completed successfully!!!
+Copying image to cleaned header...
+Beginning VICAR task label
+LABEL version 2019-05-28
+************************************************************
+ 
+        ************  File prod4.img ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in BYTE format from a X86-64-LIN host
+                1 bands
+                10 lines per band
+                10 samples per line
+                0 lines of binary header
+                0 bytes of binary prefix per line
+---- Task: GEN -- User:  --  ----
+IVAL=0.0
+SINC=1.0
+LINC=1.0
+BINC=1.0
+MODULO=0.0
+PLANET='jupiter'
+SLAT=40.0
+SLON=50.0
+---- Task: LABEL -- User:  --  ----
+SLAT=10.0
+FARENC='farenc'
+---- Task: LABEL -- User:  --  ----
+FUNC='in1*0'
+SLAT=45.0
+FORMAT='byte'
+---- Task: CLEANLAB -- User:  --  ----
+ 
+************************************************************
+Beginning VICAR task cleanlabel
+CLEANLABEL version 2019-07-18
+Beginning to clean prod5.img...
+ 2 instances of keyword   PLANET were cleaned
+ 2 instances of keyword     SLAT were cleaned
+ 2 instances of keyword     SLON were cleaned
+Cleaning completed successfully!!!
+Beginning VICAR task label
+LABEL version 2019-05-28
+************************************************************
+ 
+        ************  File prod5.img ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in BYTE format from a X86-64-LIN host
+                1 bands
+                10 lines per band
+                10 samples per line
+                0 lines of binary header
+                0 bytes of binary prefix per line
+---- Task: GEN -- User:  --  ----
+IVAL=0.0
+SINC=1.0
+LINC=1.0
+BINC=1.0
+MODULO=0.0
+---- Task: LABEL -- User:  --  ----
+FARENC='farenc'
+---- Task: LABEL -- User:  --  ----
+PLANET='neptune'
+FUNC='in1*0'
+SLAT=45.0
+SLON=70.0
+FORMAT='byte'
+---- Task: COPY -- User:  --  ----
+ 
+************************************************************
+Beginning VICAR task cleanlabel
+CLEANLABEL version 2019-07-18
+Beginning to clean prod6.img...
+ 2 instances of keyword   PLANET were cleaned
+ 2 instances of keyword     SLON were cleaned
+Cleaning completed successfully!!!
+Beginning VICAR task label
+LABEL version 2019-05-28
+************************************************************
+ 
+        ************  File prod6.img ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in BYTE format from a X86-64-LIN host
+                1 bands
+                10 lines per band
+                10 samples per line
+                0 lines of binary header
+                0 bytes of binary prefix per line
+---- Task: GEN -- User:  --  ----
+IVAL=0.0
+SINC=1.0
+LINC=1.0
+BINC=1.0
+MODULO=0.0
+PLANET='jupiter'
+SLAT=40.0
+SLON=50.0
+---- Task: LABEL -- User:  --  ----
+SLAT=10.0
+FARENC='farenc'
+---- Task: LABEL -- User:  --  ----
+FUNC='in1*0'
+SLAT=45.0
+FORMAT='byte'
+---- Task: COPY -- User:  --  ----
+ 
+************************************************************
+**** Should complain about missing FRED, GEORGE here ****
+Beginning VICAR task cleanlabel
+CLEANLABEL version 2019-07-18
+Beginning to clean prod6.img...
+[CLLBL-I-KNF] Could not find keyword FRED
+[CLLBL-I-KNF] Could not find keyword GEORGE
+Cleaning completed successfully!!!
+Beginning VICAR task label
+LABEL version 2019-05-28
+************************************************************
+ 
+        ************  File prod6.img ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in BYTE format from a X86-64-LIN host
+                1 bands
+                10 lines per band
+                10 samples per line
+                0 lines of binary header
+                0 bytes of binary prefix per line
+---- Task: GEN -- User:  --  ----
+IVAL=0.0
+SINC=1.0
+LINC=1.0
+BINC=1.0
+MODULO=0.0
+PLANET='jupiter'
+SLAT=40.0
+SLON=50.0
+---- Task: LABEL -- User:  --  ----
+SLAT=10.0
+FARENC='farenc'
+---- Task: LABEL -- User:  --  ----
+FUNC='in1*0'
+SLAT=45.0
+FORMAT='byte'
+---- Task: COPY -- User:  --  ----
+ 
+************************************************************

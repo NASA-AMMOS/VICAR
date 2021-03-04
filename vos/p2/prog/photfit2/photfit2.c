@@ -6,6 +6,7 @@
 #include "ibiserrs.h"
 #include "pho.h"
 #include "zmabend.h"
+#include "zifmessage.h"
 #include <string.h>
 #include <stdlib.h>
 
@@ -74,7 +75,7 @@ void main44()
 {
   int cnt, l, i, j, num, status, catReadStatus, count, npts, tnpts=0, ipts=0, n=0, least;
   int row, nrow, allrow=0, ncol, inpCount;
-  int class_id, pdfClass_id, classCount;
+  int class_id=0, pdfClass_id, classCount;
   int rerun, maxIter, numTen, numNorm, numPrint;
   float temp;
   double dval, dval1, *phoFuncVal, eps;
@@ -98,8 +99,7 @@ void main44()
 
   PHO_ILLUM *illum_array; 
 
-  zvmessage(" program PHOTFIT2", "");
-  zvmessage( " ", "");
+  zifmessage("PHOTFIT2 version 2019-09-06");
 
   zveaction("sau","");
 

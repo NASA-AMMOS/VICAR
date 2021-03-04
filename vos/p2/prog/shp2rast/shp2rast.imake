@@ -1,6 +1,6 @@
 #define  PROGRAM   shp2rast
 
-#define MODULE_LIST shp2rast.c concave.c dbfopen.c safileio.c shpopen.c shptree.c
+#define MODULE_LIST shp2rast.c concave.c line.c dbfopen.c safileio.c shpopen.c shptree.c
 
 #define MAIN_LANG_C
 #define R2LIB 

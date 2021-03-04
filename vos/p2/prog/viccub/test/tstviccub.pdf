@@ -28,4 +28,27 @@ write "label of the multibandfile"
 write ""
 label-l multi
 write ""
+write "multiband extraction"
+write ""
+gen aaa nl=50 ns=30 nb=3 binc=100
+gen bbb nl=50 ns=30 nb=3 binc=100 ival=100
+gen ccc nl=50 ns=30 nb=3 binc=100 ival=200
+write ""
+write "extract band 1 from each"
+write ""
+viccub (aaa,bbb,ccc) multi band=1
+label-list multi
+list multi nl=1 ns=1 sl=1 ss=1 'zero
+write ""
+write "extract band n from each"
+write ""
+viccub (aaa,bbb,ccc) multi band=(1,2,3)
+label-list multi
+list multi nl=1 ns=1 sl=1 ss=1 'zero
+write ""
+write "colorglyph use case"
+write ""
+viccub (aaa,bbb,bbb) multi band=(1,2,3)
+label-list multi
+list multi nl=1 ns=1 sl=1 ss=1 'zero
 end-proc

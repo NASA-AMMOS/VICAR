@@ -233,24 +233,25 @@ HISTORY:
  ORIGINAL PROGRAMMER: Dan Stanfill, Nov 85
  CURRENT COGNIZANT PROGRAMMER: Gary Yagi
  REVISIONS:
-  28 Jul 97   S. Pohorsky......Merged Cassini calibration version into MIPS.
-                               Per Charlie Avis, changed Cassini units to
-                               picoamp-milliseconds.  (Note this changes the
-                               default units in preparation for Cassini.  This
-                               is minor; only affects the 'Energy units =' 
-                               message.)
-  08 Jan 95   J. Yoshimizu.....Added UNITS
-  10 Oct 94   J. Turner(CRI)...Made portable for UNIX
-  26 Aug 94   C. Avis..........Made input buffers 1024 for Cassini
-  01 Apr 90   G. Yagi..........Delete spurious messages in BC mode.
-  13 Oct 89   G. Yagi..........Fix processing of column 2.
-  12 Oct 89   G. Yagi..........Fix double-column blemish routine
-  22 Sep 89   G. Yagi..........Switch codes for bad slope and offset
-  18 Oct 88   G. Yagi..........Add test in call to PHIST
-  28 Apr 88...G. Yagi..........Minor changes to help file.
-  12 Dec 87   G. Yagi..........Interface to new Radiometric File format
-  20 May 87...G. Yagi..........Compute sigmas in double precision
-  14 Aug 86...G. Yagi..........Added BC parameter
+  1986-08-14 G. Yagi - Added BC parameter
+  1987-05-20 G. Yagi - Compute sigmas in double precision
+  1987-12-12 G. Yagi - Interface to new Radiometric File format
+  1988-04-28 G. Yagi - Minor changes to help file
+  1988-10-18 G. Yagi - Add test in call to PHIST
+  1989-09-22 G. Yagi - Switch codes for bad slope and offset
+  1989-10-12 G. Yagi - Fix double-column blemish routine
+  1989-10-13 G. Yagi - Fix processing of column 2
+  1990-04-01 G. Yagi - Delete spurious messages in BC mode
+  1994-08-26 C. Avis - Made input buffers 1024 for Cassini
+  1994-10-10 J. Turner(CRI) - Made portable for UNIX
+  1995-01-08 J. Yoshimizu - Added UNITS
+  1997-07-28 S. Pohorsky - Merged Cassini calibration version into MIPS.
+                           Per Charlie Avis, changed Cassini units to
+                           picoamp-milliseconds.  (Note this changes the
+                           default units in preparation for Cassini.  This
+                           is minor; only affects the 'Energy units =' 
+                           message.)
+  2019-08-22 W. Bunch - IDS-7922 - Cleaned up a bunch of -Wall warnings.
 
 .level1
 .variable INP

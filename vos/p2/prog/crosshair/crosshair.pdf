@@ -1,0 +1,62 @@
+PROCESS HELP=*
+PARM INP TYPE=STRING COUNT=1
+PARM LOC TYPE=INT COUNT=2
+PARM DN TYPE=REAL COUNT=(1:20) DEFAULT=255
+PARM HEIGHT TYPE=INT COUNT=1 DEFAULT=10
+
+end-proc
+
+.TITLE
+VICAR program CROSSHAIR
+
+.HELP
+Simple program to plot a crosshair at the given location on a VICAR file.
+
+The size of the crosshair is given by HEIGHT - that's the size of the
+hairs on each side.
+
+The color is specified by DN.  If there are more bands than DNs, the last
+DN is repeated.
+
+The file is modified in place.  As such, it must be a pure VICAR file - NOT
+a VICAR/ODL dual label.  If you wish to crosshair one of those, use VICAR
+copy to create a pure VICAR file, do the crosshairs, and then re-transcode
+it if needed.
+
+HISTORY:
+2020-01-30 rgd	Initial version
+Cognizant programmer: Bob Deen
+
+.level1
+.vari INP
+Input image
+Modified in-place
+
+.vari LOC
+Location of crosshair
+(line, samp)
+
+.vari DN
+Color to use
+
+.vari HEIGHT
+Size of crosshair
+(all directions)
+
+.level2
+.vari INP
+Input image
+Modified in-place
+
+.vari LOC
+Location of crosshair
+(line, samp)
+1-based coordinates.
+
+.vari DN
+Color to use
+
+.vari HEIGHT
+Size of crosshair
+(all directions)
+

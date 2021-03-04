@@ -17,6 +17,8 @@ refgbl $echo
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 body
+enable-log
+
  let _onfail="stop"
  let $echo="no"
  write "****************************************************"
@@ -64,5 +66,6 @@ let $echo="yes"
 
 edibis a command=("junk")
 let $echo="no"
-end-proc
 
+disable-log
+end-proc

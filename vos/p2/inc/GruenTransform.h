@@ -30,7 +30,12 @@ typedef enum {
     Amoeba4,
     Amoeba5,
     Amoeba6,
-    Amoeba8
+    Amoeba8,
+    Amoeba2_bicubic,
+    Amoeba4_bicubic,
+    Amoeba5_bicubic,
+    Amoeba6_bicubic,
+    Amoeba8_bicubic
 } TransformType;
 
 ////////////////////////////////////////////////////////////////////////
@@ -99,6 +104,21 @@ public:
 	case Amoeba8:							\
 	    result = GruenTransformComputeXAmoeba8(coefs, x, y); 	\
 	    break;							\
+	case Amoeba2_bicubic:						\
+	    result = GruenTransformComputeXAmoeba2(coefs, x, y); 	\
+	    break;							\
+	case Amoeba4_bicubic:						\
+	    result = GruenTransformComputeXAmoeba4(coefs, x, y);	\
+	    break;							\
+	case Amoeba5_bicubic:						\
+	    result = GruenTransformComputeXAmoeba5(coefs, x, y); 	\
+	    break;							\
+	case Amoeba6_bicubic:						\
+	    result = GruenTransformComputeXAmoeba6(coefs, x, y); 	\
+	    break;							\
+	case Amoeba8_bicubic:						\
+	    result = GruenTransformComputeXAmoeba8(coefs, x, y); 	\
+	    break;							\
     } }
 
 #define GruenTransformComputeY(type, coefs, result, x, y)		\
@@ -116,6 +136,21 @@ public:
 	    result = GruenTransformComputeYAmoeba6(coefs, x, y);	\
 	    break;							\
 	case Amoeba8:							\
+	    result = GruenTransformComputeYAmoeba8(coefs, x, y);	\
+	    break;							\
+	case Amoeba2_bicubic:						\
+	    result = GruenTransformComputeYAmoeba2(coefs, x, y);	\
+	    break;							\
+	case Amoeba4_bicubic:						\
+	    result = GruenTransformComputeYAmoeba4(coefs, x, y);	\
+	    break;							\
+	case Amoeba5_bicubic:						\
+	    result = GruenTransformComputeYAmoeba5(coefs, x, y);	\
+	    break;							\
+	case Amoeba6_bicubic:						\
+	    result = GruenTransformComputeYAmoeba6(coefs, x, y);	\
+	    break;							\
+	case Amoeba8_bicubic:						\
 	    result = GruenTransformComputeYAmoeba8(coefs, x, y);	\
 	    break;							\
     } }
@@ -139,6 +174,26 @@ public:
 	    result_y = GruenTransformComputeYAmoeba6(coefs, x, y); 	\
 	    break;							\
 	case Amoeba8:							\
+	    result_x = GruenTransformComputeXAmoeba8(coefs, x, y); 	\
+	    result_y = GruenTransformComputeYAmoeba8(coefs, x, y); 	\
+	    break;							\
+	case Amoeba2_bicubic:						\
+	    result_x = GruenTransformComputeXAmoeba2(coefs, x, y); 	\
+	    result_y = GruenTransformComputeYAmoeba2(coefs, x, y); 	\
+	    break;							\
+	case Amoeba4_bicubic:						\
+	    result_x = GruenTransformComputeXAmoeba4(coefs, x, y);	\
+	    result_y = GruenTransformComputeYAmoeba4(coefs, x, y);	\
+	    break;							\
+	case Amoeba5_bicubic:						\
+	    result_x = GruenTransformComputeXAmoeba5(coefs, x, y); 	\
+	    result_y = GruenTransformComputeYAmoeba5(coefs, x, y); 	\
+	    break;							\
+	case Amoeba6_bicubic:						\
+	    result_x = GruenTransformComputeXAmoeba6(coefs, x, y); 	\
+	    result_y = GruenTransformComputeYAmoeba6(coefs, x, y); 	\
+	    break;							\
+	case Amoeba8_bicubic:						\
 	    result_x = GruenTransformComputeXAmoeba8(coefs, x, y); 	\
 	    result_y = GruenTransformComputeYAmoeba8(coefs, x, y); 	\
 	    break;							\

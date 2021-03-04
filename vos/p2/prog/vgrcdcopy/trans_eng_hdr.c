@@ -46,6 +46,27 @@ int trans_eng_hdr ( struct edrhdr* ptr, struct edrhdr* transed,
   zvtrans ( half_trans, curloc, &(transed->scet_min), 1); curloc += half_size;
   zvtrans ( half_trans, curloc, &(transed->scet_msec), 1); curloc += half_size;
   zvtrans ( byte_trans, curloc, &(transed->system_version), 32); curloc += byte_size * 32;
+
+  /* BEGIN DAR IDS-7953
+
+     The index gcf[1] below should have been [0], and the index [2]
+     should have been [1]. The effect of the error is the GCF data for
+     the first valid image line didn't get translated, and the twenty
+     bytes following the gcf array in struct edrhdr got scrambled.
+ 
+     So if/when this was used to decompress PDS cd-roms into
+     VICAR-labeled images on an opposite endian architecture, this
+     part of the data should have been scrambled (in a reversible
+     way).
+ 
+     The VGRCDCOPY program may no longer be used (useful), but has
+     value remaining uncorrected for historical reasons --
+     interpreting old data. The IDS-7953 implementation adds this
+     comment so that anyone referencing it to understand the structure
+     of legacy Voyager data would be made aware of the potential
+     scrambling.
+   */
+
   zvtrans ( half_trans, curloc, &(transed->gcf[1].sync_code_msb), 1); curloc += half_size;
   zvtrans ( byte_trans, curloc, &(transed->gcf[1].source_station), 1); curloc += byte_size;
   zvtrans ( byte_trans, curloc, &(transed->gcf[1].sync_code_lsb), 1); curloc += byte_size;
@@ -72,6 +93,9 @@ int trans_eng_hdr ( struct edrhdr* ptr, struct edrhdr* transed,
   zvtrans ( byte_trans, curloc, &(transed->gcf[2].serial_number), 1); curloc += byte_size;
   zvtrans ( half_trans, curloc, &(transed->gcf[2].dsn.word), 1); curloc += half_size;
   zvtrans ( half_trans, curloc, &(transed->gcf[2].esc), 1); curloc += half_size;
+
+  /* END DAR IDS-7953 */
+
   zvtrans ( half_trans, curloc, &(transed->irt), 1); curloc += half_size;
   zvtrans ( half_trans, curloc, &(transed->irt_min), 1); curloc += half_size;
   zvtrans ( half_trans, curloc, &(transed->irt_msec), 1); curloc += half_size;

@@ -20,7 +20,7 @@ NIMSCMM2 edr=edr_file  +
         proj=pov slew_tol=-1.  +
 	outsiz=(9,5)
 Beginning VICAR task NIMSCMM2
- *** NIMSCMM2 Version 11-jan-2012 ***
+NIMSCMM2 version 2019-06-14
  ** Body is not a spheroid, planetographic is undefined
  
  No radiance calibration done, raw DN is output
@@ -67,11 +67,12 @@ Beginning VICAR task NIMSCMM2
  Min/max incidence angles: 57.80, 147.44
  Min/max emission angles: 3.13, 61.11
  Min/max phase angles: 95.48, 95.61
-list G7JNFEAP4101A.CUB nb=1
+list G7JNFEAP4101A.CUB nb=1 'nousrtim
 Beginning VICAR task list
+list version 2017-03-29
 
    HALF     samples are interpreted as HALFWORD data
- Task:NIMSCMM2  User:wlb       Date_Time:Wed Feb 24 14:12:42 2016
+ Task:NIMSCMM2  User:          Date_Time:                        
  ***********
  Band =     1
  ***********
@@ -88,17 +89,17 @@ Beginning VICAR task list
       9    -32768-32768-32768-32768-32768
 hist2d G7JNFEAP4101A.CUB tst1.h2d out_nl=256 out_ns=408 'DN
 Beginning VICAR task hist2d
- *** Program HIST2D version 26-May-03 ***
+HIST2D version 2019-06-13
 VISIS2 (tst1.h2d G7JNFEAP4101A.CUB G7JNFEAP4101A.COC) G7JNFEAP4101A.QUB
 Beginning VICAR task VISIS2
-*** VISIS2 Version 2016-02-24 ***
+VISIS2 version 2019-08-07
  Forward mode:  ISIS cube will be generated from VICAR files
 FILE 1 copied
 FILE 2 copied
 FILE 3 copied
 isislab G7JNFEAP4101A.QUB
 Beginning VICAR task isislab
-*** ISISLAB version 3-Nov-05 ***
+*** ISISLAB version 2017-08-08 ***
  
 ********** LABEL OBJECT **********
  
@@ -268,7 +269,7 @@ OBJECT = QUBE
 
  OBSERVATION_NAME = ' '
  PRODUCT_ID = ""
- PRODUCT_CREATION_DATE = 2016-02-24
+ PRODUCT_CREATION_DATE = 2019-08-07
  IMAGE_ID = NULL
 
  INCIDENCE_ANGLE = 89.06
@@ -385,8 +386,8 @@ END
  
 ROUP = VISIS2
 
-  VERSION_DATE = 2016-02-24
-  DATE_TIME = 2016-02-24T14:12:43
+  VERSION_DATE = 2019-06-14
+  DATE_TIME = 2019-08-07T11:36:36
   NODE_NAME = "MIPL"
   USER_NAME = "NIMS Team"
   SOFTWARE_DESC = "ISIS cube file with PDS label has been generated as
@@ -429,7 +430,7 @@ END
  
 VISIS2 G7JNFEAP4101A.QUB (tst1.h2d G7JNFEAP4101A.CUB G7JNFEAP4101A.COC)
 Beginning VICAR task VISIS2
-*** VISIS2 Version 2016-02-24 ***
+VISIS2 version 2019-08-07
 Inverse mode:  VICAR files will be generated from ISIS cube
  SUPPNOTE & PRODNOTE not found!
  Keyword PHOTO_CORR_CUTOFF_WAVELENGTH not found in cube label
@@ -448,11 +449,12 @@ Inverse mode:  VICAR files will be generated from ISIS cube
 FILE 1 created
 FILE 2 created
 FILE 3 created
-list G7JNFEAP4101A.CUB nb=1
+list G7JNFEAP4101A.CUB nb=1 'nousrtim
 Beginning VICAR task list
+list version 2017-03-29
 
    HALF     samples are interpreted as HALFWORD data
- Task:VISIS2    User:wlb       Date_Time:Wed Feb 24 14:12:43 2016
+ Task:VISIS2    User:          Date_Time:                        
  ***********
  Band =     1
  ***********

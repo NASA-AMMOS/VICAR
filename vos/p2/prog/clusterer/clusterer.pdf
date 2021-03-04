@@ -22,6 +22,7 @@ PURPOSE
  REVISIONS:
  2016-10-20 WLB - Migrated to MIPL, enhanced test.
  2017-08-03 WLB - Removed DEBUG from imake.
+ 2019-08-22 WLB - IDS-7922 - Cleaned up -Wall warnings and two sprintfs.
 
 .LEVEL1
 .VARIABLE INP

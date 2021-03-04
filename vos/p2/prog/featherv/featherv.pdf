@@ -353,15 +353,16 @@ swapping).
  COGNIZANT PROGRAMMER:   Barbara McGuffie    27 Oct 1999
  
  REVISION HISTORY
-  99-10-27    AZ   Initial version, named feather
-  99-11-05    AZ   two pass version, named feather2
-  99-11-18    AZ   ramps added to feather2
-  99-11-18    AZ   halfword MOORE algorithm, named featherh
-  99-11-28    AZ   all options rolled into featherh
-  99-11-30    AZ   reduced resolution MOORE algorithm, named featherv
-  00-04-16    AZ   GeoTIFF label use
-  04-02-04    AZ   igncase added
-Thu Jan 10 2008 wlb switched to USES_ANSI_C AND LIB_CARTO; misc cleanup  
+  1999-10-27 AZ  - Initial version, named feather
+  1999-11-05 AZ  - two pass version, named feather2
+  1999-11-18 AZ  - ramps added to feather2
+  1999-11-18 AZ  - halfword MOORE algorithm, named featherh
+  1999-11-28 AZ  -  all options rolled into featherh
+  1999-11-30 AZ  - reduced resolution MOORE algorithm, named featherv
+  2000-04-16 AZ  - GeoTIFF label use
+  1004-02-04 AZ  - igncase added
+  2008-01-10 WLB - switched to USES_ANSI_C AND LIB_CARTO; misc cleanup  
+  2019-08-23 WLB - IDS-7922 - initialized a bunch of variables
   
 .LEVEL1
 .VARIABLE INP

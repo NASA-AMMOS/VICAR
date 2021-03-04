@@ -194,6 +194,11 @@
 #define EXT_CERES
 #define EXT_SIFT
 #define EXT_MYSQLCONCPP
+#define EXT_BOOST
+#define EXT_TINYOBJLOADER
+#define EXT_EMBREE
+#define EXT_M20SSIM
+#define EXT_REACH
 *--------
 * Java Externals
 *--------
@@ -267,7 +272,8 @@
 #define JEXT_RSA
 #define JEXT_COMMONS_BEANUTILS
 #define JEXT_COMMONS_DIGESTER
-#define	JEXT_PDS_GENERATE_TOOL
+*#define JEXT_PDS_GENERATE_TOOL
+#define JEXT_PDS_MI_LABEL
 #define JEXT_PDS4_TOOLS
 #define JEXT_WEBSOCKET
 #define JEXT_JMONKEYENGINE
@@ -280,6 +286,7 @@
 #define JEXT_JACKSON_DATAFORMAT_CBOR
 #define JEXT_JODA_TIME
 #define JEXT_HTTPCOMP_FOR_AWS
+#define JEXT_OWASP
 *--------
 * Python Externals
 *--------
@@ -298,7 +305,7 @@
 #define PROD_FEI3
 #define PROD_FEI5
 #define PROD_FEI5_Savannah
-#define PROD_PWDSERVER
+#define PROD_PWDSERVER 
 #define PROD_PWDSERVER_CLIENT
 #define PROD_PWDSERVER_JCLIENT
 #define PROD_DBQ
@@ -428,6 +435,9 @@
 #define EXT_NATGRID
 #define EXT_HDF
 #define EXT_GEOTRANS
+#define EXT_BOOST
+#define EXT_TINYOBJLOADER
+#define EXT_EMBREE
 *
 #endif
 *
@@ -490,11 +500,12 @@
 #define PROD_FEI3
 #define PROD_DBQ
 #define PROD_FEI5_Client_MSL
-#define EXT_MSLFSW
+#define EXT_M20SSIM
 #define EXT_MSLMMMDecomp
 #define JEXT_PDS_IMG_ATLAS
 #define PROD_APPS
 #define PROD_TLM_2020
+#define EXT_REACH
 #endif
 *
 ************************************************************************
@@ -694,6 +705,9 @@
 *#define EXT_MYSQL
 *#define EXT_CPPUNIT
 *#define EXT_JS
+*#define EXT_BOOST
+*#define EXT_TINYOBJLOADER
+*#define EXT_EMBREE
 *--------
 * Java Externals
 *--------
@@ -778,6 +792,7 @@
 *#define EXT_MYSQL
 *#define EXT_CPPUNIT
 *#define EXT_JS
+#define EXT_BOOST
 *--------
 * Java Externals
 *--------

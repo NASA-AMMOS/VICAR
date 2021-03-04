@@ -1,24 +1,25 @@
 gen ba.img 3 4
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen bb.img 2 4 ival=20
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen bc.img 4 4 ival=40
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gtappend (ba.img, bb.img, bc.img) bd.img
 Beginning VICAR task gtappend
-gtappend version 2016-01-13
-list bd.img
+GTAPPEND version 2019-09-04
+list bd.img 'nousrtim
 Beginning VICAR task list
+list version 2017-03-29
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Wed Jan 13 15:01:44 2016
- Task:GTAPPEND  User:wlb       Date_Time:Wed Jan 13 15:01:45 2016
+ Task:GEN       User:          Date_Time:                        
+ Task:GTAPPEND  User:          Date_Time:                        
      Samp     1       3
    Line
       1       0   1   2   3
@@ -32,14 +33,15 @@ Beginning VICAR task list
       9      43  44  45  46
 gtappend (ba.img, bb.img, bc.img) bd.img SIZE=(1,1,3,3)
 Beginning VICAR task gtappend
-gtappend version 2016-01-13
+GTAPPEND version 2019-09-04
 Output lines truncated to match input size, input 2
-list bd.img
+list bd.img 'nousrtim
 Beginning VICAR task list
+list version 2017-03-29
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Wed Jan 13 15:01:44 2016
- Task:GTAPPEND  User:wlb       Date_Time:Wed Jan 13 15:01:45 2016
+ Task:GEN       User:          Date_Time:                        
+ Task:GTAPPEND  User:          Date_Time:                        
      Samp     1       3
    Line
       1       0   1   2
@@ -52,26 +54,27 @@ Beginning VICAR task list
       8      42  43  44
 gen ba.img 3 4
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen bb.img 2 7 ival=20
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen bc.img 4 9 ival=40
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gtappend (ba.img, bb.img, bc.img) be.img SIZE=(2,2,2,2)
 Beginning VICAR task gtappend
-gtappend version 2016-01-13
+GTAPPEND version 2019-09-04
 Output lines truncated to match input size, input 2
-list be.img
+list be.img 'nousrtim
 Beginning VICAR task list
+list version 2017-03-29
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Wed Jan 13 15:01:45 2016
- Task:GTAPPEND  User:wlb       Date_Time:Wed Jan 13 15:01:45 2016
+ Task:GEN       User:          Date_Time:                        
+ Task:GTAPPEND  User:          Date_Time:                        
      Samp     1
    Line
       1       2   3
@@ -81,25 +84,26 @@ Beginning VICAR task list
       5      43  44
 gen ha.img 3 4 'HALF
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen hb.img 2 4  'HALF ival=20
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen hc.img 4 4 'HALF ival=40
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gtappend (ha.img, hb.img, hc.img) hd.img
 Beginning VICAR task gtappend
-gtappend version 2016-01-13
-list hd.img
+GTAPPEND version 2019-09-04
+list hd.img 'nousrtim
 Beginning VICAR task list
+list version 2017-03-29
 
    HALF     samples are interpreted as HALFWORD data
- Task:GEN       User:wlb       Date_Time:Wed Jan 13 15:01:45 2016
- Task:GTAPPEND  User:wlb       Date_Time:Wed Jan 13 15:01:45 2016
+ Task:GEN       User:          Date_Time:                        
+ Task:GTAPPEND  User:          Date_Time:                        
      Samp       1     2     3     4
    Line
       1         0     1     2     3
@@ -113,19 +117,20 @@ Beginning VICAR task list
       9        43    44    45    46
 gtappend (ha.img, hb.img, hc.img) he.img SIZE=(2,3,8,5)
 Beginning VICAR task gtappend
-gtappend version 2016-01-13
+GTAPPEND version 2019-09-04
 Output samples truncated to match input size, input 1
 Output lines truncated to match input size, input 1
 Output samples truncated to match input size, input 2
 Output lines truncated to match input size, input 2
 Output samples truncated to match input size, input 3
 Output lines truncated to match input size, input 3
-list he.img
+list he.img 'nousrtim
 Beginning VICAR task list
+list version 2017-03-29
 
    HALF     samples are interpreted as HALFWORD data
- Task:GEN       User:wlb       Date_Time:Wed Jan 13 15:01:45 2016
- Task:GTAPPEND  User:wlb       Date_Time:Wed Jan 13 15:01:45 2016
+ Task:GEN       User:          Date_Time:                        
+ Task:GTAPPEND  User:          Date_Time:                        
      Samp       1     2
    Line
       1         3     4
@@ -136,25 +141,26 @@ Beginning VICAR task list
       6        45    46
 gen ra.img 3 4 'REAL4
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen rb.img 2 4  'REAL4 ival=20
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen rc.img 4 4 'REAL4 ival=40
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gtappend (ra.img, rb.img, rc.img) rd.img
 Beginning VICAR task gtappend
-gtappend version 2016-01-13
-list rd.img
+GTAPPEND version 2019-09-04
+list rd.img 'nousrtim
 Beginning VICAR task list
+list version 2017-03-29
 
    REAL     samples are interpreted as  REAL*4  data
- Task:GEN       User:wlb       Date_Time:Wed Jan 13 15:01:45 2016
- Task:GTAPPEND  User:wlb       Date_Time:Wed Jan 13 15:01:45 2016
+ Task:GEN       User:          Date_Time:                        
+ Task:GTAPPEND  User:          Date_Time:                        
      Samp             1           2           3           4
    Line
       1       0.000E+00   1.000E+00   2.000E+00   3.000E+00
@@ -168,14 +174,15 @@ Beginning VICAR task list
       9       4.300E+01   4.400E+01   4.500E+01   4.600E+01
 gtappend (ra.img, rb.img, rc.img) re.img SIZE=(2,2,2,2)
 Beginning VICAR task gtappend
-gtappend version 2016-01-13
+GTAPPEND version 2019-09-04
 Output lines truncated to match input size, input 2
-list re.img 'REAL4
+list re.img 'REAL4 'nousrtim
 Beginning VICAR task list
+list version 2017-03-29
 
    REAL     samples are interpreted as  REAL*4  data
- Task:GEN       User:wlb       Date_Time:Wed Jan 13 15:01:45 2016
- Task:GTAPPEND  User:wlb       Date_Time:Wed Jan 13 15:01:45 2016
+ Task:GEN       User:          Date_Time:                        
+ Task:GTAPPEND  User:          Date_Time:                        
      Samp             1           2
    Line
       1       2.000E+00   3.000E+00
@@ -185,7 +192,7 @@ Beginning VICAR task list
       5       4.300E+01   4.400E+01
 gen xxxim1 nl=2 ns=5
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gtgen inp=xxxim1 out=xxxim2 'tiecnvrt  +
    geotiff=("ModelTiePointTag=(2,3,0,30000.,17000.,0.0)",  +
@@ -228,7 +235,7 @@ The scale fraction is 1 /     97.5
 (assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
 gen xxxim3 nl=4 ns=5
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gtgen inp=xxxim3 out=xxxim4 'tiecnvrt  +
    geotiff=("ModelTiePointTag=(2,1,0,30000.,17000.,0.0)",  +
@@ -271,8 +278,8 @@ The scale fraction is 1 /     97.5
 (assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
 gtappend (xxxim2,xxxim4) xxxim5
 Beginning VICAR task gtappend
-gtappend version 2016-01-13
-Mapping discrepancy at seam 1 = -0.000000000000
+GTAPPEND version 2019-09-04
+Mapping discrepancy at seam 1 =  0.000000000000
 All mapping discrepancies within tolerance
 gtlist xxxim5
 Beginning VICAR task gtlist
@@ -308,7 +315,7 @@ The scale fraction is 1 /     97.5
 (assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
 gen xxxim1 nl=3 ns=5
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gtgen inp=xxxim1 out=xxxim2 'tiecnvrt  +
    geotiff=("ModelTiePointTag=(2,3,0,30000.,17000.,0.0)",  +
@@ -351,7 +358,7 @@ The scale fraction is 1 /     97.5
 (assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
 gen xxxim3 nl=4 ns=5
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gtgen inp=xxxim3 out=xxxim4 'tiecnvrt  +
    geotiff=("ModelTiePointTag=(2,1,0,30000.,17000.,0.0)",  +
@@ -394,8 +401,8 @@ The scale fraction is 1 /     97.5
 (assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
 gtappend (xxxim2,xxxim4) xxxim5 'overlap1
 Beginning VICAR task gtappend
-gtappend version 2016-01-13
-Mapping discrepancy at seam 1 = -0.000000000000
+GTAPPEND version 2019-09-04
+Mapping discrepancy at seam 1 =  0.000000000000
 All mapping discrepancies within tolerance
 gtlist xxxim5
 Beginning VICAR task gtlist
@@ -429,35 +436,38 @@ The scale units of the image are (ignoring sign):
 1 line   = 10.0000000000000 map units north
 The scale fraction is 1 /     97.5
 (assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
-list xxxim2
+list xxxim2 'nousrtim
 Beginning VICAR task list
+list version 2017-03-29
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Wed Jan 13 15:01:45 2016
- Task:GTGEN     User:wlb       Date_Time:Wed Jan 13 15:01:45 2016
+ Task:GEN       User:          Date_Time:                        
+ Task:GTGEN     User:          Date_Time:                        
      Samp     1       3       5
    Line
       1       0   1   2   3   4
       2       1   2   3   4   5
       3       2   3   4   5   6
-list xxxim4
+list xxxim4 'nousrtim
 Beginning VICAR task list
+list version 2017-03-29
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Wed Jan 13 15:01:45 2016
- Task:GTGEN     User:wlb       Date_Time:Wed Jan 13 15:01:45 2016
+ Task:GEN       User:          Date_Time:                        
+ Task:GTGEN     User:          Date_Time:                        
      Samp     1       3       5
    Line
       1       0   1   2   3   4
       2       1   2   3   4   5
       3       2   3   4   5   6
       4       3   4   5   6   7
-list xxxim5
+list xxxim5 'nousrtim
 Beginning VICAR task list
+list version 2017-03-29
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Wed Jan 13 15:01:45 2016
- Task:GTAPPEND  User:wlb       Date_Time:Wed Jan 13 15:01:45 2016
+ Task:GEN       User:          Date_Time:                        
+ Task:GTAPPEND  User:          Date_Time:                        
      Samp     1       3       5
    Line
       1       0   1   2   3   4
@@ -468,7 +478,7 @@ Beginning VICAR task list
       6       3   4   5   6   7
 gen xxxim1 nl=2 ns=5
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gtgen inp=xxxim1 out=xxxim2 'tiecnvrt  +
    geotiff=("ModelTiePointTag=(2,3,0,30000.,17000.,0.0)",  +
@@ -511,11 +521,11 @@ The scale fraction is 1 /     97.5
 (assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
 gen xxxim3 nl=4 ns=5 ival=20
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gtappend (xxxim2,xxxim3) xxxim4 'nomapck
 Beginning VICAR task gtappend
-gtappend version 2016-01-13
+GTAPPEND version 2019-09-04
 gtlist xxxim4
 Beginning VICAR task gtlist
 gtlist version 2016-01-13
@@ -548,12 +558,13 @@ The scale units of the image are (ignoring sign):
 1 line   = 10.0000000000000 map units north
 The scale fraction is 1 /     97.5
 (assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
-list xxxim4
+list xxxim4 'nousrtim
 Beginning VICAR task list
+list version 2017-03-29
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Wed Jan 13 15:01:45 2016
- Task:GTAPPEND  User:wlb       Date_Time:Wed Jan 13 15:01:45 2016
+ Task:GEN       User:          Date_Time:                        
+ Task:GTAPPEND  User:          Date_Time:                        
      Samp     1       3       5
    Line
       1       0   1   2   3   4

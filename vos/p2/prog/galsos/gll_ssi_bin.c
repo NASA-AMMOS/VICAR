@@ -61,6 +61,7 @@
 #include "gll_ssi_edr.h"
 #include "gll_ssi_bin.h"
 #include "zvproto.h"
+#include "zvprintf.h"
 
 int gll_ssi_bin_debug = FALSE; /* Flag for turning debugging on.             */
 
@@ -86,18 +87,14 @@ ssi_bdvh_typ  *dest;
    init_pixsizeb(unit,&byte_size,&half_size,&full_size);
    status = zvget(unit, "RECSIZE", &recsize, NULL);
    if (status != SUCCESS) {
-     sprintf(aline,
-     "get_ssi_bdv_hdr_rec> failed zvget at line %d, status %d",line,status);
-     zvmessage(aline,0);
+     zvnprintf(80, "get_ssi_bdv_hdr_rec> failed zvget at line %d, status %d", line, status);
      zvsignal(unit,status,TRUE);
    }
    buf = (unsigned char *) malloc(recsize);
    if (buf == NULL) return BAD_MALLOC;
    status = zvread(unit,buf,"LINE",line,NULL); 
    if (status != SUCCESS) {
-     sprintf(aline,
-     "get_ssi_bdv_hdr_rec> failed zvread at line %d, status %d",line,status);
-     zvmessage(aline,0);
+     zvnprintf(80, "get_ssi_bdv_hdr_rec> failed zvread at line %d, status %d", line, status);
      zvsignal(unit,status,TRUE);
    }
    p = buf;
@@ -119,17 +116,12 @@ ssi_bdvh_typ  *dest;
        return (END_BDVH);
      } 
      else if (dest->record_id == BDV_EMPTY_REC) { /*empty record found*/
-       sprintf(aline,
-      "get_ssi_bdv_hdr_rec> empty bdv data record found at line %d",line);
-       zvmessage(aline,0);
+       zvnprintf(80, "get_ssi_bdv_hdr_rec> empty bdv data record found at line %d", line);
        /* keep going, and return the empty line to the calling routine. */
      }
      else { /* we got garbage */
-       sprintf(aline, 
-       "get_ssi_bdv_hdr_rec> found unrecognizable record ID = %d at line %d",
-         dest->record_id,line);
-       zvmessage(aline,0);
-       zabend();
+       zvnabend(80, "get_ssi_bdv_hdr_rec> found unrecognizable record ID = %d at line %d",
+		dest->record_id, line);
      }
    }
    p += half_size;
@@ -138,43 +130,25 @@ ssi_bdvh_typ  *dest;
    if ((dest->code != BDV_SPX)      &&
        (dest->code != BDV_LINE_SEG) &&
        (dest->code != BDV_SAMP_SEG)) { /* bad data code was found */
-      sprintf(aline,
-      "get_ssi_bdv_hdr_rec> found unrecognizable BDV object code = %d at line %d",
-      dest->code,line);
-      zvmessage(aline,0);
-      zabend();
+     zvnabend(80, "get_ssi_bdv_hdr_rec> found unrecognizable BDV object code = %d at line %d",
+	      dest->code, line);
    }
 
    THALF(p, &dest->nobjs); 
    if ((dest->code == BDV_SPX)      && (dest->nobjs > MAX_FFE_SPX_OBJ)) {
-     sprintf(aline,
-     "get_ssi_bdv_hdr_rec> bad number of bdv objects in line %d",line);
-     zvmessage(aline,0);
-     sprintf(aline,
-       "get_ssi_bdv_hdr_rec> %d objects indicated, max allowed is %d for single pixel",
-       dest->nobjs, MAX_FFE_SPX_OBJ);
-     zvmessage(aline,0);
-     zabend();
+     zvnprintf(80, "get_ssi_bdv_hdr_rec> bad number of bdv objects in line %d", line);
+     zvnabend(80, "get_ssi_bdv_hdr_rec> %d objects indicated, max allowed is %d for single pixel",
+	      dest->nobjs, MAX_FFE_SPX_OBJ);
    } 
    if ((dest->code == BDV_LINE_SEG) && (dest->nobjs > MAX_FFE_LINE_OBJ)) {
-     sprintf(aline,
-     "get_ssi_bdv_hdr_rec> bad number of bdv objects in line %d",line);
-     zvmessage(aline,0);
-     sprintf(aline,
-       "get_ssi_bdv_hdr_rec> %d objects indicated, max allowed is %d for line triplet",
-       dest->nobjs, MAX_FFE_LINE_OBJ);
-     zvmessage(aline,0);
-     zabend();
+     zvnprintf(80, "get_ssi_bdv_hdr_rec> bad number of bdv objects in line %d", line);
+     zvnabend(80, "get_ssi_bdv_hdr_rec> %d objects indicated, max allowed is %d for line triplet",
+	      dest->nobjs, MAX_FFE_LINE_OBJ);
    }
    if ((dest->code == BDV_SAMP_SEG) && (dest->nobjs > MAX_FFE_COL_OBJ)) {
-     sprintf(aline,
-     "get_ssi_bdv_hdr_rec> bad number of bdv objects in line %d",line);
-     zvmessage(aline,0);
-     sprintf(aline,
-      "get_ssi_bdv_hdr_rec> %d objects indicated, max allowed is %d for sample triplet",
-      dest->nobjs, MAX_FFE_COL_OBJ);
-     zvmessage(aline,0);
-     zabend();
+     zvnprintf(80, "get_ssi_bdv_hdr_rec> bad number of bdv objects in line %d", line);
+     zvnabend(80, "get_ssi_bdv_hdr_rec> %d objects indicated, max allowed is %d for sample triplet",
+	      dest->nobjs, MAX_FFE_COL_OBJ);
    }
 
    if (dest->code == BDV_SPX) { 
@@ -242,9 +216,7 @@ ssi_bdvh_typ  *source;          /* data to be written to ounit */
 
    /* check nobjs to be sure we have a rational number for looping */
    if ((source->nobjs < 1) || (source->nobjs > MAX_FFE_SPX_OBJ)) {
-     sprintf(aline,"SSI_WRITE_BDV_HDR> invalid nobjs = %d",source->nobjs);
-     zvmessage(aline,0);
-     zabend();
+     zvnabend(80, "SSI_WRITE_BDV_HDR> invalid nobjs = %d", source->nobjs);
    }
 
    if (source->code == BDV_SPX) { 
@@ -268,9 +240,7 @@ ssi_bdvh_typ  *source;          /* data to be written to ounit */
      }
    }
    else {
-     sprintf(aline,"SSI_WRITE_BDV_HDR> invalid code = %d",source->code);
-     zvmessage(aline,0);
-     zabend();
+     zvnabend(80, "SSI_WRITE_BDV_HDR> invalid code = %d", source->code);
    }
 
    status = zvwrit(ounit,buf,"LINE",line,NULL); 
@@ -312,8 +282,7 @@ ssi_edr_ln_typ *dest;
                 "NSAMPS", ns,
                 NULL);	
    if (status != SUCCESS) {
-     sprintf(aline,"get_gll_edr_ln> bad zvread, failing line = %d\n",line);
-     zvmessage(aline,0);
+     zvnprintf(80, "get_gll_edr_ln> bad zvread, failing line = %d\n", line);
    }
    zvsignal(unit,status,TRUE);
 
@@ -458,9 +427,9 @@ ssi_edr_hdr_typ *dest;
 {
    unsigned char *buf,
                  *p;
-   int            recsize,i,status = SUCCESS,
+   int            recsize=0,i,status = SUCCESS,
                   format,  /* data format */
-                  nrecs;   /* number of records to get */
+                  nrecs=0;   /* number of records to get */
 
    init_trans_inb(unit,byte_trans,half_trans,full_trans); 
    init_pixsizeb(unit,&byte_size,&half_size,&full_size);
@@ -554,9 +523,9 @@ ssi_edr_hdr_typ *source;
 {
    unsigned char *buf, 
                  *p;
-   int            recsize,i,status = SUCCESS,
+   int            recsize=0,i,status = SUCCESS,
                   format,  /* data format */
-                  nrecs;   /* number of records to get */
+                  nrecs=0;   /* number of records to get */
 
    init_trans_out(byte_trans,half_trans,full_trans);
    init_pixsizeb(unit,&byte_size,&half_size,&full_size);
@@ -916,8 +885,7 @@ int  unit,   /* unit number of the file */
     else if (nl == NLINES_SE) *format = SM_HALF_DATA; /* Sum-mode EDR */
   }
   else {
-    zvmessage("get_data_format> Error! Image format is not byte or halfword",0);
-    zabend();
+    zmabend("get_data_format> Error! Image format is not byte or halfword");
   }
 }
 /****************************************************************************/
@@ -970,33 +938,23 @@ int unit,
     *full_sz;
 {
    int status;
-   char aline[80];
  
    status = zvpixsizeb(byte_sz, "BYTE", unit);
    zvsignal(unit,status,TRUE);
-   if (byte_sz == 0) {
-     sprintf(aline,
-     "init_pixsizeb> error in byte pixel size determination, status %d",byte_sz);
-     zvmessage(aline,0);
-     zabend();
+   if (*byte_sz == 0) {
+     zvnabend(80, "init_pixsizeb> error in byte pixel size determination, status %d", status);
    }
 
    status = zvpixsizeb(half_sz, "HALF", unit);
    zvsignal(unit,status,TRUE);
-   if (half_sz == 0) {
-     sprintf(aline,
-    "init_pixsizeb> error in halfword pixel size determination, status %d",half_sz);
-     zvmessage(aline,0);
-     zabend();
+   if (*half_sz == 0) {
+     zvnabend(80, "init_pixsizeb> error in halfword pixel size determination, status %d", status);
    }
 
    status = zvpixsizeb(full_sz, "FULL", unit);
    zvsignal(unit,status,TRUE);
-   if (full_sz == 0) {
-     sprintf(aline,
-    "init_pixsizeb> error in fullword pixel size determination, status %d",full_sz);
-     zvmessage(aline,0);
-     zabend();
+   if (*full_sz == 0) {
+     zvnabend(80, "init_pixsizeb> error in fullword pixel size determination, status %d", status);
    }
 } /* end init_pixsizeb */
 /* end module */

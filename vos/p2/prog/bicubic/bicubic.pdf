@@ -129,7 +129,10 @@ Written by:		R. Mortensen
 Cognizant Programmer:	R. Mortensen
 
 Revisions:
-	Initial Version		7-Oct-88
+    1988-10-07 R. Mortensen - Initial Version
+    2019-08-22 W. Bunch - IDS-7922 - Cleaned up a bunch of -Wall
+               warnings. Still a lot of incompatible pointer type passing.
+       
 .LEVEL1
 .VARIABLE INP
 Input Vicar image file.

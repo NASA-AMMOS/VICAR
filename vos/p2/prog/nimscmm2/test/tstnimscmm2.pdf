@@ -13,7 +13,7 @@ enable-log
 ush cp /project/test_work/testdata/gll/g7jnfeap4101a.3 edr_file
 ush cp /project/test_work/testdata/gll/n0389703400.3 udr_file
 ush cp /project/test_work/testdata/gll/g7jnfeap4101a.aacs aacs_file
-ush cp /project/spice/ops/sun-solr/s980326b.bsp spk_file
+ush cp /project/test_work/testdata/gll/s980326b.bsp spk_file
 ush cp /project/test_work/testdata/gll/nims_ikernel_mab.dat ik_file
 ush cp /project/test_work/testdata/gll/boom_obscuration.nim dbm_file
 ush cp /project/test_work/testdata/gll/nims_solar.dat sol_file
@@ -41,8 +41,8 @@ NIMSCMM2 edr=edr_file +
         proj=pov slew_tol=-1. +
 	outsiz=(9,5)
 
-label-list G7JNFEAP4101A.cub
-list G7JNFEAP4101A.cub nb=1
+label-list G7JNFEAP4101A.cub 'nousrtim
+list G7JNFEAP4101A.cub nb=1  'nousrtim
 
 write " "
 write " next, any other projection that uses TRANV:"
@@ -60,8 +60,8 @@ NIMSCMM2 edr=edr_file +
         target=GANYMEDE phase=GANYMEDE_7_ENCOUNTER +
         proj=ORTHO slew_tol=-1.
 
-label-list G7JNFEAP4101A_1.cub
-list G7JNFEAP4101A_1.cub nb=1
+label-list G7JNFEAP4101A_1.cub  'nousrtim
+list G7JNFEAP4101A_1.cub nb=1  'nousrtim
 
 write " "
 write " test that NIMSCMM2 can also accept UDR input:"
@@ -95,8 +95,8 @@ NIMSCMM2 edr=edr_file +
         target=GANYMEDE phase=GANYMEDE_7_ENCOUNTER +
         proj=ORTHO slew_tol=-1.
 
-label-list G7JNFEAP4101A.tub
-list G7JNFEAP4101A.tub nb=1 nl=10
+label-list G7JNFEAP4101A.tub  'nousrtim
+list G7JNFEAP4101A.tub nb=1 nl=10  'nousrtim
 
 write " "
 write " now a test using the calibration files:"
@@ -116,8 +116,8 @@ NIMSCMM2 edr=edr_file +
         proj=pov slew_tol=-1. +
 	outsiz=(9,5)
 
-label-list G7JNFEAP4101A_3.cub
-list G7JNFEAP4101A_3.cub nb=1
+label-list G7JNFEAP4101A_3.cub  'nousrtim
+list G7JNFEAP4101A_3.cub nb=1  'nousrtim
 
 ! THIS CATALOG TEST DOESN'T WORK, AND IT HAS BEEN DISABLED SINCE
 ! NIMSCMM2 IS NOW SCIENCE ONLY, NOT SYSTEMATIC, AFTER GLL PROJECT
@@ -153,21 +153,21 @@ list G7JNFEAP4101A_3.cub nb=1
 ! this test makes use of the current MIPL configuration and is an
 ! example of a realistic cube-generation run:
 
-nimscmm2 edr=(/project/gll/nims/edr/pb/g7gnglobal01a.11 +
-	/project/gll/nims/edr/pb/g7gnglobal01d.4 +
-	/project/gll/nims/edr/pb/g7gnglobal01b.11 +
-	/project/gll/nims/edr/pb/g7gnglobal01e.4 +
-	/project/gll/nims/edr/pb/g7gnglobal01c.11 +
-	/project/gll/nims/edr/pb/g7gnglobal01f.4) +
+nimscmm2 edr=(/project/test_work/testdata/gll/g7gnglobal01a.11 +
+	/project/test_work/testdata/gll/g7gnglobal01d.4 +
+	/project/test_work/testdata/gll/g7gnglobal01b.11 +
+	/project/test_work/testdata/gll/g7gnglobal01e.4 +
+	/project/test_work/testdata/gll/g7gnglobal01c.11 +
+	/project/test_work/testdata/gll/g7gnglobal01f.4) +
 	cube=g7gnglobal01a_lwk15.cub +
 	sclk=(389887000 389889760) +
-	'spice pckernel=/project/spice/ops/sun-solr/ckg07a2h.plt +
-	spkernel=/project/spice/ops/sun-solr/s980127a.bsp +
-	calfil=/project/gll/nims/cal/nims98a_gs3_ref_g1_01.cal +
-	darkfil=/project/gll/nims/dark/nims98a_gs3_ref_id_01.drk +
-	solfil=/project/gll/nims/misc/nims_solar.dat +
-	ikernel=/project/gll/nims/misc/nims_ikernel_mab3.dat  +
-	dbmfile=/project/gll/nims/misc/boom_obscuration.nim  +
+	'spice pckernel=/project/test_work/testdata/gll/ckg07a2h.plt +
+	spkernel=/project/test_work/testdata/gll/s980127a.bsp +
+	calfil=/project/test_work/testdata/gll/nims98a_gs3_ref_g1_01.cal +
+	darkfil=/project/test_work/testdata/gll/nims98a_gs3_ref_id_01.drk +
+	solfil=/project/test_work/testdata/gll/nims_solar.dat +
+	ikernel=/project/test_work/testdata/gll/nims_ikernel_mab3.dat  +
+	dbmfile=/project/test_work/testdata/gll/boom_obscuration2.nim  +
 	prodnote="Predict pointing, offset from limb fit" +
 	obsnote="GANYMEDE Global mosaic" +
 	target=GANYMEDE phase=GANYMEDE_7_ENCOUNTER +
@@ -186,6 +186,41 @@ ush rm dbm_file
 ush rm sol_file
 ush rm CAL_FILE
 ush rm DARK_FILE
+
+nimscmm2 edr=/project/test_work/testdata/gll/c9cnskuld_01a.9  +
+ cube=c9cnskuld_01a.cub  +
+ cocube=c9cnskuld_01a.coc  +
+ sclk=(401506100 401507076)  +
+ aacsfile=/project/test_work/testdata/gll/c9cnskuld_01.aacs  +
+ slew_tol=-1  +
+ spkernel=/project/test_work/testdata/gll/s980127a.bsp  +
+ calfil=/project/test_work/testdata/gll/nims98a_gs4_ref_g1_01.cal  +
+ PSHIFT=-1.00  +
+ darkfil=/project/test_work/testdata/gll/nims98a_gs4_ref_g1_02.drk  +
+ solfil=/project/test_work/testdata/gll/nims_solar.dat  +
+ ikernel=/project/test_work/testdata/gll/nims_ikernel_mab5.dat  +
+ dbmfile=/project/test_work/testdata/gll/boom_obscuration1.nim  +
+ prodnote="orthographic projection"  +
+ obsnote="Callisto observation"  +
+ target=CALLISTO phase=CALLISTO_9_ENCOUNTER  +
+ proj=ortho scale=5.026 'footp
+
+ush rm G7JNFEAP4101A.COC
+ush rm G7JNFEAP4101A.COT
+ush rm G7JNFEAP4101A.cub
+ush rm G7JNFEAP4101A.tub
+ush rm G7JNFEAP4101A_1.COC
+ush rm G7JNFEAP4101A_1.cub
+ush rm G7JNFEAP4101A_2.COC
+ush rm G7JNFEAP4101A_2.cub
+ush rm G7JNFEAP4101A_3.COC
+ush rm G7JNFEAP4101A_3.cub
+ush rm WTFIL
+ush rm c9cnskuld_01a.coc
+ush rm c9cnskuld_01a.cub
+ush rm g7gnglobal01a_lwk15.COC
+ush rm g7gnglobal01a_lwk15.cub
+ush rm wtfil
 
 disable-log
 

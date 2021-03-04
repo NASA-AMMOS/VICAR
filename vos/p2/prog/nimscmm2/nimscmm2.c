@@ -11,7 +11,7 @@
  *  5sep95 --lwk-- fixed some bugs in C-bridge calls
  *  2mar96 --lwk-- changed zreset() to zreset1()
  *  1may96 --lwk-- added recno[2] to mf[] array;  BigMalloc mf[] based on
-		actual # of records, not max.possible
+ actual # of records, not max.possible
  * 14may96 --lwk-- skip tube backplanes for GPs that have been deselected;
  *		added in recent changes to NIMSCMM: min/max.long. algorithm,
  *		cur_edr tracking, print out map projection data & image size,
@@ -386,14 +386,15 @@
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
+#include <strings.h>
 #include "rts_typedefs.h"
 
 /* the following include files were obsoleted and have been included
    explicitly below:
-#include "gll_rts_main.h"
-#include "gll_rts_main_diff.h"
-#include "gll_lrs.h"
-#include "gll_nims_edr_ph2.h"
+   #include "gll_rts_main.h"
+   #include "gll_rts_main_diff.h"
+   #include "gll_lrs.h"
+   #include "gll_nims_edr_ph2.h"
 */
 
 #include "spiceinc.h"
@@ -404,38 +405,42 @@
 #include "xvmaininc.h"
 #include "ftnbridge.h"
 #include "vicmain_c"					/* Vicar */
+#include "zifmessage.h"
+#include "zmabend.h"
+#include "zvprintf.h"
+#include "mve.h"
 
 #define SUCCESS         1	/* need this from gll_catalog.h */
 
 /****************************************************************************/
-	/* GLOBAL DEFINITIONS FOR NIMSCMM */
+/* GLOBAL DEFINITIONS FOR NIMSCMM */
 
-	/* first, the contents of some obsoleted include files: */
+/* first, the contents of some obsoleted include files: */
 
 /*				GLL_RTS_MAIN.H
- ******************************************************************************
- *	This file includes the basic data structures for the Galileo
- *	Phase II telemetry records.
- *
- * History:
- * 
- * Date		Reference	Description
- * -----------  --------------	------------------------------------------------
- *  20- 6-1989	N/A		Damon Knight - Original Delivery
- ******************************************************************************
- */
+******************************************************************************
+*	This file includes the basic data structures for the Galileo
+*	Phase II telemetry records.
+*
+* History:
+* 
+* Date		Reference	Description
+* -----------  --------------	------------------------------------------------
+*  20- 6-1989	N/A		Damon Knight - Original Delivery
+******************************************************************************
+*/
 
 /*
  *=============================================================================
  *	Definitions
  *=============================================================================
 
-#define	BOOM_FLAG_YES		0
-#define	BOOM_FLAG_MAYBE		1
-#define	BOOM_FLAG_NO		2
-#define BOOM_FLAG_UNKNOWN	3
+ #define	BOOM_FLAG_YES		0
+ #define	BOOM_FLAG_MAYBE		1
+ #define	BOOM_FLAG_NO		2
+ #define BOOM_FLAG_UNKNOWN	3
 
-/* SPACECRAFT_CLOCK
+ / * SPACECRAFT_CLOCK
  *=============================================================================
  *
  *	    15  14  13  12  11  10   9   8   7   6   5   4   3   2   1   0
@@ -463,13 +468,13 @@
  */
 
 typedef	struct
-	{
-	UINT	rim;				/* Real time image count */
-	UBYTE	mod91;				/* mod 91 counter	 */
-	UBYTE	mod10;				/* mod 10 counter	 */
-	UBYTE	mod8;				/* mod 8 counter	 */
-	}
-	sclk_typ;
+{
+  UINT	rim;				/* Real time image count */
+  UBYTE	mod91;				/* mod 91 counter	 */
+  UBYTE	mod10;				/* mod 10 counter	 */
+  UBYTE	mod8;				/* mod 8 counter	 */
+}
+  sclk_typ;
 
 /* EARTH_RECEIVED_TIME & SPACECRAFT EVENT TIME
  *=============================================================================
@@ -493,15 +498,15 @@ typedef	struct
  */
 
 typedef	struct
-	{
-	UWORD			year;		/* YEAR 		     */
-	UWORD			day;		/* DAY OF YEAR		     */
-	UBYTE			hour;		/* HOUR OF DAY		     */
-	UBYTE			minute;		/* MINUTES OF HOUR	     */
-	UBYTE			second;		/* SECONDS OF MINUTE	     */
-	UWORD			msecond;	/* MILLISECOND OF SECOND     */
-	}
-	ert_typ;
+{
+  UWORD			year;		/* YEAR 		     */
+  UWORD			day;		/* DAY OF YEAR		     */
+  UBYTE			hour;		/* HOUR OF DAY		     */
+  UBYTE			minute;		/* MINUTES OF HOUR	     */
+  UBYTE			second;		/* SECONDS OF MINUTE	     */
+  UWORD			msecond;	/* MILLISECOND OF SECOND     */
+}
+  ert_typ;
 
 typedef	ert_typ		scet_typ;
 
@@ -509,26 +514,26 @@ typedef	ert_typ		rct_typ;
 
 
 typedef	struct
-	{
-	UINT	rim;				/* Real time image count */
-	UBYTE	mod91;				/* mod 91 counter	 */
-	UBYTE	mod10;				/* mod 10 counter	 */
-	}
-	pws_sclk_typ;
+{
+  UINT	rim;				/* Real time image count */
+  UBYTE	mod91;				/* mod 91 counter	 */
+  UBYTE	mod10;				/* mod 10 counter	 */
+}
+  pws_sclk_typ;
 
 typedef pws_sclk_typ    nims_ph2_sclk_typ;
 
 typedef	struct
-	{
-	UWORD			year;		/* YEAR 		     */
-	UBYTE                   month;          /* MONTH OF YEAR             */
-        UBYTE                   day;		/* DAY OF MONTH              */
-	UBYTE			hour;		/* HOUR OF DAY		     */
-	UBYTE			minute;		/* MINUTES OF HOUR	     */
-	UBYTE			second;		/* SECONDS OF MINUTE	     */
-	UWORD			msecond;	/* MILLISECOND OF SECOND     */
-	}
-	pws_ert_typ;
+{
+  UWORD			year;		/* YEAR 		     */
+  UBYTE                   month;          /* MONTH OF YEAR             */
+  UBYTE                   day;		/* DAY OF MONTH              */
+  UBYTE			hour;		/* HOUR OF DAY		     */
+  UBYTE			minute;		/* MINUTES OF HOUR	     */
+  UBYTE			second;		/* SECONDS OF MINUTE	     */
+  UWORD			msecond;	/* MILLISECOND OF SECOND     */
+}
+  pws_ert_typ;
 
 typedef	pws_ert_typ		pws_scet_typ;
 typedef	pws_ert_typ		nims_ph2_ert_typ;
@@ -548,8 +553,9 @@ typedef	pws_ert_typ		nims_ph2_scet_typ;
 #define NOV  31
 #define DEC  30
 
-static short int day_tab[2][12] =
-{{JAN,
+/*
+  static short int day_tab[2][12] =
+  {{JAN,
   JAN+FEB,
   JAN+FEB+MAR,
   JAN+FEB+MAR+APR,
@@ -561,7 +567,7 @@ static short int day_tab[2][12] =
   JAN+FEB+MAR+APR+MAY+JUN+JUL+AUG+SEP+OCT,
   JAN+FEB+MAR+APR+MAY+JUN+JUL+AUG+SEP+OCT+NOV,
   JAN+FEB+MAR+APR+MAY+JUN+JUL+AUG+SEP+OCT+NOV+DEC},
- {JAN,
+  {JAN,
   JAN+FEB,
   JAN+FEB+MAR1,
   JAN+FEB+MAR1+APR,
@@ -573,20 +579,21 @@ static short int day_tab[2][12] =
   JAN+FEB+MAR1+APR+MAY+JUN+JUL+AUG+SEP+OCT,
   JAN+FEB+MAR1+APR+MAY+JUN+JUL+AUG+SEP+OCT+NOV,
   JAN+FEB+MAR1+APR+MAY+JUN+JUL+AUG+SEP+OCT+NOV+DEC},
-};
+  };
+*/
 
 /*		            GLL_RTS_MAIN_DIFF.H
- ******************************************************************************
- *	This file includes the basic data structures that are necessary
- *      for GLL Phase I compatability. 
- *
- * History:
- * 
- * Date		Reference	Description
- * -----------  --------------	------------------------------------------------
- * 23- 10-1994   N/A            Original Delivery - Damon D. Knight
- ******************************************************************************
- */
+******************************************************************************
+*	This file includes the basic data structures that are necessary
+*      for GLL Phase I compatability. 
+*
+* History:
+* 
+* Date		Reference	Description
+* -----------  --------------	------------------------------------------------
+* 23- 10-1994   N/A            Original Delivery - Damon D. Knight
+******************************************************************************
+*/
 
 /*
  *=============================================================================
@@ -607,7 +614,7 @@ static short int day_tab[2][12] =
 #define	PWS			2
 #define	SSI			4
 
-#define	POSTMSG(l,e,t,m)	if (l<=gcb.msg_lvl) postmsg( e,t,m);
+#define	POSTMSG(l,e,t,m)	if (l<=gcb.msg_lvl) postmsg(e,t,m);
 #define MINIMUM(p1, p2)		((p1<p2)?p1:p2)
 #define MAXIMUM(p1, p2)		((p1>p2)?p1:p2)
 
@@ -643,14 +650,14 @@ static short int day_tab[2][12] =
  */
 
 typedef	struct					/* Format Idendtification    */
-	{
-	FIELD		rec_id	 : 5;		/* Record identifier	     */
-	FIELD		map_seq  : 3;		/* Map sequence no.	     */
-	FIELD		comm_map : 2;		/* Commutation map	     */
-	FIELD		mem_ro	 : 1;		/* Memory readout	     */
-	FIELD		rt_id	 : 5;		/* Real Time Identifier      */
-	}
-	fid_typ;
+{
+  FIELD		rec_id	 : 5;		/* Record identifier	     */
+  FIELD		map_seq  : 3;		/* Map sequence no.	     */
+  FIELD		comm_map : 2;		/* Commutation map	     */
+  FIELD		mem_ro	 : 1;		/* Memory readout	     */
+  FIELD		rt_id	 : 5;		/* Real Time Identifier      */
+}
+  fid_typ;
 
 /* SPACECRAFT_CLOCK
  *=============================================================================
@@ -680,13 +687,13 @@ typedef	struct					/* Format Idendtification    */
  */
 
 typedef	struct
-	{
-	FIELD	rim 	: 24;			/* Real time image count */
-	UBYTE	mod91;				/* mod 91 counter	 */
-	UBYTE	mod10;				/* mod 10 counter	 */
-	UBYTE	mod8;				/* mod 8 counter	 */
-	}
-	sc_sclk_typ;
+{
+  FIELD	rim 	: 24;			/* Real time image count */
+  UBYTE	mod91;				/* mod 91 counter	 */
+  UBYTE	mod10;				/* mod 10 counter	 */
+  UBYTE	mod8;				/* mod 8 counter	 */
+}
+  sc_sclk_typ;
 
 
 /* TELEM_HEADER
@@ -716,12 +723,12 @@ typedef	struct
  */
 
 typedef	struct
-	{
-	int			pn_code;
-	fid_typ			frmt_id;
-	sc_sclk_typ		sclk;
-	}
-	tlm_hdr_typ;
+{
+  int			pn_code;
+  fid_typ			frmt_id;
+  sc_sclk_typ		sclk;
+}
+  tlm_hdr_typ;
 
 /*
  *=============================================================================
@@ -729,13 +736,13 @@ typedef	struct
  */
 
 typedef	struct
-	{
-	UBYTE		frmt;
-	FLAG		pb_rt;			/* 0:RT, 1:ASYNCH PLAYBACK    */
-	sclk_typ	sclk;
-	ert_typ		ert;
-	}
-	current_typ;
+{
+  UBYTE		frmt;
+  FLAG		pb_rt;			/* 0:RT, 1:ASYNCH PLAYBACK    */
+  sclk_typ	sclk;
+  ert_typ		ert;
+}
+  current_typ;
 
 /*
  *=============================================================================
@@ -746,26 +753,26 @@ typedef	BYTE		byte_ballot_typ[8];
 
 #define	RT_TLM		0
 #define PB_TLM		1
-static	char	*tlm_mode[2]  = { "RT", "PB"};
+/*static	char	*tlm_mode[2]  = { "RT", "PB"};*/
 
 
 /* DELETED NON-NIMS PARTS OF THIS FILE <LWK - 08JUN2008> */
 /*				GLL_LRS.H
- ******************************************************************************
- *
- * Low Rate Science Frame, definitions and macros.
- *
- * NOTES:
- *	This file uses some symbols & structures defined in MAIN_GLL.H
- *	All lengths are given in bytes unless stated otherwise.
- *
- * History:
- * 
- * Date		Reference	Description
- * -----------  --------------	------------------------------------------------
- *  7- 7-1989	N/A		Payam Zamani - Original Delivery
- ******************************************************************************
- */
+******************************************************************************
+*
+* Low Rate Science Frame, definitions and macros.
+*
+* NOTES:
+*	This file uses some symbols & structures defined in MAIN_GLL.H
+*	All lengths are given in bytes unless stated otherwise.
+*
+* History:
+* 
+* Date		Reference	Description
+* -----------  --------------	------------------------------------------------
+*  7- 7-1989	N/A		Payam Zamani - Original Delivery
+******************************************************************************
+*/
 
 /* AACS_LRS_TYP
  *=============================================================================
@@ -773,21 +780,21 @@ static	char	*tlm_mode[2]  = { "RT", "PB"};
  *=============================================================================
  */
 typedef	struct
-	{
-	UWORD		rotor_ra;	/* Rotor Attitude Right Ascension    */
-	UWORD		rotor_dec;	/* Rotor Attitude Declination	     */
-	UWORD		rotor_twist;	/* Rotor Attitude Twist		     */
-	UWORD		pltfrm_ra;	/* Platform Att.  Right Ascension    */
-	UWORD		pltfrm_dec;	/* Platform Att.  Declination	     */
-	UWORD		pltfrm_twist;	/* Platform Att.  Twist		     */
-	UWORD		pltfrm_cone_rate;	/* Platform rate, cone	     */
-	UWORD		pltfrm_x_cone_rate;	/* Platform rate, cross cone */
-	UWORD		rotor_spin_delta;	/* Rotor Spin Motion Delta   */
-	UWORD		rotor_spin_pos;		/* Rotor Spin Position angel */
-	UWORD		cone_pos;		/* Cone Position, 1/2**16th  */
-	UWORD		clock_pos;		/* Clock Position	     */
-	}
-	aacs_lrs_p_typ;
+{
+  UWORD		rotor_ra;	/* Rotor Attitude Right Ascension    */
+  UWORD		rotor_dec;	/* Rotor Attitude Declination	     */
+  UWORD		rotor_twist;	/* Rotor Attitude Twist		     */
+  UWORD		pltfrm_ra;	/* Platform Att.  Right Ascension    */
+  UWORD		pltfrm_dec;	/* Platform Att.  Declination	     */
+  UWORD		pltfrm_twist;	/* Platform Att.  Twist		     */
+  UWORD		pltfrm_cone_rate;	/* Platform rate, cone	     */
+  UWORD		pltfrm_x_cone_rate;	/* Platform rate, cross cone */
+  UWORD		rotor_spin_delta;	/* Rotor Spin Motion Delta   */
+  UWORD		rotor_spin_pos;		/* Rotor Spin Position angel */
+  UWORD		cone_pos;		/* Cone Position, 1/2**16th  */
+  UWORD		clock_pos;		/* Clock Position	     */
+}
+  aacs_lrs_p_typ;
 
 /* NIMS_LRS_TYP
  *=============================================================================
@@ -795,10 +802,10 @@ typedef	struct
  *=============================================================================
  */
 typedef	struct
-	{
-	UBYTE		dsae[3];	/* Digital Status & Analog Engnrng   */
-	}
-	nims_lrs_p_typ;
+{
+  UBYTE		dsae[3];	/* Digital Status & Analog Engnrng   */
+}
+  nims_lrs_p_typ;
 
 
 /*		GLL_NIMS_EDR_PH2.H
@@ -824,7 +831,7 @@ typedef	struct
 #define NIMS_PDS_RECORDS     3      /* Number of NIMS PDS header records */
 
 /* enable this when the ph.2 EDR has been "registered" with VICAR: */
-/*#define GLL_NIMS2_EDR "GLL_NIMS2_ED" /* BLTYPE for NIMS ph.2 EDR */
+/*#define GLL_NIMS2_EDR "GLL_NIMS2_ED" / * BLTYPE for NIMS ph.2 EDR */
 
 /* typedef unsigned long   ULONG; */
 
@@ -835,12 +842,12 @@ typedef	struct
  *=============================================================================
  */
 typedef	struct
-	{
-	ULONG	rim;	   	/* Major frame (Real-time IMage) counter */
-	UBYTE	mod91;		/* Minor frame (MOD-91) counter */
-	UBYTE	rti;		/* RTI (MOD-10) counter	     */
-	}
-	nims2_sclk_typ;
+{
+  ULONG	rim;	   	/* Major frame (Real-time IMage) counter */
+  UBYTE	mod91;		/* Minor frame (MOD-91) counter */
+  UBYTE	rti;		/* RTI (MOD-10) counter	     */
+}
+  nims2_sclk_typ;
 
 /*
  *=============================================================================
@@ -848,16 +855,16 @@ typedef	struct
  *=============================================================================
  */
 typedef	struct
-	{
-	UWORD	year;
-	UBYTE	month;
-	UBYTE	day;
-	UBYTE	hour;
-	UBYTE	minute;
-	UBYTE	second;
-	UWORD	millisecond;
-	}
-	nims2_ert_typ;
+{
+  UWORD	year;
+  UBYTE	month;
+  UBYTE	day;
+  UBYTE	hour;
+  UBYTE	minute;
+  UBYTE	second;
+  UWORD	millisecond;
+}
+  nims2_ert_typ;
 /*
  *=============================================================================
  *  First NIMS UDR file header (1st header after PDS label in EDR)
@@ -868,27 +875,27 @@ typedef	struct
  *=============================================================================
  */
 typedef	struct
-	{
-	nims2_sclk_typ	fsclk;			/* FIRST SPACE CRAFT CLOCK   */
-	nims2_sclk_typ	lsclk;			/* LAST SPACE CRAFT CLOCK    */
-	nims2_ert_typ	fert;			/* FIRST EARTH RECEIVED TIME */
-	nims2_ert_typ	lert;			/* LAST EARTH RECEIVED TIME  */
-	UBYTE		data_present[46];	/* 364-bit mask (UDR) -- in the 
-						   EDR this mask is only 182 
-						   bits, and occupies the first
-						   23 bytes of data_present */
-	UBYTE		data_recd[46];		/* 364-bit mask (UDR only) -- 
-						   this field is not used in 
-						   the EDR */
-	UWORD		threshval[17];		/* threshold DNs */
-	UWORD		total_rec;		/* total # of records in EDR */
-	UWORD		total_zero;		/* # of zero-fill recs in EDR*/
-        UINT            comp_bytes;             /* total # compressed bytes */
-        UINT            uncomp_bytes;           /* total # uncompressed bytes */
-        char            comp_ratio[6];          /* NIMS Rice comp. ratio */
-	UBYTE		reserved[850];
-	}
-	nims2_hdr1_typ;
+{
+  nims2_sclk_typ	fsclk;			/* FIRST SPACE CRAFT CLOCK   */
+  nims2_sclk_typ	lsclk;			/* LAST SPACE CRAFT CLOCK    */
+  nims2_ert_typ	fert;			/* FIRST EARTH RECEIVED TIME */
+  nims2_ert_typ	lert;			/* LAST EARTH RECEIVED TIME  */
+  UBYTE		data_present[46];	/* 364-bit mask (UDR) -- in the 
+					   EDR this mask is only 182 
+					   bits, and occupies the first
+					   23 bytes of data_present */
+  UBYTE		data_recd[46];		/* 364-bit mask (UDR only) -- 
+					   this field is not used in 
+					   the EDR */
+  UWORD		threshval[17];		/* threshold DNs */
+  UWORD		total_rec;		/* total # of records in EDR */
+  UWORD		total_zero;		/* # of zero-fill recs in EDR*/
+  UINT            comp_bytes;             /* total # compressed bytes */
+  UINT            uncomp_bytes;           /* total # uncompressed bytes */
+  char            comp_ratio[6];          /* NIMS Rice comp. ratio */
+  UBYTE		reserved[850];
+}
+  nims2_hdr1_typ;
 
 /*
  *=============================================================================
@@ -896,57 +903,57 @@ typedef	struct
  *=============================================================================
  */
 typedef	struct
-	{
-	char		oapel[12];
-	char		alias[12];
-	char		ext;
-	char		psid[2];
-	char		sclk1[13];
-	char		sclk2[13];
-        char            partition;
-        char            spare1[9];
-	char		target[8];
-	char		mode[2];
-	char		gain;
-	char		chop;
-	char		grat_off;
-	char		ptab_a[12];
-	char		ptab_b[12];
-	char		ecal;
-	char		opcal;
-	char		real_time;
-	char		record;
-	char		threshsel;
-	char		spare2;
-	char		rtiseldn[5];
-	char		rtiselup[5];
-	char		spare3;
-	char		compflag;
-	char		spare4;
-	char		estcomp[3];
-	char		estcompv[3];
-	char		ratecon1[5];
-	char		ratecon2[5];
-	char		spare5[17];
-	char		nwavetot[3];
-	char		tlmmode[3];
-	char		scet1[21];
-	char		scet2[21];
-	char		spare6[67];
-	char		thresh[51];
-	char		wetgid[10];
-	char		wetgrpsiz[2];
-	char		wetgrp[182];
-	UBYTE		reserved[512];
-	}
-	nims2_hdr2_typ;
+{
+  char		oapel[12];
+  char		alias[12];
+  char		ext;
+  char		psid[2];
+  char		sclk1[13];
+  char		sclk2[13];
+  char            partition;
+  char            spare1[9];
+  char		target[8];
+  char		mode[2];
+  char		gain;
+  char		chop;
+  char		grat_off;
+  char		ptab_a[12];
+  char		ptab_b[12];
+  char		ecal;
+  char		opcal;
+  char		real_time;
+  char		record;
+  char		threshsel;
+  char		spare2;
+  char		rtiseldn[5];
+  char		rtiselup[5];
+  char		spare3;
+  char		compflag;
+  char		spare4;
+  char		estcomp[3];
+  char		estcompv[3];
+  char		ratecon1[5];
+  char		ratecon2[5];
+  char		spare5[17];
+  char		nwavetot[3];
+  char		tlmmode[3];
+  char		scet1[21];
+  char		scet2[21];
+  char		spare6[67];
+  char		thresh[51];
+  char		wetgid[10];
+  char		wetgrpsiz[2];
+  char		wetgrp[182];
+  UBYTE		reserved[512];
+}
+  nims2_hdr2_typ;
 
 typedef	struct
-	{
-	nims2_hdr1_typ	hdr1;
-	nims2_hdr2_typ	hdr2;
-	}
-	nims2_hdr_typ;
+{
+  nims2_hdr1_typ	hdr1;
+  nims2_hdr2_typ	hdr2;
+}
+  nims2_hdr_typ;
 
 /* 
  *=============================================================================
@@ -954,81 +961,81 @@ typedef	struct
  *=============================================================================
  */
 typedef	struct
-	{
-        FIELD     overflow: 1;
-        FIELD     underflow: 1;
-	FIELD     fill: 6;
-	}
-	nims_er_flg_typ;
+{
+  FIELD     overflow: 1;
+  FIELD     underflow: 1;
+  FIELD     fill: 6;
+}
+  nims_er_flg_typ;
 
 typedef	struct
-	{
-        FIELD     sclk_suspect: 1;
-        FIELD     ert_val: 1;
-	FIELD     scid_force: 1;
-        FIELD     data_val: 1;
-        FIELD     replay_flag: 1;
-	FIELD     test_mode: 1;
-        FIELD     data_mode: 1;
-        FIELD     pb_mode: 1;
-	}
-	sclk_flg_typ1;
+{
+  FIELD     sclk_suspect: 1;
+  FIELD     ert_val: 1;
+  FIELD     scid_force: 1;
+  FIELD     data_val: 1;
+  FIELD     replay_flag: 1;
+  FIELD     test_mode: 1;
+  FIELD     data_mode: 1;
+  FIELD     pb_mode: 1;
+}
+  sclk_flg_typ1;
 
 typedef	struct
-	{
-        FIELD     pkt_flag: 2;
-	FIELD     sclk_flag: 3;
-        FIELD     sclk_calc_suspect: 1;
-        FIELD     sclk_unexpected: 1;
-	FIELD     sclk_corr: 1;
-	}
-	sclk_flg_typ2;
+{
+  FIELD     pkt_flag: 2;
+  FIELD     sclk_flag: 3;
+  FIELD     sclk_calc_suspect: 1;
+  FIELD     sclk_unexpected: 1;
+  FIELD     sclk_corr: 1;
+}
+  sclk_flg_typ2;
 
 typedef	struct
-	{
-        FIELD     flush_flag: 4;
-	FIELD     scet_val: 1;
-	FIELD     scet_int: 1;
-	FIELD     less_than_max: 1;
-	FIELD     spare: 1;
-	}
-	sclk_flg_typ3;
+{
+  FIELD     flush_flag: 4;
+  FIELD     scet_val: 1;
+  FIELD     scet_int: 1;
+  FIELD     less_than_max: 1;
+  FIELD     spare: 1;
+}
+  sclk_flg_typ3;
 
 typedef	struct
-	{
-	nims2_sclk_typ	sclk;			/* data acq. SCLK */
-	nims2_ert_typ	ert1;			/* ERT of 1st packet */
-	nims2_ert_typ	ert2;			/* ERT of 2nd packet */
-	nims2_ert_typ	ert3;			/* ERT of 3rd packet */
-	UBYTE		apid;			/* Packet Application ID no.*/
-	ULONG		pkt_seq[3];		/* sequencer for 3 packets */
-	UBYTE		insmode;		/* instrument mode */
-	UBYTE		data_complete;		/* flag (>0 means Yes) */
-	BYTE		compression_stat;	/* decompression return status*/
-	UWORD		subpkt_size;		/* subpacket size in bytes */
-	UWORD		data_size;		/* after decomp. (in bytes) */
-        UBYTE           mirror_dir;             /* mirror direction */
-        UBYTE           grating_position;       /* grating position */
-        nims_er_flg_typ error_flags;            /* Overflow & underflow bits */
-	UINT		det_mask;		/* 17-bit detector mask */
-	UINT		mirror_mask;		/* 20-bit mirror mask */
-	UBYTE		rrpmf;			/* RIM rollover pkt miss'g flg*/
-        sclk_flg_typ1   sclk_flag1;             /* SCLK SFDU flag 3 bytes */
-        sclk_flg_typ2   sclk_flag2;
-        sclk_flg_typ3   sclk_flag3;
-	UBYTE		reserved[276];
-	}
-	nims2_pfix_typ;
+{
+  nims2_sclk_typ	sclk;			/* data acq. SCLK */
+  nims2_ert_typ	ert1;			/* ERT of 1st packet */
+  nims2_ert_typ	ert2;			/* ERT of 2nd packet */
+  nims2_ert_typ	ert3;			/* ERT of 3rd packet */
+  UBYTE		apid;			/* Packet Application ID no.*/
+  ULONG		pkt_seq[3];		/* sequencer for 3 packets */
+  UBYTE		insmode;		/* instrument mode */
+  UBYTE		data_complete;		/* flag (>0 means Yes) */
+  BYTE		compression_stat;	/* decompression return status*/
+  UWORD		subpkt_size;		/* subpacket size in bytes */
+  UWORD		data_size;		/* after decomp. (in bytes) */
+  UBYTE           mirror_dir;             /* mirror direction */
+  UBYTE           grating_position;       /* grating position */
+  nims_er_flg_typ error_flags;            /* Overflow & underflow bits */
+  UINT		det_mask;		/* 17-bit detector mask */
+  UINT		mirror_mask;		/* 20-bit mirror mask */
+  UBYTE		rrpmf;			/* RIM rollover pkt miss'g flg*/
+  sclk_flg_typ1   sclk_flag1;             /* SCLK SFDU flag 3 bytes */
+  sclk_flg_typ2   sclk_flag2;
+  sclk_flg_typ3   sclk_flag3;
+  UBYTE		reserved[276];
+}
+  nims2_pfix_typ;
 
 typedef	struct
-	{
-	nims2_pfix_typ	pfix;
-	UWORD		sensor[340];		/* science data */
-	}
-	nims2_rec_typ;
+{
+  nims2_pfix_typ	pfix;
+  UWORD		sensor[340];		/* science data */
+}
+  nims2_rec_typ;
 
-  /* these definitions are taken from gll_ssi_bin_diff.h & gll_ph2_ssi_bin.h,
-   * needed for the code included from gll_nims_bin_ph2.c: */
+/* these definitions are taken from gll_ssi_bin_diff.h & gll_ph2_ssi_bin.h,
+ * needed for the code included from gll_nims_bin_ph2.c: */
 static int byte_trans[12], byte_size;
 static int half_trans[12], half_size;
 static int full_trans[12], full_size;
@@ -1036,40 +1043,37 @@ static int full_trans[12], full_size;
 #define THALF(from, to) zvtrans(half_trans,(from),(to),1); (from)+=half_size;
 #define TFULL(from, to) zvtrans(full_trans,(from),(to),1); (from)+=full_size;
 #define TSTRN(from, to, n) zmove((from),(to),(n)); (from)+=(n);
-#define ROUTINE          /* */
 
-  /* this was the start of the old nimscmm2 global defines: */
+/* this was the start of the old nimscmm2 global defines: */
 
-  /* compound sclk = sclk time in mf (mod91): */
+/* compound sclk = sclk time in mf (mod91): */
 #define comp_sclk(sclk) (91 * (sclk).rim + (sclk).mod91)
 
-  /* conversion between planetodetic and planetocentric latitudes in 
-   * degrees (for TRANV): */
-#define cen2det(lat) ( degrad * atan( tan(lat/degrad) * rep2 ) );
-#define det2cen(lat) ( degrad * atan( tan(lat/degrad) / rep2 ) );
+/* conversion between planetodetic and planetocentric latitudes in 
+ * degrees (for TRANV): */
+#define cen2det(lat) ( degrad * atan(tan(lat/degrad) * rep2 ) );
+#define det2cen(lat) ( degrad * atan(tan(lat/degrad) / rep2 ) );
 
 #define max(x,y) (x>y ? x : y)
 #define min(x,y) (x<y ? x : y)
 
-#define FUNCTION				/* (for that Fortran look) */
-
 #ifndef TRUE
-  #define TRUE 1
+#define TRUE 1
 #endif
 #ifndef FALSE
-  #define FALSE 0
+#define FALSE 0
 #endif
 
-	/*
-	 * define the std. ISIS reserved "special values" for Real &
-	 * Halfword data:
-	 *
-	 * INStrument low/high saturation means DN = 0/1023
-	 * REPresentation low/high saturation overflows DN range
-	 *
-	 * NOTE: the float definitions are taken from the ISIS
-	 * include file 'special_pixel.h'
-	 */
+/*
+ * define the std. ISIS reserved "special values" for Real &
+ * Halfword data:
+ *
+ * INStrument low/high saturation means DN = 0/1023
+ * REPresentation low/high saturation overflows DN range
+ *
+ * NOTE: the float definitions are taken from the ISIS
+ * include file 'special_pixel.h'
+ */
 
 /* Define 4-byte special pixel values for IEEE floating point */
 #define IEEE_VALID_MIN_4                0xFF7FFFFA
@@ -1094,13 +1098,13 @@ static const unsigned int high_instr_sat_4 = IEEE_HIGH_INSTR_SAT_4;
 /* these were the old definitions on VMS only:
  * (BELOW_THRESH, FILL_FLAG, & NO_SENS were non-standard and
  * not used in final version) */
-/*#define NULL4 	-1.7014117e38			/* hex FFFFFFFF */
-/*#define INS_LO_SAT4 	-1.7014115e38			/*     FFFDFFFF */
-/*#define INS_HI_SAT4 	-1.7014114e38			/*     FFFCFFFF */
-/*#define BELOW_THRESH4	-1.7014112e38			/*     FFFAFFFF */
-/*#define FILL_FLAG 	-1.7014111e38			/*     FFF9FFFF */
-/*#define NO_SENSITIVITY4 -1.7014103e38			/*     FFF1FFFF */
-/*#define VALID_MIN4	-1.7014101e38			/*     FFEFFFFF */
+/*#define NULL4 	-1.7014117e38			/ * hex FFFFFFFF */
+/*#define INS_LO_SAT4 	-1.7014115e38			/ *     FFFDFFFF */
+/*#define INS_HI_SAT4 	-1.7014114e38			/ *     FFFCFFFF */
+/*#define BELOW_THRESH4	-1.7014112e38			/ *     FFFAFFFF */
+/*#define FILL_FLAG 	-1.7014111e38			/ *     FFF9FFFF */
+/*#define NO_SENSITIVITY4 -1.7014103e38			/ *     FFF1FFFF */
+/*#define VALID_MIN4	-1.7014101e38			/ *     FFEFFFFF */
 
 /* integer versions: */
 #define NULL2 		-32768
@@ -1154,29 +1158,29 @@ struct mf_type {
 };
 
 static struct mf_type *mf;		/* will be allocated with malloc */
-int nmf;		/* total # of MFs in observation */
+int nmf=0;		/* total # of MFs in observation */
 int ngcs;		/* total # of grating cycles, for Tube case */
 int nbpg;		/* # of backplanes per GC, for Tube case */
 
 struct xytype {float x,y;};             /* for mirror pos. calculations */
 
-	/* summary of time range limits:
-	 *
-	 * The following are of type SCLK (RIM.MF.RTI):
-	 *
-	 *  loclk/hiclk start as user param.SCLK, if specified, and are reset
-	 *    to minclk/maxclk if latter range is smaller
-	 *
-	 *  minclk/maxclk are the limits of all data in all EDRs
-	 *
-	 *  in a tube, lo/minclk are forced to be the start of a Grating Cycle
-	 *
-	 * The following are of type int (91*RIM+MF):
-	 *
-	 *  range_lclk/range_hclk are derived from param.SCLK, and
-	 *    are zero if this was not specified
-	 * 
-	 *  file_lclk/file_hclk are the limits of the file currently open */
+/* summary of time range limits:
+ *
+ * The following are of type SCLK (RIM.MF.RTI):
+ *
+ *  loclk/hiclk start as user param.SCLK, if specified, and are reset
+ *    to minclk/maxclk if latter range is smaller
+ *
+ *  minclk/maxclk are the limits of all data in all EDRs
+ *
+ *  in a tube, lo/minclk are forced to be the start of a Grating Cycle
+ *
+ * The following are of type int (91*RIM+MF):
+ *
+ *  range_lclk/range_hclk are derived from param.SCLK, and
+ *    are zero if this was not specified
+ * 
+ *  file_lclk/file_hclk are the limits of the file currently open */
 
 nims2_sclk_typ loclk, hiclk, minclk, maxclk;	/* range params */
 
@@ -1206,7 +1210,7 @@ typedef struct {
 } edr_stat_typ;
 
 edr_stat_typ edrs[MAX_EDRS];
-int nedrs, cur_edr;
+int nedrs, cur_edr = 0;
 int nrec;				/* # of records in current EDR */
 
 short wet[N_GPS][N_DETS];		/* Wavelength Edit Table */
@@ -1220,7 +1224,7 @@ int smpos, empos, nmpos;		/* start/end/no. of mirror pos. */
 int smpos0, empos0;			/* ignoring mirror scan direction */
 int ngps;				/* no. of grat. pos. per cycle */
 int ngps0;				/* no. of "real" grat. pos. */
-char fix_mode;			/* flag for fixed grating with mirror wait */
+char fix_mode=0;			/* flag for fixed grating with mirror wait */
 char fix_wait;			/* flag to process mirror wait in fix_mode */
 int imode;				/* instrument mode code */
 char ins_mode[20];			/*  id. as string */
@@ -1246,24 +1250,24 @@ int nmaplin, nmapsam;			/* id. for special line/samp */
 int nscal;				/* id. for scale */
 char target[16];			/* target planet */
 int calib;				/* flag for CAL/SKY target */
-/*char obsnam[20];			/* observation name */
-/*char obsext[2];				/* observation extension */
-/*char mosnum[3];				/* mosaic id. no. */
+/*char obsnam[20];			/ * observation name */
+/*char obsext[2];				/ * observation extension */
+/*char mosnum[3];				/ * mosaic id. no. */
 char fname[MAX_EDRS*40];		/* input EDR file names */
 int x_min = 1;				/*  counted from 1  */
 int x_max = 512;
 int y_min = 1;
 int y_max = 512;
 
-	/* data for map projection (TRANV): */
-double latitude, longitude, map_line, map_samp;
+/* data for map projection (TRANV): */
+double latitude=0., longitude=0., map_line, map_samp;
 double parallel[2];
 double scale, focal;
 double eq_rad, pol_rad;
 /*double north=NULL4;*/
 double north;
 double map_pole;
-int map_type;				/* map projection code */
+int map_type=0;				/* map projection code */
 
 double scale0;				/* nominal scale */
 double circum, long0, mapsam0;		/* for cylindrical wraparound fix */
@@ -1272,7 +1276,7 @@ int elon;				/* flag for East longitudes */
 int radfudge;				/* flag to do radius fudge */
 double radfact;				/* radius fudge factor */
 float rnom, lfact;			/* used in radius fudge */
-float rtang;				/* tangent radius for radius fudge */
+float rtang=0.;				/* tangent radius for radius fudge */
 double frad, frad1, frad2;		/* pole-equ. ratio */
 
 int refsclk, refmp;			/* ref. SCLK for map projection */
@@ -1297,9 +1301,9 @@ int nspik;                               /* # of spikes in despike file */
 
 int drk_tol=10;			/* max. allowed deviation of dark from mean */
 
-	/*
-	 * Mirror Tables from IKERNEL:
-	 */
+/*
+ * Mirror Tables from IKERNEL:
+ */
 double mirr_tim_table[40];		/* mirror sample timing table */
 struct {
   double cone_up, cone_down, xcone_up, xcone_down;
@@ -1337,7 +1341,7 @@ float maxdistor;			/* max. distortion to keep pixel */
 int ndistor;
 
 int use_max;				/* flag for OVERLAP=MAXIMUM */
-int use_last;				/* flag for OVERLAP=REPLACE */
+int use_last=0;				/* flag for OVERLAP=REPLACE */
 int do_fill;				/* flag for fill algorithm */
 int flag_sat;				/* flag saturated pixels */
 int repl_sat;			/* replace saturated pixels with BB est. */
@@ -1358,7 +1362,7 @@ double s_tol;				/* C-mat tolerance in ticks */
 
 char esystem[6];			/* B1950 or J2000 */
 
-float *odata;				/* address of (temp.) float cube */
+float *odata=NULL;			/* address of (temp.) float cube */
 float *gdata;				/* address of cocube file*/
 float *wdata;				/* address of weights file*/
 float *sddata;				/* address of std.dev. cube */
@@ -1458,16 +1462,16 @@ int npfcut;				/*  ditto for band # */
 char phot_func[10];			/* same as pfunc, but text */
 double p_minn;				/* Minnaert exponent */
 
-	/* these items are for the label only: */
+/* these items are for the label only: */
 float sun_azi=0., sc_azi=0.;			/* azimuths */
 int n_azi=0;
 float minsdist = 1.e30, maxsdist = -1.e30; 	/* s/c - planet surface */
 float minsun=1.e30, maxsun= -1.e30;		/* s/c - sun dist. */
 float mincenbod=1.e30, maxcenbod= -1.e30;	/* s/c - central body dist. */
 
-	/* these items are for the catalog only, except for mmlat/lon &
-	 * ssclat/lon, which also go to label ... [2] arrays are either
-	 * begin/end or min/max: */
+/* these items are for the catalog only, except for mmlat/lon &
+ * ssclat/lon, which also go to label ... [2] arrays are either
+ * begin/end or min/max: */
 float trange[2];			/* slant distance range (to target) */
 float crange[2];			/* sun distance range */
 float tincid[2] = {1.e30,-1.e30};	/* min/max incidence angle */
@@ -1488,13 +1492,13 @@ double twt_tol;				/* twist angle spike tolerance */
 float dpoint[2];			/* pointing offsets */
 int dpt_sclk[2];			/* SCLK range for dpoint */
 int dpt_sclk0[2];
-double wamp, wfreq, wphase;		/* wobble constants */
+double wamp=0., wfreq, wphase=0.;	/* wobble constants */
 double wob_cone;			/* cone estimate for Predict pointing */
 int beg_sclk;				/* for wobble computation */
 
 int tube;				/* =0: G-cube, =1: tube */
 int ptub;				/* =0: std.tube, =1: P-tube */
-  /* note that ptub implies tube! */
+/* note that ptub implies tube! */
 
 int org;				/* cube format: BSQ/BIL/BIP */
 
@@ -1503,7 +1507,7 @@ int dunit, gunit;			/* Vicar unit #s for cube & cocube */
 int cat_flag;				/* flags request to updata catalog */
 int ll_rec1, ll_rec2;			/* more flags for catalog/label items */
 
-int xtest;				/* debug/test param */
+int xtest=0;				/* debug/test param */
 
 int nohkp;				/* flag to ignore housekeeping data */
 
@@ -1525,7 +1529,7 @@ extern double zpi();
 extern double zhalfpi();
 extern double ztwopi();
 
-double degrad;		/* degrees per radian */
+double degrad=0.;		/* degrees per radian */
 
 int idebug=0;		/* a flag that can be set in the debugger */
 
@@ -1540,14 +1544,90 @@ int oldver;		/* flag to use old algorithm, keyed to INITIALS */
 
 int cal_asc, drk_asc;	/* flags for ascii cal/dark files */
 
+static void init_stuff(void);
+static void get_uparms(void);
+static int open_edr(int prnt);
+static void find_mode(void);
+static void nims_s2et(int sclk, double *pet);
+static void zload_spice95(double et, int *spk, int *i);
+static void add_label(int fpar[2]);
+static void assemble_pntng(void);
+static void average_dn(float *word, float cdata, float wt, float wtx, int det);
+static void bb_repl(float rad[N_DETS], int igp);
+static void check_thresh(void);
+static void comp_stdev(void);
+static void extract_data(void);
+static int extract_pntng(int sclk, struct pntng_typ *cang);
+static int fill(float *array, int msize, int ndata, float *fplane);
+static void find_angles(float *pang);
+static void find_body_motion(double *pra, double *pdec, int *pnp0, double *pbm_mra, double *pbm_mdec);
+static void find_gap(int *hist, int nbin, int *bgap, int *ngap);
+static void find_tube_gcs(void);
+static void find_xy_center(int sclk, int rti, struct xytype mpos[4][20], double bcone, double bxcone, double dbc, double dbx);
+static void find_xy_corners(int sclk, int rti, struct xytype mpos[4][20], double bcone, double bxcone, double dbc, double dbx);
+static void geobuf(struct xytype mpos[4][20], double dlat[20], double dlon[20]);
+static int get_pntng(int sclk, struct pntng_typ *cang);
+static void get_omrs(double pdist, double slat, double slon, double olat, double olon, double *pssl, double *psss, int *bop);
+static void get_sflux(void);
+static void get_tgt_data(int sc_time, int rti, int mp, int nora, int geo_flag, double *pcone, double *pxcone);
+static void hist2cube(void);
+static void nims_ps_orient(int sclk, vector sc, vector sol, vector cenbod, struct pntng_typ *pme);
+static void open_outs(void);
+static void output_cotube(struct xytype * mpos, struct xytype *mpos1, int gp, int iy,
+			  int nchops, int *offimag, int *offplan, int *dcnt, int *vcnt, int *vflag);
+static void output_ftpt(float *cdata, int mp, struct xytype cpos[4], int gp, int *offimag, int isclk);
+static void output_histbin(float *pdata, int ix, int iy, int lambda, float *wtp);
+static void output_near(float *cdata, int mp, struct xytype pos, int gp, float wtx, int *offimag);
+static void output_test(void);
+static void output_tube_h(short cdata[][20], int gp, int iy, int *vflag);
+static void output_tube_f(float cdata[][20], int gp, int iy, int *vflag);
+static void read_dspk(char *dsfil1);
+static void read_ikernel(void);
+static void rplan(float *r, float rlat, float rlon, float ra, float rb, float rp);
+static void scale_data(void);
+static void set_mp(int isclk, int imp, int *pmp, int *prti);
+static void set_pov(void);
+static void set_projection(void);
+static void setup_cal(int rim, int mod91);
+static void solar(float dist, float *fsol);
+static void update_catalog(void);
+static void varc(float lat[2], float lon[2], vector vab);
+static void vrdcomp(double ra, double dec, vector dv, double *dra, double *ddec);
+static void write_latlon(void);
+static void zgetom(float *r1, float *r2, float *r3, float *r4, float *r5, float *r6,
+		   float *r7, float *r8, float *r9, float *r10, float *r11, float *r12);
+static void znimsboom(float cone, float clock, int *iobs, char *filnam);
+static void znims_check_rad(int *lrshsk, int *hrshsk, int *hrsbkg, int *pstatus);
+static void znims_check_dark(int *drkbuf, int *drkbuf1, int drk_nl, int drktyp, 
+			     int rim, int mod91, int *dave, int *pstatus);
+static void znims_comp_rad(int i, int j, int *p1, int *p2, int *p3);
+static void znims_get_cal(char *file, int *pstatus);
+static void znims_get_dark(char *file, int *drk_ns, int *drk_nl, int *drkbuf, int *pstatus);
+static void znims_get_cal_a(char *file, int *pstatus);
+static void znims_get_dark_a(char *file, int *drk_ns, int *drk_nl, float drkbuf[712], int *pstatus);
+static void znims_set_rad(int iop, int imode, int g_off, int gstart, int gdel,
+			  int ngpos, int *lrshsk, int *hrshsk, int *hrsbkg,
+			  int *utemps, int *wavs, int *sensv, int *cbase,
+			  int *cmult, int *ppshift, int *painfl, float xnull,
+			  float xlsat, float xhsat, int *pstat);
+static void zpproj(int *tdata, int *y, int *x, int *lat, int *lon, int i, int j, int *r, int *s, int *k);
+static void zrotadkx(int *r1, int i, int j, int *r2);
+static int get_nims_edr_hdr_2(int unit, nims2_hdr_typ *dest);
+static int get_nims_edr_rec_2(int unit, int line, nims2_rec_typ *dest);
+static void trin_nims_ert_typ(unsigned char **from, nims2_ert_typ *to);
+static void trin_nims_sclk_typ(unsigned char **from, nims2_sclk_typ *to);
+static void trin_nims_er_flg_typ(unsigned char **from, nims_er_flg_typ *to);
+static int init_trans_inbn(int unit, int *byte_tr, int *half_tr, int *full_tr);
+static int init_pixsizebn(int unit, int *byte_sz, int *half_sz, int *full_sz);
+
 /****************************************************************************/
 void main44()
 {
-  int def, fpar[2], i, isclk, istat, nvalues, sclk1, sclk2;
+  int def, fpar[2], i, isclk, istat, nvalues;
   float *dptr, *fplane;
 
   /* tell user which version this is */
-  zvmessage(" *** NIMSCMM2 Version 2016-02-24 ***","");
+  zifmessage("NIMSCMM2 version 2020-03-19");
 
   init_stuff();		/* initialize SPICE & some buffers --
 			 * this does some ZVPARMS */
@@ -1563,8 +1643,8 @@ void main44()
   /* at this point we are sure to have a valid SCLK, so can finally load
    * an SPK if not already done: */
   if (!u_spk) {
-    nims_s2et( file_lclk, &etime);
-    zload_spice95( etime, spice_ids, &istat);
+    nims_s2et(file_lclk, &etime);
+    zload_spice95(etime, spice_ids, &istat);
     if (istat!=SUCCESS) zmabend(" *** unable to load spice for GLL ***");
   }
   while (cur_edr+1<nedrs) {
@@ -1576,7 +1656,7 @@ void main44()
   /* close the EDRs to avoid problems ... */
   for (i=0; i<nedrs; i++)
     if (edrs[i].opened) {
-      zvclose( edrs[i].unit, NULL);
+      zvclose(edrs[i].unit, NULL);
       edrs[i].opened = FALSE;
     }
 
@@ -1592,9 +1672,9 @@ void main44()
     loclk.mod91 = i/2;
     loclk.rti = 0;
     if (i%2 != 0) loclk.rti = 5;
-      /* reset loclk even if it falls in the 1st GC: */
+    /* reset loclk even if it falls in the 1st GC: */
     if (comp_sclk(loclk) < comp_sclk(minclk)) loclk = minclk;
-      /* set number of cotube bands per g.p. */
+    /* set number of cotube bands per g.p. */
     nbpg = footprint ? 6 : 4;
     if (ptub) nbpg += 6;
   }
@@ -1602,22 +1682,22 @@ void main44()
     if (comp_sclk(loclk) < comp_sclk(minclk)) loclk = minclk;
   }
   if ((comp_sclk(hiclk) > comp_sclk(maxclk)) || 
-    (comp_sclk(hiclk)==0)) hiclk = maxclk;
+      (comp_sclk(hiclk)==0)) hiclk = maxclk;
 
   /* compute the start/end UTCs here because SPICE calls are flakey 
    * later on ... */
-  isclk = comp_sclk( loclk);  
-  nims_s2et( isclk, &etime);
-  zet2utc( etime, "C", 0, beg_utc);
-  zet2utc( etime, "D", 3, beg_utcd);
-  isclk = comp_sclk( hiclk);  
-  nims_s2et( isclk, &etime);
-  zet2utc( etime, "C", 0, end_utc);
-  zet2utc( etime, "D", 3, end_utcd);
+  isclk = comp_sclk(loclk);  
+  nims_s2et(isclk, &etime);
+  zet2utc(etime, "C", 0, beg_utc);
+  zet2utc(etime, "D", 3, beg_utcd);
+  isclk = comp_sclk(hiclk);  
+  nims_s2et(isclk, &etime);
+  zet2utc(etime, "C", 0, end_utc);
+  zet2utc(etime, "D", 3, end_utcd);
 
   /* open the AACS file */
   if (aacsf) {
-    aacsfil = fopen( aacsfnam, "r");
+    aacsfil = fopen(aacsfnam, "r");
     if (aacsfil == NULL) zmabend(" ** unable to open AACSFILE **");
   }
 
@@ -1650,15 +1730,15 @@ void main44()
     /* here is the previous algorithm, based on # of grating cycles in the
      * entire SCLK range: */
     /*
-    sclk1 = comp_sclk(loclk);
-    sclk2 = comp_sclk(hiclk);
-    if (fix_mode)
+      sclk1 = comp_sclk(loclk);
+      sclk2 = comp_sclk(hiclk);
+      if (fix_mode)
       ngcs = 2*(sclk2-sclk1+1);
-    else {
+      else {
       i = ngps/2;
       ngcs = 1+(sclk2-sclk1+1)/i;
       if ((loclk.mod91)%i > (hiclk.mod91)%i) ngcs++;
-    }
+      }
     */
     nl = ngcs;
   }
@@ -1668,87 +1748,88 @@ void main44()
     return;
   }
 
-	/* open output cube & cocube files, allocate temp. REAL cube;
-	 * this also initializes to NULL */
+  /* open output cube & cocube files, allocate temp. REAL cube;
+   * this also initializes to NULL */
   open_outs();
 
-	/*
-	 * read the sensor data, correct, and project them:
-	 */
+  /*
+   * read the sensor data, correct, and project them:
+   */
   extract_data();
 
-  if (aacsf) fclose( aacsfil); 
+  if (aacsf) fclose(aacsfil); 
 
-	/* in histogram-binning option, generate output: */
+  /* in histogram-binning option, generate output: */
   if (histbin) hist2cube();
 
-	/*
-	 * if footprint algorithm used, then check for pixels with
-	 * weights below threshold (G-cube only):
-	 */
+  /*
+   * if footprint algorithm used, then check for pixels with
+   * weights below threshold (G-cube only):
+   */
   if (thresh>0. && !tube && !histbin) check_thresh();
 
-	/* if std.dev. cube requested, convert <DN**2> to s.d. */
+  /* if std.dev. cube requested, convert <DN**2> to s.d. */
   if (sd_file) comp_stdev();
 
-	/* write lat/long data to cocube for all data pixels:
-	 * (must do this before FILL step, as latter uses lat plane
-	 * as check for on-planet pixels) */
+  /* write lat/long data to cocube for all data pixels:
+   * (must do this before FILL step, as latter uses lat plane
+   * as check for on-planet pixels) */
   if (!tube) write_latlon();
 
-	/*
-	 * option to fill the data and planes 3-6 of the cocube:
-	 */
+  /*
+   * option to fill the data and planes 3-6 of the cocube:
+   */
   if (do_fill) {
-    zvparm( "FILPAR", fpar, &nvalues, &def, 2, 0);
+    zvparm("FILPAR", fpar, &nvalues, &def, 2, 0);
     for (i=0; i<nb; i++) {
       dptr = odata + i*nl*ns;
-      vstat = fill( dptr, fpar[0], fpar[1], 0);
+      vstat = fill(dptr, fpar[0], fpar[1], 0);
       if (vstat<0) break;
     }
     for (i=0; i<4; i++) {
       dptr = gdata + (2+i)*nl*ns;
       fplane = 0;
       if (i==0) fplane = gdata+7*nl*ns;	/* plane 8 for fill flag */
-      vstat = fill( dptr, fpar[0], fpar[1], fplane);
+      vstat = fill(dptr, fpar[0], fpar[1], fplane);
       if (vstat<0) break;
     }
   }
 
-	/* scale floating-point cube data and write out as halfword: */
+  /* scale floating-point cube data and write out as halfword: */
   if ((caltyp && radscal>0) || (!caltyp && !tube)) scale_data();
 
-	/* call this even if we're not going to do catalog stuff in order
- 	 * to have the same min/max lat/lon values in all cases: */
+  /* call this even if we're not going to do catalog stuff in order
+   * to have the same min/max lat/lon values in all cases: */
   update_catalog();
-	/*
-	 * add history labels and close the files --
-	 * first close & reopen to avoid overflow of vicar label buffer
-	 * with array I/O:
-	 */
-  zvclose( dunit, NULL);
+  /*
+   * add history labels and close the files --
+   * first close & reopen to avoid overflow of vicar label buffer
+   * with array I/O:
+   */
+  zvclose(dunit, NULL);
   
-	/* close edrs too: (cocube will be closed after last
-	 * use in find_angles) */
-  for (i=0; i<nedrs; i++) if (edrs[i].opened) zvclose( edrs[i].unit, NULL);
+  /* close edrs too: (cocube will be closed after last
+   * use in find_angles) */
+  for (i=0; i<nedrs; i++) if (edrs[i].opened) zvclose(edrs[i].unit, NULL);
 
-  zvopen( dunit, "OP", "UPDATE", "OPEN_ACT", "SA", "IO_ACT", "SA", NULL);
-  add_label( fpar);
-  zvclose( dunit, NULL);
+  zvopen(dunit, "OP", "UPDATE", "OPEN_ACT", "SA", "IO_ACT", "SA", NULL);
+  add_label(fpar);
+  zvclose(dunit, NULL);
 }
 
 
 /*************************************************************************/
-FUNCTION add_label( fpar)
+void add_label(int fpar[2])
 /*
  * add VICAR history labels
  */
-int fpar[2];
+#if 0
+  int fpar[2];
+#endif
 {
   char onbuf[91], snbuf[159], svalue[MAX_EDRS][101];
   int gaps[200], i, i1, i2, irim, imf, j, k, ivalue[3];
   float dum, eq_radf, fword, rvalue[9], x;
-  char mn;
 
   union {
     struct { float reals[38]; int ints[2];} map1;
@@ -1756,26 +1837,26 @@ int fpar[2];
   } mapbuf;			/* for MAPLABV2 */
   MP mpo;                      /* Declaration of MP pointer */
 
-	/* if TUBE, write a pseudo-maplab label to keep Vicar s/w
-	 * from misinterpreting the label: */
+  /* if TUBE, write a pseudo-maplab label to keep Vicar s/w
+   * from misinterpreting the label: */
   if (tube) {
-    zladd( dunit, "HISTORY", "MAP00000",
-     "** TUBE FILE: map labels apply to cocube data only **", 
-     "FORMAT", "STRING", NULL);
-    zladd( dunit, "HISTORY", CUBE_SIZE, osize, "FORMAT", "INT",
-	"NELEMENT", 2, NULL);
+    zladd(dunit, "HISTORY", "MAP00000",
+	  "** TUBE FILE: map labels apply to cocube data only **", 
+	  "FORMAT", "STRING", NULL);
+    zladd(dunit, "HISTORY", CUBE_SIZE, osize, "FORMAT", "INT",
+	  "NELEMENT", 2, NULL);
   }
 
-	/* first write out MAPLAB-format labels so other Vicar s/w
-	 * can interface with our file: */
-  zvmessage(" ","");
+  /* first write out MAPLAB-format labels so other Vicar s/w
+   * can interface with our file: */
+  zifmessage(" ");
 
   if (calib) goto endmap;
 
   if (map_type==16) {		/* special for POV */
 
-    for ( i=0, k=0; i<3; i++) {
-      for ( j=0; j<3; j++, k++) mapbuf.map2.dbles[k] = t_data_pov.om[i][j];
+    for (i=0, k=0; i<3; i++) {
+      for (j=0; j<3; j++, k++) mapbuf.map2.dbles[k] = t_data_pov.om[i][j];
     }
     for (i=0;i<3;i++) mapbuf.map2.dbles[9+i] = t_data_pov.rs[i];
     mapbuf.map2.reals[0] = t_data_pov.prad;
@@ -1788,45 +1869,40 @@ int fpar[2];
     /* fill in 2 extra slots for new MP: */
     mapbuf.map2.reals[11] = 0.;
     mapbuf.map2.reals[12] = t_data_pov.e1rad;
-    sprintf( msg, " Focal Length (mm) = %.1f, Camera Scale (pix/mm) = %.1f", 
-     t_data_pov.focal, t_data_pov.cscale);
-    zvmessage( msg,"");
-    sprintf( msg, " Optical Axis Line/Sample = %.3f, %.3f", t_data_pov.aline,
-     t_data_pov.asamp);
-    zvmessage( msg,"");
+    zvnprintf(100, " Focal Length (mm) = %.1f, Camera Scale (pix/mm) = %.1f", 
+	      t_data_pov.focal, t_data_pov.cscale);
+    zvnprintf(100, " Optical Axis Line/Sample = %.3f, %.3f", t_data_pov.aline,
+	      t_data_pov.asamp);
 
-	/* range: */
-    x = sqrt( t_data_pov.rs[0] * t_data_pov.rs[0] +
-	      t_data_pov.rs[1] * t_data_pov.rs[1] +
-	      t_data_pov.rs[2] * t_data_pov.rs[2] );
+    /* range: */
+    x = sqrt(t_data_pov.rs[0] * t_data_pov.rs[0] +
+	     t_data_pov.rs[1] * t_data_pov.rs[1] +
+	     t_data_pov.rs[2] * t_data_pov.rs[2] );
     mapbuf.map2.reals[13] = x;
-    sprintf( msg, " Spacecraft-Target Range (km) = %.1f, North Angle = %.2f",
-     x, north);
-    zvmessage( msg,"");
+    zvnprintf(100, " Spacecraft-Target Range (km) = %.1f, North Angle = %.2f",
+	      x, north);
 
-	/* Lat & Lon(W) of subspacecraft point: */
-    mapbuf.map2.reals[6] = degrad * asin( t_data_pov.rs[2] / x);
-    mapbuf.map2.reals[7] = degrad * atan2( -t_data_pov.rs[1],
-     t_data_pov.rs[0]);
+    /* Lat & Lon(W) of subspacecraft point: */
+    mapbuf.map2.reals[6] = degrad * asin(t_data_pov.rs[2] / x);
+    mapbuf.map2.reals[7] = degrad * atan2(-t_data_pov.rs[1],
+					  t_data_pov.rs[0]);
     if (mapbuf.map2.reals[7]<0.) mapbuf.map2.reals[7] += 360.;
-    sprintf( msg, " Subspacecraft Lat/Long (deg) = %.2f, %.2f", 
-     mapbuf.map2.reals[6], mapbuf.map2.reals[7]);
-    zvmessage( msg,"");
+    zvnprintf(100, " Subspacecraft Lat/Long (deg) = %.2f, %.2f", 
+	      mapbuf.map2.reals[6], mapbuf.map2.reals[7]);
 
-	/* Line/Samp of subspacecraft point: */
-    zpproj( &t_data_pov, &mapbuf.map2.reals[8], &mapbuf.map2.reals[9],
-     &mapbuf.map2.reals[6], &mapbuf.map2.reals[7], LL_LS, lattyp, &dum,
-     &dum, &i);
-    sprintf( msg, " Subspacecraft Line/Samp = %.3f, %.3f", 
-     mapbuf.map2.reals[8], mapbuf.map2.reals[9]);
-    zvmessage( msg,"");
+    /* Line/Samp of subspacecraft point: */
+    zpproj(&t_data_pov, &mapbuf.map2.reals[8], &mapbuf.map2.reals[9],
+	   &mapbuf.map2.reals[6], &mapbuf.map2.reals[7], LL_LS, lattyp, &dum,
+	   &dum, &i);
+    zvnprintf(100, " Subspacecraft Line/Samp = %.3f, %.3f", 
+	      mapbuf.map2.reals[8], mapbuf.map2.reals[9]);
   }  
   else {
     if (map_type==9 || map_type==10) {	/* restore original tielon/sam */
       longitude = long0;
       map_samp = mapsam0;
     }
-    for (i=0; i<=39; i++) mapbuf.map1.reals[i] = 0.;
+    for (i=0; i<38; i++) mapbuf.map1.reals[i] = 0.;
     mapbuf.map1.reals[0] = map_samp;
     mapbuf.map1.reals[1] = map_line;
     mapbuf.map1.reals[2] = latitude;
@@ -1838,288 +1914,280 @@ int fpar[2];
     mapbuf.map1.reals[8] = north;
     mapbuf.map1.reals[24] = pol_rad;
     mapbuf.map1.reals[25] = eq_rad;
-    sprintf( msg, " Tiepoint Lat/Long (deg) = %.2f, %.2f", latitude, longitude);
-    zvmessage( msg,"");
-    sprintf( msg, " Tiepoint Line/Sample = %.3f, %.3f",  map_line, map_samp);
-    zvmessage( msg,"");
+    zvnprintf(100, " Tiepoint Lat/Long (deg) = %.2f, %.2f", latitude, longitude);
+    zvnprintf(100, " Tiepoint Line/Sample = %.3f, %.3f",  map_line, map_samp);
     if (north>(-360.))
-      sprintf( msg, " Map scale (km/pix) = %.4f, North Angle (deg) = %.2f",
-       scale, north);
+      zvnprintf(100, " Map scale (km/pix) = %.4f, North Angle (deg) = %.2f",
+		scale, north);
     else
-      sprintf( msg, " Map scale (km/pix) = %.4f", scale);
-    zvmessage( msg,"");
+      zvnprintf(100, " Map scale (km/pix) = %.4f", scale);
   }
   mapbuf.map1.ints[0] = map_type;
 
-  vstat = mpInit( &mpo);
+  vstat = mpInit(&mpo);
   if (vstat!=mpSUCCESS) zmabend(" error initializing MP object");
-  vstat = mpBuf2Mpo( &mapbuf, mpo);
+  vstat = mpBuf2Mpo(&mapbuf, mpo);
   if (vstat!=mpSUCCESS) zmabend(" error in MP translation");
   /* mpBuf2Mpo always writes "planetocentric", so fix this if we passed
    * it 'graphic' latitudes: */
   if (pgraphic==1) {
-    vstat = mpSetValues( mpo, mpCOORDINATE_SYSTEM_NAME, "PLANETOGRAPHIC", "");
+    vstat = mpSetValues(mpo, mpCOORDINATE_SYSTEM_NAME, "PLANETOGRAPHIC", "");
     if (vstat!=mpSUCCESS) zmabend(" error setting Coord.system");
   }
   /* fix 2nd axis if tri-axial (POV only): */
   if (map_type==16 && t_data_pov.e1rad!=t_data_pov.e2rad) {
-    vstat = mpSetValues( mpo, "B_AXIS_RADIUS", t_data_pov.e2rad, "");
+    vstat = mpSetValues(mpo, "B_AXIS_RADIUS", t_data_pov.e2rad, "");
     if (vstat!=mpSUCCESS) zmabend(" error setting B_AXIS label");
   }
-  vstat = mpLabelWrite( mpo, dunit, "HISTORY");
+  vstat = mpLabelWrite(mpo, dunit, "HISTORY");
   if (vstat!=mpSUCCESS) zmabend(" error writing map labels");
-  vstat = mpLabelWrite( mpo, dunit, "PROPERTY");
+  vstat = mpLabelWrite(mpo, dunit, "PROPERTY");
   if (vstat!=mpSUCCESS) zmabend(" error writing map labels");
 
-	/*
-	 * then other stuff for VISIS & NIMSMASK:
-	 */
+  /*
+   * then other stuff for VISIS & NIMSMASK:
+   */
 
-	/* required for PDS map projection group: */
+  /* required for PDS map projection group: */
   if (mmlon[0]<400. && elon) {	/* ensure Longitudes are East for Venus */
     mmlon[0] = 360.-mmlon[0];
     mmlon[1] = 360.-mmlon[1];
   }
-  zladd( dunit, "HISTORY", MIN_LAT, &mmlat[0], "FORMAT", "REAL",
-     "NELEMENT", 1, NULL);
-  zladd( dunit, "HISTORY", MIN_LON, &mmlon[0], "FORMAT", "REAL",
-     "NELEMENT", 1, NULL);
-  zladd( dunit, "HISTORY", MAX_LAT, &mmlat[1], "FORMAT", "REAL",
-     "NELEMENT", 1, NULL);
-  zladd( dunit, "HISTORY", MAX_LON, &mmlon[1], "FORMAT", "REAL",
-     "NELEMENT", 1, NULL);
+  zladd(dunit, "HISTORY", MIN_LAT, &mmlat[0], "FORMAT", "REAL",
+	"NELEMENT", 1, NULL);
+  zladd(dunit, "HISTORY", MIN_LON, &mmlon[0], "FORMAT", "REAL",
+	"NELEMENT", 1, NULL);
+  zladd(dunit, "HISTORY", MAX_LAT, &mmlat[1], "FORMAT", "REAL",
+	"NELEMENT", 1, NULL);
+  zladd(dunit, "HISTORY", MAX_LON, &mmlon[1], "FORMAT", "REAL",
+	"NELEMENT", 1, NULL);
 
   /* write these out to log too: */
-  sprintf( msg, " Min/max latitudes: %.2f, %.2f", mmlat[0], mmlat[1]);
-  zvmessage( msg,"");
-  sprintf( msg, " Min/max longitudes: %.2f, %.2f", mmlon[0], mmlon[1]);
-  zvmessage( msg,"");
+  zvnprintf(100, " Min/max latitudes: %.2f, %.2f", mmlat[0], mmlat[1]);
+  zvnprintf(100, " Min/max longitudes: %.2f, %.2f", mmlon[0], mmlon[1]);
 
   /* write out the min/max photometric angles too: */
-  sprintf( msg, " Min/max incidence angles: %.2f, %.2f", tincid[0], tincid[1]);
-  zvmessage( msg,"");
-  sprintf( msg, " Min/max emission angles: %.2f, %.2f", temiss[0], temiss[1]);
-  zvmessage( msg,"");
-  sprintf( msg, " Min/max phase angles: %.2f, %.2f", tphase[0], tphase[1]);
-  zvmessage( msg,"");
+  zvnprintf(100, " Min/max incidence angles: %.2f, %.2f", tincid[0], tincid[1]);
+  zvnprintf(100, " Min/max emission angles: %.2f, %.2f", temiss[0], temiss[1]);
+  zvnprintf(100, " Min/max phase angles: %.2f, %.2f", tphase[0], tphase[1]);
 
   if (pgraphic==1)
-    zladd( dunit, "HISTORY", LAT_TYPE, "PLANETOGRAPHIC", "FORMAT", "STRING", NULL);
+    zladd(dunit, "HISTORY", LAT_TYPE, "PLANETOGRAPHIC", "FORMAT", "STRING", NULL);
   else if (pgraphic==0)
-    zladd( dunit, "HISTORY", LAT_TYPE, "PLANETOCENTRIC", "FORMAT", "STRING", NULL);
+    zladd(dunit, "HISTORY", LAT_TYPE, "PLANETOCENTRIC", "FORMAT", "STRING", NULL);
 
-endmap:
+ endmap:
 
-	/* identify band if only one requested: */
+  /* identify band if only one requested: */
   if (lami && imode<=7) {
-    sprintf( msg, "Band %3d only of ", lami);
-    if (fix_mode || imode==0 || imode==7) sprintf( &msg[17], "FIXED mode");
-    else if (imode==1 || imode==2) sprintf( &msg[17], "FULL mode");
-    else if (imode==3 || imode==4) sprintf( &msg[17], "LONG mode");
-    else if (imode==5 || imode==6) sprintf( &msg[17], "SHORT mode");
-    zladd( dunit, "HISTORY", "COMMENT", msg, "FORMAT", "STRING", NULL);
- }
+    snprintf(msg, 100, "Band %3d only of ", lami);
+    if (fix_mode || imode==0 || imode==7) snprintf(&msg[17], 100, "FIXED mode");
+    else if (imode==1 || imode==2) snprintf(&msg[17], 100, "FULL mode");
+    else if (imode==3 || imode==4) snprintf(&msg[17], 100, "LONG mode");
+    else if (imode==5 || imode==6) snprintf(&msg[17], 100, "SHORT mode");
+    zladd(dunit, "HISTORY", "COMMENT", msg, "FORMAT", "STRING", NULL);
+  }
 
   for (i=0; i<nedrs; i++)
-    strcpy( svalue[i], (fname+edrs[i].foff-1));
-  zladd( dunit, "HISTORY", EDRS, svalue, "FORMAT", "STRING",
+    strcpy(svalue[i], (fname+edrs[i].foff-1));
+  zladd(dunit, "HISTORY", EDRS, svalue, "FORMAT", "STRING",
 	"NELEMENT", nedrs, "ULEN", 101, NULL);
 
-  zladd( dunit, "HISTORY", PROJECT, "GLL", "FORMAT", "STRING", NULL);
+  zladd(dunit, "HISTORY", PROJECT, "GLL", "FORMAT", "STRING", NULL);
 
-  zladd( dunit, "HISTORY", INSTRUMENT, "NIMS", "FORMAT", "STRING", NULL);
+  zladd(dunit, "HISTORY", INSTRUMENT, "NIMS", "FORMAT", "STRING", NULL);
 
-  zvparm( "PHASE", svalue[0], &nvalues, &def, 1, 0);	 
+  zvparm("PHASE", svalue[0], &nvalues, &def, 1, 0);	 
   if (strcmp(svalue[0], ""))
-    zladd( dunit, "HISTORY", PHASE, svalue[0], "FORMAT", "STRING", NULL);
+    zladd(dunit, "HISTORY", PHASE, svalue[0], "FORMAT", "STRING", NULL);
 
-  zladd( dunit, "HISTORY", TARGET, target, "FORMAT", "STRING", NULL);
+  zladd(dunit, "HISTORY", TARGET, target, "FORMAT", "STRING", NULL);
 
-/* removed for VICAR-only version:
-  zladd( dunit, "HISTORY", OBSNAME, obsnam, "FORMAT", "STRING", NULL);
-  zladd( dunit, "HISTORY", OBSEXT, obsext, "FORMAT", "STRING", NULL);
-  zladd( dunit, "HISTORY", MOSNUM, mosnum, "FORMAT", "STRING", NULL);
-*/
+  /* removed for VICAR-only version:
+     zladd( dunit, "HISTORY", OBSNAME, obsnam, "FORMAT", "STRING", NULL);
+     zladd( dunit, "HISTORY", OBSEXT, obsext, "FORMAT", "STRING", NULL);
+     zladd( dunit, "HISTORY", MOSNUM, mosnum, "FORMAT", "STRING", NULL);
+  */
 
-  zvparm( "OBSNOTE", onbuf, &nvalues, &def, 1, 0);
-  if (strcmp( onbuf, "")) zladd( dunit, "HISTORY", OBSNOTE,
-   onbuf, "FORMAT", "STRING", NULL);
+  zvparm("OBSNOTE", onbuf, &nvalues, &def, 1, 0);
+  if (strcmp(onbuf, "")) zladd(dunit, "HISTORY", OBSNOTE,
+			       onbuf, "FORMAT", "STRING", NULL);
 
-  zvparm( "SUPPNOTE", snbuf, &nvalues, &def, 1, 0);
-  if (strcmp( snbuf, "")) zladd( dunit, "HISTORY", SUPPNOTE,
-   snbuf, "FORMAT", "STRING", NULL);
+  zvparm("SUPPNOTE", snbuf, &nvalues, &def, 1, 0);
+  if (strcmp(snbuf, "")) zladd(dunit, "HISTORY", SUPPNOTE,
+			       snbuf, "FORMAT", "STRING", NULL);
 
-/* removed for VICAR-only version:
-  zvparm( "PRODID", svalue[0], &nvalues, &def, 1, 0);
-  if (!strcmp( svalue[0], "")) {	/* form default Product ID */
-/*  strcpy( svalue[0], obsnam);
-    strcat( svalue[0], obsext);
-    strcat( svalue[0], "_");
-    strcat( svalue[0], initials);
-    strcat( svalue[0], mosnum);
-    if (tube)
+  /*     removed for VICAR-only version:
+	 zvparm( "PRODID", svalue[0], &nvalues, &def, 1, 0);
+	 if (!strcmp( svalue[0], "")) {	/ * form default Product ID */
+  /*  strcpy( svalue[0], obsnam);
+      strcat( svalue[0], obsext);
+      strcat( svalue[0], "_");
+      strcat( svalue[0], initials);
+      strcat( svalue[0], mosnum);
+      if (tube)
       strcat( svalue[0], ".VTUB");
-    else
+      else
       strcat( svalue[0], ".QUB");
-  }
-  zladd( dunit, "HISTORY", PRODID, svalue[0], "FORMAT", "STRING", NULL);
-*/
+      }
+      zladd( dunit, "HISTORY", PRODID, svalue[0], "FORMAT", "STRING", NULL);
+  */
 
-  zvparm( "PRODNOTE", svalue[0], &nvalues, &def, 1, 0);
-  if (strcmp( svalue[0], "")) zladd( dunit, "HISTORY", PRODNOTE,
-   svalue[0], "FORMAT", "STRING", NULL);
+  zvparm("PRODNOTE", svalue[0], &nvalues, &def, 1, 0);
+  if (strcmp(svalue[0], "")) zladd(dunit, "HISTORY", PRODNOTE,
+				   svalue[0], "FORMAT", "STRING", NULL);
 
   if (c_spice) {
-    zladd( dunit, "HISTORY", PFM_CK, pckernel, "FORMAT", "STRING", NULL);
-/*    zladd( dunit, "HISTORY", ROT_CK, rckernel, "FORMAT", "STRING", NULL); */
+    zladd(dunit, "HISTORY", PFM_CK, pckernel, "FORMAT", "STRING", NULL);
+    /*    zladd( dunit, "HISTORY", ROT_CK, rckernel, "FORMAT", "STRING", NULL); */
   }
   else if (aacsf)
-    zladd( dunit, "HISTORY", AACS_FILE, aacsfnam, "FORMAT", "STRING", NULL);
+    zladd(dunit, "HISTORY", AACS_FILE, aacsfnam, "FORMAT", "STRING", NULL);
 
-  zladd( dunit, "HISTORY", IKERNEL, ikernel, "FORMAT", "STRING", NULL);
+  zladd(dunit, "HISTORY", IKERNEL, ikernel, "FORMAT", "STRING", NULL);
 
   if (u_spk) 		/* if user specified SPK */
-    zladd( dunit, "HISTORY", SP_KERNEL, spkernel, "FORMAT", "STRING", NULL);
+    zladd(dunit, "HISTORY", SP_KERNEL, spkernel, "FORMAT", "STRING", NULL);
   else {
-	/* SPK ids -- the S & P ids will usually
-	 * be the same, but keep separate for generality: */
-    strncpy( svalue[0], spice_ids, LEN_SPICE_ID);
+    /* SPK ids -- the S & P ids will usually
+     * be the same, but keep separate for generality: */
+    strncpy(svalue[0], spice_ids, LEN_SPICE_ID);
     svalue[0][LEN_SPICE_ID] = 0;
-    zladd( dunit, "HISTORY", SK_ID, svalue, "FORMAT", "STRING", NULL);
-    strncpy( svalue[0], spice_ids, LEN_SPICE_ID);
-    zladd( dunit, "HISTORY", "PK_ID", svalue, "FORMAT", "STRING", NULL);
+    zladd(dunit, "HISTORY", SK_ID, svalue, "FORMAT", "STRING", NULL);
+    strncpy(svalue[0], spice_ids, LEN_SPICE_ID);
+    zladd(dunit, "HISTORY", "PK_ID", svalue, "FORMAT", "STRING", NULL);
   }
 
   if (u_pck) 		/* if user specified PCK */
-    zladd( dunit, "HISTORY", PC_KERNEL, pconstants, "FORMAT", "STRING", NULL);
+    zladd(dunit, "HISTORY", PC_KERNEL, pconstants, "FORMAT", "STRING", NULL);
 
-  if (dpoint[0] != 0.0 || dpoint[1] != 0.0) zladd( dunit, "HISTORY",
-   DPOINT, dpoint, "FORMAT", "REAL", "NELEMENT", 2, NULL);
+  if (dpoint[0] != 0.0 || dpoint[1] != 0.0) zladd(dunit, "HISTORY",
+						  DPOINT, dpoint, "FORMAT", "REAL", "NELEMENT", 2, NULL);
 
-  if (dpt_sclk0[0] != 0 || dpt_sclk0[1] != 0) zladd( dunit, "HISTORY",
-   DPT_SCLK, dpt_sclk0, "FORMAT", "INT", "NELEMENT", 2, NULL);
+  if (dpt_sclk0[0] != 0 || dpt_sclk0[1] != 0) zladd(dunit, "HISTORY",
+						    DPT_SCLK, dpt_sclk0, "FORMAT", "INT", "NELEMENT", 2, NULL);
 
   if (wamp>1.e-7) {
-    zladd( dunit, "HISTORY", WAMP, &wamp, "FORMAT", "REAL", "NELEMENT", 1, NULL);
-    zladd( dunit, "HISTORY", WFREQ, &wfreq, "FORMAT", "REAL", "NELEMENT", 1, NULL);
-    zladd( dunit, "HISTORY", WPHASE, &wphase, "FORMAT", "REAL", "NELEMENT", 1,
-     NULL);
+    zladd(dunit, "HISTORY", WAMP, &wamp, "FORMAT", "REAL", "NELEMENT", 1, NULL);
+    zladd(dunit, "HISTORY", WFREQ, &wfreq, "FORMAT", "REAL", "NELEMENT", 1, NULL);
+    zladd(dunit, "HISTORY", WPHASE, &wphase, "FORMAT", "REAL", "NELEMENT", 1,
+	  NULL);
     if (!aacsf) {
       wob_cone *= degrad;
-      zladd( dunit, "HISTORY", WCONE, &wob_cone, "FORMAT", "REAL", "NELEMENT",
-       1, NULL);
+      zladd(dunit, "HISTORY", WCONE, &wob_cone, "FORMAT", "REAL", "NELEMENT",
+	    1, NULL);
     }
   }
 
-  zladd( dunit, "HISTORY", CAL_TYPE, cal_type, "FORMAT", "STRING", NULL);
+  zladd(dunit, "HISTORY", CAL_TYPE, cal_type, "FORMAT", "STRING", NULL);
 
-  if (radscal == -1) zladd( dunit, "HISTORY", "CAL_NOTE", 
-   "Pseudo-Radiance: floating-point DN cube",  "FORMAT", "STRING", NULL);
+  if (radscal == -1) zladd(dunit, "HISTORY", "CAL_NOTE", 
+			   "Pseudo-Radiance: floating-point DN cube",  "FORMAT", "STRING", NULL);
 
-	/* PDS label wants these even if not calibrated: */
-  zladd( dunit, "HISTORY", DARK_TYPE, dark_type, "FORMAT", "STRING", NULL);
+  /* PDS label wants these even if not calibrated: */
+  zladd(dunit, "HISTORY", DARK_TYPE, dark_type, "FORMAT", "STRING", NULL);
 
   if (!caltyp) { /* if radiance calibration done, sat. is always flagged */
-    if (flag_sat) zladd( dunit, "HISTORY", SATURATED, "FLAGGED",
-     "FORMAT", "STRING", NULL);
-    else zladd( dunit, "HISTORY", SATURATED, "NOT_FLAGGED", 
-     "FORMAT", "STRING", NULL);
+    if (flag_sat) zladd(dunit, "HISTORY", SATURATED, "FLAGGED",
+			"FORMAT", "STRING", NULL);
+    else zladd(dunit, "HISTORY", SATURATED, "NOT_FLAGGED", 
+	       "FORMAT", "STRING", NULL);
   }
 
-	/* cal.file always needed for wavelengths: */
+  /* cal.file always needed for wavelengths: */
   if (ncalfils==1) {
-    zladd( dunit, "HISTORY", CAL_FILE, cfile, "FORMAT", "STRING", NULL);
+    zladd(dunit, "HISTORY", CAL_FILE, cfile, "FORMAT", "STRING", NULL);
   }
   else {
-    for (i=0; i<ncalfils; i++) strcpy( svalue[i], (cfile+cfnoff[i]-1));
-    zladd( dunit, "HISTORY", CAL_FILE, svalue, "FORMAT", "STRING",
-     "NELEMENT", ncalfils, "ULEN", 101, NULL);
+    for (i=0; i<ncalfils; i++) strcpy(svalue[i], (cfile+cfnoff[i]-1));
+    zladd(dunit, "HISTORY", CAL_FILE, svalue, "FORMAT", "STRING",
+	  "NELEMENT", ncalfils, "ULEN", 101, NULL);
   }
   if ((caltyp && radscal>=0) || dndark || drkchk) {
     if (ndrkfils==1) {
-    zladd( dunit, "HISTORY", DARK_FILE, dfile, "FORMAT", "STRING", NULL);
+      zladd(dunit, "HISTORY", DARK_FILE, dfile, "FORMAT", "STRING", NULL);
     }
     else {
-      for (i=0; i<ndrkfils; i++) strcpy( svalue[i], (dfile+dfnoff[i]-1));
-      zladd( dunit, "HISTORY", DARK_FILE, svalue, "FORMAT", "STRING",
-       "NELEMENT", ndrkfils, "ULEN", 101, NULL);
+      for (i=0; i<ndrkfils; i++) strcpy(svalue[i], (dfile+dfnoff[i]-1));
+      zladd(dunit, "HISTORY", DARK_FILE, svalue, "FORMAT", "STRING",
+	    "NELEMENT", ndrkfils, "ULEN", 101, NULL);
     }
   }
 
-	/* solar flux file name: */
-  zladd( dunit, "HISTORY", SOL_FILE, solfile, "FORMAT", "STRING", NULL);
+  /* solar flux file name: */
+  zladd(dunit, "HISTORY", SOL_FILE, solfile, "FORMAT", "STRING", NULL);
 
-	/* despike file name: */
+  /* despike file name: */
   if (nspifils==1) {
-    zladd( dunit, "HISTORY", DESPIKE_FILE, dsfile, "FORMAT", "STRING", NULL);
+    zladd(dunit, "HISTORY", DESPIKE_FILE, dsfile, "FORMAT", "STRING", NULL);
   }
   else if (nspifils > 1) {
-    for (i=0; i<nspifils; i++) strcpy( svalue[i], (dsfile+dsfnoff[i]-1));
-    zladd( dunit, "HISTORY", DESPIKE_FILE, svalue, "FORMAT", "STRING",
-     "NELEMENT", nspifils, "ULEN", 101, NULL);
+    for (i=0; i<nspifils; i++) strcpy(svalue[i], (dsfile+dsfnoff[i]-1));
+    zladd(dunit, "HISTORY", DESPIKE_FILE, svalue, "FORMAT", "STRING",
+	  "NELEMENT", nspifils, "ULEN", 101, NULL);
   }
 
-	/* deboom file name: */
-  if (dbm) zladd( dunit, "HISTORY", DEBOOM_FILE, dbmfile, "FORMAT", "STRING", NULL);
+  /* deboom file name: */
+  if (dbm) zladd(dunit, "HISTORY", DEBOOM_FILE, dbmfile, "FORMAT", "STRING", NULL);
 
-  zladd( dunit, "HISTORY", PHOT_FUNC, phot_func, "FORMAT", "STRING", NULL);
+  zladd(dunit, "HISTORY", PHOT_FUNC, phot_func, "FORMAT", "STRING", NULL);
   if (pfunc>0) {
     fword = pfcut;
-    zladd( dunit, "HISTORY", PHOT_CUT, &pfcut, "FORMAT", "REAL",
-     "NELEMENT", 1, NULL);
+    zladd(dunit, "HISTORY", PHOT_CUT, &pfcut, "FORMAT", "REAL",
+	  "NELEMENT", 1, NULL);
   }
   if (pfunc==2) {
     fword = p_minn;
-    zladd( dunit, "HISTORY", MINN_EXP, &fword, "FORMAT", "REAL",
-     "NELEMENT", 1, NULL);
+    zladd(dunit, "HISTORY", MINN_EXP, &fword, "FORMAT", "REAL",
+	  "NELEMENT", 1, NULL);
   }
 
-  if (drkchk) zladd( dunit, "HISTORY", "DARK_THRESH", &drkfac, 
-     "FORMAT", "REAL", "NELEMENT", 1, NULL);
+  if (drkchk) zladd(dunit, "HISTORY", "DARK_THRESH", &drkfac, 
+		    "FORMAT", "REAL", "NELEMENT", 1, NULL);
 
   x = (float)slew_rate;
-  zladd( dunit, "HISTORY", SLEW_RATE, &x, "FORMAT", "REAL",
-     "NELEMENT", 1, NULL);
+  zladd(dunit, "HISTORY", SLEW_RATE, &x, "FORMAT", "REAL",
+	"NELEMENT", 1, NULL);
   x = (float)slew_tol;
-  zladd( dunit, "HISTORY", SLEW_TOL, &x, "FORMAT", "REAL",
-     "NELEMENT", 1, NULL);
+  zladd(dunit, "HISTORY", SLEW_TOL, &x, "FORMAT", "REAL",
+	"NELEMENT", 1, NULL);
 
   if (radfudge) {
     eq_radf = eq_rad*radfact;
-    zladd( dunit, "HISTORY", EQRAD_FUDG, &eq_radf, "FORMAT", "REAL",
-     "NELEMENT", 1, NULL);
+    zladd(dunit, "HISTORY", EQRAD_FUDG, &eq_radf, "FORMAT", "REAL",
+	  "NELEMENT", 1, NULL);
   }
 
-  zladd( dunit, "HISTORY", INS_MODE, ins_mode, "FORMAT", "STRING", NULL);
-  if (imode==8 || imode==9) zladd( dunit, "HISTORY", STOP_SLIDE,
-   stop_slide, "FORMAT", "STRING", NULL);
+  zladd(dunit, "HISTORY", INS_MODE, ins_mode, "FORMAT", "STRING", NULL);
+  if (imode==8 || imode==9) zladd(dunit, "HISTORY", STOP_SLIDE,
+				  stop_slide, "FORMAT", "STRING", NULL);
 
-  zladd( dunit, "HISTORY", GAIN_STATE, gain, "FORMAT", "INT",
+  zladd(dunit, "HISTORY", GAIN_STATE, gain, "FORMAT", "INT",
 	"NELEMENT", ncalfils, NULL);
 
-  zladd( dunit, "HISTORY", CHOPPER_MODE, &chopper, "FORMAT", "INT",
+  zladd(dunit, "HISTORY", CHOPPER_MODE, &chopper, "FORMAT", "INT",
 	"NELEMENT", 1, NULL);
 
-  zladd( dunit, "HISTORY", GRATING_OFFSET, &g_off, "FORMAT", "INT",
+  zladd(dunit, "HISTORY", GRATING_OFFSET, &g_off, "FORMAT", "INT",
 	"NELEMENT", 1, NULL);
-  zladd( dunit, "HISTORY", GRATING_START, &gstart, "FORMAT", "INT",
+  zladd(dunit, "HISTORY", GRATING_START, &gstart, "FORMAT", "INT",
 	"NELEMENT", 1, NULL);
-  zladd( dunit, "HISTORY", GRATING_DELTA, &gdel, "FORMAT", "INT",
+  zladd(dunit, "HISTORY", GRATING_DELTA, &gdel, "FORMAT", "INT",
 	"NELEMENT", 1, NULL);
-  zladd( dunit, "HISTORY", GRATING_STEPS, &nsteps, "FORMAT", "INT",
+  zladd(dunit, "HISTORY", GRATING_STEPS, &nsteps, "FORMAT", "INT",
 	"NELEMENT", 1, NULL);
 
   ivalue[0] = loclk.rim;
   ivalue[1] = loclk.mod91;
   ivalue[2] = loclk.rti;
-  zladd( dunit, "HISTORY", BEG_SCLK, ivalue, "FORMAT", "INT", "NELEMENT", 3, NULL);
-  zladd( dunit, "HISTORY", BEG_SCET, beg_utc, "FORMAT", "STRING", NULL);
+  zladd(dunit, "HISTORY", BEG_SCLK, ivalue, "FORMAT", "INT", "NELEMENT", 3, NULL);
+  zladd(dunit, "HISTORY", BEG_SCET, beg_utc, "FORMAT", "STRING", NULL);
 
   ivalue[0] = hiclk.rim;
   ivalue[1] = hiclk.mod91;
   ivalue[2] = hiclk.rti;
-  zladd( dunit, "HISTORY", END_SCLK, ivalue, "FORMAT", "INT", "NELEMENT", 3, NULL);
-  zladd( dunit, "HISTORY", END_SCET, end_utc, "FORMAT", "STRING", NULL);
+  zladd(dunit, "HISTORY", END_SCLK, ivalue, "FORMAT", "INT", "NELEMENT", 3, NULL);
+  zladd(dunit, "HISTORY", END_SCET, end_utc, "FORMAT", "STRING", NULL);
 
   /* if there were any SCLK gaps, write them to label ...
    * first make sure the gaps are actually in the range used: */
@@ -2152,204 +2220,204 @@ endmap:
     irim = bclk[nintrvl-1]/91;
     imf = bclk[nintrvl-1]%91;
     gaps[j] = 100*irim+imf;
-    zladd( dunit, "HISTORY", SC_GAPS, gaps, "FORMAT", "INT", "NELEMENT", j+1,
-     NULL);
+    zladd(dunit, "HISTORY", SC_GAPS, gaps, "FORMAT", "INT", "NELEMENT", j+1,
+	  NULL);
   }
 
   if (!do_fill) {
     fpar[0] = 0;
     fpar[1] = 0;
   }
-  zladd( dunit, "HISTORY", FILL_SIZE, &fpar[0], "FORMAT", "INT",
-     "NELEMENT", 1, NULL);
-  zladd( dunit, "HISTORY", FILL_NUM, &fpar[1], "FORMAT", "INT",
-     "NELEMENT", 1, NULL);
+  zladd(dunit, "HISTORY", FILL_SIZE, &fpar[0], "FORMAT", "INT",
+	"NELEMENT", 1, NULL);
+  zladd(dunit, "HISTORY", FILL_NUM, &fpar[1], "FORMAT", "INT",
+	"NELEMENT", 1, NULL);
 
-	/* std. dev. bands in cocube: */
-  zladd( dunit, "HISTORY", DN_STD_DEV, &lamsd, "FORMAT", "INT",
-     "NELEMENT", 1, NULL);
-  zladd( dunit, "HISTORY", GEO_STD_DEV, &geosd, "FORMAT", "INT",
-     "NELEMENT", 1, NULL);
+  /* std. dev. bands in cocube: */
+  zladd(dunit, "HISTORY", DN_STD_DEV, &lamsd, "FORMAT", "INT",
+	"NELEMENT", 1, NULL);
+  zladd(dunit, "HISTORY", GEO_STD_DEV, &geosd, "FORMAT", "INT",
+	"NELEMENT", 1, NULL);
 
   if (footprint) {
     if (histbin) {
-      if (!histcrit) strcpy( svalue[0], "FTPTHSTP");
-      else strcpy( svalue[0], "FTPTHSTM");
+      if (!histcrit) strcpy(svalue[0], "FTPTHSTP");
+      else strcpy(svalue[0], "FTPTHSTM");
     }
-    else strcpy( svalue[0], "FOOTPRNT");
+    else strcpy(svalue[0], "FOOTPRNT");
   }
   else {
-    if (use_max) strcpy( svalue[0], "MAXIMUM");
-    else if (use_last) strcpy( svalue[0], "REPLACE");
-    else strcpy( svalue[0], "NEAREST");
+    if (use_max) strcpy(svalue[0], "MAXIMUM");
+    else if (use_last) strcpy(svalue[0], "REPLACE");
+    else strcpy(svalue[0], "NEAREST");
   }
-  zladd( dunit, "HISTORY", BINNING, svalue, "FORMAT", "STRING", NULL);
+  zladd(dunit, "HISTORY", BINNING, svalue, "FORMAT", "STRING", NULL);
   if (footprint) {
     /* write these to the label even for a tube, since they may be
      * needed in a subsequent cube-construction step: */
     if (!histbin) {
-      zladd( dunit, "HISTORY", THRESH, &thresh, "FORMAT", "REAL",
-       "NELEMENT", 1, NULL);
-      zladd( dunit, "HISTORY", SATTHRSH, &sat_thrsh, "FORMAT", "REAL",
-       "NELEMENT", 1, NULL);
+      zladd(dunit, "HISTORY", THRESH, &thresh, "FORMAT", "REAL",
+	    "NELEMENT", 1, NULL);
+      zladd(dunit, "HISTORY", SATTHRSH, &sat_thrsh, "FORMAT", "REAL",
+	    "NELEMENT", 1, NULL);
     }
-    zladd( dunit, "HISTORY", FPGRID, &fpgrid, "FORMAT", "INT",
-     "NELEMENT", 1, NULL);
-    if (ndistor) zladd( dunit, "HISTORY", MAXDISTOR, &maxdistor, "FORMAT",
-     "REAL", "NELEMENT", 1, NULL);
+    zladd(dunit, "HISTORY", FPGRID, &fpgrid, "FORMAT", "INT",
+	  "NELEMENT", 1, NULL);
+    if (ndistor) zladd(dunit, "HISTORY", MAXDISTOR, &maxdistor, "FORMAT",
+		       "REAL", "NELEMENT", 1, NULL);
   }
-	/* get photometric angles from cocube, and then close it: */
+  /* get photometric angles from cocube, and then close it: */
   if (!calib) {
 
-    find_angles( rvalue);
+    find_angles(rvalue);
 
-    zladd( dunit, "HISTORY", INCI_ANG, &rvalue[0], "FORMAT", "REAL",
-     "NELEMENT", 1, NULL);
-    zladd( dunit, "HISTORY", EMIS_ANG, &rvalue[1], "FORMAT", "REAL",
-     "NELEMENT", 1, NULL);
-    zladd( dunit, "HISTORY", PHAS_ANG, &rvalue[2], "FORMAT", "REAL",
-     "NELEMENT", 1, NULL);
+    zladd(dunit, "HISTORY", INCI_ANG, &rvalue[0], "FORMAT", "REAL",
+	  "NELEMENT", 1, NULL);
+    zladd(dunit, "HISTORY", EMIS_ANG, &rvalue[1], "FORMAT", "REAL",
+	  "NELEMENT", 1, NULL);
+    zladd(dunit, "HISTORY", PHAS_ANG, &rvalue[2], "FORMAT", "REAL",
+	  "NELEMENT", 1, NULL);
 
-	/* compute mean azimuths */
+    /* compute mean azimuths */
     if (n_azi > 0) {
       sun_azi = sun_azi/n_azi;
       sc_azi = sc_azi/n_azi;
     }
-    zladd( dunit, "HISTORY", SUN_AZI, &sun_azi, "FORMAT", "REAL",
-     "NELEMENT", 1, NULL);
-    zladd( dunit, "HISTORY", SC_AZI, &sc_azi, "FORMAT", "REAL",
-     "NELEMENT", 1, NULL);
+    zladd(dunit, "HISTORY", SUN_AZI, &sun_azi, "FORMAT", "REAL",
+	  "NELEMENT", 1, NULL);
+    zladd(dunit, "HISTORY", SC_AZI, &sc_azi, "FORMAT", "REAL",
+	  "NELEMENT", 1, NULL);
 
-    zladd( dunit, "HISTORY", MIN_RANGE, &minsdist, "FORMAT", "REAL",
-     "NELEMENT", 1, NULL);
-    zladd( dunit, "HISTORY", MAX_RANGE, &maxsdist, "FORMAT", "REAL",
-     "NELEMENT", 1, NULL);
+    zladd(dunit, "HISTORY", MIN_RANGE, &minsdist, "FORMAT", "REAL",
+	  "NELEMENT", 1, NULL);
+    zladd(dunit, "HISTORY", MAX_RANGE, &maxsdist, "FORMAT", "REAL",
+	  "NELEMENT", 1, NULL);
 
-	/* beginning/end SSC lat/lon */
-    zladd( dunit, "HISTORY", B_SSCLAT, &ssclat[0], "FORMAT", "REAL",
-     "NELEMENT", 1, NULL);
-    zladd( dunit, "HISTORY", B_SSCLON, &ssclon[0], "FORMAT", "REAL",
-     "NELEMENT", 1, NULL);
-    zladd( dunit, "HISTORY", E_SSCLAT, &ssclat[1], "FORMAT", "REAL",
-     "NELEMENT", 1, NULL);
-    zladd( dunit, "HISTORY", E_SSCLON, &ssclon[1], "FORMAT", "REAL",
-     "NELEMENT", 1, NULL);
+    /* beginning/end SSC lat/lon */
+    zladd(dunit, "HISTORY", B_SSCLAT, &ssclat[0], "FORMAT", "REAL",
+	  "NELEMENT", 1, NULL);
+    zladd(dunit, "HISTORY", B_SSCLON, &ssclon[0], "FORMAT", "REAL",
+	  "NELEMENT", 1, NULL);
+    zladd(dunit, "HISTORY", E_SSCLAT, &ssclat[1], "FORMAT", "REAL",
+	  "NELEMENT", 1, NULL);
+    zladd(dunit, "HISTORY", E_SSCLON, &ssclon[1], "FORMAT", "REAL",
+	  "NELEMENT", 1, NULL);
 
-        /* beginning/end Sub-Solar lat/lon */
-    zladd( dunit, "HISTORY", B_SSOLLAT, &ssollat[0], "FORMAT", "REAL",
-     "NELEMENT", 1, NULL);
-    zladd( dunit, "HISTORY", B_SSOLLON, &ssollon[0], "FORMAT", "REAL",
-     "NELEMENT", 1, NULL);
-    zladd( dunit, "HISTORY", E_SSOLLAT, &ssollat[1], "FORMAT", "REAL",
-     "NELEMENT", 1, NULL);
-    zladd( dunit, "HISTORY", E_SSOLLON, &ssollon[1], "FORMAT", "REAL",
-     "NELEMENT", 1, NULL);
+    /* beginning/end Sub-Solar lat/lon */
+    zladd(dunit, "HISTORY", B_SSOLLAT, &ssollat[0], "FORMAT", "REAL",
+	  "NELEMENT", 1, NULL);
+    zladd(dunit, "HISTORY", B_SSOLLON, &ssollon[0], "FORMAT", "REAL",
+	  "NELEMENT", 1, NULL);
+    zladd(dunit, "HISTORY", E_SSOLLAT, &ssollat[1], "FORMAT", "REAL",
+	  "NELEMENT", 1, NULL);
+    zladd(dunit, "HISTORY", E_SSOLLON, &ssollon[1], "FORMAT", "REAL",
+	  "NELEMENT", 1, NULL);
   }
-  zvclose( gunit, NULL);
+  zvclose(gunit, NULL);
 
-  zladd( dunit, "HISTORY", MIN_SUN_D, &minsun, "FORMAT", "REAL",
-   "NELEMENT", 1, NULL);
-  zladd( dunit, "HISTORY", MAX_SUN_D, &maxsun, "FORMAT", "REAL",
-   "NELEMENT", 1, NULL);
-  zladd( dunit, "HISTORY", MIN_CB_D, &mincenbod, "FORMAT", "REAL",
-   "NELEMENT", 1, NULL);
-  zladd( dunit, "HISTORY", MAX_CB_D, &maxcenbod, "FORMAT", "REAL",
-   "NELEMENT", 1, NULL);
+  zladd(dunit, "HISTORY", MIN_SUN_D, &minsun, "FORMAT", "REAL",
+	"NELEMENT", 1, NULL);
+  zladd(dunit, "HISTORY", MAX_SUN_D, &maxsun, "FORMAT", "REAL",
+	"NELEMENT", 1, NULL);
+  zladd(dunit, "HISTORY", MIN_CB_D, &mincenbod, "FORMAT", "REAL",
+	"NELEMENT", 1, NULL);
+  zladd(dunit, "HISTORY", MAX_CB_D, &maxcenbod, "FORMAT", "REAL",
+	"NELEMENT", 1, NULL);
 
   /* P-shift from Cal file: */
-  zladd( dunit, "HISTORY", PSHIFT, &pshift, "FORMAT", "REAL",
-     "NELEMENT", 1, NULL);
+  zladd(dunit, "HISTORY", PSHIFT, &pshift, "FORMAT", "REAL",
+	"NELEMENT", 1, NULL);
 
   /* "inflation" factor */
-  zladd( dunit, "HISTORY", AINFL, &ainfl, "FORMAT", "REAL",
-     "NELEMENT", 1, NULL);
+  zladd(dunit, "HISTORY", AINFL, &ainfl, "FORMAT", "REAL",
+	"NELEMENT", 1, NULL);
 
   /* telemetry threshold values from EDR, only if used: */
-  if (threshing) zladd( dunit, "HISTORY", THRESHVAL, threshval, "FORMAT", "INT",
-     "NELEMENT", 17, NULL);
+  if (threshing) zladd(dunit, "HISTORY", THRESHVAL, threshval, "FORMAT", "INT",
+		       "NELEMENT", 17, NULL);
 
   /* temperatures: */
-  zladd( dunit, "HISTORY", T_FOCAL, &utemps[0], "FORMAT", "REAL",
-     "NELEMENT", 1, NULL);
-  zladd( dunit, "HISTORY", T_RAD_SHIELD, &utemps[1], "FORMAT", "REAL",
-     "NELEMENT", 1, NULL);
-  zladd( dunit, "HISTORY", T_TELESCOPE, &utemps[2], "FORMAT", "REAL",
-     "NELEMENT", 1, NULL);
-  zladd( dunit, "HISTORY", T_GRATING, &utemps[3], "FORMAT", "REAL",
-     "NELEMENT", 1, NULL);
-  zladd( dunit, "HISTORY", T_CHOPPER, &utemps[4], "FORMAT", "REAL",
-     "NELEMENT", 1, NULL);
-  zladd( dunit, "HISTORY", T_ELECTRONICS, &utemps[5], "FORMAT", "REAL",
-     "NELEMENT", 1, NULL);
+  zladd(dunit, "HISTORY", T_FOCAL, &utemps[0], "FORMAT", "REAL",
+	"NELEMENT", 1, NULL);
+  zladd(dunit, "HISTORY", T_RAD_SHIELD, &utemps[1], "FORMAT", "REAL",
+	"NELEMENT", 1, NULL);
+  zladd(dunit, "HISTORY", T_TELESCOPE, &utemps[2], "FORMAT", "REAL",
+	"NELEMENT", 1, NULL);
+  zladd(dunit, "HISTORY", T_GRATING, &utemps[3], "FORMAT", "REAL",
+	"NELEMENT", 1, NULL);
+  zladd(dunit, "HISTORY", T_CHOPPER, &utemps[4], "FORMAT", "REAL",
+	"NELEMENT", 1, NULL);
+  zladd(dunit, "HISTORY", T_ELECTRONICS, &utemps[5], "FORMAT", "REAL",
+	"NELEMENT", 1, NULL);
 
-  if (lami) zladd( dunit, "HISTORY", WAVELENGTHS, &waves[lami-1], 
-   "FORMAT", "REAL", "NELEMENT", 1, "ERR_ACT", "SA", NULL);
+  if (lami) zladd(dunit, "HISTORY", WAVELENGTHS, &waves[lami-1], 
+		  "FORMAT", "REAL", "NELEMENT", 1, "ERR_ACT", "SA", NULL);
   else {
-    zladd( dunit, "HISTORY", WAVELENGTHS, waves, "FORMAT", "REAL",
-     "NELEMENT", nb, "ERR_ACT", "SA", NULL);
-    if (nb<nbb) zladd( dunit, "HISTORY", B_MASK, bmask, "FORMAT", "INT",
-     "NELEMENT", nbb, "ERR_ACT", "SA", NULL);
+    zladd(dunit, "HISTORY", WAVELENGTHS, waves, "FORMAT", "REAL",
+	  "NELEMENT", nb, "ERR_ACT", "SA", NULL);
+    if (nb<nbb) zladd(dunit, "HISTORY", B_MASK, bmask, "FORMAT", "INT",
+		      "NELEMENT", nbb, "ERR_ACT", "SA", NULL);
   }
 
-	/* before adding further large label items, we shall do a
-	 * close & re-open each time for Vicar buffersize problem */
+  /* before adding further large label items, we shall do a
+   * close & re-open each time for Vicar buffersize problem */
 
   if (caltyp && radscal>=0) {
     if (lami) {
-      zladd( dunit, "HISTORY", SOLAR_FLUX, &sol_flux[lami-1], 
-       "FORMAT", "REAL", "NELEMENT", 1, "ERR_ACT", "SA", NULL);
-      zladd( dunit, "HISTORY", RAD_SENS, &sensv[lami-1], "FORMAT",
-       "REAL", "NELEMENT", 1, "ERR_ACT", "SA", NULL);
-      zladd( dunit, "HISTORY", DRK_AVE, &dave[deteci], "FORMAT",
-       "REAL", "NELEMENT", 1, "ERR_ACT", "SA", NULL);
+      zladd(dunit, "HISTORY", SOLAR_FLUX, &sol_flux[lami-1], 
+	    "FORMAT", "REAL", "NELEMENT", 1, "ERR_ACT", "SA", NULL);
+      zladd(dunit, "HISTORY", RAD_SENS, &sensv[lami-1], "FORMAT",
+	    "REAL", "NELEMENT", 1, "ERR_ACT", "SA", NULL);
+      zladd(dunit, "HISTORY", DRK_AVE, &dave[deteci], "FORMAT",
+	    "REAL", "NELEMENT", 1, "ERR_ACT", "SA", NULL);
     }
     else {
-      zvclose( dunit, NULL);
-      zvopen( dunit, "OP", "UPDATE", "OPEN_ACT", "SA", "IO_ACT", "SA", NULL);
-      zladd( dunit, "HISTORY", SOLAR_FLUX, sol_flux, "FORMAT",
-       "REAL", "NELEMENT", nb, "ERR_ACT", "SA", NULL);
-      zladd( dunit, "HISTORY", RAD_SENS, sensv, "FORMAT",
-       "REAL", "NELEMENT", nb, "ERR_ACT", "SA", NULL);
-      zladd( dunit, "HISTORY", DRK_AVE, dave, "FORMAT",
-       "REAL", "NELEMENT", N_DETS, "ERR_ACT", "SA", NULL);
+      zvclose(dunit, NULL);
+      zvopen(dunit, "OP", "UPDATE", "OPEN_ACT", "SA", "IO_ACT", "SA", NULL);
+      zladd(dunit, "HISTORY", SOLAR_FLUX, sol_flux, "FORMAT",
+	    "REAL", "NELEMENT", nb, "ERR_ACT", "SA", NULL);
+      zladd(dunit, "HISTORY", RAD_SENS, sensv, "FORMAT",
+	    "REAL", "NELEMENT", nb, "ERR_ACT", "SA", NULL);
+      zladd(dunit, "HISTORY", DRK_AVE, dave, "FORMAT",
+	    "REAL", "NELEMENT", N_DETS, "ERR_ACT", "SA", NULL);
     }
   }
 
-	/* PDS label wants these even if not calibrated: */
+  /* PDS label wants these even if not calibrated: */
   if (!caltyp || radscal<=0) {  
     cmult[0] = 1.0;
     cbase[0] = 0.0;
   } 
   if (!caltyp || radscal<=0 || radscal==3) {
-    zladd( dunit, "HISTORY", RAD_BASE, cbase, "FORMAT", "REAL",
-     "NELEMENT", 1, NULL);
-    zladd( dunit, "HISTORY", RAD_CONV, cmult, "FORMAT", "REAL",
-     "NELEMENT", 1, NULL);
+    zladd(dunit, "HISTORY", RAD_BASE, cbase, "FORMAT", "REAL",
+	  "NELEMENT", 1, NULL);
+    zladd(dunit, "HISTORY", RAD_CONV, cmult, "FORMAT", "REAL",
+	  "NELEMENT", 1, NULL);
   }
   else {
 
     if (lami) {
-      zladd( dunit, "HISTORY", RAD_BASE, &cbase[lami-1], "FORMAT",
-       "REAL", "NELEMENT", 1, "ERR_ACT", "SA", NULL);
-      zladd( dunit, "HISTORY", RAD_CONV, &cmult[lami-1], "FORMAT",
-       "REAL", "NELEMENT", 1, "ERR_ACT", "SA", NULL);
+      zladd(dunit, "HISTORY", RAD_BASE, &cbase[lami-1], "FORMAT",
+	    "REAL", "NELEMENT", 1, "ERR_ACT", "SA", NULL);
+      zladd(dunit, "HISTORY", RAD_CONV, &cmult[lami-1], "FORMAT",
+	    "REAL", "NELEMENT", 1, "ERR_ACT", "SA", NULL);
     }
     else {
-      zvclose( dunit, NULL);
-      zvopen( dunit, "OP", "UPDATE", "OPEN_ACT", "SA", "IO_ACT", "SA", NULL);
-      zladd( dunit, "HISTORY", RAD_BASE, cbase, "FORMAT", "REAL",
-       "NELEMENT", nb, "ERR_ACT", "SA", NULL);
-      zvclose( dunit, NULL);
-      zvopen( dunit, "OP", "UPDATE", "OPEN_ACT", "SA", "IO_ACT", "SA", NULL);
-      zladd( dunit, "HISTORY", RAD_CONV, cmult, "FORMAT", "REAL",
-       "NELEMENT", nb, "ERR_ACT", "SA", NULL);
+      zvclose(dunit, NULL);
+      zvopen(dunit, "OP", "UPDATE", "OPEN_ACT", "SA", "IO_ACT", "SA", NULL);
+      zladd(dunit, "HISTORY", RAD_BASE, cbase, "FORMAT", "REAL",
+	    "NELEMENT", nb, "ERR_ACT", "SA", NULL);
+      zvclose(dunit, NULL);
+      zvopen(dunit, "OP", "UPDATE", "OPEN_ACT", "SA", "IO_ACT", "SA", NULL);
+      zladd(dunit, "HISTORY", RAD_CONV, cmult, "FORMAT", "REAL",
+	    "NELEMENT", nb, "ERR_ACT", "SA", NULL);
     }
   }
 }
 
 
 /************************************************************************/
-FUNCTION assemble_pntng()
+void assemble_pntng(void)
 /*
  * read in the pointing for all valid mf's into the buffer mf[]
  *
@@ -2383,14 +2451,13 @@ FUNCTION assemble_pntng()
  * opened if slew rate checking is done in order to compute body motion.
  */
 {
-  int acnt=0, boom, del, delmin, gcnt=0, gc, gp0, gp5, i, ii, irt,
-   istat, iv, j, jj, jgap, k, mid_mf, mp, nrec0, nrec1, sclk, sclk1, sclk2,
-   scnt=0;
+  int acnt=0, del, delmin, gcnt=0, i, ii, 
+    iv, j, jj, jgap, k, nrec1, sclk, sclk1, sclk2,
+    scnt=0;
   int failed_chk=0;
-  double twt_rate=0., ptwt_rate=0., prev_rate=0., cur_rate=0., bm_ra, bm_dec,
-   bm_mra, bm_mdec, bm_mra1, bm_mdec1, ddec, dra, x;
+  double twt_rate=0., ptwt_rate=0., prev_rate=0., cur_rate=0., bm_ra = 0., bm_dec = 0.,
+    bm_mra, bm_mdec, bm_mra1, bm_mdec1, ddec, dra=0.;
   struct pntng_typ cur_ang, prev_ang;
-  char segid[41];
 
   /* for nims_ps_orient calls */
   struct pntng_typ me_ang;
@@ -2399,24 +2466,28 @@ FUNCTION assemble_pntng()
   double cenboddis, solscdis;
   int ntotrec;				/* # of MFs in the interval */
 
-	/* allocate storage for array containing pointing info;
-	 * this uses special malloc to avoid page file quota limits. */
+  bzero(&cur_ang, sizeof(cur_ang));
+  bzero(&prev_ang, sizeof(prev_ang));
+  bzero(&me_ang, sizeof(me_ang));
+  bzero(&me, sizeof(me));
+
+  /* allocate storage for array containing pointing info;
+   * this uses special malloc to avoid page file quota limits. */
   sclk1 = comp_sclk(loclk);
   sclk2 = comp_sclk(hiclk);
   if (sclk1>sclk2) zmabend(" *** Bad SCLK range! ***");
   ntotrec = sclk2-sclk1+1;
   mf = (struct mf_type *)
-    malloc( ntotrec*sizeof(struct mf_type));
+    malloc(ntotrec*sizeof(struct mf_type));
   if (mf==0) zmabend(" *** insufficient scratch space available for MF ***");
 
   /* initialize the flags to 'valid': */
   for (i=0; i<ntotrec; i++) mf[i].igc = 0;
 
-  zvmessage(" ","");
-  zvmessage(" Extracting pointing","");
+  zifmessage(" ");
+  zifmessage(" Extracting pointing");
   bm_mra = bm_mdec = bm_mra1 = bm_mdec1 = 0.0;
 
-  nrec0 = 0;
   nrec1 = 0;
 
   /* the following call was just put in to initialize NAIF
@@ -2428,20 +2499,19 @@ FUNCTION assemble_pntng()
    * otherwise not computed for Calibration data) */
   j = range_lclk;
   if (j<=0) j = file_lclk;
-  nims_ps_orient( j, sc, sol, cenbod, &me_ang);
+  nims_ps_orient(j, sc, sol, cenbod, &me_ang);
   for (i=0, solscdis=0.; i<3; i++) solscdis += sol[i]*sol[i];
-  solscdis = sqrt( solscdis);
+  solscdis = sqrt(solscdis);
   for (i=0, cenboddis=0.; i<3; i++) cenboddis += cenbod[i]*cenbod[i];
-  cenboddis = sqrt( cenboddis);
-  maxsun = max( solscdis, maxsun);
-  minsun = min( solscdis, minsun);
-  maxcenbod = max( cenboddis, maxcenbod);
-  mincenbod = min( cenboddis, mincenbod);
-  eul2mat( me_ang.ra, me_ang.dec, me_ang.twist, me); /* ME: Earth -> Planet */
+  cenboddis = sqrt(cenboddis);
+  maxsun = max(solscdis, maxsun);
+  minsun = min(solscdis, minsun);
+  maxcenbod = max(cenboddis, maxcenbod);
+  mincenbod = min(cenboddis, mincenbod);
+  eul2mat(me_ang.ra, me_ang.dec, me_ang.twist, me); /* ME: Earth -> Planet */
 
   j = 0;			/* global valid mf #, spanning all EDRs */
   jgap = 0;			/* counts mfs since last gap */
-  mid_mf = 1;		/* flag that we are past the beginning of a new MF */
   file_hclk = 0;		/* to ensure an EDR gets opened at 1st sclk */
   delmin = -1;			/* (in case nochk=1) */
 
@@ -2451,7 +2521,7 @@ FUNCTION assemble_pntng()
      * other gaps, see below ... */
     for (iv=0; iv<nintrvl-1; iv++) {
       if (sclk>eclk[iv] && sclk<bclk[iv+1]) {
-	vstat = get_pntng( sclk, &cur_ang);
+	vstat = get_pntng(sclk, &cur_ang);
 	if (dpt_sclk[0] == 0 || (dpt_sclk[0] <= sclk && dpt_sclk[1] >= sclk)) {
 	  cur_ang.ra += dpoint[0];
 	  cur_ang.dec += dpoint[1];
@@ -2479,7 +2549,7 @@ FUNCTION assemble_pntng()
        * pointing so that adjacent valid data don't get thrown out */
       if (delmin<0) break;	/* if after all EDRs, then we're done */
       file_hclk = 0;		/* ensure that EDRs are searched after the gap*/
-      vstat = get_pntng( sclk, &cur_ang);
+      vstat = get_pntng(sclk, &cur_ang);
       if (!vstat) {
 	cur_ang.ra = -999.;
 	continue;
@@ -2499,9 +2569,9 @@ FUNCTION assemble_pntng()
       }
       goto store_ang;
 
-sfound:
+    sfound:
       delmin = -1;
-      find_body_motion( &bm_ra, &bm_dec, &nrec1, &bm_mra, &bm_mdec);
+      find_body_motion(&bm_ra, &bm_dec, &nrec1, &bm_mra, &bm_mdec);
     }
 
     /* get the C-angles at this SCLK, saving the previous ones for the
@@ -2509,7 +2579,7 @@ sfound:
     prev_ang = cur_ang;
     prev_rate = cur_rate;
     ptwt_rate = twt_rate;
-    vstat = get_pntng( sclk, &cur_ang);
+    vstat = get_pntng(sclk, &cur_ang);
 
     /* check for gap in the pointing: */
     if (!vstat || sclk<file_lclk) {
@@ -2517,8 +2587,8 @@ sfound:
       if (!vstat) cur_ang.ra = -999.;
       mf[j].igc = -1;
       jgap = -1;	/* next MF is first after gap */
-	/* if previous check was failed, but gap prevents a second check,
-	 * then treat this as 2 consecutive failures: */
+      /* if previous check was failed, but gap prevents a second check,
+       * then treat this as 2 consecutive failures: */
       if (!nochk && (j>0 && failed_chk && mf[j-1].igc>=0)) {
 	scnt++;
 	mf[j-1].igc = -1;
@@ -2538,11 +2608,11 @@ sfound:
 
     if (nochk) goto store_ang;
 
-	/* compute slew rates and compare versus slew_tol --
-	 * if both current and previous rates exceed tolerance, then
-	 * this disqualifies the PREVIOUS two MFs ... the current
-	 * mf will discarded too if isolated, on the 2nd pass;
-	 * (also check twist for "spikes") */
+    /* compute slew rates and compare versus slew_tol --
+     * if both current and previous rates exceed tolerance, then
+     * this disqualifies the PREVIOUS two MFs ... the current
+     * mf will discarded too if isolated, on the 2nd pass;
+     * (also check twist for "spikes") */
     failed_chk = 0;
     if (jgap>0) {
       dra = cur_ang.ra - prev_ang.ra;
@@ -2551,21 +2621,21 @@ sfound:
       if ((-dra)>zpi()) dra += ztwopi();
       dra = (dra - bm_ra) * cos(cur_ang.dec);
       ddec = cur_ang.dec - prev_ang.dec - bm_dec;
-      cur_rate = sqrt( dra*dra + ddec*ddec);
+      cur_rate = sqrt(dra*dra + ddec*ddec);
       /* here is exact equation (for historical purposes) -- was replaced
        * with small-angle approximation to allow for target body motion */
       if (idebug)
-        cur_rate = acos( sin(prev_ang.dec) * sin(cur_ang.dec) +
-         cos(prev_ang.dec) * cos(cur_ang.dec) * cos(cur_ang.ra-prev_ang.ra));
+        cur_rate = acos(sin(prev_ang.dec) * sin(cur_ang.dec) +
+			cos(prev_ang.dec) * cos(cur_ang.dec) * cos(cur_ang.ra-prev_ang.ra));
       twt_rate = cur_ang.twist - prev_ang.twist;
       if (twt_rate < 0) twt_rate = -twt_rate;
       if (twt_rate>zpi()) twt_rate -= ztwopi();      /* check for wraparound */
 
     }
     if (jgap>1) {	/* since prev_rate = 0 for jgap=1) */
-	/* here is the actual slew rate check: */
-      if ( (slew_tol>0.0 && cur_rate>slew_tol && prev_rate>slew_tol) || 
-	   (twt_tol>0.0  && twt_rate>twt_tol  && ptwt_rate>twt_tol) ) {
+      /* here is the actual slew rate check: */
+      if ((slew_tol>0.0 && cur_rate>slew_tol && prev_rate>slew_tol) || 
+	  (twt_tol>0.0  && twt_rate>twt_tol  && ptwt_rate>twt_tol) ) {
 	for (ii=1; ii<3; ii++) {
 	  if (mf[j-ii].igc>=0) {
 	    mf[j-ii].igc = -1;
@@ -2573,14 +2643,14 @@ sfound:
 	  }
 	}
       }
-	/* signal if only failed current check, in case of gap following: */
-      if ( (slew_tol>0.0 && cur_rate>slew_tol) ||
-	   (twt_tol>0.0  && twt_rate>twt_tol) )
+      /* signal if only failed current check, in case of gap following: */
+      if ((slew_tol>0.0 && cur_rate>slew_tol) ||
+	  (twt_tol>0.0  && twt_rate>twt_tol) )
 	failed_chk = 1;
     }
 
-store_ang:
-	/* store the C-angles */
+  store_ang:
+    /* store the C-angles */
     mf[j].sclk = sclk;
     mf[j].cang = cur_ang;
     if (calib || jgap<0) mf[j].igc = -1;
@@ -2610,10 +2680,10 @@ store_ang:
       mf[i].igc = -1;
       acnt++;
     }
-	/* set MFs with bad pointing on either side to invalid in order
-	 * to avoid confusing get_tgt_data ... */
+    /* set MFs with bad pointing on either side to invalid in order
+     * to avoid confusing get_tgt_data ... */
     if (i<(nmf-1) && i>0 && mf[i].igc>=0 && (mf[i-1].cang.ra<=-999. ||
-        mf[i+1].cang.ra<=-999.)) {
+					     mf[i+1].cang.ra<=-999.)) {
       mf[i].igc = -1;
       acnt++;
     }
@@ -2624,7 +2694,7 @@ store_ang:
       if ((-dra)>zpi()) dra += ztwopi();
       dra = (dra - bm_mra) * cos(mf[i].cang.dec);
       ddec = mf[i].cang.dec - mf[i-1].cang.dec - bm_mdec;
-      slew_rate += sqrt( dra*dra + ddec*ddec);
+      slew_rate += sqrt(dra*dra + ddec*ddec);
       ii++;
     }
   }
@@ -2636,55 +2706,48 @@ store_ang:
   }
   if (ii>1) slew_rate /= (double)ii;
 
-	/* convert slew rate to units of Nyquist rate: */
+  /* convert slew rate to units of Nyquist rate: */
   slew_rate *= 2000.;
   if (!fix_mode) slew_rate *= (double)ngps;
-  sprintf( msg, " mean slew rate = %.2f * Nyquist, computed from %d pairs of mfs",
-   slew_rate, ii);
-  zvmessage( msg,"");
+  zvnprintf(100, " mean slew rate = %.2f * Nyquist, computed from %d pairs of mfs",
+	    slew_rate, ii);
 
   if (scnt) {
-    sprintf( msg, " %d mfs rejected by slew rate test", scnt);
-    zvmessage( msg,"");
+    zvnprintf(100, " %d mfs rejected by slew rate test", scnt);
   }
   if (acnt) {
-    sprintf( msg, " %d mfs rejected for missing pointing", acnt);
-    zvmessage( msg,"");
+    zvnprintf(100, " %d mfs rejected for missing pointing", acnt);
   }
   if (gcnt) {
-    sprintf( msg, " %d mfs fell in gaps between user-specified intervals", gcnt);
-    zvmessage( msg,"");
+    zvnprintf(100, " %d mfs fell in gaps between user-specified intervals", gcnt);
   }
 
   k = nmf-scnt-acnt-gcnt;
   if (k<=0) zmabend(" ** no valid mfs found! **");
-  sprintf( msg, " %d mfs will be used", k);
-  zvmessage( msg,"");
+  zvnprintf(100, " %d mfs will be used", k);
 
-	/* this is a convenient place for some test options: */
+  /* this is a convenient place for some test options: */
   if (xtest==4) {
     i = mf[0].sclk/91;
     j = mf[0].sclk%91;
-    setup_cal( i, j);
-    zvmessage("  BAND #   WAVE     BASE        MULT  ","");
+    setup_cal(i, j);
+    zifmessage("  BAND #   WAVE     BASE        MULT  ");
     for (i=0; i<nbb; i++) {
-      sprintf( msg, " %5d  %8.5f  %9.3f  %13.5e", i+1, waves[i], cbase[i],
-       cmult[i]);
-      zvmessage( msg,"");
+      zvnprintf(100, " %5d  %8.5f  %9.3f  %13.5e", i+1, waves[i], cbase[i],
+		cmult[i]);
     }
     return;
   }
   if (xtest==5 || xtest==7) {
-    zvmessage("    SCLK       MFC      RA         Dec      Twist      Cone       Clock Valid ","");
+    zifmessage("    SCLK       MFC      RA         Dec      Twist      Cone       Clock Valid ");
     for (i=0; i<nmf; i++) {
       if (xtest==7 && mf[i].igc<0) continue;
       j = mf[i].sclk/91;
       jj = mf[i].sclk%91;
       ii = mf[i].sclk - mf[0].sclk;
-      sprintf( msg, " %d.%02d %5d  %9.3f  %9.3f  %9.3f  %9.3f  %9.3f  %d",
-       j, jj, ii, degrad*mf[i].cang.ra, degrad*mf[i].cang.dec,
-       degrad*mf[i].cang.twist, mf[i].cang.cone, mf[i].cang.clock, mf[i].igc);
-      zvmessage( msg,"");
+      zvnprintf(100, " %d.%02d %5d  %9.3f  %9.3f  %9.3f  %9.3f  %9.3f  %d",
+		j, jj, ii, degrad*mf[i].cang.ra, degrad*mf[i].cang.dec,
+		degrad*mf[i].cang.twist, mf[i].cang.cone, mf[i].cang.clock, mf[i].igc);
     }
     return;
   }
@@ -2692,26 +2755,27 @@ store_ang:
 
 
 /************************************************************************/
-FUNCTION average_dn( word, cdata, wt, wtx, det)
+void average_dn(float *word, float cdata, float wt, float wtx, int det)
 /*
  * we need a special function to average DNs because of the problem
  * of the sensitivity change around DN=512 in the thermal detectors
  */
-
-float *word, cdata, wt, wtx;
+#if 0
+  float *word, cdata, wt, wtx;
 int det;
+#endif
 {
   int i;
   float offx[2], temp;
-	/*
-	 * these are the average ratios of low to high sensitivities in the
-	 * the thermal detectors (14-16 as pgm. counts det):
-	 * (NOTE that there are small variations by gp -- if desired, the
-	 * full table of (gp,det) sensitivities could be read in, but this
-	 * seems like overkill, given the rounding errors)
-	 */
+  /*
+   * these are the average ratios of low to high sensitivities in the
+   * the thermal detectors (14-16 as pgm. counts det):
+   * (NOTE that there are small variations by gp -- if desired, the
+   * full table of (gp,det) sensitivities could be read in, but this
+   * seems like overkill, given the rounding errors)
+   */
   static float sfact[3] = { 46.81, 47.33, 48.22};
-	/* threshold between low & high gains: */
+  /* threshold between low & high gains: */
   static float dnx[3] = { 513., 513., 510.};
 
   i = det-14;
@@ -2724,9 +2788,9 @@ int det;
     *word = (wtx*cdata + wt * *word) / (wtx+wt); 
     return;
   }
-	/* we have one DN in each gain regime:  convert the high-gain
-	 * DN to the low-gain, perform the average, and then convert
-	 * back if result is in high-gain regime: */
+  /* we have one DN in each gain regime:  convert the high-gain
+   * DN to the low-gain, perform the average, and then convert
+   * back if result is in high-gain regime: */
   if (offx[0]>0) {
     temp = dnx[i] + sfact[i]*offx[0];
     temp = (wtx*cdata + wt * temp) / (wtx+wt); 
@@ -2741,7 +2805,7 @@ int det;
 
 
 /************************************************************************/
-FUNCTION bb_repl( rad, igp)
+void bb_repl(float rad[N_DETS], int igp)
 /*
  * replace saturated radiances by estimate based on BB function
  *
@@ -2756,15 +2820,17 @@ FUNCTION bb_repl( rad, igp)
  * 6. if corrected thermal radiance is negative, use T=120K (min. T
  *   detectable by nims)
  */
-float rad[N_DETS];
+#if 0
+  float rad[N_DETS];
 int igp;
+#endif
 {
-  /* double c10=0.00001191;		/* 2 * h * c**2 */
+  /*  double c10=0.00001191;		/ * 2 * h * c**2 */
   double c10=1.191e10;
   double c20=1.43875;			/* h * c / k */
   double alb, c1, c2, rad1, xtemp, wav;
-  float xrads[N_DETS], xtemps[N_DETS];	/* (diagnostic tools) */
-  int det, i, ib, isat, nn, nsat, nthrm;
+  float xtemps[N_DETS];	/* (diagnostic tools) */
+  int det, i, ib, isat=0, nn, nsat, nthrm;
 
   /* first check to see if we need to do anything at all */
   nsat = 0;		/* # of saturated thermal bands */
@@ -2811,7 +2877,7 @@ int igp;
     ncompalb++;
   }
   /* compute mean brightness T */
-  for (i=1;i<N_DETS;i++) xrads[i] = xtemps[i] = 0.0;
+  for (i=1;i<N_DETS;i++) xtemps[i] = 0.0;
   xtemp = 0.0;
   for (det=s_det, nn=0; det<=e_det; det++) {
     if (skipdet[det]>0) continue;
@@ -2820,7 +2886,6 @@ int igp;
     if (wav<3.0) continue;
     if (rad[det]<VALID_MIN4) continue;
     rad1 = rad[det]-alb*sol_flux[ib];
-    xrads[det] = rad1;
     if (rad1<0.0) {
       xtemps[det] = 120.0;
       xtemp += xtemps[det];
@@ -2848,7 +2913,7 @@ int igp;
     c1 = c10/(wav*wav*wav*wav*wav);
     c2 = (1.0e4*c20)/wav;
     rad1 = c1/(exp(c2/xtemp)-1.);
-    /* rad1 *= 1.0e-5;		/* convert back to NIMS units */
+    /*    rad1 *= 1.0e-5;		/ * convert back to NIMS units */
     rad1 += alb*sol_flux[ib];	/* add in solar background */
     rad[det] = rad1;
     nsatrep++;
@@ -2858,14 +2923,14 @@ int igp;
 
 
 /************************************************************************/
-FUNCTION check_thresh()
+void check_thresh(void)
 /*
  * go thru weights cube and delete all data DNs whose weight is below
  * threshold
  */ 
 {
-  float *dptr, word, wt, *wptr;
-  int det, gp, ix, iy, ib, offs;
+  float *dptr = NULL, wt, *wptr;
+  int ix, iy, ib, offs;
 
   for (iy=0; iy<nl; iy++) {
     for (ix=0; ix<ns; ix++) {
@@ -2880,7 +2945,7 @@ FUNCTION check_thresh()
 	    dptr = odata + ix + ib*ns + iy*ns*nb;
 	  else if (org==2) 		/* BIP */
 	    dptr = odata + ib + ix*nb + iy*ns*nb;
-/*	  *dptr = BELOW_THRESH4; 	-- REMOVED FOR UNIX ISIS */
+	  /*	  *dptr = BELOW_THRESH4; 	-- REMOVED FOR UNIX ISIS */
 	  *dptr = NULL4;
 	}
       }
@@ -2891,15 +2956,15 @@ FUNCTION check_thresh()
 
 
 /************************************************************************/
-FUNCTION comp_stdev()
+void comp_stdev(void)
 /*
  * go thru std.dev. cube and convert mean square values to s.d. of
  * measurement = s.d. of ensemble / sqrt(N)
- * = sqrt( variance / (sum weights) )
+ * = sqrt(variance / (sum weights) )
  */ 
 {
   float *dptr, sword, *sptr, word, *wptr, wt;
-  int det, gp, ix, iy, ib, offs;
+  int ix, iy, ib, offs = 0;
 
   for (iy=0; iy<nl; iy++) {
     for (ix=0; ix<ns; ix++) {
@@ -2918,15 +2983,15 @@ FUNCTION comp_stdev()
 	sptr = sddata + offs;
 	sword = *sptr;
 	sword -= word*word;
-	sword = max( sword, 0.0);		/* in case of roundoff error*/
+	sword = max(sword, 0.0);		/* in case of roundoff error*/
 	sword = sqrt(sword/wt);
 	*sptr = sword;
-} } } }
+      } } } }
 
 
 
 /************************************************************************/
-FUNCTION extract_data()
+void extract_data(void)
 /*
  * Extract and radiometrically correct the data, then write to the
  * output cube.
@@ -2945,43 +3010,42 @@ FUNCTION extract_data()
  * overlapping pixels.
  */
 {
-	/* mirror pos. of pixels (centers or corners): */
+  /* mirror pos. of pixels (centers or corners): */
   struct xytype mpos[4][20], mpos1[20];
 
   short s1data[20][N_DETS], s2data[N_DETS][20];
-  float f1data[20][N_DETS], f2data[N_DETS][20], dist, delx, dely, detnt,
-   mat[2][2], p, q, w1[2], w2[2], xskip;
-  double bcone=0.0, bxcone=0.0, dbc=0.0, dbx=0.0, et1, mnerr=0.0, mnerr2=0.0,
-   tssb[6];
-  int ccnt=0, dcnt=0, det, discnt=0, drkcnt=0, empty, gp, i, idel, idistor, igp,
-   imp, irec, irim, irim0, irim1, imf, imf0, isclk, ispik, istat, j, j1, j2,
-   jrti, jsclk, nchops, new_edr, new_rim, ngc, ngc1, oops=0, offplan=0,
-   offimag=0, perc, perc0, rec, rgp, rti, rti0, rval, scnt=0, skpcnt=0, 
-   vcnt=0, vflag[20], xbadpk=0, xinvpik=0, xokpk=0, xzpik=0, xpik=0;
+  float f1data[20][N_DETS], f2data[N_DETS][20], delx, dely, detnt=0.,
+    mat[2][2], p = 0.0, q = 0.0, w1[2], w2[2], xskip;
+  double bcone=0.0, bxcone=0.0, dbc=0.0, dbx=0.0, mnerr=0.0, mnerr2=0.0;
+  int ccnt=0, dcnt=0, det, discnt=0, drkcnt=0, empty, gp=0, i=0, idel, idistor, igp,
+    imp, irec = 0, irim, irim0, irim1, imf, imf0, isclk, ispik, istat, j, j1, j2,
+    jrti, jsclk, nchops, new_edr, new_rim, ngc, ngc1, oops=0, offplan=0,
+    offimag=0, perc, perc0, rec, rgp, rti, rti0, scnt=0, skpcnt=0, 
+    vcnt=0, vflag[20], xbadpk=0, xinvpik=0, xokpk=0, xzpik=0, xpik=0;
   int comperr[1000], comperrgp[1000];
   int cur_rim = -1;
   int first_twtd = 1;
 
-  zvmessage(" ","");
-  zvmessage(" Beginning data extraction","");
+  zifmessage(" ");
+  zifmessage(" Beginning data extraction");
 
-	/* if no calibration done, call RXM's calibration setup 
-	 * once in order to get wavelengths: */
+  /* if no calibration done, call RXM's calibration setup 
+   * once in order to get wavelengths: */
   if (!caltyp || radscal==-1) {
     cur_rim = mf[0].sclk/91;
     i = mf[0].sclk%91;
-    setup_cal( cur_rim, i);
+    setup_cal(cur_rim, i);
   }
 
-	/* zero-point for nchops (tube option) -- we now force the tube
-	 * to start on a new GC (in main), so don't really need these
-	 * special variables, but keep them to minimize code changes ... */
+  /* zero-point for nchops (tube option) -- we now force the tube
+   * to start on a new GC (in main), so don't really need these
+   * special variables, but keep them to minimize code changes ... */
   irim0 = loclk.rim;
   imf0 = loclk.mod91;
   rti0 = loclk.rti;
 
-	/* initialize flags for begin/end quantities in get_tgt_data &
-	 * find_xy: */
+  /* initialize flags for begin/end quantities in get_tgt_data &
+   * find_xy: */
   ll_rec1 = ll_rec2 = 0;
 
   perc = 0;
@@ -2990,7 +3054,7 @@ FUNCTION extract_data()
   jsclk = 0;			/* initialize EDR record SCLK counter */
   file_hclk = 0;		/* to ensure an EDR gets opened at 1st rec */
   ispik = -1;
-  sol_flux[0] = 0.0;		/* flag to call get_sflux
+  sol_flux[0] = 0.0;		/* flag to call get_sflux */
 
   /* loop over all pointing records (MFs): */
   for (rec=0; rec<nmf; rec++) {
@@ -3024,7 +3088,7 @@ FUNCTION extract_data()
 	}
       }
       /* read in associated spike file, if any */
-      if (nspifils>1 && strcmp( dsfile, "DUMMY_DSPK.DAT")) {
+      if (nspifils>1 && strcmp(dsfile, "DUMMY_DSPK.DAT")) {
 	if (pdespike!=0) free(pdespike);
         read_dspk(dsfile+dsfnoff[cur_edr]-1);	/* this resets nspik */
 	ispik = -1;		/* so reset this counter too */
@@ -3033,11 +3097,10 @@ FUNCTION extract_data()
       irec = 1;		/* set record counter to start of EDR */
       if (ncalfils>1) {
 	/* get new Gain state: */
-	strncpy( msg, &edrhdr.hdr2.gain, 1);
+	strncpy(msg, &edrhdr.hdr2.gain, 1);
 	msg[1] = '\n';
 	gain[cur_edr] = atoi(msg);
-	sprintf( msg, " Gain state = %d", gain[cur_edr]);
-	zvmessage( msg,"");
+	zvnprintf(100, " Gain state = %d", gain[cur_edr]);
       }
     }
 
@@ -3046,7 +3109,7 @@ FUNCTION extract_data()
      * pointing record: */
     xskip = 0.0;
     while (jsclk<isclk) {
-      get_nims_edr_rec_2( edrs[cur_edr].unit, irec++, &edrrec);
+      get_nims_edr_rec_2(edrs[cur_edr].unit, irec++, &edrrec);
       jsclk = comp_sclk(edrrec.pfix.sclk);
       if (!jsclk) {
 	scnt += 20;	/* increment skipped-combs count */
@@ -3076,15 +3139,15 @@ FUNCTION extract_data()
       continue;				/* to next pointing record */
     }
 
-	/* get HSK/Eng data for calibration:
-	 * (OLDCAL:  did this at start of every new RIM) */
+    /* get HSK/Eng data for calibration:
+     * (OLDCAL:  did this at start of every new RIM) */
     if (oldcal) new_rim = isclk/91;
     else new_rim = 0;		/* trick to fall thru new_rim test) */
     if (caltyp && radscal>=0 && ((new_rim != cur_rim) ||
-        (ncalfils>1 && new_edr))) {
+				 (ncalfils>1 && new_edr))) {
       i = isclk%91;			/* mod91 */
       j = isclk/91;
-      setup_cal( j, i);		/* RXM's calibration calls */
+      setup_cal(j, i);		/* RXM's calibration calls */
       cur_rim = new_rim;
       /* compute solar flux for label (and bb_repl, if used) */
       if (sol_flux[0]==0.0) get_sflux();
@@ -3110,8 +3173,7 @@ FUNCTION extract_data()
     perc0 = perc;
     perc = 0.5 + (100*rec)/nmf;
     if (perc/10 != perc0/10) {
-      sprintf( msg, " %3d%% of data extracted", perc);
-      zvmessage( msg,"");
+      zvnprintf(100, " %3d%% of data extracted", perc);
     }
 
     for (rti=0; rti<=5; rti+=5) {  /* 2 scans (EDR records) per mf */
@@ -3122,7 +3184,7 @@ FUNCTION extract_data()
       if (rti>jrti) {		/* rti=5 */
 	/* check if EDR ends in the middle of a MF: */
 	if (isclk==file_hclk && !file_hrti) break;
-	get_nims_edr_rec_2( edrs[cur_edr].unit, irec++, &edrrec);
+	get_nims_edr_rec_2(edrs[cur_edr].unit, irec++, &edrrec);
 	jsclk = comp_sclk(edrrec.pfix.sclk);
 	if (!jsclk) {
 	  scnt += 20;		/* increment skipped-combs count */
@@ -3141,7 +3203,7 @@ FUNCTION extract_data()
 	if (chk_comp) continue;
 	else {
 	  if (tube) {
-	    if (ccnt>1000) zvmessage(" COMPERR buffer overflow!","");
+	    if (ccnt>1000) zifmessage(" COMPERR buffer overflow!");
 	    else {
 	      i = ngcs;				/* preceding line count */
 	      if (fix_mode || !gp) i++;		/* this is a new line */
@@ -3153,7 +3215,7 @@ FUNCTION extract_data()
       }
 
       /* copy sensor data to local buffer: */
-      zmve( 2, 340, edrrec.sensor, s1data, 1, 1);
+      zmve(2, 340, edrrec.sensor, s1data, 1, 1);
 
       /* quick check if any valid data in record */
       empty = 1;
@@ -3179,9 +3241,9 @@ FUNCTION extract_data()
 	}
       }
 
-	/*
-	 * Determine mirror direction
-	 */
+      /*
+       * Determine mirror direction
+       */
 
       /* wait state takes precedence over fixed/scanning, since
        * it must be skipped if grating is not fixed */
@@ -3210,10 +3272,10 @@ FUNCTION extract_data()
 	empos = 19-smpos0;
       }
 
-	/* 
-	 * initialize the geometry cocube buffer for find_xy --
-	 * it gets filled in find_xy & get_tgt_data 
-	 */
+      /* 
+       * initialize the geometry cocube buffer for find_xy --
+       * it gets filled in find_xy & get_tgt_data 
+       */
 
       for (i=smpos; i<=empos; i++) {
 	for (j=0; j<3; j++) {
@@ -3250,15 +3312,15 @@ FUNCTION extract_data()
 	 * pixels
 	 */
 	if (footprint)
-	  find_xy_corners( isclk, rti, mpos, bcone, bxcone, dbc, dbx);
+	  find_xy_corners(isclk, rti, mpos, bcone, bxcone, dbc, dbx);
 	else
-	  find_xy_center( isclk, rti, mpos, bcone, bxcone, dbc, dbx);
+	  find_xy_center(isclk, rti, mpos, bcone, bxcone, dbc, dbx);
       }
 
-	/*
-	 * before calibration and projection, we allow various sorts
-	 * of "special screening" of the data:
-	 */
+      /*
+       * before calibration and projection, we allow various sorts
+       * of "special screening" of the data:
+       */
 
       /* check for DNs set to special values in phase-2 (this is on
        * pixel basis, not comb!) -- do this before despiking so as not
@@ -3326,8 +3388,8 @@ FUNCTION extract_data()
       /* check incidence/emission cutoffs: */
       if (cutinc || cutemi) {
 	for (i=smpos; i<=empos; i++) {
-	  if ( (cutinc && cobuf[i].geom[0] > inccut) ||
-	       (cutemi && cobuf[i].geom[1] > emicut) ) {
+	  if ((cutinc && cobuf[i].geom[0] > inccut) ||
+	      (cutemi && cobuf[i].geom[1] > emicut) ) {
 	    for (det=s_det; det<=e_det; det++) s1data[i][det] = NULL2;
 	  }
 	}
@@ -3360,29 +3422,29 @@ FUNCTION extract_data()
 	    if (s1data[i][det] <= drkfac*darktab[i+4*rti][det]) {
 	      s1data[i][det] = NULL2;
 	      drkcnt++;
-      } } } }
-	/* end of "special screening" */
+	    } } } }
+      /* end of "special screening" */
 
-	/*
-	 * Calibration step:
-	 *
-	 * 1. all cases except DN Tube are converted to float;
-	 * 2. if CAL, transpose and pass to RM's cal routine;
-	 *  2a. if GCUBE, transpose back.
-	 *
-	 * So there are two special cases:
-	 * A. DN G-cube: just convert to float;
-	 * B. DN Tube: just transpose.
-	 * These are also done in this step, for convenience.
+      /*
+       * Calibration step:
+       *
+       * 1. all cases except DN Tube are converted to float;
+       * 2. if CAL, transpose and pass to RM's cal routine;
+       *  2a. if GCUBE, transpose back.
+       *
+       * So there are two special cases:
+       * A. DN G-cube: just convert to float;
+       * B. DN Tube: just transpose.
+       * These are also done in this step, for convenience.
 
-	 * the histogram-binning option is treated as a DN G-cube in
-	 * this routine, with the difference that in output_near
-	 * the data are written to histograms stored in the weights
-	 * file;  this means that an unnecessary conversion from
-	 * integer to float (and back again) is done, but the
-	 * enormous simplication of the coding makes this worth
-	 * while (for now)
-	 */
+       * the histogram-binning option is treated as a DN G-cube in
+       * this routine, with the difference that in output_near
+       * the data are written to histograms stored in the weights
+       * file;  this means that an unnecessary conversion from
+       * integer to float (and back again) is done, but the
+       * enormous simplication of the coding makes this worth
+       * while (for now)
+       */
 
       if (caltyp && radscal>=0 && !histbin) {	/* radiometrically calibrate the data */
 	/* initialize arrays */
@@ -3405,16 +3467,15 @@ FUNCTION extract_data()
 	}
 	rgp = igp+1;
 	/* do the calibration: */
-	znims_comp_rad( rgp, 1, s2data, f2data, &istat);
+	znims_comp_rad(rgp, 1, s2data, f2data, &istat);
 	if (istat) {			/* istat=0 is ok */
-	  sprintf( msg, " error in NIMS_COMP_RAD, code = %d", istat);
-	  zmabend( msg);
+	  zvnabend(100, " error in NIMS_COMP_RAD, code = %d", istat);
 	}
 	/* set NO_SENS to NULL for Unix ISIS ... */
 	/*for (i=smpos; i<=empos; i++)
 	  for (det=s_det; det<=e_det; det++) {
-	    if (skipdet[det]>0) continue;
-	    if (f2data[det][i]==(float)NO_SENSITIVITY4) f2data[det][i] = NULL4;
+	  if (skipdet[det]>0) continue;
+	  if (f2data[det][i]==(float)NO_SENSITIVITY4) f2data[det][i] = NULL4;
 	  }*/
 	if (!tube)
 	  for (i=smpos; i<=empos; i++)
@@ -3458,26 +3519,26 @@ FUNCTION extract_data()
 	      /* omit these checks -- DNs cannot exceed 1023, and if they are 
 	       * <0 then it's because they've been set to that value above,
 	       * and we shouldn't overwrite it!
-	      if (skipdet[det]>0) continue;
-	      if (flag_sat && s1data[i][det] >= 1023)
-		s2data[det][i] = INS_HI_SAT2;
-	      else if (flag_sat && s1data[i][det] <= 0)
-		s2data[det][i] = NULL2;
-	      else *****/
-		s2data[det][i] = s1data[i][det];
+	       if (skipdet[det]>0) continue;
+	       if (flag_sat && s1data[i][det] >= 1023)
+	       s2data[det][i] = INS_HI_SAT2;
+	       else if (flag_sat && s1data[i][det] <= 0)
+	       s2data[det][i] = NULL2;
+	       else *****/
+	      s2data[det][i] = s1data[i][det];
 	    }
 	  }
 	}
       }
       else	/* just in case */
 	zmabend(" Logic error in calibration step!");
-	/* end of Calibration step */
+      /* end of Calibration step */
 
-	/*
-	 * Final step:
-	 * apply the photometric correction, and save the data
-	 * to the cube & cocube files:
-	 */
+      /*
+       * Final step:
+       * apply the photometric correction, and save the data
+       * to the cube & cocube files:
+       */
 
       if (tube) {	 	/* special case for TUBE option: */
 	/* line # = grating cycle count, unless grating is fixed
@@ -3500,19 +3561,19 @@ FUNCTION extract_data()
 	/* force the first GC to start of cycle: */
 	/* if (ngcs==1) nchops = 0;	??? why was I doing this?! */
 
-	if (caltyp) output_tube_f( f2data, gp, ngcs, vflag);
-	else output_tube_h( s2data, gp, ngcs, vflag);
-/*	if (mf[rec].igc>=0 && (fix_wait || mirror!=WAIT)) {  */
+	if (caltyp) output_tube_f(f2data, gp, ngcs, vflag);
+	else output_tube_h(s2data, gp, ngcs, vflag);
+	/*	if (mf[rec].igc>=0 && (fix_wait || mirror!=WAIT)) {  */
 	if ((fix_wait || mirror!=WAIT)) {
 	  if (footprint)
 	    for (j=smpos; j<=empos; j++) mpos1[j] = mpos[1][j];
-	  output_cotube( mpos, mpos1, gp, ngcs, nchops, &offimag, &offplan, 
-	   &dcnt, &vcnt, vflag);
+	  output_cotube(mpos, mpos1, gp, ngcs, nchops, &offimag, &offplan, 
+			&dcnt, &vcnt, vflag);
 	}
 	continue;
       }		/* end of TUBE case */
 
-	/* G-cube case */
+      /* G-cube case */
       for (i=smpos; i<=empos; i++) {
 	if (mpos[0][i].x == (float)BADP) {	/* off-planet or deboomed */
 	  if (mpos[0][i].y == (float)BADP) offplan++;
@@ -3520,22 +3581,22 @@ FUNCTION extract_data()
 	  else oops++;		/* shouldn't happen */
 	  continue;
 	}
-	if (repl_sat) bb_repl( f1data[i], gp);	/* SATURATD=BB_REPL option */
-		/* check that there are some valid data, 1 comb at a time:
-		 * (also perform the photometric correction) */
+	if (repl_sat) bb_repl(f1data[i], gp);	/* SATURATD=BB_REPL option */
+	/* check that there are some valid data, 1 comb at a time:
+	 * (also perform the photometric correction) */
 	for (det=s_det, j=0; det<=e_det; det++) {
 	  if (skipdet[det]>0 || wet[gp][det]<0) continue; 
 	  if (caltyp && radscal>=0 && !histbin) {
 	    if ((f1data[i][det]==(float)INS_HI_SAT4 && flag_sat) ||
 	        (f1data[i][det]==(float)INS_LO_SAT4 && threshing) ||
-	         f1data[i][det]>=VALID_MIN4) j = 1;	/* valid data flag */
+		f1data[i][det]>=VALID_MIN4) j = 1;	/* valid data flag */
 	    if (f1data[i][det] >= VALID_MIN4 && wet[gp][det] <= npfcut)
-	     f1data[i][det] = f1data[i][det]/cobuf[i].photcor;
+	      f1data[i][det] = f1data[i][det]/cobuf[i].photcor;
 	  }
 	  else {
 	    if ((f1data[i][det]==(float)INS_HI_SAT2 && flag_sat) ||
 	        (f1data[i][det]==(float)INS_LO_SAT2 && threshing) ||
-	         f1data[i][det]>=VALID_MIN2) j = 1;	/* valid data flag */
+		f1data[i][det]>=VALID_MIN2) j = 1;	/* valid data flag */
 	  }
 	}
 	if (j==0) {
@@ -3571,30 +3632,29 @@ FUNCTION extract_data()
 	  mat[1][0] = mpos1[2].x-mpos1[1].x;
 	  mat[0][1] = mpos1[0].y-mpos1[3].y;
 	  mat[1][1] = mpos1[2].y-mpos1[1].y;
-	  zminv( mat, 2, &detnt, w1, w2);	/* invert mat */
+	  zminv(mat, 2, &detnt, w1, w2);	/* invert mat */
 	  if (fabs(detnt)>1.e-30) {
 	    p = mat[0][0]*(mpos1[2].x-mpos1[3].x) +
-	        mat[1][0]*(mpos1[2].y-mpos1[3].y); 
+	      mat[1][0]*(mpos1[2].y-mpos1[3].y); 
 	    q = mat[0][1]*(mpos1[2].x-mpos1[3].x) +
-	        mat[1][1]*(mpos1[2].y-mpos1[3].y);
+	      mat[1][1]*(mpos1[2].y-mpos1[3].y);
 	  }
 	  if (fabs(detnt)<1.e-30 || p<0.0 || p>1.0 || q<0.0 || q>1.0) {
 	    irim1 = isclk/91;
 	    imf = isclk%91;
 	    if (first_twtd) {
-	      sprintf(msg, " pixel unprojectably twisted, SCLK=%d.%d",
-	       irim1, imf);
-	      zvmessage( msg,"");
+	      zvnprintf(100, " pixel unprojectably twisted, SCLK=%d.%d",
+			irim1, imf);
 	      first_twtd = 0;
 	    }
 	    discnt++;
 	    continue;
 	  }
 
-	  output_ftpt( &f1data[i][0], i, mpos1, gp, &offimag, isclk);
+	  output_ftpt(&f1data[i][0], i, mpos1, gp, &offimag, isclk);
 	}
-        else output_near( &f1data[i][0], i, mpos[0][i], gp, 1.0,
-	 &offimag);
+        else output_near(&f1data[i][0], i, mpos[0][i], gp, 1.0,
+			 &offimag);
       }		/* end of G-cube case */
 
     }	/* END OF RTI LOOP */
@@ -3602,120 +3662,98 @@ FUNCTION extract_data()
   }	/* END OF MF LOOP */
 
   if (idebug) {
-    zvclose( dunit, NULL);
-    zvclose( gunit, NULL);
+    zvclose(dunit, NULL);
+    zvclose(gunit, NULL);
   }			/* then exit in debugger */
 
-	/* tell user how many pix. failed: */
+  /* tell user how many pix. failed: */
   if (scnt) {
-    sprintf( msg, " %d combs skipped or dummy in EDR ", scnt);
-    zvmessage( msg,"");
+    zvnprintf(100, " %d combs skipped or dummy in EDR ", scnt);
   }
   if (dcnt) {
-    sprintf( msg, " %d combs rejected by boom test ", dcnt);
-    zvmessage( msg,"");
+    zvnprintf(100, " %d combs rejected by boom test ", dcnt);
   }
   if (vcnt) {
-    if (fix_mode) sprintf( msg, " %d combs had invalid data", vcnt);
-    else sprintf( msg, " %d combs had invalid data or were WAIT state",
-     vcnt);
-    zvmessage( msg,"");
+    if (fix_mode) zvnprintf(100, " %d combs had invalid data", vcnt);
+    else zvnprintf(100, " %d combs had invalid data or were WAIT state",
+		   vcnt);
   }
   if (ccnt) {
     if (chk_comp) {
-      sprintf( msg, " %d combs rejected for bad compression status", 20*ccnt);
-      zvmessage( msg,"");
+      zvnprintf(100, " %d combs rejected for bad compression status", 20*ccnt);
     }
     else {
       j1 = min(ccnt,1000);
       if (fix_mode) {
-	sprintf( msg, " %d combs reported bad compression status at lines:",
-	  20*ccnt);
-	zvmessage( msg,"");
+	zvnprintf(100, " %d combs reported bad compression status at lines:",
+		  20*ccnt);
 	for (j=0; j<j1; j++) {
-	  sprintf( msg, "   %d", comperr[j]);
-	  zvmessage( msg,"");
+	  zvnprintf(100, "   %d", comperr[j]);
 	}
       }
       else {
-	sprintf( msg, " %d combs reported bad compression status at line,GP:",
-	  20*ccnt);
-	zvmessage( msg,"");
+	zvnprintf(100, " %d combs reported bad compression status at line,GP:",
+		  20*ccnt);
 	for (j=0; j<j1; j++) {
-	  sprintf( msg, "   %d, %d", comperr[j], comperrgp[j]);
-	  zvmessage( msg,"");
+	  zvnprintf(100, "   %d, %d", comperr[j], comperrgp[j]);
 	}
       }
     }
   }
   if (discnt) {
-    sprintf( msg, " %d combs rejected for excessive distortion", discnt);
-    zvmessage( msg,"");
+    zvnprintf(100, " %d combs rejected for excessive distortion", discnt);
   }
   if (skpcnt) {
-    sprintf( msg, " %d combs rejected by SKIP_GP parameter", skpcnt);
-    zvmessage( msg,"");
+    zvnprintf(100, " %d combs rejected by SKIP_GP parameter", skpcnt);
   }
   if (offplan) {
-    sprintf( msg, " %d combs were off the planet", offplan);
-    zvmessage( msg,"");
+    zvnprintf(100, " %d combs were off the planet", offplan);
   }
   if (offimag) {
-    sprintf( msg, " %d combs fell outside the image", offimag);
-    zvmessage( msg,"");
+    zvnprintf(100, " %d combs fell outside the image", offimag);
   }
   if (oops) {		/* (this is always supposed to be 0) */
-    sprintf( msg, " %d combs had bad flag ...", oops);
-    zvmessage( msg,"");
+    zvnprintf(100, " %d combs had bad flag ...", oops);
   }
   if (drkcnt) {
-    sprintf( msg, " %d pixels rejected by dark threshold test ", drkcnt);
-    zvmessage( msg,"");
+    zvnprintf(100, " %d pixels rejected by dark threshold test ", drkcnt);
   }
   if (xpik) {
-    sprintf( msg, " %d valid pixels replaced by spike file", xpik);
-    zvmessage( msg,"");
+    zvnprintf(100, " %d valid pixels replaced by spike file", xpik);
   }
   if (xinvpik) {
-    sprintf( msg, " %d invalid pixels were replaced by spike file", xinvpik);
-    zvmessage( msg,"");
+    zvnprintf(100, " %d invalid pixels were replaced by spike file", xinvpik);
   }
   if (xzpik) {
-    sprintf( msg, " %d pixels were zeroed out by spike file", xzpik);
-    zvmessage( msg,"");
+    zvnprintf(100, " %d pixels were zeroed out by spike file", xzpik);
   }
   if (xbadpk) {
     mnerr /= xbadpk;
     mnerr2 /= xbadpk;
     mnerr2 = sqrt(mnerr2-mnerr*mnerr);
-    sprintf( msg, " %d spikes did not match Old DN, mn.err = %f, std.dev = %f",
-     xbadpk, mnerr, mnerr2);
-    zvmessage( msg,"");
-    sprintf( msg, " %d of these spikes were interpreted as dark deviations and used", xokpk);
-    zvmessage( msg,"");
+    zvnprintf(100, " %d spikes did not match Old DN, mn.err = %f, std.dev = %f",
+	      xbadpk, mnerr, mnerr2);
+    zvnprintf(100, " %d of these spikes were interpreted as dark deviations and used", xokpk);
   }
   if (repl_sat) {
     if (!nsatrep) {
-      zvmessage(" no saturated radiances were replaced!", "");
+      zifmessage(" no saturated radiances were replaced!");
       return;
     }
-    sprintf( msg," %d saturated radiances were replaced", nsatrep);
-    zvmessage( msg,"");
+    zvnprintf(100," %d saturated radiances were replaced", nsatrep);
     if (ndefalb) {
-      sprintf( msg," %d of these used default albedoes", ndefalb);
-      zvmessage( msg,"");
+      zvnprintf(100," %d of these used default albedoes", ndefalb);
     }
     if (ncompalb) {
       repl_alb /= ncompalb;
-      sprintf( msg," mean computed albedo was: %f", repl_alb);
-      zvmessage( msg,"");
+      zvnprintf(100," mean computed albedo was: %f", repl_alb);
     }
   }
 }
 
 
 /*************************************************************************/
-int FUNCTION extract_pntng( sclk, cang)
+int extract_pntng(int sclk, struct pntng_typ *cang)
 /*
  * extract instrument pointing (C-matrix Euler angles & Cone/Clock from
  * AACS file or from NAIF SPICE C-kernels (Pfm & Rotor), at beginning of
@@ -3734,11 +3772,13 @@ int FUNCTION extract_pntng( sclk, cang)
  *
  * (also note that GLL telemetry is in EME1950) 
  */
-int sclk;
+#if 0
+  int sclk;
 struct pntng_typ *cang;
+#endif
 {
   int i, is, isclk, j, k;
-  double con, timout;
+  double timout;
   matrix ctemp;
   static double pra, pdec, ptwt, pcon, pclk;
   char buf[101];
@@ -3749,8 +3789,6 @@ struct pntng_typ *cang;
     cang->twist = 0.0;
     return 1;
   }
-
-  con = ztwopi() / 65536.;
 
   if (aacsf) {	/* search the AACS file */
 
@@ -3764,18 +3802,18 @@ struct pntng_typ *cang;
     if (is>isclk) return 0;	/* we are in a pointing gap */
 
     if (!is) {			/* first call */
-      strcpy( buf, " ");
+      strcpy(buf, " ");
       i = 0;
       /* headers terminated by "Clock" */
       while (strcmp(buf,"Clock") && strcmp(buf,"CLOCK")) {
-	vstat = fscanf( aacsfil," %s\n", buf);
+	vstat = fscanf(aacsfil," %s\n", buf);
 	i++;
 	if (i>1000) zmabend(" *** AACS file format error ***");
       }
     }
     while (is<isclk) {
-      vstat = fscanf( aacsfil," %d %lf %lf %lf %lf %lf", &is, &pra, &pdec,
-       &ptwt, &pcon, &pclk);
+      vstat = fscanf(aacsfil," %d %lf %lf %lf %lf %lf", &is, &pra, &pdec,
+		     &ptwt, &pcon, &pclk);
       if (vstat == EOF || vstat == 0) return 0;
       else if (vstat == 6) is0 = is;
       else zmabend(" *** error reading AACS file ***");
@@ -3792,31 +3830,31 @@ struct pntng_typ *cang;
   }
   else {
     zreset1();				/* clear previous SPICE errors */
-	/* encode SCLK into a string for NAIF: */
+    /* encode SCLK into a string for NAIF: */
     i = sclk/91;		/* RIM */
     j = sclk%91;		/* mod91 */
-    sprintf( msg, "%d", i);
-    k = strlen( msg);
-    sprintf( &msg[k], ".%d", j);
-	/* get double-precision-encoded SCLK: */
-    zscencd( ids.sc, msg, &sclkdp);
-    if (zfailed()) zvmessage(" *** error in SCENCD ***","");
-    zckgp( ck_id, sclkdp, s_tol, esystem, ctemp, &timout, &k);
+    snprintf(msg, 100, "%d", i);
+    k = strlen(msg);
+    snprintf(&msg[k], 100-k, ".%d", j);
+    /* get double-precision-encoded SCLK: */
+    zscencd(ids.sc, msg, &sclkdp);
+    if (zfailed()) zifmessage(" *** error in SCENCD ***");
+    zckgp(ck_id, sclkdp, s_tol, esystem, ctemp, &timout, &k);
     if (zfailed() || !k) return 0;
-    zm2eul( ctemp, 3, 2, 3, &cang->twist, &cang->dec, &cang->ra);
+    zm2eul(ctemp, 3, 2, 3, &cang->twist, &cang->dec, &cang->ra);
     cang->dec = zhalfpi() - cang->dec;
   }
-	/* it appears that the Primary CKs (hence also the NIMS CKs and
-	 * the AACSFILE) use the GLL definition of twist, so correct this
-	 * here too: */
+  /* it appears that the Primary CKs (hence also the NIMS CKs and
+   * the AACSFILE) use the GLL definition of twist, so correct this
+   * here too: */
   cang->twist -= zhalfpi();
-  if (!strcmp( esystem, "J2000")) zrotadkx( cang, B1950, J2000, cang);
+  if (!strcmp(esystem, "J2000")) zrotadkx(cang, B1950, J2000, cang);
   return 1;
 }
 
 
 /*************************************************************************/
-int FUNCTION fill( array, msize, ndata, fplane)
+int fill(float *array, int msize, int ndata, float *fplane)
 /*
  * fill the pixels with no data -- but only if more than 'ndata' points are
  * present within an (msize**2) neighborhood of the missing data point
@@ -3827,8 +3865,10 @@ int FUNCTION fill( array, msize, ndata, fplane)
  * 'fplane' is the plane offset in which to store a fill-flag DN
  * (only if fplane != NULL)
  */
-float *array, *fplane;
+#if 0
+  float *array, *fplane;
 int msize, ndata;
+#endif
 {
   int i, j;
   int mi, mj;
@@ -3840,13 +3880,13 @@ int msize, ndata;
   float *ptr;
 
   if ((msize % 2) != 1) {
-      zvmessage(" Fill matrix size is not a odd number -- fill aborted","");
-      return -1;
-    }
+    zifmessage(" Fill matrix size is not a odd number -- fill aborted");
+    return -1;
+  }
 
-/*
- * duplicate the array
- */
+  /*
+   * duplicate the array
+   */
   ptr = (float *)malloc(nl*ns*sizeof(float));
   for (i = 0; i < (nl*ns); i++) ptr[i] = array[i];
 
@@ -3854,7 +3894,7 @@ int msize, ndata;
   for (i = 0; i < nl; i++) {
     for (j = 0; j < ns; j++) {
       if (ptr[i*ns+j] == (float)NULL4 && gdata[i*ns+j] != (float)NULL4) {
-				/* gdata is latitude: on-limb flag */
+	/* gdata is latitude: on-limb flag */
 	count = 0;
 	for (mi = (i - radius); mi <= (i + radius); mi++) {
 	  for (mj = (j - radius); mj <= (j + radius); mj++) {
@@ -3890,11 +3930,12 @@ int msize, ndata;
     }
   }
   free(ptr);
+  return 0;
 }
 
 
 /************************************************************************/
-FUNCTION find_angles( pang)
+void find_angles(float *pang)
 /*
  * retrieve the photometric angles at the center of the image (or as
  * close as we can get) from the cocube buffer, to store in label
@@ -3903,13 +3944,14 @@ FUNCTION find_angles( pang)
  * the corresponding G-cube, as the spatial centers are not the same
  * point -- although they should be close.)
  */
-
-float *pang;
+#if 0
+  float *pang;
+#endif
 {
   int boffs, del, delmax, i, i0, i1, j, j0, j1, nlc, nsc;
   float *dptr;
 
-	/* start at center of image: */
+  /* start at center of image: */
   nlc = (nl+1)/2;
   nsc = (ns+1)/2;
 
@@ -3926,22 +3968,22 @@ float *pang;
   del = 0;
   if (pang[0] >= VALID_MIN4) goto pfound;
 
-	/* at each step N, start at (L'-1,S'-1), where (L',S') is the
-	 * the previous starting point, and move clockwise along the
-	 * circumference of a square.  If we can increment the step in 
-	 * both L & S, then this will result in a path of 8*N points, 
-	 * none duplicating a preceding point.  If one of L,S must stop 
-	 * incrementing because it ran into an edge, then some of the 
-	 * points are duplicated, but we can live with this. */
+  /* at each step N, start at (L'-1,S'-1), where (L',S') is the
+   * the previous starting point, and move clockwise along the
+   * circumference of a square.  If we can increment the step in 
+   * both L & S, then this will result in a path of 8*N points, 
+   * none duplicating a preceding point.  If one of L,S must stop 
+   * incrementing because it ran into an edge, then some of the 
+   * points are duplicated, but we can live with this. */
 
-  delmax = max( nl/2, ns/2);
-  for ( del=1; del<=delmax; del++) {
-    i0 = max( nsc-del, 0);
-    i1 = min( nsc+del, ns-1);
-    j0 = max( nlc-del, 0);
-    j1 = min( nlc+del, nl-1);
+  delmax = max(nl/2, ns/2);
+  for (del=1; del<=delmax; del++) {
+    i0 = max(nsc-del, 0);
+    i1 = min(nsc+del, ns-1);
+    j0 = max(nlc-del, 0);
+    j1 = min(nlc+del, nl-1);
 
-    for ( i=i0, j=j0; i<i1; i++) {	/* top of square */
+    for (i=i0, j=j0; i<i1; i++) {	/* top of square */
       dptr = gdata + (boffs*nl+j) * ns + i;	/* point to incidence angle */
       pang[0] = *dptr; 
       dptr += nl*ns;				/* point to emission angle */
@@ -3978,20 +4020,19 @@ float *pang;
       if (pang[0] >= VALID_MIN4) goto pfound;
     }
   }
-  zvmessage(" unable to find photometric angles!","");
+  zifmessage(" unable to find photometric angles!");
   for (i=0; i<3; i++) pang[i] = -999.;
   return;
 
-pfound:			/* stop when valid point found */
+ pfound:			/* stop when valid point found */
   if (del > 2) {		/* hole in the center! */
-    sprintf( msg, " %d steps needed to find photometric angles", del);
-    zvmessage( msg,"");
+    zvnprintf(100, " %d steps needed to find photometric angles", del);
   }
 }
 
 
 /************************************************************************/
-FUNCTION find_body_motion( pra, pdec, pnp0, pbm_mra, pbm_mdec)
+void find_body_motion(double *pra, double *pdec, int *pnp0, double *pbm_mra, double *pbm_mdec)
 /*
  * find the mean motion per mf of target body relative to s/c over the current
  * EDR range and return the RA/Dec components in rad/mf;
@@ -4003,17 +4044,19 @@ FUNCTION find_body_motion( pra, pdec, pnp0, pbm_mra, pbm_mdec)
  * if an SCLK range has been set by the user, then only the part of the
  * EDR range falling inside this interval is used
  */
-double *pra, *pdec, *pbm_mra, *pbm_mdec;
+#if 0
+  double *pra, *pdec, *pbm_mra, *pbm_mdec;
 int *pnp0;
+#endif
 {
   int i, ii, ind, indx;
   unsigned int sclk, sclkmax=0, sclkstrt=0, losclk, hisclk;
-  double ddec, dra, dt, dxy, dec1, dec2, ra1, ra2, slantmax, slantstrt,
-   state1[6], state2[6], state_lt, ssb_craft[6], xrat1, xrat2;
+  double ddec, dra, dt, dxy, dec1, dec2, ra1, ra2, slantmax = 0.0, slantstrt = 0.0,
+    state1[6], state2[6], state_lt, ssb_craft[6], xrat1, xrat2;
   double vmag, maxmag=-1.;
   float lat[2],lon[2],dum,dum1;
   static matrix me, cm;
-  vector sc, vab, vabmax, vv1, vv2;
+  vector sc, vab, vv1, vv2;
   struct pntng_typ angs[2], me_ang;
 
   zreset1();				/* clear previous SPICE errors */
@@ -4026,26 +4069,26 @@ int *pnp0;
 
   /* (this code is adapted from fcn. nims_ps_orient) */
 
-	/* convert start SCLK of file to ephem. time */
-  nims_s2et( losclk, &etime);
-	/* spacecraft position relative to SSB: */
-  zspkssb( ids.sc, etime, esystem, ssb_craft);
-	/* target body position relative to spacecraft: */
-  zspkapp( ids.target, etime, esystem, ssb_craft, "LT+S", state1, &state_lt);
+  /* convert start SCLK of file to ephem. time */
+  nims_s2et(losclk, &etime);
+  /* spacecraft position relative to SSB: */
+  zspkssb(ids.sc, etime, esystem, ssb_craft);
+  /* target body position relative to spacecraft: */
+  zspkapp(ids.target, etime, esystem, ssb_craft, "LT+S", state1, &state_lt);
   if (zfailed()) zmabend(" *** unable to get mean body motion ***");
-	/* ratio of target radius to range */
+  /* ratio of target radius to range */
   for (i=0, xrat1=0.0; i<3; i++) 
     xrat1 += state1[i]*state1[i];
   xrat1 = tgt_data.e1rad / sqrt(xrat1);
 
-	/* convert end SCLK of file to ephem. time */
-  nims_s2et( hisclk, &etime);
-	/* spacecraft position relative to SSB: */
-  zspkssb( ids.sc, etime, esystem, ssb_craft);
-	/* target body position relative to spacecraft: */
-  zspkapp( ids.target, etime, esystem, ssb_craft, "LT+S", state2, &state_lt);
+  /* convert end SCLK of file to ephem. time */
+  nims_s2et(hisclk, &etime);
+  /* spacecraft position relative to SSB: */
+  zspkssb(ids.sc, etime, esystem, ssb_craft);
+  /* target body position relative to spacecraft: */
+  zspkapp(ids.target, etime, esystem, ssb_craft, "LT+S", state2, &state_lt);
   if (zfailed()) zmabend(" *** unable to get mean body motion ***");
-	/* ratio of target radius to range */
+  /* ratio of target radius to range */
   for (i=0, xrat2=0.0; i<3; i++) 
     xrat2 += state2[i]*state2[i];
   xrat2 = tgt_data.e1rad / sqrt(xrat2);
@@ -4080,21 +4123,21 @@ int *pnp0;
     for (sclk=losclk; sclk<=hisclk; sclk++) {
 
       /* get the C-angles at this SCLK */
-      vstat = get_pntng( sclk, &angs[indx]);
+      vstat = get_pntng(sclk, &angs[indx]);
       if (!vstat) continue;
 
       /* these steps are from get_tgt_data, which cannot be called 
        * because the mf[] buffer has not been filled: */
-      nims_ps_orient( sclk, sc, vv1, vv2, &me_ang);
-      eul2mat( me_ang.ra, me_ang.dec, me_ang.twist, me); 
-      eul2mat( angs[indx].ra, angs[indx].dec, angs[indx].twist, cm); 
-      zmxmt( cm, me, tgt_data.om);
+      nims_ps_orient(sclk, sc, vv1, vv2, &me_ang);
+      eul2mat(me_ang.ra, me_ang.dec, me_ang.twist, me); 
+      eul2mat(angs[indx].ra, angs[indx].dec, angs[indx].twist, cm); 
+      zmxmt(cm, me, tgt_data.om);
       for (ii=0; ii<3; ii++) vv1[ii] = -sc[ii];
-      zmxv( me, vv1, tgt_data.rs);
+      zmxv(me, vv1, tgt_data.rs);
       /* call PPROJ for boresight with this tgt_data buffer: */
       dum = 0.0;
-      zpproj( &tgt_data, &dum, &dum, &lat[indx], &lon[indx], LS_LL, lattyp,
-       &dum1, &slant, &ind);
+      zpproj(&tgt_data, &dum, &dum, &lat[indx], &lon[indx], LS_LL, lattyp,
+	     &dum1, &slant, &ind);
       vv2[0] = dum1;
       if (ind) {
 	/* after the first on-target point, reset indx to search for
@@ -4106,7 +4149,7 @@ int *pnp0;
 	  continue;
 	}
 	/* this actually returns vector AB, not arc ... */
-        varc( lat, lon, vab);
+        varc(lat, lon, vab);
 	/* look for the largest vector so far */
 	vmag = 0.;
 	for (ii=0; ii<3; ii++) vmag += vab[ii]*vab[ii];
@@ -4115,7 +4158,6 @@ int *pnp0;
 	  maxmag = vmag;
 	  sclkmax = sclk;
 	  slantmax = slant;
-	  for (ii=0; ii<3; ii++) vabmax[ii] = vab[ii];
 	}
       }
     }
@@ -4125,16 +4167,16 @@ int *pnp0;
 
     /* to simplify things, we evaluate the SC-vector at the beginning,
      * rather than at the middle, as would be more accurate */
-    nims_ps_orient( sclkstrt, sc, vv1, vv2, &me_ang);
+    nims_ps_orient(sclkstrt, sc, vv1, vv2, &me_ang);
     for (ii=0; ii<3; ii++) vv1[ii] = -sc[ii];
-    eul2mat( me_ang.ra, me_ang.dec, me_ang.twist, me); 
-    eul2mat( angs[0].ra, angs[0].dec, angs[0].twist, cm); 
-    zmxmt( cm, me, tgt_data.om);
+    eul2mat(me_ang.ra, me_ang.dec, me_ang.twist, me); 
+    eul2mat(angs[0].ra, angs[0].dec, angs[0].twist, cm); 
+    zmxmt(cm, me, tgt_data.om);
 
     /* to get the components we want, first transform vector to
      * Camera system and set L-component to zero, then transform
      * to EME system: */
-    zmxv( tgt_data.om, vab, vab);	/* Body -> Camera system */
+    zmxv(tgt_data.om, vab, vab);	/* Body -> Camera system */
     /* use average slant distance here -- not consistent with other
      * assumptions, but it should always improve the approximation,
      * and is a simple fix */
@@ -4142,9 +4184,9 @@ int *pnp0;
     vab[0] /= slant;			/* convert to angles */
     vab[1] /= slant;
     vab[2] = 0;				/* component along boresight */
-    zmtxv( cm, vab, vab);		/* Camera -> EME system */
+    zmtxv(cm, vab, vab);		/* Camera -> EME system */
     /* return RA/Dec components: */
-    vrdcomp( angs[0].ra, angs[0].dec, vab, &dra, &ddec);
+    vrdcomp(angs[0].ra, angs[0].dec, vab, &dra, &ddec);
     /* compute body-relative rates from this new slew rate: */
     if (cos(angs[0].dec) == 0.0)
       *pra = 0.;
@@ -4160,23 +4202,23 @@ int *pnp0;
 
     if (aacsf) {
       /* we must reset aacsfile to start of file for assemble_pntng */
-      rewind( aacsfil);
+      rewind(aacsfil);
       is0 = 0;
     }
   }
   else{
 
-far_case:
-    ra1 = atan2( state1[1], state1[0]);
+  far_case:
+    ra1 = atan2(state1[1], state1[0]);
     if (ra1<0) ra1 += ztwopi();
-    dxy = sqrt( state1[0]*state1[0] + state1[1]*state1[1] );
-    /*dec1 = atan2( state1[2], dxy);
-    wrong!  should be: <19jan04> */
-    dec1 = atan2( dxy, state1[2]);
-    ra2 = atan2( state2[1], state2[0]);
+    dxy = sqrt(state1[0]*state1[0] + state1[1]*state1[1] );
+    /*dec1 = atan2(state1[2], dxy);
+      wrong!  should be: <19jan04> */
+    dec1 = atan2(dxy, state1[2]);
+    ra2 = atan2(state2[1], state2[0]);
     if (ra2<0) ra2 += ztwopi();
-    dxy = sqrt( state2[0]*state2[0] + state2[1]*state2[1] );
-    dec2 = atan2( dxy, state2[2]);
+    dxy = sqrt(state2[0]*state2[0] + state2[1]*state2[1] );
+    dec2 = atan2(dxy, state2[2]);
 
     /* ra/dec motions in rad/mf: */
     *pra = ra2-ra1;
@@ -4186,27 +4228,28 @@ far_case:
     *pdec = (dec2-dec1)/dt;
   }
 
-  *pbm_mra = ( (*pnp0)*(*pbm_mra) + dt*(*pra) ) / (dt+(*pnp0));
-  *pbm_mdec = ( (*pnp0)*(*pbm_mdec) + dt*(*pdec) ) / (dt+(*pnp0));
+  *pbm_mra = ((*pnp0)*(*pbm_mra) + dt*(*pra) ) / (dt+(*pnp0));
+  *pbm_mdec = ((*pnp0)*(*pbm_mdec) + dt*(*pdec) ) / (dt+(*pnp0));
   *pnp0 += dt;
 
   ra1 = 1500.*(*pra);
   dec1 = 1500.*(*pdec);
-  sprintf( msg,
-   " Mean relative body motion in RA/Dec = %.3f, %.3f (mrad/sec)",
-   ra1, dec1);
-  zvmessage( msg,"");
+  zvnprintf(100,
+	    " Mean relative body motion in RA/Dec = %.3f, %.3f (mrad/sec)",
+	    ra1, dec1);
 
   return;
 }
 
 
 /************************************************************************/
-FUNCTION find_gap( hist, nbin, bgap, ngap)
+void find_gap(int *hist, int nbin, int *bgap, int *ngap)
 /*
  * find largest gap in a histogram
  */
-int *bgap, *hist, nbin, *ngap;
+#if 0
+  int *bgap, *hist, nbin, *ngap;
+#endif
 {
   int bgap0, i, igap, ngap0;
 
@@ -4235,7 +4278,7 @@ int *bgap, *hist, nbin, *ngap;
 
 
 /************************************************************************/
-FUNCTION find_mode()
+void find_mode(void)
 /*
  * determine the instrument mode from the EDR header 
  *
@@ -4249,8 +4292,8 @@ FUNCTION find_mode()
  * 3FEB93: MODE 12 ("SPECIAL SEQUENCE") ENABLED FOR ONE CASE ONLY 
  */
 {
-  int i, i1, iprev, j, j1, k, kbi, kby, n, nn, mbands, mgps, 
-   nmode, nwps, wrep;
+  int i, i1, iprev, j, j1, kbi, kby, n, nn, mbands, mgps, 
+    nmode, nwps, wrep;
   char gmask[N_GPS];
   char sbuf[33], chr;
 
@@ -4258,63 +4301,63 @@ FUNCTION find_mode()
     imode = u_imode;
     if (!u_gst) gstart = 0;		/* indeterminate in this case! */
     switch (imode) {
-      case 0:  nsteps = nlgp; gdel = 0; mirrop = 0; break;
-      case 1:  nsteps = 12; gdel = 2; mirrop = 1; break;
-      case 2:  nsteps = 12; gdel = 2; mirrop = 0; break;
-      case 3:  nsteps = 24; gdel = 1; mirrop = 1; break;
-      case 4:  nsteps = 24; gdel = 1; mirrop = 0; break;
-      case 5:  nsteps = 6; gdel = 4; mirrop = 1; break;
-      case 6:  nsteps = 6; gdel = 4; mirrop = 0; break;
-      case 7:  nsteps = nlgp; gdel = 0; mirrop = 1; break;
-      case 8:  nsteps = 1; gdel = 2; mirrop = 1; break;
-      case 9:  nsteps = 1; gdel = 2; mirrop = 0; break;
-      case 10:  nsteps = 24; gdel = 1; mirrop = 1; break;
-      case 11:  nsteps = 24; gdel = 1; mirrop = 0; break;
-      case 12:  nsteps = 6; gdel = 2; mirrop = 1; break;
-      case 13:  nsteps = 24; gdel = 0; mirrop = 1; break;
-      case 14:  nsteps = 6; gdel = 0; mirrop = 1; break;
-      case 15:  nsteps = 12; gdel = 0; mirrop = 1; break;
-      default: zmabend(" *** invalid instrument mode ***");
+    case 0:  nsteps = nlgp; gdel = 0; mirrop = 0; break;
+    case 1:  nsteps = 12; gdel = 2; mirrop = 1; break;
+    case 2:  nsteps = 12; gdel = 2; mirrop = 0; break;
+    case 3:  nsteps = 24; gdel = 1; mirrop = 1; break;
+    case 4:  nsteps = 24; gdel = 1; mirrop = 0; break;
+    case 5:  nsteps = 6; gdel = 4; mirrop = 1; break;
+    case 6:  nsteps = 6; gdel = 4; mirrop = 0; break;
+    case 7:  nsteps = nlgp; gdel = 0; mirrop = 1; break;
+    case 8:  nsteps = 1; gdel = 2; mirrop = 1; break;
+    case 9:  nsteps = 1; gdel = 2; mirrop = 0; break;
+    case 10:  nsteps = 24; gdel = 1; mirrop = 1; break;
+    case 11:  nsteps = 24; gdel = 1; mirrop = 0; break;
+    case 12:  nsteps = 6; gdel = 2; mirrop = 1; break;
+    case 13:  nsteps = 24; gdel = 0; mirrop = 1; break;
+    case 14:  nsteps = 6; gdel = 0; mirrop = 1; break;
+    case 15:  nsteps = 12; gdel = 0; mirrop = 1; break;
+    default: zmabend(" *** invalid instrument mode ***");
     }
     goto mfound;
   }
-/*
- * note that modes 10/11 have TWO PTABS, the parameters given above
- * only specify the first -- this must be handled by special code (TBD)
- */
+  /*
+   * note that modes 10/11 have TWO PTABS, the parameters given above
+   * only specify the first -- this must be handled by special code (TBD)
+   */
 
-/*
- * phase-2 NIMS EDRs have the mode info in the 2nd header, so all we do
- * here is collect it and check for internal consistency:
- * (assume that the header has been read with get_nims_edr_hdr_2)
- */
+  /*
+   * phase-2 NIMS EDRs have the mode info in the 2nd header, so all we do
+   * here is collect it and check for internal consistency:
+   * (assume that the header has been read with get_nims_edr_hdr_2)
+   */
 
   /* (avoid use of sscanf because it gets confused by spaces) */
 
   /* nominal MODE */
-  strncpy( sbuf, edrhdr.hdr2.mode, 2);
+  strncpy(sbuf, edrhdr.hdr2.mode, 2);
   sbuf[2] = '\n';
   nmode = atoi(sbuf);
 
   /* other stuff, for label .... */
-  strncpy( sbuf, &edrhdr.hdr2.chop, 1);
+  strncpy(sbuf, &edrhdr.hdr2.chop, 1);
   sbuf[1] = '\n';
   chopper = atoi(sbuf);
-  strncpy( sbuf, &edrhdr.hdr2.grat_off, 1);
+  strncpy(sbuf, &edrhdr.hdr2.grat_off, 1);
   sbuf[1] = '\n';
   g_off = atoi(sbuf);
 
   /* PTAB A */
-  strncpy( sbuf, &edrhdr.hdr2.ptab_a[2], 2);
+  strncpy(sbuf, &edrhdr.hdr2.ptab_a[2], 2);
   sbuf[2] = '\n';
   mirrop = atoi(sbuf);
   if (!u_gst) {
-    strncpy( sbuf, &edrhdr.hdr2.ptab_a[6], 2);
+    strncpy(sbuf, &edrhdr.hdr2.ptab_a[6], 2);
     gstart = atoi(sbuf);
   }
-  strncpy( sbuf, &edrhdr.hdr2.ptab_a[8], 2);
+  strncpy(sbuf, &edrhdr.hdr2.ptab_a[8], 2);
   gdel = atoi(sbuf);
-  strncpy( sbuf, &edrhdr.hdr2.ptab_a[10], 2);
+  strncpy(sbuf, &edrhdr.hdr2.ptab_a[10], 2);
   nsteps = atoi(sbuf);
 
   /* need for PTAB B is TBD */
@@ -4322,11 +4365,11 @@ FUNCTION find_mode()
   /* now determine mode from PTAB */
   if (nsteps==0) return;	/* can't determine mode in this EDR */
   switch (gdel) {		/* grating delta determines: */
-    case 0:  imode = 0; break;			/* FIXED/BANDEDGE/SAFE */
-    case 1:  imode = 3; break;  		/* LONG */
-    case 2:  imode = 1; break;  		/* FULL/SPECIAL-SEQ */
-    case 4:  imode = 5; break;  		/* SHORT */
-    default: imode = -1;
+  case 0:  imode = 0; break;			/* FIXED/BANDEDGE/SAFE */
+  case 1:  imode = 3; break;  		/* LONG */
+  case 2:  imode = 1; break;  		/* FULL/SPECIAL-SEQ */
+  case 4:  imode = 5; break;  		/* SHORT */
+  default: imode = -1;
   }
   /* STOP-SLIDE modes (10/11) are also ambiguous with the above, but need
    * special code to handle them */
@@ -4337,9 +4380,9 @@ FUNCTION find_mode()
   }
   if (imode==1) {		/* resolve ambiguity using nsteps */
     switch (nsteps) {
-      case 6:  imode = 12; break;		/* SPECIAL-SEQ */
-      case 12:  imode = 1; break;		/* FULL */
-      default: imode = -1;			/* ??? */
+    case 6:  imode = 12; break;		/* SPECIAL-SEQ */
+    case 12:  imode = 1; break;		/* FULL */
+    default: imode = -1;			/* ??? */
     }
   }
   if (!mirrop) {		/* mirror fixed = SPECT mode */
@@ -4347,61 +4390,56 @@ FUNCTION find_mode()
     else if (imode>0) imode++;
   }
   if (imode != nmode) {
-    sprintf( msg, " ** inconsistent mode information in EDR %d", cur_edr+1);
-    zvmessage( msg, "");
+    zvnprintf(100, " ** inconsistent mode information in EDR %d", cur_edr+1);
     nsteps = 0;
     return;
   }
 
-mfound:
+ mfound:
 
   /* GAIN */
-  strncpy( sbuf, &edrhdr.hdr2.gain, 1);
+  strncpy(sbuf, &edrhdr.hdr2.gain, 1);
   sbuf[1] = '\n';
   gain[0] = atoi(sbuf);
-  sprintf( msg, " Gain state = %d", gain[0]);
-  zvmessage( msg,"");
+  zvnprintf(100, " Gain state = %d", gain[0]);
 
-	/* set mirror position count: */
+  /* set mirror position count: */
   nmpos = empos0-smpos0+1;
-/*  if (!mirrop) nmpos = 1;	disabled because we still have 40 combs
-				per MF! */
+  /*  if (!mirrop) nmpos = 1;	disabled because we still have 40 combs
+      per MF! */
 
-	/* find the number of "mirror wait" cycles (nits): this
-	 * depends on number of logical steps (even for fixed modes !!)
-	 */
+  /* find the number of "mirror wait" cycles (nits): this
+   * depends on number of logical steps (even for fixed modes !!)
+   */
   switch (nsteps) {
-    case 0:  nwps = 0; break;
-    case 1:  nwps = 1; break;	/* (??) -- BANDEDGE */
-    case 6:  nwps = 1; break;
-    case 12:  nwps = 1; break;
-    case 24:  nwps = 2; break;
-    default:  nwps = 1;		/* (just in case) */
+  case 0:  nwps = 0; break;
+  case 1:  nwps = 1; break;	/* (??) -- BANDEDGE */
+  case 6:  nwps = 1; break;
+  case 12:  nwps = 1; break;
+  case 24:  nwps = 2; break;
+  default:  nwps = 1;		/* (just in case) */
   }
 
-	/* store for label & inform user: */
+  /* store for label & inform user: */
   switch (imode) {
-    case 0: sprintf( ins_mode, "SAFE"); break;
-    case 1: sprintf( ins_mode, "FULL MAP"); break;
-    case 2: sprintf( ins_mode, "FULL SPECT"); break;
-    case 3: sprintf( ins_mode, "LONG MAP"); break;
-    case 4: sprintf( ins_mode, "LONG SPECT"); break;
-    case 5: sprintf( ins_mode, "SHORT MAP"); break;
-    case 6: sprintf( ins_mode, "SHORT SPECT"); break;
-    case 7: sprintf( ins_mode, "FIXED MAP"); break;
-    case 8: sprintf( ins_mode, "BANDEDGE MAP"); break;
-    case 9: sprintf( ins_mode, "BANDEDGE SPECT"); break;
-    case 10: sprintf( ins_mode, "SLIDE & STOP MAP"); break;
-    case 11: sprintf( ins_mode, "SLIDE & STOP SPECT"); break;
-    case 12: sprintf( ins_mode, "SPECIAL SEQUENCE"); break;
-    case 13: sprintf( ins_mode, "FIXED LONG MAP"); break;
-    case 14: sprintf( ins_mode, "FIXED SHORT MAP"); break;
-    case 15: sprintf( ins_mode, "FIXED FULL MAP"); break;
+  case 0: strcpy(ins_mode, "SAFE"); break;
+  case 1: strcpy(ins_mode, "FULL MAP"); break;
+  case 2: strcpy(ins_mode, "FULL SPECT"); break;
+  case 3: strcpy(ins_mode, "LONG MAP"); break;
+  case 4: strcpy(ins_mode, "LONG SPECT"); break;
+  case 5: strcpy(ins_mode, "SHORT MAP"); break;
+  case 6: strcpy(ins_mode, "SHORT SPECT"); break;
+  case 7: strcpy(ins_mode, "FIXED MAP"); break;
+  case 8: strcpy(ins_mode, "BANDEDGE MAP"); break;
+  case 9: strcpy(ins_mode, "BANDEDGE SPECT"); break;
+  case 10: strcpy(ins_mode, "SLIDE & STOP MAP"); break;
+  case 11: strcpy(ins_mode, "SLIDE & STOP SPECT"); break;
+  case 12: strcpy(ins_mode, "SPECIAL SEQUENCE"); break;
+  case 13: strcpy(ins_mode, "FIXED LONG MAP"); break;
+  case 14: strcpy(ins_mode, "FIXED SHORT MAP"); break;
+  case 15: strcpy(ins_mode, "FIXED FULL MAP"); break;
   }
-  sprintf( msg, " Instrument mode is ");
-  strcat( msg, ins_mode);
-  zvmessage(" ","");
-  zvmessage( msg,"");
+  zvnprintf(100, "\n Instrument mode is %s", ins_mode);
 
   ngps = nsteps + nwps;
 
@@ -4412,15 +4450,15 @@ mfound:
 
   if (histbin && ngps0>1) zmabend(" Ins. mode incompatible with histogram binningg");
 
-	/* convert SLEW_TOL from per-g.c. to per mf: */
+  /* convert SLEW_TOL from per-g.c. to per mf: */
   if (!fix_mode) slew_tol = slew_tol/ngps;
 
   /* now the WET! */
 
-  strncpy( wet_gid, edrhdr.hdr2.wetgid, 10);	/* store ID for label */
+  strncpy(wet_gid, edrhdr.hdr2.wetgid, 10);	/* store ID for label */
   wet_gid[10] = '\n';
 
-  strncpy( sbuf, edrhdr.hdr2.wetgrpsiz, 2);	/* # of entries in WET */
+  strncpy(sbuf, edrhdr.hdr2.wetgrpsiz, 2);	/* # of entries in WET */
   sbuf[2] = '\n';
   n = atoi(sbuf);
 
@@ -4428,10 +4466,10 @@ mfound:
   mgps = 0;				/* total # GPs from WET */
   for (i=0; i<n; i++) {
     gmask[mgps] = 0;
-    strncpy( sbuf, &edrhdr.hdr2.wetgrp[7*i], 2);	/* repeat count */
+    strncpy(sbuf, &edrhdr.hdr2.wetgrp[7*i], 2);	/* repeat count */
     sbuf[2] = '\n';
     wrep = atoi(sbuf);
-    strncpy( sbuf, &edrhdr.hdr2.wetgrp[7*i+2], 5);	/* det.mask */
+    strncpy(sbuf, &edrhdr.hdr2.wetgrp[7*i+2], 5);	/* det.mask */
     for (j=0; j<5; j++) {		/* convert hex char's to binary */
       if (sbuf[j]<='9')
 	sbuf[j] -= '0';
@@ -4470,7 +4508,7 @@ mfound:
     for (i=0; i<N_DETS; i++) {
       for (j=0; j<ngps0; j++) {
         if (i<s_det || i>e_det || (lami && nbb!=(lami-1)) || !wet[j][i] ||
-	 skipdet[i]>0) {
+	    skipdet[i]>0) {
 	  wet[j][i] = -1;
         }
         else {
@@ -4490,7 +4528,7 @@ mfound:
     for (i=0; i<N_DETS; i++) {
       for (j=0; j<nsteps; j++) {
         if (i<s_det || i>e_det || (lami && nbb!=(lami-1)) || !wet[j][i] ||
-	 skipdet[i]>0) {
+	    skipdet[i]>0) {
 	  wet[j][i] = -1;
         }
         else {
@@ -4549,7 +4587,7 @@ mfound:
 
 
 /************************************************************************/
-FUNCTION find_tube_gcs()
+void find_tube_gcs(void)
 /*
  * make a first pass thru the EDRs to see how many lines to allocate for
  * the tube (1 line per Grating Cycle);  this routine has the same main
@@ -4557,8 +4595,8 @@ FUNCTION find_tube_gcs()
  *
  */
 {
-  int empty, gp, i, igp, imp, irec, irim, irim1, isclk, istat, jrti,
-   jsclk, ngc, ngc1, rec, rti;
+  int empty, gp, i, irec = 0, irim, irim1, isclk, jrti,
+    jsclk, ngc, ngc1, rec, rti;
 
   jsclk = 0;			/* initialize EDR record SCLK counter */
   ngcs = 0;			/* reset grating cycle count (for tube) */
@@ -4586,7 +4624,7 @@ FUNCTION find_tube_gcs()
      * this pointing record -- if none, then flag it and skip to next
      * pointing record: */
     while (jsclk<isclk) {
-      get_nims_edr_rec_2( edrs[cur_edr].unit, irec++, &edrrec);
+      get_nims_edr_rec_2(edrs[cur_edr].unit, irec++, &edrrec);
       jsclk = comp_sclk(edrrec.pfix.sclk);
     }
     /* if EDR skipped over this MF: */
@@ -4600,7 +4638,7 @@ FUNCTION find_tube_gcs()
       if (rti>jrti) {		/* rti must be 5 */
 	/* check if EDR ends in the middle of a MF: */
 	if (isclk==file_hclk && !file_hrti) break;
-	get_nims_edr_rec_2( edrs[cur_edr].unit, irec++, &edrrec);
+	get_nims_edr_rec_2(edrs[cur_edr].unit, irec++, &edrrec);
 	jsclk = comp_sclk(edrrec.pfix.sclk);
 	if (!jsclk) continue;
 	jrti = edrrec.pfix.sclk.rti;
@@ -4618,7 +4656,6 @@ FUNCTION find_tube_gcs()
 
       gp = (2*(isclk%91) + rti/5) % ngps;
       if (gpos[gp]<0) continue;
-      igp = fix_mode ? 0 : gp;
 
       if (fix_mode) ngcs++;
       else {		/* compute GC in RIM, increment count when it changes*/
@@ -4632,13 +4669,13 @@ FUNCTION find_tube_gcs()
       }
     }
   }
-  sprintf( msg, " # of GCs with valid data = %d", ngcs);
-  zvmessage( msg,"");
+  zvnprintf(100, " # of GCs with valid data = %d", ngcs);
 }
 
 
 /************************************************************************/
-FUNCTION find_xy_center( sclk, rti, mpos, bcone, bxcone, dbc, dbx)
+void find_xy_center(int sclk, int rti, struct xytype mpos[4][20],
+		    double bcone, double bxcone, double dbc, double dbx)
 /*
  * Calculate the coordinates of the pixel center for all mirror positions for
  * a given scan (nit), specified by rti = 0 or 5.  
@@ -4647,15 +4684,16 @@ FUNCTION find_xy_center( sclk, rti, mpos, bcone, bxcone, dbc, dbx)
  * computed and the rejected pixels marked by X = BADP and Y=0 (to distinguish
  * them from off-planet pixels, which have X = Y = BADP.
  */
-
-int sclk;
+#if 0
+  int sclk;
 double bcone, bxcone, dbc, dbx;
-	/* mirror pos. -- only 1st element of 1st dimension is used: */
+/* mirror pos. -- only 1st element of 1st dimension is used: */
 struct xytype mpos[4][20];
+#endif
 {
-  int boom, dboom, i, ind, j, k, mp;
+  int dboom, i, ind, j;
   float dum, lat0, lat, lon, ertang, prtang;
-  double dlat[20], dlon[20], phi, cone, xcone, tcone, txcone;
+  double dlat[20], dlon[20], cone, xcone, tcone, txcone;
 
   for (i=smpos; i<=empos; i++) {
     mpos[0][i].x = BADP;
@@ -4665,45 +4703,45 @@ struct xytype mpos[4][20];
     dlat[i] = 0.;
     dlon[i] = 0.;
 
-    get_tgt_data( sclk, rti, i, 0, 1, &cone, &xcone);
+    get_tgt_data(sclk, rti, i, 0, 1, &cone, &xcone);
     if (dbm) {
       j = i;
       if (rti) j += 20;            /* rti is 0 or 5 only */
       tcone = bcone + dbc*mirr_tim_table[j] + cone*degrad;
       txcone = bxcone + dbx*mirr_tim_table[j] + xcone*degrad;
-      znimsboom( tcone, txcone, &dboom, dbmfile);
+      znimsboom(tcone, txcone, &dboom, dbmfile);
       if (dboom) {
         mpos[0][i].y = 0;  /* to distinguish pix. from off-planet */
         continue;
       }
     }
 
-      /* get lat, lon of mp0 */
+    /* get lat, lon of mp0 */
     dum = 0.0;
-    zpproj( &tgt_data, &dum, &dum, &lat, &lon, LS_LL, lattyp, &rtang,
-     &slant, &ind);
+    zpproj(&tgt_data, &dum, &dum, &lat, &lon, LS_LL, lattyp, &rtang,
+	   &slant, &ind);
     lat0 = lat;		/* store since lat may get converted det->cen */
 
-      /*
-       * if point is off-planet then check if we want to try
-       * the radius fudge option:  (only for map_type = 2 or 16 !)
-       */
+    /*
+     * if point is off-planet then check if we want to try
+     * the radius fudge option:  (only for map_type = 2 or 16 !)
+     */
     if (!ind) {
       if (!radfudge) continue;
-	/* nominal planetocentric radius at this lat/lon: */
-      rplan( &rnom, lat, lon, tgt_data.e1rad, tgt_data.e2rad,
-       tgt_data.prad);
+      /* nominal planetocentric radius at this lat/lon: */
+      rplan(&rnom, lat, lon, tgt_data.e1rad, tgt_data.e2rad,
+	    tgt_data.prad);
       lfact = rtang/rnom;
       if (lfact> radfact) continue;
-            /* only ORTHO & POV allow RADFUDGE */
+      /* only ORTHO & POV allow RADFUDGE */
       if (map_type == 2) {
 	prtang = pol_rad * lfact;
 	ertang = eq_rad * lfact;
-	if (pgraphic==1) lat = det2cen( lat);
-	ztranv( &ind, map_type, LL_LS, map_samp, map_line, latitude,
-	 parallel[0], parallel[1], longitude, scale, map_pole,
-	 &mpos[0][i].y, &mpos[0][i].x, &lat, &lon, prtang, ertang,
-	 north);
+	if (pgraphic==1) lat = det2cen(lat);
+	ztranv(&ind, map_type, LL_LS, map_samp, map_line, latitude,
+	       parallel[0], parallel[1], longitude, scale, map_pole,
+	       &mpos[0][i].y, &mpos[0][i].x, &lat, &lon, prtang, ertang,
+	       north);
         if (ind && (rtang < eq_rad)) continue;	/* BOP */
         if ((map_type==9 || map_type==10) && mpos[0][i].x<0.)
 	  mpos[0][i].x += circum;
@@ -4713,8 +4751,8 @@ struct xytype mpos[4][20];
 	t_data_povf.e1rad = tgt_data.e1rad * lfact;
 	t_data_povf.e2rad = tgt_data.e2rad * lfact;
 	dum = -1.;	/* flag to ignore BOP test */
-        zpproj( &t_data_povf, &mpos[0][i].y, &mpos[0][i].x, &lat, &lon,
-         LL_LS, lattyp, &dum, &dum, &ind);
+        zpproj(&t_data_povf, &mpos[0][i].y, &mpos[0][i].x, &lat, &lon,
+	       LL_LS, lattyp, &dum, &dum, &ind);
         if (!ind && (rtang < rnom)) continue;	/* BOP */
       }
       cobuf[i].rads[1] = rtang - rnom;		/* altitude */
@@ -4723,17 +4761,17 @@ struct xytype mpos[4][20];
     else {                  /* point is on planet */
       if (map_type==16) {
 	dum = 1.;	/* flag to use BOP test */
-        zpproj( &t_data_pov, &mpos[0][i].y, &mpos[0][i].x, &lat, &lon,
-         LL_LS, lattyp, &dum, &dum, &ind);
+        zpproj(&t_data_pov, &mpos[0][i].y, &mpos[0][i].x, &lat, &lon,
+	       LL_LS, lattyp, &dum, &dum, &ind);
         if (!ind) continue;
         cobuf[i].rads[1] = 0.0;
       }
       else {
-	if (pgraphic==1 && (map_type!=10 || oldver)) lat = det2cen( lat);
-        ztranv( &ind, map_type, LL_LS, map_samp, map_line, latitude,
-         parallel[0], parallel[1], longitude, scale, map_pole,
-         &mpos[0][i].y, &mpos[0][i].x, &lat, &lon, pol_rad, eq_rad,
-         north);
+	if (pgraphic==1 && (map_type!=10 || oldver)) lat = det2cen(lat);
+        ztranv(&ind, map_type, LL_LS, map_samp, map_line, latitude,
+	       parallel[0], parallel[1], longitude, scale, map_pole,
+	       &mpos[0][i].y, &mpos[0][i].x, &lat, &lon, pol_rad, eq_rad,
+	       north);
         if (ind) continue;
         if ((map_type==9 || map_type==10) && mpos[0][i].x<0.) 
 	  mpos[0][i].x += circum;
@@ -4749,25 +4787,26 @@ struct xytype mpos[4][20];
 
     cobuf[i].rads[0] = slant;            /* slant distance */
 
-            /* save range for label: */
-    maxsdist = max( slant, maxsdist);
-    minsdist = min( slant, minsdist);
-            /* ... and for catalog: */
+    /* save range for label: */
+    maxsdist = max(slant, maxsdist);
+    minsdist = min(slant, minsdist);
+    /* ... and for catalog: */
     if (i==9 && !rti) {
       trange[ll_rec1] = slant;
       if (!ll_rec1) ll_rec1 = 1;
     }
   }
-	/*
-	 * finish computation of geometry buffer:
-	 */
-  geobuf( mpos, dlat, dlon);
+  /*
+   * finish computation of geometry buffer:
+   */
+  geobuf(mpos, dlat, dlon);
 
 }
 
 
 /************************************************************************/
-FUNCTION find_xy_corners( sclk, rti, mpos, bcone, bxcone, dbc, dbx)
+void find_xy_corners(int sclk, int rti, struct xytype mpos[4][20],
+		     double bcone, double bxcone, double dbc, double dbx)
 /*
  * Calculate the coordinates of the 4 corners of the input pixel for all
  * mirror positions for a given scan (nit), specified by rti = 0 or 5.  
@@ -4782,15 +4821,16 @@ FUNCTION find_xy_corners( sclk, rti, mpos, bcone, bxcone, dbc, dbx)
  * computed and the rejected pixels marked by X = -1 and Y=0 (to distinguish
  * them from off-planet pixels, which have X = Y = -1.
  */
-
-int sclk;
+#if 0
+  int sclk;
 double bcone, bxcone, dbc, dbx;
-	/* mirror pos. of corners: */
+/* mirror pos. of corners: */
 struct xytype mpos[4][20];
+#endif
 {
-  int boom, dboom, i, ind, j, jj, k, m, mp, npts;
+  int dboom, i, ind, j, jj, k, npts;
   float del1, del2, dum, lat0, lat, lon[4], ertang, prtang;
-  double delx, dlat[20], dlon[20], phi, cone, xcone, tcone, txcone;
+  double delx, dlat[20], dlon[20], cone, xcone, tcone, txcone;
 
   for (i=smpos; i<=empos; i++) {
 
@@ -4799,27 +4839,27 @@ struct xytype mpos[4][20];
     cobuf[i].latlon[0] = BADP;
     cobuf[i].latlon[1] = BADP;
 
-    get_tgt_data( sclk, rti, i, 0, 1, &cone, &xcone);
+    get_tgt_data(sclk, rti, i, 0, 1, &cone, &xcone);
     if (dbm) {
       j = i;
       if (rti) j += 20;            /* rti is 0 or 5 only */
       tcone = bcone + dbc*mirr_tim_table[j] + cone*degrad;
       txcone = bxcone + dbx*mirr_tim_table[j] + xcone*degrad;
-      znimsboom( tcone, txcone, &dboom, dbmfile);
+      znimsboom(tcone, txcone, &dboom, dbmfile);
       if (dboom) {
         mpos[0][i].y = 0;  /* to distinuish pix. from off-planet */
         continue;
       }
     }
 
-	/*
-	 * get mpos at the 4 corners, relying on the fact that
-	 * cone/x-cone correspond to sample/line directions:
-	 * (note that pixel is 2* larger in x-cone than cone,
-	 * with a non-uniform weighting function in x-cone)
-	 *
-	 * in Tube case, we only need the right-hand edge
-	 */
+    /*
+     * get mpos at the 4 corners, relying on the fact that
+     * cone/x-cone correspond to sample/line directions:
+     * (note that pixel is 2* larger in x-cone than cone,
+     * with a non-uniform weighting function in x-cone)
+     *
+     * in Tube case, we only need the right-hand edge
+     */
     npts = 4;
     del1 = -1.0;
     del2 = -0.5;
@@ -4835,98 +4875,98 @@ struct xytype mpos[4][20];
       cobuf[i].rads[1] = 0;
     }
 
-/* OLD WAY (G-cube only):
-    for (j=0, del1 = -1.0; del1 < 1.101; del1 += 2.0) {
-      for (del2 = -0.5; del2 < 0.501; del2 += 1.0, j++) {
-*/
-      for (j=0; j<npts; j++) {
-        zpproj( &tgt_data, &del1, &del2, &lat, &lon[j], LS_LL, lattyp,
-	 &rtang, &slant, &ind);
-	lat0 = lat;		/* store since lat may get converted det->cen */
+    /* OLD WAY (G-cube only):
+       for (j=0, del1 = -1.0; del1 < 1.101; del1 += 2.0) {
+       for (del2 = -0.5; del2 < 0.501; del2 += 1.0, j++) {
+    */
+    for (j=0; j<npts; j++) {
+      zpproj(&tgt_data, &del1, &del2, &lat, &lon[j], LS_LL, lattyp,
+	     &rtang, &slant, &ind);
+      lat0 = lat;		/* store since lat may get converted det->cen */
 
-	  /*
-	   * if point is off-planet then check if we want to try
-	   * the radius fudge option:  (only for map_type = 2 or 16 !)
-	   */
-	if (!ind) {
-	  if (!radfudge) goto bad_pt;
-	  /* nominal planetocentric radius at this lat/lon: */
-	  rplan( &rnom, lat, lon[j], tgt_data.e1rad, tgt_data.e2rad,
-	   tgt_data.prad);
-	  lfact = rtang/rnom;
-	  if (lfact> radfact) goto bad_pt;
-          /* only ORTHO & POV allow RADFUDGE */
-	  if (map_type == 2) {
-	    prtang = pol_rad * lfact;
-	    ertang = eq_rad * lfact;
-	    if (pgraphic==1) lat = det2cen( lat);
-	    ztranv( &ind, map_type, LL_LS, map_samp, map_line, latitude,
-	     parallel[0], parallel[1], longitude, scale, map_pole,
-	     &mpos[j][i].y, &mpos[j][i].x, &lat, &lon[j], prtang, ertang,
-	     north);
-	    if (ind && (rtang < eq_rad)) goto bad_pt;	/* BOP */
-            if ((map_type==10 || map_type==10) && mpos[j][i].x<0.) 
-	      mpos[j][i].x += circum;
-	  }
-	  else {            /* must be maptype = 16 */
-	    t_data_povf.prad = tgt_data.prad * lfact;
-	    t_data_povf.e1rad = tgt_data.e1rad * lfact;
-	    t_data_povf.e2rad = tgt_data.e2rad * lfact;
-	    dum = -1.;	/* flag to ignore BOP test */
-	    zpproj( &t_data_povf, &mpos[j][i].y, &mpos[j][i].x, &lat, &lon[j],
-	     LL_LS, lattyp, &dum, &dum, &ind);
-	    if (!ind && (rtang < rnom)) goto bad_pt;	/* BOP */
-	  }
-	  if (!tube) {
-	    cobuf[i].rads[1] += rtang - rnom;		/* altitude */
-	  }
-	  else if (j==0) {
-	    cobuf[i].rads[1] = rtang - rnom;
-	  }
+      /*
+       * if point is off-planet then check if we want to try
+       * the radius fudge option:  (only for map_type = 2 or 16 !)
+       */
+      if (!ind) {
+	if (!radfudge) goto bad_pt;
+	/* nominal planetocentric radius at this lat/lon: */
+	rplan(&rnom, lat, lon[j], tgt_data.e1rad, tgt_data.e2rad,
+	      tgt_data.prad);
+	lfact = rtang/rnom;
+	if (lfact> radfact) goto bad_pt;
+	/* only ORTHO & POV allow RADFUDGE */
+	if (map_type == 2) {
+	  prtang = pol_rad * lfact;
+	  ertang = eq_rad * lfact;
+	  if (pgraphic==1) lat = det2cen(lat);
+	  ztranv(&ind, map_type, LL_LS, map_samp, map_line, latitude,
+		 parallel[0], parallel[1], longitude, scale, map_pole,
+		 &mpos[j][i].y, &mpos[j][i].x, &lat, &lon[j], prtang, ertang,
+		 north);
+	  if (ind && (rtang < eq_rad)) goto bad_pt;	/* BOP */
+	  if ((map_type==10 || map_type==10) && mpos[j][i].x<0.) 
+	    mpos[j][i].x += circum;
 	}
-	else {                  /* point is on planet */
-	  if (map_type==16) {
-	    dum = 1.;	/* flag to use BOP test */
-	    zpproj( &t_data_pov, &mpos[j][i].y, &mpos[j][i].x, &lat, &lon[j],
-	     LL_LS, lattyp, &dum, &dum, &ind);
-	    if (!ind) goto bad_pt;
-	    cobuf[i].rads[1] = 0.0;
-	  }
-	  else {
-	    if (pgraphic==1 && (map_type!=10 || oldver)) lat = det2cen( lat);
-	    ztranv( &ind, map_type, LL_LS, map_samp, map_line, latitude,
-	     parallel[0], parallel[1], longitude, scale, map_pole, 
-	     &mpos[j][i].y, &mpos[j][i].x, &lat, &lon[j], pol_rad, eq_rad,
-	     north);
-	    if (ind) goto bad_pt;
-            if ((map_type==9 || map_type==10) && mpos[j][i].x<0.)
-	      mpos[j][i].x += circum;
-	    cobuf[i].rads[1] = 0.0; /* this is on-planet flag in output_cot */
-	  }
+	else {            /* must be maptype = 16 */
+	  t_data_povf.prad = tgt_data.prad * lfact;
+	  t_data_povf.e1rad = tgt_data.e1rad * lfact;
+	  t_data_povf.e2rad = tgt_data.e2rad * lfact;
+	  dum = -1.;	/* flag to ignore BOP test */
+	  zpproj(&t_data_povf, &mpos[j][i].y, &mpos[j][i].x, &lat, &lon[j],
+		 LL_LS, lattyp, &dum, &dum, &ind);
+	  if (!ind && (rtang < rnom)) goto bad_pt;	/* BOP */
 	}
 	if (!tube) {
-	  cobuf[i].rads[0] += slant;			/* slant distance */
-	  dlat[i] += lat0;		/* save for geometry calc'n */
+	  cobuf[i].rads[1] += rtang - rnom;		/* altitude */
 	}
 	else if (j==0) {
-	  cobuf[i].rads[0] = slant;
-	  dlat[i] = lat0;
-	}
-
-	/* end loop over npts -- handle increments for different cases: */
-	if (tube) {
-	  del2 = 0.5;	/* (only j=0 case occurs) */
-	}
-	else {
-	  switch (j) {
-	    case 0: del1 = -1.0; del2 = 0.5; break;
-	    case 1: del1 = 1.0; del2 = -0.5; break;
-	    case 2: del1 = 1.0; del2 = 0.5; break;
-	  }
+	  cobuf[i].rads[1] = rtang - rnom;
 	}
       }
-/* OLD WAY:
-    }	/* end loop over 4 corners (or 2 points, if tube) */
+      else {                  /* point is on planet */
+	if (map_type==16) {
+	  dum = 1.;	/* flag to use BOP test */
+	  zpproj(&t_data_pov, &mpos[j][i].y, &mpos[j][i].x, &lat, &lon[j],
+		 LL_LS, lattyp, &dum, &dum, &ind);
+	  if (!ind) goto bad_pt;
+	  cobuf[i].rads[1] = 0.0;
+	}
+	else {
+	  if (pgraphic==1 && (map_type!=10 || oldver)) lat = det2cen(lat);
+	  ztranv(&ind, map_type, LL_LS, map_samp, map_line, latitude,
+		 parallel[0], parallel[1], longitude, scale, map_pole, 
+		 &mpos[j][i].y, &mpos[j][i].x, &lat, &lon[j], pol_rad, eq_rad,
+		 north);
+	  if (ind) goto bad_pt;
+	  if ((map_type==9 || map_type==10) && mpos[j][i].x<0.)
+	    mpos[j][i].x += circum;
+	  cobuf[i].rads[1] = 0.0; /* this is on-planet flag in output_cot */
+	}
+      }
+      if (!tube) {
+	cobuf[i].rads[0] += slant;			/* slant distance */
+	dlat[i] += lat0;		/* save for geometry calc'n */
+      }
+      else if (j==0) {
+	cobuf[i].rads[0] = slant;
+	dlat[i] = lat0;
+      }
+
+      /* end loop over npts -- handle increments for different cases: */
+      if (tube) {
+	del2 = 0.5;	/* (only j=0 case occurs) */
+      }
+      else {
+	switch (j) {
+	case 0: del1 = -1.0; del2 = 0.5; break;
+	case 1: del1 = 1.0; del2 = -0.5; break;
+	case 2: del1 = 1.0; del2 = 0.5; break;
+	}
+      }
+    }
+    /*    OLD WAY:
+	  }	/ * end loop over 4 corners (or 2 points, if tube) */
 
     /* check for wraparound problem in Cyl. projection: */
     if (map_type==9 || map_type==10) {
@@ -4973,9 +5013,9 @@ struct xytype mpos[4][20];
     dlat[i] = dlat[i]/degrad;
     dlon[i] = dlon[i]/degrad;
 
-	/* for label & catalog range, just use last corner: */
-    maxsdist = max( slant, maxsdist);
-    minsdist = min( slant, minsdist);
+    /* for label & catalog range, just use last corner: */
+    maxsdist = max(slant, maxsdist);
+    minsdist = min(slant, minsdist);
     if (i==9 && !rti) {
       trange[ll_rec1] = slant;
       if (!ll_rec1) ll_rec1 = 1;
@@ -4983,32 +5023,33 @@ struct xytype mpos[4][20];
 
     continue;	/* in order to skip "error processing" below */
 
-	/* end of mp loop -- jump here out of double loop if *any* corner 
-	 * is off-planet, since in that case DN is contaminated by sky;
-	 * (can be circumvented by RADFACT option) */
-bad_pt:
+    /* end of mp loop -- jump here out of double loop if *any* corner 
+     * is off-planet, since in that case DN is contaminated by sky;
+     * (can be circumvented by RADFACT option) */
+  bad_pt:
     mpos[0][i].x = BADP;	/* only this vertex is checked subsequently! */
     mpos[0][i].y = BADP;
     cobuf[i].rads[0] = 0.;	/* clear these, just to be sure */
     cobuf[i].rads[1] = NULL4;	/* on-planet flag in output_cotube */
   }
-	/*
-	 * finish computation of geometry buffer, using the average
-	 * lat/lon for comb:
-	 */
-  geobuf( mpos, dlat, dlon);
+  /*
+   * finish computation of geometry buffer, using the average
+   * lat/lon for comb:
+   */
+  geobuf(mpos, dlat, dlon);
 
 }
 
 
 /************************************************************************/
-FUNCTION geobuf( mpos, dlat, dlon)
+void geobuf(struct xytype mpos[4][20], double dlat[20], double dlon[20])
 /*
  * fill the geometry buffer using lat/lon values computed in find_xy
  */
-
-struct xytype mpos[4][20];
+#if 0
+  struct xytype mpos[4][20];
 double dlat[20], dlon[20];
+#endif
 {
   int i, j;
   double clat, dword, phic, phid, r, slat, tdlon, xrs;
@@ -5017,25 +5058,25 @@ double dlat[20], dlon[20];
   for (i=smpos; i<=empos; i++) {
     if (mpos[0][i].x == (float)BADP) continue;
 
-	/* find both detic and centric latitudes: */
+    /* find both detic and centric latitudes: */
     if (pgraphic<0) phic = phid = dlat[i];
     else if (pgraphic==1) {
-      phic = atan( tan(dlat[i]) / rep2 );
+      phic = atan(tan(dlat[i]) / rep2 );
       phid = dlat[i];
     }
     else {
       phic = dlat[i];
-      phid = atan( rep2 * tan(dlat[i]) );
+      phid = atan(rep2 * tan(dlat[i]) );
     }
 
     tdlon = dlon[i];	/* TO AVOID COMPILER BUG WHEN /OPT */
 
-	/* unit zenith vector in planet coord's at (lat,lon): */
-    u_zenith[0] = cos( phid) * cos( tdlon);
-    u_zenith[1] = - cos( phid) * sin( tdlon);	/* - because W long. */
-    u_zenith[2] = sin( phid);
+    /* unit zenith vector in planet coord's at (lat,lon): */
+    u_zenith[0] = cos(phid) * cos(tdlon);
+    u_zenith[1] = - cos(phid) * sin(tdlon);	/* - because W long. */
+    u_zenith[2] = sin(phid);
 
-	/* unit vector from surface pixel to s/c */
+    /* unit vector from surface pixel to s/c */
     if (pgraphic<0) {	/* spherical case */
       for (j=0, xrs=0.; j<3; j++) {
 	u_sc[j] = cobuf[i].rs[j] - eq_rad*u_zenith[j];
@@ -5056,109 +5097,111 @@ double dlat[20], dlon[20];
 	xrs += u_sc[j]*u_sc[j];
       }
     }
-    xrs = sqrt( xrs);
+    xrs = sqrt(xrs);
     for (j=0; j<3; j++) u_sc[j] = u_sc[j]/xrs;
 
-	/* emission angle: */
-    cobuf[i].geom[1] = acos( u_zenith[0]*u_sc[0] + u_zenith[1]*u_sc[1] +
-     u_zenith[2]*u_sc[2]);
+    /* emission angle: */
+    cobuf[i].geom[1] = acos(u_zenith[0]*u_sc[0] + u_zenith[1]*u_sc[1] +
+			    u_zenith[2]*u_sc[2]);
 
-	/* incidence angle: */
-    cobuf[i].geom[0] = acos( u_zenith[0]*cobuf[i].u_sun[0] +
-     u_zenith[1]*cobuf[i].u_sun[1] + u_zenith[2]*cobuf[i].u_sun[2]);
+    /* incidence angle: */
+    cobuf[i].geom[0] = acos(u_zenith[0]*cobuf[i].u_sun[0] +
+			    u_zenith[1]*cobuf[i].u_sun[1] + u_zenith[2]*cobuf[i].u_sun[2]);
 
-	/* phase angle: (THIS IS NOW DONE IN GET_TGT_DATA) */
-/*    cobuf[i].geom[2] = acos( u_sc[0]*cobuf[i].u_sun[0] +
- *     u_sc[1]*cobuf[i].u_sun[1] +
- *     u_sc[2]*cobuf[i].u_sun[2]); */
+    /* phase angle: (THIS IS NOW DONE IN GET_TGT_DATA) */
+    /*    cobuf[i].geom[2] = acos(u_sc[0]*cobuf[i].u_sun[0] +
+     *     u_sc[1]*cobuf[i].u_sun[1] +
+     *     u_sc[2]*cobuf[i].u_sun[2]); */
 
-	/* photometric function correction: */
+    /* photometric function correction: */
     if (pfunc==0) cobuf[i].photcor = 1.0;
-    else if (pfunc==1) cobuf[i].photcor = cos( cobuf[i].geom[0]);
+    else if (pfunc==1) cobuf[i].photcor = cos(cobuf[i].geom[0]);
     else if (pfunc==2) {
-      if (p_minn == 0.0) cobuf[i].photcor = cos( cobuf[i].geom[1]);
-      else if (p_minn == 1.0) cobuf[i].photcor = cos( cobuf[i].geom[0]);
+      if (p_minn == 0.0) cobuf[i].photcor = cos(cobuf[i].geom[1]);
+      else if (p_minn == 1.0) cobuf[i].photcor = cos(cobuf[i].geom[0]);
       else {
-	dword = cos( cobuf[i].geom[0]) * cos( cobuf[i].geom[1]);
+	dword = cos(cobuf[i].geom[0]) * cos(cobuf[i].geom[1]);
 	if (dword > 0.0) cobuf[i].photcor =
-	 pow( dword, p_minn) / cos( cobuf[i].geom[1]);
+			   pow(dword, p_minn) / cos(cobuf[i].geom[1]);
       }
     }
     else if (pfunc==3) cobuf[i].photcor = cos(cobuf[i].geom[0]) /
-     (cos(cobuf[i].geom[0]) + cos(cobuf[i].geom[1]));
+			 (cos(cobuf[i].geom[0]) + cos(cobuf[i].geom[1]));
     if (cobuf[i].photcor <= 0.0) cobuf[i].photcor = 1.0;
   }
 
-	/* min/max lat/longs for label: */
+  /* min/max lat/longs for label: */
   for (i=smpos; i<=empos; i++) {
     if (mpos[0][i].x == (float)BADP || mpos[0][i].x < 0.5 ||
         mpos[0][i].x > (float)osize[1]+0.5 || mpos[0][i].y < 0.5 ||
         mpos[0][i].y > (float)osize[0]+0.5) continue;
     /* these will be replaced for G-cube in write_latlon: */
-    mmlat[0] = min( degrad*dlat[i], mmlat[0]);
-    mmlat[1] = max( degrad*dlat[i], mmlat[1]);
+    mmlat[0] = min(degrad*dlat[i], mmlat[0]);
+    mmlat[1] = max(degrad*dlat[i], mmlat[1]);
     /* lonrange>0 occurs only for Tube case if min/max long's not done in
      * set_projection (that feature has been effectively disabled) */
     if (lonrange) { 
       dword = degrad*dlon[i];
       if (lonrange==1 && dword>180.) dword -= 360.;
       if (lonrange==2 && dword<0.) dword += 360.;
-      mmlon[0] = min( dword, mmlon[0]);
-      mmlon[1] = max( dword, mmlon[1]);
+      mmlon[0] = min(dword, mmlon[0]);
+      mmlon[1] = max(dword, mmlon[1]);
     }
   }
 
-/*  if (!cat_flag) return; */
+  /*  if (!cat_flag) return; */
 
-	/* min/max catalog stuff (leave lon for end because of wraparound
-	 * problem) */
+  /* min/max catalog stuff (leave lon for end because of wraparound
+   * problem) */
   for (i=smpos; i<=empos; i++) {
     if (mpos[0][i].x == (float)BADP) continue;
-    tincid[0] = min( degrad*cobuf[i].geom[0], tincid[0]);
-    tincid[1] = max( degrad*cobuf[i].geom[0], tincid[1]);
-    temiss[0] = min( degrad*cobuf[i].geom[1], temiss[0]);
-    temiss[1] = max( degrad*cobuf[i].geom[1], temiss[1]);
-    tphase[0] = min( degrad*cobuf[i].geom[2], tphase[0]);
-    tphase[1] = max( degrad*cobuf[i].geom[2], tphase[1]);
+    tincid[0] = min(degrad*cobuf[i].geom[0], tincid[0]);
+    tincid[1] = max(degrad*cobuf[i].geom[0], tincid[1]);
+    temiss[0] = min(degrad*cobuf[i].geom[1], temiss[0]);
+    temiss[1] = max(degrad*cobuf[i].geom[1], temiss[1]);
+    tphase[0] = min(degrad*cobuf[i].geom[2], tphase[0]);
+    tphase[1] = max(degrad*cobuf[i].geom[2], tphase[1]);
   }
 }
 
 
 /*************************************************************************/
-int FUNCTION get_pntng( sclk, cang)
+int get_pntng(int sclk, struct pntng_typ *cang)
 /*
  * return instrument pointing (C-matrix Euler angles + Cone/Clock) at
  * beginning of specified SCLK (mf)
  *
  * return the angles in radians 
  */
-int sclk;
+#if 0
+  int sclk;
 struct pntng_typ *cang;
+#endif
 {
   int i, i1, i2, lo1, lo2, hi1, hi2;
   double delang, frac;
   struct pntng_typ cang1, cang2;
 
-  vstat = extract_pntng( sclk, cang);
+  vstat = extract_pntng(sclk, cang);
 
   if (!vstat) {
     if (!c_extrap) return vstat;
     if (aacsf) {
       /* reset aacsfile to start of file for assemble_pntng */
-      rewind( aacsfil);
+      rewind(aacsfil);
       is0 = 0;
     }
-	/*
-	 * if no data for this SCLK, find 2 closest records with data and
-	 * inter/extrapolate;  since we prefer interpolation over
-	 * extrapolation, find the 2 closest on each side (if any),
-	 * and then decide which to use:
-	 */
+    /*
+     * if no data for this SCLK, find 2 closest records with data and
+     * inter/extrapolate;  since we prefer interpolation over
+     * extrapolation, find the 2 closest on each side (if any),
+     * and then decide which to use:
+     */
     i = lo1 = lo2 = 0;
     /* we must read the AACSFILE in ascending sclk order, so start CK_TOL
      * away and read all points up to SCLK-1, replacing lo1/2 as we go along */
     for (i=0; i<CK_TOL; i++) {
-      vstat = extract_pntng( sclk-CK_TOL+i, cang);
+      vstat = extract_pntng(sclk-CK_TOL+i, cang);
       if (vstat) {
 	lo2 = lo1;
 	lo1 = sclk-CK_TOL+i;
@@ -5168,7 +5211,7 @@ struct pntng_typ *cang;
     while (hi1==0 || hi2==0) {
       i++;
       if (i>CK_TOL || sclk+i >= file_hclk) break;
-      vstat = extract_pntng( sclk+i, cang);
+      vstat = extract_pntng(sclk+i, cang);
       if (vstat) {
 	if (hi1==0) hi1 = sclk+i;
 	else hi2 = sclk+i;
@@ -5190,14 +5233,14 @@ struct pntng_typ *cang;
       
     if (aacsf) {
       /* reset aacsfile to start of file for assemble_pntng */
-      rewind( aacsfil);
+      rewind(aacsfil);
       is0 = 0;
     }
-    vstat = extract_pntng( i1, &cang1);
-    vstat = extract_pntng( i2, &cang2);
+    vstat = extract_pntng(i1, &cang1);
+    vstat = extract_pntng(i2, &cang2);
     if (aacsf) {
       /* reset aacsfile to start of file for assemble_pntng */
-      rewind( aacsfil);
+      rewind(aacsfil);
       is0 = 0;
     }
 
@@ -5226,7 +5269,7 @@ struct pntng_typ *cang;
 }
 
 /************************************************************************/
-FUNCTION get_omrs( pdist, slat, slon, olat, olon, pssl, psss, bop)
+void get_omrs(double pdist, double slat, double slon, double olat, double olon, double *pssl, double *psss, int *bop)
 /*
  * compute OM-matrix and subspacecraft line & sample, if lat/long of
  * SSC and optical axis have been specified -- the OM matrix is stored
@@ -5234,10 +5277,12 @@ FUNCTION get_omrs( pdist, slat, slon, olat, olon, pssl, psss, bop)
  *
  * if PDIST > 0, then the RS-vector is also computed
  */
-double pdist, slat, slon, olat, olon, *pssl, *psss;
+#if 0
+  double pdist, slat, slon, olat, olon, *pssl, *psss;
 int *bop;
+#endif
 {
-  double e1rad, e2rad, prad, pdist1, rolat, rolon, rslat, rslon, pscal, xnorth;
+  double e1rad, e2rad, prad, pdist1, rolat, rolon, rslat, rslon, xnorth;
   static double vec[3] = {0.0, 0.0, 1.0};
   matrix om1;
 
@@ -5252,33 +5297,32 @@ int *bop;
     t_data_pov.rs[2] = pdist*sin(rslat);
     pdist1 = pdist;
   }
-  else pdist1 = sqrt( t_data_pov.rs[0] * t_data_pov.rs[0] +
-		      t_data_pov.rs[1] * t_data_pov.rs[1] +
-		      t_data_pov.rs[2] * t_data_pov.rs[2] );
+  else pdist1 = sqrt(t_data_pov.rs[0] * t_data_pov.rs[0] +
+		     t_data_pov.rs[1] * t_data_pov.rs[1] +
+		     t_data_pov.rs[2] * t_data_pov.rs[2] );
 
   xnorth = north/degrad - zhalfpi();
 
-	/* convert longs to East for GETOM: */
+  /* convert longs to East for GETOM: */
   rslon = ztwopi()-rslon;
   rolon = ztwopi()-rolon;
 
-	/* convert to REAL*8: */
+  /* convert to REAL*8: */
   e1rad = t_data_pov.e1rad;
   e2rad = t_data_pov.e2rad;
   prad = t_data_pov.prad;
 
-  zgetom( &e1rad, &e2rad, &prad, &rslat, &rslon, &pdist1, &rolat, &rolon, 
-   vec, &xnorth, om1, bop);
+  zgetom(&e1rad, &e2rad, &prad, &rslat, &rslon, &pdist1, &rolat, &rolon, 
+	 vec, &xnorth, om1, bop);
   if (zfailed()) zmabend(" ** an error occurred in GETOM **");
 
-	/* PPROJ wants OM^-1 */
-  zxpose( om1, t_data_pov.om);
+  /* PPROJ wants OM^-1 */
+  zxpose(om1, t_data_pov.om);
 
-	/* convert RS to camera coordinates & compute SSC line/samp
-	 * -- vec is actually negative of what we want */
-  zmtxv( om1, t_data_pov.rs, vec);
+  /* convert RS to camera coordinates & compute SSC line/samp
+   * -- vec is actually negative of what we want */
+  zmtxv(om1, t_data_pov.rs, vec);
 
-  pscal = - t_data_pov.focal * t_data_pov.cscale / vec[2];
   *pssl = t_data_pov.aline - vec[1]/scale;
   *psss = t_data_pov.asamp - vec[0]/scale;
 
@@ -5286,29 +5330,29 @@ int *bop;
 
 
 /*************************************************************************/
-FUNCTION get_sflux()
+void get_sflux(void)
 /* compute solar flux */
 {
   int i;
   double et1, tssb[6];
   float dist;
 
-  i = comp_sclk( loclk);  
-  nims_s2et( i, &et1);
-  i = comp_sclk( hiclk);  
-  nims_s2et( i, &etime);
+  i = comp_sclk(loclk);  
+  nims_s2et(i, &et1);
+  i = comp_sclk(hiclk);  
+  nims_s2et(i, &etime);
   etime = 0.5*(etime+et1);	/* midpoint of observation */
   /* get state of target relative to SSB:
    * (should correct for Solar radius, but ignore that) */
-  zspkssb( ids.target, etime, esystem, tssb);
-  dist = sqrt( tssb[0]*tssb[0] + tssb[1]*tssb[1] + tssb[2]*tssb[2] );
+  zspkssb(ids.target, etime, esystem, tssb);
+  dist = sqrt(tssb[0]*tssb[0] + tssb[1]*tssb[1] + tssb[2]*tssb[2] );
   dist = 1.0e5*dist;		/* convert km to cm */
-  solar( dist, sol_flux);
+  solar(dist, sol_flux);
 }
 
 
 /*************************************************************************/
-FUNCTION get_tgt_data( sc_time, rti, mp, nora, geo_flag, pcone, pxcone)
+void get_tgt_data(int sc_time, int rti, int mp, int nora, int geo_flag, double *pcone, double *pxcone)
 /*
  * Store data into the structure used by PPROJ for a given scan (nit),
  * which is designated by rti = 0 or 5.
@@ -5328,12 +5372,13 @@ FUNCTION get_tgt_data( sc_time, rti, mp, nora, geo_flag, pcone, pxcone)
  *
  * geo_flag<0 is for TEST=9
  */
-
-int sc_time, rti, mp, nora, geo_flag;
+#if 0
+  int sc_time, rti, mp, nora, geo_flag;
 double *pcone, *pxcone;
+#endif
 {
-  int i, j, imp, xsclk;
-  double alpha, delta, kappa, con, clk, azi, dmtim, tcos, tsin, wcone, x;
+  int i, j=0, imp, xsclk = 0;
+  double alpha, delta, kappa, con = 0.0, clk = 0.0, azi, dmtim, wcone, x=0.;
   matrix c_nims;
   vector v0, v1;
   static int lastmf;
@@ -5346,9 +5391,9 @@ double *pcone, *pxcone;
 
   if (sc_time==0) zmabend(" *** invalid call to get_tgt_data ***");
 
-	/* first, make sure optical axis line/samp set to 0
-	 * (this is always the case for INPUT projections -- if
-	 * POV is output, then t_data_pov has the correct values */
+  /* first, make sure optical axis line/samp set to 0
+   * (this is always the case for INPUT projections -- if
+   * POV is output, then t_data_pov has the correct values */
   tgt_data.aline = 0.;
   tgt_data.asamp = 0.;
 
@@ -5365,20 +5410,20 @@ double *pcone, *pxcone;
       xsclk = mf[j+1].sclk;
     }
     lastmf = 0;
-	/* if last mf must extrapolate -- also if last before gap */
+    /* if last mf must extrapolate -- also if last before gap */
     if (j==(nmf-1) || xsclk!=(sclk_time+1)) {
       lastmf = 1;
       xc_ang = mf[j-1].cang;
       xsclk = mf[j-1].sclk;
       if (!nochk && c_extrap && xsclk!=(sclk_time-1))
-       zmabend(" *** error 2 interpolating C-angles ***");
+	zmabend(" *** error 2 interpolating C-angles ***");
     }
-	/* if there's still a gap must also extrapolate, but this won't work
-	 * if !c_extrap ... */
+    /* if there's still a gap must also extrapolate, but this won't work
+     * if !c_extrap ... */
     if (xsclk!=(sclk_time+1) && xsclk!=(sclk_time-1)) {
       xsclk = sclk_time+1;
       lastmf = 0;
-      vstat = extract_pntng( xsclk, &xc_ang);
+      vstat = extract_pntng(xsclk, &xc_ang);
       if (!vstat) zmabend(" *** error 3 interpolating C-angles ***");
     }
 
@@ -5397,27 +5442,27 @@ double *pcone, *pxcone;
       if ((-dclk)>180.) dclk += 360.;
     }
 
-    nims_ps_orient( sclk_time, sc, sol, cenbod, &me_ang);
-    eul2mat( me_ang.ra, me_ang.dec, me_ang.twist, me); /* ME: Earth -> Planet */
-	/* (we interpolate 'sc', but not 'me') */
-    nims_ps_orient( xsclk, xsc, xsol, cenbod, &xme_ang);
+    nims_ps_orient(sclk_time, sc, sol, cenbod, &me_ang);
+    eul2mat(me_ang.ra, me_ang.dec, me_ang.twist, me); /* ME: Earth -> Planet */
+    /* (we interpolate 'sc', but not 'me') */
+    nims_ps_orient(xsclk, xsc, xsol, cenbod, &xme_ang);
     for (i = 0; i < 3; i++) dsc[i] = xsc[i] - sc[i];
 
-	/* solar & centr.body are assumed constant during mirror scan: */
+    /* solar & centr.body are assumed constant during mirror scan: */
     for (i=0, solscdis=0.; i<3; i++) solscdis += sol[i]*sol[i];
-    solscdis = sqrt( solscdis);
+    solscdis = sqrt(solscdis);
     for (i=0, cenboddis=0.; i<3; i++) cenboddis += cenbod[i]*cenbod[i];
-    cenboddis = sqrt( cenboddis);
+    cenboddis = sqrt(cenboddis);
 
-	/* make this unit vector: */
+    /* make this unit vector: */
     for (i=0; i<3; i++) xsol[i] = sol[i]/solscdis; 
   }
   dmtim = mirr_tim_table[imp];
   if (lastmf) dmtim = -dmtim;	/* to cancel negative delta-abscissa */
-	/*
-	 * do linear interpolation of camera orientation and picture 
-	 * body vector in time.
-	 */
+  /*
+   * do linear interpolation of camera orientation and picture 
+   * body vector in time.
+   */
   alpha = c_ang.ra + dmtim * da;
   delta = c_ang.dec + dmtim * dd;
   kappa = c_ang.twist + dmtim * dk;
@@ -5442,15 +5487,15 @@ double *pcone, *pxcone;
     }
   }
 
-  eul2mat( alpha, delta, kappa, c_nims);	/* C: Earth -> Camera */
+  eul2mat(alpha, delta, kappa, c_nims);	/* C: Earth -> Camera */
 
-	/*
-	 * rotate C matrix for instrument / mirror offsets ...
-	 * in order not to have to go to Stator coordinate system,
-	 * treat an increase in cone angle as a right-handed rotation
-	 * around the +N axis, and cross-cone as a rotation around -M
-	 * axis -- valid for small offsets from boresight
-	 */
+  /*
+   * rotate C matrix for instrument / mirror offsets ...
+   * in order not to have to go to Stator coordinate system,
+   * treat an increase in cone angle as a right-handed rotation
+   * around the +N axis, and cross-cone as a rotation around -M
+   * axis -- valid for small offsets from boresight
+   */
 
   *pcone = nims_bore_cone;
   *pxcone = -nims_bore_xcone;
@@ -5488,14 +5533,14 @@ double *pcone, *pxcone;
     }
   }
 
-  if (*pcone!=0.0) zrotmat( c_nims, *pcone, 2, c_nims);
-  if (*pxcone!=0.0) zrotmat( c_nims, *pxcone, 1, c_nims);
+  if (*pcone!=0.0) zrotmat(c_nims, *pcone, 2, c_nims);
+  if (*pxcone!=0.0) zrotmat(c_nims, *pxcone, 1, c_nims);
 
-    /* store the angles if PTUBE or TEST=9: */
+  /* store the angles if PTUBE or TEST=9: */
   if (ptub || (xtest==9 && !rti && mp==9 && geo_flag<0)) {
-    zm2eul( c_nims, 3, 2, 3, &kappa, &delta, &alpha);
-      /* note this gives the GLL version of twist, which is what is
-       * wanted in the backplanes */
+    zm2eul(c_nims, 3, 2, 3, &kappa, &delta, &alpha);
+    /* note this gives the GLL version of twist, which is what is
+     * wanted in the backplanes */
     if (ptub) {
       cobuf[mp].euler[0] = alpha;
       if (cobuf[mp].euler[0] < 0.0) cobuf[mp].euler[0] += ztwopi();
@@ -5506,29 +5551,28 @@ double *pcone, *pxcone;
     else {
       i = sc_time/91;
       j = sc_time%91;
-      sprintf( msg, " %d.%02d %8.3f %8.3f %8.3f %8.4f %8.4f",
-       i, j, degrad*alpha, degrad*(zhalfpi()-delta), degrad*kappa,
-       degrad*(*pcone), -degrad*(*pxcone));
-      zvmessage( msg,"");
+      zvnprintf(100, " %d.%02d %8.3f %8.3f %8.3f %8.4f %8.4f",
+		i, j, degrad*alpha, degrad*(zhalfpi()-delta), degrad*kappa,
+		degrad*(*pcone), -degrad*(*pxcone));
     }
   }
 
-	/* OM = ME * CT : Camera -> Planet 
-	 * but TRANV wants OM**-1, so compute this directly: */
-  zmxmt( c_nims, me, tgt_data.om);
+  /* OM = ME * CT : Camera -> Planet 
+   * but TRANV wants OM**-1, so compute this directly: */
+  zmxmt(c_nims, me, tgt_data.om);
 
-	/* reverse sc-planet vector to planet-sc and rotate to planet
-	 * coordinates: */
+  /* reverse sc-planet vector to planet-sc and rotate to planet
+   * coordinates: */
   for (i = 0; i < 3; i++) v0[i] = -(sc[i] + dmtim * dsc[i]);
-  zmxv( me, v0, tgt_data.rs);	/* RS vector (planet coord's) */
+  zmxv(me, v0, tgt_data.rs);	/* RS vector (planet coord's) */
 
   if (nora > 0) {
-	 /* compute North Angle = angle from UP in image 
-	  * clockwise to projection of body rotation axis 
-	  */
+    /* compute North Angle = angle from UP in image 
+     * clockwise to projection of body rotation axis 
+     */
     v1[0]=0.0; v1[1]=0.0; v1[2]=1.0; 	/* unit Z-vector */
-    zmxv( tgt_data.om, v1, v1);/* rotate planet Z-axis into Camera coord's */
-    north = atan2( v1[0], v1[1]);
+    zmxv(tgt_data.om, v1, v1);/* rotate planet Z-axis into Camera coord's */
+    north = atan2(v1[0], v1[1]);
     north = north*degrad;		/* TRANV wants degrees */
     north = 180. - north;		/* camera coordinates have Y down */
     if (north<0.) north += 360.;
@@ -5536,70 +5580,70 @@ double *pcone, *pxcone;
 
   if (geo_flag <= 0) return;
 
-	/*
-	 * fill parts of geometry buffer for cocube computations
-	 */
+  /*
+   * fill parts of geometry buffer for cocube computations
+   */
 
   /* phase angle -- this is just angle between unit vectors
    * in LOS (negated) and to sun;
    * LOS in EME coordinates is Camera L-axis transformed: */
   v1[0] = v1[1] = 0.0;
   v1[2] = 1.0;
-  zmtxv( c_nims, v1, v1);
+  zmtxv(c_nims, v1, v1);
   for (j=0; j<3; j++) v1[j] = -v1[j];
-  cobuf[mp].geom[2] = acos( v1[0]*xsol[0] + v1[1]*xsol[1] + v1[2]*xsol[2] );
+  cobuf[mp].geom[2] = acos(v1[0]*xsol[0] + v1[1]*xsol[1] + v1[2]*xsol[2] );
 
-	/* save planet - s/c vector: */
+  /* save planet - s/c vector: */
   for (j=0; j<3; j++) cobuf[mp].rs[j] = tgt_data.rs[j];
 
-	/* get planet-sun unit vector & transform to planet coord's: */
+  /* get planet-sun unit vector & transform to planet coord's: */
   soldis=0.; 
   for (j=0; j<3; j++) {
     v1[j] = sol[j]+v0[j];
     soldis += v1[j]*v1[j];
   }
-  soldis = sqrt( soldis);
+  soldis = sqrt(soldis);
   for (j=0; j<3; j++) cobuf[mp].u_sun[j] = v1[j]/soldis;
-  zmxv( me, &cobuf[mp].u_sun[0], &cobuf[mp].u_sun[0]);
+  zmxv(me, &cobuf[mp].u_sun[0], &cobuf[mp].u_sun[0]);
 
-	/* save ranges for label: */
-  maxsun = max( solscdis, maxsun);
-  minsun = min( solscdis, minsun);
-  maxcenbod = max( cenboddis, maxcenbod);
-  mincenbod = min( cenboddis, mincenbod);
+  /* save ranges for label: */
+  maxsun = max(solscdis, maxsun);
+  minsun = min(solscdis, minsun);
+  maxcenbod = max(cenboddis, maxcenbod);
+  mincenbod = min(cenboddis, mincenbod);
 
   if (mp==9 && rti==0) {
 
-	/* compute mean azimuths with s.d. -- kludge for label items --
-	 * these are azimuthal angles in the (M,N) plane of the camera
-	 * coordinates;  M = Sample (cone), N = Line (cross-cone)
-	 * CAUTION:  these azimuths are defined to be in the plane tangent
-	 * to the surface at P5 point by the definition borrowed from VGR 
-	 * ... is in the image plane ok??  TBD: CHECK THIS */
-    zmxv( c_nims, v1, v1); /* rotate solar vector into Camera coord's */
-    azi = degrad * atan2( v1[1], v1[0]);
+    /* compute mean azimuths with s.d. -- kludge for label items --
+     * these are azimuthal angles in the (M,N) plane of the camera
+     * coordinates;  M = Sample (cone), N = Line (cross-cone)
+     * CAUTION:  these azimuths are defined to be in the plane tangent
+     * to the surface at P5 point by the definition borrowed from VGR 
+     * ... is in the image plane ok??  TBD: CHECK THIS */
+    zmxv(c_nims, v1, v1); /* rotate solar vector into Camera coord's */
+    azi = degrad * atan2(v1[1], v1[0]);
     sun_azi += azi;
-    zmxv( c_nims, v0, v0); /* rotate s/c vector into Camera coord's */
-    azi = degrad * atan2( v0[1], v0[0]);
+    zmxv(c_nims, v0, v0); /* rotate s/c vector into Camera coord's */
+    azi = degrad * atan2(v0[1], v0[0]);
     sc_azi += azi;
     n_azi++;
   }
 
   crange[ll_rec2] = solscdis;
 
-	/* Lon(W) and Lat of subspacecraft point: */
-  ssclon[ll_rec2] = degrad * atan2( -tgt_data.rs[1], tgt_data.rs[0]);
+  /* Lon(W) and Lat of subspacecraft point: */
+  ssclon[ll_rec2] = degrad * atan2(-tgt_data.rs[1], tgt_data.rs[0]);
   if (ssclon[ll_rec2]<0.) ssclon[ll_rec2] += 360.;
 
-  x = sqrt( tgt_data.rs[0] * tgt_data.rs[0] +
-	    tgt_data.rs[1] * tgt_data.rs[1] +
-	    tgt_data.rs[2] * tgt_data.rs[2] );
-  ssclat[ll_rec2] = degrad * asin( tgt_data.rs[2] / x);
+  x = sqrt(tgt_data.rs[0] * tgt_data.rs[0] +
+	   tgt_data.rs[1] * tgt_data.rs[1] +
+	   tgt_data.rs[2] * tgt_data.rs[2] );
+  ssclat[ll_rec2] = degrad * asin(tgt_data.rs[2] / x);
 
-	/* and subsolar point: */
-  ssollon[ll_rec2] = degrad * atan2( -cobuf[mp].u_sun[1], cobuf[mp].u_sun[0]);
+  /* and subsolar point: */
+  ssollon[ll_rec2] = degrad * atan2(-cobuf[mp].u_sun[1], cobuf[mp].u_sun[0]);
   if (ssollon[ll_rec2]<0.) ssollon[ll_rec2] += 360.;
-  ssollat[ll_rec2] = degrad * asin( cobuf[mp].u_sun[2]);
+  ssollat[ll_rec2] = degrad * asin(cobuf[mp].u_sun[2]);
 
   if (!ll_rec2) {
     /* first time around, check to see whether this is a projection that
@@ -5621,35 +5665,35 @@ double *pcone, *pxcone;
 
 
 /*************************************************************************/
-FUNCTION get_uparms()
+void get_uparms(void)
 /*
  * process most user parameters
  */
 {
   int bop, foff[MAX_EDRS], flen[MAX_EDRS], isclk[200], jbuf[20], i, j,
-   ntlat, nval1, nval2, nval3, nval4, nval5;
-  double csc, lat, oal, oas, temp;
+    ntlat, nval1, nval2, nval3, nval4, nval5;
+  double csc, oal, oas, temp;
   float buf[2];
-  char msg1[10], tstring[9];
+  char tstring[9];
   nims2_sclk_typ xsclk;
 
   /* use certain recent changes to code? */
   /* NOT NEEDED AFTER END OF SYS.PROC.
-  zvparm( "OLD_VER", tstring, &nvalues, &def, 1, 0);
-  if (nvalues) 
-    oldver = !strcmp(tstring,"OLD_VER");
-  else {
-    zvparm( "INITIALS", initials, &nvalues, &def, 1, 0);
-    oldver = !strcmp(initials,"MSY") || !strcmp(initials,"MPS");
-  }
-  if (oldver) zvmessage(" using old version of oct/dec00 fixes","");
+     zvparm("OLD_VER", tstring, &nvalues, &def, 1, 0);
+     if (nvalues) 
+     oldver = !strcmp(tstring,"OLD_VER");
+     else {
+     zvparm("INITIALS", initials, &nvalues, &def, 1, 0);
+     oldver = !strcmp(initials,"MSY") || !strcmp(initials,"MPS");
+     }
+     if (oldver) zvmessage(" using old version of oct/dec00 fixes","");
   */
   oldver = 0;
 
-  zvpcnt( "EDR", &nedrs);
+  zvpcnt("EDR", &nedrs);
   if (nedrs > MAX_EDRS) zmabend(" *** too many EDRs ***");
-  zvparm( "EDR", fname, &nvalues, &def, nedrs, 0);
-  zvsptr( fname, nedrs, foff, flen);
+  zvparm("EDR", fname, &nvalues, &def, nedrs, 0);
+  zvsptr(fname, nedrs, foff, flen);
 
   for (i = 0; i < nedrs; i++) {
     edrs[i].foff = foff[i];
@@ -5657,37 +5701,37 @@ FUNCTION get_uparms()
     edrs[i].first_open = FALSE;
   }
 
-	/* read in despike data if available: */
-  zvpcnt( "DSPKFILE", &nspifils);
+  /* read in despike data if available: */
+  zvpcnt("DSPKFILE", &nspifils);
   if (nspifils>1 && nspifils != nedrs) zmabend(
-   "** must be either one spike file, or one per EDR **");
+					       "** must be either one spike file, or one per EDR **");
   if (nspifils) {
-    zvparm( "DSPKFILE", dsfile, &nvalues, &def, nspifils, 0);
-    zvsptr( dsfile, nspifils, dsfnoff, flen);
+    zvparm("DSPKFILE", dsfile, &nvalues, &def, nspifils, 0);
+    zvsptr(dsfile, nspifils, dsfnoff, flen);
   }
   /* if there is only one spike file, read it here -- otherwise
    * read each one in as its EDR is processed */
-  if (nspifils==1 && strcmp( dsfile, "DUMMY_DSPK.DAT")) read_dspk(dsfile);
+  if (nspifils==1 && strcmp(dsfile, "DUMMY_DSPK.DAT")) read_dspk(dsfile);
 
-  zvparm( "OUTTYPE", tstring, &nvalues, &def, 1, 0);
-  if (!strcmp( tstring, "GCUBE")) tube = 0;
+  zvparm("OUTTYPE", tstring, &nvalues, &def, 1, 0);
+  if (!strcmp(tstring, "GCUBE")) tube = 0;
   else tube = 1;	/* includes TUBE & PTUBE */
   ptub = 0;
-  if (!strcmp( tstring, "PTUBE")) ptub = 1;
+  if (!strcmp(tstring, "PTUBE")) ptub = 1;
 
   if (!tube && calib) 
     zmabend(" CALIBRATION target requires Tube only!");
 
   org = 0;
-/* no need to ever implement this: 
-  zvparm( "OUTORG", tstring, &nvalues, &def, 1, 0);
-  if (!strcmp( tstring, "BSQ")) org = 0;
-  else zmabend(" ** BIL/BIP options temporarily disabled **");
-/* DISABLED UNTIL SCALE_DATA IS BROUGHT UP TO SPEED: */
-/*  else if (!strcmp( tstring, "BIL")) org = 1; */
-/*  else if (!strcmp( tstring, "BIP")) org = 2; */
+  /*     no need to ever implement this: 
+	 zvparm("OUTORG", tstring, &nvalues, &def, 1, 0);
+	 if (!strcmp(tstring, "BSQ")) org = 0;
+	 else zmabend(" ** BIL/BIP options temporarily disabled **");
+	 / * DISABLED UNTIL SCALE_DATA IS BROUGHT UP TO SPEED: */
+  /*  else if (!strcmp(tstring, "BIL")) org = 1; */
+  /*  else if (!strcmp(tstring, "BIP")) org = 2; */
   
-  zvparm( "OUTDETS", jbuf, &nvalues, &def, 2, 0);
+  zvparm("OUTDETS", jbuf, &nvalues, &def, 2, 0);
   if (nvalues) {
     s_det = jbuf[0]-1;
     e_det = jbuf[1]-1;
@@ -5698,7 +5742,7 @@ FUNCTION get_uparms()
   }
 
   for (j=0; j<N_DETS; j++) skipdet[j] = 0;
-  zvparm( "SKIPDET", &jbuf, &nvalues, &def, 16, 0);
+  zvparm("SKIPDET", &jbuf, &nvalues, &def, 16, 0);
   for (j=0; j<nvalues; j++) {
     i = jbuf[j]-1;	/* param. is 1-based, program variable is 0-based */
     skipdet[i] = 1;
@@ -5706,23 +5750,23 @@ FUNCTION get_uparms()
 
   if (!nvalues) {	/* no OUTBAND if OUTDETS was spec'd */
     lami = 0;
-    zvparm( "OUTBAND", &lami, &nvalues, &def, 1, 0);
+    zvparm("OUTBAND", &lami, &nvalues, &def, 1, 0);
   }
 
-  zvparm( "NSKIP_GP", &nskipgp, &nvalues, &def, 1, 0);
+  zvparm("NSKIP_GP", &nskipgp, &nvalues, &def, 1, 0);
 
-  zvparm( "B_E_MP", jbuf, &nvalues, &def, 2, 0);
+  zvparm("B_E_MP", jbuf, &nvalues, &def, 2, 0);
   smpos0 = jbuf[0];
   empos0 = jbuf[1];
   if (smpos0>empos0) zmabend(" invalid B_E_MP values");
 
-  zvparmd( "CKTOL", &s_tol, &nvalues, &def, 1, 0);
+  zvparmd("CKTOL", &s_tol, &nvalues, &def, 1, 0);
 
-	/* pointing offset parameter: */
-  zvparm( "DPOINT", dpoint, &nvalues, &def, 2, 0);
+  /* pointing offset parameter: */
+  zvparm("DPOINT", dpoint, &nvalues, &def, 2, 0);
 
-	/* SCLK range for pointing offset: */
-  zvparm( "DPT_SCLK", dpt_sclk0, &nvalues, &def, 2, 0);
+  /* SCLK range for pointing offset: */
+  zvparm("DPT_SCLK", dpt_sclk0, &nvalues, &def, 2, 0);
   /* convert to continuous sclk-count: */
   for (i=0; i<nvalues; i++) {
     xsclk.rim = dpt_sclk0[i]/100;
@@ -5730,192 +5774,185 @@ FUNCTION get_uparms()
     dpt_sclk[i] = comp_sclk(xsclk);
   }
 
-	/* pointing wobble parameters (amplitude, phase): */
-  zvparm( "WAMP", &wamp, &nvalues, &def, 1, 0);
+  /* pointing wobble parameters (amplitude, phase): */
+  zvparm("WAMP", &wamp, &nvalues, &def, 1, 0);
   if (wamp>1.e-7) {
-    zvparm( "WFREQ", &wfreq, &nvalues, &def, 1, 0);
+    zvparm("WFREQ", &wfreq, &nvalues, &def, 1, 0);
     /* (wfreq>=0, by PDF constraint!) */
-    zvparm( "WPHASE", &wphase, &nvalues, &def, 1, 0);
+    zvparm("WPHASE", &wphase, &nvalues, &def, 1, 0);
     if (!aacsf) {
       if (wfreq<1.e-7) zmabend(" need WFREQ if no AACSFILE given!");
-      zvparm( "WCONE", &wob_cone, &nvalues, &def, 1, 0);
+      zvparm("WCONE", &wob_cone, &nvalues, &def, 1, 0);
       if (!nvalues) zmabend(" need WCONE if no AACSFILE given!");
       wob_cone /= degrad;
     }
   }
 
-	/* simulate ephemeris error by time offset: */
-  zvparm( "EPHERR", &epherr, &nvalues, &def, 1, 0);
+  /* simulate ephemeris error by time offset: */
+  zvparm("EPHERR", &epherr, &nvalues, &def, 1, 0);
 
-	/* deboom file: */
-  zvparm( "DBMFILE", dbmfile, &nvalues, &def, 1,0);
-  if (!nvalues || !strcmp( dbmfile, "DUMMY_DBM.DAT")) dbm = 0;
+  /* deboom file: */
+  zvparm("DBMFILE", dbmfile, &nvalues, &def, 1,0);
+  if (!nvalues || !strcmp(dbmfile, "DUMMY_DBM.DAT")) dbm = 0;
   else if (c_spice) dbm = 0;	/* until Rotor kernels are supported */
   else {
     dbm = 1;
     /* make a dummy call to NIMSBOOM to open the file and avoid
      * problems with GETLUN: */
-    znimsboom( 0., 0., &i, dbmfile);
+    znimsboom(0., 0., &i, dbmfile);
   }
 
-  zvparm( "SDBAND", &lamsd, &nlamsd, &def, 1, 0);
-		/* if not specified, will be set after nb is determined */
+  zvparm("SDBAND", &lamsd, &nlamsd, &def, 1, 0);
+  /* if not specified, will be set after nb is determined */
 
-  zvparm( "SDGEO", &geosd, &nvalues, &def, 1, 0);
+  zvparm("SDGEO", &geosd, &nvalues, &def, 1, 0);
 
-/*
-  zvparm( "OBSNAME", obsnam, &nvalues, &def, 1, 0);
+  /*
+    zvparm("OBSNAME", obsnam, &nvalues, &def, 1, 0);
 
-  zvparm( "OBSEXT", obsext, &nvalues, &def, 1, 0);
+    zvparm("OBSEXT", obsext, &nvalues, &def, 1, 0);
 
-  zvparm( "MOS_NUM", &i, &nvalues, &def, 1, 0);
-  sprintf( mosnum, "%02d", i);
-*/
+    zvparm("MOS_NUM", &i, &nvalues, &def, 1, 0);
+    sprintf(mosnum, "%02d", i);
+  */
 
-  zvparm( "TEST", &xtest, &nvalues, &def, 1, 0);
+  zvparm("TEST", &xtest, &nvalues, &def, 1, 0);
 
-  zvparm( "CALTYPE", cal_type, &nvalues, &def, 1, 0);
+  zvparm("CALTYPE", cal_type, &nvalues, &def, 1, 0);
   if (xtest) caltyp = 0;
-  else if (!strcmp( cal_type, "NOCAL")) {
+  else if (!strcmp(cal_type, "NOCAL")) {
     caltyp = 0;
-    sprintf( msg, " No radiance calibration done, raw DN is output");
-    zvmessage(" ","");
-    zvmessage( msg,"");
+    zifmessage("\n No radiance calibration done, raw DN is output");
   }
-  else if (!strcmp( cal_type, "RAD")) {
+  else if (!strcmp(cal_type, "RAD")) {
     caltyp = 1;
-    sprintf( msg, " Radiance calibration will be done");
-    zvmessage(" ","");
-    zvmessage( msg,"");
+    zifmessage("\n Radiance calibration will be done");
   }
 
   radscal = 0;
-  if (caltyp) zvparm( "RADSCAL", &radscal, &nvalues, &def, 1, 0);
+  if (caltyp) zvparm("RADSCAL", &radscal, &nvalues, &def, 1, 0);
 
-  zvparm( "DARKTYPE", dark_type, &nvalues, &def, 1, 0);
-  if (!strcmp( dark_type, "NOUPDAT")) drktyp = 0;
-  else if (!strcmp( dark_type, "NEARVAL")) drktyp = 1;
-  else if (!strcmp( dark_type, "PREVVAL")) drktyp = 2;
-  else if (!strcmp( dark_type, "INTERP")) drktyp = 3;
+  zvparm("DARKTYPE", dark_type, &nvalues, &def, 1, 0);
+  if (!strcmp(dark_type, "NOUPDAT")) drktyp = 0;
+  else if (!strcmp(dark_type, "NEARVAL")) drktyp = 1;
+  else if (!strcmp(dark_type, "PREVVAL")) drktyp = 2;
+  else if (!strcmp(dark_type, "INTERP")) drktyp = 3;
 
-  zvparm( "DRKTHRSH", &drkfac, &nvalues, &def, 1, 0);
+  zvparm("DRKTHRSH", &drkfac, &nvalues, &def, 1, 0);
   drkchk = (nvalues>0);
 
-  zvparm( "PHOTFUNC", phot_func, &nvalues, &def, 1, 0);
-  if (!strcmp( phot_func, "LAMBERTF")) {
-    sprintf( phot_func, "LAMBERT");	/* remove the "F" */
-    sprintf( msg, "Lambert ");
+  zvparm("PHOTFUNC", phot_func, &nvalues, &def, 1, 0);
+  if (!strcmp(phot_func, "LAMBERTF")) {
+    snprintf(phot_func, 10, "LAMBERT");	/* remove the "F" */
+    snprintf(msg, 100, "Lambert ");
     pfunc = 1;
   }
-  else if (!strcmp( phot_func, "MINNAERT")) {
-    sprintf( msg, "Minnaert ");
+  else if (!strcmp(phot_func, "MINNAERT")) {
+    snprintf(msg, 100, "Minnaert ");
     pfunc = 2;
-    zvparmd( "MINN_EXP", &p_minn, &nvalues, &def, 1, 0);
+    zvparmd("MINN_EXP", &p_minn, &nvalues, &def, 1, 0);
   }
-  else if (!strcmp( phot_func, "LOMMEL")) {
-    sprintf( msg, "Lommel-Seeliger ");
+  else if (!strcmp(phot_func, "LOMMEL")) {
+    snprintf(msg, 100, "Lommel-Seeliger ");
     pfunc = 3;
   }
-/*  else if (!strcmp( phot_func, "HAPKE") {   -- TBD IN FUTURE? */
+  /*  else if (!strcmp(phot_func, "HAPKE") {   -- TBD IN FUTURE? */
   else pfunc = 0;
 
   if (pfunc > 0) {
-    zvparmd( "PHOTCUT", &pfcut, &nvalues, &def, 1, 0);
+    zvparmd("PHOTCUT", &pfcut, &nvalues, &def, 1, 0);
     if (!nvalues) {
       if (!strcmp(target,"JUPITER")) pfcut = 4.0;
       else pfcut = 5.3;
     }
-    strcat( msg, "photometric function applied for wavelength (mu) < ");
-    sprintf( msg1, "%.2f", pfcut);
-    strcat( msg, msg1);
-    zvmessage( msg,"");
+    zvnprintf(100, "photometric function applied for wavelength (mu) < %.2f", pfcut);
   }
 
-  zvparm( "GOFFSET", &g_off, &nvalues, &def, 1, 0);
+  zvparm("GOFFSET", &g_off, &nvalues, &def, 1, 0);
 
-  zvparm( "GSTART", &gstart, &u_gst, &def, 1, 0);
+  zvparm("GSTART", &gstart, &u_gst, &def, 1, 0);
 
-  zvparm( "GAIN", &gain[0], &nvalues, &def, 1, 0);
+  zvparm("GAIN", &gain[0], &nvalues, &def, 1, 0);
 
-  zvparm( "CHOPPER", &chopper, &nvalues, &def, 1, 0);
+  zvparm("CHOPPER", &chopper, &nvalues, &def, 1, 0);
 
   /* check compression status flag? */
-  chk_comp = zvptst( "COMP_CHK");
+  chk_comp = zvptst("COMP_CHK");
 
   /* check for missing LRS/Housekeeping data */
-  nohkp = zvptst( "NOHKP");
+  nohkp = zvptst("NOHKP");
 
   /* option to throw out some mirror positions (GCUBE only!): */
   mirrsel = 0;
-  if (!tube) zvparm( "MIRROMIT", nomirr, &mirrsel, &def, 39, 0);
+  if (!tube) zvparm("MIRROMIT", nomirr, &mirrsel, &def, 39, 0);
 
-  zvparm( "INSMODE", &u_imode, &nvalues, &def, 1, 0);
+  zvparm("INSMODE", &u_imode, &nvalues, &def, 1, 0);
   if (nvalues==0) u_imode = -1;
   if (u_imode<0 && nohkp) zmabend("*** must specify mode if NOHKP ***");
 
-  zvparm( "NLGP", &nlgp, &nvalues, &def, 1, 0);
+  zvparm("NLGP", &nlgp, &nvalues, &def, 1, 0);
 
-  zvparm( "STOPSLID", stop_slide, &nvalues, &def, 1, 0);
+  zvparm("STOPSLID", stop_slide, &nvalues, &def, 1, 0);
 
-	/* up to 100 SCLK intervals allowed: */
-  zvparm( "SCLK", isclk, &nintrvl, &def, 200, 0);
+  /* up to 100 SCLK intervals allowed: */
+  zvparm("SCLK", isclk, &nintrvl, &def, 200, 0);
   if (nintrvl/2 != (nintrvl+1)/2) zmabend(" SCLK must have even # items");
   nintrvl = nintrvl/2;
-	/* unpack into begin/end CLK for each interval;
-	 * also store initial/end SCLK into LOCLK/HICLK:  */
+  /* unpack into begin/end CLK for each interval;
+   * also store initial/end SCLK into LOCLK/HICLK:  */
   for (i=0; i<nintrvl; i++) {
     hiclk.rim = isclk[2*i]/100;
     hiclk.mod91 = isclk[2*i]%100;
     hiclk.rti = 0;
-    bclk[i] = comp_sclk( hiclk);
+    bclk[i] = comp_sclk(hiclk);
     if (i==0) loclk = hiclk;
     hiclk.rim = isclk[2*i+1]/100;
     hiclk.mod91 = isclk[2*i+1]%100;
-    eclk[i] = comp_sclk( hiclk);
+    eclk[i] = comp_sclk(hiclk);
   }
   range_lclk = bclk[0];
   range_hclk = eclk[nintrvl-1];
 
   refsclk = 0;
-  zvparm( "REFSCLK", &refsclk, &nvalues, &def, 1, 0);
+  zvparm("REFSCLK", &refsclk, &nvalues, &def, 1, 0);
   if (nvalues) {
     i = refsclk / 100;
     j = refsclk % 100;
     refsclk = 91*i + j;	/* convert to internal definition of sclk */
-    zvparm( "REFMP", &refmp, &nvalues, &def, 1, 0);
+    zvparm("REFMP", &refmp, &nvalues, &def, 1, 0);
   }
 
   nl = ns = 0;				/* flag in case not specified */
-  zvparm( "OUTSIZ", osize, &nvalues, &def, 2, 0);
+  zvparm("OUTSIZ", osize, &nvalues, &def, 2, 0);
   if (nvalues) {
     nl = osize[0];
     ns = osize[1];
   }
 
-  footprint = zvptst( "FOOTPRNT") && !xtest;	/* "BIN" parameter */
+  footprint = zvptst("FOOTPRNT") && !xtest;	/* "BIN" parameter */
 
   thresh = 0.;
   if (footprint) {
-    zvparm( "THRESH", &thresh, &nthresh, &def, 1, 0);
-    zvparm( "MAXDSTOR", &maxdistor, &ndistor, &def, 1, 0);
-    zvparm( "FPNGRID", &fpgrid, &nvalues, &def, 1, 0);
+    zvparm("THRESH", &thresh, &nthresh, &def, 1, 0);
+    zvparm("MAXDSTOR", &maxdistor, &ndistor, &def, 1, 0);
+    zvparm("FPNGRID", &fpgrid, &nvalues, &def, 1, 0);
     nfpwts = fpgrid*fpgrid*fpgrid;
   }
   else {
-	/* check if other than AVERAGE was selected for overlapping pixels */
-    use_max = zvptst( "MAXIMUM");		/* "OVERLAP" parameter */
-    use_last = zvptst( "REPLACE");
+    /* check if other than AVERAGE was selected for overlapping pixels */
+    use_max = zvptst("MAXIMUM");		/* "OVERLAP" parameter */
+    use_last = zvptst("REPLACE");
   }
 
   histbin = 0;
   if (!tube) {
     /* histogram-binning option: */
-    zvparm( "HBINSIZE", &hbinsize, &histbin, &def, 1, 0);
+    zvparm("HBINSIZE", &hbinsize, &histbin, &def, 1, 0);
     /* hbinsize must be <= MAX_HBINSIZE -- rely on PDF to enforce that */
     if (histbin) {
-      zvparm( "HBINSTEP", &hbinstep, &nvalues, &def, 1, 0);
+      zvparm("HBINSTEP", &hbinstep, &nvalues, &def, 1, 0);
       hbstp2 = hbinstep/2;	/* (for convenience) */
-      zvparm( "HISTCRIT", tstring, &nvalues, &def, 1, 0);
+      zvparm("HISTCRIT", tstring, &nvalues, &def, 1, 0);
       histcrit = 0;
       if (!strcmp(tstring,"MEDIAN")) histcrit = 1;
     }
@@ -5924,15 +5961,15 @@ FUNCTION get_uparms()
   /* exclude incidence/emission ranges for GCUBE only */
   cutinc = emicut = 0;
   if (!tube) {
-    zvparmd( "INCCUT", &inccut, &cutinc, &def, 1, 0);
+    zvparmd("INCCUT", &inccut, &cutinc, &def, 1, 0);
     if (cutinc) inccut /= degrad;
-    zvparmd( "EMICUT", &emicut, &cutemi, &def, 1, 0);
+    zvparmd("EMICUT", &emicut, &cutemi, &def, 1, 0);
     if (cutemi) emicut /= degrad;
   }
 
-  c_extrap = zvptst( "CEXTRAP");
+  c_extrap = zvptst("CEXTRAP");
 
-  zvparmd( "SLEW_TOL", &slew_tol, &nvalues, &def, 1, 0);
+  zvparmd("SLEW_TOL", &slew_tol, &nvalues, &def, 1, 0);
 
   /* set flag if no rate checking to be done: */
   nochk = slew_tol<0.0;
@@ -5941,29 +5978,29 @@ FUNCTION get_uparms()
    * -- will be converted from per-grating-cycle in find_mode */
   slew_tol = slew_tol * 0.0005;
 
-  zvparmd( "TWISTTOL", &twt_tol, &nvalues, &def, 1, 0);
+  zvparmd("TWISTTOL", &twt_tol, &nvalues, &def, 1, 0);
 
   if (tube) do_fill = 0;
-  else do_fill = zvptst( "FILL");
+  else do_fill = zvptst("FILL");
   if (do_fill && org>0) {
     do_fill = 0;
-    zvmessage(" no fill performed when output ORG is not BSQ!","");
+    zifmessage(" no fill performed when output ORG is not BSQ!");
   }
 
-	/* SATURATD parameter: */
-  flag_sat = zvptst( "FLAG");
-  repl_sat = zvptst( "BB_REPL");
-  max_sat = zvptst( "MAX_REPL");
+  /* SATURATD parameter: */
+  flag_sat = zvptst("FLAG");
+  repl_sat = zvptst("BB_REPL");
+  max_sat = zvptst("MAX_REPL");
 
-  zvparm( "SATTHRSH", &sat_thrsh, &nsatthr, &def, 1, 0);
+  zvparm("SATTHRSH", &sat_thrsh, &nsatthr, &def, 1, 0);
 
-  lo_sat = zvptst( "LO_SAT");
+  lo_sat = zvptst("LO_SAT");
 
-  oldcal = zvptst( "OLDCAL");
+  oldcal = zvptst("OLDCAL");
 
-  cat_flag = zvptst( "CATUPDT");
+  cat_flag = zvptst("CATUPDT");
 
-  zvparm( "PROJ", project, &nvalues, &def, 1, 0);
+  zvparm("PROJ", project, &nvalues, &def, 1, 0);
 
   if      (!strcmp(project,"POLORTH"))  map_type = 1;	/* polar orthographic*/
   else if (!strcmp(project,"ORTHO"))    map_type = 2;	/*oblique orthographic*/
@@ -5978,23 +6015,23 @@ FUNCTION get_uparms()
   else if (!strcmp(project,"PERSPECT")) map_type = 16;	/* Perspective */
 
   scale = 0.0;
-  zvparmd( "SCALE", &scale, &nscal, &def, 1, 0);
+  zvparmd("SCALE", &scale, &nscal, &def, 1, 0);
 
-	/* radius fudge factor for off-limb data: */
+  /* radius fudge factor for off-limb data: */
   radfudge = 0;
   if (map_type==2 || map_type==16)
-    zvparmd( "RADFACT", &radfact, &radfudge, &def, 1, 0);
+    zvparmd("RADFACT", &radfact, &radfudge, &def, 1, 0);
 
-	/*
-	 * set up data used by TRANV for the selected map projection
-	 * (if not specified here, will be computed in set_projection)
-	 */
+  /*
+   * set up data used by TRANV for the selected map projection
+   * (if not specified here, will be computed in set_projection)
+   */
   if (map_type==5) {					/* Lambert*/
-    zvparm( "PARALLEL", buf, &nparallels, &def, 2, 0);
+    zvparm("PARALLEL", buf, &nparallels, &def, 2, 0);
     if (nparallels) {
       for (i=0;i<2;i++) parallel[i] = buf[i];
       if (parallel[0] * parallel[1] < 0) zmabend(
-        " *** LAMBERT PARALLELS MUST BE IN SAME HEMISPHERE ***");
+						 " *** LAMBERT PARALLELS MUST BE IN SAME HEMISPHERE ***");
       if (parallel[0] < parallel[1]) {			/*if wrong order*/
         temp = parallel[0];				/*swap them*/
         parallel[0] = parallel[1];
@@ -6003,28 +6040,27 @@ FUNCTION get_uparms()
     }
   }
 
-	/*
-	 * POV projection -- can use REFSCLK instead of special point
-	 */
+  /*
+   * POV projection -- can use REFSCLK instead of special point
+   */
   if (map_type == 16) {
 
-    zvmessage(" Output image will be in perspective (POV) projection","");
+    zifmessage(" Output image will be in perspective (POV) projection");
 
-	/* copy fixed parts of PPROJ buffer: */
+    /* copy fixed parts of PPROJ buffer: */
     t_data_pov = tgt_data;
 
     if (nscal) {
-      sprintf( msg, " POV scale (km/pix) has been multiplied by %g", scale);
-      zvmessage( msg,"");
+      zvnprintf(100, " POV scale (km/pix) has been multiplied by %g", scale);
       t_data_pov.cscale = t_data_pov.cscale / scale;	/* output proj'n only */
       /* note that "map scale" (km/pix) has *opposite* effect of cam.scale */
     }
     else scale = 1.0;
     scale0 = 1.0;		/* nominal scale */
 
-    zvparmd( "NORTH", &north, &inorth, &def, 1, 0);
+    zvparmd("NORTH", &north, &inorth, &def, 1, 0);
 
-    zvparm( "OAXIS", buf, &n_oaxis, &def, 2, 0);
+    zvparm("OAXIS", buf, &n_oaxis, &def, 2, 0);
     if (n_oaxis == 2) {
       t_data_pov.aline = buf[0];
       t_data_pov.asamp = buf[1]; 
@@ -6037,7 +6073,7 @@ FUNCTION get_uparms()
     /* option to ignore optical axis even if not specified: */
     recenter = zvptst("RECENTER");
 
-    zvparm( "OLATLON", buf, &n_oll, &def, 2, 0);
+    zvparm("OLATLON", buf, &n_oll, &def, 2, 0);
     if (n_oll == 2) {
       olatlon[0] = buf[0];
       if (buf[1] < 0.0) buf[1] += 360.;
@@ -6052,44 +6088,44 @@ FUNCTION get_uparms()
 
     if (refsclk) return;	/* don't need any more if REFSCLK spec'd */
 
-	/* ... else, check if user has specified complete viewing geometry;
-	 * if not, return as POV is done */
+    /* ... else, check if user has specified complete viewing geometry;
+     * if not, return as POV is done */
 
-    zvparmd( "TIELON", &longitude, &nval1, &def, 1, 0);
+    zvparmd("TIELON", &longitude, &nval1, &def, 1, 0);
     if (nval1) {
       if (longitude < 0.0) longitude += 360.;
       if (elon) longitude = 360 - longitude;
     }
-    zvparmd( "TIELAT", &latitude, &nval2, &def, 1, 0);
-    zvparmd( "PDIST", &pdist, &nval3, &def, 1, 0);
+    zvparmd("TIELAT", &latitude, &nval2, &def, 1, 0);
+    zvparmd("PDIST", &pdist, &nval3, &def, 1, 0);
 
     if (n_oll==2) {
 
-	/* GET_OMRS adds stuff directly to structure t_data_pov */
-      get_omrs( pdist, latitude, longitude, olatlon[0], olatlon[1], &map_line,
-       &map_samp, &bop);
+      /* GET_OMRS adds stuff directly to structure t_data_pov */
+      get_omrs(pdist, latitude, longitude, olatlon[0], olatlon[1], &map_line,
+	       &map_samp, &bop);
       if (!bop) zmabend(" ** specified OLATLON is back-of-planet **");
 
     }
     else {		/* don't need SSC line/samp if OLATLON spec'd */
 
-      zvparmd( "TIELINE", &map_line, &nval4, &def, 1, 0);
-      zvparmd( "TIESAMP", &map_samp, &nval5, &def, 1, 0);
+      zvparmd("TIELINE", &map_line, &nval4, &def, 1, 0);
+      zvparmd("TIESAMP", &map_samp, &nval5, &def, 1, 0);
 
       /* if at least one parameter is missing, cannot specify projection */
       if (!inorth || !nval1 || !nval2 || !nval3 || !nval4 || !nval5) {
 	/* if at least one parameter was specified, notify the user ... */
         if (inorth || nval1 || nval2 || nval3 || nval4 || nval5)
-	  zvmessage(" Partial specification of POV ignored;  OM & RS will be computed from defaults ...","");
+	  zifmessage(" Partial specification of POV ignored;  OM & RS will be computed from defaults ...");
 	return;
       }
 
-	/* load real*8 items for MOMATI: */
+      /* load real*8 items for MOMATI: */
       oal = t_data_pov.aline;
       oas = t_data_pov.asamp;
       csc = t_data_pov.cscale;
-      zmomati( oal, oas, map_line, map_samp, csc, focal, longitude,
-       latitude, north, pdist, t_data_pov.om, t_data_pov.rs);
+      zmomati(oal, oas, map_line, map_samp, csc, focal, longitude,
+	      latitude, north, pdist, t_data_pov.om, t_data_pov.rs);
     }
 
     refsclk = -1;	/* flag to SET_POV not to use default REFSCLK */
@@ -6099,7 +6135,7 @@ FUNCTION get_uparms()
 
   /* projections other than POV: */
 
-  zvparmd( "TIELON", &longitude, &nvalues, &def, 1, 0);
+  zvparmd("TIELON", &longitude, &nvalues, &def, 1, 0);
   if (nvalues) {
     if (longitude < 0.0) longitude += 360.;
     if (elon) longitude = 360 - longitude;
@@ -6112,15 +6148,15 @@ FUNCTION get_uparms()
     refsclk = 0;
   }
   else {
-    zvparmd( "TIELINE", &map_line, &nmaplin, &def, 1, 0);
-    zvparmd( "TIESAMP", &map_samp, &nmapsam, &def, 1, 0);
+    zvparmd("TIELINE", &map_line, &nmaplin, &def, 1, 0);
+    zvparmd("TIESAMP", &map_samp, &nmapsam, &def, 1, 0);
   }
 
-  /* latitude = -999.;
-  if (map_type==1 || map_type==3 )
-    refsclk = 0;	/* Polar: set to 90 in set_proj */
+  /*     latitude = -999.;
+	 if (map_type==1 || map_type==3 )
+	 refsclk = 0;	/ * Polar: set to 90 in set_proj */
   /* else */
-  zvparmd( "TIELAT", &latitude, &ntlat, &def, 1, 0);
+  zvparmd("TIELAT", &latitude, &ntlat, &def, 1, 0);
 
   /* Sinusoidal & Cylindrical require Tielat=0 */
   if (map_type==10) {		/* Simple Cylindrical */
@@ -6128,26 +6164,26 @@ FUNCTION get_uparms()
       /* if user specified a tielat, move it to 0 -- assuming tieline and
        * scale were specified too */
       if (nscal && nmaplin) {
-	lat = latitude;
-	if (pgraphic==1 && oldver) lat = det2cen( latitude);
+	/*lat = latitude;*/
+	/*if (pgraphic==1 && oldver) lat = det2cen(latitude); */
 	map_line += latitude*eq_rad/(degrad*scale);
       }
       else
-	zvmessage(" TIELAT given without TIELINE/SCALE -- ignored!","");
+	zifmessage(" TIELAT given without TIELINE/SCALE -- ignored!");
     }
     latitude = 0.;
     refsclk = 0;
   }
   if (map_type==9 || map_type==12) {		/* Norm. Cyl. & Sinusoidal */
     if (ntlat && fabs(latitude)<0.00001)
-      zvmessage(" TIELAT specification ignored!","");
+      zifmessage(" TIELAT specification ignored!");
     latitude = 0.;
     refsclk = 0;
   }
 
-	/* Ortho & Stereo can have north angle specified: */
+  /* Ortho & Stereo can have north angle specified: */
   if (map_type==2 || map_type==4) {
-    zvparm( "NORTH", &buf[0], &inorth, &def, 1, 0);
+    zvparm("NORTH", &buf[0], &inorth, &def, 1, 0);
     north = buf[0];
     if (north<0.) north += 360.;
   }
@@ -6156,7 +6192,7 @@ FUNCTION get_uparms()
 
 
 /*************************************************************************/
-FUNCTION hist2cube()
+void hist2cube(void)
 /*
  * generate output cube data from histograms accumulated in extract_data
  * if the histogram-binning option is set
@@ -6166,9 +6202,9 @@ FUNCTION hist2cube()
  * (this option is currently only allowed for fixed-grating modes!)
  */
 {
-  int det, gp0, i, ib, idn0, il, is, istat, j, maxi, nbad, nhi, nlo, nnomed,
-   word;
-  float dn0, wts[MAX_HBINSIZE], *dptr, *wptr;
+  int det = 0, gp0 = 0, i, ib, idn0, il, is, istat, j, maxi, nbad = 0, nhi, nlo, nnomed,
+    word = 0;
+  float dn0, wts[MAX_HBINSIZE], *dptr = NULL, *wptr;
   double maxwt, sumwts, sumlo, sumhi, totwt, totwt1, wt2;
   short sdata[N_DETS][20];
   float fdata[N_DETS][20];
@@ -6188,100 +6224,93 @@ FUNCTION hist2cube()
     }
   }
   zmabend(" hist2cube unable to find valid GP");
-  foundgp:
+ foundgp:
   for (is=0; is<ns; is++) {
-  for (il=0; il<nl; il++) {
-    for (i=0; i<N_DETS; i++) sdata[i][0] = NULL2;
-    for (det=s_det; det<=e_det; det++) {
-      if (skipdet[det]>0) continue;
-      ib = wet[gp0][det];
-      if (ib<0) continue;
-      /* get location of start of histogram for this pixel: */
-      wptr = wdata + (hbinsize+1)*ib*nl*ns + il*ns + is;
-      dn0 = *wptr;
-      idn0 = (int)dn0;
-      if (!idn0) continue;	/* only invalid DNs in histogram */
-      totwt = maxwt = 0.0;
-      maxi = -1;
-      for (i=0; i<hbinsize; i++) {
-	wptr += nl*ns;
-	wts[i] = *wptr;
-	totwt += wts[i];
-	if (wts[i]>maxwt) {
-	  maxwt = wts[i];
-	  maxi = i+1;
-	}
-      }
-      sumwts += totwt;
-      sumlo += wts[0];
-      sumhi += wts[hbinsize-1];
-      /* use the normal Footprint "thresh" parameter as cutoff: */
-      if (totwt<thresh) continue;
-      /* some statistics ... */
-      if (maxi==1) nlo++;
-      if (maxi==hbinsize) nhi++;
-      /* options for evaluating histogram: */
-      if (!histcrit) {			/* mode=0:  peak value */
-	if (maxi==1) word = INS_LO_SAT2;
-	else if (maxi==hbinsize) word = INS_HI_SAT2;
-	else word = idn0 + (maxi-1)*hbinstep + hbstp2;
-      }
-      else if (histcrit==1) {		/* mode=1:  median value */
-	wt2 = 0.5*totwt;
-	if (wts[0]>wt2) word = INS_LO_SAT2;
-	else if (wts[hbinsize-1]>wt2) word = INS_HI_SAT2;
-	else {
-	  totwt1 = 0.0;
-	  for (i=0; i<hbinsize; i++) {
-	    totwt1 += wts[i];
-	    if (totwt1>wt2) break;
+    for (il=0; il<nl; il++) {
+      for (i=0; i<N_DETS; i++) sdata[i][0] = NULL2;
+      for (det=s_det; det<=e_det; det++) {
+	if (skipdet[det]>0) continue;
+	ib = wet[gp0][det];
+	if (ib<0) continue;
+	/* get location of start of histogram for this pixel: */
+	wptr = wdata + (hbinsize+1)*ib*nl*ns + il*ns + is;
+	dn0 = *wptr;
+	idn0 = (int)dn0;
+	if (!idn0) continue;	/* only invalid DNs in histogram */
+	totwt = maxwt = 0.0;
+	maxi = -1;
+	for (i=0; i<hbinsize; i++) {
+	  wptr += nl*ns;
+	  wts[i] = *wptr;
+	  totwt += wts[i];
+	  if (wts[i]>maxwt) {
+	    maxwt = wts[i];
+	    maxi = i+1;
 	  }
-	  word = idn0 + i*hbinstep + hbstp2;
 	}
+	sumwts += totwt;
+	sumlo += wts[0];
+	sumhi += wts[hbinsize-1];
+	/* use the normal Footprint "thresh" parameter as cutoff: */
+	if (totwt<thresh) continue;
+	/* some statistics ... */
+	if (maxi==1) nlo++;
+	if (maxi==hbinsize) nhi++;
+	/* options for evaluating histogram: */
+	if (!histcrit) {			/* mode=0:  peak value */
+	  if (maxi==1) word = INS_LO_SAT2;
+	  else if (maxi==hbinsize) word = INS_HI_SAT2;
+	  else word = idn0 + (maxi-1)*hbinstep + hbstp2;
+	}
+	else if (histcrit==1) {		/* mode=1:  median value */
+	  wt2 = 0.5*totwt;
+	  if (wts[0]>wt2) word = INS_LO_SAT2;
+	  else if (wts[hbinsize-1]>wt2) word = INS_HI_SAT2;
+	  else {
+	    totwt1 = 0.0;
+	    for (i=0; i<hbinsize; i++) {
+	      totwt1 += wts[i];
+	      if (totwt1>wt2) break;
+	    }
+	    word = idn0 + i*hbinstep + hbstp2;
+	  }
+	}
+	if ((word>=VALID_MIN2 && word<0) || word>1023) nbad++;
+	else if (word==1023) sdata[det][0] = INS_HI_SAT2;
+	else sdata[det][0] = word;
       }
-      if ((word>=VALID_MIN2 && word<0) || word>1023) nbad++;
-      else if (word==1023) sdata[det][0] = INS_HI_SAT2;
-      else sdata[det][0] = word;
-    }
-    /* GP=-1 flags mirror-independent data */
-    znims_comp_rad( -1, 1, sdata, fdata, &istat);
-    if (istat) {			/* istat=0 is ok */
-      sprintf( msg, " error in NIMS_COMP_RAD, code = %d", istat);
-      zmabend( msg);
-    }
-    for (det=s_det; det<=e_det; det++) {
-      if (skipdet[det]>0) continue;
-      ib = wet[gp0][det];
-      if (ib<0) continue;
-      /* store the final selected value: */
-      if (org==0) 		/* BSQ */
-        dptr = odata + is + il*ns + ib*ns*nl;
-      else if (org==1) 		/* BIL */
-        dptr = odata + is + ib*ns + il*ns*nb;
-      else if (org==2) 		/* BIP */
-        dptr = odata + ib + is*nb + il*ns*nb;
-      *dptr = fdata[det][0];
-    }
-  }}
+      /* GP=-1 flags mirror-independent data */
+      znims_comp_rad(-1, 1, sdata, fdata, &istat);
+      if (istat) {			/* istat=0 is ok */
+	zvnabend(100, " error in NIMS_COMP_RAD, code = %d", istat);
+      }
+      for (det=s_det; det<=e_det; det++) {
+	if (skipdet[det]>0) continue;
+	ib = wet[gp0][det];
+	if (ib<0) continue;
+	/* store the final selected value: */
+	if (org==0) 		/* BSQ */
+	  dptr = odata + is + il*ns + ib*ns*nl;
+	else if (org==1) 		/* BIL */
+	  dptr = odata + is + ib*ns + il*ns*nb;
+	else if (org==2) 		/* BIP */
+	  dptr = odata + ib + is*nb + il*ns*nb;
+	*dptr = fdata[det][0];
+      }
+    }}
 
   /* print out statistics ... */
-  sprintf( msg, " total of all histogram weights = %f", sumwts);
-  zvmessage( msg,"");
-  sprintf( msg, " total weights below histogram ranges = %f", sumlo);
-  zvmessage( msg,"");
-  sprintf( msg, " total weights above histogram ranges = %f", sumhi);
-  zvmessage( msg,"");
+  zvnprintf(100, " total of all histogram weights = %f", sumwts);
+  zvnprintf(100, " total weights below histogram ranges = %f", sumlo);
+  zvnprintf(100, " total weights above histogram ranges = %f", sumhi);
   if (nnomed) {
-    sprintf( msg, " %d pixels had median outside histogram range ", nnomed);
-    zvmessage( msg,"");
+    zvnprintf(100, " %d pixels had median outside histogram range ", nnomed);
   }
   if (nlo) {
-    sprintf( msg, " %d pixels had peak value below histogram range ", nlo);
-    zvmessage( msg,"");
+    zvnprintf(100, " %d pixels had peak value below histogram range ", nlo);
   }
   if (nhi) {
-    sprintf( msg, " %d pixels had peak value above histogram range ", nhi);
-    zvmessage( msg,"");
+    zvnprintf(100, " %d pixels had peak value above histogram range ", nhi);
   }
 
 
@@ -6289,7 +6318,7 @@ FUNCTION hist2cube()
 
 
 /*************************************************************************/
-FUNCTION init_stuff()
+void init_stuff(void)
 /*
  * perform necessary initializations, including reading the despike file
  *
@@ -6297,18 +6326,16 @@ FUNCTION init_stuff()
  */
 {
   int dim_radii, i, j, istat;
-  int flen[MAX_EDRS];
   char target1[16];
   float delr;
-  double pos, r;
   radii_typ rad;
   int nkern;
 
   north = (double)NULL4;
 
-	/*
-	 * initialize SPICE
-	 */
+  /*
+   * initialize SPICE
+   */
   initspice();	/* load binary CONSTANTS, SCLK, LEAPSECS files */
 
   /* turn on NAIF error reporting: */
@@ -6317,26 +6344,26 @@ FUNCTION init_stuff()
 
   degrad = 180./zpi();
 
-  zvparm( "TARGET", target, &nvalues, &def, 1, 0);
+  zvparm("TARGET", target, &nvalues, &def, 1, 0);
   /* Calibration is a special case (and must not be confused with
    * Callisto!) */
   calib = 0;
   if (!strcmp(target,"CAL") && strcmp(target,"CALLISTO")) calib = 1;
   if (!strcmp(target,"SKY")) calib = 1;
 
-	/* set flag for east long.: */
-  if (!strncmp( target, "VENUS", 5)) elon = 1;
+  /* set flag for east long.: */
+  if (!strncmp(target, "VENUS", 5)) elon = 1;
   else elon = 0;
 
   /* for Calibration data, must fake up a valid Target;  also for
    * Ring, NAIF needs Jupiter ... */
   strcpy(target1,target);
   if (calib) strcpy(target1,"JUPITER");
-  if (!strcmp( target, "J_RINGS")) strcpy(target1,"JUPITER");
+  if (!strcmp(target, "J_RINGS")) strcpy(target1,"JUPITER");
 
-/*istat = get_body_ids( "GLL", target1, &ids);
-replace above with: */
-  istat = zpbid( target1, &j);
+  /*istat = get_body_ids("GLL", target1, &ids);
+    replace above with: */
+  istat = zpbid(target1, &j);
   if (istat!=SUCCESS) zmabend(" *** unable to find target body ***");
   ids.target = j;
   /* this code is from get_body_ids(), slightly modified: */
@@ -6345,82 +6372,80 @@ replace above with: */
   ids.sc = -77;
   ids.sol = 10;
 
-	/* in case need C-kernels */
+  /* in case need C-kernels */
   ck_id = ids.sc * 1000 - PLATFORM;		/* SSI instrument id */
-	/*
-	 * set 'system' for SPICE calls;
-	 * just use B1950 for now -- since this is purely internal
-	 * to the program it should make no difference
-	 */
-  strcpy( esystem, "B1950");
+  /*
+   * set 'system' for SPICE calls;
+   * just use B1950 for now -- since this is purely internal
+   * to the program it should make no difference
+   */
+  strcpy(esystem, "B1950");
 
   read_ikernel();
 
-  zvparm( "SPKERNEL", spkernel, &u_spk, &def, 1, 0);
+  zvparm("SPKERNEL", spkernel, &u_spk, &def, 1, 0);
   if (u_spk) {
-    zspklef( spkernel, &i);
+    zspklef(spkernel, &i);
     if (zfailed()) zmabend(" *** unable to load SP-kernel ***");
   }
   /* if not, then load SPK from the MIPS kernel DB -- but wait until
    * we have the loclk (in assembler_pntng) */
 
-  zvparm( "PCONSTNT", pconstants, &u_pck, &def, 1, 0);
+  zvparm("PCONSTNT", pconstants, &u_pck, &def, 1, 0);
   if (u_pck) {
-    zldpool( pconstants);
+    zldpool(pconstants);
     if (zfailed()) zmabend(" *** unable to load Planet constants kernel ***");
   }
 
-	/*
-	 * if user specified CSOURCE=SPICE we need an additional kernel
-	 * (load it AFTER all others, as the last is read first by spice)
-	 */
-  c_spice = zvptst( "SPICE");
+  /*
+   * if user specified CSOURCE=SPICE we need an additional kernel
+   * (load it AFTER all others, as the last is read first by spice)
+   */
+  c_spice = zvptst("SPICE");
   if (c_spice) {
-    zvparm( "PCKERNEL", pckernel, &nkern, &def, 1, 0);
+    zvparm("PCKERNEL", pckernel, &nkern, &def, 1, 0);
     if (!nkern) zmabend(" No Pfm. CKERNEL specified for CSOURCE=SPICE");
     else {
-      zcklpf( pckernel, &ihpck);
+      zcklpf(pckernel, &ihpck);
       if (zfailed()) {
-        sprintf( msg, " *** unable to load kernel %s ***", pckernel);
-        zmabend( msg);
+        zvnabend(100, " *** unable to load kernel %s ***", pckernel);
       }
     }
     /* Rotor CK processing isn't implemented yet, but this code acts
      * as placeholder: */
     if (dbm) {	/* 'DBM' IS ACTUALLY SET LATER ON IN GET_UPARMS */
-      zvparm( "RCKERNEL", rckernel, &nkern, &def, 1, 0);
+      zvparm("RCKERNEL", rckernel, &nkern, &def, 1, 0);
       if (!nkern) zmabend(" No Rotor CKERNEL specified for CSOURCE=SPICE");
       else {
-        zcklpf( rckernel, &ihrck);
+        zcklpf(rckernel, &ihrck);
         if (zfailed()) {
-          sprintf( msg, " *** unable to load kernel %s ***", rckernel);
-          zmabend( msg);
+          zvnabend(100, " *** unable to load kernel %s ***", rckernel);
         }
       }
     }
   }
-  else if (!calib) zvparm( "AACSFILE", aacsfnam, &nvalues, &def, 1, 0);
+  else if (!calib) zvparm("AACSFILE", aacsfnam, &nvalues, &def, 1, 0);
   aacsf = (!c_spice && !calib);
 
-	/*
-	 * get target body radii
-	 */
-  zbodvar( ids.target, "RADII", &dim_radii, &rad);
+  /*
+   * get target body radii
+   */
+  zbodvar(ids.target, "RADII", &dim_radii, &rad);
   if (zfailed()) zmabend(" *** unable to get target radii ***");
 
-	/* allow user override: */
-  zvpcnt( "RADII", &i);
-  if (i==3) zvparmd( "RADII", &rad, &i, &def, 3, 0);
+  /* allow user override: */
+  zvpcnt("RADII", &i);
+  if (i==3) zvparmd("RADII", &rad, &i, &def, 3, 0);
 
-	/* add in the atmospheric radius correction: */
-  zvparm( "DELRAD", &delr, &i, &def, 1, 0);
+  /* add in the atmospheric radius correction: */
+  zvparm("DELRAD", &delr, &i, &def, 1, 0);
 
-	/* store for TRANV: */
+  /* store for TRANV: */
   pol_rad = rad.polar + delr; 
   eq_rad = (rad.semi_major + rad.semi_minor) / 2;	/* avg. eq. radius*/
   eq_rad += delr; 
   frad = pol_rad / eq_rad;
-	/* and for PPROJ: */
+  /* and for PPROJ: */
   tgt_data.e1rad = rad.semi_major + delr;
   tgt_data.e2rad = rad.semi_minor + delr;
   tgt_data.prad = pol_rad;
@@ -6429,7 +6454,7 @@ replace above with: */
 
   rep2 = 1.0/(frad1*frad1);
 
-	/* check if we need to worry about planetographic/-detic */
+  /* check if we need to worry about planetographic/-detic */
   if (rad.semi_major == rad.polar) {
     pgraphic = -1;
     lattyp = 0;
@@ -6438,37 +6463,37 @@ replace above with: */
     pgraphic = zvptst("PGRAPHIC") || zvptst("PDETIC");
     if (pgraphic==1) {
       if (rad.semi_major != rad.semi_minor) {
-        zvmessage(" ** Body is not a spheroid, planetographic is undefined","");
+        zifmessage(" ** Body is not a spheroid, planetographic is undefined");
         pgraphic = 0;
       }
     }
     lattyp = pgraphic;
   }
 
-	/*
-	 * fill in fixed part of PPROJ buffer ...
-	 * what PPROJ actually uses is (focal * camera scale), in pixels,
-	 * this is pretty much arbitrary since we are always looking
-	 * at Line = Sample = 0  (unless map proj'n is POV, which is
-	 * fixed in set_pov)
-	 *
-	 * NOTE: 
-	 *   CAMERA SCALE = 1/RES   
-	 *   RES = resolution element of detector
-	 *	 = size of 1 pixel [mm] in focal plane
-	 *   FOV = NIMS detector angular dimension = 0.5 mrad
-	 * We have, from the geometry of the optics:
-	 *   FOV = RES/FOCAL
-	 * Hence:
-	 *   CSCALE = 1/(FOV*FOCAL)
-	 */
+  /*
+   * fill in fixed part of PPROJ buffer ...
+   * what PPROJ actually uses is (focal * camera scale), in pixels,
+   * this is pretty much arbitrary since we are always looking
+   * at Line = Sample = 0  (unless map proj'n is POV, which is
+   * fixed in set_pov)
+   *
+   * NOTE: 
+   *   CAMERA SCALE = 1/RES   
+   *   RES = resolution element of detector
+   *	 = size of 1 pixel [mm] in focal plane
+   *   FOV = NIMS detector angular dimension = 0.5 mrad
+   * We have, from the geometry of the optics:
+   *   FOV = RES/FOCAL
+   * Hence:
+   *   CSCALE = 1/(FOV*FOCAL)
+   */
   tgt_data.focal = focal;
   tgt_data.cscale = 1.0 / (focal * 0.0005);
 
-	/* instrument temperatures: */
-  zvparm( "INS_TEMP", utemps, &nvalues, &def, 6, 0);
+  /* instrument temperatures: */
+  zvparm("INS_TEMP", utemps, &nvalues, &def, 6, 0);
 
-	/* initialize min/max values for radiance scaling: */
+  /* initialize min/max values for radiance scaling: */
   for (i=0; i<408; i++) {
     ffmin[i] = (-1)*VALID_MIN4;
     ffmax[i] = VALID_MIN4;
@@ -6477,88 +6502,92 @@ replace above with: */
 
 
 /************************************************************************/
-FUNCTION nims_ps_orient( sclk, sc, sol, cenbod, pme)
+void nims_ps_orient(int sclk, vector sc, vector sol, vector cenbod, struct pntng_typ *pme)
 /*
  * return the the spacecraft-to-planet and s/c-to-sun vectors and the
  * Euler angles for the ME matrix at given compound SCLK
  */
-int sclk;
+#if 0
+  int sclk;
 struct pntng_typ *pme;
 vector cenbod, sc, sol;
+#endif
 {
   int i;
   double state[6], state_lt, state_lt1, etime_lt, lambda, ssb_craft[6];
 
   zreset1();				/* clear previous SPICE errors */
 
-  nims_s2et( sclk, &etime);		/* convert SCLK to ephem. time */
+  nims_s2et(sclk, &etime);		/* convert SCLK to ephem. time */
 
-	/* simulate ephemeris error by a time offset: */
+  /* simulate ephemeris error by a time offset: */
   etime += epherr;
 
-	/* spacecraft position relative to SSB: */
-  zspkssb( ids.sc, etime, esystem, ssb_craft);
+  /* spacecraft position relative to SSB: */
+  zspkssb(ids.sc, etime, esystem, ssb_craft);
 
-	/* target body position relative to spacecraft: */
-  zspkapp( ids.target, etime, esystem, ssb_craft, "LT+S", state, &state_lt);
+  /* target body position relative to spacecraft: */
+  zspkapp(ids.target, etime, esystem, ssb_craft, "LT+S", state, &state_lt);
   if (zfailed()) zmabend(" *** unable to get target body position ***");
   for (i=0; i<3; i++) sc[i] = state[i];		/* (last 3 are velocities) */
 
-	/* solar position relative to spacecraft: */
-  zspkapp( ids.sol, etime, esystem, ssb_craft, "LT+S", state, &state_lt1);
+  /* solar position relative to spacecraft: */
+  zspkapp(ids.sol, etime, esystem, ssb_craft, "LT+S", state, &state_lt1);
   if (zfailed()) zmabend(" *** unable to get solar position ***");
   for (i=0; i<3; i++) sol[i] = state[i];	/* (last 3 are velocities) */
 
-	/* central body position relative to spacecraft: */
-  zspkapp( ids.center, etime, esystem, ssb_craft, "LT+S", state, &state_lt1);
+  /* central body position relative to spacecraft: */
+  zspkapp(ids.center, etime, esystem, ssb_craft, "LT+S", state, &state_lt1);
   if (zfailed()) zmabend(" *** unable to get central-body position ***");
   for (i=0; i<3; i++) cenbod[i] = state[i];	/* (last 3 are velocities) */
 
-	/* Euler angles */
+  /* Euler angles */
   etime_lt = etime - state_lt;
-  zbodeul( ids.target, etime_lt, &pme->ra, &pme->dec, &pme->twist, &lambda);
-	/* (lambda is longitude of longest axis -- irrelevant) */
+  zbodeul(ids.target, etime_lt, &pme->ra, &pme->dec, &pme->twist, &lambda);
+  /* (lambda is longitude of longest axis -- irrelevant) */
   if (zfailed()) zmabend(" *** unable to get ME Euler angles ***");
-  if (!strcmp( esystem, "B1950")) zrotadkx( pme, J2000, B1950, pme);
+  if (!strcmp(esystem, "B1950")) zrotadkx(pme, J2000, B1950, pme);
 }
 
 
 /************************************************************************/
-FUNCTION nims_s2et( sclk, pet)
+void nims_s2et(int sclk, double *pet)
 /*
  * convert compound SCLK to Ephemeris time using SPICE routines
  *
  * currently we do NOT worry about Partition -- this will need to 
  * be fixed some day
  */
-int sclk;
+#if 0
+  int sclk;
 double *pet;
+#endif
 {
   int i, j;
 
-	/* encode SCLK into a string for NAIF: */
+  /* encode SCLK into a string for NAIF: */
   i = sclk/91;		/* RIM */
   j = sclk%91;		/* mod91 */
-  sprintf( msg, "%d.%d", i, j);
+  snprintf(msg, 100, "%d.%d", i, j);
   
-  zscs2e( ids.sc, msg, pet);
-  if (zfailed()) zvmessage(" *** error in SCS2E ***","");
+  zscs2e(ids.sc, msg, pet);
+  if (zfailed()) zifmessage(" *** error in SCS2E ***");
 }
 
 
 /************************************************************************/
-int FUNCTION open_edr( prnt)
+int open_edr(int prnt)
 /*
  * increments cur_edr and then opens the data file pointed to by cur_edr
  *
  * also sets file_lclk/hclk
  */
-int prnt;
+#if 0
+  int prnt;
+#endif
 {
   static int file_number;
-  int frim, i, j, lrim, nlb_pds, nnx, nx[6], rim,
-   rim_record, record, total_record;
-  float ltx[6];
+  int i;
   nims2_sclk_typ sclk1, sclk2;
   char target1[16];
 
@@ -6566,24 +6595,24 @@ int prnt;
   cur_edr++;
   if (!edrs[cur_edr].opened) {
     file_number++;
-    zvunit( &edrs[cur_edr].unit, "NONE", file_number, "U_NAME",
-     (fname+edrs[cur_edr].foff-1), NULL);
-    zvopen( edrs[cur_edr].unit, "COND", "BINARY", "OPEN_ACT", "SA",
-     "IO_ACT", "SA", NULL);
+    zvunit(&edrs[cur_edr].unit, "NONE", file_number, "U_NAME",
+	   (fname+edrs[cur_edr].foff-1), NULL);
+    zvopen(edrs[cur_edr].unit, "COND", "BINARY", "OPEN_ACT", "SA",
+	   "IO_ACT", "SA", NULL);
     edrs[cur_edr].opened = TRUE;
   }
 
   /* read in the binary headers using system-dependent translator: */
-  get_nims_edr_hdr_2( edrs[cur_edr].unit, &edrhdr);
+  get_nims_edr_hdr_2(edrs[cur_edr].unit, &edrhdr);
 
   /* store total # of records: */
-  vstat = zvget( edrs[cur_edr].unit, "NL", &nrec, NULL);
+  vstat = zvget(edrs[cur_edr].unit, "NL", &nrec, NULL);
 
   /* only get the EDR label stuff on first open: */
   if (edrs[cur_edr].first_open != TRUE) {
     edrs[cur_edr].first_open = TRUE;
 
-	/* get limits for label: */
+    /* get limits for label: */
     if (!cur_edr || comp_sclk(minclk) > comp_sclk(edrhdr.hdr1.fsclk)) {
       minclk.rim = edrhdr.hdr1.fsclk.rim;
       minclk.mod91 = edrhdr.hdr1.fsclk.mod91;
@@ -6604,11 +6633,10 @@ int prnt;
     if (!lo_sat) threshing = 0;
 
     /* check the Target field vs. user param.: */
-    strncpy( target1, edrhdr.hdr2.target, 8);
+    strncpy(target1, edrhdr.hdr2.target, 8);
     if (strncmp(target1,target,strlen(target))) {
-      zvmessage(" Warning: user Target does not match Target in ObsTab!","");
-      sprintf( msg, " User Target = %s,  ObsTab Target = %s", target, target1);
-      zvmessage( msg,"");
+      zifmessage(" Warning: user Target does not match Target in ObsTab!");
+      zvnprintf(100, " User Target = %s,  ObsTab Target = %s", target, target1);
     }
   }
 
@@ -6617,15 +6645,15 @@ int prnt;
 
   /* check for invalid SCLK2, which occurs in some de-garbled files
    * obtained directly from NIMS: */
-  get_nims_edr_rec_2( edrs[cur_edr].unit, nrec, &edrrec);
+  get_nims_edr_rec_2(edrs[cur_edr].unit, nrec, &edrrec);
   if (edrrec.pfix.sclk.rim != 0) sclk2 = edrrec.pfix.sclk;
 
-  file_lclk = comp_sclk( sclk1);
-  file_hclk = comp_sclk( sclk2);
+  file_lclk = comp_sclk(sclk1);
+  file_hclk = comp_sclk(sclk2);
   file_hrti = edrhdr.hdr1.lsclk.rti;
 
-   /* if the range in the file is wider than that specified by the user, 
-    * we only process the latter ... */
+  /* if the range in the file is wider than that specified by the user, 
+   * we only process the latter ... */
   if (file_lclk < range_lclk) {
     sclk1.rim = loclk.rim;
     sclk1.mod91 = loclk.mod91;
@@ -6636,13 +6664,11 @@ int prnt;
   }
   if (prnt) {
     if ((range_hclk && file_lclk > range_hclk) || file_hclk < range_lclk) {
-      sprintf( msg, " no data in this range in EDR #%d", cur_edr+1);
-      zvmessage( msg,"");
+      zvnprintf(100, " no data in this range in EDR #%d", cur_edr+1);
     }
     else {
-      sprintf( msg, " processing range %d.%02d to %d.%02d ", sclk1.rim,
-       sclk1.mod91, sclk2.rim,sclk2.mod91 );
-      zvmessage( msg,"");
+      zvnprintf(100, " processing range %ld.%02d to %ld.%02d ", sclk1.rim,
+		sclk1.mod91, sclk2.rim,sclk2.mod91 );
     }
   }
   return 0;
@@ -6650,7 +6676,7 @@ int prnt;
 
 
 /************************************************************************/
-FUNCTION open_outs()
+void open_outs(void)
 /*
  * open output files, including the temporary weights file;
  * also initialize the files to NULL
@@ -6688,83 +6714,83 @@ FUNCTION open_outs()
   short xbuf[20];
   float dn0, *wptr;
 
-  if (org==0) strcpy( orgs, "BSQ");
-  else if (org==1) strcpy( orgs, "BIL");
-  else if (org==2) strcpy( orgs, "BIP");
+  if (org==0) strcpy(orgs, "BSQ");
+  else if (org==1) strcpy(orgs, "BIL");
+  else if (org==2) strcpy(orgs, "BIP");
 
-	/* primary output:  G-cube/tube file */
-  zvparm( "CUBE", cname, &nvalues, &def, 1, 0);	
-  zvunit( &dunit, "NONE0", 1, "U_NAME", cname, NULL);
+  /* primary output:  G-cube/tube file */
+  zvparm("CUBE", cname, &nvalues, &def, 1, 0);	
+  zvunit(&dunit, "NONE0", 1, "U_NAME", cname, NULL);
 
   if (caltyp && radscal<=0)		/* no TFC, Real cube */
 
-    zvopen( dunit, "ADDRESS", &odata, "OPEN_ACT", "SA", "IO_ACT", "SA", 
-     "OP", "WRITE", "O_FORMAT","REAL", "U_NL", nl, "U_NS", ns,
-     "U_NB", nb, "U_ORG", orgs, NULL);
+    zvopen(dunit, "ADDRESS", &odata, "OPEN_ACT", "SA", "IO_ACT", "SA", 
+	   "OP", "WRITE", "O_FORMAT","REAL", "U_NL", nl, "U_NS", ns,
+	   "U_NB", nb, "U_ORG", orgs, NULL);
 
   else if (caltyp || !tube) {		/* TFC, Halfword cube */
 
-    odata = (float *) malloc( nl*ns*nb*sizeof(float));
+    odata = (float *) malloc(nl*ns*nb*sizeof(float));
     if (odata==0)
       zmabend(" *** insufficient scratch space available for ODATA ***");
-    zvopen( dunit, "OPEN_ACT", "SA", "IO_ACT", "SA", "OP", "WRITE", "O_FORMAT",
-     "HALF", "U_NL", nl, "U_NS", ns, "U_NB", nb, "U_ORG", orgs, NULL);
+    zvopen(dunit, "OPEN_ACT", "SA", "IO_ACT", "SA", "OP", "WRITE", "O_FORMAT",
+	   "HALF", "U_NL", nl, "U_NS", ns, "U_NB", nb, "U_ORG", orgs, NULL);
   }
   else {			/* Tube/DN:  no TFC, Halfword cube */
 
-    zvopen( dunit, "OPEN_ACT", "SA", "IO_ACT", "SA", "OP", "WRITE", "O_FORMAT",
-     "HALF", "U_NL", nl, "U_NS", ns, "U_NB", nb, "U_ORG", orgs, NULL);
-	/* initialize the file: */
+    zvopen(dunit, "OPEN_ACT", "SA", "IO_ACT", "SA", "OP", "WRITE", "O_FORMAT",
+	   "HALF", "U_NL", nl, "U_NS", ns, "U_NB", nb, "U_ORG", orgs, NULL);
+    /* initialize the file: */
     for (i=0; i<maxmpos; i++) xbuf[i] = NULL2;
     for (j=0; j<nb; j++)
       for (i=0; i<nl; i++)
-	zvwrit( dunit, xbuf, NULL);
+	zvwrit(dunit, xbuf, NULL);
   }
 
-	/* initialize the cube array for all cases except DN tube: */
+  /* initialize the cube array for all cases except DN tube: */
   if (!tube || caltyp)
     for (i=0; i<nl*ns*nb; i++) *(odata + i) = NULL4;
 
-	/* geometry cocube file */
-  zvparm( "COCUBE", gname, &nvalues, &def, 1, 0);
+  /* geometry cocube file */
+  zvparm("COCUBE", gname, &nvalues, &def, 1, 0);
   if (!nvalues) {		/* construct gname out of cname */
-    for ( n1= -1;;) {		/* find last "." in name */
-      len = strlen( &cname[n1+1]);
-      n = strcspn( &cname[n1+1], ".");
+    for (n1= -1;;) {		/* find last "." in name */
+      len = strlen(&cname[n1+1]);
+      n = strcspn(&cname[n1+1], ".");
       if (n>=len) break;
       n1 += n+1;
     }
     if (n1<=0) {
-      if (tube) strcpy( gname, "CUBE.COT");
-      else strcpy( gname, "CUBE.COC");
+      if (tube) strcpy(gname, "CUBE.COT");
+      else strcpy(gname, "CUBE.COC");
     }
     else {
-      strncpy( gname, cname, n1);
-      if (tube) strcpy( &gname[n1], ".COT");
-      else strcpy( &gname[n1], ".COC");
+      strncpy(gname, cname, n1);
+      if (tube) strcpy(&gname[n1], ".COT");
+      else strcpy(&gname[n1], ".COC");
     }
   }
   if (calib) nbg = 1;
   else if (tube) nbg = nbpg*ngps0 +6;
   else nbg = (int)NB_GEO;
 
-  zvunit( &gunit, "NONE1", 1, "U_NAME", gname, NULL);
-  zvopen( gunit, "ADDRESS", &gdata, "OPEN_ACT", "SA", "IO_ACT", "SA",
- 	 "OP", "WRITE", "O_FORMAT", "REAL", "U_NL", nl, "U_NS", ns,
-  	 "U_NB", nbg, "U_ORG", "BSQ", NULL);
-/* FOR DEBUG WATCHPOINTS, REPLACE ABOVE WITH (if not too big!):
- *  gdata = (float *)malloc( nl*ns*nb*sizeof(float)); */
+  zvunit(&gunit, "NONE1", 1, "U_NAME", gname, NULL);
+  zvopen(gunit, "ADDRESS", &gdata, "OPEN_ACT", "SA", "IO_ACT", "SA",
+	 "OP", "WRITE", "O_FORMAT", "REAL", "U_NL", nl, "U_NS", ns,
+	 "U_NB", nbg, "U_ORG", "BSQ", NULL);
+  /* FOR DEBUG WATCHPOINTS, REPLACE ABOVE WITH (if not too big!):
+   *  gdata = (float *)malloc(nl*ns*nb*sizeof(float)); */
   for (i=0; i<nl*ns*nbg; i++) *(gdata + i) = NULL4;
 
   if (tube) return;
 
-	/* open the weights file */
-  zvparm( "WTFIL", wtfile, &nvalues, &def, 1, 0);	
-  zvunit( &wtunit, "NONE2", 1, "U_NAME", wtfile, NULL);
+  /* open the weights file */
+  zvparm("WTFIL", wtfile, &nvalues, &def, 1, 0);	
+  zvunit(&wtunit, "NONE2", 1, "U_NAME", wtfile, NULL);
   wtnb = nb + 3;		/* + Geometry-weight & 2 squares */
   if (histbin) wtnb = nb*(hbinsize+1) + 1;	/* NB hist's + geom.weight */
-  zvopen( wtunit, "ADDRESS", &wdata, "OPEN_ACT", "SA", "IO_ACT", "SA",
-   "OP","WRITE", "O_FORMAT", "REAL", "U_NL", nl, "U_NS", ns, "U_NB", wtnb, NULL);
+  zvopen(wtunit, "ADDRESS", &wdata, "OPEN_ACT", "SA", "IO_ACT", "SA",
+	 "OP","WRITE", "O_FORMAT", "REAL", "U_NL", nl, "U_NS", ns, "U_NB", wtnb, NULL);
   for (i=0; i<nl*ns*wtnb; i++) *(wdata+i) = 0.0;
 
   /* if histogram is fixed, then store DN0=7 at all entries: */
@@ -6775,15 +6801,15 @@ FUNCTION open_outs()
         for (k=0; k<nb; k++)  {
 	  wptr = wdata + (hbinsize+1)*k*nl*ns + (j-1)*ns + i-1;
 	  *wptr = dn0;			/* store dn0 */
-  } } } }
+	} } } }
 
-	/* open the std.dev. cube if requested */
-  zvparm( "SDFIL", sdfile, &sd_file, &def, 1, 0);
+  /* open the std.dev. cube if requested */
+  zvparm("SDFIL", sdfile, &sd_file, &def, 1, 0);
   if (!sd_file) return;
-  zvunit( &sdunit, "NONE3", 1, "U_NAME", sdfile, NULL);
-  zvopen( sdunit, "ADDRESS", &sddata, "OPEN_ACT", "SA", "IO_ACT", "SA",
-   "OP", "WRITE", "O_FORMAT", "REAL", "U_NL", nl, "U_NS", ns, "U_NB", nb,
-   "U_ORG", orgs, NULL);
+  zvunit(&sdunit, "NONE3", 1, "U_NAME", sdfile, NULL);
+  zvopen(sdunit, "ADDRESS", &sddata, "OPEN_ACT", "SA", "IO_ACT", "SA",
+	 "OP", "WRITE", "O_FORMAT", "REAL", "U_NL", nl, "U_NS", ns, "U_NB", nb,
+	 "U_ORG", orgs, NULL);
   for (i=0; i<nl*ns*nb; i++) *(sddata+i) = 0.0;
 
   return;
@@ -6791,8 +6817,8 @@ FUNCTION open_outs()
 
 
 /************************************************************************/
-FUNCTION output_cotube( mpos, mpos1, gp, iy, nchops, offimag, offplan, dcnt,
- vcnt, vflag)
+void output_cotube(struct xytype * mpos, struct xytype *mpos1, int gp, int iy,
+		   int nchops, int *offimag, int *offplan, int *dcnt, int *vcnt, int *vflag)
 /*
  * output data for a complete mirror scan to a co-tube file
  *
@@ -6803,10 +6829,12 @@ FUNCTION output_cotube( mpos, mpos1, gp, iy, nchops, offimag, offplan, dcnt,
  *
  * cdata contains the sensor data, included for flag counts only
  */
-struct xytype *mpos, *mpos1;
+#if 0
+  struct xytype *mpos, *mpos1;
 int gp, iy, nchops, *offimag, *offplan, *dcnt, *vcnt, *vflag;
+#endif
 {
-  int det, i, igp, ix, j, mp, mp1;
+  int i, igp, ix, j, mp, mp1;
   float *gptr;
 
   /* special case for Calibration data -- only write chop count: */
@@ -6824,17 +6852,17 @@ int gp, iy, nchops, *offimag, *offplan, *dcnt, *vcnt, *vflag;
 
   for (mp=smpos; mp<=empos; mp++) {
 
-	/* write the map projection cocube bands: */
+    /* write the map projection cocube bands: */
     ix = mp+1;
     if (pmirror == DOWN) ix = maxmpos-mp;
 
-	/* for non-fixed-grating modes, the chop count is nominally
-	 * written on the DOWN scan (since this is the first in a
-	 * grating cycle), so if it's UP then switch direction:
-	 * (because it is possible that a scan other than the first
-	 * one is the one on which the chop count gets written, due
-	 * to the preceding ones being empty)
-	 */
+    /* for non-fixed-grating modes, the chop count is nominally
+     * written on the DOWN scan (since this is the first in a
+     * grating cycle), so if it's UP then switch direction:
+     * (because it is possible that a scan other than the first
+     * one is the one on which the chop count gets written, due
+     * to the preceding ones being empty)
+     */
     mp1 = mp;
     if (gdel && pmirror == UP) mp1 = maxmpos-1-mp;
 
@@ -6912,17 +6940,17 @@ int gp, iy, nchops, *offimag, *offplan, *dcnt, *vcnt, *vflag;
       }
     }
 
-	/* also count how many combs are bad, for reporting purposes 
-	 * (in same order as for cube!):
-	 * first off-planet/deboomed: */
+    /* also count how many combs are bad, for reporting purposes 
+     * (in same order as for cube!):
+     * first off-planet/deboomed: */
     if (mpos[mp].x == (float)BADP) {
       if (mpos[mp].y == (float)BADP) (*offplan)++;
       else if (mpos[mp].y == 0.) (*dcnt)++;
     }
     else {
-	/* then check if there were valid data for this comb */
+      /* then check if there were valid data for this comb */
       if (!vflag[mp]) *vcnt += 1;
-	/* if there are, then check for off-image: */
+      /* if there are, then check for off-image: */
       else {
 	i = mpos[mp].x + 0.5;	/* (adequate because neg. values ignored) */
 	j = mpos[mp].y + 0.5;
@@ -6930,32 +6958,32 @@ int gp, iy, nchops, *offimag, *offplan, *dcnt, *vcnt, *vflag;
       }
     }
 
-	/* now write bands N+1 - N+6 of cotube: (N = NBPG*NG)
-	 * for NGPS>1 there is only 1 entry for ALL gp's, so don't
-	 * overwrite what's already there */
+    /* now write bands N+1 - N+6 of cotube: (N = NBPG*NG)
+     * for NGPS>1 there is only 1 entry for ALL gp's, so don't
+     * overwrite what's already there */
     gptr = gdata + (nbpg*ngps0*nl + iy-1)*ns + ix-1;
 
-	/* bands N+1 - N+3 are photometric angles: */
+    /* bands N+1 - N+3 are photometric angles: */
     for (i=0; i<3; i++) {
       if (cobuf[mp].geom[i] >= VALID_MIN4 && *gptr==(float)NULL4)
-       *gptr = degrad*cobuf[mp].geom[i];
+	*gptr = degrad*cobuf[mp].geom[i];
       gptr += nl*ns;
     }
-	/* bands N+4 (slant distance) & N+5 (height): */
+    /* bands N+4 (slant distance) & N+5 (height): */
     for (i=0; i<2; i++) {
       if (*gptr==(float)NULL4) *gptr = cobuf[mp].rads[i];
       gptr += nl*ns;
     } 
     
-	/* band N+6 is time in chops from start of observation
-	 * for gp=0 (which is DOWN) */
+    /* band N+6 is time in chops from start of observation
+     * for gp=0 (which is DOWN) */
     if (*gptr==(float)NULL4) *gptr = nchops + mp1;
   }
 }
 
 
 /************************************************************************/
-FUNCTION output_ftpt( cdata, mp, cpos, gp, offimag, isclk)
+void output_ftpt(float *cdata, int mp, struct xytype cpos[4], int gp, int *offimag, int isclk)
 /*
  * output one comb of calibrated data into the footprint in the output
  * image, defined by the 4 vertex positions in the CPOS array
@@ -6967,31 +6995,32 @@ FUNCTION output_ftpt( cdata, mp, cpos, gp, offimag, isclk)
  * plus user param. can change spacing) and then calling output_near for
  * each pixel with at least 1 grid point
  */
-
-float *cdata;
+#if 0
+  float *cdata;
 struct xytype cpos[4];
 int gp, mp, *offimag;
+#endif
 {
-  int det, i, ix, iy, j, k, maxx, maxy, minx, miny, off1;
+  int i, ix, iy, j, k, maxx, maxy, minx, miny, off1;
   int *wbuf;
   float wt, xa, xb, xc, xd, ya, yb, yc, yd;
   struct xytype pos;
 
-	/* check that none of the points coincide (the algorithm should
-	 * actually work for any single pair of adjacent points coincident, 
-	 * i.e., a triangle, but this is easier to check for and should not
-	 * occur either): */
+  /* check that none of the points coincide (the algorithm should
+   * actually work for any single pair of adjacent points coincident, 
+   * i.e., a triangle, but this is easier to check for and should not
+   * occur either): */
   for (i=0; i<3; i++) 
     for (j=i+1; j<4; j++) 
       if (cpos[i].x==cpos[j].x && cpos[i].y==cpos[j].y) 
         zmabend(" two of the footprint points coincide");
 
-	/*
-	 * first determine the box that contains all 4 corners --
-	 * if this is only 1 pixel, then there's no need to set up
-	 * the grid;  otherwise, need array of this size to hold the
-	 * pixel weights
-	 */
+  /*
+   * first determine the box that contains all 4 corners --
+   * if this is only 1 pixel, then there's no need to set up
+   * the grid;  otherwise, need array of this size to hold the
+   * pixel weights
+   */
   minx = ns+1;
   miny = nl+1;
   maxx = 0;
@@ -7001,10 +7030,10 @@ int gp, mp, *offimag;
     else ix = cpos[i].x - 0.5;
     if (cpos[i].y >= 0.0) iy = cpos[i].y + 0.5;
     else iy = cpos[i].y - 0.5;
-    minx = min( minx, ix);
-    miny = min( miny, iy);
-    maxx = max( maxx, ix);
-    maxy = max( maxy, iy);
+    minx = min(minx, ix);
+    miny = min(miny, iy);
+    maxx = max(maxx, ix);
+    maxy = max(maxy, iy);
   }
   if (maxx<1 || maxy<1 || minx>ns || miny>nl) {		/* all 4 off image */
     *offimag += 1;
@@ -7012,29 +7041,29 @@ int gp, mp, *offimag;
   }
   if (minx==maxx && miny==maxy) {	/* entire grid in 1 pixel */
     wt = 1.0;
-    output_near( cdata, mp, cpos[0], gp, wt, &i);
+    output_near(cdata, mp, cpos[0], gp, wt, &i);
     return;
   }
-	/* find dimensions of box & allocate memory: */
+  /* find dimensions of box & allocate memory: */
   maxx -= (minx-1);
   maxy -= (miny-1);
-  wbuf = (int *)malloc( 4*maxx*maxy);
+  wbuf = (int *)malloc(4*maxx*maxy);
   for (i=0; i<maxx*maxy; i++) wbuf[i] = 0;
-	/* 
-	 * per algorithm in find_xy_corners, the 4 vertices are stored
-	 * such that their sequence going clockwise from 0 is: 0, 1, 3, 2;
-	 * (XCONE is the 0-2 & 1-3 direction, and these sides are twice
-	 * as long as the CONE sides)
-	 * find (2*fpgrid-1) points (-1 to make the weights come out nicely)
-	 * on the long sides & fpgrid on the short, connect corresponding ones
-	 * on opposite sides, and find the intersections:
-	 *   point Ai is on side 0-1
-	 *   point Bj is on side 0-2
-	 *   point Ci is on side 2-3
-	 *   point Dj is on side 1-3
-	 * The weights are a "tent" function in XCONE direction,
-	 * uniform in CONE.
-	 */
+  /* 
+   * per algorithm in find_xy_corners, the 4 vertices are stored
+   * such that their sequence going clockwise from 0 is: 0, 1, 3, 2;
+   * (XCONE is the 0-2 & 1-3 direction, and these sides are twice
+   * as long as the CONE sides)
+   * find (2*fpgrid-1) points (-1 to make the weights come out nicely)
+   * on the long sides & fpgrid on the short, connect corresponding ones
+   * on opposite sides, and find the intersections:
+   *   point Ai is on side 0-1
+   *   point Bj is on side 0-2
+   *   point Ci is on side 2-3
+   *   point Dj is on side 1-3
+   * The weights are a "tent" function in XCONE direction,
+   * uniform in CONE.
+   */
   for (i=0; i<fpgrid; i++) {
     xa = cpos[0].x + (cpos[1].x-cpos[0].x)*i/(fpgrid-1);
     ya = cpos[0].y + (cpos[1].y-cpos[0].y)*i/(fpgrid-1);
@@ -7046,17 +7075,16 @@ int gp, mp, *offimag;
       xd = cpos[1].x + (cpos[3].x-cpos[1].x)*j/(2*fpgrid);
       yd = cpos[1].y + (cpos[3].y-cpos[1].y)*j/(2*fpgrid);
 
-	/* intersection of AC with BD gives point (i,j): */
-      pos.x = ( (yd*xb-yb*xd)*(xa-xc) - (ya*xc-yc*xa)*(xd-xb) ) /
-	      (       (yd-yb)*(xa-xc) -       (ya-yc)*(xd-xb) );
-	/* analysis shows that above denominator cannot be = 0 --
-	 * so don't check, just let pathological case crash;
-	 * however, next denominator can be 0: */
+      /* intersection of AC with BD gives point (i,j): */
+      pos.x = ((yd*xb-yb*xd)*(xa-xc) - (ya*xc-yc*xa)*(xd-xb) ) /
+	(      (yd-yb)*(xa-xc) -       (ya-yc)*(xd-xb) );
+      /* analysis shows that above denominator cannot be = 0 --
+       * so don't check, just let pathological case crash;
+       * however, next denominator can be 0: */
       if (fabs(xc-xa)<1.e-10 && fabs(xd-xb)<1.e-10) {
 	i = isclk/91;
 	j = isclk%91;
-	sprintf(msg, " error 1 in output_ftpt, SCLK=%d.%d", i, j);
-	zmabend(msg);
+	zvnabend(100, " error 1 in output_ftpt, SCLK=%d.%d", i, j);
       }
       if (fabs(xc-xa)<fabs(xd-xb)) pos.y = yb + (yd-yb)*(pos.x-xb)/(xd-xb);
       else pos.y = ya + (yc-ya)*(pos.x-xa)/(xc-xa);
@@ -7066,8 +7094,7 @@ int gp, mp, *offimag;
       if (k>4*maxx*maxy) {
 	i = isclk/91;
 	j = isclk%91;
-	sprintf(msg, " error 2 in output_ftpt, SCLK=%d.%d", i, j);
-	zmabend(msg);
+	zvnabend(100, " error 2 in output_ftpt, SCLK=%d.%d", i, j);
       }
       if (j<=fpgrid) wbuf[k] += j;
       else wbuf[k] += 2*fpgrid-j;
@@ -7083,19 +7110,19 @@ int gp, mp, *offimag;
       if (ix<1 || ix>ns || iy<1 || iy>nl) off1 += wbuf[k];
       else if (wbuf[k] > 0) {
 	wt = (float)wbuf[k]/(nfpwts);
-	output_near( cdata, mp, pos, gp, wt, &i);
+	output_near(cdata, mp, pos, gp, wt, &i);
       }
     }
   }
-  free( wbuf);		/* to avoid memory overflow */
+  free(wbuf);		/* to avoid memory overflow */
 
-	/* label points as off-image on a statistical basis: */
+  /* label points as off-image on a statistical basis: */
   if (off1 > nfpwts/2) *offimag += 1;
 }
 
 
 /************************************************************************/
-FUNCTION output_histbin( pdata, ix, iy, lambda, wtp)
+void output_histbin(float *pdata, int ix, int iy, int lambda, float *wtp)
 /*
  * add one pixel to the histogram for the current (X,Y,Lambda) position
  *
@@ -7133,12 +7160,14 @@ FUNCTION output_histbin( pdata, ix, iy, lambda, wtp)
  * range 7-1022.  (Strictly speaking, 6 is also allowed, but in
  * practice this has little effect.)
  */
-int ix, iy, lambda;
+#if 0
+  int ix, iy, lambda;
 float *pdata, *wtp;	/* passed by reference to make visible in debugger */
-			/* (strange Alpha debugger bug?) */
+#endif
+/* (strange Alpha debugger bug?) */
 {
-  int det, i, i0, idn, idn0, inom, wband;
-  float dn0, fword, word, wt, wtout, *wptr, *wptr0, *wptro, *wptrn;
+  int i, i0, idn, idn0, inom, wband;
+  float dn0, wt, wtout, *wptr, *wptr0, *wptro, *wptrn;
 
   /* start location of this histogram: */
   wptr = wdata + (hbinsize+1)*lambda*nl*ns + (iy-1)*ns + ix-1;
@@ -7261,7 +7290,7 @@ float *pdata, *wtp;	/* passed by reference to make visible in debugger */
 
 
 /************************************************************************/
-FUNCTION output_near( cdata, mp, pos, gp, wtx, offimag)
+void output_near(float *cdata, int mp, struct xytype pos, int gp, float wtx, int *offimag)
 /*
  * output one comb of data and associated cocube data, using the
  * nearest-neighbour approximation
@@ -7276,14 +7305,16 @@ FUNCTION output_near( cdata, mp, pos, gp, wtx, offimag)
  * mean cocube quantities are averaged over all grating positions
  * contributing to this pixel
  */
-float *cdata;
+#if 0
+  float *cdata;
 struct xytype pos;
 int gp, mp, *offimag;
 float wtx;
+#endif
 {
-  int det, i, ix, iy, lambda, offs, wband;
-  float dnstd, dnstdm, *dptr, fword, geomn, geostd, *gptr, phasem, scal,
-   *sptr, word, wt, wtg, wtsd, wt0, *wptr, *wptrg, *wptrp;
+  int det, i, ix, iy, lambda, offs=0;
+  float dnstd=0., dnstdm=0., *dptr, fword=0., geomn=0, geostd=0., *gptr, 
+    *sptr, word, wt, wtg, wtsd=0., wt0, *wptr, *wptrg, *wptrp;
 
   ix = pos.x + 0.5;		/* "C" truncates in int-to-float conversion */
   iy = pos.y + 0.5;		/* (wrong when x/y<0, but doesn't matter) */
@@ -7297,7 +7328,7 @@ float wtx;
       if (skipdet[det]>0) continue;
       lambda = wet[gp][det];
       if (lambda<0) continue;
-      output_histbin( &cdata[det], ix, iy, lambda, &wtx);
+      output_histbin(&cdata[det], ix, iy, lambda, &wtx);
     }
     goto cocbands;
   }
@@ -7309,7 +7340,7 @@ float wtx;
     lambda = wet[gp][det];
     if (lambda<0) continue;
 
-	/* weights file has a band for each cube band */
+    /* weights file has a band for each cube band */
     wptr = wdata + lambda*nl*ns + (iy-1)*ns + ix-1;
     wt = *wptr;
     wt0 = wt;		/* for std.dev's */
@@ -7321,22 +7352,22 @@ float wtx;
       offs = ix-1 + lambda*ns + (iy-1)*ns*nb;
     else if (org==2) 		/* BIP */
       offs = lambda + (ix-1)*nb + (iy-1)*ns*nb;
-      				/* no more */
+    /* no more */
     dptr = odata + offs;
 
     word = *dptr;			/* get whatever is already there */
 
- 	/* NOTE:  the treatment of HI_SAT pixels here is not very
-	 * satisfactory for the case where many input pixels contribute
-	 * to an output pixel, since the result will be unduly
-	 * influenced by the first few pixels encounterd;  should keep
-	 * track of total counts of saturated and unsaturated weights,
-	 * but this will greatly complicate the bookkeeping ... an
-	 * alternative is to use histogram-binning when this is a
-	 * problem */
+    /* NOTE:  the treatment of HI_SAT pixels here is not very
+     * satisfactory for the case where many input pixels contribute
+     * to an output pixel, since the result will be unduly
+     * influenced by the first few pixels encounterd;  should keep
+     * track of total counts of saturated and unsaturated weights,
+     * but this will greatly complicate the bookkeeping ... an
+     * alternative is to use histogram-binning when this is a
+     * problem */
 
-	/* can't average anything with saturated pixels, but check
-	 * weights: */
+    /* can't average anything with saturated pixels, but check
+     * weights: */
     if (word==(float)INS_HI_SAT4) {
       if (cdata[det]==(float)INS_HI_SAT4) {
 	wt += wtx;
@@ -7350,42 +7381,42 @@ float wtx;
       else continue;
     }
 
-	/* saturated cdata also beats all -- but only if its weight
-	 * is high enough: */
+    /* saturated cdata also beats all -- but only if its weight
+     * is high enough: */
     else if (cdata[det]==(float)INS_HI_SAT4 && wtx>sat_thrsh && flag_sat) {
       word = cdata[det];
       *wptr = wtx;
     }
 
-	/* if thresholding is done, then if either DN is LO_SAT we must
-	 * treat this specially ...
-	 * (Note this code does not check 'use_last' (REPLACE option) --
-	 * it is very unlikely that this will ever be used with thresholded
-	 * data!) */
+    /* if thresholding is done, then if either DN is LO_SAT we must
+     * treat this specially ...
+     * (Note this code does not check 'use_last' (REPLACE option) --
+     * it is very unlikely that this will ever be used with thresholded
+     * data!) */
     else if (word==(float)INS_LO_SAT4 || cdata[det]==(float)INS_LO_SAT4) {
-	/* if both are LO_SAT, nothing changes: */
+      /* if both are LO_SAT, nothing changes: */
       if (word==(float)INS_LO_SAT4 && cdata[det]==(float)INS_LO_SAT4) continue;
-	/* if either is NULL or below wts-thresh, it is skipped: */
+      /* if either is NULL or below wts-thresh, it is skipped: */
       else if (cdata[det]==(float)NULL4 || wtx<thresh) continue;
       else if (word==(float)NULL4 || wt<thresh) {
 	word = cdata[det];
 	*wptr = wtx;
       }
-	/* here if both are above wts-thresh and only one is LO_SAT --
-	 * average the latter in as zero radiance: */
+      /* here if both are above wts-thresh and only one is LO_SAT --
+       * average the latter in as zero radiance: */
       else {
 	if (word==(float)INS_LO_SAT4) {
 	  if (caltyp || det<14) word = wtx*cdata[det] / (wtx+wt); 
 	  else {
 	    word = 0.0;
-	    average_dn( &word, cdata[det], wt, wtx, det);
+	    average_dn(&word, cdata[det], wt, wtx, det);
 	  }
 	}
 	else {
 	  if (caltyp || det<14) word = wt*word / (wtx+wt); 
 	  else {
 	    cdata[det] = 0.0;
-	    average_dn( &word, cdata[det], wt, wtx, det);
+	    average_dn(&word, cdata[det], wt, wtx, det);
 	  }
 	}
 	wt += wtx;
@@ -7393,7 +7424,7 @@ float wtx;
       }
     }
 
-	/* if cdata is some other bad value, just keep stored value */
+    /* if cdata is some other bad value, just keep stored value */
     else if (cdata[det] < VALID_MIN4) continue;
 
     /* the only other value < VALID_MIN should be NULL:  if this is stored, 
@@ -7405,11 +7436,11 @@ float wtx;
     }
 
     else {		/* here if both stored and new values are ok */
-      if (use_max) word = max( word, cdata[det]);   /* if MAXIMUM requested */
+      if (use_max) word = max(word, cdata[det]);   /* if MAXIMUM requested */
       else if (use_last) word = cdata[det];	/* if REPLACE requested */
       else {					/* average */
 	if (caltyp || det<14) word = (wtx*cdata[det]+wt*word) / (wtx+wt); 
-        else average_dn( &word, cdata[det], wt, wtx, det);
+        else average_dn(&word, cdata[det], wt, wtx, det);
 	wt += wtx;
 	*wptr = wt;
       }
@@ -7417,21 +7448,21 @@ float wtx;
 
     *dptr = word;
 
-	/* for radiance scaling factors: */
+    /* for radiance scaling factors: */
     if (radscal==1 && word >= VALID_MIN4) {
-      ffmin[lambda] = min( ffmin[lambda], word);
-      ffmax[lambda] = max( ffmax[lambda], word);
+      ffmin[lambda] = min(ffmin[lambda], word);
+      ffmax[lambda] = max(ffmax[lambda], word);
     }
 
-	/* lamsd starts at 1, lambda at 0 */
+    /* lamsd starts at 1, lambda at 0 */
     if ((lambda+1)==lamsd && cdata[det] >= VALID_MIN4) { /* save for below */
       dnstd = cdata[det];
       dnstdm = word;
     }
 
-	/* now the std.dev. cube, if requested ...
-	 * during main processing, we store <DN**2> here, and
-	 * convert it to sqrt(variance) at the end */
+    /* now the std.dev. cube, if requested ...
+     * during main processing, we store <DN**2> here, and
+     * convert it to sqrt(variance) at the end */
     if (!sd_file || cdata[det]<VALID_MIN4) continue;
     sptr = sddata + offs;		/* has same structure as cube */
     fword = *sptr;
@@ -7439,16 +7470,16 @@ float wtx;
     *sptr = fword;
   }
 
-cocbands:
-	/*
-	 * now write bands 3-9 of cocube:
-	 * (1,2 are lat/long, get written at end of job)
-	 *
-	 * (if we have got this far, we're on-planet and there must 
-	 * be at least one det with valid data, so no need to check
-	 * for VALID_MIN)
-	 *
-	 * bands 3-5 are photometric angles: */
+ cocbands:
+  /*
+   * now write bands 3-9 of cocube:
+   * (1,2 are lat/long, get written at end of job)
+   *
+   * (if we have got this far, we're on-planet and there must 
+   * be at least one det with valid data, so no need to check
+   * for VALID_MIN)
+   *
+   * bands 3-5 are photometric angles: */
   wptrg = wdata + nb*nl*ns + (iy-1)*ns + ix-1;
   if (histbin) wptrg = wdata + (wtnb-1)*nl*ns + (iy-1)*ns + ix-1;
   wtg = *wptrg;
@@ -7466,8 +7497,8 @@ cocbands:
     gptr += nl*ns;
   }
 
-	/* band 6 (slant distance): 
-         * POV slant is written in write_latlon, unless it's old_ver */
+  /* band 6 (slant distance): 
+   * POV slant is written in write_latlon, unless it's old_ver */
   if (map_type!=16 || oldver) {
     fword = *gptr;
     if (fword < VALID_MIN4 || use_last) fword = cobuf[mp].rads[0];
@@ -7480,7 +7511,7 @@ cocbands:
   }
   gptr += nl*ns;
 
-	/* band 7 (height) -- POV & expanded-radius only: */
+  /* band 7 (height) -- POV & expanded-radius only: */
   if (map_type==16 && radfudge) {
     fword = *gptr;
     if (fword < VALID_MIN4 || use_last) fword = cobuf[mp].rads[1];
@@ -7499,41 +7530,41 @@ cocbands:
     return;
   }
 
-	/* bands 8,9 require reading squares from WTFIL */
+  /* bands 8,9 require reading squares from WTFIL */
   wptrp = wptrg + nl*ns;			/* location of <GEO**2> */
 
-	/* band 8 = GEO STD.DEV. */
+  /* band 8 = GEO STD.DEV. */
   if (geostd >= VALID_MIN4 && !use_last) {
     fword = *wptrp;
     fword = (wtx*geostd*geostd + wtg*fword) / (wtg+wtx);  /* new <GEO**2> */
     *wptrp = fword;	
     fword -= geomn*geomn;			/* SD = <X**2> - <X>**2 */
-    fword = max( fword, 0.0);			/* in case of roundoff error*/
-    fword = sqrt( fword);
+    fword = max(fword, 0.0);			/* in case of roundoff error*/
+    fword = sqrt(fword);
     *gptr = fword;				/* new GEO STD.DEV. */
     gptr += nl*ns;
   }
 
-	/* band 9 = DN STD.DEV. */
+  /* band 9 = DN STD.DEV. */
   if (dnstd >= VALID_MIN4 && !use_last) {
     wptrp += nl*ns;				/* location of <DN**2> */
     fword = *wptrp;
     fword = (wtx*dnstd*dnstd + wtsd*fword) / (wtsd+wtx);
     *wptrp = fword;				/* new <DN**2> */
     fword -= dnstdm*dnstdm;			/* SD = <X**2> - <X>**2 */
-    fword = max( fword, 0.0);			/* in case of roundoff error*/
-    fword = sqrt( fword);
+    fword = max(fword, 0.0);			/* in case of roundoff error*/
+    fword = sqrt(fword);
     *gptr = fword;				/* new DN STD.DEV. */
   }
 
-	/* update geom. weight */
+  /* update geom. weight */
   wtg += wtx;
   *wptrg = wtg;
 }
 
 
 /************************************************************************/
-FUNCTION output_test()
+void output_test(void)
 /*
  * only called in test mode:
  *  TEST=1:  output an ascii file containing mirror track data
@@ -7549,26 +7580,25 @@ FUNCTION output_test()
  * to restrict output (TEST=1-3) to one gp, use OUTBAND
  */
 {
-  int dj, gp, i, ind, isclk, j, jsclk, hmfc, mp, rti, rval, xmp;
-  float dum, xlat, xlon;
+  int dj, gp, i, ind, isclk, j, jsclk=0, hmfc=0, mp=0, rti=0, xmp=0;
+  float dum, xlat=0., xlon=0.;
   double cone, xcone;
   struct xytype mpos[20];
-  FILE *fil;
-  nims2_sclk_typ sclk;
+  FILE *fil=NULL;
 
   dbm = 0;		/* no debooming for TEST */
 
   if (xtest==1 || xtest==10) {
-    fil = fopen( "MTRACK.DAT", "w");
+    fil = fopen("MTRACK.DAT", "w");
     i = mf[0].sclk/91;
     j = mf[0].sclk%91;
-    fprintf( fil," Starting SCLK = %d.%02d\n", i, j);
-    fprintf( fil,"    HMFC    MP    X     Y\n");
+    fprintf(fil," Starting SCLK = %d.%02d\n", i, j);
+    fprintf(fil,"    HMFC    MP    X     Y\n");
   }
   else if (xtest==2 || xtest==8)
-   zvmessage("  SCLK    MP    LAT    LON    RADIUS","");
+    zifmessage("  SCLK    MP    LAT    LON    RADIUS");
   else if (xtest==9)
-   zvmessage("    SCLK     RA         Dec      Twist      D(CON)    D(XCON)","");
+    zifmessage("    SCLK     RA         Dec      Twist      D(CON)    D(XCON)");
 
   if (fix_mode) lami = 0;
 
@@ -7599,11 +7629,11 @@ FUNCTION output_test()
 
       if (xtest==1 || xtest==10) {
 
-	find_xy_center( isclk, rti, mpos, 0,0,0,0);
+	find_xy_center(isclk, rti, mpos, 0,0,0,0);
 
 	for (mp=smpos; mp<=empos; mp++) 
-	  if (mpos[mp].x >= 0.) fprintf( fil," %10d  %2d %7.3f %7.3f\n", 
-	   hmfc, mp, mpos[mp].x, mpos[mp].y);
+	  if (mpos[mp].x >= 0.) fprintf(fil," %10d  %2d %7.3f %7.3f\n", 
+					hmfc, mp, mpos[mp].x, mpos[mp].y);
       }
       else {
 	dj = 1;
@@ -7613,40 +7643,36 @@ FUNCTION output_test()
 	  smpos = empos = 9;
 	}
 	for (j=smpos; j<=empos; j+=dj) {
-	  get_tgt_data( isclk, rti, j, 0, -1, &cone, &xcone);
+	  get_tgt_data(isclk, rti, j, 0, -1, &cone, &xcone);
 	  dum = 0.0;
-	  zpproj( &tgt_data, &dum, &dum, &xlat, &xlon, LS_LL, lattyp, &rtang,
-	   &slant, &ind);
+	  zpproj(&tgt_data, &dum, &dum, &xlat, &xlon, LS_LL, lattyp, &rtang,
+		 &slant, &ind);
 	  xmp = j+maxmpos*(rti/5);
 	  xlon = 360.-xlon;		/* convert to W.Long */
 	  if (xtest==2 || xtest==8) {
-	    sprintf( msg, " %8d  %2d  %8.4f  %8.4f  %7.2f", jsclk,
-	     xmp, xlat, xlon, rtang);
-	    zvmessage( msg,"");
+	    zvnprintf(100, " %8d  %2d  %8.4f  %8.4f  %7.2f", jsclk,
+		      xmp, xlat, xlon, rtang);
 	  }
 	  else if (xtest==3) {
-	    sprintf( msg, " SCLK=%d, mp=%d: ", jsclk, xmp);
-	    zvmessage( msg,"");
-	    zvmessage( " OM-Matrix:","");
+	    zvnprintf(100, " SCLK=%d, mp=%d: ", jsclk, xmp);
+	    zifmessage(" OM-Matrix:");
 	    for (i=0; i<3; i++) {
-	      sprintf( msg, "  %f %f %f", tgt_data.om[i][0], 
-	       tgt_data.om[i][1], tgt_data.om[i][2]);
-	      zvmessage( msg,"");
+	      zvnprintf(100, "  %f %f %f", tgt_data.om[i][0], 
+			tgt_data.om[i][1], tgt_data.om[i][2]);
 	    }
-	    sprintf( msg, "  %f %f %f", tgt_data.rs[0], 
-	     tgt_data.rs[1], tgt_data.rs[2]);
-	    zvmessage( msg,"");
+	    zvnprintf(100, "  %f %f %f", tgt_data.rs[0], 
+		      tgt_data.rs[1], tgt_data.rs[2]);
 	  }
 	}
       }
     }
   }
-  if (xtest==1 || xtest==10) fclose( fil);
+  if (xtest==1 || xtest==10) fclose(fil);
 }
 
 
 /************************************************************************/
-FUNCTION output_tube_h( cdata, gp, iy, vflag)
+void output_tube_h(short cdata[][20], int gp, int iy, int *vflag)
 /*
  * output data for a complete mirror cycle to a halfword Tube file
  *
@@ -7655,8 +7681,10 @@ FUNCTION output_tube_h( cdata, gp, iy, vflag)
  *
  * 'cdata' contains the sensor data
  */
-short cdata[][20];
+#if 0
+  short cdata[][20];
 int gp, iy, *vflag;
+#endif
 {
   short hdata[20];
   int det, ix, j, lambda, mp;
@@ -7671,11 +7699,11 @@ int gp, iy, *vflag;
       if (pmirror == DOWN) ix = maxmpos-mp-1;
       hdata[ix] = cdata[det][mp];
     }
-    zvwrit( dunit, hdata, "LINE", iy, "BAND", lambda+1, NULL);
+    zvwrit(dunit, hdata, "LINE", iy, "BAND", lambda+1, NULL);
   }
 
-	/* check if there were some valid data, 1 comb at a time,
-	 * for output_cotube: */
+  /* check if there were some valid data, 1 comb at a time,
+   * for output_cotube: */
   for (mp=smpos; mp<=empos; mp++) {
     for (det=s_det, j=0; det<=e_det && j<1; det++) {
       if (wet[gp][det]<0) continue;
@@ -7687,7 +7715,7 @@ int gp, iy, *vflag;
 
 
 /************************************************************************/
-FUNCTION output_tube_f( cdata, gp, iy, vflag)
+void output_tube_f(float cdata[][20], int gp, int iy, int *vflag)
 /*
  * output data for a complete mirror cycle to a floating-point Tube 
  * (which may be a file or an internal array -- see open_outs)
@@ -7696,8 +7724,10 @@ FUNCTION output_tube_f( cdata, gp, iy, vflag)
  *
  * 'cdata' contains the sensor data
  */
-float cdata[][20];
+#if 0
+  float cdata[][20];
 int gp, iy, *vflag;
+#endif
 {
   int det, ix, j, lambda, mp;
   float *dptr;
@@ -7716,16 +7746,16 @@ int gp, iy, *vflag;
         cdata[det][mp] = cdata[det][mp] / cobuf[mp].photcor;
       *dptr = cdata[det][mp];
 
-	/* for radiance scaling factors: */
+      /* for radiance scaling factors: */
       if (radscal==1 && *dptr >= VALID_MIN4) {
-        ffmin[lambda] = min( ffmin[lambda], *dptr);
-        ffmax[lambda] = max( ffmax[lambda], *dptr);
+        ffmin[lambda] = min(ffmin[lambda], *dptr);
+        ffmax[lambda] = max(ffmax[lambda], *dptr);
       }
     }
   }
 
-	/* check if there were some valid data, 1 comb at a time,
-	 * for output_cotube: */
+  /* check if there were some valid data, 1 comb at a time,
+   * for output_cotube: */
   for (mp=smpos; mp<=empos; mp++) {
     for (det=s_det, j=0; det<=e_det && j<1; det++) {
       if (wet[gp][det]<0) continue; 
@@ -7737,24 +7767,24 @@ int gp, iy, *vflag;
 
 
 /*************************************************************************/
-FUNCTION read_dspk(dsfil1)
+void read_dspk(char *dsfil1)
 /*
  * read a despike file;  its structure is:
  * RIM MF RTI MP DET OLDDN NEWDN SC RC (where SC & RC are codes that are
  * ignored)
  */
-char *dsfil1;
+#if 0
+  char *dsfil1;
+#endif
 {
-  int eol, i, ios, isp, j, llen, lno, maxlen, nhead;
-  float s1, s2;
+  int eol, i, ios, isp, llen, lno, maxlen, nhead;
   FILE *fil;
   char buf[81];
-  struct despike_type pdspk;
 
   /* DEBUG: */
   int x1,x2,x3,x4,x5,x6,x7;
 
-  fil = fopen( dsfil1, "r");
+  fil = fopen(dsfil1, "r");
   if (fil == NULL) zmabend(" ** error opening DESPIKE file **");
 
   /* because of problems encountered reading files created by Fortran i/o,
@@ -7794,15 +7824,15 @@ char *dsfil1;
 
     /* the ROWS label line contains the # of spikes */
     if (!strncmp(buf, " ROWS =", 7)) {
-      sscanf( buf," ROWS = %d ", &nspik);
+      sscanf(buf," ROWS = %d ", &nspik);
       if (!nspik) {
-	zvmessage(" despike file is empty!","");
+	zifmessage(" despike file is empty!");
         goto closfil;
       }
       else {
 	/* allocate storage for the array: */
 	pdespike =
-	 (struct despike_type *)malloc( nspik*sizeof(struct despike_type));
+	  (struct despike_type *)malloc(nspik*sizeof(struct despike_type));
 	if (pdespike==0) zmabend(" insufficient memory for DESPIKE array");
       }
     }
@@ -7813,11 +7843,11 @@ char *dsfil1;
       }
     }
     if (nhead>0 && lno>nhead) {		/* it's a data line (or empty) */
-/*    i = sscanf( buf," %d, %d, %d, %d, %d, %d, %d", &pdespike[isp].rim,
-       &pdespike[isp].mod91, &pdespike[isp].rti, &pdespike[isp].mp,
-       &pdespike[isp].det, &pdespike[isp].olddn, &pdespike[isp].newdn);*/
+      /*    i = sscanf(buf," %d, %d, %d, %d, %d, %d, %d", &pdespike[isp].rim,
+	    &pdespike[isp].mod91, &pdespike[isp].rti, &pdespike[isp].mp,
+	    &pdespike[isp].det, &pdespike[isp].olddn, &pdespike[isp].newdn);*/
       /* DEBUG */
-      i = sscanf( buf," %d, %d, %d, %d, %d, %d, %d", &x1,&x2,&x3,&x4,&x5,&x6,&x7);
+      i = sscanf(buf," %d, %d, %d, %d, %d, %d, %d", &x1,&x2,&x3,&x4,&x5,&x6,&x7);
       if (i==7) {
 	pdespike[isp].rim = x1;
 	pdespike[isp].mod91 = x2;
@@ -7827,19 +7857,18 @@ char *dsfil1;
 	pdespike[isp].olddn = x6;
 	pdespike[isp].newdn = x7;
 	isp++;
-  } } }
-  if (!nspik) zvmessage(" despike file is empty!","");
+      } } }
+  if (!nspik) zifmessage(" despike file is empty!");
   else {
-    sprintf( msg, " %d data lines read in from spike file", nspik);
-    zvmessage( msg,"");
+    zvnprintf(100, " %d data lines read in from spike file", nspik);
   }
-closfil:
-  fclose( fil);
+ closfil:
+  fclose(fil);
 }
 
 
 /*************************************************************************/
-FUNCTION read_ikernel()
+void read_ikernel(void)
 /* 
  * get instrument properties and mirror tables from the NIMS IKERNEL
  * (must convert all angles from mrad to rad)
@@ -7849,89 +7878,91 @@ FUNCTION read_ikernel()
   float mdel;
   double buf[40], xconv=0.001;
 
-  zvparm( "IKERNEL", ikernel, &i, &def, 1, 0);
+  zvparm("IKERNEL", ikernel, &i, &def, 1, 0);
 
-	/* temporary test parm. for mirror asymmetry: */
-  zvparmd( "MIRDEL", &mdel, &i, &def, 1, 0);
+  /* temporary test parm. for mirror asymmetry: */
+  zvparmd("MIRDEL", &mdel, &i, &def, 1, 0);
 
-  zldpool( ikernel);
+  zldpool(ikernel);
   if (zfailed()) zmabend(" *** unable to read IKERNEL ***");
 
-  zrtpool( "INS-77000_BORESIGHT_XCONE_OFFSET", &i, &nims_bore_xcone, &istat);
+  zrtpool("INS-77000_BORESIGHT_XCONE_OFFSET", &i, &nims_bore_xcone, &istat);
   if (istat == 0) zmabend(" *** error 1 reading IKERNEL ***");
   nims_bore_xcone = xconv*nims_bore_xcone;
 
-  zrtpool( "INS-77000_BORESIGHT_CONE_OFFSET", &i, &nims_bore_cone, &istat);
+  zrtpool("INS-77000_BORESIGHT_CONE_OFFSET", &i, &nims_bore_cone, &istat);
   if (istat == 0) zmabend(" *** error 2 reading IKERNEL ***");
   nims_bore_cone = xconv*nims_bore_cone;
 
-  zrtpool( "INS-77000_POS_TBL_XCONE_DOWN", &i, buf, &istat);
+  zrtpool("INS-77000_POS_TBL_XCONE_DOWN", &i, buf, &istat);
   if (istat == 0 || i != 20) zmabend(" *** error 3 reading IKERNEL ***");
   for (i=0; i<20; i++)
     mirr_pos_table[i].xcone_down = xconv * (buf[i] - mdel);
 
-  zrtpool( "INS-77000_POS_TBL_CONE_DOWN", &i, buf, &istat);
+  zrtpool("INS-77000_POS_TBL_CONE_DOWN", &i, buf, &istat);
   if (istat == 0 || i != 20) zmabend(" *** error 4 reading IKERNEL ***");
   for (i=0; i<20; i++)
     mirr_pos_table[i].cone_down = xconv*buf[i];
 
-  zrtpool( "INS-77000_POS_TBL_XCONE_UP", &i, buf, &istat);
+  zrtpool("INS-77000_POS_TBL_XCONE_UP", &i, buf, &istat);
   if (istat == 0 || i != 20) zmabend(" *** error 5 reading IKERNEL ***");
   for (i=0; i<20; i++) 
     mirr_pos_table[i].xcone_up = xconv * (buf[i] + mdel);
 
-  zrtpool( "INS-77000_POS_TBL_CONE_UP", &i, buf, &istat);
+  zrtpool("INS-77000_POS_TBL_CONE_UP", &i, buf, &istat);
   if (istat == 0 || i != 20) zmabend(" *** error 6 reading IKERNEL ***");
   for (i=0; i<20; i++)
     mirr_pos_table[i].cone_up = xconv*buf[i];
 
-  zrtpool( "INS-77000_TIME_TABLE", &i, buf, &istat);
+  zrtpool("INS-77000_TIME_TABLE", &i, buf, &istat);
   if (istat == 0 || i != 40) zmabend(" *** error 7 reading IKERNEL ***");
   for (i=0; i<40; i++)
     mirr_tim_table[i] = buf[i];
 
-	/*
-	 * get_tgt_data assumes there is only one xcone_wait, and
-	 * that cone_wait and (x)cone_stop are all 0 -- since this seems
-	 * plausible, and I don't want to make alot of changes now,
-	 * these tables will only be checked here, not copied into
-	 * the main buffers
-	 */
+  /*
+   * get_tgt_data assumes there is only one xcone_wait, and
+   * that cone_wait and (x)cone_stop are all 0 -- since this seems
+   * plausible, and I don't want to make alot of changes now,
+   * these tables will only be checked here, not copied into
+   * the main buffers
+   */
 
-  zrtpool( "INS-77000_POS_TBL_XCONE_WAIT", &i, buf, &istat);
+  zrtpool("INS-77000_POS_TBL_XCONE_WAIT", &i, buf, &istat);
   if (istat == 0) zmabend(" *** error 8 reading IKERNEL ***");
   for (i=1; i<20; i++) 
     if (buf[i] != buf[0]) zmabend(" *** XCONE_WAIT table is not constant ***");
   mirr_pos_xcone_wait = xconv*buf[0];
 
-  zrtpool( "INS-77000_POS_TBL_CONE_WAIT", &i, buf, &istat);
+  zrtpool("INS-77000_POS_TBL_CONE_WAIT", &i, buf, &istat);
   if (istat == 0) zmabend(" *** error 9 reading IKERNEL ***");
   for (i=1; i<20; i++) 
     if (buf[i] != 0.0) zmabend(" *** CONE_WAIT is non-zero ***");
 
-  zrtpool( "INS-77000_POS_TBL_XCONE_STOP", &i, buf, &istat);
+  zrtpool("INS-77000_POS_TBL_XCONE_STOP", &i, buf, &istat);
   if (istat == 0) zmabend(" *** error 10 reading IKERNEL ***");
   for (i=1; i<20; i++) 
     if (buf[i] != buf[0]) zmabend(" *** XCONE_STOP table is not constant ***");
   mirr_pos_xcone_stop = xconv*buf[0];
 
-  zrtpool( "INS-77000_POS_TBL_CONE_STOP", &i, buf, &istat);
+  zrtpool("INS-77000_POS_TBL_CONE_STOP", &i, buf, &istat);
   if (istat == 0) zmabend(" *** error reading IKERNEL ***");
   for (i=1; i<20; i++) 
     if (buf[i] != 0.0) zmabend(" *** CONE_STOP is non-zero ***");
 
-  zrtpool( "INS-77000_FOCAL_LENGTH", &i, &focal, &istat);
+  zrtpool("INS-77000_FOCAL_LENGTH", &i, &focal, &istat);
   if (istat == 0) zmabend(" *** error 11 reading IKERNEL ***");
 }
 
 
 /************************************************************************/
-FUNCTION rplan( r, rlat, rlon, ra, rb, rp)
+void rplan(float *r, float rlat, float rlon, float ra, float rb, float rp)
 /*
  * return the planetocentric radius at given lat,lon, for known
  * radii along principal axes
  */
+#if 0
   float *r, rlat, rlon, ra, rb, rp;
+#endif
 {
   double lat, lon, clat, cln2, clon, d1, ra2, rb2, slat, slon, sln2, slt2;
 
@@ -7954,7 +7985,7 @@ FUNCTION rplan( r, rlat, rlon, ra, rb, rp)
 
 
 /************************************************************************/
-FUNCTION scale_data()
+void scale_data(void)
 /*
  * scale the floating-point cube data to halfword one band at a time,
  * and write to output cube (if it's a DN cube, then this is simply a
@@ -7972,10 +8003,10 @@ FUNCTION scale_data()
  */ 
 {
   float *dptr, tempdn;
-  int gp, ib, ix, iy, ngp, offs;
+  int ib, ix, iy;
   short *obuf;
 
-  obuf = (short *)malloc( 2*ns);
+  obuf = (short *)malloc(2*ns);
 
   for (ib=0; ib<nb; ib++)  {
     if (radscal==2) break;
@@ -8005,16 +8036,16 @@ FUNCTION scale_data()
     for (iy=0; iy<nl; iy++) {
       for (ix=0; ix<ns; ix++) {
 
-		/* replace all the ISIS special values separately: */
+	/* replace all the ISIS special values separately: */
 
 	if      (*dptr == (float)NULL4) obuf[ix] = NULL2;
 	else if (*dptr == (float)INS_LO_SAT4) obuf[ix] = INS_LO_SAT2;
 	else if (*dptr == (float)INS_HI_SAT4) obuf[ix] = INS_HI_SAT2;
-/*	else if (*dptr == (float)BELOW_THRESH4) obuf[ix] = BELOW_THRESH2; */
-/*	else if (*dptr == (float)NO_SENSITIVITY4) obuf[ix] = NO_SENSITIVITY2;*/
+	/*	else if (*dptr == (float)BELOW_THRESH4) obuf[ix] = BELOW_THRESH2; */
+	/*	else if (*dptr == (float)NO_SENSITIVITY4) obuf[ix] = NO_SENSITIVITY2;*/
 
 	else if (*dptr < VALID_MIN4) obuf[ix] = NULL2;
-		/* (this should be a redundant check!) */
+	/* (this should be a redundant check!) */
 
 	else {
 
@@ -8024,25 +8055,27 @@ FUNCTION scale_data()
 	  else if ((tempdn+0.5) > (float)VALID_MAX2) obuf[ix] = REP_HI_SAT2;
 
 	  else if (tempdn >= 0.0) obuf[ix] = tempdn + 0.5;
-		/* be careful when rounding negative values! */
+	  /* be careful when rounding negative values! */
 	  else obuf[ix] = tempdn - 0.5;
 	}
 	dptr++;
       }
-      zvwrit( dunit, obuf, NULL);
+      zvwrit(dunit, obuf, NULL);
     }
   }
-  free( obuf);
+  free(obuf);
 }
 
 
 /************************************************************************/
-FUNCTION set_mp( isclk, imp, pmp, prti)
+void set_mp(int isclk, int imp, int *pmp, int *prti)
 /*
  * generate mp, rti, mirror for input sclk & mp in range (0,39)
  * (used by set_projection & set_pov)
  */
-int imp, isclk, *pmp, *prti;
+#if 0
+  int imp, isclk, *pmp, *prti;
+#endif
 {
   int gp;
 
@@ -8062,7 +8095,7 @@ int imp, isclk, *pmp, *prti;
 
 
 /************************************************************************/
-FUNCTION set_pov()
+void set_pov(void)
 /*
  * find the total extent of data and compute output cube dimensions 
  * for POV projection if OUTSIZ and OAXIS have been defaulted;  in 
@@ -8070,18 +8103,18 @@ FUNCTION set_pov()
  * (but only processes 1 point per mf = 5% of the data)
  */
 {
-  int bop, i, j, k, ind, nbop, nora, ref1, ref2, rti, xmp;
-  float del_oal, del_oas, dum, fpix, lin, sam, lat, lon, scal0;
-  double maxlin, minlin, maxsam, minsam, oal, oas, cone, xcone, x;
+  int bop, i = 0, j, k, ind, nbop, nora, rti, xmp;
+  float del_oal, del_oas, dum, lin, sam, lat, lon, scal0;
+  double maxlin, minlin, maxsam, minsam, cone, xcone, x;
 
-	/*
-	 * first we go through some song & dance to figure out
-	 * where we're going to be looking from -- REFSCLK
-	 * (TBD?? -- default should be computed from central lat/long 
-	 * rather than just midpoint SCLK)
-	 * get_tgt_data wants refsclk to be one of the stored
-	 * sclks, so look for the closest one if not spot on
-	 */
+  /*
+   * first we go through some song & dance to figure out
+   * where we're going to be looking from -- REFSCLK
+   * (TBD?? -- default should be computed from central lat/long 
+   * rather than just midpoint SCLK)
+   * get_tgt_data wants refsclk to be one of the stored
+   * sclks, so look for the closest one if not spot on
+   */
   if (!refsclk) {
     refsclk = (mf[0].sclk+mf[nmf-1].sclk)/2;
     refmp = 9;				/* close to center of mirror scan */
@@ -8091,7 +8124,7 @@ FUNCTION set_pov()
     goto vdone;
   }
   else if (refsclk<mf[0].sclk || refsclk>mf[nmf-1].sclk) {
-    zvmessage(" REFSCLK lies outside valid data range, reset to limit","");
+    zifmessage(" REFSCLK lies outside valid data range, reset to limit");
     if (refsclk<mf[0].sclk) refsclk = mf[0].sclk;
     else refsclk = mf[nmf-1].sclk;
   }
@@ -8103,80 +8136,78 @@ FUNCTION set_pov()
   if (i==nmf-1) zmabend(" *** no valid data at or after mid-SCLK ***");
   i = refsclk/91;
   j = refsclk%91;
-  sprintf( msg," REFSCLK = %d.%d, MP=%d", i, j, refmp);
-  zvmessage( msg,"");
+  zvnprintf(100," REFSCLK = %d.%d, MP=%d", i, j, refmp);
 
-	/* find OM-matrix & RS-vector for this sclk: */
-  set_mp( refsclk, refmp, &xmp, &rti);	/* also sets mirror */
+  /* find OM-matrix & RS-vector for this sclk: */
+  set_mp(refsclk, refmp, &xmp, &rti);	/* also sets mirror */
 
   nora = 1;		 	/* to compute North angle */
-  get_tgt_data( refsclk, rti, xmp, nora, 0, &cone, &xcone);
+  get_tgt_data(refsclk, rti, xmp, nora, 0, &cone, &xcone);
 
-	/* cannot just copy tgt_data to t_data_pov because some
-	 * elements may be different: */
-  zmve( 8, 12, tgt_data.om, t_data_pov.om, 1, 1);
+  /* cannot just copy tgt_data to t_data_pov because some
+   * elements may be different: */
+  zmve(8, 12, tgt_data.om, t_data_pov.om, 1, 1);
 
   if (n_oll) {	/* use the RS computed above, but revise the OM */
-    longitude = degrad * atan2( -t_data_pov.rs[1], t_data_pov.rs[0]);
-    x = sqrt( t_data_pov.rs[0] * t_data_pov.rs[0] +
-	      t_data_pov.rs[1] * t_data_pov.rs[1] +
-	      t_data_pov.rs[2] * t_data_pov.rs[2] );
-    latitude = degrad * asin( t_data_pov.rs[2] / x);
-    get_omrs( 0., latitude, longitude, olatlon[0], olatlon[1], &map_line,
-     &map_samp, &bop);
+    longitude = degrad * atan2(-t_data_pov.rs[1], t_data_pov.rs[0]);
+    x = sqrt(t_data_pov.rs[0] * t_data_pov.rs[0] +
+	     t_data_pov.rs[1] * t_data_pov.rs[1] +
+	     t_data_pov.rs[2] * t_data_pov.rs[2] );
+    latitude = degrad * asin(t_data_pov.rs[2] / x);
+    get_omrs(0., latitude, longitude, olatlon[0], olatlon[1], &map_line,
+	     &map_samp, &bop);
     if (!bop) zmabend(" ** specified OLATLON is back-of-planet **");
   }
 
   if (radfudge) t_data_povf = t_data_pov;
 
-vdone:
-	/* compute & print out the scale (km/pix), as it is not
-	 * stored anywhere */
-  x = sqrt( t_data_pov.rs[0] * t_data_pov.rs[0] +
-	    t_data_pov.rs[1] * t_data_pov.rs[1] +
-	    t_data_pov.rs[2] * t_data_pov.rs[2] );
+ vdone:
+  /* compute & print out the scale (km/pix), as it is not
+   * stored anywhere */
+  x = sqrt(t_data_pov.rs[0] * t_data_pov.rs[0] +
+	   t_data_pov.rs[1] * t_data_pov.rs[1] +
+	   t_data_pov.rs[2] * t_data_pov.rs[2] );
   scal0 = 0.0005 * scale * (x - t_data_pov.e1rad);
-  sprintf( msg, " Scale at sub-s/c point [km/pix] is: %g", scal0);
-  zvmessage( msg,"");
+  zvnprintf(100, " Scale at sub-s/c point [km/pix] is: %g", scal0);
 
   if (n_oaxis && nl && ns) goto pdone;
-	/*
-	 * project points from all mfs in order to determine extent
-	 * of data
-	 *
-	 * to save time just compute one point per mf, cycling thru
-	 * mirror pos. in case the scan extremes fall off planet
-	 */
+  /*
+   * project points from all mfs in order to determine extent
+   * of data
+   *
+   * to save time just compute one point per mf, cycling thru
+   * mirror pos. in case the scan extremes fall off planet
+   */
   maxlin = maxsam = -1.e20;
   minlin = minsam =  1.e20;
   nbop = 0;
   if (xtest==6)
-    zvmessage( "   SCLK   MP    LAT     LON    LIN    SAMP","");
+    zifmessage("   SCLK   MP    LAT     LON    LIN    SAMP");
   for (i=1; i<nmf; i++) {
     if (mf[i].igc<0) continue;
     xmp = (3*i)%(2*maxmpos);	/* one point per 2 scans */
-    set_mp( mf[i].sclk, xmp, &xmp, &rti);	/* also sets mirror */
-    get_tgt_data( mf[i].sclk, rti, xmp, 0, 0, &cone, &xcone);
+    set_mp(mf[i].sclk, xmp, &xmp, &rti);	/* also sets mirror */
+    get_tgt_data(mf[i].sclk, rti, xmp, 0, 0, &cone, &xcone);
     dum = 0.0;
-    zpproj( &tgt_data, &dum, &dum, &lat, &lon, LS_LL, lattyp, &rtang, &slant,
-     &ind);
+    zpproj(&tgt_data, &dum, &dum, &lat, &lon, LS_LL, lattyp, &rtang, &slant,
+	   &ind);
     if (ind) {
       dum = 1.;		/* flag to use BOP test */
-      zpproj( &t_data_pov, &lin, &sam, &lat, &lon, LL_LS, lattyp, &dum, &slant,
-       &ind);
+      zpproj(&t_data_pov, &lin, &sam, &lat, &lon, LL_LS, lattyp, &dum, &slant,
+	     &ind);
     }
     else if (radfudge) {
-	/* nominal planetocentric radius at this lat/lon: */
-      rplan( &rnom, lat, lon, tgt_data.e1rad, tgt_data.e2rad,
-       tgt_data.prad);
+      /* nominal planetocentric radius at this lat/lon: */
+      rplan(&rnom, lat, lon, tgt_data.e1rad, tgt_data.e2rad,
+	    tgt_data.prad);
       lfact = rtang/rnom;
       if (lfact < radfact) {
 	t_data_povf.prad = tgt_data.prad * lfact;
 	t_data_povf.e1rad = tgt_data.e1rad * lfact;
 	t_data_povf.e2rad = tgt_data.e2rad * lfact;
 	dum = -1.;	/* flag to ignore BOP test */
-	zpproj( &t_data_povf, &lin, &sam, &lat, &lon, LL_LS, lattyp, &dum,
-	 &slant, &ind);
+	zpproj(&t_data_povf, &lin, &sam, &lat, &lon, LL_LS, lattyp, &dum,
+	       &slant, &ind);
 	if (!ind && (rtang > rnom)) ind = 1;	/* not really BOP */
       }
     }
@@ -8184,32 +8215,29 @@ vdone:
       nbop++;
       continue;
     }
-    maxlin = max( lin, maxlin);
-    minlin = min( lin, minlin);
-    maxsam = max( sam, maxsam);
-    minsam = min( sam, minsam);
+    maxlin = max(lin, maxlin);
+    minlin = min(lin, minlin);
+    maxsam = max(sam, maxsam);
+    minsam = min(sam, minsam);
     if (xtest==6) {
       j = mf[i].sclk / 91;
       k = mf[i].sclk % 91;
-      sprintf( msg, " %d.%02d  %2d  %6.2f %6.2f %6.1f %6.1f ", j, k, xmp,
-       lat, lon, lin, sam);
-      zvmessage( msg,"");
+      zvnprintf(100, " %d.%02d  %2d  %6.2f %6.2f %6.1f %6.1f ", j, k, xmp,
+		lat, lon, lin, sam);
     }
   }
   if (maxlin<= -1.e20) zmabend(" *** all points off planet ***");
   if (nbop) {
-    sprintf( msg, " %d pixels were back of planet in set_pov", nbop);
-    zvmessage( msg,"");
+    zvnprintf(100, " %d pixels were back of planet in set_pov", nbop);
   }
 
-	/* if one of NL,NS were specified, check scale and print
-	 * warning if too big */
+  /* if one of NL,NS were specified, check scale and print
+   * warning if too big */
   if (nl) {
     scal0 = (maxlin-minlin+1) / nl;
     if (scal0 > 1.0) {
-      sprintf( msg, " Warning: Lines do not fit; increase NL or scale by %g",
-       scal0);
-      zvmessage( msg,"");
+      zvnprintf(100, " Warning: Lines do not fit; increase NL or scale by %g",
+		scal0);
     }
   }
   else {
@@ -8219,21 +8247,19 @@ vdone:
   if (ns) {
     scal0 = (maxsam-minsam+1) / ns;
     if (scal0 > 1.0) {
-      sprintf( msg, " Warning: Samples do not fit; increase NS or scale by %g",
-       scal0);
-      zvmessage( msg,"");
+      zvnprintf(100, " Warning: Samples do not fit; increase NS or scale by %g",
+		scal0);
     }
   }
   else {
     ns = 1.1 * (maxsam-minsam+1);	/* add 10% for error margin*/
   }
-  sprintf( msg, " output image size: NL= %d, NS=%d", nl, ns);
-  zvmessage( msg,"");
-	/*
-	 * we now recenter the image to put minlin/sam at the origin
-	 * (to allow for errors in the algorithm we put it 5% away
-	 * from (1,1)) 
-	 */
+  zvnprintf(100, " output image size: NL= %d, NS=%d", nl, ns);
+  /*
+   * we now recenter the image to put minlin/sam at the origin
+   * (to allow for errors in the algorithm we put it 5% away
+   * from (1,1)) 
+   */
   if (recenter) {
     del_oal = 0.05*nl - minlin;
     del_oas = 0.05*ns - minsam;
@@ -8243,12 +8269,11 @@ vdone:
       t_data_povf.aline = t_data_pov.aline;
       t_data_povf.asamp = t_data_pov.asamp;
     }
-    sprintf( msg, " OAL,OAS set to (%7.2f, %7.2f)", t_data_pov.aline,
-     t_data_pov.asamp);
-    zvmessage( msg,"");
+    zvnprintf(100, " OAL,OAS set to (%7.2f, %7.2f)", t_data_pov.aline,
+	      t_data_pov.asamp);
   }
 
-pdone:
+ pdone:
   /* if tube, nl,ns do not refer to output file */
   osize[0] = nl;
   osize[1] = ns;
@@ -8256,7 +8281,7 @@ pdone:
 
 
 /************************************************************************/
-FUNCTION set_projection()
+void set_projection(void)
 /*
  * find the total extent of data and compute output cube dimensions 
  * and any unspecified map projection parameters
@@ -8272,29 +8297,29 @@ FUNCTION set_projection()
  * longest axis horizontal
  */
 {
-  int bgap, i, ih, i0, ind, j, k, lhist[360], nbop, ngap, nl0, ns0, rti, sclk1,
-   xmp;
-  float clin, csam, clat, clon, del, dum, lin, sam, lat, lon, fdist0;
+  int bgap, i, ih, i0, ind=0, j, k, lhist[360], nbop, ngap, nl0, ns0, rti, sclk1,
+    xmp;
+  float clin, csam, clat, clon=0., del, dum, lin, sam, lat, lon, fdist0;
   double dist0=0., f, maxdist, mindist, maxlin, minlin, maxsam,
-   minsam, maxlat, minlat, minlon, north1, sav, scal0, sc1, sc2, ml0, ms0,
-   cone, xcone, eqrad, polrad;
+    minsam, maxlat, minlat, minlon=0., north1, sav, scal0, sc1, sc2, ml0, ms0,
+    cone, xcone, eqrad, polrad;
   struct rdata tdata0, tdata0_f;
 
-	/*
-	 * if user specified REFSCLK, then this determines 
-	 * TIELAT/LON:
-	 */
+  /*
+   * if user specified REFSCLK, then this determines 
+   * TIELAT/LON:
+   */
   if (refsclk) {
     if (refsclk<mf[0].sclk || refsclk>mf[nmf-1].sclk)
       zmabend(" *** REFSCLK lies outside valid data range ***");
-    set_mp( refsclk, refmp, &xmp, &rti);	/* also sets mirror */
-    get_tgt_data( refsclk, rti, xmp, 0, 0, &cone, &xcone);
+    set_mp(refsclk, refmp, &xmp, &rti);	/* also sets mirror */
+    get_tgt_data(refsclk, rti, xmp, 0, 0, &cone, &xcone);
     dum = 0.0;
-    zpproj( &tgt_data, &dum, &dum, &lat, &lon, LS_LL, lattyp, &rtang, &slant,
-     &ind);
+    zpproj(&tgt_data, &dum, &dum, &lat, &lon, LS_LL, lattyp, &rtang, &slant,
+	   &ind);
     if (!ind && radfudge) {
-      rplan( &rnom, lat, lon, tgt_data.e1rad, tgt_data.e2rad,
-       tgt_data.prad);
+      rplan(&rnom, lat, lon, tgt_data.e1rad, tgt_data.e2rad,
+	    tgt_data.prad);
       if (rtang/rnom < radfact) ind = 1;
     }
     if (!ind) zmabend(" *** REFSCLK is an off-planet point ***");
@@ -8314,38 +8339,38 @@ FUNCTION set_projection()
   sav = north;		/* save the output North angle */
   mirror = STOP;		/* arbitrary choice */
   for (i0=nmf/2; ; i0++) if (mf[i0].igc>=0) break;
-  get_tgt_data( mf[i0].sclk, 0, 0, 1, 0, &cone, &xcone);
+  get_tgt_data(mf[i0].sclk, 0, 0, 1, 0, &cone, &xcone);
   north1 = north;		/* this is for input proj. */
   north = sav;			/* restore output one */
 
-	/* see if the first pass is necessary: */
+  /* see if the first pass is necessary: */
   if (latitude < -100. || (longitude < -900. && map_type!=1 && map_type!=3) 
-   || (map_type==5 && !nparallels)) {
-	/*
-	 * find extent & center of the data: get the approximate (X,Y) 
-	 * coord's in pseudo-object space for a few points in each mf
-	 * (don't work in Lat/Lon space because of problem of wraparound
-	 * at Lon=360)
-	 *
-	 * to save time just compute one point per mf, cycling thru
-	 * mirror pos. in case the scan extremes fall off planet
-	 *
-	 * the projection is almost arbitrary, so use POV with first point
-	 * on planet as center (unless REFSCLK is specified)
-	 * NOTE this could give a problem if it causes points near the
-	 * limb to become "back-of-planet", hence the 'nbop' test
-	 */
+      || (map_type==5 && !nparallels)) {
+    /*
+     * find extent & center of the data: get the approximate (X,Y) 
+     * coord's in pseudo-object space for a few points in each mf
+     * (don't work in Lat/Lon space because of problem of wraparound
+     * at Lon=360)
+     *
+     * to save time just compute one point per mf, cycling thru
+     * mirror pos. in case the scan extremes fall off planet
+     *
+     * the projection is almost arbitrary, so use POV with first point
+     * on planet as center (unless REFSCLK is specified)
+     * NOTE this could give a problem if it causes points near the
+     * limb to become "back-of-planet", hence the 'nbop' test
+     */
     for (i0=0; i0<nmf; i0++) {	/* find first point on planet */
       if (mf[i0].igc<0) continue;
       xmp = (3*i0)%(2*maxmpos);	/* one point per 2 scans */
-      set_mp( mf[i0].sclk, xmp, &xmp, &rti);	/* also sets mirror */
-      get_tgt_data( mf[i0].sclk, rti, xmp, 0, 0, &cone, &xcone);
+      set_mp(mf[i0].sclk, xmp, &xmp, &rti);	/* also sets mirror */
+      get_tgt_data(mf[i0].sclk, rti, xmp, 0, 0, &cone, &xcone);
       dum = 0.0;
-      zpproj( &tgt_data, &dum, &dum, &lat, &lon, LS_LL, lattyp, &rtang,
-       &slant, &ind);
+      zpproj(&tgt_data, &dum, &dum, &lat, &lon, LS_LL, lattyp, &rtang,
+	     &slant, &ind);
       if (radfudge && !ind) {
-	rplan( &rnom, lat, lon, tgt_data.e1rad, tgt_data.e2rad,
-	 tgt_data.prad);
+	rplan(&rnom, lat, lon, tgt_data.e1rad, tgt_data.e2rad,
+	      tgt_data.prad);
 	if (rtang/rnom < radfact) ind = 1;
       }
       if (ind) break;
@@ -8360,26 +8385,26 @@ FUNCTION set_projection()
     for (i=i0; i<nmf; i++) {
       if (mf[i].igc<0) continue;
       xmp = (3*i)%(2*maxmpos);	/* one point per 2 scans */
-      set_mp( mf[i].sclk, xmp, &xmp, &rti);	/* also sets mirror */
-      get_tgt_data( mf[i].sclk, rti, xmp, 0, 0, &cone, &xcone);
+      set_mp(mf[i].sclk, xmp, &xmp, &rti);	/* also sets mirror */
+      get_tgt_data(mf[i].sclk, rti, xmp, 0, 0, &cone, &xcone);
       dum = 0.0;
-      zpproj( &tgt_data, &dum, &dum, &lat, &lon, LS_LL, lattyp, &rtang,
-       &slant, &ind);
+      zpproj(&tgt_data, &dum, &dum, &lat, &lon, LS_LL, lattyp, &rtang,
+	     &slant, &ind);
       if (ind)
-        zpproj( &tdata0, &lin, &sam, &lat, &lon, LL_LS, lattyp, &dum, &dum,
-	 &ind);
+        zpproj(&tdata0, &lin, &sam, &lat, &lon, LL_LS, lattyp, &dum, &dum,
+	       &ind);
       else if (radfudge) {
 	/* nominal planetocentric radius at this lat/lon: */
-	rplan( &rnom, lat, lon, tgt_data.e1rad, tgt_data.e2rad,
-	 tgt_data.prad);
+	rplan(&rnom, lat, lon, tgt_data.e1rad, tgt_data.e2rad,
+	      tgt_data.prad);
 	lfact = rtang/rnom;
 	if (lfact < radfact) {
 	  tdata0_f.prad = tgt_data.prad * lfact;
 	  tdata0_f.e1rad = tgt_data.e1rad * lfact;
 	  tdata0_f.e2rad = tgt_data.e2rad * lfact;
 	  dum = -1.;	/* flag to ignore BOP test */
-	  zpproj( &tdata0_f, &lin, &sam, &lat, &lon, LL_LS, lattyp, &dum, &dum,
-	   &ind);
+	  zpproj(&tdata0_f, &lin, &sam, &lat, &lon, LL_LS, lattyp, &dum, &dum,
+		 &ind);
 	  if (!ind && (rtang > rnom)) ind = 1;	/* not really BOP */
 	}
       }
@@ -8387,33 +8412,32 @@ FUNCTION set_projection()
 	nbop++;
 	continue;
       }
-      maxlat = max( lat, maxlat);
-      minlat = min( lat, minlat);
-      maxlin = max( lin, maxlin);
-      minlin = min( lin, minlin);
-      maxsam = max( sam, maxsam);
-      minsam = min( sam, minsam);
-      maxdist = max( slant, maxdist);
-      mindist = min( slant, mindist);
+      maxlat = max(lat, maxlat);
+      minlat = min(lat, minlat);
+      maxlin = max(lin, maxlin);
+      minlin = min(lin, minlin);
+      maxsam = max(sam, maxsam);
+      minsam = min(sam, minsam);
+      maxdist = max(slant, maxdist);
+      mindist = min(slant, mindist);
     }
     if (maxlin<= -1.e20) zmabend(" *** all points off planet ***");
     if (nbop) {
-      sprintf( msg, " %d pixels were back of planet in set_projection",
-       nbop);
-      zvmessage( msg,"");
+      zvnprintf(100, " %d pixels were back of planet in set_projection",
+		nbop);
     }
 
     /* if necessary, fix up min/max lat/lon for Mercator to correspond to
      * ULH corner, and find center lat/lon for other proj's avoiding the
      * longitude wraparound problem: */
     if (latitude < -100. || longitude < -900.) {
-      if (map_type==6) zpproj( &tdata0, &minlin, &minsam, &minlat, &minlon,
-       LS_LL, lattyp, &rtang, &slant, &ind);
+      if (map_type==6) zpproj(&tdata0, &minlin, &minsam, &minlat, &minlon,
+			      LS_LL, lattyp, &rtang, &slant, &ind);
       else {
 	clin = (maxlin+minlin)/2.;
 	csam = (maxsam+minsam)/2.;
-	zpproj( &tdata0, &clin, &csam, &clat, &clon, LS_LL, lattyp, &rtang,
-	 &slant, &ind);
+	zpproj(&tdata0, &clin, &csam, &clat, &clon, LS_LL, lattyp, &rtang,
+	       &slant, &ind);
       }
       if (!ind) zmabend(" *** unable to determine projection center ***");
     }
@@ -8436,8 +8460,8 @@ FUNCTION set_projection()
 	}
       }
     }
-	/* if special lat/lon still unspecified, use center points
-	 * (or ULH corner for MERCATOR) */
+    /* if special lat/lon still unspecified, use center points
+     * (or ULH corner for MERCATOR) */
     if (latitude < -100.) latitude = map_type==6 ? minlat : clat;
     if (longitude < -900.) longitude = map_type==6 ? minlon : clon;
 
@@ -8448,39 +8472,38 @@ FUNCTION set_projection()
      * this option) */
     del = 0.001;
     if (north1<del || (north1>(180.-del) && north1<(180.+del)) ||
-     north1>(360.-del)) {
+	north1>(360.-del)) {
       if (north1>(180.-del) && north1<(180.+del)) {	/* upside down */
         sav = maxsam;
         maxsam = minsam;
         minsam = sav;
       }
       ml0 = (minlin+maxlin)/2.;
-      zpproj( &tdata0, &ml0, &maxsam, &minlat, &minlon, LS_LL, lattyp, &rtang,
-       &slant, &ind);
+      zpproj(&tdata0, &ml0, &maxsam, &minlat, &minlon, LS_LL, lattyp, &rtang,
+	     &slant, &ind);
       if (ind) mmlon[0] = minlon;
-      zpproj( &tdata0, &ml0, &minsam, &minlat, &minlon, LS_LL, lattyp, &rtang,
-       &slant, &ind);
+      zpproj(&tdata0, &ml0, &minsam, &minlat, &minlon, LS_LL, lattyp, &rtang,
+	     &slant, &ind);
       if (ind) mmlon[1] = minlon;	/* (actually max W.long) */
-      sprintf( msg, " Set_projection found min/max longitudes: %.2f, %.2f",
-       mmlon[0], mmlon[1]);
-      zvmessage( msg,"");
+      zvnprintf(100, " Set_projection found min/max longitudes: %.2f, %.2f",
+		mmlon[0], mmlon[1]);
     }
 
-	/* save the mean distance for scale computation: */
+    /* save the mean distance for scale computation: */
     dist0 = 0.5*(mindist+maxdist);
 
   }		/* ** end of tie_lat/long determination ** */
 
   else {
-	/* need dist0 for default scale if scale/size *or* THRESH defaulted: */
-    if ( ( (!nscal && nl<=0) || (footprint && !nthresh) ) && !refsclk) { 
+    /* need dist0 for default scale if scale/size *or* THRESH defaulted: */
+    if (((!nscal && nl<=0) || (footprint && !nthresh) ) && !refsclk) { 
       for (i0=nmf/2; ; i0++) if (mf[i0].igc>=0) break;
       sclk1 = mf[i0].sclk;
-      set_mp( sclk1, 0, &xmp, &rti);
-      get_tgt_data( sclk1, rti, xmp, 0, 0, &cone, &xcone);
+      set_mp(sclk1, 0, &xmp, &rti);
+      get_tgt_data(sclk1, rti, xmp, 0, 0, &cone, &xcone);
       dum = 0.0;
-      zpproj( &tgt_data, &dum, &dum, &lat, &lon, LS_LL, lattyp, &rtang,
-       &fdist0, &ind);
+      zpproj(&tgt_data, &dum, &dum, &lat, &lon, LS_LL, lattyp, &rtang,
+	     &fdist0, &ind);
       dist0 = fdist0;
     }
   }
@@ -8489,22 +8512,20 @@ FUNCTION set_projection()
 
   if (dist0 > 0.0 && (!nscal || !nthresh)) {
     scale0 = 0.0005*dist0;	/* nominal pixel scale at mean distance */
-	/* since this may serve as user default, truncate it to 3
-	 * signficant figures for convenience: */
+    /* since this may serve as user default, truncate it to 3
+     * signficant figures for convenience: */
     i = (int)log10(scale0);
     f = pow(10.,3-i);
     i = (int)(f*scale0+0.5);
     scale0 = (double)(i)/f;
-    sprintf( msg, "Nominal scale = %f km/pixel", scale0);
-    zvmessage( msg,"");
+    zvnprintf(100, "Nominal scale = %f km/pixel", scale0);
   }
 
   /* if both SCALE and OUTSIZ were defaulted, use nominal scale: */
   if (!nscal && nl<=0) {
     scale = scale0;
     if (scale<=0.) zmabend("*** unable to determine default scale ***");
-    sprintf( msg, " Nominal scale used");
-    zvmessage( msg,"");
+    zvnprintf(100, " Nominal scale used");
     nscal = 1;
   }
 
@@ -8516,18 +8537,17 @@ FUNCTION set_projection()
       long0 = longitude;
       mapsam0 = map_samp;
     }
-    sprintf( msg, " output image size: NL= %d, NS=%d", nl, ns);
-    zvmessage( msg,"");
+    zvnprintf(100, " output image size: NL= %d, NS=%d", nl, ns);
     osize[0] = nl;
     osize[1] = ns;
     return;
   }
 
-	/*
-	 * determine output image dimensions and any missing map
-	 * projection parameters by computing projections assuming
-	 * map_line/samp are at (0,0) if unspecified
-	 */
+  /*
+   * determine output image dimensions and any missing map
+   * projection parameters by computing projections assuming
+   * map_line/samp are at (0,0) if unspecified
+   */
   scal0 = (nscal>0) ? scale : 1.0;	/* in case scale was defaulted */
   ml0 = (nmaplin) ? map_line : 0.;
   ms0 = (nmapsam) ? map_samp : 0.;
@@ -8553,33 +8573,33 @@ FUNCTION set_projection()
   maxlin = maxsam = -1.e20;
   minlin = minsam =  1.e20;
   if (xtest==6)
-    zvmessage( "   SCLK   MP    LAT     LON    LIN    SAMP","");
+    zifmessage("   SCLK   MP    LAT     LON    LIN    SAMP");
   for (i=0; i<nmf; i++) {
     if (mf[i].igc<0) continue;
     xmp = (3*i)%(2*maxmpos);	/* one point per 2 scans */
-    set_mp( mf[i].sclk, xmp, &xmp, &rti);	/* also sets mirror */
+    set_mp(mf[i].sclk, xmp, &xmp, &rti);	/* also sets mirror */
     eqrad = eq_rad;
     polrad = pol_rad;
-    get_tgt_data( mf[i].sclk, rti, xmp, 0, 0, &cone, &xcone);
+    get_tgt_data(mf[i].sclk, rti, xmp, 0, 0, &cone, &xcone);
     dum = 0.0;
-    zpproj( &tgt_data, &dum, &dum, &lat, &lon, LS_LL, lattyp, &rtang, &slant,
-     &ind);
+    zpproj(&tgt_data, &dum, &dum, &lat, &lon, LS_LL, lattyp, &rtang, &slant,
+	   &ind);
     if (radfudge && !ind) {
-      rplan( &rnom, lat, lon, tgt_data.e1rad, tgt_data.e2rad,
-       tgt_data.prad);
+      rplan(&rnom, lat, lon, tgt_data.e1rad, tgt_data.e2rad,
+	    tgt_data.prad);
       if (rtang/rnom < radfact) {
 	eqrad = eq_rad * rtang / rnom;
 	polrad = pol_rad * rtang / rnom;
 	ind = 1;
-    } }
+      } }
     if (!ind) continue;
-    if (pgraphic==1 && (map_type!=10 || oldver)) lat = det2cen( lat);
-    ztranv( &ind, map_type, LL_LS, ms0, ml0, latitude,
-     parallel[0], parallel[1], longitude, scal0, map_pole, 
-     &lin, &sam, &lat, &lon, polrad, eqrad, north);
+    if (pgraphic==1 && (map_type!=10 || oldver)) lat = det2cen(lat);
+    ztranv(&ind, map_type, LL_LS, ms0, ml0, latitude,
+	   parallel[0], parallel[1], longitude, scal0, map_pole, 
+	   &lin, &sam, &lat, &lon, polrad, eqrad, north);
     if (ind) continue;
-	/* cylindrical: accumulate histogram of long's for wraparound
-	 * problem -- pick 1-degree bins, arbitrarily */
+    /* cylindrical: accumulate histogram of long's for wraparound
+     * problem -- pick 1-degree bins, arbitrarily */
     if (map_type==9 || map_type==10) {
       if (sam<0.) sam += circum;
       if (sam>circum) sam -= circum;
@@ -8594,15 +8614,14 @@ FUNCTION set_projection()
     if (xtest==6) {
       j = mf[i].sclk / 91;
       k = mf[i].sclk % 91;
-      sprintf( msg, " %d.%02d  %2d  %6.2f %6.2f %6.1f %6.1f ", j, k, xmp,
-       lat, lon, lin, sam);
-      zvmessage( msg,"");
+      zvnprintf(100, " %d.%02d  %2d  %6.2f %6.2f %6.1f %6.1f ", j, k, xmp,
+		lat, lon, lin, sam);
     }
   }
   /* if cylindrical spans entire planet, reset min/max_samp to start/end
    * of biggest gap (if user did not specify map_sam) */
   if (!nmapsam && (map_type==9 || map_type==10) && (maxsam-minsam)>0.9*circum) {
-    find_gap( lhist, 360, &bgap, &ngap);
+    find_gap(lhist, 360, &bgap, &ngap);
     if (bgap>0 && ngap>0) {
       minsam = (bgap+ngap-1)*circum/360.;
       maxsam = (bgap-1)*circum/360. + circum;
@@ -8618,15 +8637,14 @@ FUNCTION set_projection()
   if (!nscal) { /* scale still unknown, NL/NS must have been specified */
     sc1 = 1.1 * (maxlin-minlin) / (double)nl;
     sc2 = 1.1 * (maxsam-minsam) / (double)ns;
-    scale = max( sc1, sc2);
-    sprintf( msg, "Scale is %g km/pixel", scale);
-    zvmessage( msg,"");
+    scale = max(sc1, sc2);
+    zvnprintf(100, "Scale is %g km/pixel", scale);
 
     nl0 = 1.1 * (maxlin-minlin) / scale + 0.5;
     if (nl0<1) nl0 = 1;
     ns0 = 1.1 * (maxsam-minsam) / scale + 0.5;
     if (ns0<1) ns0 = 1;
-	/* shift & rescale for map_line/samp below: */
+    /* shift & rescale for map_line/samp below: */
     minsam = (minsam - 0.05*(maxsam-minsam)) / scale;
     minlin = (minlin - 0.05*(maxlin-minlin)) / scale;
     ms0 /= scale;
@@ -8638,7 +8656,7 @@ FUNCTION set_projection()
     minlin = (minlin - 0.05*(maxlin-minlin));
   }
 
-	/* shift map_line/samp from (0,0) */
+  /* shift map_line/samp from (0,0) */
   if (nmaplin==0) map_line = ml0-minlin;
   if (nmapsam==0) map_samp = ms0-minsam; 
 
@@ -8656,18 +8674,17 @@ FUNCTION set_projection()
     }
   }
 
-	/* set the cube dimensions:
-	 * (if nl/ns were defaulted then scale was specified) */
+  /* set the cube dimensions:
+   * (if nl/ns were defaulted then scale was specified) */
   if (nl==0) {
     nl = nl0;
     ns = ns0;
   }
-	/* cut off surplus image, but only if user did not specify all: */
+  /* cut off surplus image, but only if user did not specify all: */
   if (!nscal && nl>nl0) nl = nl0;
   if (!nscal && ns>ns0) ns = ns0;
 
-  sprintf( msg, " output image size: NL= %d, NS=%d", nl, ns);
-  zvmessage( msg,"");
+  zvnprintf(100, " output image size: NL= %d, NS=%d", nl, ns);
 
   /* if tube, nl,ns do not refer to output file */
   osize[0] = nl;
@@ -8676,7 +8693,7 @@ FUNCTION set_projection()
 
 
 /************************************************************************/
-FUNCTION setup_cal( rim, mod91)
+void setup_cal(int rim, int mod91)
 /*
  * read in engineering & housekeeping data for new RIM and pass them to 
  * RXM's calibration routines
@@ -8685,27 +8702,28 @@ FUNCTION setup_cal( rim, mod91)
  *
  * mod91 gives the first record in the RIM with valid data
  */
-int rim, mod91;
+#if 0
+  int rim, mod91;
+#endif
 {
   static char first = 1;
-  UBYTE lrshsk[91][64], hrshsk[91][10][6], hrsbkg[91][10][4], *pbyt;
-  nims2_sclk_typ sclk;
-  int crti, i, iop, i1, j, ngpos, rec, rec0, rec1, rec2, rr, r1, sb, stat;
+  UBYTE lrshsk[91][64], hrshsk[91][10][6], hrsbkg[91][10][4];
+  int i, iop, i1, ngpos, stat;
   int flen[MAX_EDRS];
   float waves0[408], sensv0[408], cbase0[408], cmult0[408];
   static int drk_nl, drk_ns;
   static float drkbuf[712];	/* leave this here for now until we figure out
-			   what to do with it -- TBD */
+				   what to do with it -- TBD */
   char *callog, *drklog, *getenv_vic();
 
   if (first) {
 
-	/* find and read in the calibration file(s): */
-    zvpcnt( "CALFILE", &ncalfils);
+    /* find and read in the calibration file(s): */
+    zvpcnt("CALFILE", &ncalfils);
     if (ncalfils > nedrs) zmabend(" *** too many Calibration files! ***");
     if (ncalfils > 1 && ncalfils < nedrs) zmabend(
-     " *** invalid number of Calibration files! ***");
-    zvparm( "CALFILE", cfile, &nvalues, &def, ncalfils, 0);
+						  " *** invalid number of Calibration files! ***");
+    zvparm("CALFILE", cfile, &nvalues, &def, ncalfils, 0);
     /* check for ascii cal file: */
     cal_asc = zvptst("ASC_CAL");
     if (!cal_asc) {
@@ -8713,7 +8731,7 @@ int rim, mod91;
         if (!strncmp(&cfile[i],".tab",4) || !strncmp(&cfile[i],".TAB",4)) {
 	  cal_asc = 1;
 	  break;
-      } }
+	} }
       /* also check for logical name: */
       if (!cal_asc) {
         callog = getenv_vic(cfile);
@@ -8722,26 +8740,26 @@ int rim, mod91;
             if (!strncmp(&callog[i],".tab",4) || !strncmp(&callog[i],".TAB",4)) {
 	      cal_asc = 1;
 	      break;
-    } } } } }
-    zvsptr( cfile, ncalfils, cfnoff, flen);
+	    } } } } }
+    zvsptr(cfile, ncalfils, cfnoff, flen);
 
-    zvparm( "PSHIFT", &pshift, &nvalues, &def, 1, 0);
+    zvparm("PSHIFT", &pshift, &nvalues, &def, 1, 0);
     if (!nvalues) pshift = -999.;	/* use default value in Cal file */
 
-    zvparm( "AINFL", &ainfl, &nvalues, &def, 1, 0);
+    zvparm("AINFL", &ainfl, &nvalues, &def, 1, 0);
 
     /* load the first one: */
-    if (cal_asc) znims_get_cal_a( cfile, &vstat);
-    else znims_get_cal( cfile, &vstat);
+    if (cal_asc) znims_get_cal_a(cfile, &vstat);
+    else znims_get_cal(cfile, &vstat);
     if (vstat) zmabend(" *** error reading calibration file ***");
 
     if (caltyp || drkchk) {
-	/* find and read in the dark files: */
-      zvpcnt( "DARKFILE", &ndrkfils);
+      /* find and read in the dark files: */
+      zvpcnt("DARKFILE", &ndrkfils);
       if (ndrkfils > nedrs) zmabend(" *** too many Dark files! ***");
       if (ndrkfils > 1 && ndrkfils < nedrs) zmabend(
-       " *** invalid number of Dark files! ***");
-      zvparm( "DARKFILE", dfile, &nvalues, &def, ndrkfils, 0);
+						    " *** invalid number of Dark files! ***");
+      zvparm("DARKFILE", dfile, &nvalues, &def, ndrkfils, 0);
       /* check for ascii dark file: */
       drk_asc = zvptst("ASC_CAL");
       if (!drk_asc) {
@@ -8749,7 +8767,7 @@ int rim, mod91;
           if (!strncmp(&dfile[i],".tab",4) || !strncmp(&dfile[i],".TAB",4)) {
 	    drk_asc = 1;
 	    break;
-        } }
+	  } }
         /* also check for logical name: */
         if (!drk_asc) {
           drklog = getenv_vic(dfile);
@@ -8758,15 +8776,15 @@ int rim, mod91;
               if (!strncmp(&drklog[i],".tab",4) || !strncmp(&drklog[i],".TAB",4)) {
 	        drk_asc = 1;
 	        break;
-      } } } } }
-      zvsptr( dfile, ndrkfils, dfnoff, flen);
-      if (radscal == -1 && strcmp( dfile, "DUMMY_DARK.DAT")) dndark = 1;
+	      } } } } }
+      zvsptr(dfile, ndrkfils, dfnoff, flen);
+      if (radscal == -1 && strcmp(dfile, "DUMMY_DARK.DAT")) dndark = 1;
       if (radscal >= 0 || dndark) {
         /* load the first one: */
-	if (drk_asc) znims_get_dark_a( dfile, &drk_ns, &drk_nl, drkbuf, &vstat);
-        else znims_get_dark( dfile, &drk_ns, &drk_nl, drkbuf, &vstat);
+	if (drk_asc) znims_get_dark_a(dfile, &drk_ns, &drk_nl, drkbuf, &vstat);
+        else znims_get_dark(dfile, &drk_ns, &drk_nl, drkbuf, &vstat);
 	if (vstat) zmabend(" *** error reading dark file ***");
-	if (drkchk || dndark) zmve( 7, 680, &drkbuf[32], darktab, 1, 1);
+	if (drkchk || dndark) zmve(7, 680, &drkbuf[32], darktab, 1, 1);
       }
     }
 
@@ -8775,9 +8793,9 @@ int rim, mod91;
     if (radscal==3) iop = 2;	/* uniform scaling requested */
     ngpos = nsteps;
     if (fix_mode) ngpos = 1;
-    znims_set_rad( iop, imode, g_off, gstart, gdel, ngpos, lrshsk, hrshsk,
-     hrsbkg, utemps, waves, sensv, cbase, cmult, &pshift, &ainfl,
-     NULL4, INS_LO_SAT4, INS_HI_SAT4, &stat);
+    znims_set_rad(iop, imode, g_off, gstart, gdel, ngpos, lrshsk, hrshsk,
+		  hrsbkg, utemps, waves, sensv, cbase, cmult, &pshift, &ainfl,
+		  NULL4, INS_LO_SAT4, INS_HI_SAT4, &stat);
     /* remove bands deselected by WET: */
     if (nb<nbb) {
       i1 = 0;
@@ -8801,16 +8819,16 @@ int rim, mod91;
 
     /* if there are multiple Cal files, load the next one: */
     if (ncalfils>1) {
-      if (cal_asc) znims_get_cal_a( (cfile+cfnoff[cur_edr]-1), &vstat);
-      else znims_get_cal( (cfile+cfnoff[cur_edr]-1), &vstat);
+      if (cal_asc) znims_get_cal_a((cfile+cfnoff[cur_edr]-1), &vstat);
+      else znims_get_cal((cfile+cfnoff[cur_edr]-1), &vstat);
       if (vstat) zmabend(" *** error reading calibration file ***");
       if (ndrkfils>1)  {
-	if (drk_asc) znims_get_dark_a( (dfile+dfnoff[cur_edr]-1), &drk_ns,
-	 &drk_nl, drkbuf, &vstat);
-	else znims_get_dark( (dfile+dfnoff[cur_edr]-1), &drk_ns,
-	 &drk_nl, drkbuf, &vstat);
+	if (drk_asc) znims_get_dark_a((dfile+dfnoff[cur_edr]-1), &drk_ns,
+				      &drk_nl, drkbuf, &vstat);
+	else znims_get_dark((dfile+dfnoff[cur_edr]-1), &drk_ns,
+			    &drk_nl, drkbuf, &vstat);
 	if (vstat) zmabend(" *** error reading dark file ***");
-	if (drkchk || dndark) zmve( 7, 680, &drkbuf[32], darktab, 1, 1);
+	if (drkchk || dndark) zmve(7, 680, &drkbuf[32], darktab, 1, 1);
       }
       /* and reset the calibration parameters -- but ignore the
 	 returned wavelengths, etc. */
@@ -8819,25 +8837,25 @@ int rim, mod91;
       if (radscal==3) iop = 2;	/* uniform scaling requested */
       ngpos = nsteps;
       if (fix_mode) ngpos = 1;
-      znims_set_rad( iop, imode, g_off, gstart, gdel, ngpos, lrshsk, hrshsk,
-       hrsbkg, utemps, waves0, sensv0, cbase0, cmult0, &pshift, &ainfl,
-       NULL4, INS_LO_SAT4, INS_HI_SAT4, &stat);
+      znims_set_rad(iop, imode, g_off, gstart, gdel, ngpos, lrshsk, hrshsk,
+		    hrsbkg, utemps, waves0, sensv0, cbase0, cmult0, &pshift, &ainfl,
+		    NULL4, INS_LO_SAT4, INS_HI_SAT4, &stat);
     }
-    znims_check_rad( lrshsk, hrshsk, hrsbkg, &vstat);	/* (this is a stub) */
+    znims_check_rad(lrshsk, hrshsk, hrsbkg, &vstat);	/* (this is a stub) */
     if (vstat) zmabend(" *** error in NIMS_CHECK_RAD ***");
   }
   first = 0;
 
   if (!caltyp || radscal<0) return;
 
-  znims_check_dark( drkbuf, drkbuf, drk_nl, drktyp, rim, mod91, dave,
-   &vstat);
+  znims_check_dark(drkbuf, drkbuf, drk_nl, drktyp, rim, mod91, dave,
+		   &vstat);
   if (vstat) zmabend(" *** error in NIMS_CHECK_DARK ***");
 }
 
 
 /******************************************************************************/
-FUNCTION solar( dist, fsol)
+void solar(float dist, float *fsol)
 /*
  * returns solar flux at given distance from sun in uWatt/cm**2/mu
  * NOTE: all calculations are in "modified" cgs (wavelengths in mu), but at
@@ -8845,9 +8863,11 @@ FUNCTION solar( dist, fsol)
  *
  * dist = distance from sun in cm
  */
-float dist, *fsol;
+#if 0
+  float dist, *fsol;
+#endif
 {
-  float dil, flog, fs, fsun, planck;
+  float dil, flog, fsun, planck;
   /* Planck constants: */
   float c1=37.4151, c2=14387.9, c4, c5, temp=5900.;
   int i, n, npts;
@@ -8859,15 +8879,15 @@ float dist, *fsol;
 
   FILE *fil;
 
-  zvparm( "SOLFILE", solfile, &nvalues, &def, 1, 0);
-  fil = fopen( solfile, "r");
+  zvparm("SOLFILE", solfile, &nvalues, &def, 1, 0);
+  fil = fopen(solfile, "r");
   if (fil == NULL) zmabend(" ** error opening SOLFILE **");
 
-  fscanf( fil," %d%s/n", &npts, buf);		/* "N points" */
+  fscanf(fil," %d%s/n", &npts, buf);		/* "N points" */
 
-	/* allocate storage for the arrays: */
-  tfsun = (float *)malloc( 4*npts);
-  twav = (float *)malloc( 4*npts);
+  /* allocate storage for the arrays: */
+  tfsun = (float *)malloc(4*npts);
+  twav = (float *)malloc(4*npts);
 
   if (tfsun==0 || twav==0)
     zmabend(" insufficient memory for SOLAR arrays");
@@ -8876,7 +8896,7 @@ float dist, *fsol;
 
   /* and read arrays in & compute Planck: */
   for (i=0; i<npts; i++) {
-    fscanf( fil," %f%f/n", &twav[i], &fsun);
+    fscanf(fil," %f%f/n", &twav[i], &fsun);
     c4 = c2/(twav[i]*temp);
     c5 = twav[i]*twav[i]*twav[i]*twav[i]*twav[i];
     planck = c1/(c5*(exp(c4)-1.0));	/* actually 10^-10 * Planck */
@@ -8885,169 +8905,169 @@ float dist, *fsol;
 
   for (n=0; n<nb; n++) {
 
-	/* find first i at which twav[i] > waves[n]:
-	 * (note we cannot assume that waves is in monotonic order!) */
+    /* find first i at which twav[i] > waves[n]:
+     * (note we cannot assume that waves is in monotonic order!) */
     for (i=1; i<(npts-1) && waves[n] > twav[i]; i++);
 	
     flog = tfsun[i-1] + (tfsun[i]-tfsun[i-1]) * (waves[n]-twav[i-1]) /
-     (twav[i]-twav[i-1]);
+      (twav[i]-twav[i-1]);
     dil = 6.96e10/dist;			/* 6.96e10 = solar radius in cm */
 
-	/* PI converts from intensity to flux;
-	 * constant of 1.e9 includes 1.e10 (for tabulated fsol & Planck
-	 * above) and 1.e-1 to convert from modified-cgs to mixed: */
+    /* PI converts from intensity to flux;
+     * constant of 1.e9 includes 1.e10 (for tabulated fsol & Planck
+     * above) and 1.e-1 to convert from modified-cgs to mixed: */
     c4 = c2/(waves[n]*temp);
     c5 = waves[n]*waves[n]*waves[n]*waves[n]*waves[n];
     planck = c1/(c5*(exp(c4)-1.0));	/* actually 10^-10 * Planck */
-    fsol[n] = zpi() * exp( flog) * 1.e9 * dil * dil * planck;
+    fsol[n] = zpi() * exp(flog) * 1.e9 * dil * dil * planck;
   }
-  fclose( fil);
+  fclose(fil);
 }
 
 
 /************************************************************************/
-FUNCTION update_catalog()
+void update_catalog(void)
 /*
  * update the nimsmosaic table of the catalog 
  * (the record will normally already have been created and partially written
  * by CATNIMS2, but this is ignored here)
  */
 {
-/*  int cnt, i, j, nrows;*/
-/*  int cstat = CAT_SUCCESS;*/
-/*  float x;*/
-/*  char *skid;*/
-/*  cat_nimsCmmMosaic_struct_query_typ mosaicQueryStruct;*/
-/*  cat_user_struct_typ userInfo;*/
+  /*  int cnt, i, j, nrows;*/
+  /*  int cstat = CAT_SUCCESS;*/
+  /*  float x;*/
+  /*  char *skid;*/
+  /*  cat_nimsCmmMosaic_struct_query_typ mosaicQueryStruct;*/
+  /*  cat_user_struct_typ userInfo;*/
 
   /* Catalog insists that max. longitude be in (0,360) range: */
-/*  if (mmlon[1]>-400. && mmlon[1]<0.) mmlon[1] += 360.;*/
+  /*  if (mmlon[1]>-400. && mmlon[1]<0.) mmlon[1] += 360.;*/
   /* (try minlon too, tho this may be reversed by next test ...) */
-/*  if (mmlon[0]<0.) mmlon[0] += 360.;*/
+  /*  if (mmlon[0]<0.) mmlon[0] += 360.;*/
   /* ... also that min/max lon are in correct order: */
-/*  if (mmlon[0]<400. && mmlon[0]>mmlon[1]) mmlon[0] -= 360;*/
+  /*  if (mmlon[0]<400. && mmlon[0]>mmlon[1]) mmlon[0] -= 360;*/
 
   /* catalog does not like "bad" values for these ... */
-/*  if (mmlon[0]>400.) mmlon[0] = 0.;*/
-/*  if (mmlon[1]<-400.) mmlon[1] = 360.;*/
-/*  if (mmlat[0]>400.) mmlat[0] = -90.;*/
-/*  if (mmlat[1]<-400.) mmlat[1] = 90.;*/
+  /*  if (mmlon[0]>400.) mmlon[0] = 0.;*/
+  /*  if (mmlon[1]<-400.) mmlon[1] = 360.;*/
+  /*  if (mmlat[0]>400.) mmlat[0] = -90.;*/
+  /*  if (mmlat[1]<-400.) mmlat[1] = 90.;*/
 
-/*  if (!cat_flag) return;*/
+  /*  if (!cat_flag) return;*/
 
-/*  i = strlen( obsnam);*/
-/*  if (i==0) {*/
-/*    zvmessage(" OBSNAME is blank, cannot update catalog","");*/
-/*    return;*/
-/*  }*/
+  /*  i = strlen(obsnam);*/
+  /*  if (i==0) {*/
+  /*    zvmessage(" OBSNAME is blank, cannot update catalog","");*/
+  /*    return;*/
+  /*  }*/
   /* initialize passwd in case user omits this: */
-/*  userInfo.passwd[0] = 0;*/
+  /*  userInfo.passwd[0] = 0;*/
 
-/*  zcatGetUserData( userInfo.server, userInfo.db, userInfo.user,*/
-/*   userInfo.passwd);	/* this routine calls ZVP on the CATxx parms! */
-/*  strcpy(userInfo.progname,"nimscmm2");*/
-/*  userInfo.printflag = 1;  /* print out all the results structures */
+  /*  zcatGetUserData(userInfo.server, userInfo.db, userInfo.user,*/
+  /*   userInfo.passwd);	/ * this routine calls ZVP on the CATxx parms! */
+  /*  strcpy(userInfo.progname,"nimscmm2");*/
+  /*  userInfo.printflag = 1;  / * print out all the results structures */
 
   /* Initialize descriptors for the program and login to Sybase. */
-/*  cstat = catLogin(&userInfo);*/
-/*  if (cstat != CAT_SUCCESS) {*/
-/*    zvmessage(" *** cannot login to catalog","");*/
-/*    return;*/
-/*  }*/
+  /*  cstat = catLogin(&userInfo);*/
+  /*  if (cstat != CAT_SUCCESS) {*/
+  /*    zvmessage(" *** cannot login to catalog","");*/
+  /*    return;*/
+  /*  }*/
 
-/*  OLD DTR CODE (NO NEED FOR SYBASE EQUIVALENT?):
-  cstat = get_nims_mosaic_rec( obsnam, mosnum, &rec);
-  if (cstat == NOT_FOUND) {
-    zvmessage(" No record in Catalog for this OBSNAME","");
-    store_cat_string( rec.obs, obsnam, L_OBS);
-    rec.mos_number = mosnum[0];
-  }
-  else if (cstat != SUCCESS) return;
-*/
+  /*  OLD DTR CODE (NO NEED FOR SYBASE EQUIVALENT?):
+      cstat = get_nims_mosaic_rec(obsnam, mosnum, &rec);
+      if (cstat == NOT_FOUND) {
+      zvmessage(" No record in Catalog for this OBSNAME","");
+      store_cat_string(rec.obs, obsnam, L_OBS);
+      rec.mos_number = mosnum[0];
+      }
+      else if (cstat != SUCCESS) return;
+  */
 
-/*  strcpy( mosaicQueryStruct.obsid, obsnam);*/
-/*  strcpy( mosaicQueryStruct.obsidext, obsext);*/
-/*  strcpy( mosaicQueryStruct.mosaicnum, mosnum);*/
-/*  strcpy( mosaicQueryStruct.targname, target);*/
+  /*  strcpy(mosaicQueryStruct.obsid, obsnam);*/
+  /*  strcpy(mosaicQueryStruct.obsidext, obsext);*/
+  /*  strcpy(mosaicQueryStruct.mosaicnum, mosnum);*/
+  /*  strcpy(mosaicQueryStruct.targname, target);*/
 
-/*  mosaicQueryStruct.sclkstrtcnt = 100*loclk.rim + loclk.mod91;*/
+  /*  mosaicQueryStruct.sclkstrtcnt = 100*loclk.rim + loclk.mod91;*/
 
   /* don't worry about partition for now: */
-/*  mosaicQueryStruct.sclkpartition  = 1;*/
+  /*  mosaicQueryStruct.sclkpartition  = 1;*/
 
   /* parse UTC SCET for Sybase: */
-/*  sscanf( &beg_utcd[21], "%3d", &i);*/
-/*  mosaicQueryStruct.startscetmilli = i;*/
-/*  xconv_date( beg_utcd);*/
-/*  strncpy( mosaicQueryStruct.startscet, beg_utcd, 20);*/
-/*  mosaicQueryStruct.startscet[20] = '\0';*/
+  /*  sscanf(&beg_utcd[21], "%3d", &i);*/
+  /*  mosaicQueryStruct.startscetmilli = i;*/
+  /*  xconv_date(beg_utcd);*/
+  /*  strncpy(mosaicQueryStruct.startscet, beg_utcd, 20);*/
+  /*  mosaicQueryStruct.startscet[20] = '\0';*/
 
   /* geometry stuff: */
-/*  mosaicQueryStruct.starttargctrdist = trange[0]; */
-/*  mosaicQueryStruct.startctrbdydist = crange[0]; */
-/*  mosaicQueryStruct.minincidang = tincid[0];*/
-/*  mosaicQueryStruct.minemissang = temiss[0];*/
-/*  mosaicQueryStruct.minphsang = tphase[0];*/
-/*  mosaicQueryStruct.minlat = mmlat[0];*/
-/*  mosaicQueryStruct.minlon = mmlon[0];*/
-/*  mosaicQueryStruct.startsubsclat = ssclat[0];*/
-/*  mosaicQueryStruct.startsubsclon = ssclon[0];*/
+  /*  mosaicQueryStruct.starttargctrdist = trange[0]; */
+  /*  mosaicQueryStruct.startctrbdydist = crange[0]; */
+  /*  mosaicQueryStruct.minincidang = tincid[0];*/
+  /*  mosaicQueryStruct.minemissang = temiss[0];*/
+  /*  mosaicQueryStruct.minphsang = tphase[0];*/
+  /*  mosaicQueryStruct.minlat = mmlat[0];*/
+  /*  mosaicQueryStruct.minlon = mmlon[0];*/
+  /*  mosaicQueryStruct.startsubsclat = ssclat[0];*/
+  /*  mosaicQueryStruct.startsubsclon = ssclon[0];*/
 
   /* now same items for end of mosaic: */
 
-/*  mosaicQueryStruct.sclkstopcnt = 100*hiclk.rim + hiclk.mod91;*/
+  /*  mosaicQueryStruct.sclkstopcnt = 100*hiclk.rim + hiclk.mod91;*/
 
-/*  sscanf( &end_utcd[21], "%3d", &i);*/
-/*  mosaicQueryStruct.stopscetmilli = i;*/
-/*  xconv_date( end_utcd);*/
-/*  strncpy( mosaicQueryStruct.stopscet, end_utcd, 20);*/
-/*  mosaicQueryStruct.stopscet[20] = '\0';*/
+  /*  sscanf(&end_utcd[21], "%3d", &i);*/
+  /*  mosaicQueryStruct.stopscetmilli = i;*/
+  /*  xconv_date(end_utcd);*/
+  /*  strncpy(mosaicQueryStruct.stopscet, end_utcd, 20);*/
+  /*  mosaicQueryStruct.stopscet[20] = '\0';*/
 
-/*  mosaicQueryStruct.stoptargctrdist = trange[1];*/
-/*  mosaicQueryStruct.stopctrbdydist = crange[1];*/
-/*  mosaicQueryStruct.maxincidang = tincid[1];*/
-/*  mosaicQueryStruct.maxemissang = temiss[1];*/
-/*  mosaicQueryStruct.maxphsang = tphase[1];*/
-/*  mosaicQueryStruct.maxlat = mmlat[1];*/
-/*  mosaicQueryStruct.maxlon = mmlon[1];*/
-/*  mosaicQueryStruct.stopsubsclat = ssclat[1];*/
-/*  mosaicQueryStruct.stopsubsclon = ssclon[1];*/
+  /*  mosaicQueryStruct.stoptargctrdist = trange[1];*/
+  /*  mosaicQueryStruct.stopctrbdydist = crange[1];*/
+  /*  mosaicQueryStruct.maxincidang = tincid[1];*/
+  /*  mosaicQueryStruct.maxemissang = temiss[1];*/
+  /*  mosaicQueryStruct.maxphsang = tphase[1];*/
+  /*  mosaicQueryStruct.maxlat = mmlat[1];*/
+  /*  mosaicQueryStruct.maxlon = mmlon[1];*/
+  /*  mosaicQueryStruct.stopsubsclat = ssclat[1];*/
+  /*  mosaicQueryStruct.stopsubsclon = ssclon[1];*/
 
-/*  strcpy(mosaicQueryStruct.note ," ");*/
+  /*  strcpy(mosaicQueryStruct.note ," ");*/
 
-/* OLD DTR CODE FOR KERNELS -- not replaced for Sybase since full Kernel 
- * names are stored in Processing domain -- */
+  /* OLD DTR CODE FOR KERNELS -- not replaced for Sybase since full Kernel 
+   * names are stored in Processing domain -- */
 
-/* 
-  store_cat_string( rec.spice_s_id, &spice_ids[0], LEN_SPICE_ID); 
-  store_cat_string( rec.spice_p_id, &spice_ids[4], LEN_SPICE_ID); 
- */
-	/* C-kernel is special:  if we use one, it must be the
-	 * MIPS_NIMS_CK: */
-/*
-  if (c_spice) store_cat_string( rec.spice_c_id, "MNCK", LEN_SPICE_ID);
-  else store_cat_string( rec.spice_c_id, "AACS", LEN_SPICE_ID);
- */
-	/* and so is I-kernel, as we made up our own: */
-/*
-  store_cat_string( rec.spice_i_id, "NIMS", LEN_SPICE_ID);
- */
+  /* 
+     store_cat_string(rec.spice_s_id, &spice_ids[0], LEN_SPICE_ID); 
+     store_cat_string(rec.spice_p_id, &spice_ids[4], LEN_SPICE_ID); 
+  */
+  /* C-kernel is special:  if we use one, it must be the
+   * MIPS_NIMS_CK: */
+  /*
+    if (c_spice) store_cat_string(rec.spice_c_id, "MNCK", LEN_SPICE_ID);
+    else store_cat_string(rec.spice_c_id, "AACS", LEN_SPICE_ID);
+  */
+  /* and so is I-kernel, as we made up our own: */
+  /*
+    store_cat_string(rec.spice_i_id, "NIMS", LEN_SPICE_ID);
+  */
 
-/*  cstat = catNimsCmmMosaic( userInfo.printflag, &nrows,&mosaicQueryStruct);
-/*  if (cstat == CAT_SUCCESS) {
-/*    message2("cstat = %d, nrows = %d",cstat,nrows);
-/*  }
-/*  else {
-/*    message2("error returned: cstat %d:\n%s",cstat,zcatGetMsg(cstat));
-/*  }
+  /*  cstat = catNimsCmmMosaic(userInfo.printflag, &nrows,&mosaicQueryStruct);
+      / *  if (cstat == CAT_SUCCESS) {
+      / *    message2("cstat = %d, nrows = %d",cstat,nrows);
+      / *  }
+      / *  else {
+      / *    message2("error returned: cstat %d:\n%s",cstat,zcatGetMsg(cstat));
+      / *  }
 
-/*  catLogout();*/
+      / *  catLogout();*/
 }
 
 
 
 /************************************************************************/
-FUNCTION varc( lat, lon, vab)
+void varc(float lat[2], float lon[2], vector vab)
 /*
  * returns the vector VAB from point P0 at lat[0],lon[0] to P1 at lat[1],lon[1],
  * on an ellipsoidal body 
@@ -9055,8 +9075,10 @@ FUNCTION varc( lat, lon, vab)
  * West longitudes assumed;  input LAT and LON values are assumed to be in
  * degrees
  */
-float lat[2], lon[2];
+#if 0
+  float lat[2], lon[2];
 vector vab;
+#endif
 {
   int i;
   double lam, phi, slam, clam, sphi, cphi, r;
@@ -9064,7 +9086,7 @@ vector vab;
 
   for (i=0; i<2; i++) {
     lam = lat[i]/degrad;
-    if (pgraphic==1) lam = atan( tan(lam)/ rep2 );
+    if (pgraphic==1) lam = atan(tan(lam)/ rep2 );
     phi = lon[i]/degrad;
     slam = sin(lam);
     clam = cos(lam);
@@ -9080,7 +9102,7 @@ vector vab;
 
 
 /************************************************************************/
-FUNCTION vrdcomp( ra, dec, dv, dra, ddec)
+void vrdcomp(double ra, double dec, vector dv, double *dra, double *ddec)
 /*
  * given a unit vector VEC defined by the Euler angles RA and DEC, and
  * a small tangential addition to this vector, DV defined by its (X,Y,Z)
@@ -9093,8 +9115,10 @@ FUNCTION vrdcomp( ra, dec, dv, dra, ddec)
  * differentiating the equation for VEC and equating the components to
  * those of DV gives ...
  */
-vector dv;
+#if 0
+  vector dv;
 double ra, dec, *dra, *ddec;
+#endif
 {
   int i;
   double d0,d1,d2, mag;
@@ -9104,8 +9128,7 @@ double ra, dec, *dra, *ddec;
   for (i=0; i<3; i++) mag += dv[i]*dv[i];
   mag = sqrt(mag);
   if (mag>0.01) {
-    sprintf( msg, " warning:  small-angle assumption violated, |DV| = %f", mag);
-    zvmessage( msg,"");
+    zvnprintf(100, " warning:  small-angle assumption violated, |DV| = %f", mag);
   }
 
   if (cos(dec)==0.0)
@@ -9126,7 +9149,7 @@ double ra, dec, *dra, *ddec;
 
 
 /************************************************************************/
-FUNCTION write_latlon()
+void write_latlon(void)
 /*
  * write lat/long values to first 2 planes of geometry cocube;
  * for POV projection, also write the slant distance for the projection
@@ -9139,35 +9162,35 @@ FUNCTION write_latlon()
  * been determined yet
  */
 {
-  int i, ib, ind, ix, iy, k, npts;
-  float dum, word, dword, latlon[2], *gptr, *optr, *ppd, scl, x, y;
+  int i, ib, ind, ix, iy, npts;
+  float dword = 0.0, latlon[2], *gptr, *optr, x, y;
   double alpha, beta, theta, tmin, tmax, xlat, xlon, xave, yave, zave,
-   *xx, *yy, *zz, zmin, zmax;
+    *xx, *yy, *zz, zmin, zmax;
 
   for (iy=1; iy<=nl; iy++) {
     for (ix=1; ix<=ns; ix++) {
       x = (float)ix;
       y = (float)iy;
       if (map_type==16) {
- 	zpproj( &t_data_pov, &y, &x, &latlon[0], &latlon[1], LS_LL, lattyp,
-	 &rtang, &slant, &ind);
+ 	zpproj(&t_data_pov, &y, &x, &latlon[0], &latlon[1], LS_LL, lattyp,
+	       &rtang, &slant, &ind);
 	if (!ind) continue;
       }
       else {
-	ztranv( &ind, map_type, LS_LL, map_samp, map_line, latitude,
-	 parallel[0], parallel[1], longitude, scale, map_pole,
-	 &y, &x, &latlon[0], &latlon[1], pol_rad, eq_rad, north);
+	ztranv(&ind, map_type, LS_LL, map_samp, map_line, latitude,
+	       parallel[0], parallel[1], longitude, scale, map_pole,
+	       &y, &x, &latlon[0], &latlon[1], pol_rad, eq_rad, north);
 	if (pgraphic==1 && (map_type!=10 || oldver))
-	 latlon[0] = cen2det( latlon[0]);
+	  latlon[0] = cen2det(latlon[0]);
 	if (ind) continue;
       }
-	/* fix up longitudes:  ensure they run from 0 to 360
-	 * and convert them to East Long. for VENUS: */
+      /* fix up longitudes:  ensure they run from 0 to 360
+       * and convert them to East Long. for VENUS: */
       if (elon) latlon[1] = -latlon[1];
       if (latlon[1] < 0.) latlon[1] += 360.;
       if (latlon[1] > 360.) latlon[1] -= 360.;
 
-	/* store lat/lon in cocube: */
+      /* store lat/lon in cocube: */
       gptr = gdata + (iy-1)*ns + ix-1;
       for (i=0; i<2; i++) {
 	*gptr = latlon[i];
@@ -9185,18 +9208,18 @@ FUNCTION write_latlon()
       if (*gptr == (float)NULL4) *gptr = 0.;
     }
   }
-	/*
-	 * if min/max lat/longs were not determined so far, then scan 
-	 * backplanes for these -- for lat could just do straight max/min,
-	 * but this doesn't work for lon if zero meridian is in image
-	 * -- need to convert to vectors and start from center point
-	 * (the LJR algorithm) ...
-	 * (also check if any data exist at same point, as alot of
-	 * empty space can be included for some projections!)
-	 */
+  /*
+   * if min/max lat/longs were not determined so far, then scan 
+   * backplanes for these -- for lat could just do straight max/min,
+   * but this doesn't work for lon if zero meridian is in image
+   * -- need to convert to vectors and start from center point
+   * (the LJR algorithm) ...
+   * (also check if any data exist at same point, as alot of
+   * empty space can be included for some projections!)
+   */
   if (mmlat[0] < 0.9e30 && mmlat[1] > -0.9e30 && mmlon[0] < 0.9e30 &&
-   mmlon[1] > -0.9e30) return;
-  zvmessage(" min/max lat/lon determined in write_latlon", "");
+      mmlon[1] > -0.9e30) return;
+  zifmessage(" min/max lat/lon determined in write_latlon");
   xx = (double *)malloc(nl*ns*sizeof(double));
   yy = (double *)malloc(nl*ns*sizeof(double));
   zz = (double *)malloc(nl*ns*sizeof(double));
@@ -9228,7 +9251,7 @@ FUNCTION write_latlon()
     }
   }
   if (!npts) {
-    zvmessage(" no on-planet points with valid data!","");
+    zifmessage(" no on-planet points with valid data!");
     return;
   }
   xave /= (double)npts;
@@ -9262,85 +9285,88 @@ FUNCTION write_latlon()
 
 
 /************************************************************************/
-FUNCTION xconv_date( date)
+#if 0
+void xconv_date(char *date)
 /*
  * convert UTC date from SPICE to Sybase format
  * 
  * SPICE format:  "YYYY-DDD // HH:MM:SS.SSS"
  * Sybase format: "Mmm DD YYYY HH:MM:SS.SSSXX" (XX = AM or PM)
  */
-char *date;
+#if 0
+  char *date;
+#endif
 {
   char dxbuf[41], dtemp[10];	/* local buffers */
   char months[12][3] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
-   "Aug", "Sep", "Oct", "Nov", "Dec"};
+			 "Aug", "Sep", "Oct", "Nov", "Dec"};
   int day, i, leapyear, month, year;
 
   if (strlen(date) > 40)
-    zvmessage(" *** xconv_date: date string too long","");
+    zifmessage(" *** xconv_date: date string too long");
 
-  strcpy( dxbuf, date);		/* copy string to local buffer */
-  strcpy( date, "                          ");	/* initialize with 26 blanks */
+  strcpy(dxbuf, date);		/* copy string to local buffer */
+  strcpy(date, "                          ");	/* initialize with 26 blanks */
 
   /* then work our way left to right ... */
 
   /* can just copy the Year string: */
-  strncpy( &date[7], dxbuf, 4);
+  strncpy(&date[7], dxbuf, 4);
 
   /* but must also extract it for leap-year det'n */
-  sscanf( dxbuf, "%4d", &year);
+  sscanf(dxbuf, "%4d", &year);
 
   /* extract day-of-year: */
-  sscanf( &dxbuf[5], "%3d", &day);
+  sscanf(&dxbuf[5], "%3d", &day);
 
   /* figure out month and day-of-month: */
   leapyear = 0;
-  if( year%4 == 0 )		/* (this is valid until 2100) */
+  if(year%4 == 0 )		/* (this is valid until 2100) */
     leapyear = 1;
-  if( day <= 31 ) { 			/* January */
+  if(day <= 31 ) { 			/* January */
     month = 1;
   }
-  else if( day <= 59 + leapyear ) {	/* February */
+  else if(day <= 59 + leapyear ) {	/* February */
     month = 2;
     day -= 31;
   }
-  else if( day <= 90 + leapyear ) {	/* March */
+  else if(day <= 90 + leapyear ) {	/* March */
     month = 3;
     day -= 59 + leapyear;
   }
-  else if( day <= 120 + leapyear ) {	/* April */
+  else if(day <= 120 + leapyear ) {	/* April */
     month = 4;
     day -= 90 + leapyear;
   }
-  else if( day <= 151 + leapyear ) {	/* May */
+  else if(day <= 151 + leapyear ) {	/* May */
     month = 5;
     day -= 120 + leapyear;
   }
-  else if( day <= 181 + leapyear ) {	/* June */
+  else if(day <= 181 + leapyear ) {	/* June */
     month = 6;
     day -= 151 + leapyear;
   }
-  else if( day <= 212 + leapyear ) {	/* July */
+  else if(day <= 212 + leapyear ) {	/* July */
     month = 7;
     day -= 181 + leapyear;
   }
-  else if( day <= 243 + leapyear ) {	/* August */
+  else if(day <= 243 + leapyear ) {	/* August */
     month = 8;
     day -= 212 + leapyear;
   }
-  else if( day <= 273 + leapyear ) {	/* September */
+  else if(day <= 273 + leapyear ) {	/* September */
     month = 9;
     day -= 243 + leapyear;
   }
-  else if( day <= 304 + leapyear ) {	/* October */
+  else if(day <= 304 + leapyear ) {	/* October */
     month = 10;
     day -= 273 + leapyear;
   }
-  else if( day <= 334 + leapyear ) {	/* November */
+  else if(day <= 334 + leapyear ) {	/* November */
     month = 11;
     day -= 304 + leapyear;
   }
-  else if( day <= 365 + leapyear ) {	/* December */
+  else if(day <= 365 + leapyear ) {	/* December */
     month = 12;
     day -= 334 + leapyear;
   }
@@ -9351,222 +9377,236 @@ char *date;
   }
 
   /* (forced to put day-month in the WRONG order!) */
-  strncpy( date, months[month-1], 3);
-  sprintf( dtemp, "%2d", day);
-  strncpy( &date[4], dtemp, 2);
+  strncpy(date, months[month-1], 3);
+  snprintf(dtemp, 10, "%2d", day);
+  strncpy(&date[4], dtemp, 2);
 
   /* check if AM or PM: */
-  sscanf( &dxbuf[12], "%2d", &i);
+  sscanf(&dxbuf[12], "%2d", &i);
   if (i>12) {
     i -= 12;
-    sprintf( dtemp, "%2d", i);
-    strncpy( &dxbuf[12], dtemp, 2);
-    strncpy( &dxbuf[24], "PM", 2);
+    snprintf(dtemp, 10, "%2d", i);
+    strncpy(&dxbuf[12], dtemp, 2);
+    strncpy(&dxbuf[24], "PM", 2);
   }
   else
-    strncpy( &dxbuf[24], "AM", 2);
+    strncpy(&dxbuf[24], "AM", 2);
 
-  strncpy( &date[12], &dxbuf[12], 14);
+  strncpy(&date[12], &dxbuf[12], 14);
 }
-
+#endif
 
 /************************************************************************/
-FUNCTION zgetom( r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12)
+void zgetom(float *r1, float *r2, float *r3, float *r4, float *r5, float *r6,
+	    float *r7, float *r8, float *r9, float *r10, float *r11, float *r12)
 /*
  *  C-bridge for in-line routine GETOM.F
  */
-float *r1, *r2, *r3, *r4, *r5, *r6, *r7, *r8, *r9, *r10, *r11, *r12;
+#if 0
+  float *r1, *r2, *r3, *r4, *r5, *r6, *r7, *r8, *r9, *r10, *r11, *r12;
+#endif
 {
-FTN_NAME( getom)( r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12);
+  FTN_NAME(getom)(r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12);
 }
 
 
 /************************************************************************/
-FUNCTION znimsboom( cone, clock, iobs, filnam)
+void znimsboom(float cone, float clock, int *iobs, char *filnam)
 /*
  * this is part of the "C-bridge" nonsense needed for porting code ...
  * it calls NIMSBOOM via XNIMSBOOM (in-line with NIMSBOOM).
  */
-float cone, clock;
+#if 0
+  float cone, clock;
 int *iobs;
 char *filnam;
+#endif
 {
   int i;
   i = strlen(filnam);
-  FTN_NAME( xnimsboom)( &cone, &clock, iobs, filnam, &i);
+  FTN_NAME(xnimsboom)(&cone, &clock, iobs, filnam, &i);
 }
 
 /************************************************************************/
-FUNCTION znims_check_rad( lrshsk, hrshsk, hrsbkg, pstatus)
+void znims_check_rad(int *lrshsk, int *hrshsk, int *hrsbkg, int *pstatus)
 /*
  * this is part of the "C-bridge" nonsense needed for porting code ...
  */
-int *lrshsk, *hrshsk, *hrsbkg, *pstatus;
+#if 0
+  int *lrshsk, *hrshsk, *hrsbkg, *pstatus;
+#endif
 {
-  FTN_NAME(nims_check_rad)( lrshsk, hrshsk, hrsbkg, pstatus);
+  FTN_NAME(nims_check_rad)(lrshsk, hrshsk, hrsbkg, pstatus);
 }
 
 
 /************************************************************************/
-FUNCTION znims_check_dark( drkbuf, drkbuf1, drk_nl, drktyp, rim, mod91, dave,
-  pstatus)
+void znims_check_dark(int *drkbuf, int *drkbuf1, int drk_nl, int drktyp, 
+		      int rim, int mod91, int *dave, int *pstatus)
 /*
  * this is part of the "C-bridge" nonsense needed for porting code ...
  */
-int *drkbuf, *drkbuf1, drk_nl, drktyp, rim, mod91, *dave, *pstatus;
+#if 0
+  int *drkbuf, *drkbuf1, drk_nl, drktyp, rim, mod91, *dave, *pstatus;
+#endif
 {
-  FTN_NAME(nims_check_dark)( drkbuf, drkbuf1, &drk_nl, &drktyp, &rim, &mod91,
-   dave, pstatus);
+  FTN_NAME(nims_check_dark)(drkbuf, drkbuf1, &drk_nl, &drktyp, &rim, &mod91,
+			    dave, pstatus);
 }
 
 
 /************************************************************************/
-FUNCTION znims_comp_rad( i, j, p1, p2, p3)
+void znims_comp_rad(int i, int j, int *p1, int *p2, int *p3)
 /*
  * this is part of the "C-bridge" nonsense needed for porting code ...
  */
-int i, j, *p1, *p2, *p3;
+#if 0
+  int i, j, *p1, *p2, *p3;
+#endif
 {
-  FTN_NAME(nims_comp_rad)( &i, &j, p1, p2, p3);
+  FTN_NAME(nims_comp_rad)(&i, &j, p1, p2, p3);
 }
 
 
 /************************************************************************/
-FUNCTION znims_get_cal( file, pstatus)
+void znims_get_cal(char *file, int *pstatus)
 /*
  * this is part of the "C-bridge" nonsense needed for porting code ...
  * it calls the NIMS_CAL routine via an "X..." routine, which is included
  * in nims_cal.f
  */
-char *file;
+#if 0
+  char *file;
 int *pstatus;
+#endif
 {
   int i;
   i = strlen(file);
-  FTN_NAME( xnims_get_cal)( file, &i, pstatus);
+  FTN_NAME(xnims_get_cal)(file, &i, pstatus);
 }
 
 
 /************************************************************************/
-FUNCTION znims_get_dark( file, drk_ns, drk_nl, drkbuf, pstatus)
+void znims_get_dark(char *file, int *drk_ns, int *drk_nl, int *drkbuf, int *pstatus)
 /*
  * this is part of the "C-bridge" nonsense needed for porting code ...
  * it calls the NIMS_CAL routine via an "X..." routine, which is included
  * in nims_cal.f
  */
-char *file;
+#if 0
+  char *file;
 int *drk_ns, *drk_nl, *drkbuf, *pstatus;
+#endif
 {
   int i;
   i = strlen(file);
-  FTN_NAME( xnims_get_dark)( file, &i, drk_ns, drk_nl, drkbuf, pstatus);
+  FTN_NAME(xnims_get_dark)(file, &i, drk_ns, drk_nl, drkbuf, pstatus);
 }
 
 
 /************************************************************************/
-FUNCTION znims_get_cal_a( file, pstatus)
+void znims_get_cal_a(char *file, int *pstatus)
 /*
  * this is part of the "C-bridge" nonsense needed for porting code ...
  * it calls the NIMS_CAL routine via an "X..." routine, which is included
  * in nims_cal.f
  */
-char *file;
+#if 0
+  char *file;
 int *pstatus;
+#endif
 {
   int i;
   i = strlen(file);
-  FTN_NAME( xnims_get_cal_a)( file, &i, pstatus);
+  FTN_NAME(xnims_get_cal_a)(file, &i, pstatus);
 }
 
 
 /************************************************************************/
-FUNCTION znims_get_dark_a( file, drk_ns, drk_nl, drkbuf, pstatus)
+void znims_get_dark_a(char *file, int *drk_ns, int *drk_nl, float drkbuf[712], int *pstatus)
 /*
  * this is part of the "C-bridge" nonsense needed for porting code ...
  * it calls the NIMS_CAL routine via an "X..." routine, which is included
  * in nims_cal.f
  */
-char *file;
+#if 0
+  char *file;
 int *drk_ns, *drk_nl, *pstatus;
 float drkbuf[712];
+#endif
 {
   int i;
   i = strlen(file);
-  FTN_NAME( xnims_get_dark_a)( file, &i, drk_ns, drk_nl, drkbuf, pstatus);
+  FTN_NAME(xnims_get_dark_a)(file, &i, drk_ns, drk_nl, drkbuf, pstatus);
 }
 
 
 /************************************************************************/
-FUNCTION znims_set_rad( iop, imode, g_off, gstart, gdel, ngpos, lrshsk, hrshsk,
- hrsbkg, utemps, wavs, sensv, cbase, cmult, ppshift, painfl, xnull, xlsat,
- xhsat, pstat)
+void znims_set_rad(int iop, int imode, int g_off, int gstart, int gdel,
+		   int ngpos, int *lrshsk, int *hrshsk, int *hrsbkg,
+		   int *utemps, int *wavs, int *sensv, int *cbase,
+		   int *cmult, int *ppshift, int *painfl, float xnull,
+		   float xlsat, float xhsat, int *pstat)
 /*
  * this is part of the "C-bridge" nonsense needed for porting code ...
  */
-int iop, imode, g_off, gstart, gdel, ngpos, *lrshsk, *hrshsk,
- *hrsbkg, *utemps, *wavs, *sensv, *cbase, *cmult, *ppshift, *painfl, *pstat;
+#if 0
+  int iop, imode, g_off, gstart, gdel, ngpos, *lrshsk, *hrshsk,
+  *hrsbkg, *utemps, *wavs, *sensv, *cbase, *cmult, *ppshift, *painfl, *pstat;
 float xnull, xlsat, xhsat;
+#endif
 {
-  FTN_NAME(nims_set_rad)( &iop, &imode, &g_off, &gstart, &gdel, &ngpos,
-   lrshsk, hrshsk, hrsbkg, utemps, wavs, sensv, cbase, cmult, ppshift, painfl,
-   &xnull, &xlsat, &xhsat, pstat);
+  FTN_NAME(nims_set_rad)(&iop, &imode, &g_off, &gstart, &gdel, &ngpos,
+			 lrshsk, hrshsk, hrsbkg, utemps, wavs, sensv, cbase, cmult, ppshift, painfl,
+			 &xnull, &xlsat, &xhsat, pstat);
 }
 
 
 /************************************************************************/
-FUNCTION zpproj( tdata, y, x, lat, lon, i, j, r, s, k)
+void zpproj(int *tdata, int *y, int *x, int *lat, int *lon, int i, int j, int *r, int *s, int *k)
 /*
  * "C-bridge" to avoid errors passing numerical values for i & j
  */
-int *tdata, *y, *x, *lat, *lon, i, j, *r, *s, *k;
+#if 0
+  int *tdata, *y, *x, *lat, *lon, i, j, *r, *s, *k;
+#endif
 {
-  FTN_NAME(npproj)( tdata, y, x, lat, lon, &i, &j, r, s, k);
+  FTN_NAME(npproj)(tdata, y, x, lat, lon, &i, &j, r, s, k);
 }
 
 /************************************************************************/
-FUNCTION zrotadkx( r1, i, j, r2)
+void zrotadkx(int *r1, int i, int j, int *r2)
 /*
  * "C-bridge" 
  */
-int i, j, *r1, *r2;
+#if 0
+  int i, j, *r1, *r2;
+#endif
 {
-  FTN_NAME(rotadkx)( r1, &i, &j, r2);
+  FTN_NAME(rotadkx)(r1, &i, &j, r2);
 }
 
 
 /************************************************************************/
-FUNCTION zload_spice95( et, spk, i)
+void zload_spice95(double et, int *spk, int *i)
 /*
  * "C-bridge" 
  */
-double et;
+#if 0
+  double et;
 int *spk, *i;
+#endif
 {
-  FTN_NAME(load_spice95)( &et, spk, i);
+  FTN_NAME(load_spice95)(&et, spk, i);
 }
 
 
 /*****************************************************************************/
 /* THIS CONTAINS THE PARTS OF
-/*     GLL_NIMS_BIN_PH2
-/* THAT ARE NEEDED BY NIMSCMM2 */
+   / *     GLL_NIMS_BIN_PH2
+   / * THAT ARE NEEDED BY NIMSCMM2 */
 
-/*** Externalized Function Prototypes ***/
-
-int get_nims_edr_hdr_2();
-int get_nims_edr_rec_2();
-
-/*** Static Function Prototypes ***/
-
-static void trin_nims_ert_typ();
-static void trin_nims_sclk_typ();
-static void trin_aacs_lrs_p_typ();
-static void trin_nims_lrs_p_typ();
-static void trin_decoder_snr_typ();
-static void trin_nims_data_typ();
-static void trin_nims_er_flg_typ();
-
-	/* Next three lines added to eliminate ANSI C compile errors (GMY) */
+/* Next three lines added to eliminate ANSI C compile errors (GMY) */
 static int init_trans_inbn();
 static int init_pixsizebn();
 
@@ -9575,271 +9615,275 @@ static int init_pixsizebn();
 /* header is composed of two records.  The translation is from NATIVE_HOST   */
 /* (VAX) into the NATIVE format.                                             */
 /*****************************************************************************/
-ROUTINE int get_nims_edr_hdr_2(unit, dest)
-int unit;		/* must be an open file with COND BINARY set */
+int get_nims_edr_hdr_2(int unit, nims2_hdr_typ *dest)
+#if 0
+  int unit;		/* must be an open file with COND BINARY set */
 nims2_hdr_typ *dest;
+#endif
 {
-   unsigned char buf[NIMS_EDR_RECORDS*NIMS_RECORD_LENGTH],
-		*p = buf;
-   int            recsize,i,vstat = SUCCESS,
-                  nlb,     /* number of lines of binary */
-                  nlb_pds, /* number of lines of pds */
-                  line;    /* line to get */
+  unsigned char buf[NIMS_EDR_RECORDS*NIMS_RECORD_LENGTH],
+    *p = buf;
+  int            recsize,i,vstat = SUCCESS,
+    nlb,     /* number of lines of binary */
+    nlb_pds, /* number of lines of pds */
+    line;    /* line to get */
 
 
-   init_trans_inbn(unit,byte_trans,half_trans,full_trans); 
-   vstat = init_pixsizebn(unit,&byte_size,&half_size,&full_size);
-   if (vstat != SUCCESS) return vstat;
+  init_trans_inbn(unit,byte_trans,half_trans,full_trans); 
+  vstat = init_pixsizebn(unit,&byte_size,&half_size,&full_size);
+  if (vstat != SUCCESS) return vstat;
 
-   vstat = zvget(unit,"RECSIZE",&recsize,"NLB",&nlb,NULL);
-   if (vstat != SUCCESS) return vstat;
-   if (recsize > NIMS_RECORD_LENGTH) {
-     zvmessage(" *** get_nims_edr_hdr_2: invalid record length ***"," ");
-     return (-1);
-   }
+  vstat = zvget(unit,"RECSIZE",&recsize,"NLB",&nlb,NULL);
+  if (vstat != SUCCESS) return vstat;
+  if (recsize > NIMS_RECORD_LENGTH) {
+    zifmessage(" *** get_nims_edr_hdr_2: invalid record length ***");
+    return (-1);
+  }
 
-   if (nlb>2) {  /*Skip over PDS labels of an EDR */
-      nlb_pds = 0;
-      (void) zlget(unit,"HISTORY","NLB_PDS",&nlb_pds,NULL);
-      line = nlb_pds + 1;
-   }
-   else line = 1;
+  if (nlb>2) {  /*Skip over PDS labels of an EDR */
+    nlb_pds = 0;
+    (void) zlget(unit,"HISTORY","NLB_PDS",&nlb_pds,NULL);
+    line = nlb_pds + 1;
+  }
+  else line = 1;
 
-   for ( i=0; i<NIMS_EDR_RECORDS; i++, line++) {
-     vstat = zvread(unit,buf + (recsize * i),"LINE",line,NULL);
-     if (vstat != SUCCESS) return vstat;
-   }
+  for (i=0; i<NIMS_EDR_RECORDS; i++, line++) {
+    vstat = zvread(unit,buf + (recsize * i),"LINE",line,NULL);
+    if (vstat != SUCCESS) return vstat;
+  }
 
-   /* Fill in the structure.  Bytes are translated (although that's	*/
-   /* probably unnecessary, it's a good idea), while characters are	*/
-   /* just moved.							*/
+  /* Fill in the structure.  Bytes are translated (although that's	*/
+  /* probably unnecessary, it's a good idea), while characters are	*/
+  /* just moved.							*/
 
-   /* translate first record */
+  /* translate first record */
 
-   trin_nims_sclk_typ(&p, &dest->hdr1.fsclk);
-   trin_nims_sclk_typ(&p, &dest->hdr1.lsclk);
-   trin_nims_ert_typ(&p, &dest->hdr1.fert);
-   trin_nims_ert_typ(&p, &dest->hdr1.lert);
-   zvtrans( byte_trans, p, dest->hdr1.data_present, 46);
-   p += 46 * byte_size;                      
-   zvtrans( byte_trans, p, dest->hdr1.data_recd, 46);
-   p += 46 * byte_size;                      
-   zvtrans( half_trans, p, dest->hdr1.threshval, 17);
-   p += 17 * half_size;                      
-   zvtrans( half_trans, p, &dest->hdr1.total_rec, 1);
-   p += half_size;                      
-   zvtrans( half_trans, p, &dest->hdr1.total_zero, 1);
-   p += half_size;                      
-   TFULL(p, &dest->hdr1.comp_bytes);
-   TFULL(p, &dest->hdr1.uncomp_bytes);
-   zvtrans( byte_trans, p, &dest->hdr1.comp_ratio, 6);
-   p += 6 * byte_size;                      
+  trin_nims_sclk_typ(&p, &dest->hdr1.fsclk);
+  trin_nims_sclk_typ(&p, &dest->hdr1.lsclk);
+  trin_nims_ert_typ(&p, &dest->hdr1.fert);
+  trin_nims_ert_typ(&p, &dest->hdr1.lert);
+  zvtrans(byte_trans, p, dest->hdr1.data_present, 46);
+  p += 46 * byte_size;                      
+  zvtrans(byte_trans, p, dest->hdr1.data_recd, 46);
+  p += 46 * byte_size;                      
+  zvtrans(half_trans, p, dest->hdr1.threshval, 17);
+  p += 17 * half_size;                      
+  zvtrans(half_trans, p, &dest->hdr1.total_rec, 1);
+  p += half_size;                      
+  zvtrans(half_trans, p, &dest->hdr1.total_zero, 1);
+  p += half_size;                      
+  TFULL(p, &dest->hdr1.comp_bytes);
+  TFULL(p, &dest->hdr1.uncomp_bytes);
+  zvtrans(byte_trans, p, &dest->hdr1.comp_ratio, 6);
+  p += 6 * byte_size;                      
 
-   zvtrans(byte_trans, p, dest->hdr1.reserved, 850);
-   p += 850 * byte_size;                      
+  zvtrans(byte_trans, p, dest->hdr1.reserved, 850);
+  p += 850 * byte_size;                      
 
-   /* now second record */
+  /* now second record */
 
-   /* Fill in the structure.  Bytes are translated (although that's	*/
-   /* probably unnecessary, it's a good idea), while characters are	*/
-   /* just moved.							*/
+  /* Fill in the structure.  Bytes are translated (although that's	*/
+  /* probably unnecessary, it's a good idea), while characters are	*/
+  /* just moved.							*/
 
-   /* translate second record */
+  /* translate second record */
 
-   TSTRN(p, dest->hdr2.oapel, 512);	/* do whole table in one call */
-   zvtrans(byte_trans, p, dest->hdr2.reserved, 512);
+  TSTRN(p, dest->hdr2.oapel, 512);	/* do whole table in one call */
+  zvtrans(byte_trans, p, dest->hdr2.reserved, 512);
 
-   return vstat;	
+  return vstat;	
 } /* end get_nims_edr_hdr */
 
 /*****************************************************************************/
 /* This routine reads and translates one NIMS EDR/UDR data record            */
 /* The translation is from NATIVE_HOST (VAX) into the NATIVE format.         */
 /*****************************************************************************/
-ROUTINE int get_nims_edr_rec_2(unit, line, dest)
-int unit,		/* must be an open file with COND BINARY set */
-    line;               /* line to retrieve binary prefix from */
-
+int get_nims_edr_rec_2(int unit, int line, nims2_rec_typ *dest)
+#if 0
+  int unit,		/* must be an open file with COND BINARY set */
+  line;               /* line to retrieve binary prefix from */
 nims2_rec_typ *dest;
+#endif
 {  
-   unsigned char buf[NIMS_RECORD_LENGTH], 
-		*p = buf;
-   int            nlb, /* number of lines of binary */
-                  nbb, /* number of bits of binary */
-                  recsize,i,
-                  vstat = SUCCESS;   /* return vstat initialized */
-   UWORD          bits_half; 
-   unsigned char byte = 0;
+  unsigned char buf[NIMS_RECORD_LENGTH], 
+    *p = buf;
+  int nlb, /* number of lines of binary */
+    recsize,
+    vstat = SUCCESS;   /* return vstat initialized */
+  unsigned char byte = 0;
 
-   init_trans_inbn(unit,byte_trans,half_trans,full_trans); 
-   vstat = init_pixsizebn(unit,&byte_size,&half_size,&full_size);
-   if (vstat != SUCCESS) return (-1);
+  init_trans_inbn(unit,byte_trans,half_trans,full_trans); 
+  vstat = init_pixsizebn(unit,&byte_size,&half_size,&full_size);
+  if (vstat != SUCCESS) return (-1);
 
-   vstat = zvget(unit,"RECSIZE",&recsize,"NLB",&nlb,NULL);
-   if (vstat != SUCCESS) return vstat;
-   if (recsize != NIMS_RECORD_LENGTH) {
-     zvmessage(" *** write_nims_edr_hdr_2: invalid record length ***"," ");
-     return (-1);
-   }
+  vstat = zvget(unit,"RECSIZE",&recsize,"NLB",&nlb,NULL);
+  if (vstat != SUCCESS) return vstat;
+  if (recsize != NIMS_RECORD_LENGTH) {
+    zifmessage(" *** write_nims_edr_hdr_2: invalid record length ***");
+    return (-1);
+  }
 
-   vstat = zvread(unit,buf,"LINE",line+nlb,"NSAMPS",recsize,NULL);
-   if (vstat != SUCCESS) return vstat;
+  vstat = zvread(unit,buf,"LINE",line+nlb,"NSAMPS",recsize,NULL);
+  if (vstat != SUCCESS) return vstat;
 
-   /* Fill in the structure.  Bytes are translated (although that's	*/
-   /* probably unnecessary, it's a good idea), while characters are	*/
-   /* just moved.							*/
+  /* Fill in the structure.  Bytes are translated (although that's	*/
+  /* probably unnecessary, it's a good idea), while characters are	*/
+  /* just moved.							*/
 
-   trin_nims_sclk_typ(&p, &dest->pfix.sclk);
-   trin_nims_ert_typ(&p, &dest->pfix.ert1);
-   trin_nims_ert_typ(&p, &dest->pfix.ert2);
-   trin_nims_ert_typ(&p, &dest->pfix.ert3);
-   TBYTE(p, &dest->pfix.apid);
-   TFULL(p, &dest->pfix.pkt_seq[0]);
-   TFULL(p, &dest->pfix.pkt_seq[1]);
-   TFULL(p, &dest->pfix.pkt_seq[2]);
-   TBYTE(p, &dest->pfix.insmode);
-   TBYTE(p, &dest->pfix.data_complete);
-   TBYTE(p, &dest->pfix.compression_stat);
-   THALF(p, &dest->pfix.subpkt_size);
-   THALF(p, &dest->pfix.data_size);
-   TBYTE(p, &dest->pfix.mirror_dir);
-   TBYTE(p, &dest->pfix.grating_position);
-   trin_nims_er_flg_typ(&p, &dest->pfix.error_flags);
-/*   TBYTE(p, &dest->pfix.spare1); */
-   TFULL(p, &dest->pfix.det_mask);
-   TFULL(p, &dest->pfix.mirror_mask);
-   TBYTE(p, &dest->pfix.rrpmf);
+  trin_nims_sclk_typ(&p, &dest->pfix.sclk);
+  trin_nims_ert_typ(&p, &dest->pfix.ert1);
+  trin_nims_ert_typ(&p, &dest->pfix.ert2);
+  trin_nims_ert_typ(&p, &dest->pfix.ert3);
+  TBYTE(p, &dest->pfix.apid);
+  TFULL(p, &dest->pfix.pkt_seq[0]);
+  TFULL(p, &dest->pfix.pkt_seq[1]);
+  TFULL(p, &dest->pfix.pkt_seq[2]);
+  TBYTE(p, &dest->pfix.insmode);
+  TBYTE(p, &dest->pfix.data_complete);
+  TBYTE(p, &dest->pfix.compression_stat);
+  THALF(p, &dest->pfix.subpkt_size);
+  THALF(p, &dest->pfix.data_size);
+  TBYTE(p, &dest->pfix.mirror_dir);
+  TBYTE(p, &dest->pfix.grating_position);
+  trin_nims_er_flg_typ(&p, &dest->pfix.error_flags);
+  /*   TBYTE(p, &dest->pfix.spare1); */
+  TFULL(p, &dest->pfix.det_mask);
+  TFULL(p, &dest->pfix.mirror_mask);
+  TBYTE(p, &dest->pfix.rrpmf);
 
-   TBYTE(p, &byte);
-   dest->pfix.sclk_flag1.sclk_suspect = byte&0x01; 
-   dest->pfix.sclk_flag1.ert_val = (int) (byte&0x02) >> 1; 
-   dest->pfix.sclk_flag1.scid_force = (int) (byte&0x04) >> 2; 
-   dest->pfix.sclk_flag1.data_val = (int) (byte&0x08) >> 3; 
-   dest->pfix.sclk_flag1.replay_flag = (int) (byte&0x10) >> 4; 
-   dest->pfix.sclk_flag1.test_mode = (int) (byte&0x20) >> 5; 
-   dest->pfix.sclk_flag1.data_mode = (int) (byte&0x40) >> 6; 
-   dest->pfix.sclk_flag1.pb_mode = (int) (byte&0x80) >> 7; 
-   byte = 0;
-   TBYTE(p, &byte);
-   dest->pfix.sclk_flag2.pkt_flag = (int) (byte&0xC0) >> 6; 
-   dest->pfix.sclk_flag2.sclk_flag = (int) (byte&0x38) >> 3; 
-   dest->pfix.sclk_flag2.sclk_calc_suspect = (int) (byte&0x04) >> 2; 
-   dest->pfix.sclk_flag2.sclk_unexpected = (int) (byte&0x02) >> 1; 
-   dest->pfix.sclk_flag2.sclk_corr = (byte&0x01); 
-   byte = 0;
-   TBYTE(p, &byte);
-   dest->pfix.sclk_flag3.flush_flag = (int) (byte&0xF0) >> 4;
-   dest->pfix.sclk_flag3.scet_val = (int) (byte&0x08) >> 3; 
-   dest->pfix.sclk_flag3.scet_int = (int) (byte&0x04) >> 2; 
-   dest->pfix.sclk_flag3.less_than_max = (int) (byte&0x02) >> 1; 
+  TBYTE(p, &byte);
+  dest->pfix.sclk_flag1.sclk_suspect = byte&0x01; 
+  dest->pfix.sclk_flag1.ert_val = (int) (byte&0x02) >> 1; 
+  dest->pfix.sclk_flag1.scid_force = (int) (byte&0x04) >> 2; 
+  dest->pfix.sclk_flag1.data_val = (int) (byte&0x08) >> 3; 
+  dest->pfix.sclk_flag1.replay_flag = (int) (byte&0x10) >> 4; 
+  dest->pfix.sclk_flag1.test_mode = (int) (byte&0x20) >> 5; 
+  dest->pfix.sclk_flag1.data_mode = (int) (byte&0x40) >> 6; 
+  dest->pfix.sclk_flag1.pb_mode = (int) (byte&0x80) >> 7; 
+  byte = 0;
+  TBYTE(p, &byte);
+  dest->pfix.sclk_flag2.pkt_flag = (int) (byte&0xC0) >> 6; 
+  dest->pfix.sclk_flag2.sclk_flag = (int) (byte&0x38) >> 3; 
+  dest->pfix.sclk_flag2.sclk_calc_suspect = (int) (byte&0x04) >> 2; 
+  dest->pfix.sclk_flag2.sclk_unexpected = (int) (byte&0x02) >> 1; 
+  dest->pfix.sclk_flag2.sclk_corr = (byte&0x01); 
+  byte = 0;
+  TBYTE(p, &byte);
+  dest->pfix.sclk_flag3.flush_flag = (int) (byte&0xF0) >> 4;
+  dest->pfix.sclk_flag3.scet_val = (int) (byte&0x08) >> 3; 
+  dest->pfix.sclk_flag3.scet_int = (int) (byte&0x04) >> 2; 
+  dest->pfix.sclk_flag3.less_than_max = (int) (byte&0x02) >> 1; 
 
-   zvtrans( byte_trans, p, dest->pfix.reserved, 276);
-   p += 276 * byte_size;
+  zvtrans(byte_trans, p, dest->pfix.reserved, 276);
+  p += 276 * byte_size;
 
-   /* these are *image* data, so have already been translated by zvread! */
-   zmve( 2, 340, p, dest->sensor, 1, 1);
+  /* these are *image* data, so have already been translated by zvread! */
+  zmve(2, 340, p, dest->sensor, 1, 1);
 
-   return vstat;
+  return vstat;
 } /* end get_nims_edr_rec_2 */
 
 
 /*****************************************************************************/
 /* Translation routines for specific datatypes: translate any input host fmt */
 /*****************************************************************************/
-ROUTINE static void trin_nims_ert_typ(from, to)
-unsigned char **from;
+void trin_nims_ert_typ(unsigned char **from, nims2_ert_typ *to)
+#if 0
+  unsigned char **from;
 nims2_ert_typ *to;
+#endif
 {
-   THALF(*from, &to->year);
-   TBYTE(*from, &to->month);
-   TBYTE(*from, &to->day);
-   TBYTE(*from, &to->hour);
-   TBYTE(*from, &to->minute);
-   TBYTE(*from, &to->second);
-   THALF(*from, &to->millisecond);
+  THALF(*from, &to->year);
+  TBYTE(*from, &to->month);
+  TBYTE(*from, &to->day);
+  TBYTE(*from, &to->hour);
+  TBYTE(*from, &to->minute);
+  TBYTE(*from, &to->second);
+  THALF(*from, &to->millisecond);
 }
 
-ROUTINE static void trin_nims_sclk_typ(from, to)
-unsigned char **from;
+void trin_nims_sclk_typ(unsigned char **from, nims2_sclk_typ *to)
+#if 0
+  unsigned char **from;
 nims2_sclk_typ *to;
+#endif
 {
-   TFULL(*from, &to->rim);
-   TBYTE(*from, &to->mod91);
-   TBYTE(*from, &to->rti);
+  TFULL(*from, &to->rim);
+  TBYTE(*from, &to->mod91);
+  TBYTE(*from, &to->rti);
 }
 
-ROUTINE static void trin_nims_er_flg_typ(from, to)
-unsigned char **from;
+void trin_nims_er_flg_typ(unsigned char **from, nims_er_flg_typ *to)
+#if 0
+  unsigned char **from;
 nims_er_flg_typ *to;
+#endif
 {
-   to->overflow = **from & 0x01;
-   to->underflow = (**from>>1) & 0x01;
-   to->fill = (**from>>2) & 0x1F;
-   *from+=1;
+  to->overflow = **from & 0x01;
+  to->underflow = (**from>>1) & 0x01;
+  to->fill = (**from>>2) & 0x1F;
+  *from+=1;
 }
 
 /****************************************************************************/
 /* This routine sets up translation buffers for input, converting from the  */
 /* host representation into the machine's native representation.            */
 /****************************************************************************/
-ROUTINE static int init_trans_inbn(unit,byte_tr,half_tr,full_tr)
-int unit,
-    *byte_tr,
-    *half_tr,
-    *full_tr;
+int init_trans_inbn(int unit, int *byte_tr, int *half_tr, int *full_tr)
+#if 0
+  int unit,
+  *byte_tr,
+  *half_tr,
+  *full_tr;
+#endif
 {
-   int vstat;
+  int vstat;
 
-   vstat = zvtrans_inb(byte_tr, "BYTE", "BYTE", unit);
-   if (vstat != SUCCESS) return vstat;
-   vstat = zvtrans_inb(half_tr, "HALF", "HALF", unit);
-   if (vstat != SUCCESS) return vstat;
-   vstat = zvtrans_inb(full_tr, "FULL", "FULL", unit);
-   return vstat;
+  vstat = zvtrans_inb(byte_tr, "BYTE", "BYTE", unit);
+  if (vstat != SUCCESS) return vstat;
+  vstat = zvtrans_inb(half_tr, "HALF", "HALF", unit);
+  if (vstat != SUCCESS) return vstat;
+  vstat = zvtrans_inb(full_tr, "FULL", "FULL", unit);
+  return vstat;
 } /* end init_trans_inbn */
 
 /****************************************************************************/
 /* This routine returns the size of a binary label value (in bytes) from a  */
 /* file.                                                                    */ 
 /****************************************************************************/
-ROUTINE static int init_pixsizebn(unit,byte_sz,half_sz,full_sz)
-int unit,
-    *byte_sz,
-    *half_sz,
-    *full_sz;
+int init_pixsizebn(int unit, int *byte_sz, int *half_sz, int *full_sz)
+#if 0
+  int unit,
+  *byte_sz,
+  *half_sz,
+  *full_sz;
+#endif
 {
-   int vstat;
-   char aline[80];
+  int vstat;
  
-   vstat = zvpixsizeb(byte_sz, "BYTE", unit);
-   if (vstat != SUCCESS) return vstat;
-   if (byte_sz == 0) {
-     (void) sprintf(aline,
-         "init_pixsizebn> error in byte pixel size determination, status %d",
-         byte_sz);
-     zvmessage(aline,0);
-     return (-1);
-   }
+  vstat = zvpixsizeb(byte_sz, "BYTE", unit);
+  if (vstat != SUCCESS) return vstat;
+  if (*byte_sz == 0) {
+    zvnprintf(80, "init_pixsizebn> error in byte pixel size determination, status %d",
+	      vstat);
+    return (-1);
+  }
 
-   vstat = zvpixsizeb(half_sz, "HALF", unit);
-   if (vstat != SUCCESS) return vstat;
-   if (half_sz == 0) {
-     (void) sprintf(aline,
-         "init_pixsizebn> error in halfword pixel size determination, status %d",
-         half_sz);
-     zvmessage(aline,0);
-     return (-1);
-   }
+  vstat = zvpixsizeb(half_sz, "HALF", unit);
+  if (vstat != SUCCESS) return vstat;
+  if (*half_sz == 0) {
+    zvnprintf(80, "init_pixsizebn> error in halfword pixel size determination, status %d",
+	      vstat);
+    return (-1);
+  }
 
-   vstat = zvpixsizeb(full_sz, "FULL", unit);
-   if (vstat != SUCCESS) return vstat;
-   if (full_sz == 0) {
-     (void) sprintf(aline,
-    "init_pixsizebn> error in fullword pixel size determination, status %d",full_sz);
-     zvmessage(aline,0);
-     return (-1);
-   }
-   return vstat;
+  vstat = zvpixsizeb(full_sz, "FULL", unit);
+  if (vstat != SUCCESS) return vstat;
+  if (*full_sz == 0) {
+    zvnprintf(80, "init_pixsizebn> error in fullword pixel size determination, status %d",vstat);
+    return (-1);
+  }
+  return vstat;
 } /* end init_pixsizebn */
 /****************************************************************************/
 /*  end module                                                              */

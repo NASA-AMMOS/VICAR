@@ -3,6 +3,8 @@
 #include "parblk.inc"
 #include "pgminc.inc"
 #include "defines.h"            /* for MAX_TASKS, MAX_LABEL_KEY_SIZE */
+#include "zifmessage.h"
+#include "taeextproto.h"
 #include <string.h>
 #include <ctype.h>
  
@@ -23,7 +25,7 @@ void main44(void) {
    int instance;
    int element;
  
-   zifmessage("getlab version 2018-01-03");
+   zifmessage("GETLAB version 2019-06-13");
 
    /* retrive user supplied parameters */ 
    get_parameters(key,location,type,task,&instance,&element);
@@ -42,8 +44,6 @@ void main44(void) {
    and convert string values into upper case characters.  */
 void get_parameters (char *key, char *loc, char *type, char *task,
                      int *instance, int *element) {
- 
-   int status;
    int count;
 
    zvp("ELEMENT", element, &count);
@@ -103,8 +103,8 @@ void get_keyword_value (char *key, char *location, char *type, char *task,
                         int instance, char *out, int element) {
 
    int   instances[MAX_TASKS], count, j;
-   int   unit, length, form;
-   int   status;
+   int   unit, length = 0;
+   int   status = SUCCESS;
    char  tasks[MAX_TASKS][KEY_SIZE+1];
  
    zvunit(&unit,"INP",1, NULL);
@@ -129,6 +129,7 @@ void get_keyword_value (char *key, char *location, char *type, char *task,
       if (!strcmp(task,"LATEST")) {
       /* retrive value from the latest history label */
 	 char tmpbuf[MAX_LABEL_VALUE_SIZE + 1];
+	 tmpbuf[MAX_LABEL_VALUE_SIZE] = '\0';
          for (j = count-1;  j >= 0; j--) {
             status = zlget(unit, "HISTORY", key, tmpbuf, "ERR_ACT","",
                            "HIST",tasks[j], "INSTANCE",instances[j],
@@ -138,7 +139,12 @@ void get_keyword_value (char *key, char *location, char *type, char *task,
             else if (status == CANNOT_FIND_KEY) continue;
             else zvsignal(unit, status, 1);     /* abort */
          }
-	 strcpy(out, tmpbuf);
+
+	 if (!strcmp(type,"INT") || !strcmp(type,"REAL")) { /* 32-bit int or float */
+	   memcpy(out, tmpbuf, 4); 
+	 } else {
+	   strcpy(out, tmpbuf);	/* string */
+	 }
       }
       else if (!strcmp(task,"EARLIEST")) {
       /* retrive value from the earliest history label */
@@ -172,15 +178,18 @@ void write_parblock (char *type, char *output) {
 
    struct PARBLK par_block;
    static char name[9] = "ITM_NAME";
-   double doubleout;
+   int intout = 0;
+   double doubleout = 0.0;
  
+   if (!strcmp(type,"INT"))
+      intout = *(int *)output;
    if (!strcmp(type,"REAL"))
       doubleout = *(float *)output;
- 
+
    q_init(&par_block, P_BYTES, P_ABORT);
  
    if (!strcmp(type,"STRING")) q_string(&par_block,name,1,&output,    P_ADD);
-   if (!strcmp(type,"INT"))    q_intg  (&par_block,name,1, output,    P_ADD);
+   if (!strcmp(type,"INT"))    q_intg  (&par_block,name,1,&intout,    P_ADD);
    if (!strcmp(type,"REAL"))   q_real  (&par_block,name,1,&doubleout, P_ADD);
  
    zvq_out(&par_block);

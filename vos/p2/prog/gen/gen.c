@@ -15,34 +15,82 @@
 /************************************************************************/
 /* Program GEN								*/
 /************************************************************************/
-/*
-/* 24 SEP 02   ...RGD...  Changed parameters to double to avoid		*/
-/*                        precision loss problems			*/
-/* 13 FEB 90   ...RGD...  Rewritten in C with Unix compatibility;	*/
-/*			  removed all sublib references, added COMPlex.	*/
-/* 23 JAN 85   ...HBD...  Handle REAL8 properly				*/
-/*  84-7-18    ...LWK...  fixed bugs when sinc=0 & format=REAL		*/
-/*  8 JUN 84   ...HBD...  Converted to Vicar2, rewrote GEN		*/
-/* 17 AUG 83   ...HBD...  ALLOW FLOATING POINT NUMBERS ON VAX VERSION	*/
-/*   82-12     ...LWK...  convert to Vax/Vicar1				*/
-/* 29 MAR 82   ...GMY...  INCREASE MAX OUTPUT SAMPLES TO 60K		*/
-/* 12 APR 81   ...GMY...  ALLOW FLOATING POINT NUMBERS			*/
-
 /* This version of GEN does not distinguish between integer and real	*/
 /* number SINC, LINC, BINC, IVAL, and MODULO values. All values are now	*/
 /* processed as real numbers. ...HBD					*/
+/************************************************************************/
+
+void gen_byte(int unit,
+	      int ns,
+	      int nl,
+	      int nb,
+	      double sinc,
+	      double linc,
+	      double binc,
+	      double ival,
+	      double modulo);
+
+void gen_half(int unit,
+	      int ns,
+	      int nl,
+	      int nb,
+	      double sinc,
+	      double linc,
+	      double binc,
+	      double ival, 
+	      double modulo);
+
+void gen_full(int unit,
+	      int ns,
+	      int nl,
+	      int nb,
+	      double sinc,
+	      double linc,
+	      double binc,
+	      double ival,
+	      double modulo);
+
+void gen_real(int unit,
+	      int ns,
+	      int nl,
+	      int nb,
+	      double sinc,
+	      double linc,
+	      double binc,
+	      double ival,
+	      double modulo);
+
+void gen_doub(int unit,
+	      int ns,
+	      int nl,
+	      int nb,
+	      double sinc,
+	      double linc,
+	      double binc,
+	      double ival,
+	      double modulo);
+
+void gen_comp(int unit,
+	      int ns,
+	      int nl,
+	      int nb,
+	      double sinc[2],
+	      double linc[2],
+	      double binc[2],
+	      double ival[2],
+	      double modulo[2]);
 
 void main44(void)
 {
     int unit;
-    int data_type;
+    int data_type = TYPE_BYTE;
     int ns, nl, nb;
     double modulo[2], sinc[2], linc[2], binc[2], ival[2];
     int cnt, def, nitems, temp;
     double ftemp;
     char format[15], org[15], msgbuf[80];
 
-    zvmessage("GEN Version 6", "");
+    zvmessage("GEN Version 2019-05-28", "");
 
     zveaction("sa","");
 
@@ -287,11 +335,15 @@ void main44(void)
 /* BYTE data								*/
 /************************************************************************/
 
-gen_byte(unit, ns, nl, nb, sinc, linc, binc, ival, modulo)
-int unit;
-int ns, nl, nb;
-double sinc, linc, binc;
-double ival, modulo;
+void gen_byte(int unit,
+	 int ns,
+	 int nl,
+	 int nb,
+	 double sinc,
+	 double linc,
+	 double binc,
+	 double ival,
+	 double modulo)
 {
 
     GEN_LOOP(unsigned char, (unsigned char)(int) );
@@ -301,11 +353,15 @@ double ival, modulo;
 /* HALF data								*/
 /************************************************************************/
 
-gen_half(unit, ns, nl, nb, sinc, linc, binc, ival, modulo)
-int unit;
-int ns, nl, nb;
-double sinc, linc, binc;
-double ival, modulo;
+void gen_half(int unit,
+	 int ns,
+	 int nl,
+	 int nb,
+	 double sinc,
+	 double linc,
+	 double binc,
+	 double ival, 
+	 double modulo)
 {
 
     GEN_LOOP(short int, (short int)(int) );
@@ -315,11 +371,15 @@ double ival, modulo;
 /* FULL data								*/
 /************************************************************************/
 
-gen_full(unit, ns, nl, nb, sinc, linc, binc, ival, modulo)
-int unit;
-int ns, nl, nb;
-double sinc, linc, binc;
-double ival, modulo;
+void gen_full(int unit,
+	 int ns,
+	 int nl,
+	 int nb,
+	 double sinc,
+	 double linc,
+	 double binc,
+	 double ival,
+	 double modulo)
 {
 
     GEN_LOOP(int, (int) );
@@ -329,11 +389,15 @@ double ival, modulo;
 /* REAL data								*/
 /************************************************************************/
 
-gen_real(unit, ns, nl, nb, sinc, linc, binc, ival, modulo)
-int unit;
-int ns, nl, nb;
-double sinc, linc, binc;
-double ival, modulo;
+void gen_real(int unit,
+	 int ns,
+	 int nl,
+	 int nb,
+	 double sinc,
+	 double linc,
+	 double binc,
+	 double ival,
+	 double modulo)
 {
 
     GEN_LOOP(float, (float) );
@@ -343,11 +407,15 @@ double ival, modulo;
 /* DOUB data								*/
 /************************************************************************/
 
-gen_doub(unit, ns, nl, nb, sinc, linc, binc, ival, modulo)
-int unit;
-int ns, nl, nb;
-double sinc, linc, binc;
-double ival, modulo;
+void gen_doub(int unit,
+	 int ns,
+	 int nl,
+	 int nb,
+	 double sinc,
+	 double linc,
+	 double binc,
+	 double ival,
+	 double modulo)
 {
 
     GEN_LOOP(double, (double) );
@@ -357,11 +425,15 @@ double ival, modulo;
 /* COMP data								*/
 /************************************************************************/
 
-gen_comp(unit, ns, nl, nb, sinc, linc, binc, ival, modulo)
-int unit;
-int ns, nl, nb;
-double sinc[2], linc[2], binc[2];
-double ival[2], modulo[2];
+void gen_comp(int unit,
+	 int ns,
+	 int nl,
+	 int nb,
+	 double sinc[2],
+	 double linc[2],
+	 double binc[2],
+	 double ival[2],
+	 double modulo[2])
 {
     int s, l, b;
     float sval[2], lval[2], bval[2];

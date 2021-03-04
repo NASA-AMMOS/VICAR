@@ -1,0 +1,131 @@
+===This section checks if the program correctly detects source
+==================================================================
+===Test Galileo Project with an existing source
+ GETLL @GLLFile COORDIN=(-70,83) 'tols COORDOUT=CoordOut CKNAME=NAIF
+Beginning VICAR task GETLL
+GETLL version 2019-07-23
+GetKernelDbFname::SPICEKER Not Defined
+CKName NAIF not available, ???? used.
+
+(-70.000000, 83.000000) {LAT,LON} = (82.896393, 527.492371) {LINE,SAMP}
+
+  Let $echo="no"
+===CoordOut is (8.289639282227e+01,5.274923706055e+02)
+===Test Galileo Project with a non-existing source
+ GETLL @GLLFile COORDIN=(-70,83) 'tols COORDOUT=CoordOut CKNAME=SMC
+Beginning VICAR task GETLL
+GETLL version 2019-07-23
+GetKernelDbFname::SPICEKER Not Defined
+CKName SMC not available, ???? used.
+
+(-70.000000, 83.000000) {LAT,LON} = (82.896393, 527.492371) {LINE,SAMP}
+
+  Let $echo="no"
+===CoordOut is (8.289639282227e+01,5.274923706055e+02)
+===This section checks if the program SEES the picture alright
+==================================================================
+===Test Galileo project, all points should be OFF planet
+ GETLL @GLLFile (65,537) 'toll
+Beginning VICAR task GETLL
+GETLL version 2019-07-23
+GetKernelDbFname::SPICEKER Not Defined
+CKName DAVI not available, ???? used.
+ This LINE,SAMP is off the planet
+
+(65.000000, 537.000000) {LINE,SAMP} = (-22918.310547, 23278.310547) {LAT,LON}
+
+ GETLL @GLLFile (57,500) 'toll
+Beginning VICAR task GETLL
+GETLL version 2019-07-23
+GetKernelDbFname::SPICEKER Not Defined
+CKName DAVI not available, ???? used.
+ This LINE,SAMP is off the planet
+
+(57.000000, 500.000000) {LINE,SAMP} = (-22918.310547, 23278.310547) {LAT,LON}
+
+ GETLL @GLLFile (79,429) 'toll
+Beginning VICAR task GETLL
+GETLL version 2019-07-23
+GetKernelDbFname::SPICEKER Not Defined
+CKName DAVI not available, ???? used.
+ This LINE,SAMP is off the planet
+
+(79.000000, 429.000000) {LINE,SAMP} = (-22918.310547, 23278.310547) {LAT,LON}
+
+ GETLL @GLLFile (173,294) 'toll
+Beginning VICAR task GETLL
+GETLL version 2019-07-23
+GetKernelDbFname::SPICEKER Not Defined
+CKName DAVI not available, ???? used.
+ This LINE,SAMP is off the planet
+
+(173.000000, 294.000000) {LINE,SAMP} = (-22918.310547, 23278.310547) {LAT,LON}
+
+ GETLL @GLLFile (416,220) 'toll
+Beginning VICAR task GETLL
+GETLL version 2019-07-23
+GetKernelDbFname::SPICEKER Not Defined
+CKName DAVI not available, ???? used.
+
+(416.000000, 220.000000) {LINE,SAMP} = (-14.276008, 278.732880) {LAT,LON}
+
+ GETLL @GLLFile (688,477) 'toll
+Beginning VICAR task GETLL
+GETLL version 2019-07-23
+GetKernelDbFname::SPICEKER Not Defined
+CKName DAVI not available, ???? used.
+
+(688.000000, 477.000000) {LINE,SAMP} = (58.969227, 297.427856) {LAT,LON}
+
+  Let $echo="no"
+===Test Galileo project, all points should be ON planet
+ GETLL @GLLFile (78,533) 'toll
+Beginning VICAR task GETLL
+GETLL version 2019-07-23
+GetKernelDbFname::SPICEKER Not Defined
+CKName DAVI not available, ???? used.
+ This LINE,SAMP is off the planet
+
+(78.000000, 533.000000) {LINE,SAMP} = (-22918.310547, 23278.310547) {LAT,LON}
+
+ GETLL @GLLFile (118,376) 'toll
+Beginning VICAR task GETLL
+GETLL version 2019-07-23
+GetKernelDbFname::SPICEKER Not Defined
+CKName DAVI not available, ???? used.
+
+(118.000000, 376.000000) {LINE,SAMP} = (-80.515160, 258.883606) {LAT,LON}
+
+ GETLL @GLLFile (299,235) 'toll
+Beginning VICAR task GETLL
+GETLL version 2019-07-23
+GetKernelDbFname::SPICEKER Not Defined
+CKName DAVI not available, ???? used.
+
+(299.000000, 235.000000) {LINE,SAMP} = (-36.311462, 281.256836) {LAT,LON}
+
+ GETLL @GLLFile (456,234) 'toll
+Beginning VICAR task GETLL
+GETLL version 2019-07-23
+GetKernelDbFname::SPICEKER Not Defined
+CKName DAVI not available, ???? used.
+
+(456.000000, 234.000000) {LINE,SAMP} = (-6.777119, 284.865234) {LAT,LON}
+
+ GETLL @GLLFile (634,362) 'toll
+Beginning VICAR task GETLL
+GETLL version 2019-07-23
+GetKernelDbFname::SPICEKER Not Defined
+CKName DAVI not available, ???? used.
+
+(634.000000, 362.000000) {LINE,SAMP} = (33.927635, 294.222412) {LAT,LON}
+
+ GETLL @GLLFile (678,483) 'toll
+Beginning VICAR task GETLL
+GETLL version 2019-07-23
+GetKernelDbFname::SPICEKER Not Defined
+CKName DAVI not available, ???? used.
+
+(678.000000, 483.000000) {LINE,SAMP} = (55.071121, 310.910858) {LAT,LON}
+
+  Let $echo="no"

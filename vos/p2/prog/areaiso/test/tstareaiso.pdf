@@ -1,6 +1,8 @@
 procedure
 refgbl $echo
 body
+enable-log
+
 let $echo="yes"
 !
 ! for phobos
@@ -8,6 +10,14 @@ areaiso out= +
  (area_lat.img,area_lon.img,area_map.img,angle_map.img,del_area_lat.img, +
  del_area_lon.img) +
  planet=phobos 'north
+
+list area_lat.img     'nousrtim 
+list area_lon.img     'nousrtim 
+list area_map.img     'nousrtim 
+list angle_map.img    'nousrtim 
+list del_area_lat.img 'nousrtim 
+list del_area_lon.img 'nousrtim 
+
 !concat inp=(area_lat.img,area_lon.img,area_map.img,angle_map.img, +
 ! del_area_lat.img,del_area_lon.img) out=auth_mos_cheng.img ns=146
 !size inp=auth_mos_cheng.img out=a.img zoom=4
@@ -43,4 +53,6 @@ areaiso out= +
 !xvd a.img
 !barne_r inp=a.img miplbox=21 primary=42057
 !
+
+disable-log
 end-proc

@@ -18,6 +18,8 @@
 
 #include "xtiffio.h"
 #include "ibisfile.h"
+#include "zmabend.h"
+#include "zifmessage.h"
 
 #include <time.h>
 #include <string.h>
@@ -187,7 +189,7 @@ void main44()
   int count,def;
   char command[12];
     
-  zifmessage("*** vtiff3o version 2017-08-15 ***");
+  zifmessage("VTIFF3O version 2019-09-05");
     
   printstat = zvptst("PRINT");
 
@@ -1562,8 +1564,8 @@ void AddGeoTIFF(TIFF *out, GTIF *gtif)
 void AddFiletoTIFF(char *parm, TIFF *tif, char *mode)      /* "tiled" or "Strips" */
 {
   int  unit[4];
-  int i,nl,ns,nb,status,uinb;
-  int bit8;
+  int i,nl,ns,nb=0,uinb;
+  int bit8 = 0;
   char name[201];
   int ninp;
 
@@ -1574,7 +1576,7 @@ void AddFiletoTIFF(char *parm, TIFF *tif, char *mode)      /* "tiled" or "Strips
     {
       zvpone(parm, name, i+1, 200);
       zvunit(unit+i, parm, i+1,"U_NAME",name, NULL);
-      status = zvopen(unit[i],"OP","READ", NULL);
+      zvopen(unit[i],"OP","READ", NULL);
     }
 
   switch (ninp) {
@@ -2044,7 +2046,7 @@ int WriteTIFFData(int * inunit, TIFF *out, int nl, int ns, int nb, int ninp)
 
   if (TIFFIsTiled(out))
     {
-      unsigned char *nulltiles;
+      unsigned char *nulltiles=NULL;
       int tilenum=0,numnulls=0;
 		
       if (zvptst("JPL")) numnulls = GetNULLS(&nulltiles);

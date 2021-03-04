@@ -1,0 +1,186 @@
+
+ First a BYTE image is GEN'ed and sized using SIZE and BICUBIC.
+ The results are compared using F2 and HIST.
+
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+Beginning VICAR task size
+*** SIZE version 2017-11-21 ***
+      INPUT AREA=(    1,    1,   10,   10)
+     OUTPUT SIZE=     50 X     50
+ PICTURE SIZE SCALED BY      5*NL,      5*NS
+ SIZE task completed
+Beginning VICAR task bicubic
+BICUBIC version 2019-08-22
+***** Output image size:  50 lines by 50 samples.
+***** 10% Done...
+***** 20% Done...
+***** 30% Done...
+***** 40% Done...
+***** 50% Done...
+***** 60% Done...
+***** 70% Done...
+***** 80% Done...
+***** 90% Done...
+***** 100% Done...
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 using hash table lookup
+FUNCTION EVALUATED 100 TIMES
+
+ The result of this HIST should be that all values are 128.
+
+Beginning VICAR task hist
+*** HIST version 2017-08-08 ***
+
+
+AVERAGE GRAY LEVEL=128.0000       STANDARD DEVIATION=0.000000       NUMBER ELEMENTS=      2500
+MIN. DN=       128
+MAX. DN=       128
+
+
+ Next a HALFWORD image is GEN'ed and tested in the same manner.
+ This time a sub-area is also tested.
+
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+ TEST NOTE: The following command currently (6/28/94) fails:
+                  size a b area=(2 2 9 9) zoom=5 scale=1 
+ As a Work around the above is replaced with: 
+                  size a b (2 2 9 9) zoom=5 scale=1
+Beginning VICAR task size
+*** SIZE version 2017-11-21 ***
+      INPUT AREA=(    1,    1,   10,   10)
+     OUTPUT SIZE=      9 X      9
+ PICTURE SIZE SCALED BY      5*NL,      5*NS
+ SIZE task completed
+Beginning VICAR task bicubic
+BICUBIC version 2019-08-22
+***** Sub-area adjusted...
+***** Using sub-area (2, 2, 9, 9).
+***** Output image size:  45 lines by 45 samples.
+***** 8% Done...
+***** 17% Done...
+***** 26% Done...
+***** 35% Done...
+***** 44% Done...
+***** 53% Done...
+***** 62% Done...
+***** 71% Done...
+***** 80% Done...
+***** 88% Done...
+***** 97% Done...
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+LINES TRUNCATED
+SAMPLES TRUNCATED
+F2 using hash table lookup
+FUNCTION EVALUATED 18 TIMES
+
+ The result of this HIST should be that all values are 0.
+
+Beginning VICAR task hist
+*** HIST version 2017-08-08 ***
+
+
+AVERAGE GRAY LEVEL=-200.000       STANDARD DEVIATION=0.000000       NUMBER ELEMENTS=        81
+MIN. DN=      -200
+MAX. DN=      -200
+
+
+ Next a FULLWORD image is GEN'ed and and tested in the same manner.
+ Another sub-area is tested.
+
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+ TEST NOTE: The following command currently (6/28/94) fails:
+               size a b area=(3,4,7,5) lzoom=5 szoom=7 scale=1
+ As a Work around the above is replaced with: 
+               size a b (3,4,7,5) lzoom=5 szoom=7 scale=1
+Beginning VICAR task size
+*** SIZE version 2017-11-21 ***
+      INPUT AREA=(    1,    1,   10,   10)
+     OUTPUT SIZE=      7 X      5
+ PICTURE SIZE SCALED BY      5*NL,      7*NS
+ SIZE task completed
+Beginning VICAR task bicubic
+BICUBIC version 2019-08-22
+***** Using sub-area (3, 4, 7, 5).
+***** Output image size:  35 lines by 35 samples.
+***** 8% Done...
+***** 17% Done...
+***** 25% Done...
+***** 34% Done...
+***** 42% Done...
+***** 51% Done...
+***** 60% Done...
+***** 68% Done...
+***** 77% Done...
+***** 85% Done...
+***** 94% Done...
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+LINES TRUNCATED
+SAMPLES TRUNCATED
+F2 calculating every pixel
+FUNCTION EVALUATED 35 TIMES
+
+ The result of this HIST should be that all values are 0.
+
+ TEST NOTE: Currently (6/28/94) the released version of HIST
+      causes an arithmetic fault, as a WORK AROUND a modified
+      version of HIST has been compiled into the local directory
+
+Beginning VICAR task hist
+*** HIST version 2017-08-08 ***
+
+
+AVERAGE GRAY LEVEL=1.288E+9       STANDARD DEVIATION=1.052E+9       NUMBER ELEMENTS=        35
+MIN. DN=     -5685
+MAX. DN=2147479552
+
+
+ Next a REAL image is GEN'ed and tested in the same manner.
+
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+Beginning VICAR task size
+*** SIZE version 2017-11-21 ***
+      INPUT AREA=(    1,    1,   10,   10)
+     OUTPUT SIZE=     50 X     50
+ PICTURE SIZE SCALED BY      5*NL,      5*NS
+ SIZE task completed
+Beginning VICAR task bicubic
+BICUBIC version 2019-08-22
+***** Output image size:  50 lines by 50 samples.
+***** 10% Done...
+***** 20% Done...
+***** 30% Done...
+***** 40% Done...
+***** 50% Done...
+***** 60% Done...
+***** 70% Done...
+***** 80% Done...
+***** 90% Done...
+***** 100% Done...
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 2500 TIMES
+
+ The result of this HIST should be that all values are near 0.
+ (An order of magnitude near E-7 should be fine.)
+
+Beginning VICAR task hist
+*** HIST version 2017-08-08 ***
+
+
+AVERAGE GRAY LEVEL=-6.87E-7       STANDARD DEVIATION=3.345E-7       NUMBER ELEMENTS=      2500
+MIN. DN=-1.67E-6
+MAX. DN=1.006E-7
+
+ DOUBLE images cannot be tested in this manner.

@@ -120,19 +120,21 @@ warn users if the maximum string length is exceeded.
   Cognizant Programmer:  R. G. Deen 1992
 
   Revisions: 
-    1990-08-16 J. F. McNeill - Addition of BINARY keyword for -CREATE
-    1991-02    R. G. Deen - Converted to Unix-compatible executive
-    1991-12-21 J. F. McNeill - BINARY header and prefixes handled in all cases.
-               Header and prefix sizes added to LABEL-LIST info.
-    1992-05    R. G. Deen - Added support for Property labels, and added host
-               types and fixed binary labels in LABEL-CREATE.
-    1998-06-17 R. R. Patel - Updated add option to correctly add a label with
-               double precision value (AR-9034). Also updated
-               remove to correctly remove binary header.
-    1999-03    R. G. Deen - Added property instances and LABEL-CONCAT subcommand.
-    2002-08    A. C. Chen - Added max string length limitation in the PDF help file.
-    2010       R. G. Deen - Added UPDATE keyword to ADD, and ANSI-fied prototypes.
-    2017-03-29 W. L. Bunch - Added NOUSRTIM param to help automated regression testing.
+   1990-08-16 J. F. McNeill - Addition of BINARY keyword for -CREATE
+   1991-02    R. G. Deen - Converted to Unix-compatible executive
+   1991-12-21 J. F. McNeill - BINARY header and prefixes handled in all cases.
+              Header and prefix sizes added to LABEL-LIST info.
+   1992-05    R. G. Deen - Added support for Property labels, and added host
+              types and fixed binary labels in LABEL-CREATE.
+   1998-06-17 R. R. Patel - Updated add option to correctly add a label with
+              double precision value (AR-9034). Also updated
+              remove to correctly remove binary header.
+   1999-03    R. G. Deen - Added property instances and LABEL-CONCAT subcommand.
+   2002-08    A. C. Chen - Added max string length limitation in the PDF help file.
+   2010       R. G. Deen - Added UPDATE keyword to ADD, and ANSI-fied prototypes.
+   2017-03-29 W. L. Bunch - Added NOUSRTIM param to help automated regression testing.
+   2019-05-28 W. L. Bunch - Cleaned up type conversion compiler warnings.
+   2019-09-06 W. L. Bunch - IDS-7922 - Initialized some variables.
 
 .LEVEL1
 !

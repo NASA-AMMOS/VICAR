@@ -215,8 +215,9 @@ PROGRAM HISTORY:
 Written by:  Gary Yagi, June 4, 1999
 Cognizant programmer:  Gary Yagi
 Revisions: 
-  2003-08-14   NTT  Enabled despike for 3D images
-  2005-10-11   lwk  converted operations to float, added POSONLY keyword
+  2003-08-14 NTT Enabled despike for 3D images
+  2005-10-11 lwk converted operations to float, added POSONLY keyword
+  2020-06-16 wlb Fixed sorting bug
 
 .LEVEL1
 .VARI INP

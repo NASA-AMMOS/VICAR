@@ -73,8 +73,11 @@ typedef struct
 	LblApiTypeItem_typ		ElevationFovUnit;
 	LblApiIdItem_typ		BadPixelReplacementId;
 	LblApiIntItem_typ		DetectorFirstLine;
+	LblApiIntItem_typ		DetectorFirstLineSample;
 	LblApiIntItem_typ		DetectorLines;
+	LblApiIntItem_typ		DetectorLineSamples;
 	LblApiRealItem_typ		DetectorToImageRotation;
+	LblApiNameItem_typ		DetectorToImageFlip;
 	LblApiNameItem_typ		DownsampleMethod;
 	LblApiIntItem_typ		ExposureCount;
 	LblApiRealItem_typ		ExposureDuration;
@@ -113,7 +116,7 @@ typedef struct
 	LblApiIntItem_typ		PixelAveragingWidth;
 	LblApiNameItem_typ		SampleBitMethod;
 	LblApiIdItem_typ		SampleBitModeId;
-	LblApiStringItem_typ	ShutterCorrectionMode;
+	LblApiStringItem_typ	        ShutterCorrectionMode;
 	LblApiFlagItem_typ		ShutterEffectCorrectionFlag;
 	LblApiIdItem_typ		ShutterModeId;
 	LblApiFlagItem_typ		SunFindFlag;
@@ -127,12 +130,36 @@ typedef struct
 	LblApiRealVectorItem_typ	SunViewDirection;
 	LblApiIntItem_typ		InstrumentTemperatureStatus[LBL_INST_STATE_TEMPS];
 	LblApiIntItem_typ		InstrumentFocusPosition;
+        LblApiIntItem_typ               FocusPositionCount; // MSAM/MARV
+        LblApiIntItem_typ               InstrumentZoomPosition;
 	LblApiNameItem_typ		BayerMode;	// deprecated...
 	LblApiNameItem_typ		CfaType;
 	LblApiNameItem_typ		CfaVenue;
 	LblApiNameItem_typ		BayerMethod;
 	LblApiRealItem_typ		OnboardResponsivity[3];
 	LblApiRealItem_typ		OnboardColorMatrix[9];
+	LblApiIntItem_typ		ExposureCoadd;
+	LblApiIntItem_typ		ExposureReadoutCount;
+  	LblApiIntItem_typ               DacOffsetNumber;
+        LblApiIntItem_typ               DacGainNumber;
+        LblApiStringItem_typ            InstrumentDuration[8];
+        LblApiStringItem_typ            InstrumentCurrent[16];
+        LblApiNameItem_typ              InstrumentCurrentName[16];
+	LblApiIntItem_typ		DeviceComponentState[2];
+	LblApiNameItem_typ		DeviceComponentStateName[2];
+	LblApiIntItem_typ		FilterPositionCount;
+	LblApiIntItem_typ		ZoomPositionCount;
+	LblApiRealItem_typ		FocalLength;
+	LblApiTypeItem_typ		FocalLengthUnit;
+	LblApiIntItem_typ		SpecialLine;
+	LblApiStringItem_typ	        SpecialName;
+	LblApiIntItem_typ		SpecialSample;
+        LblApiIntItem_typ    HdrFrameCount;
+        LblApiIntItem_typ               HdrExposureTimeDelta[7];
+        LblApiTypeItem_typ              HdrExposureTimeDeltaUnit[7];
+    LblApiIntItem_typ       DCOffset;
+	LblApiIntItem_typ		OriginalSampleBits;
+    
 	} LblInstrumentState_typ;
 
 /***  Function prototypes  ***/

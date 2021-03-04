@@ -9,7 +9,8 @@ parm maxLon     type=int default=180
 parm fg         type=int default=1
 parm bg         type=int default=0
 parm pixperdeg  type=int default=1200
-parm margin     type=keyword count=0:1 default=-- valid=margin
+parm margin     type=keyword count=0:1 valid=margin default=-- 
+parm nofill     type=keyword count=0:1 valid=nofill default=--
 end-proc
 
 .title
@@ -39,14 +40,16 @@ TAE COMMAND LINE FORMAT
 OPERATION
 
   The input file must be in Esri Shapefile format, including only
-  SHPT_ARC and SHPT_POLYGON types, which are both treated as polygons.
-  The input file shape vector points are assumed to have x, y values
-  respectively in the ranges -180 to 180 and -90 to 90. The world
-  extent is divided into 1x1 degree cells. Each cell that is within
-  the AOI specified by the min/max Lon/Lat parms and has shape data
-  will be rasterized and have a square VICAR image generated, with the
-  NL, NS = the pixperdeg parm. The 1x1 degree cell is filled with the
-  bg parm value. Then polygons are filled using the fg parm value.
+  SHPT_ARC and SHPT_POLYGON types.  The input file shape vector points
+  are assumed to have x, y values respectively in the ranges -180 to
+  180 and -90 to 90. The world extent is divided into 1x1 degree
+  cells. Each cell that is within the AOI specified by the min/max
+  Lon/Lat parms and has shape data will be rasterized and have a
+  square VICAR image generated, with the NL, NS = the pixperdeg
+  parm. The 1x1 degree cell is filled with the bg parm value. Then the
+  arcs/polygons are drawn and filled using the fg parm value. If the
+  nofill keyword is provided, then the objects are only drawn, not
+  filled.
 
   The output files are named with the lon/lat of their lower left
   corners and any output name and suffix provided respectively as OUT
@@ -68,6 +71,9 @@ COGNIZANT PROGRAMMER:  W. L. Bunch
 REVISIONS: 
   2008-01-03 WLB - Switched to USES_ANSI_C AND LIB_CARTO; misc cleanup.
   2017-06-30 WLB - Added NL, NS, margin parms; migrated to MIPL.
+  2018-12-04 WLB - Fixed north pole bug.
+  2019-07-10 WLB - IDS-7965: added nofill keyword.
+  2019-07-18 WLB - IDS-7923: replaced sprintf with snprintf.
 
 .level1
 .var inp
@@ -92,5 +98,7 @@ Background color
 NL and NS for generated 1x1 deg image files
 .var margin
 Add one pixel margin to bottom and right edges
+.var nofill
+Draw object edges only, do not fill
 .level2
 .end

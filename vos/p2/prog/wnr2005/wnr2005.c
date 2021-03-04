@@ -1,8 +1,9 @@
-#include "vicmain_c.h"
-#include "applic.h"
 #include <math.h>
 #include <string.h>
-
+#include "vicmain_c.h"
+#include "applic.h"
+#include "zifmessage.h"
+#include "zmabend.h"
 #include "cartoMemUtils.h"
 
 #define MAXSIZE            4096
@@ -23,25 +24,25 @@ C  Sep-07  ...ALZ...  INVERTED NSR ARRAY INPUT TO SNR, CONSISTENT W
 
 void main44(void)
 {
-   int iun[4],oun,nids,status,pcount,lin;
+   int iun[4],oun,nids,pcount,lin;
    float sn,rnorm=0,psfnor=0,outnor=0,mtf,factor=0;
-   float *im,*otf,*restor,*ratio,*snrbuf;
+   float *im,*otf,*restor,*ratio,*snrbuf=NULL;
    char fmt[9];
    
-   int i,ir,ic,nl=0,ns=0,nl1,ns1,snrimgcase;
+   int i,ir,ic,nl=0,ns=0,nl1,ns1,snrimgcase=0;
    float tmp1,tmp2,denom,ratior,ratioc;
    double dnumer,ddenom;
    
-   zifmessage("wnr2005 version 2016-06-09");
+   zifmessage("WNR2005 version 2019-09-18");
    
    /* open & check inputs */
    
    snrimgcase = zvptst("snrimg");
-   status = zvpcnt("inp",&nids);
+   zvpcnt("inp",&nids);
    for (i=0;i<nids;i++)
       {
-      status = zvunit(&iun[i],"INP",i+1, NULL);
-      status = zvopen(iun[i],"OPEN_ACT","SA","IO_ACT","SA", NULL);
+      zvunit(&iun[i],"INP",i+1, NULL);
+      zvopen(iun[i],"OPEN_ACT","SA","IO_ACT","SA", NULL);
       zvget(iun[i],"FORMAT",fmt,"NL",&nl1,"NS",&ns1, NULL);
       if (strcmp(fmt,"COMPLEX")!=0 && strcmp(fmt,"COMP")!=0 &&
           !(snrimgcase && i==nids-1))
@@ -63,8 +64,8 @@ void main44(void)
 
    /* open outputs */
    
-   status = zvunit(&oun,"OUT",1, NULL);
-   status=zvopen(oun,"U_NL",nl,"U_NS",ns,
+   zvunit(&oun,"OUT",1, NULL);
+   zvopen(oun,"U_NL",nl,"U_NS",ns,
 	"OP","WRITE","OPEN_ACT","SA","IO_ACT","SA", NULL);
 	
    /* get parameters */
@@ -81,9 +82,9 @@ void main44(void)
    
    for (lin=0;lin<nl;lin++)
       {
-      status = zvread(iun[0],im,"LINE",lin+1, NULL);
-      status = zvread(iun[1],otf,"LINE",lin+1, NULL);
-      if (snrimgcase) status = zvread(iun[nids-1],snrbuf,"LINE",lin+1, NULL);
+      zvread(iun[0],im,"LINE",lin+1, NULL);
+      zvread(iun[1],otf,"LINE",lin+1, NULL);
+      if (snrimgcase) zvread(iun[nids-1],snrbuf,"LINE",lin+1, NULL);
       
       if (lin==0)
          {
@@ -175,7 +176,7 @@ void main44(void)
       
       if (nids-snrimgcase==3)
          {
-         status = zvread(iun[2],otf,"LINE",lin+1, NULL);
+         zvread(iun[2],otf,"LINE",lin+1, NULL);
          if (lin==0) outnor = otf[0];
          for (i=0;i<ns;i++)
             {

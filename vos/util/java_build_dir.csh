@@ -79,6 +79,21 @@
 #     Note that the same files can go here *and* in a jar, if desired.
 #     This follows the same format as extra_jar_files.
 #
+# template_files =
+#     A list of filename patterns that will be put into $V2TEMPLATES (mostly
+#     for Velocity templates).  Note that the same files can go here *and*
+#     in a jar, if desired.  This follows the same format as extra_jar_files.
+#
+# xsl_files =
+#     A list of filename patterns that will be put into $V2XSL (mostly
+#     for XSLT templates).  Note that the same files can go here *and*
+#     in a jar, if desired.  This follows the same format as extra_jar_files.
+
+# script_files =
+#     A list of filename patterns that will be put into $V2JBIN and then
+#     chmod +x'd.  This is intended for executable scripts.  This follows the
+#     same format as extra_jar_files.
+
 # no_java = 0
 #     1 means there are no Java files to compile in this directory.  An
 #     example might be an image subdirectory (in which case you'd want to
@@ -229,6 +244,9 @@ set packaged = 1
 set jar_file = mipl.jar
 set extra_jar_files =
 set non_jar_files =
+set template_files =
+set xsl_files =
+set script_files =
 set no_java = 0
 set manifest_file =
 set jni_classes =
@@ -255,6 +273,12 @@ if ( -e 0build.jmake ) then
       set extra_jar_files = `v2param extra_jar_files`
    if (`v2param -test non_jar_files` != 0) \
       set non_jar_files = `v2param non_jar_files`
+   if (`v2param -test template_files` != 0) \
+      set template_files = `v2param template_files`
+   if (`v2param -test xsl_files` != 0) \
+      set xsl_files = `v2param xsl_files`
+   if (`v2param -test script_files` != 0) \
+      set script_files = `v2param script_files`
    if (`v2param -test no_java` != 0) \
       set no_java = `v2param no_java`
    if (`v2param -test manifest_file` != 0) \
@@ -510,6 +534,43 @@ if ("$non_jar_files" != "") then
 
    echo cp $non_jar_files $V2HTML/$1 | fold -80
    cp $non_jar_files $V2HTML/$1
+endif
+
+# Copy template files to the right spot
+
+if ("$template_files" != "") then
+   if ( ! -e $V2TEMPLATES ) then
+      mkdir -p $V2TEMPLATES
+   endif
+
+   echo cp $template_files $V2TEMPLATES | fold -80
+   cp $template_files $V2TEMPLATES
+endif
+
+# Copy XSL files to the right spot
+
+if ("$xsl_files" != "") then
+   if ( ! -e $V2XSL ) then
+      mkdir -p $V2XSL
+   endif
+
+   echo cp $xsl_files $V2XSL | fold -80
+   cp $xsl_files $V2XSL
+endif
+
+# Copy script files to the right spot
+
+if ("$script_files" != "") then
+   if ( ! -e $V2JBIN ) then
+      mkdir -p $V2JBIN
+   endif
+
+   echo cp $script_files $V2JBIN | fold -80
+   cp $script_files $V2JBIN
+   pushd $V2JBIN
+   echo chmod +x $script_files
+   chmod +x $script_files
+   popd
 endif
 
 # Generate JNI includes

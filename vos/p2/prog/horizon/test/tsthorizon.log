@@ -1,9 +1,7 @@
-./tsthorizon.pdf
 horizon inp=/project/test_work/testdata/mer/1N491020993ILFCNY9P0706L0M1.IMG out=1N491020993ILFCNY9P0706L0M1.CSV gm_img=1N491020993I+
 LFCNY9P0706L0M1.GM gd_img=1N491020993ILFCNY9P0706L0M1.GD ql_img=1N491020993ILFCNY9P0706L0M1.QL
 Beginning VICAR task horizon
-HORIZON version 1.0.3
-
+HORIZON version 2019-07-23
 Detecting horizon for image: /project/test_work/testdata/mer/1N491020993ILFCNY9P0706L0M1.IMG
 
 *** Filtering the INP image with 7 * 7 MEDIAN kernel ***
@@ -184,8 +182,7 @@ Border absolute difference average: 2.892857
 horizon inp=/project/test_work/testdata/mer/1N491021154ILFCNY9P0706L0M1.IMG out=1N491021154ILFCNY9P0706L0M1.CSV gm_img=1N491021154I+
 LFCNY9P0706L0M1.GM gd_img=1N491021154ILFCNY9P0706L0M1.GD ql_img=1N491021154ILFCNY9P0706L0M1.QL
 Beginning VICAR task horizon
-HORIZON version 1.0.3
-
+HORIZON version 2019-07-23
 Detecting horizon for image: /project/test_work/testdata/mer/1N491021154ILFCNY9P0706L0M1.IMG
 
 *** Filtering the INP image with 7 * 7 MEDIAN kernel ***
@@ -366,8 +363,7 @@ Border absolute difference average: 2.503968
 horizon inp=/project/test_work/testdata/mer/1N491020376ILFCNY9P0706L0M1.IMG out=1N491020376ILFCNY9P0706L0M1.CSV smooth_img=1N491020+
 376ILFCNY9P0706L0M1.SMOOTH filter_size=3 filter_type=min
 Beginning VICAR task horizon
-HORIZON version 1.0.3
-
+HORIZON version 2019-07-23
 Detecting horizon for image: /project/test_work/testdata/mer/1N491020376ILFCNY9P0706L0M1.IMG
 
 *** Filtering the INP image with 3 * 3 MIN kernel ***
@@ -548,8 +544,7 @@ Border absolute difference average: 2.533597
 horizon inp=/project/test_work/testdata/mer/1N491020376ILFCNY9P0706L0M1.IMG out=$wh_1_csv smooth_img=1N491020376ILFCNY9P0706L0M1.SM+
 OOTH filter_size=5 filter_type=median
 Beginning VICAR task horizon
-HORIZON version 1.0.3
-
+HORIZON version 2019-07-23
 Detecting horizon for image: /project/test_work/testdata/mer/1N491020376ILFCNY9P0706L0M1.IMG
 
 *** Filtering the INP image with 5 * 5 MEDIAN kernel ***
@@ -842,8 +837,7 @@ Border absolute difference average: 1.456693
 horizon inp=/project/test_work/testdata/mer/1N491020376ILFCNY9P0706L0M1.IMG out=1N491020376ILFCNY9P0706L0M1.CSV smooth_img=1N491020+
 376ILFCNY9P0706L0M1.SMOOTH filter_size=7 filter_type=max
 Beginning VICAR task horizon
-HORIZON version 1.0.3
-
+HORIZON version 2019-07-23
 Detecting horizon for image: /project/test_work/testdata/mer/1N491020376ILFCNY9P0706L0M1.IMG
 
 *** Filtering the INP image with 7 * 7 MAX kernel ***
@@ -1024,8 +1018,7 @@ Border absolute difference average: 1.154762
 horizon inp=/project/test_work/testdata/mer/1N491020519ILFCNY9P0706L0M1.IMG out=1N491020519ILFCNY9P0706L0M1.CSV smooth_img=1N491020+
 519ILFCNY9P0706L0M1.SMOOTH filter_size=3 filter_type=min
 Beginning VICAR task horizon
-HORIZON version 1.0.3
-
+HORIZON version 2019-07-23
 Detecting horizon for image: /project/test_work/testdata/mer/1N491020519ILFCNY9P0706L0M1.IMG
 
 *** Filtering the INP image with 3 * 3 MIN kernel ***
@@ -1262,8 +1255,7 @@ Border absolute difference average: 32.571429
 horizon inp=/project/test_work/testdata/mer/1N491020519ILFCNY9P0706L0M1.IMG out=1N491020519ILFCNY9P0706L0M1.CSV smooth_img=1N491020+
 519ILFCNY9P0706L0M1.SMOOTH filter_size=5 filter_type=median
 Beginning VICAR task horizon
-HORIZON version 1.0.3
-
+HORIZON version 2019-07-23
 Detecting horizon for image: /project/test_work/testdata/mer/1N491020519ILFCNY9P0706L0M1.IMG
 
 *** Filtering the INP image with 5 * 5 MEDIAN kernel ***
@@ -1576,8 +1568,7 @@ Border absolute difference average: 0.196850
 horizon inp=/project/test_work/testdata/mer/1N491020519ILFCNY9P0706L0M1.IMG out=1N491020519ILFCNY9P0706L0M1.CSV smooth_img=1N491020+
 519ILFCNY9P0706L0M1.SMOOTH filter_size=7 filter_type=max
 Beginning VICAR task horizon
-HORIZON version 1.0.3
-
+HORIZON version 2019-07-23
 Detecting horizon for image: /project/test_work/testdata/mer/1N491020519ILFCNY9P0706L0M1.IMG
 
 *** Filtering the INP image with 7 * 7 MAX kernel ***
@@ -1758,8 +1749,7 @@ Border absolute difference average: 1.365079
 horizon inp=/project/test_work/testdata/mer/1N491020834ILFCNY9P0706L0M1.IMG out=1N491020834ILFCNY9P0706L0M1.CSV ql_img=1N491020834I+
 LFCNY9P0706L0M1.QL filter_size=3 wh_iter_max=0 sh_thresh_min=400 sh_thresh_max=500 sh_sif=10 bp_factor=2
 Beginning VICAR task horizon
-HORIZON version 1.0.3
-
+HORIZON version 2019-07-23
 Detecting horizon for image: /project/test_work/testdata/mer/1N491020834ILFCNY9P0706L0M1.IMG
 
 *** Filtering the INP image with 3 * 3 MEDIAN kernel ***
@@ -1805,7 +1795,6 @@ Weak horizon search increment factor: 10
 
 Weak horizon detection and outlier refinement feature is turned off.
 
-
 *** Removing outliers and image columns without sky region ***
 Border average accept threshold: 30.000000
 Border average reject threshold: 10.000000
@@ -1823,8 +1812,7 @@ Border absolute difference average: 0.469428
 horizon inp=/project/test_work/testdata/mer/1N491020376ILFCNY9P0706L0M1.IMG out=1N491020376ILFCNY9P0706L0M1.CSV ql_img=1N491020376I+
 LFCNY9P0706L0M1.QL filter_size=9 wh_iter_max=0 sh_thresh_min=10 sh_thresh_max=100 sh_sif=10
 Beginning VICAR task horizon
-HORIZON version 1.0.3
-
+HORIZON version 2019-07-23
 Detecting horizon for image: /project/test_work/testdata/mer/1N491020376ILFCNY9P0706L0M1.IMG
 
 *** Filtering the INP image with 9 * 9 MEDIAN kernel ***
@@ -1868,7 +1856,6 @@ Weak horizon thresh max: 200
 Weak horizon search increment factor: 10
 
 Weak horizon detection and outlier refinement feature is turned off.
-
 
 *** Removing outliers and image columns without sky region ***
 Border average accept threshold: 30.000000
@@ -2115,8 +2102,7 @@ Border absolute difference average: 0.460317
 horizon inp=/project/test_work/testdata/mer/1N491020519ILFCNY9P0706L0M1.IMG out=1N491020519ILFCNY9P0706L0M1.CSV ql_img=1N491020519I+
 LFCNY9P0706L0M1.QL filter_size=7 wh_iter_max=0 sh_thresh_min=90 sh_thresh_max=130 sh_sif=5
 Beginning VICAR task horizon
-HORIZON version 1.0.3
-
+HORIZON version 2019-07-23
 Detecting horizon for image: /project/test_work/testdata/mer/1N491020519ILFCNY9P0706L0M1.IMG
 
 *** Filtering the INP image with 7 * 7 MEDIAN kernel ***
@@ -2159,7 +2145,6 @@ Weak horizon thresh max: 200
 Weak horizon search increment factor: 10
 
 Weak horizon detection and outlier refinement feature is turned off.
-
 
 *** Removing outliers and image columns without sky region ***
 Border average accept threshold: 30.000000
@@ -2347,8 +2332,7 @@ Border absolute difference average: 1.710317
 horizon inp=/project/test_work/testdata/mer/1N491020993ILFCNY9P0706L0M1.IMG out=1N491020993ILFCNY9P0706L0M1.CSV ql_img=1N491020993I+
 LFCNY9P0706L0M1.QL gm_img=1N491020993ILFCNY9P0706L0M1.GM gd_img=1N491020993ILFCNY9P0706L0M1.GD
 Beginning VICAR task horizon
-HORIZON version 1.0.3
-
+HORIZON version 2019-07-23
 Detecting horizon for image: /project/test_work/testdata/mer/1N491020993ILFCNY9P0706L0M1.IMG
 
 *** Filtering the INP image with 7 * 7 MEDIAN kernel ***
@@ -2529,8 +2513,7 @@ Border absolute difference average: 2.892857
 horizon inp=/project/test_work/testdata/mer/1N491021154ILFCNY9P0706L0M1.IMG out=1N491021154ILFCNY9P0706L0M1.CSV ql_img=1N491021154I+
 LFCNY9P0706L0M1.QL gm_img=1N491021154ILFCNY9P0706L0M1.GM gd_img=1N491021154ILFCNY9P0706L0M1.GD
 Beginning VICAR task horizon
-HORIZON version 1.0.3
-
+HORIZON version 2019-07-23
 Detecting horizon for image: /project/test_work/testdata/mer/1N491021154ILFCNY9P0706L0M1.IMG
 
 *** Filtering the INP image with 7 * 7 MEDIAN kernel ***
@@ -2711,8 +2694,7 @@ Border absolute difference average: 2.503968
 horizon inp=/project/test_work/testdata/mer/1P491287702ILFCNY9P2584L2M1.IMG out=1P491287702ILFCNY9P2584L2M1.CSV ql_img=1P491287702I+
 LFCNY9P2584L2M1.QL gm_img=1P491287702ILFCNY9P2584L2M1.GM gd_img=1P491287702ILFCNY9P2584L2M1.GD
 Beginning VICAR task horizon
-HORIZON version 1.0.3
-
+HORIZON version 2019-07-23
 Detecting horizon for image: /project/test_work/testdata/mer/1P491287702ILFCNY9P2584L2M1.IMG
 
 *** Filtering the INP image with 7 * 7 MEDIAN kernel ***
@@ -2890,5 +2872,4 @@ Border absolute difference average: 0.992063
 Outliers
 Border average: 1.806324
 Border absolute difference average: 0.793651
-End-proc
 disable-log

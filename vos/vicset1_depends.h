@@ -358,6 +358,7 @@
 #define JEXT_SON_SIMPLE
 #define JEXT_LUCENE
 #define JEXT_RESTLET
+#define JEXT_OWASP
 #endif
 
 #ifdef PROD_JEEVES
@@ -577,9 +578,11 @@
 *Added for Vicar Open Source 3/21/16
 #define JEXT_PDS4_TOOLS
 *Added for Vicar Open Source 3/22/16
-#define JEXT_PDS_GENERATE_TOOL
+*#define JEXT_PDS_GENERATE_TOOL
 *Added for Vicar Open Source 3/23/16
 #define JEXT_PROD_TOOLS
+* Replacing JEXT_PDS_GENERATE_TOOL 6/8/20
+#define JEXT_PDS_MI_LABEL
 #endif
 
 #ifdef PROD_JadeDisplay
@@ -616,7 +619,7 @@
 #define JEXT_COMMONS_DIGESTER
 #define JEXT_COMMONS_BEANUTILS
 #define JEXT_COMMONS_LANG
-#define JEXT_PDS_GENERATE_TOOL
+*#define JEXT_PDS_GENERATE_TOOL
 #define JEXT_PDS4_TOOLS
 #endif
 

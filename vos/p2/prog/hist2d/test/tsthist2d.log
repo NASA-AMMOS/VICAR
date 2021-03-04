@@ -1,0 +1,800 @@
+write "This is the test file for program HIST2D"
+This is the test file for program HIST2D
+write "CREATE NIMS CUBE"
+CREATE NIMS CUBE
+write " WARNING:  nimscmm2 requires the old Spice definitions, so do the"
+ WARNING:  nimscmm2 requires the old Spice definitions, so do the
+write " following before entering VICAR:"
+ following before entering VICAR:
+write " "
+ 
+write " > source nims_spicedefs"
+ > source nims_spicedefs
+write " First, generate a DN (uncalibrated, halfword) cube: "
+ First, generate a DN (uncalibrated, halfword) cube: 
+NIMSCMM2 edr=/project/test_work/testdata/gll/g7jnfeap4101a.3  +
+        cube=G7JNFEAP4101A.cub 'NOCAL  +
+        wtfil=wtfil   +
+        aacsfil=/project/test_work/testdata/gll/g7jnfeap4101a.aacs  +
+        calfil=/project/test_work/testdata/gll/nims98a_gs4_ref_g1_01.tab  +
+	spkernel=/project/spice/ops/sun-solr/s980326b.bsp  +
+        ikernel=/project/test_work/testdata/gll/nims_ikernel_mab.dat  +
+	solfile=/project/test_work/testdata/gll/nims_solar.dat  +
+	dbmfile=/project/test_work/testdata/gll/boom_obscuration.nim  +
+        prodnote="testbed EDR with simulated pointing"   +
+        obsnote="testbed EDR with simulated pointing"   +
+        target=GANYMEDE phase=GANYMEDE_7_ENCOUNTER  +
+        proj=pov slew_tol=-1.  +
+	outsiz=(9,5)
+Beginning VICAR task NIMSCMM2
+NIMSCMM2 version 2019-06-14
+ ** Body is not a spheroid, planetographic is undefined
+ 
+ No radiance calibration done, raw DN is output
+ Output image will be in perspective (POV) projection
+ Warning: user Target does not match Target in ObsTab!
+ User Target = GANYMEDE,  ObsTab Target = JUPITER
+ Gain state = 2
+ 
+ Instrument mode is SHORT MAP
+ 
+ Extracting pointing
+ mean slew rate = 0.02 * Nyquist, computed from 442 pairs of mfs
+ 443 mfs will be used
+ REFSCLK = 3897036.39, MP=9
+ Scale at sub-s/c point [km/pix] is: 663.187
+ 305 pixels were back of planet in set_pov
+ output image size: NL= 9, NS=5
+ OAL,OAS set to (   5.55,    1.90)
+ 
+ Beginning data extraction
+ processing range 3897034.00 to 3897038.78 
+  10% of data extracted
+  20% of data extracted
+  30% of data extracted
+  40% of data extracted
+  50% of data extracted
+  60% of data extracted
+  70% of data extracted
+  80% of data extracted
+  90% of data extracted
+ 6360 combs skipped or dummy in EDR 
+ 40 combs rejected for bad compression status
+ 7478 combs were off the planet
+ 11 combs fell outside the image
+ min/max lat/lon determined in write_latlon
+ 
+ Focal Length (mm) = 800.0, Camera Scale (pix/mm) = 2.5
+ Optical Axis Line/Sample = 5.548, 1.903
+ Spacecraft-Target Range (km) = 1329005.9, North Angle = 38.05
+ Subspacecraft Lat/Long (deg) = -0.31, 315.15
+ Subspacecraft Line/Samp = 4.362, 2.763
+ Min/max latitudes: -57.49, 59.06
+ Min/max longitudes: -102.44, 26.77
+ Min/max incidence angles: 57.80, 147.44
+ Min/max emission angles: 3.13, 61.11
+ Min/max phase angles: 95.48, 95.61
+WRITE "LIST SYSTEM LABEL OF CUBE"
+LIST SYSTEM LABEL OF CUBE
+label-list G7JNFEAP4101A.cub 'system 'nousrtim
+Beginning VICAR task label
+LABEL version 2019-05-28
+************************************************************
+ 
+        ************  File G7JNFEAP4101A.cub ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in HALF format from a X86-64-LIN host
+                68 bands
+                9 lines per band
+                5 samples per line
+                0 lines of binary header
+                0 bytes of binary prefix per line
+ 
+************************************************************
+write "CREATE 2-D HISTOGRAM FROM CUBE"
+CREATE 2-D HISTOGRAM FROM CUBE
+hist2d G7JNFEAP4101A.cub hist1 out_nl=256 out_ns=68 'DN
+Beginning VICAR task hist2d
+HIST2D version 2019-06-13
+label-list hist1 'nousrtim
+Beginning VICAR task label
+LABEL version 2019-05-28
+************************************************************
+ 
+        ************  File hist1 ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in BYTE format from a X86-64-LIN host
+                1 bands
+                256 lines per band
+                68 samples per line
+                0 lines of binary header
+                0 bytes of binary prefix per line
+---- Task: HIST2D -- User:  --  ----
+INP_FILE='G7JNFEAP4101A.cub'
+LIMITS=(0, 32767)
+INC_LSB=(1, 1, 1)
+WINDOW=(1, 1, 1, 9, 5, 68)
+SCALTYPE='DN'
+MAXDN=(1024.0, 0.0)
+ 
+************************************************************
+list hist1 linc=2 sinc=8 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:HIST2D    User:          Date_Time:                        
+     Samp     1      17      33      49      65
+   Line
+      1       0   0   0   0   0   0   0   0 124
+      3       0   0   0   0   0   0   0   0 124
+      5       0   0   0   0   0   0   0   0  98
+      7       0   0   0   0   0   0   0   0  62
+      9       0   0   0   0   0   0   0   0  98
+
+     27       0   0   0   0   0   0   0 144   0
+     29       0   0   0   0   0   0   0 124   0
+     31       0   0   0   0   0   0   0  98   0
+     33       0   0   0   0   0   0   0  98   0
+     35       0   0   0   0   0   0   0 187   0
+
+     47       0   0   0   0   0   0  62   0   0
+     49       0   0   0   0   0   0  98   0   0
+     51       0   0   0   0   0   0  62   0   0
+     53       0   0   0   0   0   0  62   0   0
+     55       0   0   0   0   0   0  98   0   0
+     57       0   0   0   0   0   0  98   0   0
+     59       0   0   0   0   0   0  98   0   0
+
+     69       0   0   0   0   0 161   0   0   0
+     71       0   0   0   0   0  98   0   0   0
+     73       0   0   0   0   0  98   0   0   0
+     75       0   0   0   0   0  98   0   0   0
+     77       0   0   0   0   0  62   0   0   0
+     79       0   0   0   0   0  62   0   0   0
+     81       0   0   0   0   0  98   0   0   0
+     83       0   0   0   0   0 124   0   0   0
+
+    107       0   0   0   0  98   0   0   0   0
+    109       0   0   0   0  98   0   0   0   0
+    111       0   0   0   0  98   0   0   0   0
+    113       0   0   0   0  98   0   0   0   0
+    115       0   0   0   0 124   0   0   0   0
+    117       0   0   0   0 175   0   0   0   0
+
+    135       0   0   0 161   0   0   0   0   0
+    137       0   0   0  98   0   0   0   0   0
+    139       0   0   0 124   0   0   0   0   0
+    141       0   0   0 124   0   0   0   0   0
+    143       0   0   0 187   0   0   0   0   0
+
+    165       0   0 144   0   0   0   0   0   0
+    167       0   0 144   0   0   0   0   0   0
+    169       0   0 144   0   0   0   0   0   0
+    171       0   0 124   0   0   0   0   0   0
+
+    197       0 144   0   0   0   0   0   0   0
+    199       0 175   0   0   0   0   0   0   0
+
+
+ Task:HIST2D    User:          Date_Time:                        
+     Samp     1      17      33      49      65
+   Line
+
+    227     249   0   0   0   0   0   0   0   0
+hist2d G7JNFEAP4101A.cub hist2 out_nl=256 out_ns=408 'DN 'REPLICATE
+Beginning VICAR task hist2d
+HIST2D version 2019-06-13
+list hist2 linc=2 sinc=8 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:HIST2D    User:          Date_Time:                        
+     Samp     1      17      33      49      65      81      97     113     129     145     161     177     193     209     225
+   Line
+
+     91       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0  62   0
+     93       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0  62 124  62
+     95       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0  62  98  62
+     97       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0  62 124  62
+     99       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0  98 124  98
+    101       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0  98  62  98
+
+    107       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0  98  62  98   0   0   0
+    109       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0  98  98  98   0   0   0
+    111       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0  98  98  98   0   0   0
+    113       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0  98  98  98   0   0   0
+    115       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 124 144 124   0   0   0
+    117       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 175 144 175   0   0   0
+
+    121       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 161 161 161   0   0   0   0   0   0
+    123       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0  62 124  62   0   0   0   0   0   0
+    125       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0  62 124  62   0   0   0   0   0   0
+    127       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0  98  98  98   0   0   0   0   0   0
+    129       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 124 144 124   0   0   0   0   0   0
+    131       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 175  98 175   0   0   0   0   0   0
+
+    135       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 161 124 161   0   0   0   0   0   0   0   0   0
+    137       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0  98 124  98   0   0   0   0   0   0   0   0   0
+    139       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 124  98 124   0   0   0   0   0   0   0   0   0
+    141       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 124 144 124   0   0   0   0   0   0   0   0   0
+    143       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 187 144 187   0   0   0   0   0   0   0   0   0
+
+    151       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 161 161 161   0   0   0   0   0   0   0   0   0   0   0   0
+    153       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0  62 124  62   0   0   0   0   0   0   0   0   0   0   0   0
+    155       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 124  98 124   0   0   0   0   0   0   0   0   0   0   0   0
+    157       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 144 161 144   0   0   0   0   0   0   0   0   0   0   0   0
+    159       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 187  98 187   0   0   0   0   0   0   0   0   0   0   0   0
+
+    165       0   0   0   0   0   0   0   0   0   0   0   0 144 161 144   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+    167       0   0   0   0   0   0   0   0   0   0   0   0 144 144 144   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+    169       0   0   0   0   0   0   0   0   0   0   0   0 144 124 144   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+    171       0   0   0   0   0   0   0   0   0   0   0   0 124 124 144   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+
+    183       0   0   0   0   0   0   0   0   0 144 124 144   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+    185       0   0   0   0   0   0   0   0   0 144 144 144   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+    187       0   0   0   0   0   0   0   0   0 207 161 197   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+
+    197       0   0   0   0   0   0 144 161 144   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+    199       0   0   0   0   0   0 175 175 175   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+
+    211       0   0   0 187 197 187   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+    213       0   0   0 197 207 197   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+
+    227     249 249 249   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:HIST2D    User:          Date_Time:                        
+     Samp   241     257     273     289     305     321     337     353     369     385     401
+   Line
+      1       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 124  98 124
+      3       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 124  62 124
+      5       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0  98  98  98
+      7       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0  62 161  62
+      9       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0  98 161  98
+
+     13       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 161 175 161   0   0   0
+     15       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0  98  98  98   0   0   0
+     17       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0  62  98  62   0   0   0
+     19       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0  98 124  98   0   0   0
+     21       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 124  98 124   0   0   0
+     23       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 144   0 161   0   0   0
+
+     27       0   0   0   0   0   0   0   0   0   0   0   0 144 161 144   0   0   0   0   0   0
+     29       0   0   0   0   0   0   0   0   0   0   0   0 124 124 124   0   0   0   0   0   0
+     31       0   0   0   0   0   0   0   0   0  62  62  62  98 124  98   0   0   0   0   0   0
+     33       0   0   0   0   0   0   0   0   0  98  62  98  98  98 124   0   0   0   0   0   0
+     35       0   0   0   0   0   0   0   0   0  62  62  62 187 161 187   0   0   0   0   0   0
+     37       0   0   0   0   0   0   0   0   0  62  98  62   0   0   0   0   0   0   0   0   0
+     39       0   0   0   0   0   0   0   0   0  98  62  98   0   0   0   0   0   0   0   0   0
+     41       0   0   0   0   0   0   0   0   0  62  62  62   0   0   0   0   0   0   0   0   0
+     43       0   0   0   0   0   0   0   0   0  62 124  62   0   0   0   0   0   0   0   0   0
+     45       0   0   0   0   0   0   0 124  62  62  62  62   0   0   0   0   0   0   0   0   0
+     47       0   0   0   0   0   0  62  62  62 175  98 175   0   0   0   0   0   0   0   0   0
+     49       0   0   0   0   0   0  98  62  98   0   0   0   0   0   0   0   0   0   0   0   0
+     51       0   0   0   0   0   0  62  62  62   0   0   0   0   0   0   0   0   0   0   0   0
+     53       0   0   0   0   0   0  62  62  62   0   0   0   0   0   0   0   0   0   0   0   0
+     55       0   0   0   0   0   0  98  98  98   0   0   0   0   0   0   0   0   0   0   0   0
+     57       0   0   0   0   0   0  98  98  98   0   0   0   0   0   0   0   0   0   0   0   0
+     59       0   0   0  98  62  98  98  62  98   0   0   0   0   0   0   0   0   0   0   0   0
+     61       0   0   0 124  62 124   0  98   0   0   0   0   0   0   0   0   0   0   0   0   0
+     63       0   0   0  62  62  62   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+     65       0   0   0  62  62  62   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+     67       0   0   0  62  98  62   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+     69     161  98 161  98  98  98   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+     71      98  98 124  98  62  98   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+     73      98  98  62  98 144  98   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+     75      98  62  62   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+     77      62  62  98   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+     79      62  62  98   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+     81      98 124  62   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+     83     124 144 144   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+write " Next, generate a calibrated, floating-point cube: "
+ Next, generate a calibrated, floating-point cube: 
+NIMSCMM2 edr=/project/test_work/testdata/gll/g7jnfeap4101a.3  +
+        cube=G7JNFEAP4101A_2.cub  +
+        wtfil=wtfil   +
+        aacsfil=/project/test_work/testdata/gll/g7jnfeap4101a.aacs  +
+        calfil=/project/test_work/testdata/gll/nims98a_gs4_ref_g1_01.tab  +
+        darkfil=/project/test_work/testdata/gll/jup_sl9_ave.tab  +
+	spkernel=/project/spice/ops/sun-solr/s980326b.bsp  +
+        ikernel=/project/test_work/testdata/gll/nims_ikernel_mab.dat  +
+	solfile=/project/test_work/testdata/gll/nims_solar.dat  +
+	dbmfile=/project/test_work/testdata/gll/boom_obscuration.nim  +
+        prodnote="testbed EDR with simulated pointing"   +
+        obsnote="testbed EDR with simulated pointing"   +
+        target=GANYMEDE phase=GANYMEDE_7_ENCOUNTER  +
+        proj=pov slew_tol=-1.  +
+	outsiz=(9,5)
+Beginning VICAR task NIMSCMM2
+NIMSCMM2 version 2019-06-14
+ ** Body is not a spheroid, planetographic is undefined
+ 
+ Radiance calibration will be done
+ Output image will be in perspective (POV) projection
+ Warning: user Target does not match Target in ObsTab!
+ User Target = GANYMEDE,  ObsTab Target = JUPITER
+ Gain state = 2
+ 
+ Instrument mode is SHORT MAP
+ 
+ Extracting pointing
+ mean slew rate = 0.02 * Nyquist, computed from 442 pairs of mfs
+ 443 mfs will be used
+ REFSCLK = 3897036.39, MP=9
+ Scale at sub-s/c point [km/pix] is: 663.187
+ 305 pixels were back of planet in set_pov
+ output image size: NL= 9, NS=5
+ OAL,OAS set to (   5.55,    1.90)
+ 
+ Beginning data extraction
+ processing range 3897034.00 to 3897038.78 
+  10% of data extracted
+  20% of data extracted
+  30% of data extracted
+  40% of data extracted
+  50% of data extracted
+  60% of data extracted
+  70% of data extracted
+  80% of data extracted
+  90% of data extracted
+ 6360 combs skipped or dummy in EDR 
+ 40 combs rejected for bad compression status
+ 7478 combs were off the planet
+ 11 combs fell outside the image
+ min/max lat/lon determined in write_latlon
+ 
+ Focal Length (mm) = 800.0, Camera Scale (pix/mm) = 2.5
+ Optical Axis Line/Sample = 5.548, 1.903
+ Spacecraft-Target Range (km) = 1329005.9, North Angle = 38.05
+ Subspacecraft Lat/Long (deg) = -0.31, 315.15
+ Subspacecraft Line/Samp = 4.362, 2.763
+ Min/max latitudes: -57.49, 59.06
+ Min/max longitudes: -102.44, 26.77
+ Min/max incidence angles: 57.80, 147.44
+ Min/max emission angles: 3.13, 61.11
+ Min/max phase angles: 95.48, 95.61
+label-list G7JNFEAP4101A_2.cub 'system 'nousrtim
+Beginning VICAR task label
+LABEL version 2019-05-28
+************************************************************
+ 
+        ************  File G7JNFEAP4101A_2.cub ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in REAL format from a X86-64-LIN host
+                68 bands
+                9 lines per band
+                5 samples per line
+                0 lines of binary header
+                0 bytes of binary prefix per line
+ 
+************************************************************
+hist2d G7JNFEAP4101A_2.cub hist3 out_nl=256 out_ns=68 rlimit=-1.0e38
+Beginning VICAR task hist2d
+HIST2D version 2019-06-13
+ data format is real, radiances assumed
+ *** RAD scale assumed
+ indxscale = 100.820549, indxoffset = -457
+label-list hist3 'nousrtim
+Beginning VICAR task label
+LABEL version 2019-05-28
+************************************************************
+ 
+        ************  File hist3 ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in BYTE format from a X86-64-LIN host
+                1 bands
+                256 lines per band
+                68 samples per line
+                0 lines of binary header
+                0 bytes of binary prefix per line
+---- Task: HIST2D -- User:  --  ----
+INP_FILE='G7JNFEAP4101A_2.cub'
+LIMITS=(457, 65992)
+INC_LSB=(1, 1, 1)
+WINDOW=(1, 1, 1, 9, 5, 68)
+SCALTYPE='RAD'
+MAXDN=(1000.0, 0.0)
+ 
+************************************************************
+list hist3 linc=2 sinc=8 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:HIST2D    User:          Date_Time:                        
+     Samp     1      17      33      49      65
+   Line
+
+    107       0   0   0   0   0   0   0   0  81
+    109       0   0   0   0   0   0   0   0  81
+    111       0   0   0   0   0   0   0   0  81
+    113       0   0   0   0   0   0   0   0  51
+    115       0   0   0   0   0   0   0   0  51
+
+    141       0   0   0   0   0   0   0  51   0
+    143       0   0   0   0   0   0   0  81   0
+    145       0   0   0   0   0   0   0 102   0
+    147       0   0   0   0   0   0   0  81   0
+    149       0   0   0   0   0   0   0  81   0
+
+    209       0 133   0   0   0   0   0   0   0
+    211       0 163   0   0   0   0   0   0   0
+
+    229     184   0   0   0   0   0   0   0   0
+    231     170   0   0   0   0   0   0   0   0
+
+    247       0   0 239   0   0   0   0   0   0
+
+    253       0   0   0 210   0   0   0   0   0
+    255       0   0   0   0 255 255 255   0   0
+write "The following is a test for byte input files."
+The following is a test for byte input files.
+write "****************************************************************"
+****************************************************************
+write "RAMP1 should differ from RAMP2 by one pixel at line 256"
+RAMP1 should differ from RAMP2 by one pixel at line 256
+write "and sample 1.  See listing of image A."
+and sample 1.  See listing of image A.
+write "****************************************************************"
+****************************************************************
+write "Images RAMP2 and RAMP3 should be identical."
+Images RAMP2 and RAMP3 should be identical.
+write "****************************************************************"
+****************************************************************
+gen image 10 10 256 ival=0 sinc=0 linc=0
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+hist2d image ramp1 out_nl=256 out_ns=256 'nolog
+Beginning VICAR task hist2d
+HIST2D version 2019-06-13
+hist2d image ramp2 out_nl=256 out_ns=256 'exclude
+Beginning VICAR task hist2d
+HIST2D version 2019-06-13
+hist2d image ramp3 out_nl=256 out_ns=256 limits=(1,255)
+Beginning VICAR task hist2d
+HIST2D version 2019-06-13
+difpic (ramp1,ramp2) a
+Beginning VICAR task difpic
+DIFPIC version 06Oct11
+ AVE VAL OF POS DIFFS=  255.000
+ NUMBER OF POS DIFF=   1
+ NUMBER OF NEG DIFFS=   0
+ TOTAL NUMBER OF DIFFERENT PIXELS=   1
+ AVE VAL OF DIFFS= 0.389099E-02
+ % DIFF PIXELS= 0.152588E-02
+list a 'noeje 'nofeed 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:HIST2D    User:          Date_Time:                        
+ Task:DIFPIC    User:          Date_Time:                        
+     Samp     1       3       5       7       9      11      13      15      17      19      21      23      25      27      29
+   Line
+
+    256     255   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+difpic (ramp2,ramp3)
+Beginning VICAR task difpic
+DIFPIC version 06Oct11
+ NUMBER OF DIFFERENT PIXELS =   0
+write "The only difference between RAMP1 and RAMP4 should be"
+The only difference between RAMP1 and RAMP4 should be
+write "the number of lines and samples of output file."
+the number of lines and samples of output file.
+write "****************************************************************"
+****************************************************************
+write "RAMP4 should be 512x512 and RAMP1.IMG should be 256x256."
+RAMP4 should be 512x512 and RAMP1.IMG should be 256x256.
+write "****************************************************************"
+****************************************************************
+write "RAMP5 should be similar to RAMP4, except samples 1 through 99"
+RAMP5 should be similar to RAMP4, except samples 1 through 99
+write "should have zero values for all lines."
+should have zero values for all lines.
+write "****************************************************************"
+****************************************************************
+hist2d image ramp4
+Beginning VICAR task hist2d
+HIST2D version 2019-06-13
+list ramp1 sl=250 ss=1 ns=10 'noeje 'nofeed 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+ ** Requested area exceeds size of input picture.
+ ** Number of lines printed reduced.
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:HIST2D    User:          Date_Time:                        
+     Samp     1       3       5       7       9
+   Line
+    250       0   0   0   0   0   0 255   0   0   0
+    251       0   0   0   0   0 255   0   0   0   0
+    252       0   0   0   0 255   0   0   0   0   0
+    253       0   0   0 255   0   0   0   0   0   0
+    254       0   0 255   0   0   0   0   0   0   0
+    255       0 255   0   0   0   0   0   0   0   0
+    256     255   0   0   0   0   0   0   0   0   0
+list ramp4 sl=250 ss=1 ns=10 'noeje 'nofeed 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+ ** Requested area exceeds size of input picture.
+ ** Number of lines printed reduced.
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:HIST2D    User:          Date_Time:                        
+     Samp     1       3       5       7       9
+   Line
+
+    494       0   0   0   0   0   0   0   0   0 255
+
+    496       0   0   0   0   0   0   0   0 255   0
+
+    498       0   0   0   0   0   0   0 255   0   0
+
+    500       0   0   0   0   0   0 255   0   0   0
+
+    502       0   0   0   0   0 255   0   0   0   0
+
+    504       0   0   0   0 255   0   0   0   0   0
+
+    506       0   0   0 255   0   0   0   0   0   0
+
+    508       0   0 255   0   0   0   0   0   0   0
+
+    510       0 255   0   0   0   0   0   0   0   0
+
+    512     255   0   0   0   0   0   0   0   0   0
+lablist ramp1 'full
+Beginning VICAR task lablist
+LABLIST version:  JULY-1996 
+
+LABEL FOR FILE:
+ramp1
+BYTE FORMAT  NB= 1  NL=  256  NS=  256  FILE ORGANIZATION=BSQ
+ 
+---- TASK: HIST2D        USER: wlb	Tue Jul 23 15:47:15 2019 ----
+INP_FILE='image'
+LIMITS=(0, 255)
+INC_LSB=(1, 1, 1)
+WINDOW=(1, 1, 1, 10, 10, 256)
+SCALTYPE='DN'
+MAXDN=(256.0, 0.0)
+lablist ramp4 'full
+Beginning VICAR task lablist
+LABLIST version:  JULY-1996 
+
+LABEL FOR FILE:
+ramp4
+BYTE FORMAT  NB= 1  NL=  512  NS=  512  FILE ORGANIZATION=BSQ
+ 
+---- TASK: HIST2D        USER: wlb	Tue Jul 23 15:47:15 2019 ----
+INP_FILE='image'
+LIMITS=(0, 255)
+INC_LSB=(1, 1, 1)
+WINDOW=(1, 1, 1, 10, 10, 256)
+SCALTYPE='DN'
+MAXDN=(256.0, 0.0)
+hist2d image ramp5 limits=(100,255)
+Beginning VICAR task hist2d
+HIST2D version 2019-06-13
+list ramp5 ss=95 ns=10 sl=250 'noeje 'nofeed 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+ ** Requested area exceeds size of input picture.
+ ** Number of lines printed reduced.
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:HIST2D    User:          Date_Time:                        
+     Samp    95      97      99     101     103
+   Line
+
+    306       0   0   0   0   0   0   0   0   0 255
+
+    308       0   0   0   0   0   0   0   0 255   0
+
+    310       0   0   0   0   0   0   0 255   0   0
+
+    312       0   0   0   0   0   0 255   0   0   0
+list ramp5 ss=250 sl=1 nl=10 'noeje 'nofeed 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+ ** Requested area exceeds size of input picture.
+ ** Number of samples printed reduced.
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:HIST2D    User:          Date_Time:                        
+     Samp   250     252     254     256     258     260     262     264     266     268     270     272     274     276     278
+   Line
+
+      2       0   0   0   0   0   0 255   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+
+      4       0   0   0   0   0 255   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+
+      6       0   0   0   0 255   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+
+      8       0   0   0 255   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+
+     10       0   0 255   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+write "TEST ERROR CHECKING OF PARAMETERS"
+TEST ERROR CHECKING OF PARAMETERS
+write "The following HIST2D call should produce ten error messages"
+The following HIST2D call should produce ten error messages
+write "****************************************************************"
+****************************************************************
+hist2d image testerr limits=(-1,257) sl=11 ss=0 sb=257 nl=11 ns=10  +
+	nb=-1 out_ns=20001 out_nl=-10
+Beginning VICAR task hist2d
+HIST2D version 2019-06-13
+***  Invalid lower limit for LIMITS, set to 0 ***
+*** Invalid upper limit for LIMITS, set to 255 ***
+*** Invalid starting line, SL set to 1 ***
+*** Invalid starting sample, SS set to 1 ***
+*** Invalid starting band, SB set to 1 ***
+*** Invalid number of lines, NL set to 0010. ***
+*** Invalid number of samples, NS set to 0010. ***
+*** Invalid number of bands, NB set to 0256. ***
+*** OUT_NL out of range, set to 512 ***
+*** OUT_NS out of range, set to 512 ***
+write "RAMP7 generation should result in a HIST2D warning regarding"
+RAMP7 generation should result in a HIST2D warning regarding
+write "invalid OUT_NS value.  It should be set to 512 by HIST2D."
+invalid OUT_NS value.  It should be set to 512 by HIST2D.
+write "****************************************************************"
+****************************************************************
+write "RAMP8 should differ from RAMP7 by a solid line at line 512"
+RAMP8 should differ from RAMP7 by a solid line at line 512
+write "from sample 1 through sample 257."
+from sample 1 through sample 257.
+write "****************************************************************"
+****************************************************************
+write "RAMP7 and RAMP9 should differ by one pixel at line 512,"
+RAMP7 and RAMP9 should differ by one pixel at line 512,
+write "sample 257."
+sample 257.
+write "****************************************************************"
+****************************************************************
+gen image 5 5 512 format=half ival=-32768 sinc=0 linc=0 binc=128
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+hist2d image ramp7 out_ns=256
+Beginning VICAR task hist2d
+HIST2D version 2019-06-13
+*** OUT_NS out of range, set to 512 ***
+list ramp7 linc=16 sl=16 sinc=32 'noeje 'nofeed 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+ ** Requested area exceeds size of input picture.
+ ** Number of lines printed reduced.
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:HIST2D    User:          Date_Time:                        
+     Samp     1      65     129     193     257     321     385     449
+   Line
+
+     64       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 255
+
+    128       0   0   0   0   0   0   0   0   0   0   0   0   0   0 255   0
+
+    192       0   0   0   0   0   0   0   0   0   0   0   0   0 255   0   0
+
+    256       0   0   0   0   0   0   0   0   0   0   0   0 255   0   0   0
+
+    320       0   0   0   0   0   0   0   0   0   0   0 255   0   0   0   0
+
+    384       0   0   0   0   0   0   0   0   0   0 255   0   0   0   0   0
+
+    448       0   0   0   0   0   0   0   0   0 255   0   0   0   0   0   0
+
+    512       0   0   0   0   0   0   0   0 255   0   0   0   0   0   0   0
+hist2d image ramp8 limits=(-32768,32767)
+Beginning VICAR task hist2d
+HIST2D version 2019-06-13
+list ramp8 linc=16 sl=16 sinc=32 'noeje 'nofeed 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+ ** Requested area exceeds size of input picture.
+ ** Number of lines printed reduced.
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:HIST2D    User:          Date_Time:                        
+     Samp     1      65     129     193     257     321     385     449
+   Line
+
+     64       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 255
+
+    128       0   0   0   0   0   0   0   0   0   0   0   0   0   0 255   0
+
+    192       0   0   0   0   0   0   0   0   0   0   0   0   0 255   0   0
+
+    256       0   0   0   0   0   0   0   0   0   0   0   0 255   0   0   0
+
+    320       0   0   0   0   0   0   0   0   0   0   0 255   0   0   0   0
+
+    384       0   0   0   0   0   0   0   0   0   0 255   0   0   0   0   0
+
+    448       0   0   0   0   0   0   0   0   0 255   0   0   0   0   0   0
+
+    512     255 255 255 255 255 255 255 255 255   0   0   0   0   0   0   0
+hist2d image ramp9 'exclude
+Beginning VICAR task hist2d
+HIST2D version 2019-06-13
+list ramp9 linc=16 sl=16 sinc=32 'noeje 'nofeed 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+ ** Requested area exceeds size of input picture.
+ ** Number of lines printed reduced.
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:HIST2D    User:          Date_Time:                        
+     Samp     1      65     129     193     257     321     385     449
+   Line
+
+     64       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 255
+
+    128       0   0   0   0   0   0   0   0   0   0   0   0   0   0 255   0
+
+    192       0   0   0   0   0   0   0   0   0   0   0   0   0 255   0   0
+
+    256       0   0   0   0   0   0   0   0   0   0   0   0 255   0   0   0
+
+    320       0   0   0   0   0   0   0   0   0   0   0 255   0   0   0   0
+
+    384       0   0   0   0   0   0   0   0   0   0 255   0   0   0   0   0
+
+    448       0   0   0   0   0   0   0   0   0 255   0   0   0   0   0   0
+write "RAMP10 should have three values of 255 on line 10 at samples"
+RAMP10 should have three values of 255 on line 10 at samples
+write "1, 2 and 3.  It should have two values of 255 on line 9 at"
+1, 2 and 3.  It should have two values of 255 on line 9 at
+write "samples 4 and 5."
+samples 4 and 5.
+write "****************************************************************"
+****************************************************************
+gen image 10 10 5 ival=0 linc=0 sinc=0 binc=10 'half
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+hist2d image ramp10 out_nl=10 out_ns=10
+Beginning VICAR task hist2d
+HIST2D version 2019-06-13
+list ramp10 'noeje 'nofeed 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:HIST2D    User:          Date_Time:                        
+     Samp     1       3       5       7       9
+   Line
+
+      9       0   0   0 255 255   0   0   0   0   0
+     10     255 255 255   0   0   0   0   0   0   0
+write "Check illegal formats:"
+Check illegal formats:
+gen image 10 10 5 'full
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+hist2d image dum
+Beginning VICAR task hist2d
+HIST2D version 2019-06-13
+ only BYTE/HALF/REAL formats supported
+ ** ABEND called **
+continue
+gen image 10 10 5 'doub
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+hist2d image dum
+Beginning VICAR task hist2d
+HIST2D version 2019-06-13
+ only BYTE/HALF/REAL formats supported
+ ** ABEND called **
+continue
+disable-log

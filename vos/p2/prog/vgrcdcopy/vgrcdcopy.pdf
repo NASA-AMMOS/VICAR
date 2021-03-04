@@ -50,6 +50,9 @@ OUTPUT FILES
 
 OPERATION
 
+  NOTE: This program has an uncorrected defect. See the comment
+  beginning on line 50 of trans_eng_hdr.c associated with DAR IDS-7953.
+
   vgrcdcopy decompresses a Huffman First-Difference compressed
   VGR image, translating it from a PDS labeled image to a
   Voyager formatted VICAR image.  The binary headers and line
@@ -87,8 +90,8 @@ PROGRAM HISTORY
 
 REVISION HISTORY
 
-    26 Mar 96  OAM  ...Revised to run on VMS. First Release. 
-    
+    1996-03-26 OAM - Revised to run on VMS. First Release. 
+    2019-06-12 WLB - Added comment to trans_eng_hdr.c (DAR IDS-7953).    
     
 .LEVEL1
 .VARIABLE INP	

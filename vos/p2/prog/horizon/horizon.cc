@@ -12,6 +12,8 @@
 #include <ctime>
 #include <cstring>
 #include <float.h>
+#include "zmabend.h"
+#include "zvprintf.h"
 
 using namespace std;
 
@@ -34,23 +36,20 @@ double** compute_sigma_avg(int n, double **sigma_sum, int nonzero_count);
 bool border_cleanup(int border[], int start_index, int end_index, double avg_thresh1, double avg_thresh2, double absdiff_thresh1, double absdiff_thresh2);
 
 void main44(){
-    zvmessage("HORIZON version 1.0.3\n", "");
+    zvmessage("HORIZON version 2019-07-23", "");
 
     char inp_filename[256], out_filename[256], out_gradient_magnitude[256], out_gradient_direction[256];
-    char msg[256];
-    int status, count, def;
-    int inp_unit, inp_band, inp_nl, inp_ns, inp_nb;
-    int out_gradient_magnitude_unit, out_gradient_direction_unit, out_gradient_nl, out_gradient_ns, out_gradient_nb;
+    int count, def;
+    int inp_unit, inp_nl, inp_ns, inp_nb;
+    int out_gradient_magnitude_unit, out_gradient_direction_unit;
     
     zvp("OUT", out_filename, &count);
     if(count == 0){
-        zvmessage(msg, "Parameter OUT is undefined.");
-        zabend();
+        zmabend("Parameter OUT is undefined");
     }
 
     zvp("inp", inp_filename, &count);
-    sprintf(msg, "Detecting horizon for image: %s\n", inp_filename);
-    zvmessage(msg, "");
+    zvnprintf(256, "Detecting horizon for image: %s\n", inp_filename);
 
     zvunit(&inp_unit, "inp", 1, "u_name", inp_filename, NULL); 
     zvopen(inp_unit, "op", "read", "u_format", "doub", "open_act", "sa", NULL);
@@ -73,13 +72,11 @@ void main44(){
     zvp("TRIMRIGHT", &trim_right, &count);
 
     if(trim_top < 0 || trim_bot < 0 || trim_left < 0 || trim_right < 0){
-        zvmessage("trim factors cannot be smaller than 0.", "");
-        zabend();
+      zmabend("trim factors cannot be smaller than 0.");
     }
 
     if(trim_top + trim_bot > inp_nl || trim_left + trim_right > inp_ns){
-        zvmessage("trim factors exceed the maximum size of the image.", "");
-        zabend();
+        zmabend("trim factors exceed the maximum size of the image.");
     }
 
     SimpleImage<double> trimed_img = trim_image(inp_img, trim_top, trim_bot, trim_left, trim_right); 
@@ -104,8 +101,7 @@ void main44(){
     int filter_size; 
     zvp("FILTER_SIZE", &filter_size, &count);
     if(filter_size < 3){
-        zvmessage("Filter size cannot be smaller than 3. The smallest size of the filter kernel is 3 x 3.", "");
-        zabend();
+        zmabend("Filter size cannot be smaller than 3. The smallest size of the filter kernel is 3 x 3.");
     }
 
     FilterType filter_type;
@@ -204,7 +200,6 @@ void main44(){
     int strong_horizon_thresh_min, strong_horizon_thresh_max, strong_horizon_search_increment_factor;
     int border_tmp[gradient_ns];
     int border_opt[gradient_ns];
-    double sky_gradient_magnitude_avg_opt = 0.0, ground_gradient_magnitude_avg_opt = 0.0;
 
     zvp("SH_THRESH_MIN", &strong_horizon_thresh_min, &count);
     zvp("SH_THRESH_MAX", &strong_horizon_thresh_max, &count);
@@ -215,14 +210,12 @@ void main44(){
     SimpleImage<double> sky_gradient_magnitude;
     SimpleImage<double> ground_gradient_magnitude;
 
-    int iter_opt, thresh_opt; //for printing purpose only.
+    int iter_opt = 0, thresh_opt = 0; //for printing purpose only.
 
     zvmessage("*** Detecting Strong Horizon ***", "");
-    sprintf(msg, "Strong horizon thresh min: %d\nStrong horizon thresh max: %d\nStrong horizon search increment factor: %d\n", strong_horizon_thresh_min, strong_horizon_thresh_max, strong_horizon_search_increment_factor);
-    zvmessage(msg, "");
+    zvnprintf(256, "Strong horizon thresh min: %d\nStrong horizon thresh max: %d\nStrong horizon search increment factor: %d\n", strong_horizon_thresh_min, strong_horizon_thresh_max, strong_horizon_search_increment_factor);
 
-    sprintf(msg, "%-15s%-20s%-20s%-20s%-15s", "Iteration", "Current Thresh", "Sky Business", "Ground Business", "Difference");
-    zvmessage(msg, "");
+    zvnprintf(256, "%-15s%-20s%-20s%-20s%-15s", "Iteration", "Current Thresh", "Sky Business", "Ground Business", "Difference");
 
     for(int k = 1; k <= n; k++){
         int t = (int)(strong_horizon_thresh_min + ((strong_horizon_thresh_max - strong_horizon_thresh_min) / (n - 1)) * (k - 1));
@@ -239,7 +232,7 @@ void main44(){
         }
 
         double sky_gradient_magnitude_total = 0.0, ground_gradient_magnitude_total = 0.0;
-        double gradient_magnitude_value, image_value;
+        double gradient_magnitude_value;
         int sky_nonzero_counter = 0, ground_nonzero_counter = 0;
 
         for(int samp = 0; samp < gradient_ns; samp++){
@@ -265,13 +258,10 @@ void main44(){
         //calculate energe function Jn based on sky and ground average values from gradient magnitude image
         double Jn = ground_gradient_magnitude_avg - sky_gradient_magnitude_avg;
 
-        sprintf(msg, "%-15d%-20d%-20.5f%-20.5f%-15.5f", k, t, sky_gradient_magnitude_avg, ground_gradient_magnitude_avg, Jn);
-        zvmessage(msg, "");
+        zvnprintf(256, "%-15d%-20d%-20.5f%-20.5f%-15.5f", k, t, sky_gradient_magnitude_avg, ground_gradient_magnitude_avg, Jn);
 
         if(Jn > Jn_max){
             Jn_max = Jn;
-            sky_gradient_magnitude_avg_opt = sky_gradient_magnitude_avg;
-            ground_gradient_magnitude_avg_opt = ground_gradient_magnitude_avg;
 
             iter_opt = k;
             thresh_opt = t;            
@@ -282,8 +272,7 @@ void main44(){
         }
     }
 
-    sprintf(msg, "Optimal strong horizon is detected with threshold value %d at iteration %d\n", thresh_opt, iter_opt);
-    zvmessage(msg, "");
+    zvnprintf(256, "Optimal strong horizon is detected with threshold value %d at iteration %d\n", thresh_opt, iter_opt);
 
     //Preliminary horizon borders will be marked with DN value -10000
     for(int samp = 0; samp < gradient_ns; samp++){
@@ -312,39 +301,30 @@ void main44(){
 
     zvmessage("*** Refining Weak Horizon and Outliers ***", "");
     
-    sprintf(msg, "Outlier definition: %d pixels.", outlier_thresh);
-    zvmessage(msg, "");
+    zvnprintf(256, "Outlier definition: %d pixels.", outlier_thresh);
 
-    sprintf(msg, "Outlier range: %d columns.", outlier_search_interval);
-    zvmessage(msg, "");
+    zvnprintf(256, "Outlier range: %d columns.", outlier_search_interval);
 
-    sprintf(msg, "Weak horizon detection gradient magnitude threshold: %d pixels.", weak_horizon_magnitude_thresh);
-    zvmessage(msg, "");
+    zvnprintf(256, "Weak horizon detection gradient magnitude threshold: %d pixels.", weak_horizon_magnitude_thresh);
 
-    sprintf(msg, "Weak horizon detection gradient direction threshold: %d degrees.", weak_horizon_direction_thresh);
-    zvmessage(msg, "");
+    zvnprintf(256, "Weak horizon detection gradient direction threshold: %d degrees.", weak_horizon_direction_thresh);
 
-    sprintf(msg, "Weak horizon detection gradient direction search interval: %d pixels.", weak_horizon_search_interval);
-    zvmessage(msg, "");
+    zvnprintf(256, "Weak horizon detection gradient direction search interval: %d pixels.", weak_horizon_search_interval);
 
-    sprintf(msg, "Weak horizon thresh min: %d", weak_horizon_thresh_min);
-    zvmessage(msg, "");
+    zvnprintf(256, "Weak horizon thresh min: %d", weak_horizon_thresh_min);
 
-    sprintf(msg, "Weak horizon thresh max: %d", weak_horizon_thresh_max);
-    zvmessage(msg, "");
+    zvnprintf(256, "Weak horizon thresh max: %d", weak_horizon_thresh_max);
 
-    sprintf(msg, "Weak horizon search increment factor: %d\n", weak_horizon_search_increment_factor);
-    zvmessage(msg, "");
+    zvnprintf(256, "Weak horizon search increment factor: %d\n", weak_horizon_search_increment_factor);
 
     //validate input iteration_max
     if(iteration_max > master_iteration_max){
-        sprintf(msg, "Parameter WH_ITER_MAX %d exceeds maximum iteration allowed. Iteration_max resets to 30.\n", iteration_max);
-        zvmessage(msg, "");
+        zvnprintf(256, "Parameter WH_ITER_MAX %d exceeds maximum iteration allowed. Iteration_max resets to 30.\n", iteration_max);
         iteration_max = master_iteration_max;
     }
 
     if(iteration_max == 0){
-        zvmessage("Weak horizon detection and outlier refinement feature is turned off.\n", "");
+        zvmessage("Weak horizon detection and outlier refinement feature is turned off.", "");
     }
 
     while(iteration_counter < iteration_max){
@@ -460,8 +440,7 @@ void main44(){
         int weak_border_opt[gradient_ns];
         double weak_Jn_max = 0;
 
-        sprintf(msg, "%-15s%-20s%-20s%-20s%-15s", "Iteration", "Current Thresh", "Sky Business", "Ground Business", "Difference");
-        zvmessage(msg, "");
+        zvnprintf(256, "%-15s%-20s%-20s%-20s%-15s", "Iteration", "Current Thresh", "Sky Business", "Ground Business", "Difference");
 
         for(int samp = 0; samp < gradient_ns; samp++){
             weak_border_tmp[samp] = border_opt[samp];
@@ -509,8 +488,7 @@ void main44(){
                 weak_ground_avg = weak_ground_total / weak_ground_nonzero_counter;
                 weak_Jn = weak_ground_avg - weak_sky_avg;
 
-                sprintf(msg, "%-15d%-20d%-20.5f%-20.5f%-15.5f", weak_k, weak_t, weak_sky_avg, weak_ground_avg, weak_Jn);
-                zvmessage(msg, "");
+                zvnprintf(256, "%-15d%-20d%-20.5f%-20.5f%-15.5f", weak_k, weak_t, weak_sky_avg, weak_ground_avg, weak_Jn);
 
                 if(weak_Jn > weak_Jn_max){
                     weak_Jn_max = weak_Jn;
@@ -550,20 +528,15 @@ void main44(){
     zvparmd("BAADR_THRESH", &border_avg_absdiff_thresh2, &count, &def, 1, 0); //BAADR_THRESH stands for border average absolute difference reject threshold value.
     zvparmd("BP_FACTOR", &border_partition_factor, &count, &def, 1, 0);
 
-    sprintf(msg, "Border average accept threshold: %f", border_avg_thresh2);
-    zvmessage(msg, "");
+    zvnprintf(256, "Border average accept threshold: %f", border_avg_thresh2);
 
-    sprintf(msg, "Border average reject threshold: %f", border_avg_thresh1);
-    zvmessage(msg, "");
+    zvnprintf(256, "Border average reject threshold: %f", border_avg_thresh1);
 
-    sprintf(msg, "Border average absolute difference accept threshold: %f", border_avg_absdiff_thresh1);
-    zvmessage(msg, "");
+    zvnprintf(256, "Border average absolute difference accept threshold: %f", border_avg_absdiff_thresh1);
 
-    sprintf(msg, "Border average absolute difference reject threshold: %f", border_avg_absdiff_thresh2);
-    zvmessage(msg, "");
+    zvnprintf(256, "Border average absolute difference reject threshold: %f", border_avg_absdiff_thresh2);
 
-    sprintf(msg, "Border partition factor: %d", border_partition_factor);
-    zvmessage(msg, "");
+    zvnprintf(256, "Border partition factor: %d", border_partition_factor);
 
     int sub_width = (int)round(gradient_ns / border_partition_factor);
     for(int i = 0; i < border_partition_factor; i++){
@@ -692,26 +665,23 @@ SimpleImage<double> filter(SimpleImage<double> &image, int filter_width, int fil
     int ns = image.getNS();
     int counter;
     int ret_index = 0;
-    char msg[256];
 
     result_img.alloc(nl, ns);
     
     if(filter_type == MIN){
-        sprintf(msg, "*** Filtering the INP image with %d * %d MIN kernel ***", filter_width, filter_height);
+        zvnprintf(256, "*** Filtering the INP image with %d * %d MIN kernel ***", filter_width, filter_height);
         ret_index = 0;
     } else if (filter_type == MAX){
-        sprintf(msg, "*** Filtering the INP image with %d * %d MAX kernel ***", filter_width, filter_height); 
+        zvnprintf(256, "*** Filtering the INP image with %d * %d MAX kernel ***", filter_width, filter_height); 
         ret_index = filter_width * filter_height - 1;
     } else {
-        sprintf(msg, "*** Filtering the INP image with %d * %d MEDIAN kernel ***", filter_width, filter_height);
+        zvnprintf(256, "*** Filtering the INP image with %d * %d MEDIAN kernel ***", filter_width, filter_height);
         ret_index = (filter_width * filter_height - 1) / 2;
     }
-    zvmessage(msg, "");
 
     for(int line = edge_y; line < nl - edge_y; line++){
         if(line % 100 == 0){
-            sprintf(msg, "Line %d", line);
-            zvmessage(msg, "");
+            zvnprintf(256, "Line %d", line);
         }
   
         for(int samp = edge_x; samp < ns - edge_x; samp++){
@@ -749,8 +719,7 @@ double determinant(double **matrix, int n){
     double **m = NULL;
     
     if(n < 1){
-        zvmessage("matrix size cannot be smaller than 1.", "");
-        zabend();
+        zmabend("matrix size cannot be smaller than 1.");
     } else if(n == 1){
         det = matrix[0][0];
     } else if(n == 2){
@@ -1015,8 +984,6 @@ double** compute_sigma_avg(int n, double **sigma_sum, int nonzero_count){
 }
 
 bool border_cleanup(int border[], int start_index, int end_index, double avg_thresh1, double avg_thresh2, double absdiff_thresh1, double absdiff_thresh2){
-    char msg[256];
-
     //master switch to prevent possible infinite loop
     if(start_index >= end_index){
         zvmessage("Horizon border clean up process malfunction. Clean up process is skipped.", "");
@@ -1046,14 +1013,12 @@ bool border_cleanup(int border[], int start_index, int end_index, double avg_thr
         for(int samp = start_index; samp < end_index; samp++){
             border[samp] = -1;
         }
-        sprintf(msg, "-Horizon borders from index %d to %d are classified as:\nOutliers\nBorder average: %f\nBorder absolute difference average: %f", start_index, end_index, border_avg, border_avg_absdiff);        
-        zvmessage(msg, "");      
+        zvnprintf(256, "-Horizon borders from index %d to %d are classified as:\nOutliers\nBorder average: %f\nBorder absolute difference average: %f", start_index, end_index, border_avg, border_avg_absdiff);        
 
         return true;
     } else if (border_avg > avg_thresh2 && border_avg_absdiff < absdiff_thresh1) {
         //borders within [start_index, end_index) are all good.
-        sprintf(msg, "-Horizon borders from index %d to %d are classified as:\nTrue horizon\nBorder average: %f\nBorder absolute difference average: %f", start_index, end_index, border_avg, border_avg_absdiff);
-        zvmessage(msg, "");
+        zvnprintf(256, "-Horizon borders from index %d to %d are classified as:\nTrue horizon\nBorder average: %f\nBorder absolute difference average: %f", start_index, end_index, border_avg, border_avg_absdiff);
 
         return true;
     } else {
@@ -1063,8 +1028,7 @@ bool border_cleanup(int border[], int start_index, int end_index, double avg_thr
                 border[samp] = -1;
             }
  
-            sprintf(msg, "-Horizon borders from index %d to %d are classified as:\nOutliers\nBorder average: %f\nBorder absolute difference average: %f", start_index, end_index, border_avg, border_avg_absdiff);
-            zvmessage(msg, ""); 
+            zvnprintf(256, "-Horizon borders from index %d to %d are classified as:\nOutliers\nBorder average: %f\nBorder absolute difference average: %f", start_index, end_index, border_avg, border_avg_absdiff);
 
             return true;
         } else {

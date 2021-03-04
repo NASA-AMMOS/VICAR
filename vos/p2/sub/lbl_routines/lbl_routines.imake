@@ -12,14 +12,15 @@
 
 #define MODULE_LIST lbl_gen_api.c lbl_camera_model.c lbl_command.c \
 		    lbl_pdshistory.c lbl_compression.c lbl_derived_geometry.c \
-		    lbl_identification.c lbl_image_data.c lbl_image_geometry.c
+		    lbl_identification.c lbl_image_data.c lbl_image_geometry.c 
 #define MODULE_LIST2 lbl_instrument_state.c lbl_surface_model.c \
-		    lbl_surface_projection.c lbl_telemetry.c \
+		    lbl_surface_projection.c lbl_image_map_projection.c lbl_telemetry.c \
             lbl_articulation.c \
 		    lbl_coordinate.c lbl_ground_support.c lbl_derived_image.c \
             lbl_product_request.c lbl_observation_request.c \
             lbl_chem_bin_table.c  lbl_chem_request.c lbl_mini_header.c \
-            lbl_initstate.c lbl_nav_site_transform.c
+            lbl_initstate.c lbl_nav_site_transform.c \
+            lbl_scam_mini_header.c lbl_illumination_parms.c
 
 #define MAIN_LANG_C
 

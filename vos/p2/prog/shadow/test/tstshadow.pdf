@@ -2,6 +2,8 @@ procedure
 refgbl $echo
 body
 
+enable-log
+
 local inp1 string init="/project/test_work/testdata/mer/1F483288473EFFCMUFP1214L0M1.IMG"
 local inp2 string init="/project/test_work/testdata/mer/1F490747543EFFCNY9P1214L0M1.IMG"
 local inp3 string init="/project/test_work/testdata/mer/1F483644096EFFCMX8P1214L0M1.IMG"
@@ -82,5 +84,7 @@ shadow inp=&inp3 out=&adaptive_out3 out_reflect=&relf_out3
 shadow inp=&inp4 out=&adaptive_out4 out_reflect=&relf_out4
 shadow inp=&inp5 out=&adaptive_out5 out_reflect=&relf_out5
 shadow inp=&inp6 out=&adaptive_out6 out_reflect=&relf_out6
+
+disable-log
 
 End-proc

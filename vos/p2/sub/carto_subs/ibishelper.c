@@ -12,6 +12,20 @@
 #include "ibishelper.h"
 #include "cartoLinkedList.h"
 
+#define IBISFORMAT( str, bufsiz, fmtchar, colsize )	\
+	switch (tolower(fmtchar)) { \
+		case 'b': \
+		case 'h': \
+	case 'f': snprintf( str, bufsiz, "%%%dd",  (colsize));  break;	\
+	case 'r': snprintf( str, bufsiz, "%%%d.2f",  (colsize));  break;	\
+	case 'd': snprintf( str, bufsiz, "%%%d.2lf", (colsize));  break;	\
+	case 'c': snprintf( str, bufsiz, " (%%-%d.2f,%%%d.2f)",		\
+			((colsize)-4)/2, colsize - (4 + ((colsize)-4)/2) );\
+			 break; \
+	case 'a': snprintf( str, bufsiz, "%%%ds", (colsize));break;	   \
+	default:  snprintf( str, bufsiz, "%%%ds", (colsize));break;	   \
+	}
+
 /*****************************************************************/
 void IBISHELPER_lowerString(char *dest, char *source)
 {
@@ -468,9 +482,9 @@ void IBISHELPER_getFormats(IBISStruct *ibis, char formats[MAXCOLS][30])
    {
       type = (ibis->formats)[i];
 
-      if(type[0] == 'a') {IBISFORMAT(formats[i], 'a', (ibis->colLens)[i] + 1);}
-      else if(!strcmp(type, "comp")) {IBISFORMAT(formats[i], 'c', 21);}
-      else {IBISFORMAT(formats[i], type[0], 13);}
+      if(type[0] == 'a') {IBISFORMAT(formats[i], 30, 'a', (ibis->colLens)[i] + 1);}
+      else if(!strcmp(type, "comp")) {IBISFORMAT(formats[i], 30, 'c', 21);}
+      else {IBISFORMAT(formats[i], 30, type[0], 13);}
    }
 }
 

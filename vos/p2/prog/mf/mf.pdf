@@ -123,41 +123,37 @@ EXAMPLE
 
 Original Programmer:  A. L. Zobrist, 15 December 1976
 
-Cognizant Programmer:  N. D. Ritter
-
-Revision:  3,        
-        05 January 1987 - E.J. Barragy  -  fixed bug in sci. not. conversion that
-                      mistook '.E'  for a '.EQ.' logical operation
-        06 June 1987  - E.J. Barragy  - fixed to convert to upper case before
-                      parsing and compiling the functions
-                      also changed CVSCIN to do Sci. Not. conversion
-                      for a more general case
-        05 January 1994 - N. D. Ritter - Ported to Unix, with IBIS-2 library calls.    
-        13 November 1994 N. D. Ritter - Graphics Functions
-        18 October 2007 - R. J. Bambery - Add CODE parameter
-                        to show symbolic dump like mf3 and f2.
-        28 Feb 2008 - R. J. Bambery - - Fixes for ANSI_C compiler 
-                        in Linux 
-        24 Mar 2008 - R. J. Bambery - fixed error in arg 3 in IBISColumnWrite
-                        call
-        28 Mar 2008 - R. J. Bambery - fixed xknuth call (prototype in 
-                        cartoVicarProtos.h was wrong),  added check for
-                        columns and rows in input file. added check for
-                        function columns exceeding those in input file
-                        (required some reorganization of logical flow)
-
-        02 Dec 2009 - R. J. Bambery - made compatible with 64-bit linux
-                        removed cartoVicarProtos.h (Makefile.mf)
-
-        28 Jan 2010 - R. J. Bambery - Made compatible with 64-bit afids Build 793
-                            Linux, MacOSX (both Intel/PowerPC)
-        12 Aug 2010 - R. J. Bambery - got rid of warning:
-                /usr/local/afids/include/vicmain_c:63: warning: function declaration isn't a prototype
-                #include "vicmain_c" to #include "vicmain_c.h"
-        05 May 2011 - R. J. Bambery - Removed all warning messages generated from gcc 4.4.4
-                                    Build 1009
-        15 Nov 2012 - L.W.Kamp - added data types to function declarations for compatibilty
-                                 with ANSI C on Solaris.
+Revisions:
+  1987-01-05 E.J. Barragy -  fixed bug in sci. not. conversion that
+             mistook '.E'  for a '.EQ.' logical operation
+  1987-06-06 E.J. Barragy - fixed to convert to upper case before
+             parsing and compiling the functions
+             also changed CVSCIN to do Sci. Not. conversion
+             for a more general case
+  1994-01-05 N. D. Ritter - Ported to Unix, with IBIS-2 library calls.    
+  1994-10-18 N. D. Ritter - Graphics Functions
+  2007-10-18 R. J. Bambery - Add CODE parameter
+             to show symbolic dump like mf3 and f2.
+  2008-03-24 R. J. Bambery - Fixes for ANSI_C compiler in Linux 
+  2008-03-24 R. J. Bambery - fixed error in arg 3 in IBISColumnWrite
+             call
+  2008-03-28 R. J. Bambery - fixed xknuth call (prototype in 
+             cartoVicarProtos.h was wrong),  added check for
+             columns and rows in input file. added check for
+             function columns exceeding those in input file
+             (required some reorganization of logical flow)
+  2009-12-02 R. J. Bambery - made compatible with 64-bit linux
+             removed cartoVicarProtos.h (Makefile.mf)
+  2010-01-28 R. J. Bambery - Made compatible with 64-bit afids Build 793
+             Linux, MacOSX (both Intel/PowerPC)
+  2010-08-12 R. J. Bambery - got rid of warning:
+             /usr/local/afids/include/vicmain_c:63: warning: function declaration isn't a prototype
+             #include "vicmain_c" to #include "vicmain_c.h"
+  2011-05-05 R. J. Bambery - Removed all warning messages generated from gcc 4.4.4
+             Build 1009
+  2012-11-15 L.W.Kamp - added data types to function declarations for compatibilty
+             with ANSI C on Solaris.
+  2019-09-06 W. L. Bunch - IDS-7922 - Initialized some variables. Cleaned up -Wall warnings.
 
 .LEVEL1
 .VARIABLE INP

@@ -2,6 +2,8 @@ procedure
 refgbl $echo
 
 body
+enable-log
+
 let _onfail="continue"
 let $echo="yes"
 
@@ -14,4 +16,5 @@ photfit2 inp=(phottest_m.dat,phottest_m.dat) pho_func=MINNAERT +
    norm=25 rerun=2 maxiter=100 numten=25 metrop=20 percent=90 +
    toleranc=0.02 'print 
 
+disable-log
 end-proc

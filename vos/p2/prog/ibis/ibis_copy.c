@@ -10,7 +10,7 @@
  ************************************************************************/
  
 
-int copy_file()
+int copy_file(void)
 {
 	int inunit,outunit,status;
 	int cols[1024],outcols[1024];

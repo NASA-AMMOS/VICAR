@@ -74,6 +74,9 @@ typedef struct
 	  LblApiIntItem_typ		    RvrSavedI;
 	  LblApiRealItem_typ        RvrSavedP;
 	  LblApiRealItem_typ        RvrSavedQ;
+	  LblApiRealItem_typ		AttitudePropagationCounter;
+	  LblApiRealItem_typ		AttitudePropagationDuration;
+          LblApiStringItem_typ          PoseQuality;
 	} LblCoordinate_typ;
 
 /***  Function prototypes  ***/

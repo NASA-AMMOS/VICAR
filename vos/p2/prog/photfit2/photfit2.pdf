@@ -429,11 +429,10 @@ PROGRAMMING LANGUAGE :		TCL , C
 HISTORY:			Programmer: J J Lorre,  Jan 10 1988
 				rewritten in C: Friedel Oschuetz, Nov. '95,
 Revisions:
- 14 Jun 1996  GMY  Removes tabs from IMAKE file (DFR).
-
- 25 Mar 1998  TXH  Modified to work with new IBIS prototypes (DFR).
-
-  4 Sep 2014  WLB  Corrected several memory allocation bugs.
+  1996-06-14 GMY - Removes tabs from IMAKE file (DFR).
+  1998-03-25 TXH - Modified to work with new IBIS prototypes (DFR).
+  2014-09-04 WLB - Corrected several memory allocation bugs.
+  2019-09-06 WLB - IDS-7922 - Initialized a variable.
 
 COGNIZANT PROGRAMMER:		Friedel Oschuetz
 				Institute of Planetary Exploration

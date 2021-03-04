@@ -1,13 +1,14 @@
 sampler inp=(data/band1.vic,data/band2.vic,data/band3.vic,data/band4.vic,data/band5.vic) out=subsamples.ibis ngridx=200 ngridy=200 +
 seed=30
 Beginning VICAR task sampler
-sampler version 2016-10-20
+sampler version 2017-08-11
 clusterer subsamples.ibis (subclusters.ibis, classifiedsubsamples.ibis) nclusters=20 conv=0.1 maxi=200
 Beginning VICAR task clusterer
-clusterer version 2016-10-20
+clusterer version 2017-08-03
 FINAL RESULT total num of clusters: 10 converged: YES
 ibis-l subclusters.ibis
 Beginning VICAR task ibis
+IBIS version 2019-07-31
  
 Number of Rows:10  Number of Columns: 23      
 File Version:IBIS-2  Organization:ROW  SubType:NONE
@@ -74,10 +75,10 @@ Rows: 1:10
 classifier inp=(data/band1.vic,data/band2.vic,data/band3.vic,data/band4.vic,data/band5.vic)  +
   classibis=subclusters.ibis out=(classifiedResult.img, classifiedResultDist.img)
 Beginning VICAR task classifier
-classifier version 2017-08-03
+CLASSIFIER version 2019-08-22
 hist classifiedResult.img
 Beginning VICAR task hist
-*** HIST version Aug 10 2015 ***
+*** HIST version 2017-08-08 ***
 
 Bin Width =        1.0
           1     6635   *******

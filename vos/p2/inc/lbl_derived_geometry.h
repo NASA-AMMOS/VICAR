@@ -96,6 +96,11 @@ typedef struct
 	LblApiTypeItem_typ		    StopAzimuthUnit;
 	LblApiRealItem_typ		    SurfaceFixedInstAzimuth;
 	LblApiRealItem_typ		    SurfaceFixedInstElevation;
+	LblApiRealItem_typ		    PhaseAngle;
+	LblApiTypeItem_typ		    PhaseAngleUnit;
+	LblApiRealItem_typ		    SolarIncidenceTargetAngle;
+	LblApiTypeItem_typ		    SolarIncidenceTargetAngleUnit;
+	LblApiNameItem_typ		    SolarIncidenceTargetAngleName;
 	} LblDerivedGeometry_typ;
 
 /***  Function Prototypes  ***/

@@ -202,6 +202,65 @@ static LblApiElement_typ	LabelTbl[] = {
         LBL_OFFSET(LblProdRequest_typ, ImageId.Valid),
         LBL_NO_RETURN,  LBL_SIZE(ImageId.Value)},
 
+    {"INST_CMPRS_DEFERRED_FLAG",              "STRING",   LBL_OPTIONAL,
+        LBL_NO_CONT,    1,  1,  LBL_NULL,
+        LBL_OFFSET(LblProdRequest_typ, InstCmprsDeferredFlag.Value),
+        LBL_OFFSET(LblProdRequest_typ, InstCmprsDeferredFlag.Valid),
+        LBL_NO_RETURN,  LBL_SIZE(InstCmprsDeferredFlag.Value)},
+
+        {"INST_CMPRS_NAME"    ,               "STRING",       LBL_OPTIONAL,
+                LBL_NO_CONT,    1,      1,      LBL_NULL,
+                LBL_OFFSET(LblProdRequest_typ, InstCmprsName.Value),
+                LBL_OFFSET(LblProdRequest_typ, InstCmprsName.Valid),
+                LBL_NO_RETURN,  LBL_SIZE(InstCmprsName.Value)},
+
+        {"INSTRUMENT_FOCUS_POSITION_CNT",       "INT",          LBL_OPTIONAL,
+                LBL_NO_CONT,    1,      1,      LBL_NULL,
+                LBL_OFFSET(LblProdRequest_typ, InstFocusPositionCnt.Value),
+                LBL_OFFSET(LblProdRequest_typ, InstFocusPositionCnt.Valid),
+                LBL_NO_RETURN,  LBL_SIZE(InstFocusPositionCnt.Value)},
+    {"INSTRUMENT_FOCUS_STEPS",        "INT",       LBL_OPTIONAL,
+        LBL_NO_CONT,    1,  1,  LBL_NULL,
+        LBL_OFFSET(LblProdRequest_typ, InstFocusSteps.Value),
+        LBL_OFFSET(LblProdRequest_typ, InstFocusSteps.Valid),
+        LBL_NO_RETURN,  LBL_SIZE(InstFocusSteps.Value)},
+
+
+    {"INSTRUMENT_FOCUS_STEP_SIZE",          "INT",          LBL_OPTIONAL,
+                LBL_NO_CONT,    1,      1,      LBL_NULL,
+                LBL_OFFSET(LblProdRequest_typ, InstFocusStepSize.Value),
+                LBL_OFFSET(LblProdRequest_typ, InstFocusStepSize.Valid),
+                LBL_NO_RETURN,  LBL_SIZE(InstFocusStepSize.Value)},
+
+        {"INSTRUMENT_ZOOM_POSITION_CNT",       "INT",          LBL_OPTIONAL,
+                LBL_NO_CONT,    1,      1,      LBL_NULL,
+                LBL_OFFSET(LblProdRequest_typ, InstZoomPositionCnt.Value),
+                LBL_OFFSET(LblProdRequest_typ, InstZoomPositionCnt.Valid),
+                LBL_NO_RETURN,  LBL_SIZE(InstZoomPositionCnt.Value)},
+
+        {"ZSTACK_IMAGE_DEPTH",       "INT",          LBL_OPTIONAL,
+                LBL_NO_CONT,    1,      1,      LBL_NULL,
+                LBL_OFFSET(LblProdRequest_typ, ZstackImageDepth.Value),
+                LBL_OFFSET(LblProdRequest_typ, ZstackImageDepth.Valid),
+                LBL_NO_RETURN,  LBL_SIZE(ZstackImageDepth.Value)},
+
+        {"ZSTACK_DELTA_FOCUS_COUNT",       "INT",          LBL_OPTIONAL,
+                LBL_NO_CONT,    1,      1,      LBL_NULL,
+                LBL_OFFSET(LblProdRequest_typ, ZstackDeltaFocusCount.Value),
+                LBL_OFFSET(LblProdRequest_typ, ZstackDeltaFocusCount.Valid),
+                LBL_NO_RETURN,  LBL_SIZE(ZstackDeltaFocusCount.Value)},
+    {"COMMANDED_FOCAL_LENGTH",         "REAL",     LBL_OPTIONAL,
+        LBL_NO_CONT,    1,  1,  LBL_NULL,
+        LBL_OFFSET(LblProdRequest_typ, CommandedFocalLength.Value),
+        LBL_OFFSET(LblProdRequest_typ, CommandedFocalLength.Valid),
+        LBL_NO_RETURN,  LBL_SIZE(CommandedFocalLength.Value)},
+
+    {"COMMANDED_FOCAL_LENGTH__UNIT",  "STRING",   LBL_OPTIONAL,
+        LBL_NO_CONT,    1,  1,  LBL_NULL,
+        LBL_OFFSET(LblProdRequest_typ, CommandedFocalLengthUnit.Value),
+        LBL_OFFSET(LblProdRequest_typ, CommandedFocalLengthUnit.Valid),
+        LBL_NO_RETURN,  LBL_SIZE(CommandedFocalLengthUnit.Value)},
+
 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
 
 /***  Table Definitions  ***/

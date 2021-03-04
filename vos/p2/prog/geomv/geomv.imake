@@ -14,12 +14,17 @@
 
 #define PROGRAM	geomv
 
-#define MODULE_LIST geomv.c 
+#define MODULE_LIST geomv.cc
 
-#define MAIN_LANG_C
+#define MAIN_LANG_C_PLUS_PLUS
+
+#define USES_C_PLUS_PLUS
+#define USES_ANSI_C
+#define CCC_TEMPLATES
+
 #define R2LIB
-#define USES_C
 
+#define LIB_CARTO
 #define LIB_RTL
 #define LIB_TAE
 #define LIB_P2SUB

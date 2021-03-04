@@ -3,6 +3,8 @@ refgbl $echo
 refgbl $autousage
 refgbl $syschar
 body
+enable-log
+
 let _onfail="continue"
 let $echo="yes"
 let $autousage="none"
@@ -18,20 +20,22 @@ else
 end-if
 
 write "Now list out the labels and a chunk of the data"
-   label-list ddd.vic
-   list ddd.vic nl=10 ns=5
+   label-list ddd.vic 'nousrtim
+   list ddd.vic nl=10 ns=5 'nousrtim
 
 write "And compare this to the original perl script data"
 if ($syschar(1) = "VAX_VMS")
-   label-list dev:[bam059.test]M12.VIC
-   list dev:[bam059.test]M12.VIC nl=10 ns=5
+   label-list dev:[bam059.test]M12.VIC 'nousrtim
+   list dev:[bam059.test]M12.VIC nl=10 ns=5 'nousrtim
 else
-   label-list /home/bam/porting/sun-solr/M12.VIC
-   list /home/bam/porting/sun-solr/M12.VIC nl=10 ns=5
+   label-list /home/bam/porting/sun-solr/M12.VIC 'nousrtim
+   list /home/bam/porting/sun-solr/M12.VIC nl=10 ns=5 'nousrtim
 end-if
 if ($syschar(1) = "UNIX")
   ush rm ddd.vic
 else
   dcl del ddd.vic.
 end-if
+
+disable-log
 end-proc

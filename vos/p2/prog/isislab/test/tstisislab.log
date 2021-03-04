@@ -3,7 +3,7 @@ LET CDIR = "/project/test_work/testdata/cassini/vims/"
 LET PIC = "/project/test_work/testdata/gll/"//"venus.qub"
 ISISLAB /project/test_work/testdata/gll/venus.qub 'both
 Beginning VICAR task ISISLAB
-*** ISISLAB version 2017-08-08 ***
+ISISLAB version 2019-09-05
  
 ********** LABEL OBJECT **********
  
@@ -292,7 +292,7 @@ END
  
 ISISLAB /project/test_work/testdata/gll/venus.qub 'label
 Beginning VICAR task ISISLAB
-*** ISISLAB version 2017-08-08 ***
+ISISLAB version 2019-09-05
  
 ********** LABEL OBJECT **********
  
@@ -532,7 +532,7 @@ END
  
 ISISLAB /project/test_work/testdata/gll/venus.qub 'history
 Beginning VICAR task ISISLAB
-*** ISISLAB version 2017-08-08 ***
+ISISLAB version 2019-09-05
  
 ********* HISTORY OBJECT **********
  
@@ -585,7 +585,7 @@ END
 LET PIC = "/project/test_work/testdata/cassini/vims/"//"1294648727.013-154945"
 ISISLAB /project/test_work/testdata/cassini/vims/1294648727.013-154945
 Beginning VICAR task ISISLAB
-*** ISISLAB version 2017-08-08 ***
+ISISLAB version 2019-09-05
  
 ********** LABEL OBJECT **********
  
@@ -778,7 +778,7 @@ ND
 LET PIC = "/project/test_work/testdata/gll/"//"EUROPA_SINU.CUB"
 ISISLAB /project/test_work/testdata/gll/EUROPA_SINU.CUB
 Beginning VICAR task ISISLAB
-*** ISISLAB version 2017-08-08 ***
+ISISLAB version 2019-09-05
  
 ********** LABEL OBJECT **********
  
@@ -1576,10 +1576,10 @@ END
 LET PIC = "/project/test_work/testdata/gll/"//"g7jnfea15003a.15"
 label-remove /project/test_work/testdata/gll/g7jnfea15003a.15 edr1 'bin
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-05-28
 ISISLAB edr1
 Beginning VICAR task ISISLAB
-*** ISISLAB version 2017-08-08 ***
+ISISLAB version 2019-09-05
  no History item present
  
 ********** LABEL OBJECT **********

@@ -116,9 +116,9 @@ label-list t6 'nousrtim
 !
 write " -SWITCH -- gen a different size file then switch the labels"
 gen t1 5 5 linc=10 
-list t1
+list t1 'nousrtim
 label-switch (t5,t1) t2
-list t2
+list t2 'nousrtim
 label-list t2 'nousrtim
 !
 write ""

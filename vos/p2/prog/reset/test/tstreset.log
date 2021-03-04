@@ -1,0 +1,13 @@
+if ($syschar(1) = "UNIX")
+  ush cat tstreset.dat
+  reset tstreset.dat 3
+Beginning VICAR task reset
+RESET version 2019-06-14
+  ush cat tstreset.dat
+  reset tstreset.dat
+Beginning VICAR task reset
+RESET version 2019-06-14
+  ush cat tstreset.dat
+else
+end-if
+let $echo="no"

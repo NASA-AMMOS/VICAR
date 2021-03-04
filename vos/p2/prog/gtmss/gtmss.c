@@ -5,6 +5,8 @@
 #include "vicmain_c.h"
 #include "applic.h"
 #include "defines.h"
+#include "zifmessage.h"
+#include "zmabend.h"
 
 #include "cartoMemUtils.h"
 #include "cartoLsqUtils.h"
@@ -23,18 +25,18 @@
 
 void main44(void)
 {
-   int i,img,iout,jout,inpcnt,vunit[48],inl[48],ins[48],pixsiz;
+   int i,img,iout,jout,inpcnt,vunit[48],inl[48],ins[48],pixsiz=0;
    int bignline=0,bignsamp,vsize[4],sizepcnt,sizedef,outnline=0;
    int inptr[48],tpixsiz=0,status,o_unit,dummy,outnsamp;
    int labnl,labns,len,rot1,rot2,gtfirst,tolerct,tolerdf;
    int sctype1,sctype2,mapck,overlap1;
    char *labelstr1,*labelstr2;
-   unsigned char *outbuf;
+   unsigned char *outbuf = NULL;
    double t[6],tinv[6],r[6],rinv[6],corner[4],rcorner[4];
    double toler,xcorner,ycorner,scorner,offsamp;
    double scale11,scale12,scale21,scale22;
    
-   zifmessage("gtmss version 2015-09-10");
+   zifmessage("GTMSS version 2019-09-05");
    
    /* get some parms */
    

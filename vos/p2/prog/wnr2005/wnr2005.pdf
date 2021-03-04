@@ -118,6 +118,7 @@ HISTORY
   2007-09    A Zobrist - NSR input image inverted to SNR input
   2007-12-28 W Bunch - Switched to USES_ANSI_C AND LIB_CARTO; misc cleanup.
   2016-06-09 W Bunch - Migrated to MIPL
+  2019-09-18 W Bunch - IDS-7922 - initialized a variable
 
  Current Cognizant Programmer:  J Lorre, A Zobrist
 

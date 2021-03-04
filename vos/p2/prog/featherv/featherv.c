@@ -1,12 +1,15 @@
 #include <math.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdlib.h>
 
 #include "vicmain_c.h"
 #include "applic.h"
 #include "defines.h"
 #include "ibisfile.h"
 #include "ibiserrs.h"
+#include "zmabend.h"
+#include "zifmessage.h"
 
 #include "cartoStrUtils.h"
 #include "cartoMemUtils.h"
@@ -88,13 +91,13 @@ char fmt_str[10];                       /* format of primary input */
  
 void open_files()
 {
-  int status,tsize[4],sizepcnt,sizedef;
+  int tsize[4],sizepcnt,sizedef;
   
   /***********************/
   /* open the input file */
   /***********************/
-  status = zvunit( &i_unit, "INP", 1, NULL);
-  status = zvopen( i_unit, "OPEN_ACT", "SA", "IO_ACT", "SA",
+  zvunit( &i_unit, "INP", 1, NULL);
+  zvopen( i_unit, "OPEN_ACT", "SA", "IO_ACT", "SA",
 			"U_FORMAT","HALF", NULL);
   /* should have checked status to make sure file opened properly. */
   /* Make sure we have either BYTE or HALF */
@@ -127,10 +130,10 @@ void open_files()
   if (nline==0) nline = inpline;
   if (nsamp==0) nsamp = inpsamp;
   
-  status=zvunit( &o_unit, "OUT", 1, NULL);
+  zvunit( &o_unit, "OUT", 1, NULL);
   /* note that zvopen is intelligent enough to default to the same */
   /* format as the input file.  */
-  status=zvopen( o_unit, "U_NL", nline, "U_NS", nsamp, "U_FORMAT","HALF",
+  zvopen( o_unit, "U_NL", nline, "U_NS", nsamp, "U_FORMAT","HALF",
 		"OP", "WRITE", "OPEN_ACT", "SA", "IO_ACT", "SA",
                 "O_FORMAT",fmt_str,"TYPE","IMAGE", NULL);
   return;
@@ -179,37 +182,37 @@ void main44(void)
    int i,j,k,kk,status,colcount,coldef,finfo,ibis,nrec,adjust;
    int filcount,notfound,dfeather,dummy,iread,currix,maxmfns;
    int previx,tempnl,tempns,datafound,rightbrk=0,leftbrk=0,midns,iout;
-   int listix=0,ix2,ix3,tns,fildef,numcross,maxcross,*bufused;
-   int *mfsl,*mfss,*mfnl,*mfns,**nbrj,**countz,*ibisrev,**ibisnbrj;
-   int *fileix,*ibisix,*openstat,*vunit,*rotix,*lineread,*bufix;
+   int listix=0,ix2,ix3,tns,fildef,numcross,maxcross,*bufused=NULL;
+   int *mfsl=NULL,*mfss=NULL,*mfnl=NULL,*mfns=NULL,**nbrj=NULL,**countz=NULL,*ibisrev=NULL,**ibisnbrj=NULL;
+   int *fileix=NULL,*ibisix=NULL,*openstat=NULL,*vunit=NULL,*rotix=NULL,*lineread=NULL,*bufix=NULL;
    int edge,thresh,nibble,lnibble,rnibble,nthresh,lthresh,rthresh;
-   int ixl,ixr,ibj,nseq,nincr,cloudout,*firstread,bix,ibix,nbrseq;
+   int ixl,ixr,ibj,nseq,nincr,cloudout,*firstread=NULL,bix,ibix,nbrseq;
    int cols[7],inlist[50],sampoff[50],progress,thrcount,tval;
    int ramp,rdkthr,rdiffthr,rmoore,rcols[10],kq,jq,bixq,ix2q,ix3q;
    int zcnt,iix,loff,soff,rcolcount,rcoldef,jnbr,fmt_byte,dimax;
    int kmatch,redfeather,redmfns,moorefac,ired,redtns,curline,mooremax;
-   int ix3red,ix3qred,ibjq,*rereadmemory,rereadline,moorectr,mooreend;
+   int ix3red,ix3qred,ibjq,*rereadmemory=NULL,rereadline,moorectr,mooreend;
    int geotiff,labnl,labns,len,tolerct,tolerdf,img,rot1,rot2;
-   int sctype1,sctype2,*ilcorner,*iscorner,*inl,*ins,isav,moorenbl;
+   int sctype1,sctype2,*ilcorner=NULL,*iscorner=NULL,*inl=NULL,*ins=NULL,isav,moorenbl;
    int igncase;
-   short int ***footprnt,*bufout,*bufhit,pself,pnbr,i2dkthr=0;
-   short int **inbuf,***moore,mooretst=0,mnbr;
-   char *fnames,infil[NUMINFILES][99],*name1,*name2;
-   char *p,fmt_str2[10];
-   char *labelstr1,*labelstr2,scalestr[50],transstr[133];
+   short int ***footprnt=NULL,*bufout=NULL,*bufhit=NULL,pself,pnbr,i2dkthr=0;
+   short int **inbuf=NULL,***moore=NULL,mooretst=0,mnbr;
+   char *fnames=NULL,infil[NUMINFILES][99],*name1=NULL,*name2=NULL;
+   char *p=NULL,fmt_str2[10];
+   char *labelstr1=NULL,*labelstr2=NULL,scalestr[50],transstr[133];
    double t[6],tinv[6],r[6],rinv[6],corner[4],rcorner[4];
    double tout[6],toutinv[6],scale1,scale2,voff,bcor,dcor,dpow;
    double scale11,scale12,scale21,scale22,roundval1,roundval2;
    double toler,xcorner,ycorner,lcorner,scorner;
    
-   double *mffac1,**sumz,ztot;
-   float vi,usum,ovi=0,fcloudout,di,odi,lsum,**dz,*zbar,gorefac,rpow;
-   float zramp=0,vself,vnbr,hnl,hns,locnl,locns,**ibisdz,fbigthresh=0;
+   double *mffac1=NULL,**sumz=NULL,ztot;
+   float vi,usum,ovi=0,fcloudout,di,lsum,**dz=NULL,*zbar=NULL,gorefac,rpow;
+   float zramp=0,vself,vnbr,hnl,hns,locnl,locns,**ibisdz=NULL,fbigthresh=0;
    float vdiff,vimax=0;
    
    /* initialize, fetch params */
 
-   zifmessage("featherv version Thu Oct 09 2008");
+   zifmessage("FEATHERV version 2019-08-23");
    
    if (zvptst("factor")) adjust = 1; else adjust = 0;
    if (zvptst("add")) adjust = adjust*100+2;
@@ -1419,10 +1422,9 @@ void main44(void)
                            usum = 0;
                            lsum = 0;
                            ovi = vi;
-                           odi = di;
                            }
                         }
-                     else { ovi = vi; odi = di; }
+                     else { ovi = vi; }
                      }
                   usum += di*vi;
                   lsum += di;

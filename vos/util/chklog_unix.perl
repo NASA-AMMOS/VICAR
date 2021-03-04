@@ -14,71 +14,14 @@ $flag = @ARGV[1];
 open(LOG,$log) || die "The vicar build log file could not be opened.\n";
 if ($flag eq "")
 {  print "************Platform designation missing for build log.***********\n";
-   print "Please enter solr or linux.\n"
+   print "Please enter linux32,linux64,linux32nsyt,linux32msl,linux64nsyt,linux64msl.\n"
 }
 $name = " ";
 $errmsg = " ";
 #
-#####################################################################################
-# SUN-SOLR Build Exception Reasons:
-# 
-# 1) pgm_icons,rts_tcl_scripts,tp_pdf and xvd_pdf, rtcsetupvms 
-#    actually have no build.  The files only need to get unpacked.
-#    The errors generated are spurious.
-#
-# 2) jpegcomp: Per Allan Runkle, "Since this code is currently not 
-#              required for any active mission, I do not
-#              think it is worth correcting."
-#
-# 3) Linux only: comp3_pdf     Per Barbara McGuffie, 10/11/01 
-#                ads_server    Per MPB, 5/3/02
-#
-# 4) P3 ROUTINES: p3/sub/zlow7.com, p3/prog/l7cal,sebasscal,tcal2,timscal2,timscal2re  
-#                  These routines were delivered by a summer hire for Barbara McGuffie.
-#                  zlow7.com is missing a header file.  The p3 programs are missing a 
-#                  module mod3files.  9/9/05 
-#         
-# 5) Routines removed from list due to the code being obsoleted:  
-#                 craf, gedread, gll_brws_dsp, gllimbuildnims, gllimbuildpws, gllimbuildssi,
-#                 glltelemproc, nimsmerge2, pgm_icons                
-#
-# 6) P3 routine: temis added 3/8/06 Part of the summer hire delivery.
-# 7) Phoenix code delivered to linux only.  The following code does not build on sun-solr:
-#       phx_cam_decompress, phx_ra_decompress, phxtelemlib, phxtelemproc    5/10/2006
-# 8) tlm_base, tlm_event, tlm_Test_Test_stream: Not used on sun-solr 3/22/07 
-# 9) Diviner code delivered to linux only - libjpl_mipl_diviner_spice, diviner_ckern,diviner_l1b
-# 10) Diviner code delivered to linux only - div/sub/sim_subs, div/prog/simscan
-# 11) Diviner code delivered to linux only - div/sub/libdivl1b_so,libdivl1b_a, div/prog/divl1b 12/2/08
-# 12) Removed tlm_event.  Builds on sun-solr.  6/19/2009 sxc
-# 13) Added galsos.  1/28/2010 sxc 
-# 14) Removed comp3_pdf,jpegcomp,libjpl_mipl_diviner_spice,nimsmerge2,ricecomp,sebasscal,
-#     timscal2, timscal2re, zlow7, phxtelemproc, phxtelemlib, phx_ra_decompress,tlm_base,
-#     from list.  It builds on solr. 6/1/10
-# 15) Removed ads_server,reseaulog,rtcsetupvms,rts_tcl_scripts,tp_pdf,xvd_pdf from list. 6/1/10  
-#     They have been obsoleted. 
-# 16) Added mslreach.  Program only builds on the Linux platform. 6/21/11
-# 17) Added mslfilter.  Program only build on the 32-bit Linux platform. 3/29/12
-# 18) Added the XRT routines: xrtps,ccdnoise,ccdrecip,ccdslope,mosplot,otf1,plot3d,
-#     plotint, pltgraf, power,qplot2, statplt and tieplot. 5/8/13
-# 19) Removed from exception list:galsos,ccdnoise,ccdrecip,ccdslope,mosplot,otf1,plot3d,plotint,pltgraf,qplot2,tieplot
-#     and statplt. 1/28/15
-# 20) Added: nsyt_instruments,nsyt_telemlib,marsinterp,nsyt_camera_packetizer,nsyt_camera_telemproc,nsyt_ida_science_telemproc,
-#     nsyt_ida_telemproc,nsyt_twins_telemproc,nsytrough,nsyttilt,nsyttpdf. 9/17/15
-# 21) Added: vtiff3o 10/19/15 
-# 22) Removed xrtps due to it being obsoleted. 11/17/15 
-# 23) Removed l7cal. Now builds on sun-solr.  11/17/15 
-#####################################################################################
-#
-# 
-@exceptsolr=("tcal2","diviner_ckern","diviner_l1b",
-"temis","tlm_Test_Test_stream",
-"sim_subs","simscan","libdivl1b_so","libdivl1b_a","divl1b","mslreach","mslfilter",
-"nsyt_instruments","nsyt_telemlib","marsinterp","nsyt_camera_packetizer","nsyt_camera_telemproc",
-"nsyt_ida_science_telemproc","nsyt_ida_telemproc","nsyt_twins_telemproc","nsytrough","nsyttilt","nsyttpdf","vtiff3o");
-#
 #######################################################################################
 #
-# Linux Build Exception Reasons:
+# Linux 32-bit Build Exception Reasons:
 #
 #
 # 1) NO XRT LIB: ccdnoise,ccdrecip,ccdslope,mosplot,otf1,plot3d,plotint, pltgraf, power,
@@ -192,13 +135,16 @@ $errmsg = " ";
 # 25) Added marsinterp,nsyt_instruments,nsytrough,nsyttilt. 9/17/15
 # 26) Removed xrpts because it's been obsoleted.  11/17/15
 # 27) Removed marsinterp,nsyt_instruments,nsytrough,nsyttilt, plotit, rovernav, xyznet because they now build on linux.  11/17/15
-#
-#######################################################################################
-#
-@exceptlinux=("tcal2","temis","vic2srf","casissstdtlmproc","tlm_Test_Test_stream","casisslosslessdecompsource",
-"casisssource","casswat","PEWrapper");
+# 28) Added cat_gen_util, rts_cat_util, cas_cat, cas_sybase_util,mpl_cat_util after mdms code obsoleted.
+# 29) Also added v2param,isslab,suffix2core,vimslab. 9/24/18
+# 30) Added marsrefmesh per Francois Ayoub. 1/30/19
+# 31) Added mars python scripts, m2020_scam_fitsgen, m2020_update_scam_odl 11/13/19
+# 32) Removed meshman, marsecorr due to tps embree not available for Linux-32. 2/20/20
+########################################################################################
 
-
+@exceptlinux32=("marsrefmesh","meshman","marsecorr","tcal2","temis","vic2srf",
+"cat_gen_util","rts_cat_util","cas_cat","cas_sybase_util","mpl_cat_util",
+"v2param","isslab","suffix2core","vimslab","m2020_scam_fitsgen","m2020_update_scam_odl");
 #
 #######################################################################################
 #
@@ -315,13 +261,72 @@ $errmsg = " ";
 #
 # 25) Added marsinterp.  9/17/15
 # 26) Removed rovernav,xyznet because they now build on linux64. 11/17/15
+# 27) Added cat_gen_util, rts_cat_util, cas_cat, cas_sybase_util,mpl_cat_util after mdms code obsoleted. 9/24/18
+# 28) Added mars python scripts, m2020_scam_fitsgen, m2020_update_scam_odl 11/13/19
+# 29) Added mars/src/prog/m20filter 2/12/20
 # 
 #######################################################################################
 #
-@exceptlinux64=("usedisp","tcal2","temis","vic2srf","casissstdtlmproc","casisslosslessdecompsource","casisssource",
-"tlm_Test_Test_stream","mslreach",
-"mslreach","libpig_native","PEWrapper","libdivl1b_a","libdivl1b_so","isslab","suffix2core","vimslab","casswat",
-"casvimsstdtlmproc","divl1b","mslfilter","marsinterp");
+@exceptlinux64=("tcal2","temis","vic2srf","mslreach","libpig_native","libdivl1b_a",
+"libdivl1b_so","isslab","suffix2core","vimslab","divl1b",
+"mslfilter","cat_gen_util","rts_cat_util","cas_cat","cas_sybase_util","mpl_cat_util",
+"m2020_scam_fitsgen","m2020_update_scam_odl","m20filter");
+
+#
+#######################################################################################
+#
+# MSL Linux-32 Build Exception Reasons:
+#
+# Added m2020 and nsyt code. 6/12/20
+#
+#######################################################################################
+@exceptlinux32msl=("marsrefmesh","meshman","marsecorr","tcal2","temis","vic2srf",
+"cat_gen_util","rts_cat_util","cas_cat","cas_sybase_util","mpl_cat_util",
+"v2param","isslab","suffix2core","vimslab","m2020_scam_fitsgen","m2020_update_scam_odl","m2020edrgenlib",
+"m2020engcamedrgenlib","m2020edrgen","m2020moxieedrgenlib","m2020pixledrgenlib","m2020rimfaxedrgenlib",
+"m2020srlcedrgenlib","m2020supercamedrgenlib","m20filter","nsyt_ida_science_telemproc","nsyt_ida_telemproc",
+"m2020medaedrgenlib","m2020mmmcamedrgenlib","nsyt_twins_telemproc","phxreach","phxtelemproc");
+#
+#######################################################################################
+#
+#
+# MSL Linux 64-bit Build Exception Reasons:
+#
+# Added m2020 and nsyt code. 6/12/20
+#
+################################################################################
+@exceptlinux64msl=("tcal2","temis","vic2srf","mslreach","libpig_native","libdivl1b_a",
+"libdivl1b_so","isslab","suffix2core","vimslab","divl1b",
+"mslfilter","cat_gen_util","rts_cat_util","cas_cat","cas_sybase_util","mpl_cat_util",
+"m2020_scam_fitsgen","m2020_update_scam_odl","m20filter","m2020edrgenlib","m2020engcamedrgenlib",
+"m2020medaedrgenlib","m2020mmmcamedrgenlib","m2020moxieedrgenlib","m2020pixledrgenlib",
+"m2020rimfaxedrgenlib","m2020srlcedrgenlib","m2020supercamedrgenlib","m2020edrgen");
+#
+################################################################################
+#
+# NSYT Linux-32 Build Exception Reasons:
+#
+# Added m2020 code. 6/12/20
+#
+################################################################################
+@exceptlinux32nsyt=("marsrefmesh","meshman","marsecorr","tcal2","temis","vic2srf",
+"cat_gen_util","rts_cat_util","cas_cat","cas_sybase_util","mpl_cat_util",
+"v2param","isslab","suffix2core","vimslab","m2020_scam_fitsgen","m2020_update_scam_odl","m2020edrgenlib",
+"m2020engcamedrgenlib","m2020edrgen","m2020moxieedrgenlib","m2020pixledrgenlib","m2020rimfaxedrgenlib",
+"m2020srlcedrgenlib","m2020supercamedrgenlib","m20filter",
+"m2020medaedrgenlib","m2020mmmcamedrgenlib","mslfilter","mslreach");
+#
+################################################################################
+#
+@exceptlinux64nsyt=("tcal2","temis","vic2srf","mslreach","libpig_native","libdivl1b_a",
+"libdivl1b_so","isslab","suffix2core","vimslab","divl1b",
+"mslfilter","cat_gen_util","rts_cat_util","cas_cat","cas_sybase_util","mpl_cat_util",
+"m2020_scam_fitsgen","m2020_update_scam_odl","m20filter","m2020edrgenlib","m2020engcamedrgenlib",
+"m2020medaedrgenlib","m2020mmmcamedrgenlib","m2020moxieedrgenlib","m2020pixledrgenlib",
+"m2020rimfaxedrgenlib","m2020srlcedrgenlib","m2020supercamedrgenlib","m2020edrgen");
+#
+###############################################################################
+
 
 ERROR: 
 
@@ -334,24 +339,24 @@ while (<LOG>) {
 }
 
 
-if ($flag eq "solr") {                                     # SOLR
-  if (/Error: / || /error: /) {                            
-          $errmsg = $_;
-          foreach $pattern (@exceptsolr) {
-            if ($name =~ $pattern) {
-            next ERROR;}
-         }
-      print "\n"; 
-      print "* module $name\n"; 
-      print "$errmsg\n";
-    }
-
-}
-
-elsif ($flag eq "linux") {
+if ($flag eq "linux32") {
  if (/Error 1/||/No rule/) {
          $errmsg = $_;
-         foreach $pattern (@exceptlinux) {
+         foreach $pattern (@exceptlinux32) {
+           if ($name =~ $pattern) {
+           next ERROR;}
+        }
+      print "\n";
+      print "* module $name\n";
+      print "$errmsg\n";
+    }
+}
+
+
+elsif ($flag eq "linux64") {
+ if (/Error 1/||/No rule/) {
+         $errmsg = $_;
+         foreach $pattern (@exceptlinux64) {
            if ($name =~ $pattern) {
            next ERROR;}
         }
@@ -361,10 +366,50 @@ elsif ($flag eq "linux") {
     } 
 }
 
-elsif ($flag eq "linux64") {
+elsif ($flag eq "linux64msl") {
  if (/Error 1/||/No rule/) {
          $errmsg = $_;
-         foreach $pattern (@exceptlinux64) {
+         foreach $pattern (@exceptlinux64msl) {
+           if ($name =~ $pattern) {
+           next ERROR;}
+        }
+      print "\n";
+      print "* module $name\n";
+      print "$errmsg\n";
+    }
+}
+
+elsif ($flag eq "linux64nsyt") {
+ if (/Error 1/||/No rule/) {
+         $errmsg = $_;
+         foreach $pattern (@exceptlinux64nsyt) {
+           if ($name =~ $pattern) {
+           next ERROR;}
+        }
+      print "\n";
+      print "* module $name\n";
+      print "$errmsg\n";
+    }
+}
+
+
+elsif ($flag eq "linux32msl") {
+ if (/Error 1/||/No rule/) {
+         $errmsg = $_;
+         foreach $pattern (@exceptlinux32msl) {
+           if ($name =~ $pattern) {
+           next ERROR;}
+        }
+      print "\n";
+      print "* module $name\n";
+      print "$errmsg\n";
+    }
+}
+
+elsif ($flag eq "linux32nsyt") {
+ if (/Error 1/||/No rule/) {
+         $errmsg = $_;
+         foreach $pattern (@exceptlinux32nsyt) {
            if ($name =~ $pattern) {
            next ERROR;}
         }

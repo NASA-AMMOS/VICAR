@@ -275,7 +275,7 @@ static int DBFFlushRecord( DBFHandle psDBF )
                                      1, psDBF->fp ) != 1 )
         {
             char szMessage[128];
-            sprintf( szMessage, "Failure writing DBF record %d.", 
+            snprintf( szMessage, 128, "Failure writing DBF record %d.", 
                      psDBF->nCurrentRecord );
             psDBF->sHooks.Error( szMessage );
             return FALSE;
@@ -305,7 +305,7 @@ static int DBFLoadRecord( DBFHandle psDBF, int iRecord )
 	if( psDBF->sHooks.FSeek( psDBF->fp, nRecordOffset, SEEK_SET ) != 0 )
         {
             char szMessage[128];
-            sprintf( szMessage, "fseek(%ld) failed on DBF file.\n",
+            snprintf( szMessage, 128, "fseek(%ld) failed on DBF file.\n",
                      (long) nRecordOffset );
             psDBF->sHooks.Error( szMessage );
             return FALSE;
@@ -315,7 +315,7 @@ static int DBFLoadRecord( DBFHandle psDBF, int iRecord )
                                  psDBF->nRecordLength, 1, psDBF->fp ) != 1 )
         {
             char szMessage[128];
-            sprintf( szMessage, "fread(%d) failed on DBF file.\n",
+            snprintf( szMessage, 128, "fread(%d) failed on DBF file.\n",
                      psDBF->nRecordLength );
             psDBF->sHooks.Error( szMessage );
             return FALSE;
@@ -418,8 +418,9 @@ DBFOpenLL( const char * pszFilename, const char * pszAccess, SAHooks *psHooks )
     if( pszBasename[i] == '.' )
         pszBasename[i] = '\0';
 
-    pszFullname = (char *) malloc(strlen(pszBasename) + 5);
-    sprintf( pszFullname, "%s.dbf", pszBasename );
+    int pszFullnameLen = strlen(pszBasename) + 5;
+    pszFullname = (char *) malloc(pszFullnameLen);
+    snprintf( pszFullname, pszFullnameLen, "%s.dbf", pszBasename );
         
     psDBF = (DBFHandle) calloc( 1, sizeof(DBFInfo) );
     psDBF->fp = psHooks->FOpen( pszFullname, pszAccess );
@@ -427,15 +428,15 @@ DBFOpenLL( const char * pszFilename, const char * pszAccess, SAHooks *psHooks )
 
     if( psDBF->fp == NULL )
     {
-        sprintf( pszFullname, "%s.DBF", pszBasename );
-        psDBF->fp = psDBF->sHooks.FOpen(pszFullname, pszAccess );
+      snprintf( pszFullname, pszFullnameLen, "%s.DBF", pszBasename );
+      psDBF->fp = psDBF->sHooks.FOpen(pszFullname, pszAccess );
     }
 
-    sprintf( pszFullname, "%s.cpg", pszBasename );
+    snprintf( pszFullname, pszFullnameLen, "%s.cpg", pszBasename );
     pfCPG = psHooks->FOpen( pszFullname, "r" );
     if( pfCPG == NULL )
     {
-        sprintf( pszFullname, "%s.CPG", pszBasename );
+      snprintf( pszFullname, pszFullnameLen, "%s.CPG", pszBasename );
         pfCPG = psHooks->FOpen( pszFullname, "r" );
     }
 
@@ -507,9 +508,9 @@ DBFOpenLL( const char * pszFilename, const char * pszAccess, SAHooks *psHooks )
     }
     if( psDBF->pszCodePage == NULL && pabyBuf[29] != 0 )
     {
-        sprintf( (char *) pabyBuf, "LDID/%d", psDBF->iLanguageDriver );
-        psDBF->pszCodePage = (char *) malloc(strlen((char*)pabyBuf) + 1);
-        strcpy( psDBF->pszCodePage, (char *) pabyBuf );
+      snprintf( (char *) pabyBuf, nBufSize, "LDID/%d", psDBF->iLanguageDriver );
+      psDBF->pszCodePage = (char *) malloc(strlen((char*)pabyBuf) + 1);
+      strcpy( psDBF->pszCodePage, (char *) pabyBuf );
     }
 
 /* -------------------------------------------------------------------- */
@@ -679,8 +680,9 @@ DBFCreateLL( const char * pszFilename, const char * pszCodePage, SAHooks *psHook
     if( pszBasename[i] == '.' )
         pszBasename[i] = '\0';
 
-    pszFullname = (char *) malloc(strlen(pszBasename) + 5);
-    sprintf( pszFullname, "%s.dbf", pszBasename );
+    int pszFullnameLen = strlen(pszBasename) + 5;
+    pszFullname = (char *) malloc(pszFullnameLen);
+    snprintf( pszFullname, pszFullnameLen, "%s.dbf", pszBasename );
 
 /* -------------------------------------------------------------------- */
 /*      Create the file.                                                */
@@ -697,7 +699,7 @@ DBFCreateLL( const char * pszFilename, const char * pszCodePage, SAHooks *psHook
         return( NULL );
 
 
-    sprintf( pszFullname, "%s.cpg", pszBasename );
+    snprintf( pszFullname, pszFullnameLen, "%s.cpg", pszBasename );
     if( pszCodePage != NULL )
     {
         if( strncmp( pszCodePage, "LDID/", 5 ) == 0 )
@@ -1251,7 +1253,9 @@ static int DBFWriteAttribute(DBFHandle psDBF, int hEntity, int iField,
 {
     int	       	i, j, nRetResult = TRUE;
     unsigned char	*pabyRec;
-    char	szSField[400], szFormat[20];
+    int szFormatLen = 20;
+    int szSFieldLen = 400;
+    char	szSField[szSFieldLen], szFormat[szFormatLen];
 
 /* -------------------------------------------------------------------- */
 /*	Is this a valid record?						*/
@@ -1317,8 +1321,8 @@ static int DBFWriteAttribute(DBFHandle psDBF, int hEntity, int iField,
             if( (int) sizeof(szSField)-2 < nWidth )
                 nWidth = sizeof(szSField)-2;
 
-	    sprintf( szFormat, "%%%dd", nWidth );
-	    sprintf(szSField, szFormat, (int) *((double *) pValue) );
+	    snprintf( szFormat, szFormatLen, "%%%dd", nWidth );
+	    snprintf(szSField, szSFieldLen, szFormat, (int) *((double *) pValue) );
 	    if( (int)strlen(szSField) > psDBF->panFieldSize[iField] )
             {
 	        szSField[psDBF->panFieldSize[iField]] = '\0';
@@ -1335,9 +1339,9 @@ static int DBFWriteAttribute(DBFHandle psDBF, int hEntity, int iField,
             if( (int) sizeof(szSField)-2 < nWidth )
                 nWidth = sizeof(szSField)-2;
 
-	    sprintf( szFormat, "%%%d.%df", 
+	    snprintf( szFormat, szFormatLen, "%%%d.%df", 
                      nWidth, psDBF->panFieldDecimals[iField] );
-	    sprintf(szSField, szFormat, *((double *) pValue) );
+	    snprintf(szSField, szSFieldLen, szFormat, *((double *) pValue) );
 	    if( (int) strlen(szSField) > psDBF->panFieldSize[iField] )
             {
 	        szSField[psDBF->panFieldSize[iField]] = '\0';

@@ -6,6 +6,8 @@
 #include <string.h>
 
 #include "defines.h"
+#include "zifmessage.h"
+#include "zmabend.h"
 #include "cartoGtUtils.h"
 #include "cartoMemUtils.h"
 #include "cartoStrUtils.h"
@@ -29,15 +31,15 @@ void main44(void)
 {
    int i,len,add,addtie,tiecnvrt,gtcount,gtdef,inpcnt;
    int tiecount,ier,firstpoint,scaletype=0,twofilecase;
-   int labnl,labns,i_unit,o_unit,status,nline,nsamp;
+   int labnl,labns,i_unit=0,o_unit,status,nline,nsamp;
    int infilecase,pixsiz,rectfit,outcnt;
-   char *labelstr,gtparms[40][200],buf[300];
-   char *p,*imbuf;
-   double img1[9],img2[9],map[6],ddummy,xmain,xcross,xtot;
+   char *labelstr=NULL,gtparms[40][200],buf[300];
+   char *p=NULL,*imbuf=NULL;
+   double img1[9],img2[9],map[6],xmain,xcross,xtot;
    
    /* initialize, fetch params, two input files a special case */
 
-   zifmessage("gtgen version Fri Jan 11 2008");
+   zifmessage("GTGEN version 2019-09-05");
    
    status = zvpcnt("inp",&inpcnt);
    status = zvpcnt("out",&outcnt);
@@ -98,7 +100,9 @@ void main44(void)
             img2[tiecount] = img1[tiecount];
             img2[tiecount+3] = img1[tiecount+3];
             img2[tiecount+6] = 1.0;
-            ddummy = ms_dnum(&p); p++;
+	    /* ignore returned double; just move p forward */
+            ms_dnum(&p);
+	    p++;
             map[tiecount] = ms_dnum(&p); p++;
             map[tiecount+3] = ms_dnum(&p); p++;
             tiecount++;

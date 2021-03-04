@@ -8,6 +8,11 @@
 #include <unistd.h>
 #include <errno.h>
 
+// Adding non-BSQ support would be simple: switch the BAND/LINE/SAMP
+// usages to SLICE1/2/3.  I'm just not entirely sure they're set up
+// properly in the compression case (process_input|output_file does it).
+// rgd 2020-10-28
+
 #if RTL_USE_COMPRESSION
 
 /* masking array used in the algorithm to take out bits in memory */
@@ -93,7 +98,7 @@ int basic_check_out_lbl_on_close(int unit)
    eol_labels = NULL;
    lblsize = CURRENT_I_VALUE(LBLSIZE);
    labels = CURRENT_S_VALUE(LABELS);
-   lzind = LAZY_INDEX(CURRENT_I_VALUE(NL));
+   lzind = LAZY_INDEX(CURRENT_I_VALUE(NL) * CURRENT_I_VALUE(NB));
    new_lblsize = strlen(labels);
 
    /* If more labels than initially allocated memory for, 
@@ -268,8 +273,8 @@ int v2_basic_close(int unit)
       unsigned char *lengths;
       int i;
 
-      lengths = calloc(sizeof(int) * CURRENT_I_VALUE(NL), sizeof(int));
-      for(i = 0; i < CURRENT_I_VALUE(NL); i++)
+      lengths = calloc(sizeof(int) * CURRENT_I_VALUE(NL) * CURRENT_I_VALUE(NB), sizeof(int));
+      for(i = 0; i < CURRENT_I_VALUE(NL) * CURRENT_I_VALUE(NB); i++)
       {
 	 unsigned int nBytes;
 
@@ -278,7 +283,7 @@ int v2_basic_close(int unit)
       }
 
       V2_LSEEK(bufstate->devstate.dev.disk.channel, CURRENT_I_VALUE(LBLSIZE), SEEK_SET);
-      write(bufstate->devstate.dev.disk.channel, lengths, sizeof(int) * CURRENT_I_VALUE(NL));
+      write(bufstate->devstate.dev.disk.channel, lengths, sizeof(int) * CURRENT_I_VALUE(NL)*CURRENT_I_VALUE(NB));
 
       free(lengths);
    }
@@ -328,10 +333,10 @@ int v2_basic_precheck(int unit)
    struct devstate *devstate;
 
    devstate = &((struct bufstate*)CURRENT_IP_VALUE(BUFSTATE))->devstate;
-   if(!EQUAL(CURRENT_S_VALUE(FORMAT), "BYTE") &&
-      !EQUAL(CURRENT_S_VALUE(FORMAT), "HALF") &&
-      !EQUAL(CURRENT_S_VALUE(FORMAT), "FULL"))
-      return UNSUPPORTED_FMT_BY_COMPRESSION;
+//   if(!EQUAL(CURRENT_S_VALUE(FORMAT), "BYTE") &&
+//      !EQUAL(CURRENT_S_VALUE(FORMAT), "HALF") &&
+//      !EQUAL(CURRENT_S_VALUE(FORMAT), "FULL"))
+//      return UNSUPPORTED_FMT_BY_COMPRESSION;
 
    if(!EQUAL(CURRENT_S_VALUE(ORG), "BSQ"))
       return UNSUPPORTED_ORG_BY_COMPRESSION;
@@ -737,12 +742,12 @@ int v2_set_basic_label_params(int unit)
    /* Get the last index for the EOCI (end of compressed image) label */
    /* The last index would only be -1 if the compression was BASIC    */
    /* and it had performed a read or update operation on the file.    */
-   if(LAZY_INDEX(CURRENT_I_VALUE(NL)) == -1)
+   if(LAZY_INDEX(CURRENT_I_VALUE(NL)*CURRENT_I_VALUE(NB)) == -1)
    {
-      CURRENT_I_VALUE(IMG_REC) = CURRENT_I_VALUE(NL);
+      CURRENT_I_VALUE(IMG_REC) = CURRENT_I_VALUE(NL)*CURRENT_I_VALUE(NB);
       v2_lazy_search(unit);
    }
-   eoci = (unsigned long)(LAZY_INDEX(CURRENT_I_VALUE(NL)));
+   eoci = (unsigned long)(LAZY_INDEX(CURRENT_I_VALUE(NL)*CURRENT_I_VALUE(NB)));
 
    /* delete EOCI labels if they exist and add a new ones */
    if((strstr(label, "EOCI1") != NULL))
@@ -780,21 +785,21 @@ int v2_basic_preprocess(int unit)
 
    state = (struct bufstate *)CURRENT_IP_VALUE(BUFSTATE);
 
-   CURRENT_IP_VALUE(LAZYINDEX) = malloc(sizeof(long)*(CURRENT_I_VALUE(NL)+1));
+   CURRENT_IP_VALUE(LAZYINDEX) = malloc(sizeof(long)*(CURRENT_I_VALUE(NL)*CURRENT_I_VALUE(NB)+1));
    if(EQUAL(CURRENT_S_VALUE(COMPRESS), "BASIC"))
       LAZY_INDEX(0) = (unsigned long)(CURRENT_I_VALUE(LBLSIZE));
    else if(EQUAL(CURRENT_S_VALUE(COMPRESS), "BASIC2"))
-      LAZY_INDEX(0) = (unsigned long)(CURRENT_I_VALUE(LBLSIZE)+sizeof(int)*CURRENT_I_VALUE(NL));
+      LAZY_INDEX(0) = (unsigned long)(CURRENT_I_VALUE(LBLSIZE)+sizeof(int)*CURRENT_I_VALUE(NL)*CURRENT_I_VALUE(NB));
 
    if(EQUAL(CURRENT_S_VALUE(COMPRESS), "BASIC2") && 
       (EQUAL(CURRENT_S_VALUE(OP), "READ") || EQUAL(CURRENT_S_VALUE(OP), "UPDATE")))
    {
       unsigned char *lengths;
 
-      lengths = calloc(sizeof(int)*CURRENT_I_VALUE(NL), sizeof(int));
+      lengths = calloc(sizeof(int)*CURRENT_I_VALUE(NL)*CURRENT_I_VALUE(NB), sizeof(int));
       V2_LSEEK(state->devstate.dev.disk.channel, CURRENT_I_VALUE(LBLSIZE), SEEK_SET);
-      read(state->devstate.dev.disk.channel, lengths, sizeof(int)*CURRENT_I_VALUE(NL));
-      for(i = 1; i <= CURRENT_I_VALUE(NL); i++)
+      read(state->devstate.dev.disk.channel, lengths, sizeof(int)*CURRENT_I_VALUE(NL)*CURRENT_I_VALUE(NB));
+      for(i = 1; i <= CURRENT_I_VALUE(NL)*CURRENT_I_VALUE(NB); i++)
       {
  	 unsigned int nBytes;
 
@@ -805,7 +810,7 @@ int v2_basic_preprocess(int unit)
       free(lengths);
    }
    else
-      for(i = 1; i <= CURRENT_I_VALUE(NL); i++) LAZY_INDEX(i) = -1;
+      for(i = 1; i <= CURRENT_I_VALUE(NL)*CURRENT_I_VALUE(NB); i++) LAZY_INDEX(i) = -1;
 
    CURRENT_IP_VALUE(DECODED_BUF) = calloc(CURRENT_I_VALUE(PIX_SIZE) * CURRENT_I_VALUE(NS), sizeof(char));
    CURRENT_IP_VALUE(ENCODED_BUF) = calloc(CURRENT_I_VALUE(PIX_SIZE) * CURRENT_I_VALUE(NS) * 3/2 + 11, sizeof(char));
@@ -834,7 +839,8 @@ int v2_lazy_search(int unit)
 
    state = (struct bufstate *)CURRENT_IP_VALUE(BUFSTATE);
    for(i = CURRENT_I_VALUE(IMG_REC); i > 0 && LAZY_INDEX(i) == -1; i--);
-   for(; i < CURRENT_I_VALUE(IMG_REC) && i < CURRENT_I_VALUE(NL); i++)
+   for(; i < CURRENT_I_VALUE(IMG_REC) &&
+		i < CURRENT_I_VALUE(NL) * CURRENT_I_VALUE(NB); i++)
    {
       unsigned int index;
 
@@ -856,14 +862,19 @@ int v2_lazy_search(int unit)
 /*****************************************************/
 int set_IMG_REC(int unit)
 {
-   if(CURRENT_I_VALUE(LINE) < 0) return IMPROPER_LINE_SIZE_PARAM;
+   int rec = (CURRENT_I_VALUE(BAND)-1) * CURRENT_I_VALUE(NL) +
+	     CURRENT_I_VALUE(LINE);
 
-   if(CURRENT_I_VALUE(LINE) == 0)
+   if (rec < 0) return IMPROPER_LINE_SIZE_PARAM;
+
+   if (CURRENT_I_VALUE(LINE) == 0)
       ++CURRENT_I_VALUE(IMG_REC);
    else
-      CURRENT_I_VALUE(IMG_REC) = CURRENT_I_VALUE(LINE);
+      CURRENT_I_VALUE(IMG_REC) = rec;
 
-   if(CURRENT_I_VALUE(IMG_REC) > CURRENT_I_VALUE(NL)) return END_OF_FILE;
+   if (CURRENT_I_VALUE(IMG_REC) >
+			CURRENT_I_VALUE(NL) * CURRENT_I_VALUE(NB))
+      return END_OF_FILE;
 
    return SUCCESS;
 }
@@ -958,15 +969,19 @@ int basic_writ_precondition(int unit)
    /* check to see requesting write in sequential order */
    /* We need to make sure the request is not for a line
       greater than the last unwritten line */
-   if(CURRENT_I_VALUE(LINE) != 0 && CURRENT_I_VALUE(LINE) - CURRENT_I_VALUE(IMG_REC) > 1)
+
+   int rec = (CURRENT_I_VALUE(BAND)-1) * CURRENT_I_VALUE(NL) +
+	     CURRENT_I_VALUE(LINE);
+
+   if (rec != 0 && rec - CURRENT_I_VALUE(IMG_REC) > 1)
       return NON_SEQUENTIAL_WRITE;
    /* Check to ensure the request is not for a line that
       has already been written.*/
-   if(CURRENT_I_VALUE(LINE) != 0 && CURRENT_I_VALUE(LINE) - CURRENT_I_VALUE(IMG_REC) < 0)
+   if (rec != 0 && rec - CURRENT_I_VALUE(IMG_REC) < 0)
       return NON_SEQUENTIAL_WRITE;
 
    /* return error if trying to write in update mode */
-   if(EQUAL(CURRENT_S_VALUE(OP), "UPDATE")) return NON_SEQUENTIAL_WRITE;
+   if (EQUAL(CURRENT_S_VALUE(OP), "UPDATE")) return NON_SEQUENTIAL_WRITE;
 
    /* return error if trying to compress and write only part of a line */
    samp = CURRENT_I_VALUE(SAMP);

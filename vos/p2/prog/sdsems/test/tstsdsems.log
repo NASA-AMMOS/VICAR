@@ -1,0 +1,44 @@
+sdsems ct/sdsems_test.hlf out.hlf debline=50 debsamp=150
+Beginning VICAR task sdsems
+SDSEMS version 2020-12-21
+using WX 1000.000000, WY 1000.000000, DEBLINE 50, DEBSAMP 150
+
+              SAMP    149 SAMP    150 SAMP    151
+LINE     49:   163.000000  161.000000  161.000000
+LINE     50:   159.000000  157.000000  156.000000
+LINE     51:   155.000000  155.000000  153.000000
+
+deltaX 0.001250
+deltaY 0.003500
+a_rad 2.798569 (160.346177 in degrees)
+tanS 0.003717 (s in degrees 0.212940)
+cosArad -0.941742
+sinArad 0.336336
+h0 163.000000
+
+LINE 49 SAMP 149 hi 163.000000 hm 163.000000 dif 0.000000 dif^2 0.000000 (wX * winX * cosArad + wY * winY * sinArad) 0.000000
+LINE 49 SAMP 150 hi 161.750000 hm 161.000000 dif -0.750000 dif^2 0.562500 (wX * winX * cosArad + wY * winY * sinArad) 336.336374
+LINE 49 SAMP 151 hi 160.500000 hm 161.000000 dif 0.500000 dif^2 0.250000 (wX * winX * cosArad + wY * winY * sinArad) 672.672749
+LINE 50 SAMP 149 hi 166.500000 hm 159.000000 dif -7.500000 dif^2 56.250000 (wX * winX * cosArad + wY * winY * sinArad) -941.741943
+LINE 50 SAMP 150 hi 165.250000 hm 157.000000 dif -8.250000 dif^2 68.062500 (wX * winX * cosArad + wY * winY * sinArad) -605.405569
+LINE 50 SAMP 151 hi 164.000000 hm 156.000000 dif -8.000000 dif^2 64.000000 (wX * winX * cosArad + wY * winY * sinArad) -269.069195
+LINE 51 SAMP 149 hi 170.000000 hm 155.000000 dif -15.000000 dif^2 225.000000 (wX * winX * cosArad + wY * winY * sinArad) -1883.483887
+LINE 51 SAMP 150 hi 168.750000 hm 155.000000 dif -13.750000 dif^2 189.062500 (wX * winX * cosArad + wY * winY * sinArad) -1547.147512
+LINE 51 SAMP 151 hi 167.500000 hm 153.000000 dif -14.500000 dif^2 210.250000 (wX * winX * cosArad + wY * winY * sinArad) -1210.811138
+
+sum 813.437500
+sqrt(sum/8.0) 10.083634
+write "comparing with expected 32-bit output"
+comparing with expected 32-bit output
+difpic (ct/sdsems_test_out_32bit.hlf, out.hlf)
+Beginning VICAR task difpic
+DIFPIC version 2020-04-24
+ NUMBER OF DIFFERENCES = 534
+write "comparing with expected 64-bit output"
+comparing with expected 64-bit output
+difpic (ct/sdsems_test_out.hlf, out.hlf)
+Beginning VICAR task difpic
+DIFPIC version 2020-04-24
+ NUMBER OF DIFFERENCES =   0
+ush rm out.hlf ct
+disable-log

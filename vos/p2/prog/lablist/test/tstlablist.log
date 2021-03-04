@@ -1,0 +1,1498 @@
+Write " The Test Data are handled for both VMS and UNIX in this PDF. "
+ The Test Data are handled for both VMS and UNIX in this PDF. 
+LABLIST  /project/test_work/testdata/sitod1/test_data/images/gll.edr
+Beginning VICAR task LABLIST
+LABLIST version 2019-08-01
+
+LABEL FOR FILE:
+/project/test_work/testdata/sitod1/test_data/images/gll.edr
+HALF FORMAT  NB= 1  NL=  800  NS=  800  FILE ORGANIZATION=BSQ
+GLL/SSI  PICNO=XXXYZZZ     FILTER=1(GRN)  TLMFMT=HCM     TARGET=*TARGET*  
+RIM=*/00294951:00:0:0      EXP=  100.00   FIBE=1100      TCA=CLOSEST TIME
+SCET=0000.000 00:00:00:000 GAIN=2(100K)   COMP=IP        TRUNC BITS/PXL=0.00
+PA=NNIOOOOOO#MMSSSSXXXX    RATE=30 1/3    ENTROPY=0.00   TRUNC PXLS/LNE=  0
+INA=  0.00  TWST=  0.00    SUNAZ=  0.00   BOOM=NO        HSCL=0.0000e+00 M/PXL
+EMA=  0.00  CONE=  0.00    SMRAZ=  0.00   SMEAR= 0.00    VSCL=0.0000e+00 M/PXL
+PHA=  0.00  RA=  0.00      S/CAZ=  0.00   LAT=  0.00     PLANETRNG=0.0000e+00
+HRA=  0.00  DEC=  0.00     NORAZ=  0.00   LON=  0.00     SLANT RNG=0.0000e+00
+CAL=CAL.100                IOF=1.0000e+00 UBWC=OFF       SOLAR RNG=7.7791e+08
+DC=DC.100                  CNV=2.1788e+03 
+BLM=BLEM.100               SO=OFFSETS.IMG                EDR=************/***
+ 
+GALSOS
+LABLIST  /project/test_work/testdata/sitod1/test_data/images/gll.edr   'full 'nousrtim
+Beginning VICAR task LABLIST
+LABLIST version 2019-08-01
+
+LABEL FOR FILE:
+/project/test_work/testdata/sitod1/test_data/images/gll.edr
+HALF FORMAT  NB= 1  NL=  800  NS=  800  FILE ORGANIZATION=BSQ
+GLL/SSI  PICNO=XXXYZZZ     FILTER=1(GRN)  TLMFMT=HCM     TARGET=*TARGET*  
+RIM=*/00294951:00:0:0      EXP=  100.00   FIBE=1100      TCA=CLOSEST TIME
+SCET=0000.000 00:00:00:000 GAIN=2(100K)   COMP=IP        TRUNC BITS/PXL=0.00
+PA=NNIOOOOOO#MMSSSSXXXX    RATE=30 1/3    ENTROPY=0.00   TRUNC PXLS/LNE=  0
+INA=  0.00  TWST=  0.00    SUNAZ=  0.00   BOOM=NO        HSCL=0.0000e+00 M/PXL
+EMA=  0.00  CONE=  0.00    SMRAZ=  0.00   SMEAR= 0.00    VSCL=0.0000e+00 M/PXL
+PHA=  0.00  RA=  0.00      S/CAZ=  0.00   LAT=  0.00     PLANETRNG=0.0000e+00
+HRA=  0.00  DEC=  0.00     NORAZ=  0.00   LON=  0.00     SLANT RNG=0.0000e+00
+CAL=CAL.100                IOF=1.0000e+00 UBWC=OFF       SOLAR RNG=7.7791e+08
+DC=DC.100                  CNV=2.1788e+03 
+BLM=BLEM.100               SO=OFFSETS.IMG                EDR=************/***
+ 
+---- TASK: GALSOS        USER: 	 ----
+COMMENT='GALSOS replaced 1218 pixels by interpolation'
+LABEL-LIST  /project/test_work/testdata/sitod1/test_data/images/gll.edr    'nousrtim
+Beginning VICAR task LABEL
+LABEL version 2019-05-28
+************************************************************
+ 
+        ************  File /project/test_work/testdata/sitod1/test_data/images/gll.edr ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in HALF format from a VAX-VMS host
+                1 bands
+                800 lines per band
+                800 samples per line
+                11 lines of binary header
+                200 bytes of binary prefix per line
+---- Task: TASK -- User:  --  ----
+MISSION='GALILEO'
+SENSOR='SSI'
+PICNO='XXXYZZZ'
+PA='NNIOOOOOO#MMSSSSXXXX'
+RIM=294951
+MOD10=0
+TCA='CLOSEST TIME'
+TARGET='*TARGET*'
+SCETYEAR=0
+SCETDAY=0
+SCETHOUR=0
+SCETMIN=0
+SCETSEC=0
+SCETMSEC=0
+FILTER=1
+GAIN=2
+RATE=3
+TLMFMT='HCM'
+BOOM='N'
+FIBE='1100'
+BARC='IP'
+ENTRPY=4.100124e-35
+TBPPXL=0.0
+TPPLNE=0.0
+INA=0.0
+EMA=0.0
+PHA=0.0
+HRA=0.0
+TWIST=0.0
+CONE=0.0
+RA=0.0
+DEC=0.0
+SUNAZ=0.0
+NORAZ=0.0
+SCAZ=0.0
+SMRAZ=0.0
+SMEAR=0.0
+HSCL=0.0
+VSCL=0.0
+LAT=0.0
+LOG=0.0
+RAD=0.0
+PLRANGE=0.0
+SLRANGE=0.0
+SOLRANGE=7.779091e+08
+EXP=100.0
+UBWC='OFF'
+IOF=1.0
+CNV=2178.8
+CAL='CAL.100'
+DC='DC.100'
+BLM='BLEM.100'
+SO='OFFSETS.IMG'
+---- Task: GALSOS -- User:  --  ----
+COMMENT='GALSOS replaced 1218 pixels by interpolation'
+ 
+************************************************************
+LABLIST  /project/test_work/testdata/mipl/vgr/mirandab.vio
+Beginning VICAR task LABLIST
+LABLIST version 2019-08-01
+
+LABEL FOR FILE:
+/project/test_work/testdata/mipl/vgr/mirandab.vio
+BYTE FORMAT  NB= 1  NL= 1000  NS= 1000  FILE ORGANIZATION=BSQ
+VGR-2   FDS 26844.11   PICNO 1579U2-001   SCET 86.024 15:03:09         
+NA CAMERA  EXP  2880.0 MSEC  FILT 1(VIOLET)  LO GAIN  SCAN RATE  1:1   
+ERT 86.025 19:34:22   1/ 1 FULL    RES   VIDICON TEMP  -80.00 DEG C    
+IN/xxxxxx/xx OUT/xxxxxx/xx                 DSS #45   BIT SNR   19.609  
+ 50000 A/45000BD7 B/9881 C/998E D/007F0000 ETLM/C518A4C58068E1431610S A
+NA OPCAL 00(*****.* MSEC) PIXAVG 048/0 OPERATIONAL MODE 2(NAONLY)     A
+CAM ECAL CYCLE BEAM  RESET OPEN  CLOSE FLOOD AEXPM  FIL G1 SHUT MODE  A
+NA   NO   READ  YES   NO    NO    NO    NO    NO    1 P  7 NORMAL     A
+WA   NO   PREP  NO    YES   NO    NO    NO    NO    3 P  * NORMAL     A
+LSB_TRUNC=OFF                                                          
+ 
+VGRFILLI - ADESPIKE - FICOR77 - FIXVGR - COPY - RESSAR77 - GEOMA - C
+LABLIST  /project/test_work/testdata/mipl/vgr/mirandab.vio  'full 'nousrtim
+Beginning VICAR task LABLIST
+LABLIST version 2019-08-01
+
+LABEL FOR FILE:
+/project/test_work/testdata/mipl/vgr/mirandab.vio
+BYTE FORMAT  NB= 1  NL= 1000  NS= 1000  FILE ORGANIZATION=BSQ
+VGR-2   FDS 26844.11   PICNO 1579U2-001   SCET 86.024 15:03:09         
+NA CAMERA  EXP  2880.0 MSEC  FILT 1(VIOLET)  LO GAIN  SCAN RATE  1:1   
+ERT 86.025 19:34:22   1/ 1 FULL    RES   VIDICON TEMP  -80.00 DEG C    
+IN/xxxxxx/xx OUT/xxxxxx/xx                 DSS #45   BIT SNR   19.609  
+ 50000 A/45000BD7 B/9881 C/998E D/007F0000 ETLM/C518A4C58068E1431610S A
+NA OPCAL 00(*****.* MSEC) PIXAVG 048/0 OPERATIONAL MODE 2(NAONLY)     A
+CAM ECAL CYCLE BEAM  RESET OPEN  CLOSE FLOOD AEXPM  FIL G1 SHUT MODE  A
+NA   NO   READ  YES   NO    NO    NO    NO    NO    1 P  7 NORMAL     A
+WA   NO   PREP  NO    YES   NO    NO    NO    NO    3 P  * NORMAL     A
+LSB_TRUNC=OFF                                                          
+ 
+---- TASK: VGRFILLI      USER: 	 ----
+LIN_CNT=0
+---- TASK: ADESPIKE      USER: 	 ----
+ADJ_LINE=2
+SAM_LINE=2
+---- TASK: FICOR77       USER: 	 ----
+LABEL1=
+'FICOR77  MINSAT=32767 NUMSAT=     0                                  '
+LABEL2=
+'TO CONVERT TO NANOWATTS/CM**2/STER/NM MULTIPLY DN VALUE BY    0.18448'
+LABEL3=
+'TO CONVERT TO (I/F)*10000., MULTIPLY DN VALUE BY              1.00000'
+LABEL4=
+'FICOR77  DARK CURRENT FDS = 23224.39                                 '
+---- TASK: FIXVGR        USER: 	 ----
+COMMENT=' PICTURE MULTIPLIED BY   11.18      FIXVGR     6/15/85 VERSION'
+SCALE='URANUS '
+---- TASK: COPY          USER: 	 ----
+---- TASK: RESSAR77      USER: 	 ----
+PIX_CNT=17156
+---- TASK: GEOMA         USER: 	 ----
+---- TASK: C             USER: 	 ----
+LABEL-LIST  /project/test_work/testdata/mipl/vgr/mirandab.vio   'nousrtim
+Beginning VICAR task LABEL
+LABEL version 2019-05-28
+************************************************************
+ 
+        ************  File /project/test_work/testdata/mipl/vgr/mirandab.vio ************
+                2 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in BYTE format from a VAX-VMS host
+                1000 lines
+                1000 samples per line
+                0 lines of binary header
+                0 bytes of binary prefix per line
+---- Task: TASK -- User:  --  ----
+LAB01=
+'                     800     800 800 800 L 1                          SC'
+LAB02=
+'VGR-2   FDS 26844.11   PICNO 1579U2-001   SCET 86.024 15:03:09         C'
+LAB03=
+'NA CAMERA  EXP  2880.0 MSEC  FILT 1(VIOLET)  LO GAIN  SCAN RATE  1:1   C'
+LAB04=
+'ERT 86.025 19:34:22   1/ 1 FULL    RES   VIDICON TEMP  -80.00 DEG C    C'
+LAB05=
+'IN/xxxxxx/xx OUT/xxxxxx/xx                 DSS #45   BIT SNR   19.609  C'
+LAB06=
+' 50000 A/45000BD7 B/9881 C/998E D/007F0000 ETLM/C518A4C58068E1431610S AC'
+LAB07=
+'NA OPCAL 00(*****.* MSEC) PIXAVG 048/0 OPERATIONAL MODE 2(NAONLY)     AC'
+LAB08=
+'CAM ECAL CYCLE BEAM  RESET OPEN  CLOSE FLOOD AEXPM  FIL G1 SHUT MODE  AC'
+LAB09=
+'NA   NO   READ  YES   NO    NO    NO    NO    NO    1 P  7 NORMAL     AC'
+LAB10=
+'WA   NO   PREP  NO    YES   NO    NO    NO    NO    3 P  * NORMAL     AC'
+LAB11=
+'LSB_TRUNC=OFF                                                          L'
+NLABS=11
+---- Task: VGRFILLI -- User:  --  ----
+LIN_CNT=0
+---- Task: ADESPIKE -- User:  --  ----
+ADJ_LINE=2
+SAM_LINE=2
+---- Task: FICOR77 -- User:  --  ----
+LABEL1=
+'FICOR77  MINSAT=32767 NUMSAT=     0                                  '
+LABEL2=
+'TO CONVERT TO NANOWATTS/CM**2/STER/NM MULTIPLY DN VALUE BY    0.18448'
+LABEL3=
+'TO CONVERT TO (I/F)*10000., MULTIPLY DN VALUE BY              1.00000'
+LABEL4=
+'FICOR77  DARK CURRENT FDS = 23224.39                                 '
+---- Task: FIXVGR -- User:  --  ----
+COMMENT=' PICTURE MULTIPLIED BY   11.18      FIXVGR     6/15/85 VERSION'
+SCALE='URANUS '
+---- Task: COPY -- User:  --  ----
+---- Task: RESSAR77 -- User:  --  ----
+PIX_CNT=17156
+---- Task: GEOMA -- User:  --  ----
+---- Task: C -- User:  --  ----
+ 
+************************************************************
+LABLIST  /project/test_work/testdata/mipl/gll/venus.img
+Beginning VICAR task LABLIST
+LABLIST version 2019-08-01
+
+LABEL FOR FILE:
+/project/test_work/testdata/mipl/gll/venus.img
+HALF FORMAT  NB= 1  NL=  800  NS=  800  FILE ORGANIZATION=BSQ
+GLL/SSI  PICNO=?           FILTER=3(VLT)  TLMFMT=HCM     TARGET=VENUS     
+RIM=*/00184944:00:1:0      EXP=   25.00   FIBE=0000      TCA=CLOSEST TIME
+SCET=1990.044 05:58:16:962 GAIN=2(100K)   COMP=RC        TRUNC BITS/PXL=0.00
+PA=VVGLI01                 RATE=30 1/3    ENTROPY=0.00   TRUNC PXLS/LNE=  0
+INA=-999.0  TWST=  0.00    SUNAZ=  0.00   BOOM=POSSIBLE  HSCL=0.0000e+00 M/PXL
+EMA=-999.0  CONE=  0.00    SMRAZ=  0.00   SMEAR=-999.0   VSCL=0.0000e+00 M/PXL
+PHA=-999.0  RA=  0.00      S/CAZ=  0.00   LAT=  0.00     PLANETRNG=0.0000e+00
+HRA=-999.0  DEC=  0.00     NORAZ=  0.00   LON=  0.00     SLANT RNG=0.0000e+00
+CAL=VIO100.CAL             IOF=1.0000e+01 UBWC=ON        SOLAR RNG=7.7791e+08
+DC=2F30.DC                 CNV=9.3808e+01 
+BLM=VIO2F.BLM              SO=CALIBRATION.SO             EDR=************/***
+ 
+GALSOS - LABEL - PERSLAB
+LABLIST  /project/test_work/testdata/mipl/gll/venus.img     'full 'nousrtim
+Beginning VICAR task LABLIST
+LABLIST version 2019-08-01
+
+LABEL FOR FILE:
+/project/test_work/testdata/mipl/gll/venus.img
+HALF FORMAT  NB= 1  NL=  800  NS=  800  FILE ORGANIZATION=BSQ
+GLL/SSI  PICNO=?           FILTER=3(VLT)  TLMFMT=HCM     TARGET=VENUS     
+RIM=*/00184944:00:1:0      EXP=   25.00   FIBE=0000      TCA=CLOSEST TIME
+SCET=1990.044 05:58:16:962 GAIN=2(100K)   COMP=RC        TRUNC BITS/PXL=0.00
+PA=VVGLI01                 RATE=30 1/3    ENTROPY=0.00   TRUNC PXLS/LNE=  0
+INA=-999.0  TWST=  0.00    SUNAZ=  0.00   BOOM=POSSIBLE  HSCL=0.0000e+00 M/PXL
+EMA=-999.0  CONE=  0.00    SMRAZ=  0.00   SMEAR=-999.0   VSCL=0.0000e+00 M/PXL
+PHA=-999.0  RA=  0.00      S/CAZ=  0.00   LAT=  0.00     PLANETRNG=0.0000e+00
+HRA=-999.0  DEC=  0.00     NORAZ=  0.00   LON=  0.00     SLANT RNG=0.0000e+00
+CAL=VIO100.CAL             IOF=1.0000e+01 UBWC=ON        SOLAR RNG=7.7791e+08
+DC=2F30.DC                 CNV=9.3808e+01 
+BLM=VIO2F.BLM              SO=CALIBRATION.SO             EDR=************/***
+ 
+---- TASK: GALSOS        USER: 	 ----
+COMMENT='GALSOS replaced 14 pixels by interpolation'
+---- TASK: LABEL         USER: 	 ----
+---- TASK: PERSLAB       USER: 	 ----
+LABEL-LIST  /project/test_work/testdata/mipl/gll/venus.img      'nousrtim
+Beginning VICAR task LABEL
+LABEL version 2019-05-28
+************************************************************
+ 
+        ************  File /project/test_work/testdata/mipl/gll/venus.img ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in HALF format from a AXP-VMS host
+                1 bands
+                800 lines per band
+                800 samples per line
+                0 lines of binary header
+                0 bytes of binary prefix per line
+---- Task: TASK -- User:  --  ----
+MISSION='GALILEO'
+SENSOR='SSI'
+PICNO='?'
+PA='VVGLI01'
+RIM=184944
+MOD91=0
+MOD10=1
+MOD8=0
+TCA='CLOSEST TIME'
+TARGET='VENUS'
+SCETYEAR=1990
+SCETDAY=44
+SCETHOUR=5
+SCETMIN=58
+EXP=25.0
+RATE=3
+TLMFMT='HCM'
+BOOM='P'
+FIBE='0000'
+BARC='RC'
+ENTROPY=0.0
+TBPPXL=0.0
+TPPLNE=0.0
+INA=-999.0
+EMA=-999.0
+PHA=-999.0
+HRA=-999.0
+TWIST=0.0
+CONE=0.0
+RA=0.0
+DEC=0.0
+SUNAZ=0.0
+NORAZ=0.0
+SCAZ=0.0
+SMRAZ=0.0
+SMEAR=-999.0
+HSCL=0.0
+VSCL=0.0
+LAT=0.0
+LOG=0.0
+RAD=0.0
+PLRANGE=0.0
+SLRANGE=0.0
+SOLRANGE=7.779091e+08
+UBWC='ON'
+IOF=10.0
+CNV=93.8084
+CAL='VIO100.CAL'
+DC='2F30.DC'
+BLM='VIO2F.BLM'
+SO='CALIBRATION.SO'
+FILTER=3
+GAIN=2
+SCETSEC=16
+SCETMSEC=962
+---- Task: GALSOS -- User:  --  ----
+COMMENT='GALSOS replaced 14 pixels by interpolation'
+---- Task: LABEL -- User:  --  ----
+---- Task: PERSLAB -- User:  --  ----
+ 
+************************************************************
+LABLIST  /project/test_work/testdata/mipl/gll/venus2.img
+Beginning VICAR task LABLIST
+LABLIST version 2019-08-01
+
+LABEL FOR FILE:
+/project/test_work/testdata/mipl/gll/venus2.img
+HALF FORMAT  NB= 1  NL=  800  NS=  800  FILE ORGANIZATION=BSQ
+GLL/SSI  PICNO=?           FILTER=5(968)  TLMFMT=HCM     TARGET=VENUS     
+RIM=*/00184944:45:6:0      EXP=   66.67   FIBE=1000      TCA=CLOSEST TIME
+SCET=1990.044 05:58:47:329 GAIN=2(100K)   COMP=RC        TRUNC BITS/PXL=0.00
+PA=VVGLI01                 RATE=30 1/3    ENTROPY=0.00   TRUNC PXLS/LNE=  0
+INA= 37.62  TWST=  0.00    SUNAZ=  0.00   BOOM=POSSIBLE  HSCL=0.0000e+00 M/PXL
+EMA=  9.29  CONE=  0.00    SMRAZ=  0.00   SMEAR=-999.0   VSCL=0.0000e+00 M/PXL
+PHA= 46.81  RA=  0.00      S/CAZ=  0.00   LAT=  0.00     PLANETRNG=0.0000e+00
+HRA=-999.0  DEC=  0.00     NORAZ=  0.00   LON=  0.00     SLANT RNG=0.0000e+00
+CAL=968100.CAL             IOF=1.0000e+00 UBWC=ON        SOLAR RNG=7.7791e+08
+DC=2F30.DC                 CNV=4.7519e+00 
+BLM=9682F.BLM              SO=CALIBRATION.SO             EDR=************/***
+ 
+GALSOS - LABEL - COPY
+LABLIST  /project/test_work/testdata/mipl/gll/venus2.img    'full 'nousrtim
+Beginning VICAR task LABLIST
+LABLIST version 2019-08-01
+
+LABEL FOR FILE:
+/project/test_work/testdata/mipl/gll/venus2.img
+HALF FORMAT  NB= 1  NL=  800  NS=  800  FILE ORGANIZATION=BSQ
+GLL/SSI  PICNO=?           FILTER=5(968)  TLMFMT=HCM     TARGET=VENUS     
+RIM=*/00184944:45:6:0      EXP=   66.67   FIBE=1000      TCA=CLOSEST TIME
+SCET=1990.044 05:58:47:329 GAIN=2(100K)   COMP=RC        TRUNC BITS/PXL=0.00
+PA=VVGLI01                 RATE=30 1/3    ENTROPY=0.00   TRUNC PXLS/LNE=  0
+INA= 37.62  TWST=  0.00    SUNAZ=  0.00   BOOM=POSSIBLE  HSCL=0.0000e+00 M/PXL
+EMA=  9.29  CONE=  0.00    SMRAZ=  0.00   SMEAR=-999.0   VSCL=0.0000e+00 M/PXL
+PHA= 46.81  RA=  0.00      S/CAZ=  0.00   LAT=  0.00     PLANETRNG=0.0000e+00
+HRA=-999.0  DEC=  0.00     NORAZ=  0.00   LON=  0.00     SLANT RNG=0.0000e+00
+CAL=968100.CAL             IOF=1.0000e+00 UBWC=ON        SOLAR RNG=7.7791e+08
+DC=2F30.DC                 CNV=4.7519e+00 
+BLM=9682F.BLM              SO=CALIBRATION.SO             EDR=************/***
+ 
+---- TASK: GALSOS        USER: 	 ----
+COMMENT='GALSOS replaced 723 pixels by interpolation'
+---- TASK: LABEL         USER: 	 ----
+---- TASK: COPY          USER: 	 ----
+LABEL-LIST  /project/test_work/testdata/mipl/gll/venus2.img    'nousrtim
+Beginning VICAR task LABEL
+LABEL version 2019-05-28
+************************************************************
+ 
+        ************  File /project/test_work/testdata/mipl/gll/venus2.img ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in HALF format from a VAX-VMS host
+                1 bands
+                800 lines per band
+                800 samples per line
+                0 lines of binary header
+                0 bytes of binary prefix per line
+---- Task: TASK -- User:  --  ----
+MISSION='GALILEO'
+SENSOR='SSI'
+PICNO='?'
+PA='VVGLI01'
+RIM=184944
+MOD91=45
+MOD10=6
+MOD8=0
+TCA='CLOSEST TIME'
+TARGET='VENUS'
+SCETYEAR=1990
+SCETDAY=44
+SCETHOUR=5
+SCETMIN=58
+FILTER=5
+EXP=66.667
+GAIN=2
+RATE=3
+TLMFMT='HCM'
+BOOM='P'
+FIBE='1000'
+BARC='RC'
+ENTROPY=0.0
+TBPPXL=0.0
+TPPLNE=0.0
+INA=37.6152
+EMA=9.28915
+PHA=46.8052
+HRA=-999.0
+TWIST=0.0
+CONE=0.0
+RA=0.0
+DEC=0.0
+SUNAZ=0.0
+NORAZ=0.0
+SCAZ=0.0
+SMRAZ=0.0
+SMEAR=-999.0
+HSCL=0.0
+VSCL=0.0
+LAT=0.0
+LOG=0.0
+RAD=0.0
+PLRANGE=0.0
+SLRANGE=0.0
+SOLRANGE=7.779091e+08
+UBWC='ON'
+IOF=1.0
+CNV=4.7519
+CAL='968100.CAL'
+DC='2F30.DC'
+BLM='9682F.BLM'
+SO='CALIBRATION.SO'
+SCETSEC=47
+SCETMSEC=329
+---- Task: GALSOS -- User:  --  ----
+COMMENT='GALSOS replaced 723 pixels by interpolation'
+---- Task: LABEL -- User:  --  ----
+---- Task: COPY -- User:  --  ----
+ 
+************************************************************
+LABLIST  /project/test_work/testdata/mipl/gll/venus3.img
+Beginning VICAR task LABLIST
+LABLIST version 2019-08-01
+
+LABEL FOR FILE:
+/project/test_work/testdata/mipl/gll/venus3.img
+HALF FORMAT  NB= 1  NL=  800  NS=  800  FILE ORGANIZATION=BSQ
+GLL/SSI  PICNO=?           FILTER=3(VLT)  TLMFMT=HCM     TARGET=VENUS     
+RIM=*/00185063:00:1:0      EXP=   25.00   FIBE=1000      TCA=CLOSEST TIME
+SCET=1990.044 07:58:36:296 GAIN=2(100K)   COMP=RC        TRUNC BITS/PXL=0.00
+PA=VVGLI02                 RATE=30 1/3    ENTROPY=0.00   TRUNC PXLS/LNE=  0
+INA= 37.77  TWST=  0.00    SUNAZ=  0.00   BOOM=POSSIBLE  HSCL=0.0000e+00 M/PXL
+EMA=  9.72  CONE=  0.00    SMRAZ=  0.00   SMEAR=-999.0   VSCL=0.0000e+00 M/PXL
+PHA= 46.95  RA=  0.00      S/CAZ=  0.00   LAT=  0.00     PLANETRNG=0.0000e+00
+HRA=-999.0  DEC=  0.00     NORAZ=  0.00   LON=  0.00     SLANT RNG=0.0000e+00
+CAL=VIO100.CAL             IOF=1.0000e+00 UBWC=ON        SOLAR RNG=7.7791e+08
+DC=2F30.DC                 CNV=8.4913e+00 
+BLM=VIO2F.BLM              SO=CALIBRATION.SO             EDR=************/***
+ 
+GALSOS - LABEL - COPY
+LABLIST  /project/test_work/testdata/mipl/gll/venus3.img    'full 'nousrtim
+Beginning VICAR task LABLIST
+LABLIST version 2019-08-01
+
+LABEL FOR FILE:
+/project/test_work/testdata/mipl/gll/venus3.img
+HALF FORMAT  NB= 1  NL=  800  NS=  800  FILE ORGANIZATION=BSQ
+GLL/SSI  PICNO=?           FILTER=3(VLT)  TLMFMT=HCM     TARGET=VENUS     
+RIM=*/00185063:00:1:0      EXP=   25.00   FIBE=1000      TCA=CLOSEST TIME
+SCET=1990.044 07:58:36:296 GAIN=2(100K)   COMP=RC        TRUNC BITS/PXL=0.00
+PA=VVGLI02                 RATE=30 1/3    ENTROPY=0.00   TRUNC PXLS/LNE=  0
+INA= 37.77  TWST=  0.00    SUNAZ=  0.00   BOOM=POSSIBLE  HSCL=0.0000e+00 M/PXL
+EMA=  9.72  CONE=  0.00    SMRAZ=  0.00   SMEAR=-999.0   VSCL=0.0000e+00 M/PXL
+PHA= 46.95  RA=  0.00      S/CAZ=  0.00   LAT=  0.00     PLANETRNG=0.0000e+00
+HRA=-999.0  DEC=  0.00     NORAZ=  0.00   LON=  0.00     SLANT RNG=0.0000e+00
+CAL=VIO100.CAL             IOF=1.0000e+00 UBWC=ON        SOLAR RNG=7.7791e+08
+DC=2F30.DC                 CNV=8.4913e+00 
+BLM=VIO2F.BLM              SO=CALIBRATION.SO             EDR=************/***
+ 
+---- TASK: GALSOS        USER: 	 ----
+COMMENT='GALSOS replaced 23 pixels by interpolation'
+---- TASK: LABEL         USER: 	 ----
+---- TASK: COPY          USER: 	 ----
+LABEL-LIST  /project/test_work/testdata/mipl/gll/venus3.img     'nousrtim
+Beginning VICAR task LABEL
+LABEL version 2019-05-28
+************************************************************
+ 
+        ************  File /project/test_work/testdata/mipl/gll/venus3.img ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in HALF format from a VAX-VMS host
+                1 bands
+                800 lines per band
+                800 samples per line
+                0 lines of binary header
+                0 bytes of binary prefix per line
+---- Task: TASK -- User:  --  ----
+MISSION='GALILEO'
+SENSOR='SSI'
+PICNO='?'
+PA='VVGLI02'
+RIM=185063
+MOD91=0
+MOD10=1
+MOD8=0
+TCA='CLOSEST TIME'
+TARGET='VENUS'
+SCETYEAR=1990
+SCETDAY=44
+SCETHOUR=7
+SCETMIN=58
+FILTER=3
+EXP=25.0
+GAIN=2
+RATE=3
+TLMFMT='HCM'
+BOOM='P'
+FIBE='1000'
+BARC='RC'
+ENTROPY=0.0
+TBPPXL=0.0
+TPPLNE=0.0
+INA=37.7724
+EMA=9.7205
+PHA=46.9535
+HRA=-999.0
+TWIST=0.0
+CONE=0.0
+RA=0.0
+DEC=0.0
+SUNAZ=0.0
+NORAZ=0.0
+SCAZ=0.0
+SMRAZ=0.0
+SMEAR=-999.0
+HSCL=0.0
+VSCL=0.0
+LAT=0.0
+LOG=0.0
+RAD=0.0
+PLRANGE=0.0
+SLRANGE=0.0
+SOLRANGE=7.779091e+08
+UBWC='ON'
+IOF=1.0
+CNV=8.49134
+CAL='VIO100.CAL'
+DC='2F30.DC'
+BLM='VIO2F.BLM'
+SO='CALIBRATION.SO'
+SCETSEC=36
+SCETMSEC=296
+---- Task: GALSOS -- User:  --  ----
+COMMENT='GALSOS replaced 23 pixels by interpolation'
+---- Task: LABEL -- User:  --  ----
+---- Task: COPY -- User:  --  ----
+ 
+************************************************************
+LABLIST  /project/test_work/testdata/sitod1/test_data/images/s0061498500.1    'FULL 'NOUSRTIM
+Beginning VICAR task LABLIST
+LABLIST version 2019-08-01
+
+LABEL FOR FILE:
+/project/test_work/testdata/sitod1/test_data/images/s0061498500.1
+BYTE FORMAT  NB= 1  NL=  800  NS=  800  FILE ORGANIZATION=BSQ
+GLL/SSI  PICNO=?           FILTER=4(756)  TLMFMT=XCM     TARGET=?         
+RIM=*/00614985:00:1:0      EXP=   25.00   FIBE=1000      TCA=CLOSEST TIME
+SCET=0000.000 00:00:00:000 GAIN=2(100K)   COMP=RC        TRUNC BITS/PXL=0.00
+PA=?                       RATE=60 2/3    ENTROPY=0.00   TRUNC PXLS/LNE=  0
+INA=-999.0  TWST=  0.00    SUNAZ=  0.00   BOOM=NO        HSCL=0.0000e+00 M/PXL
+EMA=-999.0  CONE=  0.00    SMRAZ=  0.00   SMEAR=-999.0   VSCL=0.0000e+00 M/PXL
+PHA=-999.0  RA=  0.00      S/CAZ=  0.00   LAT=  0.00     PLANETRNG=0.0000e+00
+HRA=-999.0  DEC=  0.00     NORAZ=  0.00   LON=  0.00     SLANT RNG=0.0000e+00
+CAL=*******************    IOF=********** UBWC=***       SOLAR RNG=7.7791e+08
+DC=*******************     CNV=********** 
+BLM=*******************    SO=*******************        REDR=************/***
+LABEL-LIST  /project/test_work/testdata/sitod1/test_data/images/s0061498500.1    'nousrtim
+Beginning VICAR task LABEL
+LABEL version 2019-05-28
+************************************************************
+ 
+        ************  File /project/test_work/testdata/sitod1/test_data/images/s0061498500.1 ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in BYTE format from a VAX-VMS host
+                1 bands
+                800 lines per band
+                800 samples per line
+                2 lines of binary header
+                200 bytes of binary prefix per line
+---- Task: TASK -- User:  --  ----
+MISSION='GALILEO'
+SENSOR='SSI'
+PICNO='?'
+PA='?'
+RIM=614985
+MOD91=0
+MOD10=1
+MOD8=0
+TCA='CLOSEST TIME'
+TARGET='?'
+SCETYEAR=0
+SCETDAY=0
+SCETHOUR=0
+SCETMIN=0
+SCETSEC=0
+SCETMSEC=0
+FILTER=4
+EXP=25.0
+GAIN=2
+RATE=4
+TLMFMT='XCM'
+BOOM='N'
+FIBE='1000'
+BARC='RC'
+ENTROPY=0.0
+TBPPXL=0.0
+TPPLNE=0.0
+INA=-999.0
+EMA=-999.0
+PHA=-999.0
+HRA=-999.0
+TWIST=0.0
+CONE=0.0
+RA=0.0
+DEC=0.0
+SUNAZ=0.0
+NORAZ=0.0
+SCAZ=0.0
+SMRAZ=0.0
+SMEAR=-999.0
+HSCL=0.0
+VSCL=0.0
+LAT=0.0
+LON=0.0
+RAD=0.0
+PLRANGE=0.0
+SLRANGE=0.0
+SOLRANGE=7.779091e+08
+ 
+************************************************************
+LABLIST  /project/test_work/testdata/sitod1/test_data/images/s0061510200.1    'FULL 'NOUSRTIM
+Beginning VICAR task LABLIST
+LABLIST version 2019-08-01
+
+LABEL FOR FILE:
+/project/test_work/testdata/sitod1/test_data/images/s0061510200.1
+BYTE FORMAT  NB= 1  NL=  800  NS=  800  FILE ORGANIZATION=BSQ
+GLL/SSI  PICNO=?           FILTER=1(GRN)  TLMFMT=XCM     TARGET=?         
+RIM=*/00615102:00:1:0      EXP=    6.25   FIBE=1000      TCA=CLOSEST TIME
+SCET=0000.000 00:00:00:000 GAIN=2(100K)   COMP=RC        TRUNC BITS/PXL=0.00
+PA=?                       RATE=60 2/3    ENTROPY=0.00   TRUNC PXLS/LNE=  0
+INA=-999.0  TWST=  0.00    SUNAZ=  0.00   BOOM=NO        HSCL=0.0000e+00 M/PXL
+EMA=-999.0  CONE=  0.00    SMRAZ=  0.00   SMEAR=-999.0   VSCL=0.0000e+00 M/PXL
+PHA=-999.0  RA=  0.00      S/CAZ=  0.00   LAT=  0.00     PLANETRNG=0.0000e+00
+HRA=-999.0  DEC=  0.00     NORAZ=  0.00   LON=  0.00     SLANT RNG=0.0000e+00
+CAL=*******************    IOF=********** UBWC=***       SOLAR RNG=7.7791e+08
+DC=*******************     CNV=********** 
+BLM=*******************    SO=*******************        REDR=************/***
+LABEL-LIST  /project/test_work/testdata/sitod1/test_data/images/s0061510200.1     'nousrtim
+Beginning VICAR task LABEL
+LABEL version 2019-05-28
+************************************************************
+ 
+        ************  File /project/test_work/testdata/sitod1/test_data/images/s0061510200.1 ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in BYTE format from a VAX-VMS host
+                1 bands
+                800 lines per band
+                800 samples per line
+                2 lines of binary header
+                200 bytes of binary prefix per line
+---- Task: TASK -- User:  --  ----
+MISSION='GALILEO'
+SENSOR='SSI'
+PICNO='?'
+PA='?'
+RIM=615102
+MOD91=0
+MOD10=1
+MOD8=0
+TCA='CLOSEST TIME'
+TARGET='?'
+SCETYEAR=0
+SCETDAY=0
+SCETHOUR=0
+SCETMIN=0
+SCETSEC=0
+SCETMSEC=0
+FILTER=1
+EXP=6.25
+GAIN=2
+RATE=4
+TLMFMT='XCM'
+BOOM='N'
+FIBE='1000'
+BARC='RC'
+ENTROPY=0.0
+TBPPXL=0.0
+TPPLNE=0.0
+INA=-999.0
+EMA=-999.0
+PHA=-999.0
+HRA=-999.0
+TWIST=0.0
+CONE=0.0
+RA=0.0
+DEC=0.0
+SUNAZ=0.0
+NORAZ=0.0
+SCAZ=0.0
+SMRAZ=0.0
+SMEAR=-999.0
+HSCL=0.0
+VSCL=0.0
+LAT=0.0
+LON=0.0
+RAD=0.0
+PLRANGE=0.0
+SLRANGE=0.0
+SOLRANGE=7.779091e+08
+ 
+************************************************************
+LABLIST  /project/test_work/testdata/sitod1/test_data/images/s0061512000.1    'FULL 'NOUSRTIM
+Beginning VICAR task LABLIST
+LABLIST version 2019-08-01
+
+LABEL FOR FILE:
+/project/test_work/testdata/sitod1/test_data/images/s0061512000.1
+BYTE FORMAT  NB= 1  NL=  800  NS=  800  FILE ORGANIZATION=BSQ
+GLL/SSI  PICNO=?           FILTER=1(GRN)  TLMFMT=XCM     TARGET=?         
+RIM=*/00615120:00:1:0      EXP=    6.25   FIBE=1000      TCA=CLOSEST TIME
+SCET=0000.000 00:00:00:000 GAIN=2(100K)   COMP=RC        TRUNC BITS/PXL=0.00
+PA=?                       RATE=60 2/3    ENTROPY=0.00   TRUNC PXLS/LNE=  0
+INA=-999.0  TWST=  0.00    SUNAZ=  0.00   BOOM=NO        HSCL=0.0000e+00 M/PXL
+EMA=-999.0  CONE=  0.00    SMRAZ=  0.00   SMEAR=-999.0   VSCL=0.0000e+00 M/PXL
+PHA=-999.0  RA=  0.00      S/CAZ=  0.00   LAT=  0.00     PLANETRNG=0.0000e+00
+HRA=-999.0  DEC=  0.00     NORAZ=  0.00   LON=  0.00     SLANT RNG=0.0000e+00
+CAL=*******************    IOF=********** UBWC=***       SOLAR RNG=7.7791e+08
+DC=*******************     CNV=********** 
+BLM=*******************    SO=*******************        REDR=************/***
+LABEL-LIST  /project/test_work/testdata/sitod1/test_data/images/s0061512000.1     'nousrtim
+Beginning VICAR task LABEL
+LABEL version 2019-05-28
+************************************************************
+ 
+        ************  File /project/test_work/testdata/sitod1/test_data/images/s0061512000.1 ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in BYTE format from a VAX-VMS host
+                1 bands
+                800 lines per band
+                800 samples per line
+                2 lines of binary header
+                200 bytes of binary prefix per line
+---- Task: TASK -- User:  --  ----
+MISSION='GALILEO'
+SENSOR='SSI'
+PICNO='?'
+PA='?'
+RIM=615120
+MOD91=0
+MOD10=1
+MOD8=0
+TCA='CLOSEST TIME'
+TARGET='?'
+SCETYEAR=0
+SCETDAY=0
+SCETHOUR=0
+SCETMIN=0
+SCETSEC=0
+SCETMSEC=0
+FILTER=1
+EXP=6.25
+GAIN=2
+RATE=4
+TLMFMT='XCM'
+BOOM='N'
+FIBE='1000'
+BARC='RC'
+ENTROPY=0.0
+TBPPXL=0.0
+TPPLNE=0.0
+INA=-999.0
+EMA=-999.0
+PHA=-999.0
+HRA=-999.0
+TWIST=0.0
+CONE=0.0
+RA=0.0
+DEC=0.0
+SUNAZ=0.0
+NORAZ=0.0
+SCAZ=0.0
+SMRAZ=0.0
+SMEAR=-999.0
+HSCL=0.0
+VSCL=0.0
+LAT=0.0
+LON=0.0
+RAD=0.0
+PLRANGE=0.0
+SLRANGE=0.0
+SOLRANGE=7.779091e+08
+ 
+************************************************************
+LABLIST  /project/test_work/testdata/gll/test_image_ict.udr	   'FULL 'NOUSRTIM
+Beginning VICAR task LABLIST
+LABLIST version 2019-08-01
+
+LABEL FOR FILE:
+/project/test_work/testdata/gll/test_image_ict.udr
+BYTE FORMAT  NB= 1  NL=  800  NS=  800  FILE ORGANIZATION=BSQ
+GLL/SSI  PICNO=EVV0067     FILTER=3(VLT)  TLMFMT=IM8     TARGET=VENUS     
+RIM=1/00184944:00:0:0      EXP=   25.00   MOFIBE=000000  TCA=002T23:59:16Z
+SCET=1957.365 00:00:00:000 GAIN=2(100K)   ETYPE=ICT      COMP-RATIO= 48.54
+PA=VVGLI01                 RATE=15 1/6    ENTROPY=0.00   HUF=UNIFORM
+MAX_C RATIO= 81.01         MIN_C RATIO= 12.74            THW=(321,241, 96, 96)
+QSTEP=64    QM=UNIFORM     ZZ=ZIGZAG                     ROI=(  1,  1,800,800)
+INA= 47.33  TWST= 82.88    SUNAZ=******   BOOM=POSSIBLE  HSCL=********** M/PXL
+EMA= 48.23  CONE=  0.00    SMRAZ=******   SMEAR=-999.0   VSCL=********** M/PXL
+PHA=******  RA=115.30      S/CAZ=******   LAT=******     PLANETRNG=**********
+HRA=-999.0  DEC= 24.40     NORAZ=******   LON=******     SLANT RNG=**********
+CAL=*******************    IOF=********** UBWC=***       SOLAR RNG=**********
+DC=*******************     CNV=********** SEQNO=1        DSPK_THRESH=********
+BLM=*******************    SO=*******************        REDR=************/***
+LABEL-LIST  /project/test_work/testdata/gll/test_image_ict.udr	    'nousrtim
+Beginning VICAR task LABEL
+LABEL version 2019-05-28
+************************************************************
+ 
+        ************  File /project/test_work/testdata/gll/test_image_ict.udr ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in BYTE format from a AXP-VMS host
+                1 bands
+                800 lines per band
+                800 samples per line
+                2 lines of binary header
+                200 bytes of binary prefix per line
+---- Task: TASK -- User:  --  ----
+MISSION='GALILEO'
+SENSOR='SSI'
+PICNO='EVV0067'
+RIM=184944
+MOD91=0
+MOD10=0
+MOD8=0
+PARTITION=1
+PA='VVGLI01'
+TCA='002T23:59:16Z'
+TARGET='VENUS'
+SCETYEAR=1957
+SCETDAY=365
+SCETHOUR=0
+SCETMIN=0
+SCETSEC=0
+SCETMSEC=0
+ERTYEAR=1994
+ERTDAY=296
+ERTHOUR=23
+ERTMIN=51
+ERTSEC=7
+ERTMSEC=781
+FILTER=3
+EXP=25.0
+GAIN=2
+RATE=5
+TLMFMT='IM8'
+BOOM='P'
+MOFIBE='000000'
+ENCODING_TYPE='INTEGER COSINE TRANSFORM '
+ENTROPY=0.0
+TBPPXL=0.0
+TPPLNE=0.0
+INA=47.331
+EMA=48.232
+HRA=-999.0
+TWIST=82.884
+CONE=0.0
+RA=115.3
+DEC=24.395
+SMEAR=-999.0
+SEQNO=1
+CUT_OUT_WINDOW=(1, 1, 800, 800)
+TRUTH_WINDOW=(321, 241, 96, 96)
+HUFFMAN_TABLE_NAME='UNIFORM'
+QUANTIZATION_STEP_SIZE=64
+QUANTIZATION_MATRIX_NAME='UNIFORM'
+ZIGZAG_PATTERN='ZIGZAG'
+COMPRESSION_RATIO=48.5363
+MAXIMUM_COMPRESSION_RATIO=81.0127
+MINIMUM_COMPRESSION_RATIO=12.7395
+ 
+************************************************************
+LABLIST  /project/test_work/testdata/gll/test_image_barc.udr	   'FULL 'NOUSRTIM
+Beginning VICAR task LABLIST
+LABLIST version 2019-08-01
+
+LABEL FOR FILE:
+/project/test_work/testdata/gll/test_image_barc.udr
+BYTE FORMAT  NB= 1  NL=  800  NS=  800  FILE ORGANIZATION=BSQ
+GLL/SSI  PICNO=?           FILTER=0(CLR)  TLMFMT=HCA     TARGET=?         
+RIM=1/00005002:00:0:0      EXP= 1066.60   MOFIBE=000000  TCA=CLOSEST TIME
+SCET=1957.365 00:00:00:000 GAIN=2(100K)   ETYPE=RC       TRUNC BITS/PXL=0.19
+PA=?                       RATE=15 1/6    ENTROPY=0.00   TRUNC PXLS/LNE= 32
+INA=-999.0  TWST=-999.0    SUNAZ=******   BOOM=POSSIBLE  HSCL=********** M/PXL
+EMA=-999.0  CONE=  0.00    SMRAZ=******   SMEAR=-999.0   VSCL=********** M/PXL
+PHA=******  RA=-999.0      S/CAZ=******   LAT=******     PLANETRNG=**********
+HRA=-999.0  DEC=-999.0     NORAZ=******   LON=******     SLANT RNG=**********
+CAL=*******************    IOF=********** UBWC=***       SOLAR RNG=**********
+DC=*******************     CNV=********** SEQNO=******   DSPK_THRESH=********
+BLM=*******************    SO=*******************        REDR=************/***
+LABEL-LIST  /project/test_work/testdata/gll/test_image_barc.udr	    'nousrtim
+Beginning VICAR task LABEL
+LABEL version 2019-05-28
+************************************************************
+ 
+        ************  File /project/test_work/testdata/gll/test_image_barc.udr ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in BYTE format from a AXP-VMS host
+                1 bands
+                800 lines per band
+                800 samples per line
+                2 lines of binary header
+                200 bytes of binary prefix per line
+---- Task: TASK -- User:  --  ----
+MISSION='GALILEO'
+SENSOR='SSI'
+PICNO='?'
+RIM=5002
+MOD91=0
+MOD10=0
+MOD8=0
+PARTITION=1
+PA='?'
+TCA='CLOSEST TIME'
+TARGET='?'
+SCETYEAR=1957
+SCETDAY=365
+SCETHOUR=0
+SCETMIN=0
+SCETSEC=0
+SCETMSEC=0
+ERTYEAR=1994
+ERTDAY=313
+ERTHOUR=23
+ERTMIN=37
+ERTSEC=28
+ERTMSEC=234
+FILTER=0
+EXP=1066.6
+GAIN=2
+RATE=5
+TLMFMT='HCA'
+BOOM='P'
+MOFIBE='000000'
+ENCODING_TYPE='BARC RATE CONTROL '
+ENTROPY=0.0
+TBPPXL=0.1925
+TPPLNE=32.0
+INA=-999.0
+EMA=-999.0
+HRA=-999.0
+TWIST=-999.0
+CONE=0.0
+RA=-999.0
+DEC=-999.0
+SMEAR=-999.0
+ 
+************************************************************
+LABLIST  /project/test_work/testdata/gll/test_image_lossless.udr   'FULL 'NOUSRTIM
+Beginning VICAR task LABLIST
+LABLIST version 2019-08-01
+
+LABEL FOR FILE:
+/project/test_work/testdata/gll/test_image_lossless.udr
+BYTE FORMAT  NB= 1  NL=  800  NS=  800  FILE ORGANIZATION=BSQ
+GLL/SSI  PICNO=EVV0067     FILTER=3(VLT)  TLMFMT=IM8     TARGET=VENUS     
+RIM=1/00182211:00:0:0      EXP=   25.00   MOFIBE=000000  TCA=002T23:59:16Z
+SCET=1957.365 00:00:00:000 GAIN=2(100K)   ETYPE=HUF      COMP-RATIO=  2.07
+PA=VVGLI01                 RATE=15 1/6    ENTROPY=0.00   HUF=UNIFORM
+MAX_C RATIO=  2.36         MIN_C RATIO=  1.97            
+INA= 47.33  TWST= 82.88    SUNAZ=******   BOOM=POSSIBLE  HSCL=********** M/PXL
+EMA= 48.23  CONE=  0.00    SMRAZ=******   SMEAR=-999.0   VSCL=********** M/PXL
+PHA=******  RA=115.30      S/CAZ=******   LAT=******     PLANETRNG=**********
+HRA=-999.0  DEC= 24.40     NORAZ=******   LON=******     SLANT RNG=**********
+CAL=*******************    IOF=********** UBWC=***       SOLAR RNG=**********
+DC=*******************     CNV=********** SEQNO=1        DSPK_THRESH=********
+BLM=*******************    SO=*******************        REDR=************/***
+LABEL-LIST  /project/test_work/testdata/gll/test_image_lossless.udr   'nousrtim
+Beginning VICAR task LABEL
+LABEL version 2019-05-28
+************************************************************
+ 
+        ************  File /project/test_work/testdata/gll/test_image_lossless.udr ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in BYTE format from a AXP-VMS host
+                1 bands
+                800 lines per band
+                800 samples per line
+                2 lines of binary header
+                200 bytes of binary prefix per line
+---- Task: TASK -- User:  --  ----
+MISSION='GALILEO'
+SENSOR='SSI'
+PICNO='EVV0067'
+RIM=182211
+MOD91=0
+MOD10=0
+MOD8=0
+PARTITION=1
+PA='VVGLI01'
+TCA='002T23:59:16Z'
+TARGET='VENUS'
+SCETYEAR=1957
+SCETDAY=365
+SCETHOUR=0
+SCETMIN=0
+SCETSEC=0
+SCETMSEC=0
+ERTYEAR=1994
+ERTDAY=297
+ERTHOUR=22
+ERTMIN=57
+ERTSEC=23
+ERTMSEC=253
+FILTER=3
+EXP=25.0
+GAIN=2
+RATE=5
+TLMFMT='IM8'
+BOOM='P'
+MOFIBE='000000'
+ENCODING_TYPE='HUFFMAN '
+ENTROPY=0.0
+TBPPXL=0.0
+TPPLNE=0.0
+INA=47.331
+EMA=48.232
+HRA=-999.0
+TWIST=82.884
+CONE=0.0
+RA=115.3
+DEC=24.395
+SMEAR=-999.0
+SEQNO=1
+CUT_OUT_WINDOW=(1, 1, 800, 800)
+TRUTH_WINDOW=(-32768, -32768, 96, 96)
+HUFFMAN_TABLE_NAME='UNIFORM'
+QUANTIZATION_STEP_SIZE=-32768
+QUANTIZATION_MATRIX_NAME='?'
+ZIGZAG_PATTERN='?'
+COMPRESSION_RATIO=2.06937
+MAXIMUM_COMPRESSION_RATIO=2.35695
+MINIMUM_COMPRESSION_RATIO=1.97249
+ 
+************************************************************
+label-list /project/test_work/testdata/gll/s1677721400.3 'nousrtim
+Beginning VICAR task label
+LABEL version 2019-05-28
+************************************************************
+ 
+        ************  File /project/test_work/testdata/gll/s1677721400.3 ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in BYTE format from a AXP-VMS host
+                1 bands
+                800 lines per band
+                800 samples per line
+                2 lines of binary header
+                200 bytes of binary prefix per line
+---- Task: TASK -- User:  --  ----
+MISSION='GALILEO'
+SENSOR='SSI'
+PICNO='E2W4280'
+RIM=16777214
+MOD91=0
+MOD10=0
+MOD8=0
+PARTITION=1
+PA='E2WSEMCONJ01-000CONJ'
+TCA='008T11:39:16Z'
+TARGET='JUPITER'
+SCETYEAR=1957
+SCETDAY=365
+SCETHOUR=0
+SCETMIN=0
+SCETSEC=0
+SCETMSEC=0
+ERTYEAR=1995
+ERTDAY=78
+ERTHOUR=18
+ERTMIN=44
+ERTSEC=36
+ERTMSEC=697
+FILTER=255
+EXP=-999.0
+GAIN=1
+RATE=4
+TLMFMT='HIM'
+BOOM='P'
+MOFIBE='000000'
+ICT_DESPIKE_THRESHOLD=-32768
+ENCODING_TYPE='INTEGER COSINE TRANSFORM '
+ENTROPY=0.0
+TBPPXL=0.0
+TPPLNE=0.0
+INA=-999.0
+EMA=-999.0
+HRA=-999.0
+TWIST=114.619
+CONE=0.0
+RA=354.414
+DEC=4.91996
+SMEAR=-999.0
+SEQNO=1
+CUT_OUT_WINDOW=(1, 1, 800, 800)
+TRUTH_WINDOW=(321, 241, 96, 96)
+HUFFMAN_TABLE_NAME='UNIFORM'
+QUANTIZATION_STEP_SIZE=8
+QUANTIZATION_MATRIX_NAME='UNIFORM'
+ZIGZAG_PATTERN='ZIGZAG'
+COMPRESSION_RATIO=34.0
+MAXIMUM_COMPRESSION_RATIO=80.6688
+MINIMUM_COMPRESSION_RATIO=9.83072
+PHA=-999.0
+HSCL=-999000.0
+VSCL=-999000.0
+LAT=-999.0
+LON=-999.0
+PLRANGE=-999.0
+SLRANGE=-999.0
+SOLRANGE=-999.0
+SUB_SOLAR_LATITUDE=-999.0
+SUB_SOLAR_LONGITUDE=-999.0
+SUB_SPACECRAFT_LATITUDE=-999.0
+SUB_SPACECRAFT_LONGITUDE=-999.0
+ 
+************************************************************
+label-replace /project/test_work/testdata/gll/s1677721400.3 star.out "FILTER=3" TASK="TASK"
+Beginning VICAR task label
+LABEL version 2019-05-28
+Keyword FILTER replaced
+lablist star.out
+Beginning VICAR task lablist
+LABLIST version 2019-08-01
+
+LABEL FOR FILE:
+star.out
+BYTE FORMAT  NB= 1  NL=  800  NS=  800  FILE ORGANIZATION=BSQ
+GLL/SSI  PICNO=E2W4280     FILTER=3(VLT)  TLMFMT=HIM     TARGET=JUPITER   
+RIM=1/16777214:00:0:0      EXP= -999.00   MOFIBE=000000  TCA=008T11:39:16Z
+SCET=1957.365 00:00:00:000 GAIN=1(400K)   ETYPE=ICT      COMP-RATIO= 34.00
+PA=E2WSEMCONJ01-000CONJ    RATE=60 2/3    ENTROPY=0.00   HUF=UNIFORM
+MAX_C RATIO= 80.67         MIN_C RATIO=  9.83            THW=(321,241, 96, 96)
+QSTEP=8     QM=UNIFORM     ZZ=ZIGZAG                     ROI=(  1,  1,800,800)
+INA=-999.0  TWST=114.62    SUNAZ=******   BOOM=POSSIBLE  HSCL=-9.9900e+0 M/PXL
+EMA=-999.0  CONE=  0.00    SMRAZ=******   SMEAR=-999.0   VSCL=-9.9900e+0 M/PXL
+PHA=-999.0  RA=354.41      S/CAZ=******   LAT=-999.0     PLANETRNG=-9.9900e+0
+HRA=-999.0  DEC=  4.92     NORAZ=******   LON=-999.0     SLANT RNG=-9.9900e+0
+CAL=*******************    IOF=********** UBWC=***       SOLAR RNG=-9.9900e+0
+DC=*******************     CNV=********** SEQNO=1        DSPK_THRESH=-32768
+BLM=*******************    SO=*******************        REDR=************/***
+SUB_SOLAR_LAT=-999.00      SUB_SOLAR_LONG=-999.00        SUB_SPCFT_LAT=-999.00
+SUB_SPCFT_LONG=-999.00     
+ 
+LABEL
+label-add star.out  stars.out "NSTARS = 5, +
+STAR1=(231,165,12,894),STAR2=(21,32,187,23),STAR3=(5,10,15,20), +
+STAR4=(1,2,3,5),STAR5=(9,4,8,3)" TASK="TASK"
+Beginning VICAR task label
+LABEL version 2019-05-28
+Keyword NSTARS added
+Keyword STAR1 added
+Keyword STAR2 added
+Keyword STAR3 added
+Keyword STAR4 added
+Keyword STAR5 added
+lablist stars.out
+Beginning VICAR task lablist
+LABLIST version 2019-08-01
+
+LABEL FOR FILE:
+stars.out
+BYTE FORMAT  NB= 1  NL=  800  NS=  800  FILE ORGANIZATION=BSQ
+GLL/SSI  PICNO=E2W4280     FILTER=3(VLT)  TLMFMT=HIM     TARGET=JUPITER   
+RIM=1/16777214:00:0:0      EXP= -999.00   MOFIBE=000000  TCA=008T11:39:16Z
+SCET=1957.365 00:00:00:000 GAIN=1(400K)   ETYPE=ICT      COMP-RATIO= 34.00
+PA=E2WSEMCONJ01-000CONJ    RATE=60 2/3    ENTROPY=0.00   HUF=UNIFORM
+MAX_C RATIO= 80.67         MIN_C RATIO=  9.83            THW=(321,241, 96, 96)
+QSTEP=8     QM=UNIFORM     ZZ=ZIGZAG                     ROI=(  1,  1,800,800)
+INA=-999.0  TWST=114.62    SUNAZ=******   BOOM=POSSIBLE  HSCL=-9.9900e+0 M/PXL
+EMA=-999.0  CONE=  0.00    SMRAZ=******   SMEAR=-999.0   VSCL=-9.9900e+0 M/PXL
+PHA=-999.0  RA=354.41      S/CAZ=******   LAT=-999.0     PLANETRNG=-9.9900e+0
+HRA=-999.0  DEC=  4.92     NORAZ=******   LON=-999.0     SLANT RNG=-9.9900e+0
+CAL=*******************    IOF=********** UBWC=***       SOLAR RNG=-9.9900e+0
+DC=*******************     CNV=********** SEQNO=1        DSPK_THRESH=-32768
+BLM=*******************    SO=*******************        REDR=************/***
+SUB_SOLAR_LAT=-999.00      SUB_SOLAR_LONG=-999.00        SUB_SPCFT_LAT=-999.00
+SUB_SPCFT_LONG=-999.00     NSTARS=5                   STAR1=(231,165, 12,894)
+STAR2=( 21, 32,187, 23)    STAR3=(  5, 10, 15, 20)    STAR4=(  1,  2,  3,  5) 
+STAR5=(  9,  4,  8,  3)   
+ 
+LABEL - LABEL
+label-list stars.out 'nousrtim
+Beginning VICAR task label
+LABEL version 2019-05-28
+************************************************************
+ 
+        ************  File stars.out ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in BYTE format from a X86-64-LIN host
+                1 bands
+                800 lines per band
+                800 samples per line
+                2 lines of binary header
+                200 bytes of binary prefix per line
+---- Task: TASK -- User:  --  ----
+MISSION='GALILEO'
+SENSOR='SSI'
+PICNO='E2W4280'
+RIM=16777214
+MOD91=0
+MOD10=0
+MOD8=0
+PARTITION=1
+PA='E2WSEMCONJ01-000CONJ'
+TCA='008T11:39:16Z'
+TARGET='JUPITER'
+SCETYEAR=1957
+SCETDAY=365
+SCETHOUR=0
+SCETMIN=0
+SCETSEC=0
+SCETMSEC=0
+ERTYEAR=1995
+ERTDAY=78
+ERTHOUR=18
+ERTMIN=44
+ERTSEC=36
+ERTMSEC=697
+EXP=-999.0
+GAIN=1
+RATE=4
+TLMFMT='HIM'
+BOOM='P'
+MOFIBE='000000'
+ICT_DESPIKE_THRESHOLD=-32768
+ENCODING_TYPE='INTEGER COSINE TRANSFORM '
+ENTROPY=0.0
+TBPPXL=0.0
+TPPLNE=0.0
+INA=-999.0
+EMA=-999.0
+HRA=-999.0
+TWIST=114.619
+CONE=0.0
+RA=354.414
+DEC=4.91996
+SMEAR=-999.0
+SEQNO=1
+CUT_OUT_WINDOW=(1, 1, 800, 800)
+TRUTH_WINDOW=(321, 241, 96, 96)
+HUFFMAN_TABLE_NAME='UNIFORM'
+QUANTIZATION_STEP_SIZE=8
+QUANTIZATION_MATRIX_NAME='UNIFORM'
+ZIGZAG_PATTERN='ZIGZAG'
+COMPRESSION_RATIO=34.0
+MAXIMUM_COMPRESSION_RATIO=80.6688
+MINIMUM_COMPRESSION_RATIO=9.83072
+PHA=-999.0
+HSCL=-999000.0
+VSCL=-999000.0
+LAT=-999.0
+LON=-999.0
+PLRANGE=-999.0
+SLRANGE=-999.0
+SOLRANGE=-999.0
+SUB_SOLAR_LATITUDE=-999.0
+SUB_SOLAR_LONGITUDE=-999.0
+SUB_SPACECRAFT_LATITUDE=-999.0
+SUB_SPACECRAFT_LONGITUDE=-999.0
+FILTER=3
+NSTARS=5
+STAR1=(231, 165, 12, 894)
+STAR2=(21, 32, 187, 23)
+STAR3=(5, 10, 15, 20)
+STAR4=(1, 2, 3, 5)
+STAR5=(9, 4, 8, 3)
+---- Task: LABEL -- User:  --  ----
+---- Task: LABEL -- User:  --  ----
+ 
+************************************************************
+label-replace stars.out star.out "NSTARS = 4" TASK="TASK"
+Beginning VICAR task label
+LABEL version 2019-05-28
+Keyword NSTARS replaced
+lablist star.out 'full 'nousrtim
+Beginning VICAR task lablist
+LABLIST version 2019-08-01
+
+LABEL FOR FILE:
+star.out
+BYTE FORMAT  NB= 1  NL=  800  NS=  800  FILE ORGANIZATION=BSQ
+GLL/SSI  PICNO=E2W4280     FILTER=3(VLT)  TLMFMT=HIM     TARGET=JUPITER   
+RIM=1/16777214:00:0:0      EXP= -999.00   MOFIBE=000000  TCA=008T11:39:16Z
+SCET=1957.365 00:00:00:000 GAIN=1(400K)   ETYPE=ICT      COMP-RATIO= 34.00
+PA=E2WSEMCONJ01-000CONJ    RATE=60 2/3    ENTROPY=0.00   HUF=UNIFORM
+MAX_C RATIO= 80.67         MIN_C RATIO=  9.83            THW=(321,241, 96, 96)
+QSTEP=8     QM=UNIFORM     ZZ=ZIGZAG                     ROI=(  1,  1,800,800)
+INA=-999.0  TWST=114.62    SUNAZ=******   BOOM=POSSIBLE  HSCL=-9.9900e+0 M/PXL
+EMA=-999.0  CONE=  0.00    SMRAZ=******   SMEAR=-999.0   VSCL=-9.9900e+0 M/PXL
+PHA=-999.0  RA=354.41      S/CAZ=******   LAT=-999.0     PLANETRNG=-9.9900e+0
+HRA=-999.0  DEC=  4.92     NORAZ=******   LON=-999.0     SLANT RNG=-9.9900e+0
+CAL=*******************    IOF=********** UBWC=***       SOLAR RNG=-9.9900e+0
+DC=*******************     CNV=********** SEQNO=1        DSPK_THRESH=-32768
+BLM=*******************    SO=*******************        REDR=************/***
+SUB_SOLAR_LAT=-999.00      SUB_SOLAR_LONG=-999.00        SUB_SPCFT_LAT=-999.00
+SUB_SPCFT_LONG=-999.00     NSTARS=4                   STAR1=(231,165, 12,894)
+STAR2=( 21, 32,187, 23)    STAR3=(  5, 10, 15, 20)    STAR4=(  1,  2,  3,  5) 
+ 
+---- TASK: LABEL         USER: 	 ----
+---- TASK: LABEL         USER: 	 ----
+---- TASK: LABEL         USER: 	 ----
+label-replace stars.out star.out "NSTARS = 3" TASK="TASK"
+Beginning VICAR task label
+LABEL version 2019-05-28
+Keyword NSTARS replaced
+lablist star.out 'full 'nousrtim
+Beginning VICAR task lablist
+LABLIST version 2019-08-01
+
+LABEL FOR FILE:
+star.out
+BYTE FORMAT  NB= 1  NL=  800  NS=  800  FILE ORGANIZATION=BSQ
+GLL/SSI  PICNO=E2W4280     FILTER=3(VLT)  TLMFMT=HIM     TARGET=JUPITER   
+RIM=1/16777214:00:0:0      EXP= -999.00   MOFIBE=000000  TCA=008T11:39:16Z
+SCET=1957.365 00:00:00:000 GAIN=1(400K)   ETYPE=ICT      COMP-RATIO= 34.00
+PA=E2WSEMCONJ01-000CONJ    RATE=60 2/3    ENTROPY=0.00   HUF=UNIFORM
+MAX_C RATIO= 80.67         MIN_C RATIO=  9.83            THW=(321,241, 96, 96)
+QSTEP=8     QM=UNIFORM     ZZ=ZIGZAG                     ROI=(  1,  1,800,800)
+INA=-999.0  TWST=114.62    SUNAZ=******   BOOM=POSSIBLE  HSCL=-9.9900e+0 M/PXL
+EMA=-999.0  CONE=  0.00    SMRAZ=******   SMEAR=-999.0   VSCL=-9.9900e+0 M/PXL
+PHA=-999.0  RA=354.41      S/CAZ=******   LAT=-999.0     PLANETRNG=-9.9900e+0
+HRA=-999.0  DEC=  4.92     NORAZ=******   LON=-999.0     SLANT RNG=-9.9900e+0
+CAL=*******************    IOF=********** UBWC=***       SOLAR RNG=-9.9900e+0
+DC=*******************     CNV=********** SEQNO=1        DSPK_THRESH=-32768
+BLM=*******************    SO=*******************        REDR=************/***
+SUB_SOLAR_LAT=-999.00      SUB_SOLAR_LONG=-999.00        SUB_SPCFT_LAT=-999.00
+SUB_SPCFT_LONG=-999.00     NSTARS=3                   STAR1=(231,165, 12,894)
+STAR2=( 21, 32,187, 23)    STAR3=(  5, 10, 15, 20)    
+ 
+---- TASK: LABEL         USER: 	 ----
+---- TASK: LABEL         USER: 	 ----
+---- TASK: LABEL         USER: 	 ----
+label-replace stars.out star.out "NSTARS = 2" TASK="TASK"
+Beginning VICAR task label
+LABEL version 2019-05-28
+Keyword NSTARS replaced
+lablist star.out 'full 'nousrtim
+Beginning VICAR task lablist
+LABLIST version 2019-08-01
+
+LABEL FOR FILE:
+star.out
+BYTE FORMAT  NB= 1  NL=  800  NS=  800  FILE ORGANIZATION=BSQ
+GLL/SSI  PICNO=E2W4280     FILTER=3(VLT)  TLMFMT=HIM     TARGET=JUPITER   
+RIM=1/16777214:00:0:0      EXP= -999.00   MOFIBE=000000  TCA=008T11:39:16Z
+SCET=1957.365 00:00:00:000 GAIN=1(400K)   ETYPE=ICT      COMP-RATIO= 34.00
+PA=E2WSEMCONJ01-000CONJ    RATE=60 2/3    ENTROPY=0.00   HUF=UNIFORM
+MAX_C RATIO= 80.67         MIN_C RATIO=  9.83            THW=(321,241, 96, 96)
+QSTEP=8     QM=UNIFORM     ZZ=ZIGZAG                     ROI=(  1,  1,800,800)
+INA=-999.0  TWST=114.62    SUNAZ=******   BOOM=POSSIBLE  HSCL=-9.9900e+0 M/PXL
+EMA=-999.0  CONE=  0.00    SMRAZ=******   SMEAR=-999.0   VSCL=-9.9900e+0 M/PXL
+PHA=-999.0  RA=354.41      S/CAZ=******   LAT=-999.0     PLANETRNG=-9.9900e+0
+HRA=-999.0  DEC=  4.92     NORAZ=******   LON=-999.0     SLANT RNG=-9.9900e+0
+CAL=*******************    IOF=********** UBWC=***       SOLAR RNG=-9.9900e+0
+DC=*******************     CNV=********** SEQNO=1        DSPK_THRESH=-32768
+BLM=*******************    SO=*******************        REDR=************/***
+SUB_SOLAR_LAT=-999.00      SUB_SOLAR_LONG=-999.00        SUB_SPCFT_LAT=-999.00
+SUB_SPCFT_LONG=-999.00     NSTARS=2                   STAR1=(231,165, 12,894)
+STAR2=( 21, 32,187, 23)    
+ 
+---- TASK: LABEL         USER: 	 ----
+---- TASK: LABEL         USER: 	 ----
+---- TASK: LABEL         USER: 	 ----
+label-replace stars.out star.out "NSTARS = 1" TASK="TASK"
+Beginning VICAR task label
+LABEL version 2019-05-28
+Keyword NSTARS replaced
+lablist star.out 'full 'nousrtim
+Beginning VICAR task lablist
+LABLIST version 2019-08-01
+
+LABEL FOR FILE:
+star.out
+BYTE FORMAT  NB= 1  NL=  800  NS=  800  FILE ORGANIZATION=BSQ
+GLL/SSI  PICNO=E2W4280     FILTER=3(VLT)  TLMFMT=HIM     TARGET=JUPITER   
+RIM=1/16777214:00:0:0      EXP= -999.00   MOFIBE=000000  TCA=008T11:39:16Z
+SCET=1957.365 00:00:00:000 GAIN=1(400K)   ETYPE=ICT      COMP-RATIO= 34.00
+PA=E2WSEMCONJ01-000CONJ    RATE=60 2/3    ENTROPY=0.00   HUF=UNIFORM
+MAX_C RATIO= 80.67         MIN_C RATIO=  9.83            THW=(321,241, 96, 96)
+QSTEP=8     QM=UNIFORM     ZZ=ZIGZAG                     ROI=(  1,  1,800,800)
+INA=-999.0  TWST=114.62    SUNAZ=******   BOOM=POSSIBLE  HSCL=-9.9900e+0 M/PXL
+EMA=-999.0  CONE=  0.00    SMRAZ=******   SMEAR=-999.0   VSCL=-9.9900e+0 M/PXL
+PHA=-999.0  RA=354.41      S/CAZ=******   LAT=-999.0     PLANETRNG=-9.9900e+0
+HRA=-999.0  DEC=  4.92     NORAZ=******   LON=-999.0     SLANT RNG=-9.9900e+0
+CAL=*******************    IOF=********** UBWC=***       SOLAR RNG=-9.9900e+0
+DC=*******************     CNV=********** SEQNO=1        DSPK_THRESH=-32768
+BLM=*******************    SO=*******************        REDR=************/***
+SUB_SOLAR_LAT=-999.00      SUB_SOLAR_LONG=-999.00        SUB_SPCFT_LAT=-999.00
+SUB_SPCFT_LONG=-999.00     NSTARS=1                   STAR1=(231,165, 12,894)
+ 
+---- TASK: LABEL         USER: 	 ----
+---- TASK: LABEL         USER: 	 ----
+---- TASK: LABEL         USER: 	 ----
+label-add     stars.out star.out "RAD = 10.22" TASK="TASK"
+Beginning VICAR task label
+LABEL version 2019-05-28
+Keyword RAD added
+label-replace star.out stars.out "TARGET = RING" TASK="TASK"
+Beginning VICAR task label
+LABEL version 2019-05-28
+Keyword TARGET replaced
+lablist stars.out 'full 'nousrtim
+Beginning VICAR task lablist
+LABLIST version 2019-08-01
+
+LABEL FOR FILE:
+stars.out
+BYTE FORMAT  NB= 1  NL=  800  NS=  800  FILE ORGANIZATION=BSQ
+GLL/SSI  PICNO=E2W4280     FILTER=3(VLT)  TLMFMT=HIM     TARGET=RING      
+RIM=1/16777214:00:0:0      EXP= -999.00   MOFIBE=000000  TCA=008T11:39:16Z
+SCET=1957.365 00:00:00:000 GAIN=1(400K)   ETYPE=ICT      COMP-RATIO= 34.00
+PA=E2WSEMCONJ01-000CONJ    RATE=60 2/3    ENTROPY=0.00   HUF=UNIFORM
+MAX_C RATIO= 80.67         MIN_C RATIO=  9.83            THW=(321,241, 96, 96)
+QSTEP=8     QM=UNIFORM     ZZ=ZIGZAG                     ROI=(  1,  1,800,800)
+INA=-999.0  TWST=114.62    SUNAZ=******   BOOM=POSSIBLE  HSCL=-9.9900e+0 M/PXL
+EMA=-999.0  CONE=  0.00    SMRAZ=******   SMEAR=-999.0   VSCL=-9.9900e+0 M/PXL
+PHA=-999.0  RA=354.41      S/CAZ=******   RAD= 10.22     PLANETRNG=-9.9900e+0
+HRA=-999.0  DEC=  4.92     NORAZ=******   LON=-999.0     SLANT RNG=-9.9900e+0
+CAL=*******************    IOF=********** UBWC=***       SOLAR RNG=-9.9900e+0
+DC=*******************     CNV=********** SEQNO=1        DSPK_THRESH=-32768
+BLM=*******************    SO=*******************        REDR=************/***
+SUB_SOLAR_LAT=-999.00      SUB_SOLAR_LONG=-999.00        SUB_SPCFT_LAT=-999.00
+SUB_SPCFT_LONG=-999.00     NSTARS=5                   STAR1=(231,165, 12,894)
+STAR2=( 21, 32,187, 23)    STAR3=(  5, 10, 15, 20)    STAR4=(  1,  2,  3,  5) 
+STAR5=(  9,  4,  8,  3)   
+ 
+---- TASK: LABEL         USER: 	 ----
+---- TASK: LABEL         USER: 	 ----
+---- TASK: LABEL         USER: 	 ----
+---- TASK: LABEL         USER: 	 ----
+if ($syschar(1) = "UNIX")
+	ush rm star.out
+        ush rm stars.out
+else
+end-if
+disable-log

@@ -5,6 +5,8 @@
 #include <math.h>
 /* #include "util.h" */
 #include "vicmain_c"
+#include "zifmessage.h"
+#include "zvprintf.h"
 
 #define INTERVAL 5.0
 #define STEP_LEGHTH 1.0
@@ -24,20 +26,15 @@ void main44(void)
 
    FILE *IN;
    int i, j, k, l, m, n;
-   double x, y, zx[4], zy[4];
+   double x, zx[4], zy[4];
    double e[4], f[4], g[4];
    double xr, yr;
    double dx[4], dy[4], dz[4];
    double d2x[4], d2y[4], d2z[4];
-   double dxt[4], dyt[4], dzt[4], r;
    double zxy;
-   double **xm, **ym;
-   double rst[5];
    double *lat, *lng, **radius, **radius2, **r2long, **r2lat;
    int num_cols, num_rows;
-   int map_num_cols, map_num_rows;
    float  xtmp,ytmp,ztmp;
-   double gam[3][4];
  
    char planet_name[30],path_name[80],filename[80];
    char msg[80];
@@ -47,6 +44,8 @@ void main44(void)
    float Rbuf[record_length];
    double latitude,longitude,t,triaxial[3];
    double coslon2,coslat2,sinlat2,sum_r;
+
+   zifmessage("EFGISO version 2019-07-18");
 
 /* vicar parameters */
    status=zveaction("AS","  ");
@@ -58,9 +57,8 @@ void main44(void)
    status=zvparm("NSW",&nsw,&count,&def,1,0);
    status=zvparmd("TRIAXIAL",triaxial,&triaxial_count,&def,3,0);
    if(triaxial_count == 3){
-     sprintf(msg,"Triaxial radii: %f %f %f",triaxial[0],
+     zvnprintf(80,"Triaxial radii: %f %f %f",triaxial[0],
       triaxial[1],triaxial[2]);
-     zvmessage(msg," ");
    }
 
 /* create ascii model filename */
@@ -72,8 +70,7 @@ void main44(void)
 
    num_cols = 360.0/INTERVAL + 3;/*extends one more columun on both ends*/
    num_rows = 180.0/INTERVAL + 3;/*enxtend one more row on both end*/  
-   sprintf(msg,"Model file: #rows= %d, #cols=%d",num_rows,num_cols);
-   zvmessage(msg," ");
+   zvnprintf(80,"Model file: #rows= %d, #cols=%d",num_rows,num_cols);
 
    lat = (double *)malloc((num_rows + 2)*sizeof(double)); 
    lng = (double *)malloc((num_cols + 2)*sizeof(double)); 
@@ -440,7 +437,7 @@ int n;
 double x, *y;
 {
    int klo, khi, k;
-   double h, b, a;
+   double h;
  
    klo = 1;
    khi = n;

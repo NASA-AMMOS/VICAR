@@ -207,6 +207,7 @@ TAESYM \
 FSYMBOL(xvqout) SYMBOL(zvq_out) \
 FSYMBOL(xvplabel) SYMBOL(zvplabel)\
 FSYMBOL(xvplabel2) SYMBOL(zvplabel2)\
+SYMBOL(zvslabel)\
 SHVIC
 
 #else		/* Do nothing for platforms with no .so */

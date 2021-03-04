@@ -1,0 +1,100 @@
+let $autousage="none"
+write "		Test for program ddd2vic"
+		Test for program ddd2vic
+write ""
+
+write ""
+
+write "Generate a VICAR file"
+Generate a VICAR file
+if ($syschar(1) = "VAX_VMS")
+else
+   ddd2vic /home/bam/porting/sun-solr/M12-963.DDD ddd.vic
+Beginning VICAR task ddd2vic
+DDD2VIC version 2019-08-22
+end-if
+write "Now list out the labels and a chunk of the data"
+Now list out the labels and a chunk of the data
+   label-list ddd.vic 'nousrtim
+Beginning VICAR task label
+LABEL version 2019-05-28
+************************************************************
+ 
+        ************  File ddd.vic ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in BYTE format from a X86-64-LIN host
+                1 bands
+                1536 lines per band
+                256 samples per line
+                0 lines of binary header
+                0 bytes of binary prefix per line
+---- Task: DDD2VIC -- User:  --  ----
+ 
+************************************************************
+   list ddd.vic nl=10 ns=5 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:DDD2VIC   User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1      79  73  69  59  60
+      2      77  71  67  66  70
+      3      71  69  68  67  77
+      4      85  74  66  72  76
+      5      90  83  84  85  82
+      6      92  91  86  89  83
+      7     100  88  89  89  87
+      8      91  78  79  82  86
+      9      82  80  78  79  79
+     10      84  80  80  79  76
+write "And compare this to the original perl script data"
+And compare this to the original perl script data
+if ($syschar(1) = "VAX_VMS")
+else
+   label-list /home/bam/porting/sun-solr/M12.VIC 'nousrtim
+Beginning VICAR task label
+LABEL version 2019-05-28
+************************************************************
+ 
+        ************  File /home/bam/porting/sun-solr/M12.VIC ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in BYTE format from a SUNOS host
+                1 bands
+                1536 lines per band
+                256 samples per line
+                0 lines of binary header
+                0 bytes of binary prefix per line
+---- Task: DDD2VICAR -- User:  --  ----
+CAMERA='NA'
+COMMENT=
+'decompressed-from 634540789.963.msdp id 963 time 634540789:95 gain 0xaa offset 24 start 0 cross 256 down 1536 cmd na 025faf00c30360009f0d00cd0000000000 sensor 1425 clocking 4821 system-id 0x35 '
+ 
+************************************************************
+   list /home/bam/porting/sun-solr/M12.VIC nl=10 ns=5 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:DDD2VICA  User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1      79  73  69  59  60
+      2      77  71  67  66  70
+      3      71  69  68  67  77
+      4      85  74  66  72  76
+      5      90  83  84  85  82
+      6      92  91  86  89  83
+      7     100  88  89  89  87
+      8      91  78  79  82  86
+      9      82  80  78  79  79
+     10      84  80  80  79  76
+end-if
+if ($syschar(1) = "UNIX")
+  ush rm ddd.vic
+else
+end-if
+disable-log

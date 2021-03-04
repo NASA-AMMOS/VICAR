@@ -1,0 +1,6 @@
+$ vpack comprs.com -mixed -
+	-s comprs.c -
+	-i comprs.imake -
+	-p comprs.pdf -
+	-t tstcomprs.pdf
+$ Exit

@@ -32,6 +32,7 @@
                terminated.
    VRH   4-01  Changed camera to reflect summation mode
    VRH   4-03  Cassini Tour projects will have 'CASSINI-HUYGENS' as MISSION.
+   RGD 2018-09 Added Mars 2020 (also, earlier, MER, PHX, MSL, NSYT...)
 **********************************************************************/
 #include "xvmaininc.h"
 #include "ftnbridge.h"
@@ -417,6 +418,18 @@ void FTN_NAME2(getproj, GETPROJ) (int *unit, char *project, int *camera,
 		return;
 	      }
 	}
+
+/* Mars 2020 mission*/
+
+	    if (strcasecmp(labi, "MARS 2020" ) == 0)
+	      {
+		strcpy(project, "M20");
+
+		*ind = 0;
+		*camera = 0;
+		*fds = 0;
+		return;
+	      }
 
 
 /* unrecognizable project */

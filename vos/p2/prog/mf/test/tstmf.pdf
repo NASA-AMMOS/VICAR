@@ -14,6 +14,8 @@ refgbl $echo
 ! Requires NO external test data: 
 
 body
+enable-log
+
 let $autousage="none"
 let $echo="yes"
 let _onfail="stop"
@@ -89,4 +91,5 @@ let $echo="no"
 ! clean up:
 ush rm -f a
 
+disable-log
 end-proc

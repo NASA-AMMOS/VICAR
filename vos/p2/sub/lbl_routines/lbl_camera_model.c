@@ -508,6 +508,12 @@ static LblApiElement_typ	LabelTbl[] = {
 		LBL_OFFSET(LblCameraModel_typ, FilterName.Valid),
 		LBL_NO_RETURN,	LBL_SIZE(FilterName.Value)},
 
+        {"FILTER_NUMBER",                         "INT",       LBL_OPTIONAL,
+                LBL_NO_CONT,    1,      1,      LBL_NULL,
+                LBL_OFFSET(LblCameraModel_typ, FilterNumber.Value),
+                LBL_OFFSET(LblCameraModel_typ, FilterNumber.Valid),
+                LBL_NO_RETURN,  LBL_SIZE(FilterNumber.Value)},
+
 	{"REFERENCE_COORD_SYSTEM_NAME",		"STRING",	LBL_OPTIONAL,
 		LBL_NO_CONT,	1,	1,	LBL_NULL,
 		LBL_OFFSET(LblCameraModel_typ, ReferenceCoordSystemName.Value),
@@ -573,6 +579,18 @@ static LblApiElement_typ	LabelTbl[] = {
         	LBL_OFFSET(LblCameraModel_typ, ReferenceCoordSystemIndex[9].Value),
         	LBL_OFFSET(LblCameraModel_typ, ReferenceCoordSystemIndex[9].Valid),
         	LBL_NO_RETURN,  LBL_SIZE(ReferenceCoordSystemIndex[9].Value)},
+
+	{"REFERENCE_COORD_SYSTEM_INDEX",    "INT",      LBL_OPTIONAL,
+        	LBL_CONTINUE,   1,  11,  LBL_NULL,
+        	LBL_OFFSET(LblCameraModel_typ, ReferenceCoordSystemIndex[10].Value),
+        	LBL_OFFSET(LblCameraModel_typ, ReferenceCoordSystemIndex[10].Valid),
+        	LBL_NO_RETURN,  LBL_SIZE(ReferenceCoordSystemIndex[10].Value)},
+
+	{"REFERENCE_COORD_SYSTEM_INDEX",    "INT",      LBL_OPTIONAL,
+        	LBL_CONTINUE,   1,  12,  LBL_NULL,
+        	LBL_OFFSET(LblCameraModel_typ, ReferenceCoordSystemIndex[11].Value),
+        	LBL_OFFSET(LblCameraModel_typ, ReferenceCoordSystemIndex[11].Valid),
+        	LBL_NO_RETURN,  LBL_SIZE(ReferenceCoordSystemIndex[11].Value)},
 
         {"REFERENCE_COORD_SYSTEM_SOLN_ID",      "STRING",       LBL_OPTIONAL,
                 LBL_NO_CONT,    1,      1,      LBL_NULL,

@@ -105,6 +105,9 @@ REVISIONS:
                  moved variables c and ounit into #ifdef VMS_OS block   
   2012-12-14 RJB Doc update.
   2016-03-07 WLB Switched to ANSI_C. Removed VMS residue. Migrated to MIPL.
+  2019-06-13 WLB IDS-7922: Initialized some variables.
+                 IDS-7924: Switched to constant formatting string.
+		 IDS-7925: Null-terminated some strings.
 
 .LEVEL1
 .VARI INPUT 

@@ -1,0 +1,164 @@
+phottest out=phottest_m.dat pho_func=MINNAERT class_id=2 albedo=0.7  +
+   exponent=0.6 start=(10,10,10) delta=(30,30,180) sigma=0.000001
+Beginning VICAR task phottest
+ 
+ CLASS_ID =    2
+ Function = MINNAERT
+    ALBEDO =   7.000e-01
+    EXPONENT =   6.000e-01
+ 
+ Number of points =          9
+ 
+ sigma =  1.000000e-06
+ 
+photfit2 inp=(phottest_m.dat,phottest_m.dat) pho_func=MINNAERT  +
+   class_id=2 albedo=0.6 min_albedo=0.0 max_albedo=1.0 t_albedo=0.1  +
+   exponent=0.6 min_exponent=0.0 max_exponent=1.0 t_exponent=0.1  +
+   norm=25 rerun=2 maxiter=100 numten=25 metrop=20 percent=90  +
+   toleranc=0.02 'print
+Beginning VICAR task photfit2
+PHOTFIT2 version 2019-09-06
+ Function =MINNAERT
+ parameter number =  2
+ 
+ 
+ First guess and there limits: 
+ ----------------------------- 
+ 
+     ALBEDO =   6.000e-01
+     MIN_ALBEDO =   0.000e+00
+     MAX_ALBEDO =   1.000e+00
+     T_ALBEDO =   1.000e-01
+ 
+     EXPONENT =   6.000e-01
+     MIN_EXPONENT =   0.000e+00
+     MAX_EXPONENT =   1.000e+00
+     T_EXPONENT =   1.000e-01
+ 
+ 
+   1.File: phottest_m.dat
+   ROW   CLASS_ID     RAD      INC_ANG    EM_ANG  PHAS_ANG     EPS
+     1          2  6.979e-01   10.0000   10.0000    1.7343  4.126e-08
+     2          2  7.716e-01   10.0000   40.0000   30.1938  5.493e-07
+     3          2  1.065e+00   10.0000   70.0000   60.1639 -1.306e-07
+     4          2  6.002e-01   40.0000   10.0000   30.1938  3.432e-08
+     5          2  6.637e-01   40.0000   40.0000    6.4231  1.135e-06
+     6          2  9.163e-01   40.0000   70.0000   31.0354  1.703e-06
+     7          2  3.700e-01   70.0000   10.0000   60.1639  2.334e-07
+     8          2  4.091e-01   70.0000   40.0000   31.0354 -9.338e-07
+     9          2  5.648e-01   70.0000   70.0000    9.3955  1.300e-06
+   1.IBIS file contains    9 points
+   Number of points left from this file =     9
+ 
+   2.File: phottest_m.dat
+   ROW   CLASS_ID     RAD      INC_ANG    EM_ANG  PHAS_ANG     EPS
+     1          2  6.979e-01   10.0000   10.0000    1.7343  4.126e-08
+     2          2  7.716e-01   10.0000   40.0000   30.1938  5.493e-07
+     3          2  1.065e+00   10.0000   70.0000   60.1639 -1.306e-07
+     4          2  6.002e-01   40.0000   10.0000   30.1938  3.432e-08
+     5          2  6.637e-01   40.0000   40.0000    6.4231  1.135e-06
+     6          2  9.163e-01   40.0000   70.0000   31.0354  1.703e-06
+     7          2  3.700e-01   70.0000   10.0000   60.1639  2.334e-07
+     8          2  4.091e-01   70.0000   40.0000   31.0354 -9.338e-07
+     9          2  5.648e-01   70.0000   70.0000    9.3955  1.300e-06
+   2.IBIS file contains    9 points
+   Number of points left from this file =     9
+ 
+ 
+  Total number of input points =     18
+  Total number of points left =     18
+ 
+ 
+ 		phoMetropolis :
+ 
+ scaling factor reduces temperatur =  9.120108e-01
+ 
+  loopNumber        Cost  #downhill    #uphill  #rejected #out_of_bounds
+       ALBEDO     EXPONENT
+  Boltzmann =  3.710930e+00  Temperatur =  1.000000e-01
+         20 6.897551e-03          3         12          5          3
+ 7.027912e-01 5.941656e-01
+  Boltzmann =  4.072267e+00  Temperatur =  1.000000e-02
+         40 9.187735e-04          3         13          4          0
+ 7.015558e-01 6.021622e-01
+  Boltzmann =  2.545815e+00  Temperatur =  1.000000e-03
+         60 3.587567e-04          2          4         14          0
+ 7.006396e-01 6.007742e-01
+  Boltzmann =  2.362653e+00  Temperatur =  1.000000e-04
+         80 1.181420e-04          6          6          8          0
+ 7.001428e-01 6.002778e-01
+        100 5.858899e-05          5          8          7          0
+ 7.000973e-01 6.001390e-01
+ 
+          1. Metropolis-result  :
+ ALBEDO =   7.001e-01
+ EXPONENT =   6.001e-01
+ 
+ 
+ 		phoMetropolis :
+ 
+ scaling factor reduces temperatur =  9.120108e-01
+ 
+  loopNumber        Cost  #downhill    #uphill  #rejected #out_of_bounds
+       ALBEDO     EXPONENT
+  Boltzmann =  4.384752e+00  Temperatur =  1.000000e-01
+         20 5.858899e-05          1         11          8          2
+ 7.000973e-01 6.001390e-01
+  Boltzmann =  4.492885e+00  Temperatur =  1.000000e-02
+         40 5.858899e-05          4         12          4          0
+ 7.000973e-01 6.001390e-01
+  Boltzmann =  4.095853e+00  Temperatur =  1.000000e-03
+         60 5.858899e-05          2          8         10          0
+ 7.000973e-01 6.001390e-01
+  Boltzmann =  9.714467e+00  Temperatur =  1.000000e-04
+         80 5.858899e-05          1         15          4          0
+ 7.000973e-01 6.001390e-01
+        100 2.216838e-05          6          7          7          0
+ 7.000314e-01 6.000531e-01
+ 
+          2. Metropolis-result  :
+ ALBEDO =   7.000e-01
+ EXPONENT =   6.001e-01
+ 
+ 
+          Statistical results:
+          --------------------
+ 
+   INC_ANG    EM_ANG  PHAS_ANG      I/F     I/F-FitVal 
+   10.0000   10.0000    1.7343  0.6978902  -0.00003015   used 
+   10.0000   40.0000   30.1938  0.7716499  -0.00002255   used 
+   10.0000   70.0000   60.1639  1.0653263   0.00001357   used 
+   40.0000   10.0000   30.1938  0.6002371  -0.00001793   used 
+   40.0000   40.0000    6.4231  0.6636759  -0.00000988   used 
+   40.0000   70.0000   31.0354  0.9162592   0.00002570   used 
+   70.0000   10.0000   60.1639  0.3699839   0.00000499   used 
+   70.0000   40.0000   31.0354  0.4090874   0.00000978   used 
+   70.0000   70.0000    9.3955  0.5647788   0.00004026   used 
+   10.0000   10.0000    1.7343  0.6978902  -0.00003015   used 
+   10.0000   40.0000   30.1938  0.7716499  -0.00002255   used 
+   10.0000   70.0000   60.1639  1.0653263   0.00001357   used 
+   40.0000   10.0000   30.1938  0.6002371  -0.00001793   used 
+   40.0000   40.0000    6.4231  0.6636759  -0.00000988   used 
+   40.0000   70.0000   31.0354  0.9162592   0.00002570   used 
+   70.0000   10.0000   60.1639  0.3699839   0.00000499   used 
+   70.0000   40.0000   31.0354  0.4090874   0.00000978   used 
+   70.0000   70.0000    9.3955  0.5647788   0.00004026   used 
+        Mean I/F error per fitted point =   0.00001942
+ 
+ MEAN VALUES (to thinking about the stability of fitting) :
+ ALBEDO =   7.001e-01 +/-  4.657e-05
+ EXPONENT =   6.001e-01 +/-  6.075e-05
+ 
+ 
+*****************************************************************************
+* ***************************************************************************
+* *
+* *  RESULTING PARAMETERS OF BEST-FIT: 
+* *
+* *      ALBEDO =   7.000e-01
+* *      EXPONENT =   6.001e-01
+* *
+* ***************************************************************************
+*****************************************************************************
+ 
+disable-log

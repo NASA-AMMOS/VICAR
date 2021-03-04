@@ -47,7 +47,7 @@ if ($?V2INC != 0) then
     else
       set force = ""
     endif
-    if ($?V2_COVERAGE) then
+    if ($?V2_COVERAGE != 0) then
       set cover = -DV2_COVERAGE
       echo "CODE COVERAGE BUILD ENABLED"
     else
@@ -55,7 +55,6 @@ if ($?V2INC != 0) then
     endif
     alias vimake 'imake '$force' '$cover' -I$V2INC -I$V2UTIL -T$V2UTIL/imake_unix.tmpl -f \!*.imake -s \!*.make'
     endif
-  endif
 else
   unalias vimake
 endif

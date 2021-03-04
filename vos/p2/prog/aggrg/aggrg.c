@@ -1,6 +1,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "vicmain_c.h"
 #include "applic.h"
@@ -23,12 +24,12 @@ void main44(void)
 {
    int i,j,sumcol[40],tocol[40],sumcount,tocount,dummy;
    int unit,ibis,status,clen,agcol,indexcol,indx,icol,outptr;
-   int *ixdat,agcolisnum,agcolwid=0,rst,il,iu,outcol;
+   int *ixdat = NULL,agcolisnum,agcolwid=0,rst,il,iu,outcol;
    short int *conbuf;
-   double sum,*agdat,*iodat;
-   char *p,cformat[7],*agdatstr;
+   double sum,*agdat = NULL,*iodat;
+   char *p,cformat[7],*agdatstr = NULL;
            
-   zifmessage("aggrg version Fri Dec  5 2014");
+   zifmessage("AGGRG version 2019-08-07");
    
    /* get the basic parameters */
    

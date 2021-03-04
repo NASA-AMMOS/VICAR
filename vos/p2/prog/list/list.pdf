@@ -95,6 +95,9 @@ END-PROC
   2000-10-06 Amy Chen - Added stdio.h header file
   2017-03-29 Walt Bunch - Added NOUSRTIM param to help automated regression testing.
 
+  2019-09-06 Walt Bunch - IDS-7922 - Initialized some variables. Replaced sprintf
+             calls. Cleaned up -Wall warnings. 
+
 .LEVEL1
 .VARIABLE INP
  Input dataset

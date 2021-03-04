@@ -7,6 +7,7 @@
 
 #define LIB_RTL
 #define LIB_TAE
+#define LIB_P2SUB
 
 #define INCLUDE_LIST tiff.h tiffio.h prototypes.h tiffcompat.h tiffiop.h
 #define MODULE_LIST \

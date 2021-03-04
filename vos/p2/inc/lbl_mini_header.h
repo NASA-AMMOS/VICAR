@@ -58,26 +58,28 @@ extern "C" {
   typedef struct
   {
     LblApiIntItem_typ           ImageId;
-    LblApiStringItem_typ	MagicNumbers[2];
+    LblApiStringItem_typ	      MagicNumbers[2];
+    LblApiTimeItem_typ          SpacecraftClockStartCountStr;
     LblApiIntItem_typ           SpacecraftClockStartCount;
     LblApiIntItem_typ           DetectorEraseCount;
-    LblApiStringItem_typ	InstrumentModeId;
+    LblApiStringItem_typ	      InstrumentModeId;
     LblApiIntItem_typ           FilterNumber;
     LblApiIntItem_typ           ExposureDurationCount;
     LblApiIntItem_typ           FirstLineSample;
     LblApiIntItem_typ           FirstLine;
     LblApiIntItem_typ           LineSamples;
     LblApiIntItem_typ           Lines;
-    LblApiStringItem_typ	InstrumentFocusMode;
+    LblApiStringItem_typ	      InstrumentFocusMode;
     LblApiIntItem_typ           InstrumentFocusPosition;
     LblApiIntItem_typ           InstrumentFocusStepSize;
     LblApiIntItem_typ           InstrumentFocusSteps;
+    LblApiIntItem_typ           AutoFocusZstackFlag;
     LblApiStringItem_typ        ExposureType;
     LblApiIntItem_typ           AutoExposureDataCut;
     LblApiIntItem_typ           AutoExposurePixelFraction;
     LblApiIntItem_typ           AutoExposurePercent;
     LblApiIntItem_typ           MaxAutoExposIterationCount;
-    LblApiIntItem_typ		InstCmprsMode;
+    LblApiIntItem_typ		        InstCmprsMode;
     LblApiIntItem_typ           InstCmprsQuality;
     LblApiStringItem_typ	SampleBitModeId;
     LblApiIntItem_typ           StartImageId;
@@ -87,12 +89,14 @@ extern "C" {
     LblApiStringItem_typ	InstrumentState[8];
     LblApiStringItem_typ	InstrumentStateName[8];
     LblApiIntItem_typ           InstrumentSerialNumber;
-    LblApiIntItem_typ           ArticulationDevPosition[2];
+    LblApiIntItem_typ           ArticulationDevPosition[8];
     LblApiStringItem_typ	ArticulationDevPositionName[8];
     LblApiIntItem_typ           OffsetModeId;
+    LblApiIntItem_typ           DCOffset;
     LblApiIntItem_typ           InitialSize;
-    LblApiIntItem_typ		InstrumentMode[12];	// new for MSAM
-    LblApiStringItem_typ	InstrumentModeName[12];	// new for MSAM
+    LblApiIntItem_typ		        InstrumentMode[12];	// new for MSAM
+    LblApiStringItem_typ	      InstrumentModeName[12];	// new for MSAM
+    LblApiRealItem_typ          DetectorReadoutRate;    // new for MSAM
   } LblMiniHeader_typ;
 
   int	LblMiniHeader( int, int, LblMiniHeader_typ *, int,const char*  );

@@ -8,12 +8,16 @@
  * Hint: set window size to at least 90 column size to best view this file
  ****************************************************************************/
 
+#include <ctype.h>
 #include "vicmain_c"
 #include "taeconf.inp"
+#include "taeextproto.h"
 #include "parblk.inc"
 #include "pgminc.inc"
 #include "spiceinc.h"
 #include <string.h>
+#include "zvprintf.h"
+#include "zmabend.h"
 
 #define  SUCCESS  1
 
@@ -22,11 +26,13 @@ void main44(void)
   float MAP[40], CoordIn[2], CoordOut[2];
   int   Mode, Cnt, Def, Status, Dummy;
 
+  zvmessage("GETLL version 2019-07-23", "");
+
   switch (FillMAPBuffer(MAP))
   {
     case SUCCESS: break;
     case -1: case -2: case -3: case -4: case -5: case -6:
-      zmabend("GETLL: Unable to determine MAP buffer for ZCONVEV, cannot continue!", "");
+      zmabend("GETLL: Unable to determine MAP buffer for ZCONVEV, cannot continue!");
     default: 
       zvmessage ("GETLL: WARNING, unhandled return code for FillMAPBuffer", "");
       break;
@@ -90,7 +96,7 @@ int FillMAPBuffer(
   char     Project[6];
   int      InUnit, Camera, Dum1, Dum2, Status, i;
   static int NO_ABEND = 0;
-  char     MsgBuf[128], ActualCKName[LEN_SOURCE+1], 
+  char     ActualCKName[LEN_SOURCE+1], 
            RequestedCKName[LEN_SOURCE+1];
 
   Status = zvunit(&InUnit, "INP", 1, NULL);
@@ -119,8 +125,7 @@ int FillMAPBuffer(
   else if (strncmp("GLL",Project,3) && strncmp("VGR-1",Project,5) && 
            strncmp("VGR-2", Project,5))
   {
-    sprintf(MsgBuf,"GETLL: Input file is of invalid project type %s.",Project);
-    zvmessage (MsgBuf, "");
+    zvnprintf(128, "GETLL: Input file is of invalid project type %s.",Project);
     return -6;
   }
 
@@ -149,9 +154,8 @@ int FillMAPBuffer(
   }
   if (strcmp(RequestedCKName, ActualCKName))
   {
-    sprintf (MsgBuf, "CKName %s not available, %s used.", RequestedCKName,
-             ActualCKName);
-    zvmessage (MsgBuf, "");
+    zvnprintf (128, "CKName %s not available, %s used.", RequestedCKName,
+	       ActualCKName);
   }
 
   /* Start Filling the MAP Buffer */
@@ -194,19 +198,17 @@ OutputCoord (int CONVEVMode,    /* Input */
              float CoordOut[2]  /* Input */
               )
 {
-  char MsgBuf[256];
   struct PARBLK ParBlk;
   double doubleout[2];
 
   /* Output to the standard console */
   zvmessage ("", "");
   if (CONVEVMode == 1)
-    sprintf (MsgBuf, "(%f, %f) {LAT,LON} = (%f, %f) {LINE,SAMP}\n", 
-             CoordIn[0], CoordIn[1], CoordOut[0], CoordOut[1]);
+    zvnprintf (256, "(%f, %f) {LAT,LON} = (%f, %f) {LINE,SAMP}\n", 
+	       CoordIn[0], CoordIn[1], CoordOut[0], CoordOut[1]);
   else
-    sprintf (MsgBuf, "(%f, %f) {LINE,SAMP} = (%f, %f) {LAT,LON}\n",
-             CoordIn[0], CoordIn[1], CoordOut[0], CoordOut[1]);
-  zvmessage (MsgBuf, "");
+    zvnprintf (256, "(%f, %f) {LINE,SAMP} = (%f, %f) {LAT,LON}\n",
+	       CoordIn[0], CoordIn[1], CoordOut[0], CoordOut[1]);
 
   /* Output to the TAE procedure's variables */
   doubleout[0] = CoordOut[0];

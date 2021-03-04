@@ -3,6 +3,7 @@
 
 #include "vicmain_c"
 #include "ftnbridge.h"
+#include "zphist.h"
 
 void main44()
 {

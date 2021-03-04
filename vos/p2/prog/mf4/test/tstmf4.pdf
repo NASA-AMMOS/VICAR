@@ -14,6 +14,8 @@ refgbl $autousage
 ! Requires NO external test data
 
 body
+enable-log
+
 let $autousage="none"
 let _onfail="stop"
 let $echo="yes"
@@ -516,4 +518,6 @@ mf4 xx1 f="c3=(1+2)*(3+4)+(5*6)" debug=1
 ibis-list xx1 csiz=(16,16,16,16) cfor="%16s %16s %16.12f %16.12f"
 
 let $echo="no"
+
+disable-log
 END-PROC

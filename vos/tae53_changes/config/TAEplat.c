@@ -377,7 +377,7 @@
 #define MacroIncludeFile <mac_osx.cf>
 #define MacroFile mac_osx.cf
 #else
-#if defined(__x86_64__) && !defined(V2_FORCE_32def)
+#if defined(__x86_64__) && !defined(V2_FORCE_32)
 #define Mac64OSXArchitecture
 #define MachineDep Mac64_OSX
 #define machinedep mac64_osx

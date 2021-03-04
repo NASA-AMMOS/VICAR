@@ -9,3 +9,5 @@ void concave(int nvert,			/* number of vertices */
 	     Point2 *point,		/* vertices of polygon */
 	     Window *win,		/* screen clipping window */
 	     void (*spanproc)());	/* called for each span of pixels */
+
+void digline(int x1, int y1, int x2, int y2, void (*dotproc)(int x, int y));

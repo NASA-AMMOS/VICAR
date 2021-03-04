@@ -7,6 +7,8 @@ local listcmd string init="dcl type"
 let $autousage="none"
 let _onfail="continue"
 
+enable-log
+
 if ($syschar(1) = "UNIX")
   let listcmd="ush cat"
 end-if
@@ -191,4 +193,6 @@ write "*********************************************"
   ibis-list temp 'format
   ibis-copy temp temp1  nc=6 incol=(1,5,6) nr=6 outc=(2,4,5)
   ibis-list temp1 'format
+
+  disable-log
 end-proc

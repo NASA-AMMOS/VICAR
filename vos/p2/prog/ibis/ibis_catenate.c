@@ -8,7 +8,7 @@
  ***                                                                  ***
  ************************************************************************/
  
-int catenate_files()
+int catenate_files(void)
 {
 	int inunit,outunit,status;
 	int in, out,def;

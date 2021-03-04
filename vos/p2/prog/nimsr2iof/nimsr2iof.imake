@@ -1,0 +1,9 @@
+#define PROGRAM nimsr2iof
+#define MODULE_LIST nimsr2iof.f
+#define MAIN_LANG_FORTRAN
+#define USES_FORTRAN
+#define LIB_P2SUB
+#define LIB_RTL
+#define LIB_TAE
+#define LIB_FORTRAN
+#define DEBUG		/* remove on delivery */

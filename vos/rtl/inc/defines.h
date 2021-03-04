@@ -49,7 +49,7 @@
 #define N_HISTORY_ITEMS		3	/* # of entries in 'history' global */
 #define N_UNIT_TABLE_ENTRIES	83	/* # of entries in current_table */
 #define N_LABEL_TABLE_ENTRIES	17	/* # of entries in label_table */
-#define N_ACTIVE_UNITS_ALLOWED	2000	/* max # of active units */
+#define N_ACTIVE_UNITS_ALLOWED	4000	/* max # of active units */
 #define N_COMPRESSION_TYPES	1	/* # of compressions available */
 #define MAX_TASKS		200	/* max # of tasks in a label */
 #define MAX_PROPS		200	/* max # of properties in a label */

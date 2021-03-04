@@ -133,7 +133,10 @@ REVISION HISTORY
 
    Written by:            N. D. Ritter  September 1991
    Cognizant Programmer:  N. D. Ritter  1991-1992
-   Latest revision:       B             March 1993.
+
+   2019-06-14 W. L. Bunch IDS-7924: corrected format directives.
+   2019-08-07 W. L. Bunch IDS-7923: replaced some sprintf calls with snprintf.
+   2019-09-18 W. L. Bunch IDS-7922: initialized a variable.
 
 REFERENCES
 

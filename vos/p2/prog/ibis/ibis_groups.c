@@ -8,7 +8,7 @@
  ***                                                                  ***
  ************************************************************************/ 
 
-modify_group()
+void modify_group(void)
 {
 	int outunit;
 	int status,def,count;

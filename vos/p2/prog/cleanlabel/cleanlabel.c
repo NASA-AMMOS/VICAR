@@ -14,6 +14,7 @@
 #include "zvproto.h"
 #include "defines.h"  /* for definition of MAX_TASKS (=200) */
 #include "errdefs.h"  /* for definitions of VICAR runtime errors */
+#include "zmabend.h" 
 #include <string.h>
 
 /*  Constant & macro definitions
@@ -22,7 +23,6 @@
 *
 *  The flags are defined so that the default-value flag is always 1.
 */
-#define VERSION_DATE "01-JUL-94"  /* date of current version of cleanlabel */
 #define TRUE 	1
 #define FALSE   0
 #define SUCCESS 1
@@ -41,13 +41,11 @@
 #define MAXLINESIZE 200000         /* size of buffer for image data transfer */
 #define MAX_KEYS 2500		  /* Max # of keys that can be deleted */
 
-#define abort_on_error(A)         zvsignal(A,status,1)
-
 /*  Type definitions							     */
 typedef int BOOL ;
 typedef char char132 [LABELLENGTH] ;
 
-
+
 /*  Structure definition	       				            
 *
 *   Variables within the structure GLOBALS:
@@ -80,7 +78,8 @@ struct INVARIANT {
 	BOOL keys_to_clean ;
 	BOOL key_to_keep ;
 } ;
-char msg[10];
+#define MSG_LEN 10
+char msg[MSG_LEN];
 /******************************************************************************
 *		Description of some inputs to 
 *		VICAR runtime routines
@@ -101,37 +100,6 @@ char msg[10];
 *  same way. 
 ******************************************************************************/
 
-
-void message (text, key, stop)
-   char *text, *key; 
-   int stop;
-/*****************************************************************************
-*  Print a message which can be recorded in the log file.  Also, if the
-*  message is an error message (indicated by stop=TRUE), zabend. 
-******************************************************************************/
-{
-   zvmessage (text, key) ;
-   if (stop) zabend () ;
-   return ;
-}
-
-void print_program_banner ()
-/******************************************************************************
-*  Zvmessage is used rather than printf so that the version date will be 
-*  recorded in the logfile of CLEANLABEL.
-******************************************************************************/
-{
-  char aline[80] ;
-
-  zvmessage
-    ("**************************************************************","") ;
-  (void) sprintf 
-      (aline, "VICAR2 program CLEANLABEL, version %s", VERSION_DATE) ;
-  message (aline, "", FALSE) ;
-  zvmessage
-    ("**************************************************************","") ;
-  return ;
-}
 
 void copy_image (image_unit, hist_unit)
    int image_unit, /* inp file containing image data */
@@ -154,7 +122,7 @@ void copy_image (image_unit, hist_unit)
     char buf [MAXLINESIZE] ;      /* buffer used for image copying */
     int status ;                
     
-    message ("Copying image to cleaned header...","", FALSE) ;
+    zvmessage ("Copying image to cleaned header...","");
 
 /* Copy the data */
     while (TRUE) {   
@@ -162,22 +130,25 @@ void copy_image (image_unit, hist_unit)
         
 	if (status == END_OF_FILE) break ;
     	else if (status != SUCCESS) {
-            (void) sprintf(msg,"%d\0",status);
-            message ("Error reading image", msg, FALSE) ;
-            abort_on_error (image_unit) ; }
+	  snprintf(msg, MSG_LEN, "%d",status);
+	  zvmessage ("Error reading image", msg);
+	  zvsignal(image_unit,status,1);
+	}
     }  /* end WHILE statement */
 
 /* Write the data to the output file */
     status = zvwrit (hist_unit, buf, NULL) ;
     if (status != SUCCESS) { 
-        (void) sprintf(msg,"%d\0",status);
-        message ("Error writing image", msg, FALSE) ;
-	abort_on_error (hist_unit) ;
+      snprintf(msg,MSG_LEN,"%d",status);
+        zvmessage ("Error writing image", msg);
+	zvsignal(hist_unit,status,1);
     }
     return ;
   }
 
-
+
+#define ALINE_LEN 80
+
 void delete_instances (invar, keyword)
    struct INVARIANT *invar;
    char *keyword;    /* keyword to be deleted */
@@ -188,7 +159,7 @@ void delete_instances (invar, keyword)
 {
    int j, status, nelem, maxlen, test, instance_cnt ;
    BOOL found_once ;
-   char aline[80], format[12] ;
+   char aline[ALINE_LEN], format[12] ;
 
    zveaction ("", "") ;
    found_once = FALSE ;
@@ -217,11 +188,11 @@ void delete_instances (invar, keyword)
 	       status = zldel (invar->out_unit, "HISTORY", keyword,
 		   "HIST", invar->task_names [j], 
 		   "INSTANCE", invar->instances [j], NULL) ;
-	       abort_on_error (invar->out_unit) ;          
+	       zvsignal(invar->out_unit,status,1);
 	   }
 	   else {
 	       if (status == CANNOT_FIND_KEY) continue ;
-	       else abort_on_error (invar->out_unit) ;          
+	       else zvsignal(invar->out_unit,status,1) ;          
 	   } /* end if SUCCESS */
         } /* end of for-loop */
     } /* if */
@@ -242,36 +213,34 @@ void delete_instances (invar, keyword)
 	       status = zldel (invar->out_unit, "HISTORY", keyword,
  		   "HIST", invar->task_names [j], 
 		   "INSTANCE", invar->instances [j], NULL) ;
-	       abort_on_error (invar->out_unit) ;          
+	       zvsignal(invar->out_unit,status,1) ;          
 	   }
 	   else {
 	       if (status == CANNOT_FIND_KEY) continue ;
-	       else abort_on_error (invar->out_unit) ;          
+	       else zvsignal(invar->out_unit,status,1) ;          
 	   } /* end if SUCCESS */
         } /* end of for-loop */
     } /* else */
 /***************************************************************************/
 
    if (found_once == FALSE) {
-       (void) sprintf (aline, "Could not find keyword %s", keyword) ;
-       message (aline, "CLLBL-I-KNF", FALSE) ;
+     snprintf (aline, ALINE_LEN, "Could not find keyword %s", keyword) ;
+     zvmessage (aline, "CLLBL-I-KNF");
    }
    else if (instance_cnt > 0) {
        if (instance_cnt == 1) {
-	  (void) sprintf 
-               (aline, " 1 instance  of keyword %8s was  cleaned",keyword) ;
+	 snprintf(aline, ALINE_LEN," 1 instance  of keyword %8s was  cleaned",keyword) ;
        }
        else { 
-	   (void) sprintf 
-                  (aline, "%2d instances of keyword %8s were cleaned", 
+	 snprintf(aline, ALINE_LEN,"%2d instances of keyword %8s were cleaned", 
 		    instance_cnt, keyword) ;
        }
-       message (aline, "", FALSE) ;
+       zvmessage (aline, "");
    }
    return ;
 }
 
-
+
 void open_files (invar)
    struct INVARIANT *invar;
 /******************************************************************************
@@ -280,32 +249,34 @@ void open_files (invar)
 *  - calls ZVGET on the input file to get information about the VICAR image 
 *****************************************************************************/ 
 {
-   int status ;
+   int status = 0;
    if (invar->write_method == NEW_OUT_FILE) {
        status = zvunit (&invar->inp_unit, "INP", 1, NULL) ;
-       abort_on_error (invar->inp_unit) ;
+       zvsignal(invar->inp_unit,status,1) ;
        status = zvunit (&invar->out_unit, "UPDATE", 1, 
                "U_NAME", invar->output_file, NULL) ;
 
-       abort_on_error (invar->out_unit) ;
+       zvsignal(invar->out_unit,status,1) ;
        status = zvopen(invar->inp_unit, "U_ORG", "BSQ", "TYPE", "IMAGE", NULL) ;
        status = zvopen(invar->out_unit, "U_ORG", "BSQ", "OP", "WRITE", 
               "TYPE", "IMAGE", NULL) ;
    }
    else if (invar->write_method == OUT_SAME_AS_INP) {
        status = zvunit (&invar->out_unit, "INP", 1, NULL) ;
-       abort_on_error (invar->out_unit) ;
+       zvsignal(invar->out_unit,status,1) ;
        status = zvopen(invar->out_unit, "U_ORG", "BSQ", "OP", "UPDATE", 
               "TYPE", "IMAGE", NULL) ;
        invar->inp_unit = invar->out_unit ;
    }
-   if (status != SUCCESS)
-       message ("Illegal file type", "SF-F-BADFTYPE", TRUE) ;
+   if (status != SUCCESS) {
+     zvmessage ("Illegal file type", "SF-F-BADFTYPE");
+     zabend();
+   }
 
    return ;
 }
 
-
+
 void cclose_file (unit_number)
 int unit_number;
 /******************************************************************************
@@ -360,7 +331,7 @@ void get_parameters (invar)
    return;
 } 
 
-
+
 void make_list (invar)
    struct INVARIANT *invar;
 /****************************************************************************
@@ -384,9 +355,9 @@ void make_list (invar)
 	    "HIST", invar->task_names[0],
 	    "INSTANCE", invar->instances[0], NULL ) ;
     if (status != SUCCESS) {
-        (void) sprintf(msg,"%d\0",status);
-        message ("Error status number", msg, FALSE) ;
-        abort_on_error (invar->inp_unit) ;
+      snprintf(msg,MSG_LEN,"%d",status);
+        zvmessage ("Error status number", msg);
+        zvsignal(invar->inp_unit,status,1) ;
     }
 
 /*
@@ -398,7 +369,7 @@ void make_list (invar)
     do {
         status = zlninfo (invar->inp_unit, one_key, format, &len, &nelem, NULL) ;
 	if ((status != END_OF_LABEL) && (status != SUCCESS)) 
-	    abort_on_error (invar->inp_unit) ;
+	  zvsignal(invar->inp_unit,status,1) ;
 
 	task_header = (strcmp(one_key, "TASK") == 0) ||
 	              (strcmp(one_key, "USER") == 0) ||
@@ -418,7 +389,7 @@ void make_list (invar)
     return ;
 }
 
-
+
 void process_header (invar)
    struct INVARIANT *invar;
 /******************************************************************************
@@ -426,7 +397,7 @@ void process_header (invar)
 ******************************************************************************/
 {
     int status, item ;
-    char aline [80] ;
+    char aline [ALINE_LEN] ;
 
     open_files (invar) ;
 
@@ -438,10 +409,12 @@ void process_header (invar)
     status = zlhinfo (invar->inp_unit, (char *)invar->task_names,
 	     invar->instances,
              &invar->num_tasks, "ULEN", MAX_LABEL_KEY_SIZE+1, NULL) ;
-    abort_on_error (invar->inp_unit) ;
-    if (invar->num_tasks < 1)  message ("Error: NO_TASKS_IN_LABEL", "", TRUE) ;
-    (void) sprintf (aline, "Beginning to clean %s...", invar->input_file) ;
-    message (aline, "", FALSE) ;
+    zvsignal(invar->inp_unit,status,1) ;
+    if (invar->num_tasks < 1)
+      zmabend ("Error: NO_TASKS_IN_LABEL");
+      
+    snprintf (aline, ALINE_LEN, "Beginning to clean %s...", invar->input_file) ;
+    zvmessage (aline, "");
 /* 
 *  Clean the instances of keywords:
 *  If ALL the keywords are to be cleaned, 
@@ -455,7 +428,7 @@ void process_header (invar)
     for (item = 0; item < invar->num_keys; item++) {
         delete_instances (invar, invar->keys [item]) ;
     }       
-    message ("Cleaning completed successfully!!!", "", FALSE) ;
+    zvmessage ("Cleaning completed successfully!!!", "");
 /* 
 *  If needed, copy the input image into the file that contains the cleaned
 *  history label. invar.out_unit will contain the image and updated label.
@@ -478,12 +451,12 @@ void process_header (invar)
     return ;
 }
 
-
+
 void main44()
 {
     struct INVARIANT invar ;
     zveaction ("SA", "") ;
-    print_program_banner () ;
+    zvmessage("CLEANLABEL version 2019-07-18","");
     get_parameters (&invar) ;
     process_header (&invar) ;
     return;

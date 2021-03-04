@@ -1,7 +1,10 @@
 #include <math.h>
 #include <string.h>
 #include "vicmain_c"
-
+#include "zifmessage.h"
+#include "zmabend.h"
+#include "prnt.h"
+#include "zphist.h"
 
 #define TRUE 1
 #define FALSE 0
@@ -35,10 +38,17 @@
 	short class;		/* blemish classification		*/
         short sat_dn;		/* DN at which pixel becomes saturated.	*/
     } blemishes[MAX_BLEMS];
-
+
+static void init_params(void);
+static void flag_blemishes(int *ind, float cal[], short sat[], short err[], short rms[], short dc[], int ns, int line);
+static void store_blemish(int *ind, int line, int samp, int criteria, int sat_val);
+static void classify_blemish(int index, int nl, int ns);
+static int is_double_column(int line, int samp, int ns, int index);
+static int is_blemish(int line, int samp);
+static void getlabval(int *iunit, char key[], int *value, int *ind);
+
 void main44(void)
 {
-char STRING[120];
     int low, high, nspike, mode;
     int i,j,k;			/* temporary increment variable		*/
     int in_unit[MAX_INPUTS];	/* table of input unit numbers		*/
@@ -49,7 +59,6 @@ char STRING[120];
     int nsat=0;			/* number of low-full-well pixels	*/
     int nunclass=0;		/* number of unclassified blemishes	*/
     int ndcblem=0;		/* number of double column blemishes	*/
-    int *intptr;                /* integer pointer for his, ...         */
     int his[MAX_DN+1];		/* histogram of low-full-well pixels	*/
     int class,isat;		/* temporary class and saturation dn    */
     double r,mean,sigma;	/* temporary statistical variables	*/
@@ -59,7 +68,6 @@ char STRING[120];
     short rms[1024];		/* rms fit error from GALGEN		*/
     short dc[1024];		/* dark-current from GALGEN		*/
     char format[5];		/* DC data format			*/
-    int size;                   /* size of his buffer                   */
     int num1=0;                 /* no. of blems failing each criteria   */
     int num2=0;
     int num4=0;
@@ -67,7 +75,7 @@ char STRING[120];
     int num6=0;
     int num7=0;
 /*  ==================================================================  */
-    zifmessage("Blemgen version 28-Jul-97");
+    zifmessage("BLEMGEN version 2019-08-22");
 
     stat = zvpcnt("INP",&n_inputs);
 
@@ -139,7 +147,7 @@ char STRING[120];
     else
       zvmessage("Energy unit = picoamp-milliseconds", "");
 
-    sprintf(message,"Slope -- Mean=%-0.10f Energy unit/DN   Sigma=%-0.4f",
+    sprintf(message,"Slope -- Mean=%-.10f Energy unit/DN   Sigma=%-.4f",
             mean,sigma);
     zvmessage (message,"");
 
@@ -157,7 +165,7 @@ char STRING[120];
     if (stat != 1) zmabend("Error in zladd");
 
     if (mean == 0.0) sprintf(message,"1.0/0.0 DN/ENERGY_UNIT");
-    else sprintf(message,"%-0.10f DN/ENERGY_UNIT",1./mean);
+    else sprintf(message,"%-.10f DN/ENERGY_UNIT",1./mean);
 
     stat = zladd(in_unit[0],"HISTORY","MEANSLOP",message,
 		 "FORMAT","STRING","MODE","REPLACE",NULL);
@@ -168,9 +176,9 @@ char STRING[120];
 	{
 	mean = sum_dc/(r*picscale);
 	sigma= sqrt((double)(sum_dc_squared/r)-(mean*mean));
-        sprintf(message," DC -- Mean=%-0.10f DN   Sigma=%-0.4f",mean,sigma);
+        sprintf(message," DC -- Mean=%-.10f DN   Sigma=%-.4f",mean,sigma);
         zvmessage (message,"");
-	sprintf(message,"%-0.10f DN",mean);
+	sprintf(message,"%-.10f DN",mean);
 	stat = zvclose(in_unit[4],NULL);
 	stat = zvopen(in_unit[4],"OP","UPDATE","OPEN_ACT","SA","IO_ACT","SA",NULL);
 	stat = zladd(in_unit[4],"HISTORY","MEANDC",message,
@@ -265,8 +273,8 @@ char STRING[120];
     stat = zvclose(out_unit, NULL);
     zvmessage("BLEMGEN done.","");
 }
-
-init_params()
+
+void init_params(void)
 {
     int count;		/* TAE COUNT from zvparm			*/
 
@@ -282,18 +290,18 @@ init_params()
     mindc = mindc*picscale;		/* Adjust for input dc scale	*/
     maxdc = maxdc*picscale;
     zvp("UNITS", &units, &count);
-    return;
 }
-
-flag_blemishes(ind, cal, sat, err, rms, dc, ns, line)
 
+void flag_blemishes(int *ind, float cal[], short sat[], short err[], short rms[], short dc[], int ns, int line)
+#if 0
 int *ind;
 int ns,line;
 float cal[];
 short sat[],err[],rms[],dc[];
+#endif
 {
 int samp;		/* current sample				*/
-int sat_val;		/* saturation point of current pixel		*/
+int sat_val = 0;	/* saturation point of current pixel		*/
 int is_blem;		/* flag indicating if blem was found		*/
 double tmp,sum_sq;	/* temporary variable				*/
 
@@ -354,17 +362,16 @@ for (samp=0; samp<ns; samp++)
     SKIP:;
     }
     sum_dc_squared += sum_sq/(picscale*picscale);
-return;
 }
-
-store_blemish(ind,line,samp,criteria,sat_val)
 
+void store_blemish(int *ind, int line, int samp, int criteria, int sat_val)
+#if 0
     int *ind;			/* return indicator=0 normal, =4 full   */
     int line;			/* line of blemish found		*/
     int samp;			/* sample number of blemish found	*/
     int criteria;		/* blemish criteria which failed        */
     int sat_val;		/* saturation value of blemish		*/
-
+#endif
 {
     struct BLEMISH *blem_ptr;
 
@@ -387,13 +394,13 @@ store_blemish(ind,line,samp,criteria,sat_val)
     blem_ptr->class = criteria;
     blem_ptr->sat_dn = sat_val;
     blemish_total++;
-    return;
 }
-
-classify_blemish(index,nl,ns)
 
+void classify_blemish(int index, int nl, int ns)
+#if 0
     int nl,ns;		/* number of lines, number of samples in image	*/
     int index;		/* index into blemishes array of current blemish*/
+#endif
 {
     short class;	/* "class" of blemish.  see help file		*/
     int line,samp;	/* line & samp of current blemish		*/
@@ -432,12 +439,13 @@ classify_blemish(index,nl,ns)
         }
     }
     blemishes[index].class = class;
-    return;
 }
-
-is_double_column(line,samp,ns,index)
+
+int is_double_column(int line, int samp, int ns, int index)
+#if 0
     int line,samp;		/* line sample of blemish		*/
     int ns,index;		/* index into blemishes array		*/
+#endif
 {
     short class;		/* class of blemish (interp scheme)	*/
     int left;			/* good pixel column to left of blemish	*/
@@ -476,10 +484,11 @@ is_double_column(line,samp,ns,index)
 SUCCESS: blemishes[index].class = class;
     return TRUE;
 }
-
-is_blemish(line,samp)	/* returns true if point is in blemishes array	*/
 
+int is_blemish(int line, int samp)	/* returns true if point is in blemishes array	*/
+#if 0
     int line,samp;	/* line & samp of proposed blemish		*/
+#endif
 {
     struct BLEMISH *current_blem;	/* pointer to current blemish	*/
 					/* in blemishes array		*/
@@ -496,14 +505,16 @@ is_blemish(line,samp)	/* returns true if point is in blemishes array	*/
 
     return (current_blem->samp == samp);
 }
-
+
 /* Return last value (VALUE) of a label item (KEY)
  * Outputs: VALUE, IND
  * Upon return, IND=1 if item is found, =0 otherwise.
  */
-getlabval(iunit,key,value,ind)
+void getlabval(int *iunit, char key[], int *value, int *ind)
+#if 0
     int *iunit,*value,*ind;
     char key[];
+#endif
 { 
     int icnt, j;
 
@@ -521,5 +532,4 @@ getlabval(iunit,key,value,ind)
 	}
 
     *ind = 0;
-    return;
 }

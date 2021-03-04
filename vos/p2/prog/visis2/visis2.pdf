@@ -340,6 +340,9 @@ Revisions:
                 1997 above) -- Unix ISIS seems to have changed its syntax
   2012-02-10 LWK added PC for Linux to list of hosts
   2016-02-24 WLB Fixed 64-bit bugs and library call errors.
+  2019-06-14 WLB IDS-7924: Cast format args to expected type.
+                 IDS-7922: Initialized some variables.
+  2019-08-07 WLB IDS-7923: Replaced some sprintf calls with snprintf.
 
 .LEVEL1
 .VARI INP

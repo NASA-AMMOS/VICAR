@@ -76,6 +76,7 @@
 /rtl/source/comftn/xvwrit.c 
 /rtl/source/comftn/xvzinit.c
 /rtl/source/comftn/xvplabel.c
+/rtl/source/comftn/xvslabel.c
 /rtl/source/common/activate_a_unit.c
 /rtl/source/common/add_complex_label_item.c 
 /rtl/source/common/add_label_item.c 

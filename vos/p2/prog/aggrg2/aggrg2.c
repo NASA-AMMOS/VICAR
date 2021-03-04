@@ -1,12 +1,14 @@
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "vicmain_c.h"
 #include "applic.h"
 #include "defines.h"
 #include "ibisfile.h"
 #include "ibiserrs.h"
+#include "zvprintf.h"
 
 /*#include "cartoVicarProtos.h"*/
 #include "cartoStrUtils.h"
@@ -31,9 +33,9 @@ void main44(void)
    int agcolisnum,areacolisnum,agcolwid=0,areacolwid=0,colwid;
    short int *conbuf,x2;
    double *agdat,*areadat,*iodat,val=0,valmax=0,rst;
-   char *p=0,*q,cformat[MAXCOLS][6],*agdatstr,*areadatstr,*iodatstr;
+   char *p=0,*q,cformat[MAXCOLS][6],*agdatstr = NULL,*areadatstr = NULL,*iodatstr;
   
-   zifmessage("aggrg2 version Thu Jan  3 2008");
+   zifmessage("AGGRG2 version 2019-08-07");
    
    zvp("agcol",&agcol,&count);
    zvp("area",&area,&count);
@@ -275,7 +277,7 @@ void main44(void)
    
    /* print in/out file lengths */
    
-   printf("%d records in, %d records out\n",clen1,clen2);
+   zvnprintf(100,"%d records in, %d records out",clen1,clen2);
    
    /* close files */
 

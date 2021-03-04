@@ -229,20 +229,20 @@ TBD:
 ******************************************************************************/
 
 /*#include "gll_main.h"
- include gll_main.h here: */
+  include gll_main.h here: */
 /*				GLL_MAIN.H
- ******************************************************************************
- *	This file includes the basic data structures for the Galileo
- *	telemetry records.
- *
- * History:
- * 
- * Date		Reference	Description
- * -----------  --------------	------------------------------------------------
- *  7- 7-1989	N/A		Payam Zamani - Original Delivery
- * 23- 9-1989   N/A                          - Added MINIMUM and MAXIMUM macros
- ******************************************************************************
- */
+******************************************************************************
+*	This file includes the basic data structures for the Galileo
+*	telemetry records.
+*
+* History:
+* 
+* Date		Reference	Description
+* -----------  --------------	------------------------------------------------
+*  7- 7-1989	N/A		Payam Zamani - Original Delivery
+* 23- 9-1989   N/A                          - Added MINIMUM and MAXIMUM macros
+******************************************************************************
+*/
 
 #include <stdlib.h>
 
@@ -320,14 +320,14 @@ typedef	short			WORD;
  */
 
 typedef	struct					/* Format Idendtification    */
-	{
-	FIELD		rec_id	 : 5;		/* Record identifier	     */
-	FIELD		map_seq  : 3;		/* Map sequence no.	     */
-	FIELD		comm_map : 2;		/* Commutation map	     */
-	FIELD		mem_ro	 : 1;		/* Memory readout	     */
-	FIELD		rt_id	 : 5;		/* Real Time Identifier      */
-	}
-	fid_typ;
+{
+  FIELD		rec_id	 : 5;		/* Record identifier	     */
+  FIELD		map_seq  : 3;		/* Map sequence no.	     */
+  FIELD		comm_map : 2;		/* Commutation map	     */
+  FIELD		mem_ro	 : 1;		/* Memory readout	     */
+  FIELD		rt_id	 : 5;		/* Real Time Identifier      */
+}
+  fid_typ;
 
 /* SPACECRAFT_CLOCK
  *=============================================================================
@@ -357,22 +357,22 @@ typedef	struct					/* Format Idendtification    */
  */
 
 typedef	struct
-	{
-	FIELD	rim 	: 24;			/* Real time image count */
-	UBYTE	mod91;				/* mod 91 counter	 */
-	UBYTE	mod10;				/* mod 10 counter	 */
-	UBYTE	mod8;				/* mod 8 counter	 */
-	}
-	sc_sclk_typ;
+{
+  FIELD	rim 	: 24;			/* Real time image count */
+  UBYTE	mod91;				/* mod 91 counter	 */
+  UBYTE	mod10;				/* mod 10 counter	 */
+  UBYTE	mod8;				/* mod 8 counter	 */
+}
+  sc_sclk_typ;
 
 typedef	struct
-	{
-	UINT	rim;				/* Real time image count */
-	UBYTE	mod91;				/* mod 91 counter	 */
-	UBYTE	mod10;				/* mod 10 counter	 */
-	UBYTE	mod8;				/* mod 8 counter	 */
-	}
-	sclk_typ;
+{
+  UINT	rim;				/* Real time image count */
+  UBYTE	mod91;				/* mod 91 counter	 */
+  UBYTE	mod10;				/* mod 10 counter	 */
+  UBYTE	mod8;				/* mod 8 counter	 */
+}
+  sclk_typ;
 
 /* TELEM_HEADER
  *=============================================================================
@@ -401,12 +401,12 @@ typedef	struct
  */
 
 typedef	struct
-	{
-	int			pn_code;
-	fid_typ			frmt_id;
-	sc_sclk_typ		sclk;
-	}
-	tlm_hdr_typ;
+{
+  int			pn_code;
+  fid_typ			frmt_id;
+  sc_sclk_typ		sclk;
+}
+  tlm_hdr_typ;
 
 /* EARTH_RECEIVED_TIME & SPACECRAFT EVENT TIME
  *=============================================================================
@@ -430,15 +430,15 @@ typedef	struct
  */
 
 typedef	struct
-	{
-	UWORD			year;		/* YEAR 		     */
-	UWORD			day;		/* DAY OF YEAR		     */
-	UBYTE			hour;		/* HOUR OF DAY		     */
-	UBYTE			minute;		/* MINUTES OF HOUR	     */
-	UBYTE			second;		/* SECONDS OF MINUTE	     */
-	UWORD			msecond;	/* MILLISECOND OF SECOND     */
-	}
-	ert_typ;
+{
+  UWORD			year;		/* YEAR 		     */
+  UWORD			day;		/* DAY OF YEAR		     */
+  UBYTE			hour;		/* HOUR OF DAY		     */
+  UBYTE			minute;		/* MINUTES OF HOUR	     */
+  UBYTE			second;		/* SECONDS OF MINUTE	     */
+  UWORD			msecond;	/* MILLISECOND OF SECOND     */
+}
+  ert_typ;
 
 typedef	ert_typ		scet_typ;
 
@@ -449,13 +449,13 @@ typedef	ert_typ		scet_typ;
  */
 
 typedef	struct
-	{
-	UBYTE		frmt;
-	FLAG		pb_rt;			/* 0:RT, 1:ASYNCH PLAYBACK    */
-	sclk_typ	sclk;
-	ert_typ		ert;
-	}
-	current_typ;
+{
+  UBYTE		frmt;
+  FLAG		pb_rt;			/* 0:RT, 1:ASYNCH PLAYBACK    */
+  sclk_typ	sclk;
+  ert_typ		ert;
+}
+  current_typ;
 
 /*
  *=============================================================================
@@ -479,16 +479,16 @@ static	char	*tlm_mode[2]  = { "RT", "PB"};
 #include <ctype.h>
 #include "vicmain_c"                                    /* Vicar */
 
-					/*	ERROR HANDLING MACROS	     */
+/*	ERROR HANDLING MACROS	     */
 #define return_if_error(A)	zvsignal(A,vstat,0);	if(vstat<=0) return
 #define continue_if_error(A)	zvsignal(A,vstat,0);	if(vstat<=0) continue
 #define break_if_error(A)	zvsignal(A,vstat,0);	if(vstat<=0) break
 #define fill_9s_error(A)	if(vstat<=0) strcpy(A,"999999999999")
 #define zero_if_error(A)        if(vstat<=0) *(A)=0
 
-	/*	DEFINE GLOBAL CONSTANTS	     */
+/*	DEFINE GLOBAL CONSTANTS	     */
 /*#define FALSE 			0
-#define TRUE 			1 (these are in mp_routines.h) */
+  #define TRUE 			1 (these are in mp_routines.h) */
 #define FORWARD 		1
 #define BACKWARD 		0
 #define LABELMEMORY		84000
@@ -503,183 +503,183 @@ static	char	*tlm_mode[2]  = { "RT", "PB"};
 #define HST_BLANK_RECORDS 	20
 #define GEOBANDS		9
 #define NUMOFPTRS		6
-				/* 	DECLARATION OF GLOBAL VARIABLES	      */
+/* 	DECLARATION OF GLOBAL VARIABLES	      */
 
 struct band_bin {		/* Structure of Band Bin parameters */
-  float waves[MAXBANDS];	/* Wavelength center in microns	*/
-  int  	org_band[MAXBANDS];	/* List of original band numbers */
-  int 	grating[MAXBANDS];	/* Logical grating positions */
-  int 	detector[MAXBANDS];	/* (ng 1's, ng 2's, . . . ng 17's) */
+float waves[MAXBANDS];	/* Wavelength center in microns	*/
+int  	org_band[MAXBANDS];	/* List of original band numbers */
+int 	grating[MAXBANDS];	/* Logical grating positions */
+int 	detector[MAXBANDS];	/* (ng 1's, ng 2's, . . . ng 17's) */
 } b;
 
-int nbm;			/* max. # of bands for the ins.mode */
+int nbm=0;			/* max. # of bands for the ins.mode */
 int nbb;			/* actual number of bands in the cube */
 int ngp;			/* #grating positions (for Tube suffix) */
 int grates[26];
 
 struct vitems {			/* VICAR label items or CATALOG fields   */
-  double projitem1,		/* 1st std. prll. LAMB; Ref. lat OBLQ   */
-	projitem2,		/* 2nd std. prll. LAMB; Ref. lon OBLQ   */
-	radii[3],		/* A, B, and C axes lengths		*/
-	rotation,		/* Map projection rotation in degrees   */
-	scale,			/* Projection scale in KM/PIXEL		*/
-	cscale,			/* camera scale (pixels/mm)		*/
-	focal,			/* focal length (mm)			*/
-	oaline,			/* line of optical axis intercept	*/
-	oasamp,			/* sample of optical axis intercept	*/
-	center_line,		/* line of MM projection tiepoint	*/
-	center_samp,		/* sample of MM projection tiepoint	*/
-	center_lat,		/* latitude of MM projection tiepoint	*/
-	center_lon,		/* longitude of MM projection tiepoint	*/
-	ssc_line,		/* line of subspacecraft point		*/
-	ssc_samp,		/* sample of subspacecraft point	*/
-	ssc_lat,		/* latitude of ssc point		*/
-	ssc_lon,		/* longitude of ssc point		*/
-	range;			/* spacecraft-to-planet range		*/
-  float	astretch[2],		/* Adaptive stretch parms of summary im */
-	rstretch[2],		/* Red plane stret. parms of summary im */
-	gstretch[2],		/* Grn plane stret. parms of summary im */
-	bstretch[2],		/* Blu plane stret. parms of summary im */
-	lat[MAXPLOTS],		/* Starting latitudes of spectra areas	*/
-	lon[MAXPLOTS],		/* Starting longitudes of spectra areas	*/
-	max_range,		/* S/C - Planet maximum distance	*/
-	min_range,		/* S/C - Planet minimum distance	*/
-	min_sun_d,		/* S/C - Sun minimum distance		*/
-	max_sun_d,		/* S/C - Sun maximum distance		*/
-	min_cb_d,		/* S/C - Central body minimum distance	*/
-	max_cb_d,		/* S/C - Central body maximum distance	*/
-	b_ssc_lat,		/* latitude of starting sub-s/c point	*/
-	b_ssc_lon,		/* longitude of starting sub-s/c  point	*/
-	e_ssc_lat,		/* latitude of ending sub-s/c point	*/
-	e_ssc_lon,		/* longitude of ending sub-s/c point	*/
-	b_ssl_lat,		/* latitude of starting sub-sol point	*/
-	b_ssl_lon,		/* longitude of starting sub-sol point	*/
-	e_ssl_lat,		/* latitude of ending sub-sol point	*/
-	e_ssl_lon,		/* longitude of ending sub-sol point	*/
-	min_lat,		/* Minimum latitude of MM cube		*/
-	min_lon,		/* Minimum longitude of MM cube		*/
-	max_lat,		/* Maximum latitude of MM cube		*/
-	max_lon,		/* Maximum longitude of MM cube		*/
-	inci_angle,		/* Photometric angles			*/
-	emis_angle,		
-	phas_angle,		
-	phot_cut,		/* phot.func. cutoff wavelength		*/
-	minn_exp,		/* exponent for Minnaert phot.func. 	*/
-	thresh,			/* threshold for FOOTPRINT		*/
-	satthrsh,		/* saturated-pixel threshold 		*/
-	maxdistor,		/* max.pixel distortion, for FOOTPRINT	*/
-	dpoint[2],		/* pointing offset 			*/
-	slewtol,		/* slew rate tolerance			*/
-	slew_rate,		/* mean slew rate relative to surface	*/
-	eradf,			/* radius expansion factor		*/
-	azimuth_sun,		/* Azimuth of sun in planet's coordina. */
-	azimuth_sc,		/* Azimuth of spacecraft in planet's co */
-	radiance[MAXBANDS],	/* DN to radiance or DN to IOF convers. */
-	rad_base[MAXBANDS],	/* Radiance or IOF offset 		*/
-	slant_dist_base,	/* Slant distance base for GEOCUBE	*/
-	slant_dist_mult,	/* Slant distance multiplier		*/
-	solarflux[MAXBANDS],	/* Solar flux vector 			*/
-	radsens[MAXBANDS],	/* radiometric sensitivities		*/
-	drkave[17],		/* average dark values			*/
-	temp[MAXTEMPS],		/* Array of mean sensor temperatures	*/
-	pshift,			/* Grating correction 			*/
-	ainfl,			/* Grating step inflation		*/
-	y_axis_max;		/* Highest value of HIST2D y-axis scale */
-  int	gain_state[25],		/* Gain states (max. one per EDR)	*/
-	fpgrid,			/* grid size for FOOTPRINT		*/
-	chopper,		/* chopper mode				*/
-	grating_offset,		/* Grating offset (0-31)		*/
-	grating_delta,		/* Grating increment			*/
-	grating_steps,		/* Grating step count			*/
-	grating_start_pos,	/* Grating start position		*/
-	bandedge_gp1,		/* Band edge grating position 1		*/
-	bandedge_gp2,		/* Band edge grating position 2		*/
-	fillnum,fillsize,	/* NIMSCMM fill parameters		*/
-	sdband,sdgeo,		/* cube/cocube band #s for STD_DEV      */
-	threshval[17],		/* instrument threshold values		*/
-	modescale,		/* SPECPLOT mode: 1-DN, 2-IOF, 3-RAD,   */
-				/* 	4-COMBINATION, 5-IOFonly 	*/
-	native_times[2][3],	/* RIM.MF.RTI- start and stop	*/
-	lines[MAXPLOTS],	/* Number of lines for spectra area	*/
-	samples[MAXPLOTS],	/* Number of samples for spectra area 	*/
-	dpstat,			/* flag for presence of DPOINT label item */
-	sens_flg,		/* flag presence of sensitivities in label */
-	drk_flg;		/* flag presence of dark aves in label */
-  short bands[10][5],		/* Bands used in generation of SII cube */
-	red_siid,		/* Band number of summary image red pln */
-	grn_siid,		/* Band number of summary image grn pln */
-	blu_siid,		/* Band number of summary image blu pln */
-	sii_imgs,		/* Number of spectral index images	*/
-	breakdet;		/* break detector if CALTYP=BOTH */
-  char 	formulae[10][100],	/* Formulae of SII Cocube		*/
-	binning[15],		/* NIMSCMM binning type			*/
-	calfile[25][100],	/* Calibration file names		*/
-	caltype[10],		/* Calibration type			*/
-	darkfile[25][100],	/* Dark value file name			*/
-	darktype[10],		/* Dark update type			*/
-	sol_file[100],		/* Solar flux file name			*/
-	deboomfile[100],	/* Deboom file name			*/
-	despikefile[100],	/* Despike file name			*/
-	dataformat[35],		/* Calibration type or data scale	*/
-	dataunits[35],		/* Data units of calibration		*/
-	edrfiles[25][101],	/* EDR file names			*/
-	event_start_time[25],	/* Event start time in PDS format	*/
-	event_stop_time[25],	/* Event stop time in PDS format	*/
-	spkernel[100],		/* SP-kernel file name			*/
-	ikernel[100],		/* I-kernel file name			*/
-	mask[10],		/* Keyword for MASK or NOMASK specified */
-	nimsmode[25],		/* NIMS instrument mode name		*/
-	prod_id[50],		/* Product ID = Cube name		*/
-	obsname[13],		/* Observation name 			*/
-	obsext[2],		/* Observation extension		*/
-	mosnum[3],		/* Mosaic number			*/
-	prodnote[80],		/* Product note				*/
-	obsnote[338],		/* Observation note			*/
-	suppnote[159],		/* supplementary Obsnote		*/
-	phase_name[50],		/* Mission phase name			*/
-	picnos[2][30],		/* start/end SSI ridealong picture numbers*/
-	photofunc[25],		/* Photometric correction type		*/
-	aacs_file[100],		/* AACS file (pointing)			*/
-	pfm_ck[100],		/* Platform C-kernel			*/
-	rot_ck[100],		/* Rotor C-kernel			*/
-	projection[41],		/* Map projection name			*/
-	requestor[25],		/* Observation requestor name		*/
-	stop_slide[10],		/* Stop or slide mode 			*/
-	target[20],		/* Target body name			*/
-	targetcode[4];		/* Target body code 			*/
+double projitem1,		/* 1st std. prll. LAMB; Ref. lat OBLQ   */
+  projitem2,		/* 2nd std. prll. LAMB; Ref. lon OBLQ   */
+  radii[3],		/* A, B, and C axes lengths		*/
+  rotation,		/* Map projection rotation in degrees   */
+  scale,			/* Projection scale in KM/PIXEL		*/
+  cscale,			/* camera scale (pixels/mm)		*/
+  focal,			/* focal length (mm)			*/
+  oaline,			/* line of optical axis intercept	*/
+  oasamp,			/* sample of optical axis intercept	*/
+  center_line,		/* line of MM projection tiepoint	*/
+  center_samp,		/* sample of MM projection tiepoint	*/
+  center_lat,		/* latitude of MM projection tiepoint	*/
+  center_lon,		/* longitude of MM projection tiepoint	*/
+  ssc_line,		/* line of subspacecraft point		*/
+  ssc_samp,		/* sample of subspacecraft point	*/
+  ssc_lat,		/* latitude of ssc point		*/
+  ssc_lon,		/* longitude of ssc point		*/
+  range;			/* spacecraft-to-planet range		*/
+float	astretch[2],		/* Adaptive stretch parms of summary im */
+  rstretch[2],		/* Red plane stret. parms of summary im */
+  gstretch[2],		/* Grn plane stret. parms of summary im */
+  bstretch[2],		/* Blu plane stret. parms of summary im */
+  lat[MAXPLOTS],		/* Starting latitudes of spectra areas	*/
+  lon[MAXPLOTS],		/* Starting longitudes of spectra areas	*/
+  max_range,		/* S/C - Planet maximum distance	*/
+  min_range,		/* S/C - Planet minimum distance	*/
+  min_sun_d,		/* S/C - Sun minimum distance		*/
+  max_sun_d,		/* S/C - Sun maximum distance		*/
+  min_cb_d,		/* S/C - Central body minimum distance	*/
+  max_cb_d,		/* S/C - Central body maximum distance	*/
+  b_ssc_lat,		/* latitude of starting sub-s/c point	*/
+  b_ssc_lon,		/* longitude of starting sub-s/c  point	*/
+  e_ssc_lat,		/* latitude of ending sub-s/c point	*/
+  e_ssc_lon,		/* longitude of ending sub-s/c point	*/
+  b_ssl_lat,		/* latitude of starting sub-sol point	*/
+  b_ssl_lon,		/* longitude of starting sub-sol point	*/
+  e_ssl_lat,		/* latitude of ending sub-sol point	*/
+  e_ssl_lon,		/* longitude of ending sub-sol point	*/
+  min_lat,		/* Minimum latitude of MM cube		*/
+  min_lon,		/* Minimum longitude of MM cube		*/
+  max_lat,		/* Maximum latitude of MM cube		*/
+  max_lon,		/* Maximum longitude of MM cube		*/
+  inci_angle,		/* Photometric angles			*/
+  emis_angle,		
+  phas_angle,		
+  phot_cut,		/* phot.func. cutoff wavelength		*/
+  minn_exp,		/* exponent for Minnaert phot.func. 	*/
+  thresh,			/* threshold for FOOTPRINT		*/
+  satthrsh,		/* saturated-pixel threshold 		*/
+  maxdistor,		/* max.pixel distortion, for FOOTPRINT	*/
+  dpoint[2],		/* pointing offset 			*/
+  slewtol,		/* slew rate tolerance			*/
+  slew_rate,		/* mean slew rate relative to surface	*/
+  eradf,			/* radius expansion factor		*/
+  azimuth_sun,		/* Azimuth of sun in planet's coordina. */
+  azimuth_sc,		/* Azimuth of spacecraft in planet's co */
+  radiance[MAXBANDS],	/* DN to radiance or DN to IOF convers. */
+  rad_base[MAXBANDS],	/* Radiance or IOF offset 		*/
+  slant_dist_base,	/* Slant distance base for GEOCUBE	*/
+  slant_dist_mult,	/* Slant distance multiplier		*/
+  solarflux[MAXBANDS],	/* Solar flux vector 			*/
+  radsens[MAXBANDS],	/* radiometric sensitivities		*/
+  drkave[17],		/* average dark values			*/
+  temp[MAXTEMPS],		/* Array of mean sensor temperatures	*/
+  pshift,			/* Grating correction 			*/
+  ainfl,			/* Grating step inflation		*/
+  y_axis_max;		/* Highest value of HIST2D y-axis scale */
+int	gain_state[25],		/* Gain states (max. one per EDR)	*/
+  fpgrid,			/* grid size for FOOTPRINT		*/
+  chopper,		/* chopper mode				*/
+  grating_offset,		/* Grating offset (0-31)		*/
+  grating_delta,		/* Grating increment			*/
+  grating_steps,		/* Grating step count			*/
+  grating_start_pos,	/* Grating start position		*/
+  bandedge_gp1,		/* Band edge grating position 1		*/
+  bandedge_gp2,		/* Band edge grating position 2		*/
+  fillnum,fillsize,	/* NIMSCMM fill parameters		*/
+  sdband,sdgeo,		/* cube/cocube band #s for STD_DEV      */
+  threshval[17],		/* instrument threshold values		*/
+  modescale,		/* SPECPLOT mode: 1-DN, 2-IOF, 3-RAD,   */
+/* 	4-COMBINATION, 5-IOFonly 	*/
+  native_times[2][3],	/* RIM.MF.RTI- start and stop	*/
+  lines[MAXPLOTS],	/* Number of lines for spectra area	*/
+  samples[MAXPLOTS],	/* Number of samples for spectra area 	*/
+  dpstat,			/* flag for presence of DPOINT label item */
+  sens_flg,		/* flag presence of sensitivities in label */
+  drk_flg;		/* flag presence of dark aves in label */
+short bands[10][5],		/* Bands used in generation of SII cube */
+  red_siid,		/* Band number of summary image red pln */
+  grn_siid,		/* Band number of summary image grn pln */
+  blu_siid,		/* Band number of summary image blu pln */
+  sii_imgs,		/* Number of spectral index images	*/
+  breakdet;		/* break detector if CALTYP=BOTH */
+char 	formulae[10][100],	/* Formulae of SII Cocube		*/
+  binning[15],		/* NIMSCMM binning type			*/
+  calfile[25][100],	/* Calibration file names		*/
+  caltype[10],		/* Calibration type			*/
+  darkfile[25][100],	/* Dark value file name			*/
+  darktype[10],		/* Dark update type			*/
+  sol_file[100],		/* Solar flux file name			*/
+  deboomfile[100],	/* Deboom file name			*/
+  despikefile[100],	/* Despike file name			*/
+  dataformat[35],		/* Calibration type or data scale	*/
+  dataunits[35],		/* Data units of calibration		*/
+  edrfiles[25][101],	/* EDR file names			*/
+  event_start_time[25],	/* Event start time in PDS format	*/
+  event_stop_time[25],	/* Event stop time in PDS format	*/
+  spkernel[100],		/* SP-kernel file name			*/
+  ikernel[100],		/* I-kernel file name			*/
+  mask[10],		/* Keyword for MASK or NOMASK specified */
+  nimsmode[25],		/* NIMS instrument mode name		*/
+  prod_id[50],		/* Product ID = Cube name		*/
+  obsname[13],		/* Observation name 			*/
+  obsext[2],		/* Observation extension		*/
+  mosnum[3],		/* Mosaic number			*/
+  prodnote[80],		/* Product note				*/
+  obsnote[338],		/* Observation note			*/
+  suppnote[159],		/* supplementary Obsnote		*/
+  phase_name[50],		/* Mission phase name			*/
+  picnos[2][30],		/* start/end SSI ridealong picture numbers*/
+  photofunc[25],		/* Photometric correction type		*/
+  aacs_file[100],		/* AACS file (pointing)			*/
+  pfm_ck[100],		/* Platform C-kernel			*/
+  rot_ck[100],		/* Rotor C-kernel			*/
+  projection[41],		/* Map projection name			*/
+  requestor[25],		/* Observation requestor name		*/
+  stop_slide[10],		/* Stop or slide mode 			*/
+  target[20],		/* Target body name			*/
+  targetcode[4];		/* Target body code 			*/
 }	v;			/* Pointer to VITEMS structure		*/
 
 int	cubefiles,		/* Number of cube files: MM, GEO, SII   */
-	numofbytes,		/* Number of bytes in PDS label		*/
-	numoffiles,		/* Number of input files		*/
-	nbpln,			/* Number of backplanes			*/
-	objptr[NUMOFPTRS],	/* Pointers to objects		      	*/
-	lsef,			/* Label search END flag		*/
-	specplots,		/* Number of spectra files as input     */
-	size,			/* Number of bytes in buffer	      	*/
-	inunit[MAXNUMOFFILES],	/* Input files' unit numbers   		*/
-	outunit[MAXNUMOFFILES],	/* Output files' unit numbers   	*/
-	bytes[MAXNUMOFFILES],	/* Number of bytes/pixel 	     	*/
-	nb[MAXNUMOFFILES],	/* Number of bands of files     	*/
-	inl[MAXNUMOFFILES],	/* Number of lines of files     	*/
-	ns[MAXNUMOFFILES],	/* Number of samples of files   	*/
-	bmask[MAXBANDS],	/* band mask */
-	vstat,			/* status variable for VICAR   	 	*/
-	nedrs,			/* # of edrfiles		 	*/
-	ncals,			/* # of cal files		 	*/
-	ndrks,			/* # of dark files		 	*/
-	tube,			/* flag that cube object is tube 	*/
-	ptub,			/* flag that tube is P-tube 	*/
-        cubsiz[2];		/* projected cube size (if tube) 	*/
+  numofbytes,		/* Number of bytes in PDS label		*/
+  numoffiles,		/* Number of input files		*/
+  nbpln,			/* Number of backplanes			*/
+  objptr[NUMOFPTRS],	/* Pointers to objects		      	*/
+  lsef,			/* Label search END flag		*/
+  specplots,		/* Number of spectra files as input     */
+  size,			/* Number of bytes in buffer	      	*/
+  inunit[MAXNUMOFFILES],	/* Input files' unit numbers   		*/
+  outunit[MAXNUMOFFILES],	/* Output files' unit numbers   	*/
+  bytes[MAXNUMOFFILES],	/* Number of bytes/pixel 	     	*/
+  nb[MAXNUMOFFILES],	/* Number of bands of files     	*/
+  inl[MAXNUMOFFILES],	/* Number of lines of files     	*/
+  ns[MAXNUMOFFILES],	/* Number of samples of files   	*/
+  bmask[MAXBANDS],	/* band mask */
+  vstat,			/* status variable for VICAR   	 	*/
+  nedrs,			/* # of edrfiles		 	*/
+  ncals,			/* # of cal files		 	*/
+  ndrks,			/* # of dark files		 	*/
+  tube,			/* flag that cube object is tube 	*/
+  ptub,			/* flag that tube is P-tube 	*/
+  cubsiz[2];		/* projected cube size (if tube) 	*/
 long	inptr,			/* Input file pointer 	     		*/
-        outptr;			/* Output file pointer          	*/
+  outptr;			/* Output file pointer          	*/
 int	labend;			/* Pointer to end of label */
 char 	*bufpoint,		/* Pointer for PDS item parsing 	*/
-	*histpoint,		/* Pointer for History object   	*/
-	value[8][7],		/* Object pointers	             	*/
-	xstring[80],		/* character string buffer		*/
-	line[120],lineb[80],	/* character string buffers	      	*/
-	tasknam[9];		/* task name for labels */
+  *histpoint,		/* Pointer for History object   	*/
+  value[8][7],		/* Object pointers	             	*/
+  xstring[80],		/* character string buffer		*/
+  line[120],lineb[80],	/* character string buffers	      	*/
+  tasknam[9];		/* task name for labels */
 
 int mphase;			/* 0=Phase-0 (NIMSCMM), 1=Phase-2 (NIMSCMM2) */
 int ithreshval;			/* flag for instrument threshold array	*/
@@ -741,8 +741,8 @@ void main44()
   int 	direction;			/* Direction of transformation 	     */
 
   /* inform user of Program version & update VERSION_DATE for label */
-  zvmessage("*** VISIS2 Version 2016-02-24 ***","");
-  strcpy( verdat, "2016-02-24");
+  zvmessage("VISIS2 version 2019-08-07","");
+  strcpy( verdat, "2019-06-14");
 
   free(malloc(4096*4096));		/* 	Guarantee sufficient memory  */
 
@@ -761,13 +761,13 @@ FUNCTION byte_nibble(bbuf,nbuf,length)
  * Create an array of nibbles from an array of bytes 
  * using only the most significant four bits of a byte.
  */
-unsigned char bbuf[],nbuf[];
-int *length;
+     unsigned char bbuf[],nbuf[];
+     int *length;
 {
   int samp;
 
   for( samp=0; samp<(*length)/2; samp++ )
-	nbuf[samp] = bbuf[samp]&&240 + (bbuf[samp+1]&&240)>>4;
+    nbuf[samp] = bbuf[samp]&&240 + (bbuf[samp+1]&&240)>>4;
 }
 
 
@@ -776,1397 +776,1397 @@ FUNCTION create_PDSlabel(nrecs,nlabrecs,nhistrecs,inputfiles)
 /*
  * Create PDS label for NIMS cube file.
  */
-int	*nhistrecs,		/* 	Number of records in history object   */
-	*nlabrecs,		/* 	Number of PDS label records	      */
-	*nrecs;			/* 	Number of records for cube file	      */
-char	inputfiles[][100];	/* 	Input files to generate cube          */
+     int	*nhistrecs,		/* 	Number of records in history object   */
+     *nlabrecs,		/* 	Number of PDS label records	      */
+     *nrecs;			/* 	Number of records for cube file	      */
+     char	inputfiles[][100];	/* 	Input files to generate cube          */
 {
-int additionalbytes, bufptr, count, index, object, labelbytes, nsi,
- i, ibk, j, len1, len2, len3, x, y, year, z;
-float arval, pixelsperdegree, sav;
-char cc, notes[7][80], tstr[50], geoplane[31], fobsname[20];
-char obuf[160];		/* for notes processing */
-char *hpoint;
-time_t lt;
-float sfact[3] = {47.56, 47.34, 48.29};		/* thermal sensitivity ratios */
-float thoff[3] = {515.50,516.03,514.03};	/* upper range thermal offset */
+  int additionalbytes, bufptr, count, index, object, labelbytes, nsi,
+    i, ibk, j, len1, len2, len3, x, y, year, z;
+  float arval, pixelsperdegree, sav;
+  char cc, notes[7][80], tstr[50], geoplane[31], fobsname[20];
+  char obuf[160];		/* for notes processing */
+  char *hpoint;
+  time_t lt;
+  float sfact[3] = {47.56, 47.34, 48.29};		/* thermal sensitivity ratios */
+  float thoff[3] = {515.50,516.03,514.03};	/* upper range thermal offset */
 
-struct tm *ptr;
+  struct tm *ptr;
 
-bufpoint = (char *)calloc	/* Allocate memory for buffer */
-	(LABELMEMORY,sizeof(char));	
-if( bufpoint==NULL )
-  zmabend( "Memory allocation error in create_PDSlabel routine");
+  bufpoint = (char *)calloc	/* Allocate memory for buffer */
+    (LABELMEMORY,sizeof(char));	
+  if( bufpoint==NULL )
+    zmabend( "Memory allocation error in create_PDSlabel routine");
 
-strcpy(bufpoint,"CCSD3ZF0000100000001NJPL3IF0PDS200000001 = SFDU_LABEL\r\n");
-strcat(bufpoint,"\r\n/* File Structure */\r\n\r\n");
-strcat(bufpoint,"RECORD_TYPE = FIXED_LENGTH\r\n");
-strcat(bufpoint,"RECORD_BYTES = 512\r\n");
-strcat(bufpoint,"FILE_RECORDS = XXXXXX\r\n");
-strcat(bufpoint,"LABEL_RECORDS = XXXXXX\r\n");
-strcat(bufpoint,"FILE_STATE = DIRTY\r\n\r\n");
+  strcpy(bufpoint,"CCSD3ZF0000100000001NJPL3IF0PDS200000001 = SFDU_LABEL\r\n");
+  strcat(bufpoint,"\r\n/* File Structure */\r\n\r\n");
+  strcat(bufpoint,"RECORD_TYPE = FIXED_LENGTH\r\n");
+  strcat(bufpoint,"RECORD_BYTES = 512\r\n");
+  strcat(bufpoint,"FILE_RECORDS = XXXXXX\r\n");
+  strcat(bufpoint,"LABEL_RECORDS = XXXXXX\r\n");
+  strcat(bufpoint,"FILE_STATE = DIRTY\r\n\r\n");
 
-strcat(bufpoint,"^HISTORY = XXXXXX\r\n");	
-strcat(bufpoint,"OBJECT = HISTORY\r\n");
-strcat(bufpoint,"END_OBJECT = HISTORY\r\n\r\n");
+  strcat(bufpoint,"^HISTORY = XXXXXX\r\n");	
+  strcat(bufpoint,"OBJECT = HISTORY\r\n");
+  strcat(bufpoint,"END_OBJECT = HISTORY\r\n\r\n");
 
-object = 0;
+  object = 0;
 
-strcat(bufpoint,"^HISTOGRAM_IMAGE = XXXXXX\r\n");	/* 2D HISTOGRAM OBJ  */
-strcat(bufpoint,"OBJECT = HISTOGRAM_IMAGE\r\n");
-strcat(bufpoint,"/* Two dim histogram image structure */\r\n");
-sprintf(line," LINES = %d\r\n",inl[object]);
-strcat(bufpoint,line);
-sprintf(line," LINE_SAMPLES = %d\r\n",ns[object]);
-strcat(bufpoint,line);
-strcat(bufpoint," SAMPLE_TYPE = UNSIGNED_INTEGER\r\n");
-strcat(bufpoint," SAMPLE_BITS = 8\r\n");
-strcat(bufpoint," SAMPLE_NAME = BAND\r\n");
-strcat(bufpoint," LINE_NAME = INTENSITY\r\n");
-strcat(bufpoint," NOTE = \"This is an unannotated two-dimensional histogram");
-strcat(bufpoint," 'image' showing\r\n  frequency of measured 'Intensity'");
-strcat(bufpoint," versus band number.  The 'Intensity'\r\n  may be DN, Radiance,");
-strcat(bufpoint," or BDRF (Bi-Directional Reflectance), or a\r\n  combination");
-strcat(bufpoint," of BDRF with Radiance, with BDRF below a cutoff band\r\n");
-strcat(bufpoint,"  number and radiance above.  The cutoff is defined by:\r\n");
-strcat(bufpoint,"  BDRF_RAD_TRANSITION_BAND_NUMBER.\r\n");
-strcat(bufpoint,"  The 'Intensity' is DN only if CORE_NAME in the QUBE object");
-strcat(bufpoint," is\r\n  RAW_DATA_NUMBER.\"\r\n");
-sprintf(line," BDRF_RAD_TRANSITION_BAND_NUMBER = %d\r\n",v.breakdet);
-strcat(bufpoint,line);
-strcat(bufpoint,"END_OBJECT = HISTOGRAM_IMAGE\r\n\r\n");
-
-if( specplots > 0 ) 	{
-
-object+=specplots;
-
-strcat(bufpoint,"^SAMPLE_SPECTRUM_QUBE = XXXXXX\r\n"); /* SPECTRA OBJECT  */
-strcat(bufpoint,"OBJECT = SAMPLE_SPECTRUM_QUBE\r\n");
-strcat(bufpoint,"/* Sample spectrum non-standard qube structure */\r\n");
-strcat(bufpoint," AXES = 3\r\n");
-strcat(bufpoint," AXIS_NAME = (SAMPLE,LINE,REGION)\r\n");
-sprintf(line," ITEMS = (%d,%d,%d)\r\n",ns[object],inl[object],specplots);
-strcat(bufpoint,line);
-strcat(bufpoint," ITEM_BITS = 4\r\n");
-strcat(bufpoint," ITEM_TYPE = UNSIGNED_INTEGER\r\n");
-
-write_PDS_line(bufpoint,'F'," REGION_UPPER_LEFT_LATITUDE",v.lat,specplots,3);
-write_PDS_line(bufpoint,'F'," REGION_UPPER_LEFT_LONGITUDE",v.lon,specplots,3);
-write_PDS_line(bufpoint,'I'," REGION_SAMPLES",v.samples,specplots,0);
-write_PDS_line(bufpoint,'I'," REGION_LINES",  v.lines,specplots,0);
-
-strcat(bufpoint," NOTE	  = \"Each band is a partially annotated \'image\' of a spectral\r\n");
-strcat(bufpoint,"  plot over a selected region in the NIMS data cube. The plot is of\r\n");
-strcat(bufpoint,"  DN, radiance or BDRF (Bi-Directional Reflectance) versus NIMS_band\r\n");
-strcat(bufpoint,"  or wavelength.  Nibble pixels may assume 3 values, representing\r\n");
-strcat(bufpoint,"  background (usually 0), spectrum (usually 15), and an intermediate\r\n");
-strcat(bufpoint,"  (gray) value used to display standard deviation over region. ");
-strcat(bufpoint," BDRF\r\n  and radiance may coexist in each plot, with BDRF below a cutoff\r\n");
-strcat(bufpoint,"  wavelength and radiance above.  The cutoff is defined by:\r\n");
-strcat(bufpoint,"  BDRF_RAD_TRANSITION_WAVELENGTH.\r\n");
-strcat(bufpoint,"  The plot is of DN only if CORE_NAME in the QUBE object");
-strcat(bufpoint," is\r\n  RAW_DATA_NUMBER.\"\r\n");
-sprintf(line," BDRF_RAD_TRANSITION_WAVELENGTH = %.5f\r\n",b.waves[v.breakdet-1]);
-strcat(bufpoint,line);
-strcat(bufpoint,"END_OBJECT = SAMPLE_SPECTRUM_QUBE\r\n\r\n");	}
-
-object++;
-strcat(bufpoint,"^QUBE = XXXXXX\r\n");	/* QUBE OBJECT		*/
-strcat(bufpoint,"OBJECT = QUBE\r\n\r\n");
-strcat(bufpoint,"/* Qube structure */");
-strcat(bufpoint,"\r\n\r\n AXES = 3\r\n");
-strcat(bufpoint," AXIS_NAME = (SAMPLE,LINE,BAND)\r\n\r\n");
-strcat(bufpoint,"/*  Core description */\r\n\r\n");
-sprintf(line," CORE_ITEMS = (%d,%d,%d)\r\n",ns[object],inl[object],nbb);
-strcat(bufpoint,line);
-
-sprintf(line," CORE_ITEM_BYTES = %d\r\n", bytes[object]);
-strcat(bufpoint,line);
-if (bytes[object]==2) {
-  strcat(bufpoint," CORE_ITEM_TYPE = ");
-  strcat(bufpoint,host);
-  strcat(bufpoint,"_INTEGER\r\n");
-}
-else if (bytes[object]==4) {
-  strcat(bufpoint," CORE_ITEM_TYPe = ");
-  strcat(bufpoint,host);
-  strcat(bufpoint,"_REAL\r\n");
-}
-
-strcat(bufpoint," CORE_BASE = 0.0\r\n CORE_MULTIPLIER = 1.0\r\n");
-strcat(bufpoint,"/* Core scaling is:  True_value = base + (multiplier *");
-strcat(bufpoint," stored_value)");
-if (strcmp(v.dataformat,"RAW_DATA_NUMBER") && bytes[object]==2) {
-  strcat(bufpoint,". */\r\n/* Scaling of radiance is band-dependent.");
-  strcat(bufpoint,"  But values of CORE BASE and */\r\n");
-  strcat(bufpoint,"/* CORE MULTIPLIER are set to 0.0 and");
-  strcat(bufpoint," 1.0 for ISIS software compatibility. */\r\n");
-  strcat(bufpoint,"/* See Band Bin scaling, below. */\r\n");
-}
-else
-  strcat(bufpoint," */\r\n");
-
-if (bytes[object]==2) {
-  strcat(bufpoint," CORE_VALID_MINIMUM =         -32752\r\n");
-/* (removed because of Unix ISIS incompatibility)
-  strcat(bufpoint," CORE_MISSING_SENSITIVITY =   -32754\r\n");
-  strcat(bufpoint," CORE_BELOW_THRESHOLD =       -32762\r\n");
- */
-  strcat(bufpoint," CORE_HIGH_REPR_SATURATION =  -32764\r\n");
-  strcat(bufpoint," CORE_HIGH_INSTR_SATURATION = -32765\r\n");
-  strcat(bufpoint," CORE_LOW_INSTR_SATURATION =  -32766\r\n");
-  strcat(bufpoint," CORE_LOW_REPR_SATURATION =   -32767\r\n");
-  strcat(bufpoint," CORE_NULL =                  -32768\r\n");
-}
-else if (bytes[object]==4) {
-  strcat(bufpoint," CORE_VALID_MINIMUM =         ");
-  strcat( bufpoint, VALID_MIN_4);
-  strcat( bufpoint, "\r\n");
-  strcat(bufpoint," CORE_HIGH_REPR_SATURATION =  ");
-  strcat( bufpoint, HIGH_REPR_SAT_4);
-  strcat( bufpoint, "\r\n");
-  strcat(bufpoint," CORE_HIGH_INSTR_SATURATION = ");
-  strcat( bufpoint, HIGH_INSTR_SAT_4);
-  strcat( bufpoint, "\r\n");
-  strcat(bufpoint," CORE_LOW_INSTR_SATURATION =  ");
-  strcat( bufpoint, LOW_INSTR_SAT_4);
-  strcat( bufpoint, "\r\n");
-  strcat(bufpoint," CORE_LOW_REPR_SATURATION =   ");
-  strcat( bufpoint, LOW_REPR_SAT_4);
-  strcat( bufpoint, "\r\n");
-  strcat(bufpoint," CORE_NULL =                  ");
-  strcat( bufpoint, NULL_4);
-  strcat( bufpoint, "\r\n");
-}
-sprintf(line," CORE_NAME = %s\r\n",v.dataformat);
-strcat(bufpoint,line);
-sprintf(line," CORE_UNIT = %s\r\n",v.dataunits);
-strcat(bufpoint,line);
-if (!strcmp(v.dataformat,"SPECTRAL_RADIANCE")) {
-  strcat(bufpoint,"/* Core units:  to convert these radiances to SI");
-  strcat(bufpoint," units (W/m^2/sr/uM), */\r\n/* the data in the cube must");
-  strcat(bufpoint," be divided by 100. */\r\n");
-}
-else if (!strcmp(v.dataformat,"RADIANCE_FACTOR")) 
-  strcat(bufpoint,"/* 'Radiance factor' = ( PI * Radiance) / Solar_Flux */\r\n");
-strcat(bufpoint,"\r\n SPATIAL_BINNING_TYPE = ");
-if (!strcmp(v.binning,"FOOTPRNT")) {
-  strcat(bufpoint,"FOOTPRINT_AVERAGE\r\n");
-  sprintf(line," THRESHOLD_WEIGHT = %.5f\r\n",v.thresh);
+  strcat(bufpoint,"^HISTOGRAM_IMAGE = XXXXXX\r\n");	/* 2D HISTOGRAM OBJ  */
+  strcat(bufpoint,"OBJECT = HISTOGRAM_IMAGE\r\n");
+  strcat(bufpoint,"/* Two dim histogram image structure */\r\n");
+  sprintf(line," LINES = %d\r\n",inl[object]);
   strcat(bufpoint,line);
-}
-else if (!strcmp(v.binning,"FTPTHSTM"))
-  strcat(bufpoint,"FOOTPRINT_HISTOGRAM_MEDIAN\r\n");
-else if (!strcmp(v.binning,"FTPTHSTP"))
-  strcat(bufpoint,"FOOTPRINT_HISTOGRAM_PEAK\r\n");
-if (v.binning[0]=='F') {
-  sprintf(line," FOOTPRINT_GRID_SIZE = %d\r\n",v.fpgrid);
+  sprintf(line," LINE_SAMPLES = %d\r\n",ns[object]);
   strcat(bufpoint,line);
-  if (v.satthrsh > 0.0) {
-    sprintf(line," SATURATION_THRESHOLD_WEIGHT = %.5f\r\n",v.satthrsh);
+  strcat(bufpoint," SAMPLE_TYPE = UNSIGNED_INTEGER\r\n");
+  strcat(bufpoint," SAMPLE_BITS = 8\r\n");
+  strcat(bufpoint," SAMPLE_NAME = BAND\r\n");
+  strcat(bufpoint," LINE_NAME = INTENSITY\r\n");
+  strcat(bufpoint," NOTE = \"This is an unannotated two-dimensional histogram");
+  strcat(bufpoint," 'image' showing\r\n  frequency of measured 'Intensity'");
+  strcat(bufpoint," versus band number.  The 'Intensity'\r\n  may be DN, Radiance,");
+  strcat(bufpoint," or BDRF (Bi-Directional Reflectance), or a\r\n  combination");
+  strcat(bufpoint," of BDRF with Radiance, with BDRF below a cutoff band\r\n");
+  strcat(bufpoint,"  number and radiance above.  The cutoff is defined by:\r\n");
+  strcat(bufpoint,"  BDRF_RAD_TRANSITION_BAND_NUMBER.\r\n");
+  strcat(bufpoint,"  The 'Intensity' is DN only if CORE_NAME in the QUBE object");
+  strcat(bufpoint," is\r\n  RAW_DATA_NUMBER.\"\r\n");
+  sprintf(line," BDRF_RAD_TRANSITION_BAND_NUMBER = %d\r\n",v.breakdet);
+  strcat(bufpoint,line);
+  strcat(bufpoint,"END_OBJECT = HISTOGRAM_IMAGE\r\n\r\n");
+
+  if( specplots > 0 ) 	{
+
+    object+=specplots;
+
+    strcat(bufpoint,"^SAMPLE_SPECTRUM_QUBE = XXXXXX\r\n"); /* SPECTRA OBJECT  */
+    strcat(bufpoint,"OBJECT = SAMPLE_SPECTRUM_QUBE\r\n");
+    strcat(bufpoint,"/* Sample spectrum non-standard qube structure */\r\n");
+    strcat(bufpoint," AXES = 3\r\n");
+    strcat(bufpoint," AXIS_NAME = (SAMPLE,LINE,REGION)\r\n");
+    sprintf(line," ITEMS = (%d,%d,%d)\r\n",ns[object],inl[object],specplots);
+    strcat(bufpoint,line);
+    strcat(bufpoint," ITEM_BITS = 4\r\n");
+    strcat(bufpoint," ITEM_TYPE = UNSIGNED_INTEGER\r\n");
+
+    write_PDS_line(bufpoint,'F'," REGION_UPPER_LEFT_LATITUDE",v.lat,specplots,3);
+    write_PDS_line(bufpoint,'F'," REGION_UPPER_LEFT_LONGITUDE",v.lon,specplots,3);
+    write_PDS_line(bufpoint,'I'," REGION_SAMPLES",v.samples,specplots,0);
+    write_PDS_line(bufpoint,'I'," REGION_LINES",  v.lines,specplots,0);
+
+    strcat(bufpoint," NOTE	  = \"Each band is a partially annotated \'image\' of a spectral\r\n");
+    strcat(bufpoint,"  plot over a selected region in the NIMS data cube. The plot is of\r\n");
+    strcat(bufpoint,"  DN, radiance or BDRF (Bi-Directional Reflectance) versus NIMS_band\r\n");
+    strcat(bufpoint,"  or wavelength.  Nibble pixels may assume 3 values, representing\r\n");
+    strcat(bufpoint,"  background (usually 0), spectrum (usually 15), and an intermediate\r\n");
+    strcat(bufpoint,"  (gray) value used to display standard deviation over region. ");
+    strcat(bufpoint," BDRF\r\n  and radiance may coexist in each plot, with BDRF below a cutoff\r\n");
+    strcat(bufpoint,"  wavelength and radiance above.  The cutoff is defined by:\r\n");
+    strcat(bufpoint,"  BDRF_RAD_TRANSITION_WAVELENGTH.\r\n");
+    strcat(bufpoint,"  The plot is of DN only if CORE_NAME in the QUBE object");
+    strcat(bufpoint," is\r\n  RAW_DATA_NUMBER.\"\r\n");
+    sprintf(line," BDRF_RAD_TRANSITION_WAVELENGTH = %.5f\r\n",b.waves[v.breakdet-1]);
+    strcat(bufpoint,line);
+    strcat(bufpoint,"END_OBJECT = SAMPLE_SPECTRUM_QUBE\r\n\r\n");	}
+
+  object++;
+  strcat(bufpoint,"^QUBE = XXXXXX\r\n");	/* QUBE OBJECT		*/
+  strcat(bufpoint,"OBJECT = QUBE\r\n\r\n");
+  strcat(bufpoint,"/* Qube structure */");
+  strcat(bufpoint,"\r\n\r\n AXES = 3\r\n");
+  strcat(bufpoint," AXIS_NAME = (SAMPLE,LINE,BAND)\r\n\r\n");
+  strcat(bufpoint,"/*  Core description */\r\n\r\n");
+  sprintf(line," CORE_ITEMS = (%d,%d,%d)\r\n",ns[object],inl[object],nbb);
+  strcat(bufpoint,line);
+
+  sprintf(line," CORE_ITEM_BYTES = %d\r\n", bytes[object]);
+  strcat(bufpoint,line);
+  if (bytes[object]==2) {
+    strcat(bufpoint," CORE_ITEM_TYPE = ");
+    strcat(bufpoint,host);
+    strcat(bufpoint,"_INTEGER\r\n");
+  }
+  else if (bytes[object]==4) {
+    strcat(bufpoint," CORE_ITEM_TYPe = ");
+    strcat(bufpoint,host);
+    strcat(bufpoint,"_REAL\r\n");
+  }
+
+  strcat(bufpoint," CORE_BASE = 0.0\r\n CORE_MULTIPLIER = 1.0\r\n");
+  strcat(bufpoint,"/* Core scaling is:  True_value = base + (multiplier *");
+  strcat(bufpoint," stored_value)");
+  if (strcmp(v.dataformat,"RAW_DATA_NUMBER") && bytes[object]==2) {
+    strcat(bufpoint,". */\r\n/* Scaling of radiance is band-dependent.");
+    strcat(bufpoint,"  But values of CORE BASE and */\r\n");
+    strcat(bufpoint,"/* CORE MULTIPLIER are set to 0.0 and");
+    strcat(bufpoint," 1.0 for ISIS software compatibility. */\r\n");
+    strcat(bufpoint,"/* See Band Bin scaling, below. */\r\n");
+  }
+  else
+    strcat(bufpoint," */\r\n");
+
+  if (bytes[object]==2) {
+    strcat(bufpoint," CORE_VALID_MINIMUM =         -32752\r\n");
+    /* (removed because of Unix ISIS incompatibility)
+       strcat(bufpoint," CORE_MISSING_SENSITIVITY =   -32754\r\n");
+       strcat(bufpoint," CORE_BELOW_THRESHOLD =       -32762\r\n");
+    */
+    strcat(bufpoint," CORE_HIGH_REPR_SATURATION =  -32764\r\n");
+    strcat(bufpoint," CORE_HIGH_INSTR_SATURATION = -32765\r\n");
+    strcat(bufpoint," CORE_LOW_INSTR_SATURATION =  -32766\r\n");
+    strcat(bufpoint," CORE_LOW_REPR_SATURATION =   -32767\r\n");
+    strcat(bufpoint," CORE_NULL =                  -32768\r\n");
+  }
+  else if (bytes[object]==4) {
+    strcat(bufpoint," CORE_VALID_MINIMUM =         ");
+    strcat( bufpoint, VALID_MIN_4);
+    strcat( bufpoint, "\r\n");
+    strcat(bufpoint," CORE_HIGH_REPR_SATURATION =  ");
+    strcat( bufpoint, HIGH_REPR_SAT_4);
+    strcat( bufpoint, "\r\n");
+    strcat(bufpoint," CORE_HIGH_INSTR_SATURATION = ");
+    strcat( bufpoint, HIGH_INSTR_SAT_4);
+    strcat( bufpoint, "\r\n");
+    strcat(bufpoint," CORE_LOW_INSTR_SATURATION =  ");
+    strcat( bufpoint, LOW_INSTR_SAT_4);
+    strcat( bufpoint, "\r\n");
+    strcat(bufpoint," CORE_LOW_REPR_SATURATION =   ");
+    strcat( bufpoint, LOW_REPR_SAT_4);
+    strcat( bufpoint, "\r\n");
+    strcat(bufpoint," CORE_NULL =                  ");
+    strcat( bufpoint, NULL_4);
+    strcat( bufpoint, "\r\n");
+  }
+  sprintf(line," CORE_NAME = %s\r\n",v.dataformat);
+  strcat(bufpoint,line);
+  sprintf(line," CORE_UNIT = %s\r\n",v.dataunits);
+  strcat(bufpoint,line);
+  if (!strcmp(v.dataformat,"SPECTRAL_RADIANCE")) {
+    strcat(bufpoint,"/* Core units:  to convert these radiances to SI");
+    strcat(bufpoint," units (W/m^2/sr/uM), */\r\n/* the data in the cube must");
+    strcat(bufpoint," be divided by 100. */\r\n");
+  }
+  else if (!strcmp(v.dataformat,"RADIANCE_FACTOR")) 
+    strcat(bufpoint,"/* 'Radiance factor' = ( PI * Radiance) / Solar_Flux */\r\n");
+  strcat(bufpoint,"\r\n SPATIAL_BINNING_TYPE = ");
+  if (!strcmp(v.binning,"FOOTPRNT")) {
+    strcat(bufpoint,"FOOTPRINT_AVERAGE\r\n");
+    sprintf(line," THRESHOLD_WEIGHT = %.5f\r\n",v.thresh);
     strcat(bufpoint,line);
   }
-  if (v.maxdistor>0.0) {
-    sprintf(line," MAXIMUM_PIXEL_DISTORTION = %.5f\r\n",v.maxdistor);
+  else if (!strcmp(v.binning,"FTPTHSTM"))
+    strcat(bufpoint,"FOOTPRINT_HISTOGRAM_MEDIAN\r\n");
+  else if (!strcmp(v.binning,"FTPTHSTP"))
+    strcat(bufpoint,"FOOTPRINT_HISTOGRAM_PEAK\r\n");
+  if (v.binning[0]=='F') {
+    sprintf(line," FOOTPRINT_GRID_SIZE = %d\r\n",v.fpgrid);
     strcat(bufpoint,line);
-  }
-  if (!tube) {
-    strcat(bufpoint,"/* Each NIMS raw DN was averaged over its entire footprint");
-    strcat(bufpoint,", which was */\r\n");
-    strcat(bufpoint,"/* approximated by computing the location of its four");
-    strcat(bufpoint," corner points and */\r\n");
-    strcat(bufpoint,"/* covering the resulting quadrilateral with a grid;  the");
-    strcat(bufpoint," weight of each DN */\r\n");
-    strcat(bufpoint,"/* in a given output pixel is the number of grid points");
-    strcat(bufpoint," falling in that */\r\n"); 
-    strcat(bufpoint,"/* pixel, weighted by the instrument response function. */\r\n"); 
-    strcat(bufpoint,"/* FOOTPRINT_GRID_SIZE is the number of points used in");
-    strcat(bufpoint," each dimension for */\r\n");
-    strcat(bufpoint,"/* the grid. */\r\n");
-
-    if (!strcmp(v.binning,"FOOTPRNT")) {
-      strcat(bufpoint,"/* THRESHOLD_WEIGHT is the lower limit for the average:");
-      strcat(bufpoint," if the total weight */\r\n");
-      strcat(bufpoint,"/* contributing to an output pixel is below this limit,");
-      strcat(bufpoint," then the output DN */\r\n");
-      /* replaced CORE_BELOW_THRESHOLD with NULL because of Unix ISIS
-        incompatibility: */
-      strcat(bufpoint,"/* is set to NULL. */\r\n");
+    if (v.satthrsh > 0.0) {
+      sprintf(line," SATURATION_THRESHOLD_WEIGHT = %.5f\r\n",v.satthrsh);
+      strcat(bufpoint,line);
     }
     if (v.maxdistor>0.0) {
-      strcat(bufpoint,"/* MAXIMUM_PIXEL_DISTORTION is the upper limit to the");
-      strcat(bufpoint," line and sample */\r\n");
-      strcat(bufpoint,"/* extension of this quadrilateral:  if it is exceeded,");
-      strcat(bufpoint," then the raw DN is */\r\n");
-      strcat(bufpoint,"/* omitted. */\r\n");
+      sprintf(line," MAXIMUM_PIXEL_DISTORTION = %.5f\r\n",v.maxdistor);
+      strcat(bufpoint,line);
     }
-    if (!strncmp(v.binning,"FTPTHST",7)) {
-      strcat(bufpoint,"/* The output pixel value was determined by accumulating");
-      strcat(bufpoint," the histogram of */\r\n");
-      strcat(bufpoint,"/* the input values */\r\n");
+    if (!tube) {
+      strcat(bufpoint,"/* Each NIMS raw DN was averaged over its entire footprint");
+      strcat(bufpoint,", which was */\r\n");
+      strcat(bufpoint,"/* approximated by computing the location of its four");
+      strcat(bufpoint," corner points and */\r\n");
+      strcat(bufpoint,"/* covering the resulting quadrilateral with a grid;  the");
+      strcat(bufpoint," weight of each DN */\r\n");
+      strcat(bufpoint,"/* in a given output pixel is the number of grid points");
+      strcat(bufpoint," falling in that */\r\n"); 
+      strcat(bufpoint,"/* pixel, weighted by the instrument response function. */\r\n"); 
+      strcat(bufpoint,"/* FOOTPRINT_GRID_SIZE is the number of points used in");
+      strcat(bufpoint," each dimension for */\r\n");
+      strcat(bufpoint,"/* the grid. */\r\n");
+
+      if (!strcmp(v.binning,"FOOTPRNT")) {
+	strcat(bufpoint,"/* THRESHOLD_WEIGHT is the lower limit for the average:");
+	strcat(bufpoint," if the total weight */\r\n");
+	strcat(bufpoint,"/* contributing to an output pixel is below this limit,");
+	strcat(bufpoint," then the output DN */\r\n");
+	/* replaced CORE_BELOW_THRESHOLD with NULL because of Unix ISIS
+	   incompatibility: */
+	strcat(bufpoint,"/* is set to NULL. */\r\n");
+      }
+      if (v.maxdistor>0.0) {
+	strcat(bufpoint,"/* MAXIMUM_PIXEL_DISTORTION is the upper limit to the");
+	strcat(bufpoint," line and sample */\r\n");
+	strcat(bufpoint,"/* extension of this quadrilateral:  if it is exceeded,");
+	strcat(bufpoint," then the raw DN is */\r\n");
+	strcat(bufpoint,"/* omitted. */\r\n");
+      }
+      if (!strncmp(v.binning,"FTPTHST",7)) {
+	strcat(bufpoint,"/* The output pixel value was determined by accumulating");
+	strcat(bufpoint," the histogram of */\r\n");
+	strcat(bufpoint,"/* the input values */\r\n");
+      }
     }
+    else {		/* if Tube */
+      strcat(bufpoint,
+	     "/* SPATIAL_BINNING_TYPE, FOOTPRINT_GRID_SIZE, THRESHOLD_WEIGHT, and */\r\n");
+      strcat(bufpoint,
+	     "/* (for certain projections) MAXIMUM_PIXEL_DISTORTION, are parameters */\r\n");
+      strcat(bufpoint,
+	     "/* that are not relevant to the Tube core data, but can be used in */\r\n");
+      strcat(bufpoint,
+	     "/* subsequent ISIS processing to generate a projected cube from a */\r\n");
+      strcat(bufpoint,
+	     "/* tube file with program NIMSGEOMF.  Note that the value: */\r\n");
+      strcat(bufpoint,
+	     "/*     SPATIAL_BINNING_TYPE = FOOTPRINT */\r\n");
+      strcat(bufpoint,
+	     "/* does trigger the addition of two extra backplanes per grating */\r\n");
+      strcat(bufpoint,
+	     "/* position:  the RIGHT_EDGE_PROJ_LINE/SAMPLE backplanes. */\r\n");
+    }
+    strcat(bufpoint,"\r\n");
   }
-  else {		/* if Tube */
-    strcat(bufpoint,
-     "/* SPATIAL_BINNING_TYPE, FOOTPRINT_GRID_SIZE, THRESHOLD_WEIGHT, and */\r\n");
-    strcat(bufpoint,
-     "/* (for certain projections) MAXIMUM_PIXEL_DISTORTION, are parameters */\r\n");
-    strcat(bufpoint,
-     "/* that are not relevant to the Tube core data, but can be used in */\r\n");
-    strcat(bufpoint,
-     "/* subsequent ISIS processing to generate a projected cube from a */\r\n");
-    strcat(bufpoint,
-     "/* tube file with program NIMSGEOMF.  Note that the value: */\r\n");
-    strcat(bufpoint,
-     "/*     SPATIAL_BINNING_TYPE = FOOTPRINT */\r\n");
-    strcat(bufpoint,
-     "/* does trigger the addition of two extra backplanes per grating */\r\n");
-    strcat(bufpoint,
-     "/* position:  the RIGHT_EDGE_PROJ_LINE/SAMPLE backplanes. */\r\n");
+  else if (v.binning[0]=='N') strcat(bufpoint,"NEAREST_AVERAGE\r\n");
+  else if (v.binning[0]=='M') strcat(bufpoint,"NEAREST_MAXIMUM\r\n");
+  else if (v.binning[0]=='R') strcat(bufpoint,"NEAREST_REPLACE\r\n");
+  else zmabend(" *** unknown binning type ***");
+  if (v.eradf > 0.0) {
+    sprintf(line," EXPANDED_RADIUS = %.2f\r\n",v.eradf);
+    strcat(bufpoint,line);
   }
-  strcat(bufpoint,"\r\n");
-}
-else if (v.binning[0]=='N') strcat(bufpoint,"NEAREST_AVERAGE\r\n");
-else if (v.binning[0]=='M') strcat(bufpoint,"NEAREST_MAXIMUM\r\n");
-else if (v.binning[0]=='R') strcat(bufpoint,"NEAREST_REPLACE\r\n");
-else zmabend(" *** unknown binning type ***");
-if (v.eradf > 0.0) {
-  sprintf(line," EXPANDED_RADIUS = %.2f\r\n",v.eradf);
+  sprintf(line," DARK_UPDATE_TYPE = %s\r\n",v.darktype);
   strcat(bufpoint,line);
-}
-sprintf(line," DARK_UPDATE_TYPE = %s\r\n",v.darktype);
-strcat(bufpoint,line);
-sprintf(line," FILL_BOX_SIZE = %d\r\n",v.fillsize);
-strcat(bufpoint,line);
-sprintf(line," FILL_MIN_VALID_PIXELS = %d\r\n",v.fillnum);
-strcat(bufpoint,line);
-sprintf(line," PHOTOMETRIC_CORRECTION_TYPE = %s\r\n",v.photofunc);
-strcat(bufpoint,line);
-if( v.photofunc[0]=='M' || v.photofunc[0]=='L' || v.photofunc[1]=='L' ) {
-  sprintf(line," PHOTO_CORR_CUTOFF_WAVELENGTH = %.2f\r\n\r\n",
-   v.phot_cut);
+  sprintf(line," FILL_BOX_SIZE = %d\r\n",v.fillsize);
   strcat(bufpoint,line);
-}
-if( v.photofunc[0] == 'M' ) {
-  sprintf(line," MINNAERT_EXPONENT = %.4f\r\n",v.minn_exp);
+  sprintf(line," FILL_MIN_VALID_PIXELS = %d\r\n",v.fillnum);
   strcat(bufpoint,line);
-}
-if( v.photofunc[0]=='M' || v.photofunc[0]=='L' || v.photofunc[1]=='L' ) {
-  strcat(bufpoint,"/* The \"photometric correction\" ");
-  strcat(bufpoint,"specifies the photometric function */\r\n/* used to ");
-  strcat(bufpoint,"correct for effects of viewing and illumination geometry. */\r\n/*");
-  strcat(bufpoint," Currently supported functions include: */\r\n");
-  strcat(bufpoint,"/*    Lambert = cos(I) */\r\n");
-  strcat(bufpoint,"/*    Lommel-Seeliger = cos(I)/(cos(I)+cos(E)) */\r\n");
-  strcat(bufpoint,"/*    Minnaert = cos(I)^K *");
-  strcat(bufpoint," cos(E)^(K-1) */\r\n/* where I = incidence angle, and E =");
-  strcat(bufpoint," emission angle, which are both found */\r\n/* in the backplanes.");
-  strcat(bufpoint,"  Each radiance in the cube has been divided by this */\r\n/*");
-  strcat(bufpoint," function, if its wavelength is less than the cutoff");
-  strcat(bufpoint," wavelength specified */\r\n/* by the parameter");
-  strcat(bufpoint," PHOTO_CORR_CUTOFF_WAVELENGTH. */\r\n");
-  if( v.photofunc[0] == 'M') {
-    strcat(bufpoint,"/* The value of the constant K for the Minnaert function");
-    strcat(bufpoint," is stored in the parameter */\r\n/* MINNAERT_EXPONENT. */\r\n");
+  sprintf(line," PHOTOMETRIC_CORRECTION_TYPE = %s\r\n",v.photofunc);
+  strcat(bufpoint,line);
+  if( v.photofunc[0]=='M' || v.photofunc[0]=='L' || v.photofunc[1]=='L' ) {
+    sprintf(line," PHOTO_CORR_CUTOFF_WAVELENGTH = %.2f\r\n\r\n",
+	    v.phot_cut);
+    strcat(bufpoint,line);
   }
-  strcat(bufpoint,"\r\n");
-}
+  if( v.photofunc[0] == 'M' ) {
+    sprintf(line," MINNAERT_EXPONENT = %.4f\r\n",v.minn_exp);
+    strcat(bufpoint,line);
+  }
+  if( v.photofunc[0]=='M' || v.photofunc[0]=='L' || v.photofunc[1]=='L' ) {
+    strcat(bufpoint,"/* The \"photometric correction\" ");
+    strcat(bufpoint,"specifies the photometric function */\r\n/* used to ");
+    strcat(bufpoint,"correct for effects of viewing and illumination geometry. */\r\n/*");
+    strcat(bufpoint," Currently supported functions include: */\r\n");
+    strcat(bufpoint,"/*    Lambert = cos(I) */\r\n");
+    strcat(bufpoint,"/*    Lommel-Seeliger = cos(I)/(cos(I)+cos(E)) */\r\n");
+    strcat(bufpoint,"/*    Minnaert = cos(I)^K *");
+    strcat(bufpoint," cos(E)^(K-1) */\r\n/* where I = incidence angle, and E =");
+    strcat(bufpoint," emission angle, which are both found */\r\n/* in the backplanes.");
+    strcat(bufpoint,"  Each radiance in the cube has been divided by this */\r\n/*");
+    strcat(bufpoint," function, if its wavelength is less than the cutoff");
+    strcat(bufpoint," wavelength specified */\r\n/* by the parameter");
+    strcat(bufpoint," PHOTO_CORR_CUTOFF_WAVELENGTH. */\r\n");
+    if( v.photofunc[0] == 'M') {
+      strcat(bufpoint,"/* The value of the constant K for the Minnaert function");
+      strcat(bufpoint," is stored in the parameter */\r\n/* MINNAERT_EXPONENT. */\r\n");
+    }
+    strcat(bufpoint,"\r\n");
+  }
 
-if( cubefiles == 3 ) {
-  nsi = nb[numoffiles-1];
-}
-else {
-  nsi = 0;
-}
-
-strcat(bufpoint,"\r\n");
-strcat(bufpoint,"/*  Suffix description  */\r\n\r\n");
-strcat(bufpoint," SUFFIX_BYTES = 4\r\n");
-sprintf(line," SUFFIX_ITEMS = (0,0,%d)\r\n",nbpln);
-strcat(bufpoint,line);
-
-if (calib) {
-  strcat(bufpoint," BAND_SUFFIX_NAME = NATIVE_TIME\r\n");
-  strcat(bufpoint," BAND_SUFFIX_UNIT = SECOND\r\n");
-  strcat(bufpoint," BAND_SUFFIX_ITEM_BYTES = 4\r\n");
-  strcat(bufpoint," BAND_SUFFIX_ITEM_TYPE = ");
-  strcat(bufpoint,host);
-  strcat(bufpoint,"_REAL\r\n");
-  strcat(bufpoint," BAND_SUFFIX_BASE = 0.000000\r\n");
-  strcat(bufpoint," BAND_SUFFIX_MULTIPLIER = 63.000000\r\n");
-  goto endsuff;
-}
-
-strcat(bufpoint," BAND_SUFFIX_NAME = (");
-if (!tube) {
-  strcat( bufpoint, "LATITUDE,LONGITUDE,INCIDENCE_ANGLE,\r\n  ");
-  if (nbpln==5)
-    strcat( bufpoint, "EMISSION_ANGLE,PHASE_ANGLE");
+  if( cubefiles == 3 ) {
+    nsi = nb[numoffiles-1];
+  }
   else {
-    strcat( bufpoint, "EMISSION_ANGLE,PHASE_ANGLE,SLANT_DISTANCE,");
-    strcat( bufpoint, "INTERCEPT_ALTITUDE,\r\n  ");
-    if (v.sdgeo==3) strcpy(geoplane,"INCIDENCE_ANGLE");
-    else if (v.sdgeo==4) strcpy(geoplane,"EMISSION_ANGLE");
-    else if (v.sdgeo==5) strcpy(geoplane,"PHASE_ANGLE");
-    else if (v.sdgeo==6) strcpy(geoplane,"SLANT_DISTANCE");
-    else if (v.sdgeo==7) strcpy(geoplane,"INTERCEPT_ALTITUDE");
-    /* the Std.Dev. backplane is never IOF, even if the core is ... */
-    strcpy( obuf, v.dataformat);
-    if (!strcmp(v.dataformat,"RADIANCE_FACTOR"))
-     strcpy( obuf, "SPECTRAL_RADIANCE");
-    sprintf(line,"%s_STD_DEV,%s_STD_DEV",geoplane,obuf);
+    nsi = 0;
   }
-}
-else {				/* if tube input */
-  for (i=0; i<ngp; i++) {
-    j = grates[i];
-    sprintf( line, "GR_POS_%02d_LATITUDE,GR_POS_%02d_LONGITUDE,\r\n  ", j, j);
+
+  strcat(bufpoint,"\r\n");
+  strcat(bufpoint,"/*  Suffix description  */\r\n\r\n");
+  strcat(bufpoint," SUFFIX_BYTES = 4\r\n");
+  sprintf(line," SUFFIX_ITEMS = (0,0,%d)\r\n",nbpln);
+  strcat(bufpoint,line);
+
+  if (calib) {
+    strcat(bufpoint," BAND_SUFFIX_NAME = NATIVE_TIME\r\n");
+    strcat(bufpoint," BAND_SUFFIX_UNIT = SECOND\r\n");
+    strcat(bufpoint," BAND_SUFFIX_ITEM_BYTES = 4\r\n");
+    strcat(bufpoint," BAND_SUFFIX_ITEM_TYPE = ");
+    strcat(bufpoint,host);
+    strcat(bufpoint,"_REAL\r\n");
+    strcat(bufpoint," BAND_SUFFIX_BASE = 0.000000\r\n");
+    strcat(bufpoint," BAND_SUFFIX_MULTIPLIER = 63.000000\r\n");
+    goto endsuff;
+  }
+
+  strcat(bufpoint," BAND_SUFFIX_NAME = (");
+  if (!tube) {
+    strcat( bufpoint, "LATITUDE,LONGITUDE,INCIDENCE_ANGLE,\r\n  ");
+    if (nbpln==5)
+      strcat( bufpoint, "EMISSION_ANGLE,PHASE_ANGLE");
+    else {
+      strcat( bufpoint, "EMISSION_ANGLE,PHASE_ANGLE,SLANT_DISTANCE,");
+      strcat( bufpoint, "INTERCEPT_ALTITUDE,\r\n  ");
+      if (v.sdgeo==3) strcpy(geoplane,"INCIDENCE_ANGLE");
+      else if (v.sdgeo==4) strcpy(geoplane,"EMISSION_ANGLE");
+      else if (v.sdgeo==5) strcpy(geoplane,"PHASE_ANGLE");
+      else if (v.sdgeo==6) strcpy(geoplane,"SLANT_DISTANCE");
+      else if (v.sdgeo==7) strcpy(geoplane,"INTERCEPT_ALTITUDE");
+      /* the Std.Dev. backplane is never IOF, even if the core is ... */
+      strcpy( obuf, v.dataformat);
+      if (!strcmp(v.dataformat,"RADIANCE_FACTOR"))
+	strcpy( obuf, "SPECTRAL_RADIANCE");
+      sprintf(line,"%s_STD_DEV,%s_STD_DEV",geoplane,obuf);
+    }
+  }
+  else {				/* if tube input */
+    for (i=0; i<ngp; i++) {
+      j = grates[i];
+      sprintf( line, "GR_POS_%02d_LATITUDE,GR_POS_%02d_LONGITUDE,\r\n  ", j, j);
+      strcat(bufpoint,line);
+      sprintf( line,
+	       "GR_POS_%02d_PROJECTED_LINE,GR_POS_%02d_PROJECTED_SAMPLE,\r\n  ", j, j);
+      strcat(bufpoint,line);
+      if (v.binning[0]=='F') {
+	sprintf( line,
+		 "GR_POS_%02d_RIGHT_EDGE_PROJ_LINE,GR_POS_%02d_RIGHT_EDGE_PROJ_SAMPLE,\r\n  ", j, j);
+	strcat(bufpoint,line);
+      }
+      if (ptub) {
+	sprintf( line,
+		 "GR_POS_%02d_RIGHT_ASCENSION,GR_POS_%02d_DECLINATION,\r\n  ", j, j);
+	strcat(bufpoint,line);
+	sprintf( line,
+		 "GR_POS_%02d_TWIST_ANGLE,GR_POS_%02d_SC_TG_VECT_COMP_1,\r\n  ", j, j);
+	strcat(bufpoint,line);
+	sprintf( line,
+		 "GR_POS_%02d_SC_TG_VECT_COMP_2,GR_POS_%02d_SC_TG_VECT_COMP_3,\r\n  ", j, j);
+	strcat(bufpoint,line);
+      }
+    }
+    strcat(bufpoint,"INCIDENCE_ANGLE,EMISSION_ANGLE,");
+    strcat(bufpoint,"PHASE_ANGLE,SLANT_DISTANCE,\r\n");
+    strcpy(line,"  INTERCEPT_ALTITUDE,NATIVE_TIME");
+  }
+  /* SII formulae, if present: */
+  if( cubefiles == 3 ) {
+    strcat(line,",");
+    for( x = 0; x < (nsi-1); x++ ) {
+      sprintf(xstring,"\'%s\',",v.formulae[x]);
+      strcat(line,xstring);
+      if( (strlen(line)+strlen(v.formulae[x+1])) > 70 ) {
+	strcat(line,"\r\n");
+	strcat(bufpoint,line);
+	strcpy(line,"  ");
+      }
+    }
+    sprintf(xstring,"\'%s\')\r\n",v.formulae[x]);
+    strcat(line,xstring);
     strcat(bufpoint,line);
-    sprintf( line,
-     "GR_POS_%02d_PROJECTED_LINE,GR_POS_%02d_PROJECTED_SAMPLE,\r\n  ", j, j);
+  }
+  else {
+    if (nbpln==5)
+      strcat(bufpoint,")\r\n");
+    else {
+      strcat(line,")\r\n");
+      strcat(bufpoint,line);
+    }
+  }
+  if (!tube) {
+    strcat(bufpoint," BAND_SUFFIX_UNIT = (DEGREE,DEGREE,DEGREE,DEGREE,DEGREE");
+    if (nbpln>5) {
+      strcat(bufpoint,",KILOMETER,\r\n");
+      sprintf(line,"  KILOMETER,");
+      if (v.sdgeo<6) strcat(line,"DEGREE,");
+      else strcat(line,"KILOMETER,");
+      sprintf(lineb,"%s",v.dataunits);
+      strcat(line,lineb);
+    }
+  }
+  else {				/* if tube input */
+    strcat(bufpoint," BAND_SUFFIX_UNIT = (");
+    for (i=0; i<ngp; i++) {
+      strcat( bufpoint, "DEGREE,DEGREE,DIMENSIONLESS,DIMENSIONLESS,");
+      if (v.binning[0]=='F')	/* Footprint algorithm */
+	strcat( bufpoint, "DIMENSIONLESS,DIMENSIONLESS,");
+      strcat( bufpoint, "\r\n  ");
+      if (ptub)
+	strcat( bufpoint, "RADIAN,RADIAN,RADIAN,KILOMETER,KILOMETER,KILOMETER, \r\n  ");
+    }
+    strcpy( line,"DEGREE,DEGREE,DEGREE,KILOMETER,KILOMETER,SECOND");
+  }
+  if( cubefiles == 3 ) {
+    for( x = 0; x < (nsi-1); x++ ) {
+      if( strlen(line) > 60 ) {
+	strcat(line,",\r\n");
+	strcat(bufpoint,line);
+	sprintf(line,"  UNKNOWN");
+      }
+      else strcat(line,",UNKNOWN");
+    }
+    strcat(line,",UNKNOWN)\r\n");
     strcat(bufpoint,line);
+  }
+  else {
+    if (nbpln==5)
+      strcat(bufpoint,")\r\n");
+    else {
+      strcat(line,")\r\n");
+      strcat(bufpoint,line);
+    }
+  }
+  write_PDS_aline(bufpoint,'I'," BAND_SUFFIX_ITEM_BYTES",4,nbpln);
+  write_PDS_aline(bufpoint,'C'," BAND_SUFFIX_ITEM_TYPE",bp_type,nbpln);
+  arval = 0.0;
+  write_PDS_aline(bufpoint,'F'," BAND_SUFFIX_BASE",&arval,nbpln);
+  if (!tube) {
+    arval = 1.0;
+    write_PDS_aline(bufpoint,'F'," BAND_SUFFIX_MULTIPLIER",&arval,nbpln);
+  }
+  else {		/* Tube needs final '63' for chops */
+    sprintf(line,"%s = ("," BAND_SUFFIX_MULTIPLIER");
+    for( x = 0; x < nbpln-1 ; x++ ) {
+      snprintf(xstring,80,"%f,",1.0);
+      strcat(line,xstring);
+      if( strlen(line) > 60 ) {
+	strcat(line,"\r\n");
+	strcat(bufpoint,line);
+	strcpy(line,"     ");
+      }
+    }
+    snprintf(xstring,80,"%f)\r\n",63.);
+    strcat(line,xstring);
+    strcat(bufpoint,line);
+  }
+ endsuff:
+  write_PDS_aline(bufpoint,'C'," BAND_SUFFIX_VALID_MINIMUM ",VALID_MIN_4,nbpln);
+  write_PDS_aline(bufpoint,'C'," BAND_SUFFIX_NULL          ",NULL_4,nbpln);
+  write_PDS_aline(bufpoint,'C'," BAND_SUFFIX_LOW_REPR_SAT  ",LOW_REPR_SAT_4,nbpln);
+  write_PDS_aline(bufpoint,'C'," BAND_SUFFIX_LOW_INSTR_SAT ",LOW_INSTR_SAT_4,nbpln);
+  write_PDS_aline(bufpoint,'C'," BAND_SUFFIX_HIGH_INSTR_SAT",HIGH_INSTR_SAT_4,nbpln);
+  write_PDS_aline(bufpoint,'C'," BAND_SUFFIX_HIGH_REPR_SAT ",HIGH_REPR_SAT_4,nbpln);
+
+  strcat(bufpoint,"\r\n");
+
+  /* this is the erstwhile BAND_SUFFIX_NOTE: */
+  if (!tube) {
+    strcat(bufpoint,"/* The backplanes contain 7 geometric parameters, the ");
+    strcat(bufpoint,"standard deviation */\r\n/* of one of them, the standard ");
+    strcat(bufpoint,"deviation of a selected data band, ");
+  }
+  else if (ptub) {
     if (v.binning[0]=='F') {
-      sprintf( line,
-     "GR_POS_%02d_RIGHT_EDGE_PROJ_LINE,GR_POS_%02d_RIGHT_EDGE_PROJ_SAMPLE,\r\n  ", j, j);
-      strcat(bufpoint,line);
-    }
-    if (ptub) {
-      sprintf( line,
-     "GR_POS_%02d_RIGHT_ASCENSION,GR_POS_%02d_DECLINATION,\r\n  ", j, j);
-      strcat(bufpoint,line);
-      sprintf( line,
-     "GR_POS_%02d_TWIST_ANGLE,GR_POS_%02d_SC_TG_VECT_COMP_1,\r\n  ", j, j);
-      strcat(bufpoint,line);
-      sprintf( line,
-     "GR_POS_%02d_SC_TG_VECT_COMP_2,GR_POS_%02d_SC_TG_VECT_COMP_3,\r\n  ", j, j);
-      strcat(bufpoint,line);
-    }
-  }
-  strcat(bufpoint,"INCIDENCE_ANGLE,EMISSION_ANGLE,");
-  strcat(bufpoint,"PHASE_ANGLE,SLANT_DISTANCE,\r\n");
-  strcpy(line,"  INTERCEPT_ALTITUDE,NATIVE_TIME");
-}
-	/* SII formulae, if present: */
-if( cubefiles == 3 ) {
-  strcat(line,",");
-  for( x = 0; x < (nsi-1); x++ ) {
-    sprintf(xstring,"\'%s\',",v.formulae[x]);
-    strcat(line,xstring);
-    if( (strlen(line)+strlen(v.formulae[x+1])) > 70 ) {
-      strcat(line,"\r\n");
-      strcat(bufpoint,line);
-      strcpy(line,"  ");
-    }
-  }
-  sprintf(xstring,"\'%s\')\r\n",v.formulae[x]);
-  strcat(line,xstring);
-  strcat(bufpoint,line);
-}
-else {
-  if (nbpln==5)
-    strcat(bufpoint,")\r\n");
-  else {
-    strcat(line,")\r\n");
-    strcat(bufpoint,line);
-  }
-}
-if (!tube) {
-  strcat(bufpoint," BAND_SUFFIX_UNIT = (DEGREE,DEGREE,DEGREE,DEGREE,DEGREE");
-  if (nbpln>5) {
-    strcat(bufpoint,",KILOMETER,\r\n");
-    sprintf(line,"  KILOMETER,");
-    if (v.sdgeo<6) strcat(line,"DEGREE,");
-    else strcat(line,"KILOMETER,");
-    sprintf(lineb,"%s",v.dataunits);
-    strcat(line,lineb);
-  }
-}
-else {				/* if tube input */
-  strcat(bufpoint," BAND_SUFFIX_UNIT = (");
-  for (i=0; i<ngp; i++) {
-    strcat( bufpoint, "DEGREE,DEGREE,DIMENSIONLESS,DIMENSIONLESS,");
-    if (v.binning[0]=='F')	/* Footprint algorithm */
-      strcat( bufpoint, "DIMENSIONLESS,DIMENSIONLESS,");
-    strcat( bufpoint, "\r\n  ");
-    if (ptub)
-      strcat( bufpoint, "RADIAN,RADIAN,RADIAN,KILOMETER,KILOMETER,KILOMETER, \r\n  ");
-  }
-  strcpy( line,"DEGREE,DEGREE,DEGREE,KILOMETER,KILOMETER,SECOND");
-}
-if( cubefiles == 3 ) {
-  for( x = 0; x < (nsi-1); x++ ) {
-    if( strlen(line) > 60 ) {
-      strcat(line,",\r\n");
-      strcat(bufpoint,line);
-      sprintf(line,"  UNKNOWN");
-    }
-    else strcat(line,",UNKNOWN");
-  }
-  strcat(line,",UNKNOWN)\r\n");
-  strcat(bufpoint,line);
-}
-else {
-  if (nbpln==5)
-    strcat(bufpoint,")\r\n");
-  else {
-    strcat(line,")\r\n");
-    strcat(bufpoint,line);
-  }
-}
-write_PDS_aline(bufpoint,'I'," BAND_SUFFIX_ITEM_BYTES",4,nbpln);
-write_PDS_aline(bufpoint,'C'," BAND_SUFFIX_ITEM_TYPE",bp_type,nbpln);
-arval = 0.0;
-write_PDS_aline(bufpoint,'F'," BAND_SUFFIX_BASE",&arval,nbpln);
-if (!tube) {
-  arval = 1.0;
-  write_PDS_aline(bufpoint,'F'," BAND_SUFFIX_MULTIPLIER",&arval,nbpln);
-}
-else {		/* Tube needs final '63' for chops */
-  sprintf(line,"%s = ("," BAND_SUFFIX_MULTIPLIER");
-  for( x = 0; x < nbpln-1 ; x++ ) {
-    sprintf(xstring,"%f,",1.0);
-    strcat(line,xstring);
-    if( strlen(line) > 60 ) {
-      strcat(line,"\r\n");
-      strcat(bufpoint,line);
-      strcpy(line,"     ");
-    }
-  }
-  sprintf(xstring,"%f)\r\n",63.);
-  strcat(line,xstring);
-  strcat(bufpoint,line);
-}
-endsuff:
-write_PDS_aline(bufpoint,'C'," BAND_SUFFIX_VALID_MINIMUM ",VALID_MIN_4,nbpln);
-write_PDS_aline(bufpoint,'C'," BAND_SUFFIX_NULL          ",NULL_4,nbpln);
-write_PDS_aline(bufpoint,'C'," BAND_SUFFIX_LOW_REPR_SAT  ",LOW_REPR_SAT_4,nbpln);
-write_PDS_aline(bufpoint,'C'," BAND_SUFFIX_LOW_INSTR_SAT ",LOW_INSTR_SAT_4,nbpln);
-write_PDS_aline(bufpoint,'C'," BAND_SUFFIX_HIGH_INSTR_SAT",HIGH_INSTR_SAT_4,nbpln);
-write_PDS_aline(bufpoint,'C'," BAND_SUFFIX_HIGH_REPR_SAT ",HIGH_REPR_SAT_4,nbpln);
-
-strcat(bufpoint,"\r\n");
-
-/* this is the erstwhile BAND_SUFFIX_NOTE: */
-if (!tube) {
-  strcat(bufpoint,"/* The backplanes contain 7 geometric parameters, the ");
-  strcat(bufpoint,"standard deviation */\r\n/* of one of them, the standard ");
-  strcat(bufpoint,"deviation of a selected data band, ");
-}
-else if (ptub) {
-  if (v.binning[0]=='F') {
-    strcat(bufpoint,"/* The backplanes contain 12 geometric parameters for ");
-    strcat(bufpoint,"each grating position */\r\n/* (latitude, longitude, line, ");
-    strcat(bufpoint,"sample, right-edge-of-NIMS-FOV line, right-edge */\r\n/* ");
-    strcat(bufpoint,"sample), 3 Euler angles [RA,Dec,Twist], 3 components ");
-    strcat(bufpoint,"of the \'RS-vector\' */\r\n/* from Target-body center ");
-    strcat(bufpoint,"to Spacecraft), 5 \'global\' geometric parameters which ");
-    strcat(bufpoint,"apply to all grating */\r\n/* positions, the time ");
-    strcat(bufpoint,"(in \'chops\', see below) of the first grating ");
-    strcat(bufpoint,"position, ");
-  }
-  else {
-    strcat(bufpoint,"/* The backplanes contain 10 geometric parameters for ");
-    strcat(bufpoint,"each grating position */\r\n/* (latitude, longitude, line, ");
-    strcat(bufpoint,"sample, 3 Euler angles [RA,Dec,Twist], */\r\n/* 3 ");
-    strcat(bufpoint,"components of the \'RS-vector\' from Target-body center ");
-    strcat(bufpoint,"*/\r\n/* to Spacecraft), 5 \'global\' geometric parameters ");
-    strcat(bufpoint,"which */\r\n/* apply to all grating positions, the time ");
-    strcat(bufpoint,"(in \'chops\', see below) */\r\n/* of the first grating ");
-    strcat(bufpoint,"position, ");
-  }
-}
-else if (!calib) {
-  if (v.binning[0]=='F') {
-    strcat(bufpoint,"/* The backplanes contain 6 geometric parameters for ");
-    strcat(bufpoint,"each grating position */\r\n/* (latitude, longitude, line, ");
-    strcat(bufpoint,"sample, right-edge-of-NIMS-FOV line, right-edge */\r\n/* ");
-    strcat(bufpoint,"sample), 5 \'global\' geometric parameters which ");
-    strcat(bufpoint,"apply to all grating */\r\n/* positions, the time ");
-    strcat(bufpoint,"(in \'chops\', see below) of the first grating ");
-    strcat(bufpoint,"position, ");
-  }
-  else {
-    strcat(bufpoint,"/* The backplanes contain 4 geometric parameters for ");
-    strcat(bufpoint,"each grating */\r\n/* position (latitude, longitude, line, ");
-    strcat(bufpoint,"sample), 5 \'global\' geometric */\r\n/* parameters ");
-    strcat(bufpoint,"which apply to all grating positions, the time */\r\n/* ");
-    strcat(bufpoint,"(in \'chops\', see below) of the first grating position, ");
-  }
-}
-if (!calib) {
-  strcat(bufpoint,"*/\r\n/* and 0 to 10 ");
-  strcat(bufpoint,"\'spectral index\' bands, each a user-specified function");
-  strcat(bufpoint," of the */\r\n/* data bands.  (See the BAND SUFFIX NAME ");
-  strcat(bufpoint,"values.) */\r\n\r\n");
-  strcat(bufpoint,"/* Longitude ranges from 0 to 360 degrees, with positive ");
-  strcat(bufpoint,"direction */\r\n/* specified by POSITIVE LONGITUDE DIRECTION ");
-  strcat(bufpoint,"in the IMAGE MAP PROJECTION */\r\n/*");
-  if (pgraphic==1) strcat(bufpoint," group.  Latitudes are planetographic. */\r\n\r\n");
-  else if (pgraphic==0) strcat(bufpoint,"  group.  Latitudes are planetocentric. */\r\n\r\n");
-  else strcat(bufpoint,"  group. */\r\n\r\n");
-
-  strcat(bufpoint,"/* SLANT DISTANCE contains the distance from the observer");
-  strcat(bufpoint," to the */\r\n/* intercept point of the line of sight with");
-  strcat(bufpoint," the target body surface. */\r\n/* Normally, this is the"); 
-  strcat(bufpoint," distance at the time of observation (or */\r\n/* the mean");
-  strcat(bufpoint," time, when projected pixels are averaged).  However, */\r\n");
-  strcat(bufpoint,"/* in the case of a Perspective projection, the distance is");
-  strcat(bufpoint," measured */\r\n/* from the perspective point of the");
-  strcat(bufpoint," projection. */\r\n\r\n");
-
-  strcat(bufpoint,"/* INTERCEPT ALTITUDE contains values for the DIFFERENCE ");
-  strcat(bufpoint,"between */\r\n/* the length of the normal from the center of ");
-  strcat(bufpoint,"the target body to the */\r\n/* line of sight AND the radius of");
-  strcat(bufpoint," the target body.  On-target points */\r\n/* have zero values. ");
-  strcat(bufpoint," Points beyond the maximum expanded radius have */\r\n");
-  strcat(bufpoint,"/* null values.  This plane thus also serves as a set of ");
-  strcat(bufpoint,"\"off-limb\" */\r\n/* flags.  It is meaningful only for the ");
-  strcat(bufpoint,"ORTHOGRAPHIC and */\r\n/* POINT PERSPECTIVE projections; other");
-  strcat(bufpoint,"wise all values are zero. */\r\n\r\n");
-}
-if (!tube) {
-  strcat(bufpoint,"/* The geometric standard deviation backplane contains ");
-  strcat(bufpoint,"the standard */\r\n/* deviation of the geometry backplane indi");
-  strcat(bufpoint,"cated in its NAME. */\r\n\r\n");
-  strcat(bufpoint,"/* The data band standard deviation plane is computed for ");
-  strcat(bufpoint,"the NIMS data */\r\n/* band specified by STD DEV SELECTED BAND");
-  strcat(bufpoint," NUMBER.  This may be either */\r\n/* a raw data number, or ");
-  strcat(bufpoint,"spectral radiance, whichever is indicated by */\r\n");
-  strcat(bufpoint,"/* CORE NAME. */");
-}
-else {
-  strcat(bufpoint,"/* The NATIVE TIME band of the suffix");
-  strcat(bufpoint," is the time in \"chops\" of */\r\n/* the first grating");
-  strcat(bufpoint," position at the corresponding line and sample */\r\n/* after");
-  strcat(bufpoint," the NATIVE START TIME, where 63 chops = 1 second. */");
-}
-if( cubefiles == 3 ) {		/* if SII bands present */
-  strcat(bufpoint,"\r\n\r\n");
-  strcat(bufpoint,"/* The spectral index bands were generated by the ");
-  strcat(bufpoint,"Vicar F2 program. */\r\n/* The corresponding BAND SUFFIX");
-  strcat(bufpoint," NAME is an abbreviated formula */\r\n/* for the function used");
-  strcat(bufpoint,", where Bn should be read 'NIMS data band n'. */\r\n/* For ");
-  strcat(bufpoint,"example: B4/B8 represents the ratio of bands 4 and 8. */");
-}
-strcat(bufpoint,"\"\r\n\r\n");
-
-if (!calib) {
-  sprintf(line," STD_DEV_SELECTED_BAND_NUMBER = %d\r\n", v.sdband);
-  strcat(bufpoint,line);
-  sprintf(line," STD_DEV_SELECTED_BACKPLANE = %d\r\n\r\n", v.sdgeo);
-  strcat(bufpoint,line);
-}
-
-strcat(bufpoint,"/*  Data description: general */\r\n\r\n");
-if (tube) sprintf(line," DATA_SET_ID = 'GO-%s-NIMS-3-TUBE-V1.0'\r\n",
- v.targetcode);
-else sprintf(line," DATA_SET_ID = 'GO-%s-NIMS-4-MOSAIC-V1.0'\r\n",v.targetcode);
-strcat(bufpoint,line);
-strcat(bufpoint," SPACECRAFT_NAME = GALILEO_ORBITER\r\n");
-sprintf(line," MISSION_PHASE_NAME = %s\r\n",v.phase_name);
-strcat(bufpoint,line);
-strcat(bufpoint," INSTRUMENT_NAME = 'NEAR INFRARED MAPPING SPECTROMETER'\r\n");
-strcat(bufpoint," INSTRUMENT_ID = NIMS\r\n");
-strcat(bufpoint," ^INSTRUMENT_DESCRIPTION = \"NIMSINST.TXT\"\r\n\r\n");
-sprintf(line," TARGET_NAME = %s\r\n",v.target);		/* target name */
-strcat(bufpoint,line);
-
-	/* write START_TIME before NATIVE_START_TIME, so that VISIS2 
-	 * does not find the latter when looking for the former in 
-	 * inverse mode: */
-sprintf(line," START_TIME = \"%s\"\r\n",		/* starting SCET     */
-	v.event_start_time);	
-strcat(bufpoint,line);
-sprintf(line," STOP_TIME = \"%s\"\r\n",		/* ending SCET       */
-	v.event_stop_time);
-strcat(bufpoint,line); 
-
-sprintf(line," NATIVE_START_TIME = \"%d.%02d.%d\"\r\n",	/* starting SCLK */
-	v.native_times[0][0],v.native_times[0][1],v.native_times[0][2]);
-strcat(bufpoint,line);
-sprintf(line," NATIVE_STOP_TIME = \"%d.%02d\"\r\n\r\n", /* ending SCLK */
-	v.native_times[1][0],v.native_times[1][1]);
-strcat(bufpoint,line);
-
-strcpy( fobsname, v.obsname);
-if (mphase && strcmp( v.obsext, " ")) strcat( fobsname, v.obsext);
-sprintf(line," OBSERVATION_NAME = \'%s\'\r\n", fobsname);
-strcat(bufpoint,line);
-
-/* OBSNOTE, SUPPNOTE, & PRODNOTE get concatenated into a single NOTE, 
- * with " // " as delimiter (for inverse mode) */
-
-/* 07apr07:  this code is misbehaving;  since it's not essential,
- * disable it for now */
-goto skipnote;
-
-len1 = len2 = len3 = 0;		/* lengths without trailing blanks */
-/* first, replace any instances of "//" (or more /'s) with a single "/",
- * to avoid confusing parser in inverse mode;  also, VICAR replaces single
- * quotes (') with pairs of same, but we don't need this, so undo it ... */
-x = strlen(v.obsnote);
-y = 0;
-for (i=0; i<x; i++) {
-  while (!strncmp( &v.obsnote[i], "//", 2)) {
-    strcpy( obuf, &v.obsnote[i+1]);
-    strcpy( &v.obsnote[i], obuf);
-    x--;  
-  }
-  if (!strncmp( &v.obsnote[i], "''", 2)) {
-    strcpy( obuf, &v.obsnote[i+1]);
-    strcpy( &v.obsnote[i], obuf);
-    x--;  
-  }
-  if (v.obsnote[y] != ' ') len1 = y+1;
-  y++;
-}
-x = strlen(v.suppnote);
-y = 0;
-for (i=0; i<x; i++) {
-  while (!strncmp( &v.suppnote[i], "//", 2)) {
-    strcpy( obuf, &v.suppnote[i+1]);
-    strcpy( &v.suppnote[i], obuf);
-    x--;
-  }
-  if (!strncmp( &v.suppnote[i], "''", 2)) {
-    strcpy( obuf, &v.suppnote[i+1]);
-    strcpy( &v.suppnote[i], obuf);
-    x--;  
-  }
-  if (v.suppnote[y] != ' ') len2 = y+1;
-  y++;
-}
-x = strlen(v.prodnote);
-y = 0;
-for (i=0; i<x; i++) {
-  while (!strncmp( &v.prodnote[i], "//", 2)) {
-    strcpy( obuf, &v.prodnote[i+1]);
-    strcpy( &v.prodnote[i], obuf);
-    x--;  
-  }
-  if (!strncmp( &v.prodnote[i], "''", 2)) {
-    strcpy( obuf, &v.prodnote[i+1]);
-    strcpy( &v.prodnote[i], obuf);
-    x--;  
-  }
-  if (v.prodnote[y] != ' ') len3 = y+1;
-  y++;
-}
-
-	/* concatenate them */
-strncpy( &v.obsnote[len1], " // \0", 5);
-strcat( v.obsnote, v.suppnote);
-if (len2<2) len2 = 0;
-strncpy( &v.obsnote[len1+4+len2], " // \0", 5);
-strcat( v.obsnote, v.prodnote);
-x = len1 + len2 + 8 + len3;
-if (x<2 || x>337) zmabend(" error processing NOTEs");
-
-	/* write out entire NOTE: */
-y = 0;			/* current position in obsnote */
-if (x < 68) {
-  sprintf(line," NOTE = \"%s\"\r\n", v.obsnote);
-  strcat(bufpoint,line);
-}
-else {
-  strncpy( line," NOTE = \"", 9);
-  /* back up if a word is split at EOL: */
-  for (ibk=0; ibk<66; ibk++) {
-    if (v.obsnote[65-ibk] == ' ' || v.obsnote[66-ibk] == ' ') break;
-  }
-  if (ibk>65) {
-    zvmessage(" error parsing NOTE","");
-    ibk = 0;
-  }
-  strncpy( &line[9], v.obsnote, 66-ibk);
-  strcpy( &line[75-ibk], "\r\n");
-  strcat(bufpoint,line);
-  x -= 66-ibk;
-  y += 66-ibk;
-  for (; x>0;) {
-    strncpy( line,"  ", 2);
-    if (x <= 74) {
-      strncpy( &line[2], &v.obsnote[y], x);
-      strcpy( &line[x+2], "\"\r\n");
-      x = -1;
+      strcat(bufpoint,"/* The backplanes contain 12 geometric parameters for ");
+      strcat(bufpoint,"each grating position */\r\n/* (latitude, longitude, line, ");
+      strcat(bufpoint,"sample, right-edge-of-NIMS-FOV line, right-edge */\r\n/* ");
+      strcat(bufpoint,"sample), 3 Euler angles [RA,Dec,Twist], 3 components ");
+      strcat(bufpoint,"of the \'RS-vector\' */\r\n/* from Target-body center ");
+      strcat(bufpoint,"to Spacecraft), 5 \'global\' geometric parameters which ");
+      strcat(bufpoint,"apply to all grating */\r\n/* positions, the time ");
+      strcat(bufpoint,"(in \'chops\', see below) of the first grating ");
+      strcat(bufpoint,"position, ");
     }
     else {
-      /* back up if a word is split at EOL: */
-      for (ibk=0; ibk<72; ibk++) {
-        if (v.obsnote[y+71-ibk] == ' ' || v.obsnote[y+72-ibk] == ' ') break;
+      strcat(bufpoint,"/* The backplanes contain 10 geometric parameters for ");
+      strcat(bufpoint,"each grating position */\r\n/* (latitude, longitude, line, ");
+      strcat(bufpoint,"sample, 3 Euler angles [RA,Dec,Twist], */\r\n/* 3 ");
+      strcat(bufpoint,"components of the \'RS-vector\' from Target-body center ");
+      strcat(bufpoint,"*/\r\n/* to Spacecraft), 5 \'global\' geometric parameters ");
+      strcat(bufpoint,"which */\r\n/* apply to all grating positions, the time ");
+      strcat(bufpoint,"(in \'chops\', see below) */\r\n/* of the first grating ");
+      strcat(bufpoint,"position, ");
+    }
+  }
+  else if (!calib) {
+    if (v.binning[0]=='F') {
+      strcat(bufpoint,"/* The backplanes contain 6 geometric parameters for ");
+      strcat(bufpoint,"each grating position */\r\n/* (latitude, longitude, line, ");
+      strcat(bufpoint,"sample, right-edge-of-NIMS-FOV line, right-edge */\r\n/* ");
+      strcat(bufpoint,"sample), 5 \'global\' geometric parameters which ");
+      strcat(bufpoint,"apply to all grating */\r\n/* positions, the time ");
+      strcat(bufpoint,"(in \'chops\', see below) of the first grating ");
+      strcat(bufpoint,"position, ");
+    }
+    else {
+      strcat(bufpoint,"/* The backplanes contain 4 geometric parameters for ");
+      strcat(bufpoint,"each grating */\r\n/* position (latitude, longitude, line, ");
+      strcat(bufpoint,"sample), 5 \'global\' geometric */\r\n/* parameters ");
+      strcat(bufpoint,"which apply to all grating positions, the time */\r\n/* ");
+      strcat(bufpoint,"(in \'chops\', see below) of the first grating position, ");
+    }
+  }
+  if (!calib) {
+    strcat(bufpoint,"*/\r\n/* and 0 to 10 ");
+    strcat(bufpoint,"\'spectral index\' bands, each a user-specified function");
+    strcat(bufpoint," of the */\r\n/* data bands.  (See the BAND SUFFIX NAME ");
+    strcat(bufpoint,"values.) */\r\n\r\n");
+    strcat(bufpoint,"/* Longitude ranges from 0 to 360 degrees, with positive ");
+    strcat(bufpoint,"direction */\r\n/* specified by POSITIVE LONGITUDE DIRECTION ");
+    strcat(bufpoint,"in the IMAGE MAP PROJECTION */\r\n/*");
+    if (pgraphic==1) strcat(bufpoint," group.  Latitudes are planetographic. */\r\n\r\n");
+    else if (pgraphic==0) strcat(bufpoint,"  group.  Latitudes are planetocentric. */\r\n\r\n");
+    else strcat(bufpoint,"  group. */\r\n\r\n");
+
+    strcat(bufpoint,"/* SLANT DISTANCE contains the distance from the observer");
+    strcat(bufpoint," to the */\r\n/* intercept point of the line of sight with");
+    strcat(bufpoint," the target body surface. */\r\n/* Normally, this is the"); 
+    strcat(bufpoint," distance at the time of observation (or */\r\n/* the mean");
+    strcat(bufpoint," time, when projected pixels are averaged).  However, */\r\n");
+    strcat(bufpoint,"/* in the case of a Perspective projection, the distance is");
+    strcat(bufpoint," measured */\r\n/* from the perspective point of the");
+    strcat(bufpoint," projection. */\r\n\r\n");
+
+    strcat(bufpoint,"/* INTERCEPT ALTITUDE contains values for the DIFFERENCE ");
+    strcat(bufpoint,"between */\r\n/* the length of the normal from the center of ");
+    strcat(bufpoint,"the target body to the */\r\n/* line of sight AND the radius of");
+    strcat(bufpoint," the target body.  On-target points */\r\n/* have zero values. ");
+    strcat(bufpoint," Points beyond the maximum expanded radius have */\r\n");
+    strcat(bufpoint,"/* null values.  This plane thus also serves as a set of ");
+    strcat(bufpoint,"\"off-limb\" */\r\n/* flags.  It is meaningful only for the ");
+    strcat(bufpoint,"ORTHOGRAPHIC and */\r\n/* POINT PERSPECTIVE projections; other");
+    strcat(bufpoint,"wise all values are zero. */\r\n\r\n");
+  }
+  if (!tube) {
+    strcat(bufpoint,"/* The geometric standard deviation backplane contains ");
+    strcat(bufpoint,"the standard */\r\n/* deviation of the geometry backplane indi");
+    strcat(bufpoint,"cated in its NAME. */\r\n\r\n");
+    strcat(bufpoint,"/* The data band standard deviation plane is computed for ");
+    strcat(bufpoint,"the NIMS data */\r\n/* band specified by STD DEV SELECTED BAND");
+    strcat(bufpoint," NUMBER.  This may be either */\r\n/* a raw data number, or ");
+    strcat(bufpoint,"spectral radiance, whichever is indicated by */\r\n");
+    strcat(bufpoint,"/* CORE NAME. */");
+  }
+  else {
+    strcat(bufpoint,"/* The NATIVE TIME band of the suffix");
+    strcat(bufpoint," is the time in \"chops\" of */\r\n/* the first grating");
+    strcat(bufpoint," position at the corresponding line and sample */\r\n/* after");
+    strcat(bufpoint," the NATIVE START TIME, where 63 chops = 1 second. */");
+  }
+  if( cubefiles == 3 ) {		/* if SII bands present */
+    strcat(bufpoint,"\r\n\r\n");
+    strcat(bufpoint,"/* The spectral index bands were generated by the ");
+    strcat(bufpoint,"Vicar F2 program. */\r\n/* The corresponding BAND SUFFIX");
+    strcat(bufpoint," NAME is an abbreviated formula */\r\n/* for the function used");
+    strcat(bufpoint,", where Bn should be read 'NIMS data band n'. */\r\n/* For ");
+    strcat(bufpoint,"example: B4/B8 represents the ratio of bands 4 and 8. */");
+  }
+  strcat(bufpoint,"\"\r\n\r\n");
+
+  if (!calib) {
+    sprintf(line," STD_DEV_SELECTED_BAND_NUMBER = %d\r\n", v.sdband);
+    strcat(bufpoint,line);
+    sprintf(line," STD_DEV_SELECTED_BACKPLANE = %d\r\n\r\n", v.sdgeo);
+    strcat(bufpoint,line);
+  }
+
+  strcat(bufpoint,"/*  Data description: general */\r\n\r\n");
+  if (tube) sprintf(line," DATA_SET_ID = 'GO-%s-NIMS-3-TUBE-V1.0'\r\n",
+		    v.targetcode);
+  else sprintf(line," DATA_SET_ID = 'GO-%s-NIMS-4-MOSAIC-V1.0'\r\n",v.targetcode);
+  strcat(bufpoint,line);
+  strcat(bufpoint," SPACECRAFT_NAME = GALILEO_ORBITER\r\n");
+  sprintf(line," MISSION_PHASE_NAME = %s\r\n",v.phase_name);
+  strcat(bufpoint,line);
+  strcat(bufpoint," INSTRUMENT_NAME = 'NEAR INFRARED MAPPING SPECTROMETER'\r\n");
+  strcat(bufpoint," INSTRUMENT_ID = NIMS\r\n");
+  strcat(bufpoint," ^INSTRUMENT_DESCRIPTION = \"NIMSINST.TXT\"\r\n\r\n");
+  sprintf(line," TARGET_NAME = %s\r\n",v.target);		/* target name */
+  strcat(bufpoint,line);
+
+  /* write START_TIME before NATIVE_START_TIME, so that VISIS2 
+   * does not find the latter when looking for the former in 
+   * inverse mode: */
+  sprintf(line," START_TIME = \"%s\"\r\n",		/* starting SCET     */
+	  v.event_start_time);	
+  strcat(bufpoint,line);
+  sprintf(line," STOP_TIME = \"%s\"\r\n",		/* ending SCET       */
+	  v.event_stop_time);
+  strcat(bufpoint,line); 
+
+  sprintf(line," NATIVE_START_TIME = \"%d.%02d.%d\"\r\n",	/* starting SCLK */
+	  v.native_times[0][0],v.native_times[0][1],v.native_times[0][2]);
+  strcat(bufpoint,line);
+  sprintf(line," NATIVE_STOP_TIME = \"%d.%02d\"\r\n\r\n", /* ending SCLK */
+	  v.native_times[1][0],v.native_times[1][1]);
+  strcat(bufpoint,line);
+
+  strcpy( fobsname, v.obsname);
+  if (mphase && strcmp( v.obsext, " ")) strcat( fobsname, v.obsext);
+  sprintf(line," OBSERVATION_NAME = \'%s\'\r\n", fobsname);
+  strcat(bufpoint,line);
+
+  /* OBSNOTE, SUPPNOTE, & PRODNOTE get concatenated into a single NOTE, 
+   * with " // " as delimiter (for inverse mode) */
+
+  /* 07apr07:  this code is misbehaving;  since it's not essential,
+   * disable it for now */
+  goto skipnote;
+
+  len1 = len2 = len3 = 0;		/* lengths without trailing blanks */
+  /* first, replace any instances of "//" (or more /'s) with a single "/",
+   * to avoid confusing parser in inverse mode;  also, VICAR replaces single
+   * quotes (') with pairs of same, but we don't need this, so undo it ... */
+  x = strlen(v.obsnote);
+  y = 0;
+  for (i=0; i<x; i++) {
+    while (!strncmp( &v.obsnote[i], "//", 2)) {
+      strcpy( obuf, &v.obsnote[i+1]);
+      strcpy( &v.obsnote[i], obuf);
+      x--;  
+    }
+    if (!strncmp( &v.obsnote[i], "''", 2)) {
+      strcpy( obuf, &v.obsnote[i+1]);
+      strcpy( &v.obsnote[i], obuf);
+      x--;  
+    }
+    if (v.obsnote[y] != ' ') len1 = y+1;
+    y++;
+  }
+  x = strlen(v.suppnote);
+  y = 0;
+  for (i=0; i<x; i++) {
+    while (!strncmp( &v.suppnote[i], "//", 2)) {
+      strcpy( obuf, &v.suppnote[i+1]);
+      strcpy( &v.suppnote[i], obuf);
+      x--;
+    }
+    if (!strncmp( &v.suppnote[i], "''", 2)) {
+      strcpy( obuf, &v.suppnote[i+1]);
+      strcpy( &v.suppnote[i], obuf);
+      x--;  
+    }
+    if (v.suppnote[y] != ' ') len2 = y+1;
+    y++;
+  }
+  x = strlen(v.prodnote);
+  y = 0;
+  for (i=0; i<x; i++) {
+    while (!strncmp( &v.prodnote[i], "//", 2)) {
+      strcpy( obuf, &v.prodnote[i+1]);
+      strcpy( &v.prodnote[i], obuf);
+      x--;  
+    }
+    if (!strncmp( &v.prodnote[i], "''", 2)) {
+      strcpy( obuf, &v.prodnote[i+1]);
+      strcpy( &v.prodnote[i], obuf);
+      x--;  
+    }
+    if (v.prodnote[y] != ' ') len3 = y+1;
+    y++;
+  }
+
+  /* concatenate them */
+  strncpy( &v.obsnote[len1], " // \0", 5);
+  strcat( v.obsnote, v.suppnote);
+  if (len2<2) len2 = 0;
+  strncpy( &v.obsnote[len1+4+len2], " // \0", 5);
+  strcat( v.obsnote, v.prodnote);
+  x = len1 + len2 + 8 + len3;
+  if (x<2 || x>337) zmabend(" error processing NOTEs");
+
+  /* write out entire NOTE: */
+  y = 0;			/* current position in obsnote */
+  if (x < 68) {
+    sprintf(line," NOTE = \"%s\"\r\n", v.obsnote);
+    strcat(bufpoint,line);
+  }
+  else {
+    strncpy( line," NOTE = \"", 9);
+    /* back up if a word is split at EOL: */
+    for (ibk=0; ibk<66; ibk++) {
+      if (v.obsnote[65-ibk] == ' ' || v.obsnote[66-ibk] == ' ') break;
+    }
+    if (ibk>65) {
+      zvmessage(" error parsing NOTE","");
+      ibk = 0;
+    }
+    strncpy( &line[9], v.obsnote, 66-ibk);
+    strcpy( &line[75-ibk], "\r\n");
+    strcat(bufpoint,line);
+    x -= 66-ibk;
+    y += 66-ibk;
+    for (; x>0;) {
+      strncpy( line,"  ", 2);
+      if (x <= 74) {
+	strncpy( &line[2], &v.obsnote[y], x);
+	strcpy( &line[x+2], "\"\r\n");
+	x = -1;
       }
-      if (ibk>71) {
-        zvmessage(" error parsing NOTE","");
-        ibk = 0;
+      else {
+	/* back up if a word is split at EOL: */
+	for (ibk=0; ibk<72; ibk++) {
+	  if (v.obsnote[y+71-ibk] == ' ' || v.obsnote[y+72-ibk] == ' ') break;
+	}
+	if (ibk>71) {
+	  zvmessage(" error parsing NOTE","");
+	  ibk = 0;
+	}
+	strncpy( &line[2], &v.obsnote[y], 72-ibk);
+	strcpy( &line[74-ibk], "\r\n");
+	x -= 72-ibk;
+	y += 72-ibk;
       }
-      strncpy( &line[2], &v.obsnote[y], 72-ibk);
-      strcpy( &line[74-ibk], "\r\n");
-      x -= 72-ibk;
-      y += 72-ibk;
+      strcat(bufpoint,line);
+    }
+  }
+
+ skipnote:
+  sprintf(line," PRODUCT_ID = \"%s\"\r\n", v.prod_id);
+  strcat(bufpoint,line);
+
+  /* Get current date and time -- use date part only
+   * for PRODUCT_CREATION_DATE, then add time for
+   * DATE_TIME (below) */
+  lt = time(NULL);
+  ptr = localtime(&lt);
+  year = 1900+(*ptr).tm_year;
+  sprintf(tstr,"%04d",year);
+  sprintf( line, "-%02d-%02d", ((*ptr).tm_mon+1), (*ptr).tm_mday);
+  strcat( tstr, line);
+  sprintf( line, " PRODUCT_CREATION_DATE = %s\r\n", tstr);
+  strcat( bufpoint, line);
+  sprintf( line, "T%02d:%02d:%02d", (*ptr).tm_hour, (*ptr).tm_min, (*ptr).tm_sec);
+  strcat(tstr,line);	/* to be used below */
+
+  if (specialp) {
+    sprintf(line," SPECIAL_PROCESSING_TYPE = %d\r\n\r\n", specialp);
+    strcat(bufpoint,line);
+    strcat(bufpoint, 
+	   "/* The EDR from which this product was made required special */\r\n");
+    strcat(bufpoint, 
+	   "/* processing by the NIMS team due to anomalous behavior of  */\r\n");
+    strcat(bufpoint, 
+	   "/* the NIMS instrument in the Jupiter radiation field during */\r\n");
+    strcat(bufpoint, 
+	   "/* part of the G1 encounter.  There may be some loss of data */\r\n");
+    strcat(bufpoint, 
+	   "/* quality.  See [DOCUMENT]SPECPROC.TXT on CD for details.   */\r\n\r\n");
+  }
+
+  vstat = 1;	/* for fill_if_error */
+  fill_if_error(v.picnos[0],"String");	/* convert blank string to " " */
+  if( v.picnos[0][0]!='?' && v.picnos[0][0]!=0 && strcmp(v.picnos[0]," ")!=0 
+      && strcmp(v.picnos[0],"NULL")!=0 ) {
+    if (!strcmp( v.picnos[0], v.picnos[1])) {	/* if begin = end */
+      sprintf(line," IMAGE_ID = %s\r\n\r\n",v.picnos[0]);
+    }
+    else {
+      sprintf(line," IMAGE_ID = (%s",v.picnos[0]); 
+      strcat(line,",'...',");
+      strcat(line,v.picnos[1]);
+      strcat(line,")\r\n\r\n");
     }
     strcat(bufpoint,line);
   }
-}
+  else strcat(bufpoint," IMAGE_ID = NULL\r\n\r\n");
 
-skipnote:
-sprintf(line," PRODUCT_ID = \"%s\"\r\n", v.prod_id);
-strcat(bufpoint,line);
-
-	/* Get current date and time -- use date part only
-	 * for PRODUCT_CREATION_DATE, then add time for
-	 * DATE_TIME (below) */
-lt = time(NULL);
-ptr = localtime(&lt);
-year = 1900+(*ptr).tm_year;
-sprintf(tstr,"%04d",year);
-sprintf( line, "-%02d-%02d", ((*ptr).tm_mon+1), (*ptr).tm_mday);
-strcat( tstr, line);
-sprintf( line, " PRODUCT_CREATION_DATE = %s\r\n", tstr);
-strcat( bufpoint, line);
-sprintf( line, "T%02d:%02d:%02d", (*ptr).tm_hour, (*ptr).tm_min, (*ptr).tm_sec);
-strcat(tstr,line);	/* to be used below */
-
-if (specialp) {
-  sprintf(line," SPECIAL_PROCESSING_TYPE = %d\r\n\r\n", specialp);
-  strcat(bufpoint,line);
-  strcat(bufpoint, 
-   "/* The EDR from which this product was made required special */\r\n");
-  strcat(bufpoint, 
-   "/* processing by the NIMS team due to anomalous behavior of  */\r\n");
-  strcat(bufpoint, 
-   "/* the NIMS instrument in the Jupiter radiation field during */\r\n");
-  strcat(bufpoint, 
-   "/* part of the G1 encounter.  There may be some loss of data */\r\n");
-  strcat(bufpoint, 
-   "/* quality.  See [DOCUMENT]SPECPROC.TXT on CD for details.   */\r\n\r\n");
-}
-
-vstat = 1;	/* for fill_if_error */
-fill_if_error(v.picnos[0],"String");	/* convert blank string to " " */
-if( v.picnos[0][0]!='?' && v.picnos[0][0]!=0 && strcmp(v.picnos[0]," ")!=0 
- && strcmp(v.picnos[0],"NULL")!=0 ) {
-  if (!strcmp( v.picnos[0], v.picnos[1])) {	/* if begin = end */
-    sprintf(line," IMAGE_ID = %s\r\n\r\n",v.picnos[0]);
+  if (!calib) {
+    sprintf(line," INCIDENCE_ANGLE = %5.2f\r\n",v.inci_angle);
+    strcat(bufpoint,line);
+    sprintf(line," EMISSION_ANGLE = %5.2f\r\n",v.emis_angle);
+    strcat(bufpoint,line);
+    sprintf(line," PHASE_ANGLE = %5.2f\r\n",v.phas_angle);
+    strcat(bufpoint,line);
+    sprintf(line," SOLAR_AZIMUTH = %5.2f\r\n",v.azimuth_sun);
+    strcat(bufpoint,line);
+    sprintf(line," SUB_SPACECRAFT_AZIMUTH = %5.2f\r\n",v.azimuth_sc);
+    strcat(bufpoint,line);
+    sprintf(line," START_SUB_SPACECRAFT_LATITUDE = %5.2f\r\n",v.b_ssc_lat);
+    strcat(bufpoint,line);
+    sprintf(line," START_SUB_SPACECRAFT_LONGITUDE = %5.2f\r\n",v.b_ssc_lon);
+    strcat(bufpoint,line);
+    sprintf(line," STOP_SUB_SPACECRAFT_LATITUDE = %5.2f\r\n",v.e_ssc_lat);
+    strcat(bufpoint,line);
+    sprintf(line," STOP_SUB_SPACECRAFT_LONGITUDE = %5.2f\r\n",v.e_ssc_lon);
+    strcat(bufpoint,line);
+    sprintf(line," START_SUB_SOLAR_LATITUDE = %5.2f\r\n",v.b_ssl_lat);
+    strcat(bufpoint,line);
+    sprintf(line," START_SUB_SOLAR_LONGITUDE = %5.2f\r\n",v.b_ssl_lon);
+    strcat(bufpoint,line);
+    sprintf(line," STOP_SUB_SOLAR_LATITUDE = %5.2f\r\n",v.e_ssl_lat);
+    strcat(bufpoint,line);
+    sprintf(line," STOP_SUB_SOLAR_LONGITUDE = %5.2f\r\n",v.e_ssl_lon);
+    strcat(bufpoint,line);
+    sprintf(line," MINIMUM_SLANT_DISTANCE = %9.2f\r\n",v.min_range);
+    strcat(bufpoint,line);
+    sprintf(line," MAXIMUM_SLANT_DISTANCE = %9.2f\r\n",v.max_range);
+    strcat(bufpoint,line);
+    if (v.dpstat>0) {
+      snprintf(line,120," POINTING_OFFSET = (%f,%f)\r\n",v.dpoint[0],v.dpoint[1]);
+      strcat(bufpoint,line);
+    }
+    snprintf(line,120," SCAN_RATE_TOLERANCE = %.6f\r\n", 1000.*v.slewtol);
+    strcat(bufpoint,line);
+    snprintf(line,120," MEAN_SCAN_RATE = %.6f\r\n",v.slew_rate);
+    strcat(bufpoint,line);
+    /* this is the former SCAN_RATE_NOTE: */
+    strcat(bufpoint,"/* The unit of SCAN RATE TOLERANCE is");
+    strcat(bufpoint," mrad/s. */\r\n/* The unit of MEAN SCAN RATE is the Nyquist");
+    strcat(bufpoint," scanning rate, which depends on */\r\n/* the instrument mode:");
+    strcat(bufpoint," it is one-half FOV (0.5 mrad) per grating cycle. */\r\n");
   }
-  else {
-    sprintf(line," IMAGE_ID = (%s",v.picnos[0]); 
-    strcat(line,",'...',");
-    strcat(line,v.picnos[1]);
-    strcat(line,")\r\n\r\n");
-  }
+  sprintf(line," MIN_SPACECRAFT_SOLAR_DISTANCE = %g\r\n",v.min_sun_d);
   strcat(bufpoint,line);
-}
-else strcat(bufpoint," IMAGE_ID = NULL\r\n\r\n");
+  sprintf(line," MAX_SPACECRAFT_SOLAR_DISTANCE = %g\r\n",v.max_sun_d);
+  strcat(bufpoint,line);
+  sprintf(line," MINIMUM_CENTRAL_BODY_DISTANCE = %9.2f\r\n",v.min_cb_d);
+  strcat(bufpoint,line);
+  sprintf(line," MAXIMUM_CENTRAL_BODY_DISTANCE = %9.2f\r\n\r\n",v.max_cb_d);
+  strcat(bufpoint,line);
 
-if (!calib) {
-  sprintf(line," INCIDENCE_ANGLE = %5.2f\r\n",v.inci_angle);
-  strcat(bufpoint,line);
-  sprintf(line," EMISSION_ANGLE = %5.2f\r\n",v.emis_angle);
-  strcat(bufpoint,line);
-  sprintf(line," PHASE_ANGLE = %5.2f\r\n",v.phas_angle);
-  strcat(bufpoint,line);
-  sprintf(line," SOLAR_AZIMUTH = %5.2f\r\n",v.azimuth_sun);
-  strcat(bufpoint,line);
-  sprintf(line," SUB_SPACECRAFT_AZIMUTH = %5.2f\r\n",v.azimuth_sc);
-  strcat(bufpoint,line);
-  sprintf(line," START_SUB_SPACECRAFT_LATITUDE = %5.2f\r\n",v.b_ssc_lat);
-  strcat(bufpoint,line);
-  sprintf(line," START_SUB_SPACECRAFT_LONGITUDE = %5.2f\r\n",v.b_ssc_lon);
-  strcat(bufpoint,line);
-  sprintf(line," STOP_SUB_SPACECRAFT_LATITUDE = %5.2f\r\n",v.e_ssc_lat);
-  strcat(bufpoint,line);
-  sprintf(line," STOP_SUB_SPACECRAFT_LONGITUDE = %5.2f\r\n",v.e_ssc_lon);
-  strcat(bufpoint,line);
-  sprintf(line," START_SUB_SOLAR_LATITUDE = %5.2f\r\n",v.b_ssl_lat);
-  strcat(bufpoint,line);
-  sprintf(line," START_SUB_SOLAR_LONGITUDE = %5.2f\r\n",v.b_ssl_lon);
-  strcat(bufpoint,line);
-  sprintf(line," STOP_SUB_SOLAR_LATITUDE = %5.2f\r\n",v.e_ssl_lat);
-  strcat(bufpoint,line);
-  sprintf(line," STOP_SUB_SOLAR_LONGITUDE = %5.2f\r\n",v.e_ssl_lon);
-  strcat(bufpoint,line);
-  sprintf(line," MINIMUM_SLANT_DISTANCE = %9.2f\r\n",v.min_range);
-  strcat(bufpoint,line);
-  sprintf(line," MAXIMUM_SLANT_DISTANCE = %9.2f\r\n",v.max_range);
-  strcat(bufpoint,line);
-  if (v.dpstat>0) {
-    sprintf(line," POINTING_OFFSET = (%f,%f)\r\n",v.dpoint[0],v.dpoint[1]);
+  strcat(bufpoint,"/*  Data description: instrument status  */\r\n\r\n");
+
+  sprintf(line," INSTRUMENT_MODE_ID = %s\r\n",v.nimsmode);
+  strcat(bufpoint,line);					/* instrument mode   */
+
+  /* gain state(s) -- can be as many as Cal. files */
+  if (v.gain_state[0] <= 0) strcat( bufpoint, " GAIN_MODE_ID = NULL\r\n");
+  else if (ncals==1) {
+    sprintf(line," GAIN_MODE_ID = %d\r\n",v.gain_state[0]);
     strcat(bufpoint,line);
   }
-  sprintf(line," SCAN_RATE_TOLERANCE = %.6f\r\n", 1000.*v.slewtol);
+  else {
+    write_PDS_line(bufpoint,'I'," GAIN_MODE_ID",v.gain_state,ncals,0);
+  }
+
+  strcat(bufpoint," CHOPPER_MODE_ID =");			/* chopper mode      */
+  if (v.chopper==0) strcat(bufpoint," \'63_HERTZ\'\r\n");
+  else if (v.chopper==1) strcat(bufpoint," REFERENCE\r\n");
+  else if (v.chopper==2) strcat(bufpoint," OFF\r\n");
+  else if (v.chopper==3) strcat(bufpoint," FREE_RUN\r\n");
+  sprintf(line," START_GRATING_POSITION = %02d\r\n",v.grating_start_pos);
   strcat(bufpoint,line);
-  sprintf(line," MEAN_SCAN_RATE = %.6f\r\n",v.slew_rate);
+  sprintf(line," OFFSET_GRATING_POSITION = %02d\r\n",v.grating_offset);
   strcat(bufpoint,line);
-  /* this is the former SCAN_RATE_NOTE: */
-  strcat(bufpoint,"/* The unit of SCAN RATE TOLERANCE is");
-  strcat(bufpoint," mrad/s. */\r\n/* The unit of MEAN SCAN RATE is the Nyquist");
-  strcat(bufpoint," scanning rate, which depends on */\r\n/* the instrument mode:");
-  strcat(bufpoint," it is one-half FOV (0.5 mrad) per grating cycle. */\r\n");
-}
-sprintf(line," MIN_SPACECRAFT_SOLAR_DISTANCE = %g\r\n",v.min_sun_d);
-strcat(bufpoint,line);
-sprintf(line," MAX_SPACECRAFT_SOLAR_DISTANCE = %g\r\n",v.max_sun_d);
-strcat(bufpoint,line);
-sprintf(line," MINIMUM_CENTRAL_BODY_DISTANCE = %9.2f\r\n",v.min_cb_d);
-strcat(bufpoint,line);
-sprintf(line," MAXIMUM_CENTRAL_BODY_DISTANCE = %9.2f\r\n\r\n",v.max_cb_d);
-strcat(bufpoint,line);
-
-strcat(bufpoint,"/*  Data description: instrument status  */\r\n\r\n");
-
-sprintf(line," INSTRUMENT_MODE_ID = %s\r\n",v.nimsmode);
-strcat(bufpoint,line);					/* instrument mode   */
-
-	/* gain state(s) -- can be as many as Cal. files */
-if (v.gain_state[0] <= 0) strcat( bufpoint, " GAIN_MODE_ID = NULL\r\n");
-else if (ncals==1) {
-  sprintf(line," GAIN_MODE_ID = %d\r\n",v.gain_state[0]);
+  sprintf(line," GRATING_POSITION_INCREMENT = %02d\r\n",v.grating_delta);
   strcat(bufpoint,line);
-}
-else {
-  write_PDS_line(bufpoint,'I'," GAIN_MODE_ID",v.gain_state,ncals,0);
-}
+  if (v.nimsmode[2] == 'x' || v.nimsmode[2] == 'X') 	/* Fixed modes */
+    sprintf(line," GRATING_POSITIONS = %02d\r\n\r\n",1);
+  else
+    sprintf(line," GRATING_POSITIONS = %02d\r\n\r\n",v.grating_steps);
+  strcat(bufpoint,line);
 
-strcat(bufpoint," CHOPPER_MODE_ID =");			/* chopper mode      */
-if (v.chopper==0) strcat(bufpoint," \'63_HERTZ\'\r\n");
-else if (v.chopper==1) strcat(bufpoint," REFERENCE\r\n");
-else if (v.chopper==2) strcat(bufpoint," OFF\r\n");
-else if (v.chopper==3) strcat(bufpoint," FREE_RUN\r\n");
-sprintf(line," START_GRATING_POSITION = %02d\r\n",v.grating_start_pos);
-strcat(bufpoint,line);
-sprintf(line," OFFSET_GRATING_POSITION = %02d\r\n",v.grating_offset);
-strcat(bufpoint,line);
-sprintf(line," GRATING_POSITION_INCREMENT = %02d\r\n",v.grating_delta);
-strcat(bufpoint,line);
-if (v.nimsmode[2] == 'x' || v.nimsmode[2] == 'X') 	/* Fixed modes */
-  sprintf(line," GRATING_POSITIONS = %02d\r\n\r\n",1);
-else
-  sprintf(line," GRATING_POSITIONS = %02d\r\n\r\n",v.grating_steps);
-strcat(bufpoint,line);
-
-switch( v.nimsmode[3] ) {
+  switch( v.nimsmode[3] ) {
   case 'd':		/* BANDEDGE */
   case 'D':  
 
-  sprintf(line," BAND_EDGE_GRATING_POSITION_1 = %d\r\n",v.bandedge_gp1);
-  strcat(bufpoint,line);
-  sprintf(line," BAND_EDGE_GRATING_POSITION_2 = %d\r\n",v.bandedge_gp2);
-  strcat(bufpoint,line);
-  break;
+    sprintf(line," BAND_EDGE_GRATING_POSITION_1 = %d\r\n",v.bandedge_gp1);
+    strcat(bufpoint,line);
+    sprintf(line," BAND_EDGE_GRATING_POSITION_2 = %d\r\n",v.bandedge_gp2);
+    strcat(bufpoint,line);
+    break;
 
   case 'p':		/* STOP SLIDE */
   case 'P':
 
-  sprintf(line," STOP_SLIDE_MODE_ID = %s\r\n",v.stop_slide);
-  strcat(bufpoint,line);
-  break;
+    sprintf(line," STOP_SLIDE_MODE_ID = %s\r\n",v.stop_slide);
+    strcat(bufpoint,line);
+    break;
 
   default:
   
-  break;
-}
-
-sprintf(line," MEAN_FOCAL_PLANE_TEMPERATURE = %.2f\r\n",v.temp[0]);
-strcat(bufpoint,line);
-sprintf(line," MEAN_RAD_SHIELD_TEMPERATURE = %.2f\r\n",v.temp[1]);
-strcat(bufpoint,line);
-sprintf(line," MEAN_TELESCOPE_TEMPERATURE = %.2f\r\n",v.temp[2]);
-strcat(bufpoint,line);
-sprintf(line," MEAN_GRATING_TEMPERATURE = %.2f\r\n",v.temp[3]);
-strcat(bufpoint,line);
-sprintf(line," MEAN_CHOPPER_TEMPERATURE = %.2f\r\n",v.temp[4]);
-strcat(bufpoint,line);
-sprintf(line," MEAN_ELECTRONICS_TEMPERATURE = %.2f\r\n\r\n",v.temp[5]);
-strcat(bufpoint,line);
-
-if (strcmp(v.dataformat,"RAW_DATA_NUMBER")) {	/* radiance cube */
-  if (v.drk_flg>0) {
-    write_PDS_line(bufpoint,'F'," MEAN_DARK_DATA_NUMBER",v.drkave,17,2);
-    strcat(bufpoint,"/* The \"mean dark data numbers\" are the DN value of dark sky for");
-    strcat(bufpoint," each of the */\r\n/* 17 NIMS detectors, averaged over the");
-    strcat(bufpoint," mirror-position-specific values used */\r\n/*");  
-    strcat(bufpoint," in the computation of radiance.  The original dark values");
-    strcat(bufpoint," were obtained */\r\n/* from either off-limb portions of the");
-    strcat(bufpoint," observation or special \"heaven dark\" */\r\n/* observations");
-    strcat(bufpoint," for an encounter. */\r\n\r\n");  
-  }
-  if (v.sens_flg>0) {
-    write_PDS_line(bufpoint,'F'," THERMAL_DETECTOR_OFFSET", thoff, 3, 2);
-    write_PDS_line(bufpoint,'F'," THERMAL_DETECTOR_SENS_RATIO", sfact, 3, 2);
-    strcat(bufpoint,"\r\n");  
-  }
-}
-
-	/* BAND BIN GROUP */
-
-strcat(bufpoint," GROUP = BAND_BIN\r\n\r\n");
-
-strcat(bufpoint,"/*  Spectral axis description */\r\n\r\n");
-
-write_PDS_line(bufpoint,'F',"  BAND_BIN_CENTER",b.waves,nbb,4);
-
-strcat(bufpoint,"  BAND_BIN_UNIT = MICROMETER\r\n");
-
-write_PDS_line(bufpoint,'I',"  BAND_BIN_ORIGINAL_BAND", b.org_band,nbb,0);
-write_PDS_line(bufpoint,'I',"  BAND_BIN_GRATING_POSITION",b.grating, nbb,0);
-write_PDS_line(bufpoint,'I',"  BAND_BIN_DETECTOR", b.detector,nbb,0);
-
-if (strcmp(v.dataformat,"RAW_DATA_NUMBER")) {	/* radiance cube */
-
-  if (bytes[object]==2) {	/* scaled to halfword */
-    write_PDS_line( bufpoint, 'F', "  BAND_BIN_BASE", v.rad_base, nbb, -1);
-    write_PDS_line( bufpoint, 'F', "  BAND_BIN_MULTIPLIER", v.radiance,
-     nbb, -1);
-
-    strcat(bufpoint,"/* Band Bin scaling is:  True_value = base +");
-    strcat(bufpoint," (multiplier * stored_value). */\r\n/* Scaling of");
-    strcat(bufpoint," radiance is band-dependent.  But see also");
-    strcat(bufpoint," CORE SCALING, above. */\r\n");
+    break;
   }
 
-  write_PDS_line(bufpoint,'F',"  BAND_BIN_SOLAR_FLUX",v.solarflux, nbb, 4);
+  sprintf(line," MEAN_FOCAL_PLANE_TEMPERATURE = %.2f\r\n",v.temp[0]);
+  strcat(bufpoint,line);
+  sprintf(line," MEAN_RAD_SHIELD_TEMPERATURE = %.2f\r\n",v.temp[1]);
+  strcat(bufpoint,line);
+  sprintf(line," MEAN_TELESCOPE_TEMPERATURE = %.2f\r\n",v.temp[2]);
+  strcat(bufpoint,line);
+  sprintf(line," MEAN_GRATING_TEMPERATURE = %.2f\r\n",v.temp[3]);
+  strcat(bufpoint,line);
+  sprintf(line," MEAN_CHOPPER_TEMPERATURE = %.2f\r\n",v.temp[4]);
+  strcat(bufpoint,line);
+  sprintf(line," MEAN_ELECTRONICS_TEMPERATURE = %.2f\r\n\r\n",v.temp[5]);
+  strcat(bufpoint,line);
 
-  if (v.sens_flg>0) {
-    write_PDS_line(bufpoint,'F',"  BAND_BIN_SENSITIVITY",v.radsens, nbb, 4);
-
-    strcat(bufpoint,"/* \"Band Bin Sensitivity\" is the sensitivity for each");
-    strcat(bufpoint," band, in units of */\r\n/* DN/radiance_unit (see CORE UNIT).");
-    strcat(bufpoint," These values are functions of */\r\n/* reported focal plane");
-    strcat(bufpoint," assembly temperature during the observation and */\r\n");  
-    strcat(bufpoint,"/* of ground and flight calibration data.  They may be");
-    strcat(bufpoint," used to construct */\r\n/* \"idealized data numbers\" (DNs");
-    strcat(bufpoint," which would have been measured by an */\r\n");  
-    strcat(bufpoint,"/* anomaly-free instrument) by the formula: */\r\n");  
-    strcat(bufpoint,"/*	DN = dark_value + sensitivity * radiance, */\r\n");
-    strcat(bufpoint,"/* where 'dark_value' is approximated by the"); 
-    strcat(bufpoint," MEAN_DARK_DATA_NUMBER array, */\r\n");
-    strcat(bufpoint,"/* preceding the BAND_BIN");
-    strcat(bufpoint," group. */\r\n/* Note that actually");
-    strcat(bufpoint," measured raw DNs are not obtainable in this way, */\r\n");
-    strcat(bufpoint,"/* due to corrections for instrument anomalies (see the");
-    strcat(bufpoint," referenced */\r\n/* INSTRUMENT_DESCRIPTION for details) and");
-    strcat(bufpoint," possible resampling of the */\r\n/* data.  The above");
-    strcat(bufpoint," formula for DN also does not hold for the higher */\r\n");  
-    strcat(bufpoint,"/* intensity regime in the thermal detectors (15-17),");
-    strcat(bufpoint," for which the */\r\n/* following formula applies: */\r\n");
-    strcat(bufpoint,"/*      DN = thermal_offset + sensitivity * radiance");
-    strcat(bufpoint," / sens_ratio */\r\n");
-    strcat(bufpoint,"/* where 'thermal_offset' and 'sens_ratio' for detectors");
-    strcat(bufpoint," 15, 16, and 17 are */\r\n/* given by the");
-    strcat(bufpoint," THERMAL_DETECTOR_OFFSET and THERMAL_DETECTOR_SENS_RATIO */\r\n");
-    strcat(bufpoint,"/* arrays, preceding the BAND_BIN group. */\r\n");
-
-    strcat(bufpoint,"/* The radiances for which the above formula applies, are");
-    strcat(bufpoint," those lying above: */\r\n");
-    strcat(bufpoint,"/*       Cutoff_radiance = thermal_offset / sensitivity */\r\n");
+  if (strcmp(v.dataformat,"RAW_DATA_NUMBER")) {	/* radiance cube */
+    if (v.drk_flg>0) {
+      write_PDS_line(bufpoint,'F'," MEAN_DARK_DATA_NUMBER",v.drkave,17,2);
+      strcat(bufpoint,"/* The \"mean dark data numbers\" are the DN value of dark sky for");
+      strcat(bufpoint," each of the */\r\n/* 17 NIMS detectors, averaged over the");
+      strcat(bufpoint," mirror-position-specific values used */\r\n/*");  
+      strcat(bufpoint," in the computation of radiance.  The original dark values");
+      strcat(bufpoint," were obtained */\r\n/* from either off-limb portions of the");
+      strcat(bufpoint," observation or special \"heaven dark\" */\r\n/* observations");
+      strcat(bufpoint," for an encounter. */\r\n\r\n");  
+    }
+    if (v.sens_flg>0) {
+      write_PDS_line(bufpoint,'F'," THERMAL_DETECTOR_OFFSET", thoff, 3, 2);
+      write_PDS_line(bufpoint,'F'," THERMAL_DETECTOR_SENS_RATIO", sfact, 3, 2);
+      strcat(bufpoint,"\r\n");  
+    }
   }
-}
 
-strcat(bufpoint," END_GROUP = BAND_BIN\r\n\r\n");
+  /* BAND BIN GROUP */
 
-if (calib) goto endqub;
+  strcat(bufpoint," GROUP = BAND_BIN\r\n\r\n");
 
-strcat(bufpoint," GROUP = IMAGE_MAP_PROJECTION\r\n");
+  strcat(bufpoint,"/*  Spectral axis description */\r\n\r\n");
 
-strcat(bufpoint,"/* Projection description */\r\n");
+  write_PDS_line(bufpoint,'F',"  BAND_BIN_CENTER",b.waves,nbb,4);
 
-sprintf(line,"  MAP_PROJECTION_TYPE = %s\r\n",v.projection);
-strcat(bufpoint,line);
+  strcat(bufpoint,"  BAND_BIN_UNIT = MICROMETER\r\n");
 
-sprintf(line,"  MAP_SCALE = %6.3f\r\n",v.scale);/* Map scale in KM/PIXEL  */
-strcat(bufpoint,line);
+  write_PDS_line(bufpoint,'I',"  BAND_BIN_ORIGINAL_BAND", b.org_band,nbb,0);
+  write_PDS_line(bufpoint,'I',"  BAND_BIN_GRATING_POSITION",b.grating, nbb,0);
+  write_PDS_line(bufpoint,'I',"  BAND_BIN_DETECTOR", b.detector,nbb,0);
 
-if ( v.scale != 0 )
-  pixelsperdegree = (2.0 * 3.14159 * v.radii[0])/(360.0 * v.scale);
-else
-  pixelsperdegree = 0;
-sprintf(line,"  MAP_RESOLUTION = %6.3f\r\n",pixelsperdegree);
-strcat(bufpoint,line);
+  if (strcmp(v.dataformat,"RAW_DATA_NUMBER")) {	/* radiance cube */
 
-	/* any items obtained from the VICAR "MAP00x" labels must be
-	 * corrected to planetographic lat. if requested */
+    if (bytes[object]==2) {	/* scaled to halfword */
+      write_PDS_line( bufpoint, 'F', "  BAND_BIN_BASE", v.rad_base, nbb, -1);
+      write_PDS_line( bufpoint, 'F', "  BAND_BIN_MULTIPLIER", v.radiance,
+		      nbb, -1);
 
-if (strcmp(v.projection,"POINT_PERSPECTIVE")==0) {
-  sprintf(line,"  SUB_SPACECRAFT_LATITUDE = %6.2f\r\n",v.ssc_lat);
+      strcat(bufpoint,"/* Band Bin scaling is:  True_value = base +");
+      strcat(bufpoint," (multiplier * stored_value). */\r\n/* Scaling of");
+      strcat(bufpoint," radiance is band-dependent.  But see also");
+      strcat(bufpoint," CORE SCALING, above. */\r\n");
+    }
+
+    write_PDS_line(bufpoint,'F',"  BAND_BIN_SOLAR_FLUX",v.solarflux, nbb, 4);
+
+    if (v.sens_flg>0) {
+      write_PDS_line(bufpoint,'F',"  BAND_BIN_SENSITIVITY",v.radsens, nbb, 4);
+
+      strcat(bufpoint,"/* \"Band Bin Sensitivity\" is the sensitivity for each");
+      strcat(bufpoint," band, in units of */\r\n/* DN/radiance_unit (see CORE UNIT).");
+      strcat(bufpoint," These values are functions of */\r\n/* reported focal plane");
+      strcat(bufpoint," assembly temperature during the observation and */\r\n");  
+      strcat(bufpoint,"/* of ground and flight calibration data.  They may be");
+      strcat(bufpoint," used to construct */\r\n/* \"idealized data numbers\" (DNs");
+      strcat(bufpoint," which would have been measured by an */\r\n");  
+      strcat(bufpoint,"/* anomaly-free instrument) by the formula: */\r\n");  
+      strcat(bufpoint,"/*	DN = dark_value + sensitivity * radiance, */\r\n");
+      strcat(bufpoint,"/* where 'dark_value' is approximated by the"); 
+      strcat(bufpoint," MEAN_DARK_DATA_NUMBER array, */\r\n");
+      strcat(bufpoint,"/* preceding the BAND_BIN");
+      strcat(bufpoint," group. */\r\n/* Note that actually");
+      strcat(bufpoint," measured raw DNs are not obtainable in this way, */\r\n");
+      strcat(bufpoint,"/* due to corrections for instrument anomalies (see the");
+      strcat(bufpoint," referenced */\r\n/* INSTRUMENT_DESCRIPTION for details) and");
+      strcat(bufpoint," possible resampling of the */\r\n/* data.  The above");
+      strcat(bufpoint," formula for DN also does not hold for the higher */\r\n");  
+      strcat(bufpoint,"/* intensity regime in the thermal detectors (15-17),");
+      strcat(bufpoint," for which the */\r\n/* following formula applies: */\r\n");
+      strcat(bufpoint,"/*      DN = thermal_offset + sensitivity * radiance");
+      strcat(bufpoint," / sens_ratio */\r\n");
+      strcat(bufpoint,"/* where 'thermal_offset' and 'sens_ratio' for detectors");
+      strcat(bufpoint," 15, 16, and 17 are */\r\n/* given by the");
+      strcat(bufpoint," THERMAL_DETECTOR_OFFSET and THERMAL_DETECTOR_SENS_RATIO */\r\n");
+      strcat(bufpoint,"/* arrays, preceding the BAND_BIN group. */\r\n");
+
+      strcat(bufpoint,"/* The radiances for which the above formula applies, are");
+      strcat(bufpoint," those lying above: */\r\n");
+      strcat(bufpoint,"/*       Cutoff_radiance = thermal_offset / sensitivity */\r\n");
+    }
+  }
+
+  strcat(bufpoint," END_GROUP = BAND_BIN\r\n\r\n");
+
+  if (calib) goto endqub;
+
+  strcat(bufpoint," GROUP = IMAGE_MAP_PROJECTION\r\n");
+
+  strcat(bufpoint,"/* Projection description */\r\n");
+
+  sprintf(line,"  MAP_PROJECTION_TYPE = %s\r\n",v.projection);
   strcat(bufpoint,line);
-  sprintf(line,"  SUB_SPACECRAFT_LONGITUDE = %6.2f\r\n",v.ssc_lon);
-  strcat(bufpoint,line);
-	/* subtract 1 because PDS definition is relative to (1,1) &
-	 * switch signs for Unix ISIS ...  */
-  sav = 1.-v.ssc_line;
-  sprintf(line,"  LINE_SUB_SPACECRAFT_OFFSET = %6.2f\r\n",sav);
-  strcat(bufpoint,line);
-  sav = 1.-v.ssc_samp;
-  sprintf(line,"  SAMPLE_SUB_SPACECRAFT_OFFSET = %6.2f\r\n",sav);
-  strcat(bufpoint,line);
-  sprintf(line,"  TARGET_CENTER_DISTANCE = %.1f\r\n",v.range);
-  strcat(bufpoint,line);
-  sav = 1.-v.oaline;
-  sprintf(line,"  LINE_OPTICAL_AXIS_OFFSET = %6.2f\r\n",sav);
-  strcat(bufpoint,line);
-  sav = 1.-v.oasamp;
-  sprintf(line,"  SAMPLE_OPTICAL_AXIS_OFFSET = %6.2f\r\n",sav);
+
+  sprintf(line,"  MAP_SCALE = %6.3f\r\n",v.scale);/* Map scale in KM/PIXEL  */
   strcat(bufpoint,line);
 
-	/* for POV, scale is in pixels/mm in focal plane, and
-	 * the focal length in mm is also required: */
-  sprintf(line,"  FOCAL_LENGTH = %5.1f\r\n",v.focal);
-  strcat(bufpoint,line);
-  sprintf(line,"  FOCAL_PLANE_SCALE = %6.3f\r\n",v.cscale);
-  strcat(bufpoint,line);
-}
-else {
-
-  sprintf(line,"  CENTER_LATITUDE = %6.2f\r\n",v.center_lat);
-  strcat(bufpoint,line);
-  sprintf(line,"  CENTER_LONGITUDE = %6.2f\r\n",v.center_lon);
+  if ( v.scale != 0 )
+    pixelsperdegree = (2.0 * 3.14159 * v.radii[0])/(360.0 * v.scale);
+  else
+    pixelsperdegree = 0;
+  sprintf(line,"  MAP_RESOLUTION = %6.3f\r\n",pixelsperdegree);
   strcat(bufpoint,line);
 
-  /* subtract 1 because PDS definition is relative to (1,1), and
-   * switch signs for Unix ISIS ...  */
-  sav = 1. - v.center_line;
-  sprintf(line,"  LINE_PROJECTION_OFFSET = %6.2f\r\n",sav);
-  strcat(bufpoint,line);
-  sav = 1. - v.center_samp;
-  sprintf(line,"  SAMPLE_PROJECTION_OFFSET = %6.2f\r\n",sav);
-  strcat(bufpoint,line);
-}
+  /* any items obtained from the VICAR "MAP00x" labels must be
+   * corrected to planetographic lat. if requested */
 
-/* need OFFSET_DIRECTION keyword to distinguish new labels from old */
-strcat( bufpoint, "  OFFSET_DIRECTION = TO_ORIGIN\r\n");
+  if (strcmp(v.projection,"POINT_PERSPECTIVE")==0) {
+    sprintf(line,"  SUB_SPACECRAFT_LATITUDE = %6.2f\r\n",v.ssc_lat);
+    strcat(bufpoint,line);
+    sprintf(line,"  SUB_SPACECRAFT_LONGITUDE = %6.2f\r\n",v.ssc_lon);
+    strcat(bufpoint,line);
+    /* subtract 1 because PDS definition is relative to (1,1) &
+     * switch signs for Unix ISIS ...  */
+    sav = 1.-v.ssc_line;
+    sprintf(line,"  LINE_SUB_SPACECRAFT_OFFSET = %6.2f\r\n",sav);
+    strcat(bufpoint,line);
+    sav = 1.-v.ssc_samp;
+    sprintf(line,"  SAMPLE_SUB_SPACECRAFT_OFFSET = %6.2f\r\n",sav);
+    strcat(bufpoint,line);
+    sprintf(line,"  TARGET_CENTER_DISTANCE = %.1f\r\n",v.range);
+    strcat(bufpoint,line);
+    sav = 1.-v.oaline;
+    sprintf(line,"  LINE_OPTICAL_AXIS_OFFSET = %6.2f\r\n",sav);
+    strcat(bufpoint,line);
+    sav = 1.-v.oasamp;
+    sprintf(line,"  SAMPLE_OPTICAL_AXIS_OFFSET = %6.2f\r\n",sav);
+    strcat(bufpoint,line);
 
-sprintf(line,"  MINIMUM_LATITUDE = %6.2f\r\n",v.min_lat);
-strcat(bufpoint,line);
-sprintf(line,"  MAXIMUM_LATITUDE = %6.2f\r\n",v.max_lat);
-strcat(bufpoint,line);
+    /* for POV, scale is in pixels/mm in focal plane, and
+     * the focal length in mm is also required: */
+    sprintf(line,"  FOCAL_LENGTH = %5.1f\r\n",v.focal);
+    strcat(bufpoint,line);
+    sprintf(line,"  FOCAL_PLANE_SCALE = %6.3f\r\n",v.cscale);
+    strcat(bufpoint,line);
+  }
+  else {
+
+    sprintf(line,"  CENTER_LATITUDE = %6.2f\r\n",v.center_lat);
+    strcat(bufpoint,line);
+    sprintf(line,"  CENTER_LONGITUDE = %6.2f\r\n",v.center_lon);
+    strcat(bufpoint,line);
+
+    /* subtract 1 because PDS definition is relative to (1,1), and
+     * switch signs for Unix ISIS ...  */
+    sav = 1. - v.center_line;
+    sprintf(line,"  LINE_PROJECTION_OFFSET = %6.2f\r\n",sav);
+    strcat(bufpoint,line);
+    sav = 1. - v.center_samp;
+    sprintf(line,"  SAMPLE_PROJECTION_OFFSET = %6.2f\r\n",sav);
+    strcat(bufpoint,line);
+  }
+
+  /* need OFFSET_DIRECTION keyword to distinguish new labels from old */
+  strcat( bufpoint, "  OFFSET_DIRECTION = TO_ORIGIN\r\n");
+
+  sprintf(line,"  MINIMUM_LATITUDE = %6.2f\r\n",v.min_lat);
+  strcat(bufpoint,line);
+  sprintf(line,"  MAXIMUM_LATITUDE = %6.2f\r\n",v.max_lat);
+  strcat(bufpoint,line);
 
   /* convert VICAR Min/Max Long's to East/Westmost for ISIS ... the 
    * values have already been converted to East, if required, when they 
    * were read in, so just need to ensure long's are positive for PDS 
    * (Max is always Westmost since Vicar items are West long.) */
-if (v.min_lon < 0.0) v.min_lon += 360.;
-sprintf(line,"  EASTERNMOST_LONGITUDE = %6.2f\r\n",v.min_lon);
-strcat(bufpoint,line);
-sprintf(line,"  WESTERNMOST_LONGITUDE = %6.2f\r\n",v.max_lon);
-strcat(bufpoint,line);
-
-strcat(bufpoint,"  COORDINATE_SYSTEM_TYPE = \"BODY-FIXED ROTATING\"\r\n");
-if (pgraphic==1)
-  strcat(bufpoint,"  COORDINATE_SYSTEM_NAME = PLANETOGRAPHIC\r\n");
-else if (pgraphic==0)
-  strcat(bufpoint,"  COORDINATE_SYSTEM_NAME = PLANETOCENTRIC\r\n");
-if ( strcmp(v.target,"VENUS")==0 || zvptst("EAST_LON") )
-  strcat(bufpoint,"  POSITIVE_LONGITUDE_DIRECTION = EAST\r\n");
-else
-  strcat(bufpoint,"  POSITIVE_LONGITUDE_DIRECTION = WEST\r\n");
-
-sprintf(line,"  A_AXIS_RADIUS = %.2f\r\n",v.radii[0]); /* A, B, C axes */
-strcat(bufpoint,line);
-sprintf(line,"  B_AXIS_RADIUS = %.2f\r\n",v.radii[1]);
-strcat(bufpoint,line);
-sprintf(line,"  C_AXIS_RADIUS = %.2f\r\n",v.radii[2]);
-strcat(bufpoint,line);
-
-if( v.projection[0] == 'L' ) {
-  sprintf(line,"  FIRST_STANDARD_PARALLEL = %.3f\r\n",v.projitem1);
+  if (v.min_lon < 0.0) v.min_lon += 360.;
+  sprintf(line,"  EASTERNMOST_LONGITUDE = %6.2f\r\n",v.min_lon);
   strcat(bufpoint,line);
-  sprintf(line,"  SECOND_STANDARD_PARALLEL = %.3f\r\n",v.projitem2);
+  sprintf(line,"  WESTERNMOST_LONGITUDE = %6.2f\r\n",v.max_lon);
   strcat(bufpoint,line);
-}
 
-if( v.projection[4] == 'Q' ) {
-  sprintf(line,"  REFERENCE_LATITUDE = %.3f\r\n",v.projitem1);
+  strcat(bufpoint,"  COORDINATE_SYSTEM_TYPE = \"BODY-FIXED ROTATING\"\r\n");
+  if (pgraphic==1)
+    strcat(bufpoint,"  COORDINATE_SYSTEM_NAME = PLANETOGRAPHIC\r\n");
+  else if (pgraphic==0)
+    strcat(bufpoint,"  COORDINATE_SYSTEM_NAME = PLANETOCENTRIC\r\n");
+  if ( strcmp(v.target,"VENUS")==0 || zvptst("EAST_LON") )
+    strcat(bufpoint,"  POSITIVE_LONGITUDE_DIRECTION = EAST\r\n");
+  else
+    strcat(bufpoint,"  POSITIVE_LONGITUDE_DIRECTION = WEST\r\n");
+
+  sprintf(line,"  A_AXIS_RADIUS = %.2f\r\n",v.radii[0]); /* A, B, C axes */
   strcat(bufpoint,line);
-  sprintf(line,"  REFERENCE_LONGITUDE = %.3f\r\n",v.projitem2);
+  sprintf(line,"  B_AXIS_RADIUS = %.2f\r\n",v.radii[1]);
   strcat(bufpoint,line);
-}
-if( strcmp(v.projection,"POLAR_ORTHOGRAPHIC")==0 ||
-    strcmp(v.projection,"POINT_PERSPECTIVE")==0 ||
-    strcmp(v.projection,"OBLIQUE_ORTHOGRAPHIC")==0 ||
-    strcmp(v.projection,"OBLIQUE_STEREOGRAPHIC")==0 ) {
-  sprintf(line,"  MAP_PROJECTION_ROTATION = %6.2f\r\n",v.rotation);
+  sprintf(line,"  C_AXIS_RADIUS = %.2f\r\n",v.radii[2]);
   strcat(bufpoint,line);
-}
-strcat(bufpoint,"  SAMPLE_FIRST_PIXEL = 1\r\n");
-if (tube) 
-  sprintf(line,"  SAMPLE_LAST_PIXEL = %d\r\n",cubsiz[1]);
-else
-  sprintf(line,"  SAMPLE_LAST_PIXEL = %d\r\n",ns[object]);
-strcat(bufpoint,line);
-strcat(bufpoint,"  LINE_FIRST_PIXEL = 1\r\n");
-if (tube) 
-  sprintf(line,"  LINE_LAST_PIXEL = %d\r\n",cubsiz[0]); 
-else
-  sprintf(line,"  LINE_LAST_PIXEL = %d\r\n\r\n",inl[object]);
-strcat(bufpoint,line);
 
-strcat(bufpoint," END_GROUP = IMAGE_MAP_PROJECTION\r\n\r\n");
+  if( v.projection[0] == 'L' ) {
+    sprintf(line,"  FIRST_STANDARD_PARALLEL = %.3f\r\n",v.projitem1);
+    strcat(bufpoint,line);
+    sprintf(line,"  SECOND_STANDARD_PARALLEL = %.3f\r\n",v.projitem2);
+    strcat(bufpoint,line);
+  }
 
-endqub:
-strcat(bufpoint,"END_OBJECT = QUBE\r\nEND\r\n");
+  if( v.projection[4] == 'Q' ) {
+    sprintf(line,"  REFERENCE_LATITUDE = %.3f\r\n",v.projitem1);
+    strcat(bufpoint,line);
+    sprintf(line,"  REFERENCE_LONGITUDE = %.3f\r\n",v.projitem2);
+    strcat(bufpoint,line);
+  }
+  if( strcmp(v.projection,"POLAR_ORTHOGRAPHIC")==0 ||
+      strcmp(v.projection,"POINT_PERSPECTIVE")==0 ||
+      strcmp(v.projection,"OBLIQUE_ORTHOGRAPHIC")==0 ||
+      strcmp(v.projection,"OBLIQUE_STEREOGRAPHIC")==0 ) {
+    sprintf(line,"  MAP_PROJECTION_ROTATION = %6.2f\r\n",v.rotation);
+    strcat(bufpoint,line);
+  }
+  strcat(bufpoint,"  SAMPLE_FIRST_PIXEL = 1\r\n");
+  if (tube) 
+    sprintf(line,"  SAMPLE_LAST_PIXEL = %d\r\n",cubsiz[1]);
+  else
+    sprintf(line,"  SAMPLE_LAST_PIXEL = %d\r\n",ns[object]);
+  strcat(bufpoint,line);
+  strcat(bufpoint,"  LINE_FIRST_PIXEL = 1\r\n");
+  if (tube) 
+    sprintf(line,"  LINE_LAST_PIXEL = %d\r\n",cubsiz[0]); 
+  else
+    sprintf(line,"  LINE_LAST_PIXEL = %d\r\n\r\n",inl[object]);
+  strcat(bufpoint,line);
 
-histpoint = (char *)calloc	/* Generate history obj buff*/
-	(HISTMEMORY,sizeof( char )); 
-if( histpoint==NULL )
-  zmabend(" Memory allocation error for history object");
+  strcat(bufpoint," END_GROUP = IMAGE_MAP_PROJECTION\r\n\r\n");
 
-if (histfile) {
-  hfile = fopen(hfilnam,"r");
-  /* just copy all bytes to our buffer: */
-  hpoint = histpoint;
-  for (;;) {
-    vstat = fscanf(hfile, "%c", &cc);
-    if (vstat==EOF) break;
-    *(hpoint++) = cc;
-  }
-  fclose(hfile);
-  for (x=0; x<8; x++) {
-    if (!strncmp(hpoint-x,"END",3)) break;
-  }
-  if (x>=7) zmabend(" error reading History file");
-  hpoint -= x;	/* remove the final "END" line */
-  *hpoint = 0;
-  strcat(histpoint,"\r\n\r\nGROUP = VISIS2\r\n\r\n");
-}
-else
-  strcpy(histpoint,"GROUP = VISIS2\r\n\r\n");
-sprintf(line,"  VERSION_DATE = %s\r\n", verdat);
-strcat(histpoint,line);
-sprintf(line,"  DATE_TIME = %s\r\n",tstr);
-strcat(histpoint,line);
-sprintf(line,"  NODE_NAME = \"MIPL\"\r\n  USER_NAME = \"%s\"\r\n",v.requestor);	
-strcat(histpoint,line);
-strcat(histpoint,"  SOFTWARE_DESC = \"ISIS cube file with PDS label has been");
-strcat(histpoint," generated as\r\n    systematic product by MIPL using the");
-strcat(histpoint," following programs:\r\n");
-if (!histfile) {
-  if (mphase) {
-    strcat(histpoint,"      NIMSMERGE2 to create EDRs;\r\n");
-    strcat(histpoint,"      NIMSCMM2 to create the merged mosaic & geometry cube;\r\n");
-  }
-  else {
-    strcat(histpoint,"      NIMSMERGE to create EDRs;\r\n");
-    strcat(histpoint,"      NIMSCMM to create the merged mosaic & geometry cube;\r\n");
-  }
-}
-strcat(histpoint,"      HIST2D to create a two-dimensional histogram;\r\n");
-if (specplots > 0) 
-  strcat(histpoint,"      SPECPLOT to create the spectral plots;\r\n");
-if (cubefiles == 3)
-  strcat(histpoint,"      NIMSFLOAT, F2, and INSERT3D to create the SII cube;\r\n");
-for (x=0; x<ncubtasks; x++) {
-  if (strncmp(&cubtasks[x * TASK_LEN], "NIMSR2IO", 8) == 0) {
-    strcat(histpoint,
-     "      NIMSR2IOF to convert Radiance to BDRF;\r\n");
-  }
-  if (strncmp(&cubtasks[x * TASK_LEN], "NIMSXCA", 7) == 0) {
-    strcat(histpoint,
-     "      NIMSXCA to correct for the cross-cone sensitivity function;\r\n");
-  }
-  if (strncmp(&cubtasks[x * TASK_LEN], "NIMSBBFI", 8) == 0) {
-    strcat(histpoint,
-     "      NIMSBBFIT to fit Temperatures and write these to backplanes;\r\n");
-  }
-}
-if (histfile) {
-  strcat(histpoint,"      VISIS2 to create the ISIS cube.\r\n");
-  strcat(histpoint,"    The input was an ISIS cube file, from which the core ");
-  strcat(histpoint,"and backplanes\r\n    were extracted;  only the other ");
-  strcat(histpoint,"cube objects were regenerated.\"\r\n\r\n");
-}
-else
-  strcat(histpoint,"      VISIS2 to create the ISIS cube.\"\r\n\r\n");
+ endqub:
+  strcat(bufpoint,"END_OBJECT = QUBE\r\nEND\r\n");
 
-sprintf(line,"  USERNOTE = \"%s\"\r\n\r\n",v.prodnote);
-strcat(histpoint,line);
+  histpoint = (char *)calloc	/* Generate history obj buff*/
+    (HISTMEMORY,sizeof( char )); 
+  if( histpoint==NULL )
+    zmabend(" Memory allocation error for history object");
 
-if (!histfile || !strcmp(v.mask,"MASK")) 
-  strcat(histpoint,"  GROUP = PARAMETERS\r\n\r\n");
-
-if (!histfile) {
-  if (nedrs==1) {
-    sprintf(line,"    EDR_FILE_NAME = \"%s\"\r\n",v.edrfiles);
-    strcat(histpoint,line);
-  }
-  else if (nedrs>1) 
-    write_PDS_cline( histpoint, "    EDR_FILE_NAME", v.edrfiles, nedrs, 101);
-
-  if (nsc_gaps) {
-    write_PDS_line(histpoint,'I',"    SCLK_GAPS", sclk_gaps,nsc_gaps,0);
-    strcat(histpoint,"/* The SCLK_GAPS array contains a list of pairs of SCLK values which define */\r\n");
-    strcat(histpoint,"/* periods for which EDR data were excluded from cube processing, within */\r\n");
-    strcat(histpoint,"/* the complete period defined by the NATIVE_START_TIME and NATIVE_STOP_TIME */\r\n");
-    strcat(histpoint,"/* values given in the label.  Note that NATIVE_TIME is defined as a triplet */\r\n");
-    strcat(histpoint,"/* of (RIM,MF,RTI), while SCLK is defined as 100*RIM+MF. */\r\n");
-  }
-  if (mphase) {
-    if (!strcmp(v.aacs_file,"")) {
-      sprintf(line,"    PLATFORM_CKERNEL_NAME = \"%s\"\r\n",v.pfm_ck);
-      strcat(histpoint,line);
-      sprintf(line,"    ROTOR_CKERNEL_NAME = \"%s\"\r\n",v.rot_ck);
-      strcat(histpoint,line);
+  if (histfile) {
+    hfile = fopen(hfilnam,"r");
+    /* just copy all bytes to our buffer: */
+    hpoint = histpoint;
+    for (;;) {
+      vstat = fscanf(hfile, "%c", &cc);
+      if (vstat==EOF) break;
+      *(hpoint++) = cc;
     }
-    else if (!calib) {
-      sprintf(line,"    AACS_FILE_NAME = \"%s\"\r\n",v.aacs_file);
-      strcat(histpoint,line);
+    fclose(hfile);
+    for (x=0; x<8; x++) {
+      if (!strncmp(hpoint-x,"END",3)) break;
+    }
+    if (x>=7) zmabend(" error reading History file");
+    hpoint -= x;	/* remove the final "END" line */
+    *hpoint = 0;
+    strcat(histpoint,"\r\n\r\nGROUP = VISIS2\r\n\r\n");
+  }
+  else
+    strcpy(histpoint,"GROUP = VISIS2\r\n\r\n");
+  sprintf(line,"  VERSION_DATE = %s\r\n", verdat);
+  strcat(histpoint,line);
+  sprintf(line,"  DATE_TIME = %s\r\n",tstr);
+  strcat(histpoint,line);
+  sprintf(line,"  NODE_NAME = \"MIPL\"\r\n  USER_NAME = \"%s\"\r\n",v.requestor);	
+  strcat(histpoint,line);
+  strcat(histpoint,"  SOFTWARE_DESC = \"ISIS cube file with PDS label has been");
+  strcat(histpoint," generated as\r\n    systematic product by MIPL using the");
+  strcat(histpoint," following programs:\r\n");
+  if (!histfile) {
+    if (mphase) {
+      strcat(histpoint,"      NIMSMERGE2 to create EDRs;\r\n");
+      strcat(histpoint,"      NIMSCMM2 to create the merged mosaic & geometry cube;\r\n");
+    }
+    else {
+      strcat(histpoint,"      NIMSMERGE to create EDRs;\r\n");
+      strcat(histpoint,"      NIMSCMM to create the merged mosaic & geometry cube;\r\n");
     }
   }
-  else {
-    sprintf(line,"    POINTING_SOURCE = \"%s\"\r\n",v.pfm_ck);
-    strcat(histpoint,line);
-  }
-  if (v.dpstat>0) {
-    sprintf(line,"    POINTING_OFFSET = (%f,%f)\r\n",v.dpoint[0],v.dpoint[1]);
-    strcat(histpoint,line);
-  }
-  if (wamp>1.e-7) {
-    sprintf(line,"    WOBBLE_AMPLITUDE = %f\r\n",wamp);
-    strcat(histpoint,line);
-    sprintf(line,"    WOBBLE_FREQUENCY = %f\r\n",wfreq);
-    strcat(histpoint,line);
-    sprintf(line,"    WOBBLE_PHASE = %f\r\n",wphase);
-    strcat(histpoint,line);
-    if (wcone>-900.) {
-      sprintf(line,"    WOBBLE_CONE_ESTIMATE = \"%f\"\r\n",wcone);
-      strcat(histpoint,line);
+  strcat(histpoint,"      HIST2D to create a two-dimensional histogram;\r\n");
+  if (specplots > 0) 
+    strcat(histpoint,"      SPECPLOT to create the spectral plots;\r\n");
+  if (cubefiles == 3)
+    strcat(histpoint,"      NIMSFLOAT, F2, and INSERT3D to create the SII cube;\r\n");
+  for (x=0; x<ncubtasks; x++) {
+    if (strncmp(&cubtasks[x * TASK_LEN], "NIMSR2IO", 8) == 0) {
+      strcat(histpoint,
+	     "      NIMSR2IOF to convert Radiance to BDRF;\r\n");
+    }
+    if (strncmp(&cubtasks[x * TASK_LEN], "NIMSXCA", 7) == 0) {
+      strcat(histpoint,
+	     "      NIMSXCA to correct for the cross-cone sensitivity function;\r\n");
+    }
+    if (strncmp(&cubtasks[x * TASK_LEN], "NIMSBBFI", 8) == 0) {
+      strcat(histpoint,
+	     "      NIMSBBFIT to fit Temperatures and write these to backplanes;\r\n");
     }
   }
-  sprintf(line,"    SP_KERNEL_FILE_NAME = \"%s\"\r\n",v.spkernel);
+  if (histfile) {
+    strcat(histpoint,"      VISIS2 to create the ISIS cube.\r\n");
+    strcat(histpoint,"    The input was an ISIS cube file, from which the core ");
+    strcat(histpoint,"and backplanes\r\n    were extracted;  only the other ");
+    strcat(histpoint,"cube objects were regenerated.\"\r\n\r\n");
+  }
+  else
+    strcat(histpoint,"      VISIS2 to create the ISIS cube.\"\r\n\r\n");
+
+  sprintf(line,"  USERNOTE = \"%s\"\r\n\r\n",v.prodnote);
   strcat(histpoint,line);
-  sprintf(line,"    I_KERNEL_FILE_NAME = \"%s\"\r\n",v.ikernel);
-  strcat(histpoint,line);
-  sprintf(line,"    SPIKE_FILE_NAME = \"%s\"\r\n",v.despikefile);
-  strcat(histpoint,line);
-  sprintf(line,"    BOOM_FILE_NAME = \"%s\"\r\n",v.deboomfile);
-  strcat(histpoint,line);
-  if (ncals==1) {
-    sprintf(line,"    DARK_VALUE_FILE_NAME = \"%s\"\r\n",v.darkfile);
+
+  if (!histfile || !strcmp(v.mask,"MASK")) 
+    strcat(histpoint,"  GROUP = PARAMETERS\r\n\r\n");
+
+  if (!histfile) {
+    if (nedrs==1) {
+      sprintf(line,"    EDR_FILE_NAME = \"%s\"\r\n",v.edrfiles);
+      strcat(histpoint,line);
+    }
+    else if (nedrs>1) 
+      write_PDS_cline( histpoint, "    EDR_FILE_NAME", v.edrfiles, nedrs, 101);
+
+    if (nsc_gaps) {
+      write_PDS_line(histpoint,'I',"    SCLK_GAPS", sclk_gaps,nsc_gaps,0);
+      strcat(histpoint,"/* The SCLK_GAPS array contains a list of pairs of SCLK values which define */\r\n");
+      strcat(histpoint,"/* periods for which EDR data were excluded from cube processing, within */\r\n");
+      strcat(histpoint,"/* the complete period defined by the NATIVE_START_TIME and NATIVE_STOP_TIME */\r\n");
+      strcat(histpoint,"/* values given in the label.  Note that NATIVE_TIME is defined as a triplet */\r\n");
+      strcat(histpoint,"/* of (RIM,MF,RTI), while SCLK is defined as 100*RIM+MF. */\r\n");
+    }
+    if (mphase) {
+      if (!strcmp(v.aacs_file,"")) {
+	sprintf(line,"    PLATFORM_CKERNEL_NAME = \"%s\"\r\n",v.pfm_ck);
+	strcat(histpoint,line);
+	sprintf(line,"    ROTOR_CKERNEL_NAME = \"%s\"\r\n",v.rot_ck);
+	strcat(histpoint,line);
+      }
+      else if (!calib) {
+	sprintf(line,"    AACS_FILE_NAME = \"%s\"\r\n",v.aacs_file);
+	strcat(histpoint,line);
+      }
+    }
+    else {
+      sprintf(line,"    POINTING_SOURCE = \"%s\"\r\n",v.pfm_ck);
+      strcat(histpoint,line);
+    }
+    if (v.dpstat>0) {
+      snprintf(line,120,"    POINTING_OFFSET = (%f,%f)\r\n",v.dpoint[0],v.dpoint[1]);
+      strcat(histpoint,line);
+    }
+    if (wamp>1.e-7) {
+      snprintf(line,120,"    WOBBLE_AMPLITUDE = %f\r\n",wamp);
+      strcat(histpoint,line);
+      snprintf(line,120,"    WOBBLE_FREQUENCY = %f\r\n",wfreq);
+      strcat(histpoint,line);
+      snprintf(line,120,"    WOBBLE_PHASE = %f\r\n",wphase);
+      strcat(histpoint,line);
+      if (wcone>-900.) {
+	snprintf(line,120,"    WOBBLE_CONE_ESTIMATE = \"%f\"\r\n",wcone);
+	strcat(histpoint,line);
+      }
+    }
+    sprintf(line,"    SP_KERNEL_FILE_NAME = \"%s\"\r\n",v.spkernel);
+    strcat(histpoint,line);
+    sprintf(line,"    I_KERNEL_FILE_NAME = \"%s\"\r\n",v.ikernel);
+    strcat(histpoint,line);
+    sprintf(line,"    SPIKE_FILE_NAME = \"%s\"\r\n",v.despikefile);
+    strcat(histpoint,line);
+    sprintf(line,"    BOOM_FILE_NAME = \"%s\"\r\n",v.deboomfile);
+    strcat(histpoint,line);
+    if (ncals==1) {
+      sprintf(line,"    DARK_VALUE_FILE_NAME = \"%s\"\r\n",v.darkfile);
+      strcat(histpoint,line);
+    }
+    else if (ndrks>1) 
+      write_PDS_cline( histpoint, "    DARK_FILE_NAME", v.darkfile, ndrks, 100);
+
+    if (ncals==1) {
+      sprintf(line,"    CALIBRATION_FILE_NAME = \"%s\"\r\n",v.calfile);
+      strcat(histpoint,line);
+    }
+    else if (ncals>1) 
+      write_PDS_cline( histpoint, "    CALIBRATION_FILE_NAME", v.calfile, ncals,
+		       100);
+
+    sprintf(line,"    SOLAR_FLUX_FILE_NAME = \"%s\"\r\n",v.sol_file);
+    strcat(histpoint,line);
+    sprintf(line,"    MERGED_MOSAIC_FILE_NAME = \"%s\"\r\n",
+	    inputfiles[numoffiles-cubefiles]);
+    strcat(histpoint,line);
+
+    if (ithreshval) {
+      write_PDS_line(histpoint,'I',"    INSTRUMENT_THRESHOLD",v.threshval,17,4);
+      strcat(histpoint,"/* \"Instrument Thresholds\" are per-detector threshold values for data return */\r\n"); 
+      strcat(histpoint,"/* during Galileo phase-2 operation.  When thresholding is selected, detector */\r\n");
+      strcat(histpoint,"/* DNs less than the threshold value for that detector are not returned; */\r\n"); 
+      strcat(histpoint,"/* those DNs are therefore known to be less than that threshold value. */\r\n"); 
+      strcat(histpoint,"/* Detectors with zero threshold values are not thresholded. */\r\n"); 
+    }
+
+    sprintf(line,"    GRATING_POSITION_CORRECTION = %.4f\r\n", v.pshift);
+    strcat(histpoint,line);
+    sprintf(line,"    GRATING_STEP_INFLATION = %.4f\r\n", v.ainfl);
+    strcat(histpoint,line);
+    strcat(histpoint,"/* The \"Grating Position Correction\" and \"Grating Step Inflation\" are */\r\n");
+    strcat(histpoint,"/* adjustments to the nominal grating positions, based on flight calibrations */\r\n");
+    strcat(histpoint,"/* and known sharp spectral features of the target, used in determination of */\r\n");
+    strcat(histpoint,"/* wavelengths.  GRATING_POSITION_CORRECTION is an additive term to the */\r\n");
+    strcat(histpoint,"/* grating position and (1.0 + GRATING_STEP_INFLATION) is a multiplicative */\r\n");
+    strcat(histpoint,"/* term modifying the grating stepsize. */\r\n\r\n");
+  }
+
+  if( strcmp(v.mask,"MASK") == 0 ) {
+    sprintf(line,"  SUMMARY_IMAGE_RED_ID = %d\r\n",v.red_siid);
+    strcat(histpoint,line);
+    sprintf(line,"  SUMMARY_IMAGE_GREEN_ID = %d\r\n",v.grn_siid);
+    strcat(histpoint,line); 
+    sprintf(line,"  SUMMARY_IMAGE_BLUE_ID = %d\r\n",v.blu_siid);
+    strcat(histpoint,line);
+    sprintf(line,"  ADAPT_STRETCH_SAT_FRAC = %.4f\r\n",v.astretch[1]); 
+    strcat(histpoint,line);
+    sprintf(line,"  ADAPT_STRETCH_SAMP_FRAC = %.4f\r\n",v.astretch[0]);
+    strcat(histpoint,line);
+    sprintf(line,"  RED_STRETCH_RANGE = (%5.0f,%5.0f)\r\n",
+	    v.rstretch[0],v.rstretch[1]);
+    strcat(histpoint,line);
+    sprintf(line,"  GREEN_STRETCH_RANGE = (%5.0f,%5.0f)\r\n",
+	    v.gstretch[0],v.gstretch[1]);
+    strcat(histpoint,line);
+    sprintf(line,"  BLUE_STRETCH_RANGE = (%5.0f,%5.0f)\r\n",
+	    v.bstretch[0],v.bstretch[1]);
     strcat(histpoint,line);
   }
-  else if (ndrks>1) 
-    write_PDS_cline( histpoint, "    DARK_FILE_NAME", v.darkfile, ndrks, 100);
 
-  if (ncals==1) {
-    sprintf(line,"    CALIBRATION_FILE_NAME = \"%s\"\r\n",v.calfile);
-    strcat(histpoint,line);
-  }
-  else if (ncals>1) 
-    write_PDS_cline( histpoint, "    CALIBRATION_FILE_NAME", v.calfile, ncals,
-     100);
+  if (!histfile || !strcmp(v.mask,"MASK")) 
+    strcat(histpoint,"  END_GROUP = PARAMETERS\r\n\r\n");
 
-  sprintf(line,"    SOLAR_FLUX_FILE_NAME = \"%s\"\r\n",v.sol_file);
-  strcat(histpoint,line);
-  sprintf(line,"    MERGED_MOSAIC_FILE_NAME = \"%s\"\r\n",
-	inputfiles[numoffiles-cubefiles]);
-  strcat(histpoint,line);
+  strcat(histpoint,"END_GROUP = VISIS2\r\n\r\nEND\r\n");
 
-  if (ithreshval) {
-    write_PDS_line(histpoint,'I',"    INSTRUMENT_THRESHOLD",v.threshval,17,4);
-    strcat(histpoint,"/* \"Instrument Thresholds\" are per-detector threshold values for data return */\r\n"); 
-    strcat(histpoint,"/* during Galileo phase-2 operation.  When thresholding is selected, detector */\r\n");
-    strcat(histpoint,"/* DNs less than the threshold value for that detector are not returned; */\r\n"); 
-    strcat(histpoint,"/* those DNs are therefore known to be less than that threshold value. */\r\n"); 
-    strcat(histpoint,"/* Detectors with zero threshold values are not thresholded. */\r\n"); 
-  }
+  x=strlen(histpoint);
+  additionalbytes = BUFFERSIZE - x%BUFFERSIZE + HST_BLANK_RECORDS*BUFFERSIZE;
+  for(y=0;y<additionalbytes;y++)
+    strcat(histpoint," ");
+  x=strlen(histpoint);
+  if (x > HISTMEMORY) zmabend("*** history label too big ***");
 
-  sprintf(line,"    GRATING_POSITION_CORRECTION = %.4f\r\n", v.pshift);
-  strcat(histpoint,line);
-  sprintf(line,"    GRATING_STEP_INFLATION = %.4f\r\n", v.ainfl);
-  strcat(histpoint,line);
-  strcat(histpoint,"/* The \"Grating Position Correction\" and \"Grating Step Inflation\" are */\r\n");
-  strcat(histpoint,"/* adjustments to the nominal grating positions, based on flight calibrations */\r\n");
-  strcat(histpoint,"/* and known sharp spectral features of the target, used in determination of */\r\n");
-  strcat(histpoint,"/* wavelengths.  GRATING_POSITION_CORRECTION is an additive term to the */\r\n");
-  strcat(histpoint,"/* grating position and (1.0 + GRATING_STEP_INFLATION) is a multiplicative */\r\n");
-  strcat(histpoint,"/* term modifying the grating stepsize. */\r\n\r\n");
-}
+  *nhistrecs = x/BUFFERSIZE;		/* Calc # of history records */
 
-if( strcmp(v.mask,"MASK") == 0 ) {
-  sprintf(line,"  SUMMARY_IMAGE_RED_ID = %d\r\n",v.red_siid);
-  strcat(histpoint,line);
-  sprintf(line,"  SUMMARY_IMAGE_GREEN_ID = %d\r\n",v.grn_siid);
-  strcat(histpoint,line); 
-  sprintf(line,"  SUMMARY_IMAGE_BLUE_ID = %d\r\n",v.blu_siid);
-  strcat(histpoint,line);
-  sprintf(line,"  ADAPT_STRETCH_SAT_FRAC = %.4f\r\n",v.astretch[1]); 
-  strcat(histpoint,line);
-  sprintf(line,"  ADAPT_STRETCH_SAMP_FRAC = %.4f\r\n",v.astretch[0]);
-  strcat(histpoint,line);
-  sprintf(line,"  RED_STRETCH_RANGE = (%5.0f,%5.0f)\r\n",
-	v.rstretch[0],v.rstretch[1]);
-  strcat(histpoint,line);
-  sprintf(line,"  GREEN_STRETCH_RANGE = (%5.0f,%5.0f)\r\n",
- 	v.gstretch[0],v.gstretch[1]);
-  strcat(histpoint,line);
-  sprintf(line,"  BLUE_STRETCH_RANGE = (%5.0f,%5.0f)\r\n",
-	v.bstretch[0],v.bstretch[1]);
-  strcat(histpoint,line);
-}
+  labelbytes = strlen(bufpoint);
+  additionalbytes = BUFFERSIZE - labelbytes%BUFFERSIZE 
+    + LBL_BLANK_RECORDS*BUFFERSIZE;
+  for(y=0;y<additionalbytes;y++)
+    strcat(bufpoint," ");
+  labelbytes = strlen(bufpoint);		/* Calc # of label records   	*/
+  if (labelbytes > LABELMEMORY) zmabend("*** PDS label too big ***");
 
-if (!histfile || !strcmp(v.mask,"MASK")) 
-  strcat(histpoint,"  END_GROUP = PARAMETERS\r\n\r\n");
+  *nlabrecs  = labelbytes/BUFFERSIZE;
 
-strcat(histpoint,"END_GROUP = VISIS2\r\n\r\nEND\r\n");
-
-x=strlen(histpoint);
-additionalbytes = BUFFERSIZE - x%BUFFERSIZE + HST_BLANK_RECORDS*BUFFERSIZE;
-for(y=0;y<additionalbytes;y++)
-	strcat(histpoint," ");
-x=strlen(histpoint);
-if (x > HISTMEMORY) zmabend("*** history label too big ***");
-
-*nhistrecs = x/BUFFERSIZE;		/* Calc # of history records */
-
-labelbytes = strlen(bufpoint);
-additionalbytes = BUFFERSIZE - labelbytes%BUFFERSIZE 
-		  + LBL_BLANK_RECORDS*BUFFERSIZE;
-for(y=0;y<additionalbytes;y++)
-	strcat(bufpoint," ");
-labelbytes = strlen(bufpoint);		/* Calc # of label records   	*/
-if (labelbytes > LABELMEMORY) zmabend("*** PDS label too big ***");
-
-*nlabrecs  = labelbytes/BUFFERSIZE;
-
-*nrecs += (*nlabrecs + *nhistrecs);	/* Update file record total	*/
+  *nrecs += (*nlabrecs + *nhistrecs);	/* Update file record total	*/
 
 					/* OBJECT FILE POINTERS    	*/
-sprintf(value[0],"%6d",*nrecs);		/* Number of records in file	*/
-sprintf(value[1],"%6d",*nlabrecs);	/* Number of label records	*/
-sprintf(value[2],"%6d",*nlabrecs+1);	/* Pointer to history object	*/
-sprintf(value[3],"%6d",			/* Pointer to 2D histogram 	*/
-	*nlabrecs+*nhistrecs+1);
-if( specplots > 0 )			/* Pointers to SPECTRA & CUBE	*/
-	{
-	for( x=0; x<2; x++ )
-		sprintf(value[x+4],"%6d",*nlabrecs+*nhistrecs+objptr[x]+1);
-	z = NUMOFPTRS;
-	}
-else		
-	{
-	sprintf(value[4],"%6d",*nlabrecs+*nhistrecs+objptr[0]+1);
-	z = NUMOFPTRS - 1;
-	}
+  sprintf(value[0],"%6d",*nrecs);		/* Number of records in file	*/
+  sprintf(value[1],"%6d",*nlabrecs);	/* Number of label records	*/
+  sprintf(value[2],"%6d",*nlabrecs+1);	/* Pointer to history object	*/
+  sprintf(value[3],"%6d",			/* Pointer to 2D histogram 	*/
+	  *nlabrecs+*nhistrecs+1);
+  if( specplots > 0 )			/* Pointers to SPECTRA & CUBE	*/
+    {
+      for( x=0; x<2; x++ )
+	sprintf(value[x+4],"%6d",*nlabrecs+*nhistrecs+objptr[x]+1);
+      z = NUMOFPTRS;
+    }
+  else		
+    {
+      sprintf(value[4],"%6d",*nlabrecs+*nhistrecs+objptr[0]+1);
+      z = NUMOFPTRS - 1;
+    }
 
-count = bufptr = 0;			/* Place POINTERS and above 	*/
-while( count < z )			/* values in PDS label		*/
-	{
-	if(bufpoint[bufptr]=='\r')
-		if( strncmp(&bufpoint[bufptr-6],"XXXXXX",6)==0 )
-			strncpy(&bufpoint[bufptr-6],value[count++],6);
-	bufptr++;
-	}
-					/* NOTE: This should be elsewhere. */
-count = bufptr = 0;			/* Replace FILE DIRTY with	*/
-while( count == 0 && bufptr < 200 )	/* FILE CLEAN			*/
-	{
-	if(bufpoint[bufptr]=='\r')
-		if(strncmp(&bufpoint[bufptr-5],"DIRTY",5)==0)
-			{
-			strncpy(&bufpoint[bufptr-5],"CLEAN",5);
-			count = 1;
-			}
-	bufptr++;
-	}
+  count = bufptr = 0;			/* Place POINTERS and above 	*/
+  while( count < z )			/* values in PDS label		*/
+    {
+      if(bufpoint[bufptr]=='\r')
+	if( strncmp(&bufpoint[bufptr-6],"XXXXXX",6)==0 )
+	  strncpy(&bufpoint[bufptr-6],value[count++],6);
+      bufptr++;
+    }
+  /* NOTE: This should be elsewhere. */
+  count = bufptr = 0;			/* Replace FILE DIRTY with	*/
+  while( count == 0 && bufptr < 200 )	/* FILE CLEAN			*/
+    {
+      if(bufpoint[bufptr]=='\r')
+	if(strncmp(&bufpoint[bufptr-5],"DIRTY",5)==0)
+	  {
+	    strncpy(&bufpoint[bufptr-5],"CLEAN",5);
+	    count = 1;
+	  }
+      bufptr++;
+    }
 }
 
 
@@ -2176,7 +2176,7 @@ FUNCTION determine_band_bin_parms()
  * Determine the Band Bin parameters based on instrument mode
  */
 {
-  int nbm1, ngp1, nbpg, x, y, z, z1;
+  int nbm1=0, ngp1=0, nbpg, x=0, y=0, z=0, z1;
 
   if (!strncmp(v.nimsmode, "FIX", 3)) {	/* FIXED GRATING */
     ngp1 = 1;   /* Number of grating positions = 1 */
@@ -2214,7 +2214,7 @@ FUNCTION determine_band_bin_parms()
    * contents */
 
   if (nbm<0) 	/* no band mask, so assume all bands present */
-    for (x=0; x<nbm1; x++)
+     for (x=0; x<nbm1; x++)
       bmask[x] = 1;
   else
     if (nbm != nbm1) zmabend(" Invalid band mask dimension!");
@@ -2278,53 +2278,53 @@ FUNCTION determine_month( month, string )
 /*
  * Determine month number string from month name.
  */
-char	month[],
-	string[];
+     char	month[],
+     string[];
 {
 
-switch( string[0] )	
-	{
-	case 'J': 	if( string[1] == 'A' )
-				strcpy(month,"01");
-			else
-				if( string[2] == 'N' )
-					strcpy(month,"06");
-				else
-					strcpy(month,"07");
-			break;
+  switch( string[0] )	
+    {
+    case 'J': 	if( string[1] == 'A' )
+	strcpy(month,"01");
+      else
+	if( string[2] == 'N' )
+	  strcpy(month,"06");
+	else
+	  strcpy(month,"07");
+      break;
 
-	case 'F':	strcpy(month,"02");
-			break;	
+    case 'F':	strcpy(month,"02");
+      break;	
 
-	case 'M':	if( string[2] == 'R' )
-				strcpy(month,"03");
-			else
-				strcpy(month,"05");
-			break;	
+    case 'M':	if( string[2] == 'R' )
+	strcpy(month,"03");
+      else
+	strcpy(month,"05");
+      break;	
 
-	case 'A':	if( string[1] == 'P' )
-				strcpy(month,"04");
-			else
-				strcpy(month,"08");
-			break;	
+    case 'A':	if( string[1] == 'P' )
+	strcpy(month,"04");
+      else
+	strcpy(month,"08");
+      break;	
 
-	case 'S':	strcpy(month,"09");
-			break;	
+    case 'S':	strcpy(month,"09");
+      break;	
 
-	case 'O':	strcpy(month,"10");
-			break;	
+    case 'O':	strcpy(month,"10");
+      break;	
 
-	case 'N':	strcpy(month,"11");
-			break;	
+    case 'N':	strcpy(month,"11");
+      break;	
 
-	case 'D':	strcpy(month,"12");
-			break;	
+    case 'D':	strcpy(month,"12");
+      break;	
 
-	/* otherwise, assume input is numeric */
-	default:	strncpy(month,&string[1],2);
-			month[2] = '\0';
-			break;	
-	}
+      /* otherwise, assume input is numeric */
+    default:	strncpy(month,&string[1],2);
+      month[2] = '\0';
+      break;	
+    }
 }
 
 
@@ -2334,7 +2334,7 @@ FUNCTION fill_if_error(string,type)
  * Replace string with " " if status of VICAR zlget is < 1; check for
  * blank strings and substitute ' ' or " ".
  */
-char string[],type[];
+     char string[],type[];
 {
   int x, y;
 
@@ -2368,31 +2368,31 @@ int FUNCTION find_keyword(char* keyword, char* buf, int* labptr, int* endptr)
 /*int	*labptr;				   Pointer to label element  */
 /*int	*endptr;				   end of label to search    */
 {						/* Local Variables           */
-int	count,					/* Counter/index             */
-	found,					/* Item found indicator      */
-	keylength,				/* Item name length	     */	
-	startptr;				/* Value passed as labptr  */
+  int	count,					/* Counter/index             */
+    found,					/* Item found indicator      */
+    keylength,				/* Item name length	     */	
+    startptr;				/* Value passed as labptr  */
 
-startptr  = *labptr;				/* Record starting pointer   */
-found     = FALSE;				/* Item not found yet        */
-keylength = strlen(keyword);			/* Determine itemname length */
-while( !found && *labptr < *endptr ) {
-  count  = 0;
-  while( buf[*labptr] != keyword[count] )
+  startptr  = *labptr;				/* Record starting pointer   */
+  found     = FALSE;				/* Item not found yet        */
+  keylength = strlen(keyword);			/* Determine itemname length */
+  while( !found && *labptr < *endptr ) {
+    count  = 0;
+    while( buf[*labptr] != keyword[count] )
+      if ( *labptr >= *endptr || incrm_check_buffer( labptr ) == 0 ) return 0;
     if ( *labptr >= *endptr || incrm_check_buffer( labptr ) == 0 ) return 0;
-  if ( *labptr >= *endptr || incrm_check_buffer( labptr ) == 0 ) return 0;
-  count++;
+    count++;
 
-  while( buf[*labptr] == keyword[count] && count < keylength )
-    if ( *labptr >= *endptr || incrm_check_buffer( labptr ) == 0 ) return 0;
-    else count++;
+    while( buf[*labptr] == keyword[count] && count < keylength )
+      if ( *labptr >= *endptr || incrm_check_buffer( labptr ) == 0 ) return 0;
+      else count++;
 
-  if( count == keylength && ( buf[*labptr] == ' ' || buf[*labptr] == '=' ||
-   buf[*labptr] == '\r' ) )
-    found = TRUE;
-}
+    if( count == keylength && ( buf[*labptr] == ' ' || buf[*labptr] == '=' ||
+				buf[*labptr] == '\r' ) )
+      found = TRUE;
+  }
 
-return 1;
+  return 1;
 }
 
 
@@ -2406,13 +2406,13 @@ FUNCTION for_tran( str2, str1, bands)
  * NOTE that str1 is *not* zero-terminated, but str2 must be zero-terminated.
  */
 
-char str1[80], str2[100];
-short bands[5];
+     char str1[80], str2[100];
+     short bands[5];
 {
   int i1, i2, len, x;
   char bandc[5];
 
-	/* find true length of str1 (ignoring blanks): */
+  /* find true length of str1 (ignoring blanks): */
   for (i1=79; i1>=0; i1--) if (str1[i1] != ' ') break;
   len = i1;
 
@@ -2428,13 +2428,13 @@ short bands[5];
       x = str1[i1+2] - 48;	/* ascii-to-numeral */
       if (x<1 || x>5) zmabend(" error in for_tran");
       strcpy( &str2[i2], "B");
-      sprintf( bandc, "%d", bands[x-1]);
+      snprintf( bandc, 5, "%d", bands[x-1]);
       strcat( &str2[i2+1], bandc);
       i1 += 3;
       i2 += strlen(bandc)+1;
     }
   }
-	/* if string is too long, truncate with some trailing dots */
+  /* if string is too long, truncate with some trailing dots */
   if (i2>=30) strcpy( &str2[27], "...");
   else str2[i2] = 0;
 }
@@ -2445,9 +2445,9 @@ int FUNCTION get_integer_value(intitem,buf,labptr)
 /*
  * Get integer value.	
  */
-int	*intitem,				/* Integer value pointer     */
-	*labptr;				/* Label element pointer     */
-char 	buf[];					/* PDS label buffer	     */
+     int	*intitem,				/* Integer value pointer     */
+     *labptr;				/* Label element pointer     */
+     char 	buf[];					/* PDS label buffer	     */
 
 {						/* Local Variables           */
   char	integer[12];				/* String for integer        */
@@ -2457,28 +2457,28 @@ char 	buf[];					/* PDS label buffer	     */
   sign = 1;		/* initialize as positive */
   memset( integer, 0, 12 );
 
-	/* Find first digit/sign */
+  /* Find first digit/sign */
   while (!isdigit(buf[*labptr]) && buf[*labptr] != '+' &&
-   buf[*labptr] != '-') {
+	 buf[*labptr] != '-') {
     lsef = incrm_check_buffer(labptr);
     if( lsef == 0 ) return 0;
   }
   if (buf[*labptr]=='-') sign = -1;
 
-	/* space past sign: */
+  /* space past sign: */
   if (buf[*labptr]=='-' || buf[*labptr]=='+') {
     lsef = incrm_check_buffer(labptr);
     if( lsef == 0 ) return 0;
   }
  
-	/* Continue until last digit is found */
+  /* Continue until last digit is found */
   while (isdigit(buf[*labptr])) {
     integer[count++]=buf[*labptr];
     lsef = incrm_check_buffer(labptr);
     if( lsef == 0 ) return 0;
   }
 
-	/* Convert string into INT */
+  /* Convert string into INT */
   *intitem = sign*atoi(integer);
   return 1;
 }
@@ -2521,7 +2521,7 @@ FUNCTION get_label_items()
   if (zvptst("EAST_LON")) conv_lon = 1;
 
   vstat = zlget(inunit[i],"HISTORY",CUBE_SIZE,cubsiz,"HIST",tasknam,
-   "NELEMENT",-1,NULL);
+		"NELEMENT",-1,NULL);
   if (vstat<0) tube = 0;
   else tube = 1;
 
@@ -2544,7 +2544,7 @@ FUNCTION get_label_items()
   for( i=1; i<=specplots; i++ ) {
     vstat = zvopen(inunit[i],"OP","READ","OPEN_ACT","SA","IO_ACT","SA",NULL);
     vstat = zlget(inunit[i],"HISTORY","LATLON",latlon,"NELEMENT",2,
-     "HIST","SPECPLOT",NULL);
+		  "HIST","SPECPLOT",NULL);
     if (  vstat==1 ) {
       v.lat[i-1] = latlon[0];
       if (conv_lon)
@@ -2558,7 +2558,7 @@ FUNCTION get_label_items()
       v.lon[i-1] = 0;
     }
     vstat = zlget(inunit[i],"HISTORY","AREA",area,"NELEMENT",4,"HIST","SPECPLOT",
-     NULL);
+		  NULL);
     if ( vstat==1 ) {
       v.lines[i-1]   = area[2];
       v.samples[i-1] = area[3];
@@ -2581,8 +2581,8 @@ FUNCTION get_label_items()
 
   /* ISIS wants Sinusoidal expanded: */
   /* 2012:  not any more!
-  if (strcmp(v.projection,"SINUSOIDAL") == 0) 
-    strcpy( v.projection, "'SINUSOIDAL_EQUAL-AREA'");
+     if (strcmp(v.projection,"SINUSOIDAL") == 0) 
+     strcpy( v.projection, "'SINUSOIDAL_EQUAL-AREA'");
   */
 
   /* projection-specfic stuff: */
@@ -2606,9 +2606,9 @@ FUNCTION get_label_items()
     /* don't add 1 because the MP items are NOT relative to (1,1) -- in
      * contrast to the label items! */
     /*v.ssc_line++;
-    v.ssc_samp++;
-    v.oaline++;
-    v.oasamp++;*/
+      v.ssc_samp++;
+      v.oaline++;
+      v.oasamp++;*/
   }
   else {
     lsef = mpGetValues( mpo, mpMAP_SCALE, &v.scale, "");
@@ -2630,10 +2630,10 @@ FUNCTION get_label_items()
     }
     else if (!strcmp(v.projection,"LAMBERT_CONFORMAL"))
       lsef = mpGetValues( mpo, mpFIRST_STANDARD_PARALLEL, &v.projitem1, "");
-      lsef = mpGetValues( mpo, mpSECOND_STANDARD_PARALLEL, &v.projitem2, "");
+    lsef = mpGetValues( mpo, mpSECOND_STANDARD_PARALLEL, &v.projitem2, "");
   }
 
-endmp:
+ endmp:
 
   /* continue with cube label ... */
   i = numoffiles - cubefiles;
@@ -2648,27 +2648,27 @@ endmp:
   /* read in the band mask */
   if (mphase) {
     vstat = zlget(inunit[i],"HISTORY",B_MASK,bmask,"NRET",&nbm,"NELEMENT",-1,
-    "HIST",tasknam,NULL);
+		  "HIST",tasknam,NULL);
     if (vstat != 1) nbm = -1;
   }
   else nbm = -1;
 
   vstat = zlget(inunit[i],"HISTORY",WAVELENGTHS,b.waves,"NELEMENT",-1,
-  "HIST",tasknam,NULL);
+		"HIST",tasknam,NULL);
   if( vstat != 1 ) zmabend(" Wavelengths missing from cube label!");
 
   /* disable this, since Sun version of nimscmm2 doesn't use PRODID ...
-  vstat = zlget(inunit[i],"HISTORY",PRODID,v.prod_id,"HIST",tasknam,NULL);
-  fill_if_error(v.prod_id,"String");
+     vstat = zlget(inunit[i],"HISTORY",PRODID,v.prod_id,"HIST",tasknam,NULL);
+     fill_if_error(v.prod_id,"String");
   */
   /* fix this for IOF case, since NIMSR2IOF doesn't update the label */
   /*
-  if (iofcub) {
+    if (iofcub) {
     for (x=0; x<strlen(v.prod_id)-3; x++) 
-      if (!strncmp(&v.prod_id[x],".QUB",4)) strcpy(&v.prod_id[x],".IOF");
+    if (!strncmp(&v.prod_id[x],".QUB",4)) strcpy(&v.prod_id[x],".IOF");
     for (x=0; x<strlen(v.prod_id)-4; x++) 
-      if (!strncmp(&v.prod_id[x],".VTUB",5)) strcpy(&v.prod_id[x],".VIOF");
-  }
+    if (!strncmp(&v.prod_id[x],".VTUB",5)) strcpy(&v.prod_id[x],".VIOF");
+    }
   */
 
   vstat = zlget(inunit[i],"HISTORY",OBSNOTE,v.obsnote,"HIST",tasknam,NULL);
@@ -2740,7 +2740,7 @@ endmp:
     vstat = zlget(inunit[i],"HISTORY",POINT_SOURCE,v.pfm_ck,"HIST",tasknam,NULL);
 
   vstat = zlget(inunit[i],"HISTORY",DPOINT,v.dpoint,"HIST",tasknam,
-   "NELEMENT",-1,NULL);
+		"NELEMENT",-1,NULL);
   v.dpstat = (vstat>0);
 
   wamp = 0.0;
@@ -2753,7 +2753,7 @@ endmp:
   }
 
   vstat = zlget(inunit[i],"HISTORY",SC_GAPS,sclk_gaps,"HIST",tasknam,
-   "NELEMENT",-1,"NRET",&nsc_gaps,NULL);
+		"NELEMENT",-1,"NRET",&nsc_gaps,NULL);
 
   vstat = zlget(inunit[i],"HISTORY",SLEW_TOL,&v.slewtol,"HIST",tasknam,NULL);
   vstat = zlget(inunit[i],"HISTORY",SLEW_RATE,&v.slew_rate,"HIST",tasknam,NULL);
@@ -2788,13 +2788,13 @@ endmp:
   fill_if_error(v.binning,"Literal");
   if (!strcmp(v.binning,"FOOTPRNT"))
     vstat = zlget( inunit[i], "HISTORY", THRESH, &v.thresh,  "HIST", tasknam,
-     "NELEMENT",-1,NULL);
+		   "NELEMENT",-1,NULL);
   if (v.binning[0]=='F') {
     v.maxdistor = 0.0;
     vstat = zlget( inunit[i], "HISTORY", MAXDISTOR, &v.maxdistor, "HIST", 
-     tasknam, "NELEMENT",-1,NULL);
+		   tasknam, "NELEMENT",-1,NULL);
     vstat = zlget( inunit[i], "HISTORY", FPGRID, &v.fpgrid,  "HIST", tasknam,
-     "NELEMENT",-1,NULL);
+		   "NELEMENT",-1,NULL);
   }
 
   /* this call verifies that the dimension of B_MASK agrees with the actual
@@ -2803,7 +2803,7 @@ endmp:
   determine_band_bin_parms();
 
   vstat = zlget( inunit[i], "HISTORY", EDRS, v.edrfiles,  "HIST", tasknam,
-   "ULEN", 101, "NELEMENT", -1, "NRET", &nedrs,NULL);
+		 "ULEN", 101, "NELEMENT", -1, "NRET", &nedrs,NULL);
   fill_if_error(v.edrfiles,"S");
 
   vstat = zlget(inunit[i],"HISTORY",IKERNEL,v.ikernel,"HIST",tasknam,NULL);
@@ -2818,14 +2818,14 @@ endmp:
   }
 
   vstat = zlget(inunit[i],"HISTORY",CAL_FILE,v.calfile,"HIST",tasknam,
-   "ULEN", 100, "NELEMENT", -1, "NRET", &ncals, NULL);
+		"ULEN", 100, "NELEMENT", -1, "NRET", &ncals, NULL);
   fill_if_error(v.calfile,"S");
 
   vstat = zlget(inunit[i],"HISTORY",CAL_TYPE,v.caltype,"HIST",tasknam,NULL);
   fill_if_error(v.caltype,"Literal");
 
   vstat = zlget(inunit[i],"HISTORY",DARK_FILE,v.darkfile,"HIST",tasknam,
-   "ULEN", 100, "NELEMENT", -1, "NRET", &ndrks, NULL);
+		"ULEN", 100, "NELEMENT", -1, "NRET", &ndrks, NULL);
   fill_if_error(v.darkfile,"S");
 
   vstat = zlget(inunit[i],"HISTORY",DARK_TYPE,v.darktype,"HIST",tasknam,NULL);
@@ -2838,14 +2838,14 @@ endmp:
   fill_if_error(v.deboomfile,"S");
 
   vstat = zlget(inunit[i],"HISTORY",DESPIKE_FILE,v.despikefile,
-   "HIST",tasknam,NULL);
+		"HIST",tasknam,NULL);
   fill_if_error(v.despikefile,"S");
 
   vstat = zlget(inunit[i],"HISTORY",STOP_SLIDE,v.stop_slide,"HIST",tasknam,NULL);
   fill_if_error(v.stop_slide,"Literal");
 
   vstat = zlget(inunit[i],"HISTORY",GAIN_STATE,&v.gain_state,"NRET",&cnt,
-   "HIST",tasknam,"NELEMENT",-1,NULL);
+		"HIST",tasknam,"NELEMENT",-1,NULL);
   if (vstat<=0) {
     cnt = 1;
     v.gain_state[0] = 0;
@@ -2862,23 +2862,23 @@ endmp:
   zero_if_error(&v.chopper);
 
   vstat = zlget(inunit[i],"HISTORY",SOLAR_FLUX,v.solarflux,"HIST",tasknam,
-   "NELEMENT",-1,NULL);
+		"NELEMENT",-1,NULL);
 
   vstat = zlget(inunit[i],"HISTORY",RAD_SENS,v.radsens,"NRET",&v.sens_flg,
-   "HIST",tasknam,"NELEMENT",-1,NULL);
+		"HIST",tasknam,"NELEMENT",-1,NULL);
 
   vstat = zlget(inunit[i],"HISTORY",DRK_AVE,v.drkave,"NRET",&v.drk_flg,
-   "HIST",tasknam,"NELEMENT",-1,NULL);
+		"HIST",tasknam,"NELEMENT",-1,NULL);
 
   vstat = zlget(inunit[i],"HISTORY",RAD_CONV,v.radiance,"HIST",tasknam,"NRET",
-   &nret,"NELEMENT",-1,NULL);
+		&nret,"NELEMENT",-1,NULL);
   if (vstat==1) 
     /* fill the array if the # values is less than # wavelengths */
     for (x=nret; x<nbb; x++)
       v.radiance[x] = v.radiance[x-1];
 
   vstat = zlget(inunit[i],"HISTORY",RAD_BASE,v.rad_base,"HIST",tasknam,"NRET",
-   &nret,"NELEMENT",-1,NULL);
+		&nret,"NELEMENT",-1,NULL);
   if (vstat==1) 
     /* same as for RAD_CONV */
     for (x=nret; x<nbb; x++)
@@ -2935,7 +2935,7 @@ endmp:
   zero_if_error(&v.sdgeo);
 
   vstat = zlget(inunit[i],"HISTORY",THRESHVAL,v.threshval,"NELEMENT",-1,
-  "HIST",tasknam,NULL);
+		"HIST",tasknam,NULL);
   ithreshval = (vstat==1);
 
   vstat = zlget(inunit[i],"HISTORY",PSHIFT,&v.pshift,"HIST",tasknam,NULL);
@@ -2945,27 +2945,27 @@ endmp:
   zero_if_error(&v.ainfl);
 
   vstat = zlget(inunit[i],"HISTORY",GRATING_START,&v.grating_start_pos,
-  "HIST",tasknam,NULL);
+		"HIST",tasknam,NULL);
   zero_if_error(&v.grating_start_pos);
 
   vstat = zlget(inunit[i],"HISTORY","B_E_G_P_1",&v.bandedge_gp1,
-  "HIST",tasknam,NULL);
+		"HIST",tasknam,NULL);
   zero_if_error(&v.bandedge_gp1);
 
   vstat = zlget(inunit[i],"HISTORY","B_E_G_P_2",&v.bandedge_gp2,
-  "HIST",tasknam,NULL);
+		"HIST",tasknam,NULL);
   zero_if_error(&v.bandedge_gp2);
 
   vstat = zlget(inunit[i],"HISTORY",GRATING_OFFSET,&v.grating_offset,
-  "HIST",tasknam,NULL);
+		"HIST",tasknam,NULL);
   zero_if_error(&v.grating_offset);
 
   vstat = zlget(inunit[i],"HISTORY",GRATING_DELTA,&v.grating_delta,
-  "HIST",tasknam,NULL);
+		"HIST",tasknam,NULL);
   zero_if_error(&v.grating_delta);
 
   vstat = zlget(inunit[i],"HISTORY",GRATING_STEPS,&v.grating_steps,
-  "HIST",tasknam,NULL);
+		"HIST",tasknam,NULL);
   zero_if_error(&v.grating_steps);
 
   vstat = zlget(inunit[i],"HISTORY",SUN_AZI,&v.azimuth_sun,"HIST",tasknam,NULL);
@@ -3031,7 +3031,7 @@ endmp:
   zero_if_error(&v.temp[4]);
 
   vstat = zlget(inunit[i],"HISTORY",T_ELECTRONICS,&v.temp[5],
-  "HIST",tasknam,NULL);
+		"HIST",tasknam,NULL);
   zero_if_error(&v.temp[5]);
 
   vstat = zlget(inunit[i],"HISTORY",BEG_SCET,tstr,"HIST",tasknam,NULL);
@@ -3039,7 +3039,7 @@ endmp:
   if( tstr[0] != 'x' ) {
     /*for( j=0; j<25; j++) v.event_start_time[j] = tstr[j];*/
     /* this code fails for VEVPDIN1 cube ... disable it [2006jun09]: /*
-    /* 13nov2011:  it works in VISISX an is PDS std, so re-enable it: */
+       /* 13nov2011:  it works in VISISX an is PDS std, so re-enable it: */
     for( j=0; j<25; j++) v.event_start_time[j] = 0;		/* initialize */
     for( j=0; j<4; j++) v.event_start_time[j] = tstr[j];	/* Year */
     strcat( v.event_start_time,"-");
@@ -3075,7 +3075,7 @@ endmp:
   }
 
   vstat = zlget(inunit[i],"HISTORY",BEG_SCLK,integers,"HIST",tasknam,
-      "NELEMENT",3,NULL);
+		"NELEMENT",3,NULL);
   if( vstat == 1 ) {
     v.native_times[0][0] = integers[0];
     v.native_times[0][1] = integers[1];
@@ -3088,7 +3088,7 @@ endmp:
   }
 
   vstat = zlget(inunit[i],"HISTORY",END_SCLK,integers,"HIST",tasknam,
-      "NELEMENT",2,NULL);
+		"NELEMENT",2,NULL);
   if( vstat == 1 ) {
     v.native_times[1][0] = integers[0];
     v.native_times[1][1] = integers[1];
@@ -3116,12 +3116,12 @@ endmp:
            strcmp(v.target,"PASIPHAE")==0 || strcmp(v.target,"SINOPE")==0 ||
            strcmp(v.target,"METIS")==0 || strcmp(v.target,"ELARA")==0 )
     strcpy(v.targetcode,"J");
-    /*strcpy(v.targetcode,"JSA");  /* JSA has been disapproved */
+  /*strcpy(v.targetcode,"JSA");  /* JSA has been disapproved */
   else if( strcmp(v.target,"GASPRA")==0 || strcmp(v.target,"IDA")==0 )
     strcpy(v.targetcode,"A");
   else if( strcmp(v.target,"RING")==0 )
     strcpy(v.targetcode,"J");
-    /*strcpy(v.targetcode,"JR");*/
+  /*strcpy(v.targetcode,"JR");*/
   else    
     strcpy(v.targetcode,"J");  /* includes JR & JSA & CAL */
 
@@ -3134,9 +3134,9 @@ int FUNCTION get_real_value(realitem,buf,labptr)
 /*
  * Get a fixed-point or floating point value from an ASCII string
  */
-float	*realitem;				/* Real value pointer        */
-int	*labptr;				/* Label element pointer     */
-char	buf[];					/* PDS label buffer   	     */
+     float	*realitem;				/* Real value pointer        */
+     int	*labptr;				/* Label element pointer     */
+     char	buf[];					/* PDS label buffer   	     */
 {
   char	number[33];
   int	a,b;
@@ -3152,7 +3152,7 @@ char	buf[];					/* PDS label buffer   	     */
   /* read the number into buffer: */
   a=0;
   while (isdigit(buf[*labptr]) || buf[*labptr]=='-' || buf[*labptr]=='+' 
-   || buf[*labptr]=='.' || buf[*labptr]=='e' || buf[*labptr]=='E' ) {
+	 || buf[*labptr]=='.' || buf[*labptr]=='e' || buf[*labptr]=='E' ) {
     number[a++] = buf[*labptr];
     lsef = incrm_check_buffer(labptr);
     if (lsef == 0 || a>=32) return 0;
@@ -3168,9 +3168,9 @@ int FUNCTION get_double(doubitem,buf,labptr)
  * Get a double-precision fixed-point or floating point value from an ASCII
  * string
  */
-double	*doubitem;				/* Real value pointer        */
-int	*labptr;				/* Label element pointer     */
-char	buf[];					/* PDS label buffer   	     */
+     double	*doubitem;				/* Real value pointer        */
+     int	*labptr;				/* Label element pointer     */
+     char	buf[];					/* PDS label buffer   	     */
 {
   char	number[33];
   int	a,b;
@@ -3186,7 +3186,7 @@ char	buf[];					/* PDS label buffer   	     */
   /* read the number into buffer: */
   a=0;
   while (isdigit(buf[*labptr]) || buf[*labptr]=='-' || buf[*labptr]=='+' 
-   || buf[*labptr]=='.' || buf[*labptr]=='e' || buf[*labptr]=='E' ) {
+	 || buf[*labptr]=='.' || buf[*labptr]=='e' || buf[*labptr]=='E' ) {
     number[a++] = buf[*labptr];
     lsef = incrm_check_buffer(labptr);
     if (lsef == 0 || a>=32) return 0;
@@ -3203,9 +3203,9 @@ FUNCTION get_recinfo(nlabs,nhrecs,nrecs)
  * Also reads the ISIS cube label and history objects into
  * memory buffers.
  */
-int	*nlabs,					/* Number of label records   */
-	*nhrecs,				/* Number of history records */
-	*nrecs;					/* Number of file records    */
+     int	*nlabs,					/* Number of label records   */
+     *nhrecs,				/* Number of history records */
+     *nrecs;					/* Number of file records    */
 {
   char 	buffer[BUFFERSIZE];			/* First 512 characters      */
 						/* of the PDS label	     */
@@ -3218,7 +3218,7 @@ int	*nlabs,					/* Number of label records   */
 
   /* Open ISIS cube file */
   vstat = zvopen( inunit[object], "OPEN_ACT", "SA", "IO_ACT", "SA", "OP", "READ",
-   "COND", "NOLABELS", "U_NL", 1, "U_NS", BUFFERSIZE, NULL);
+		  "COND", "NOLABELS", "U_NL", 1, "U_NS", BUFFERSIZE, NULL);
 
   /* Read first 512 bytes of the PDS label */
   zvread(inunit[object],buffer,"NSAMPS",BUFFERSIZE,NULL);
@@ -3237,11 +3237,11 @@ int	*nlabs,					/* Number of label records   */
 
   /* Reopen input file with the ADDRESS option */
   vstat = zvopen(inunit[object],"OPEN_ACT","SA","IO_ACT","SA","OP","READ",
-   "COND","NOLABELS","ADDRESS",&inptr,"U_NL",*nlabs,"U_NS",BUFFERSIZE,NULL);
+		 "COND","NOLABELS","ADDRESS",&inptr,"U_NL",*nlabs,"U_NS",BUFFERSIZE,NULL);
 
-	/* first allocate enough buffer to hold label -- then
-	 * search for end of history object and re-allocate 
-	 * enough to hold both */
+  /* first allocate enough buffer to hold label -- then
+   * search for end of history object and re-allocate 
+   * enough to hold both */
 
   numofbytes = (*nlabs) * BUFFERSIZE;	/* # bytes in PDS label object */
   bufpoint = (char *)calloc(numofbytes,sizeof(char));	
@@ -3251,7 +3251,7 @@ int	*nlabs,					/* Number of label records   */
 
   labptr = index = 0;
   labend = numofbytes;
-						/* Get 2D HISTOGRAM dimen.   */
+  /* Get 2D HISTOGRAM dimen.   */
   vstat = find_keyword("^HISTOGRAM_IMAGE",bufpoint,&labptr,&labend);
   get_integer_value(nhrecs,bufpoint,&labptr);
   objptr[index++] = *nhrecs;
@@ -3349,7 +3349,7 @@ int	*nlabs,					/* Number of label records   */
   /* Check for invalid number of output files specified by the user */
   if( numoffiles != (specplots+cubefiles+1) ) {
     sprintf(xstring,"%d output files specified; %d files in cube",
-     numoffiles,(specplots+cubefiles+1));
+	    numoffiles,(specplots+cubefiles+1));
     zmabend(xstring);
   }
 
@@ -3363,7 +3363,7 @@ int FUNCTION incrm_check_buffer(a)
  * Increment buffer index and check against maximum number of bytes in 
  * the PDS label
  */
-int *a;
+     int *a;
 {
   (*a)++;
   if (*a < numofbytes)
@@ -3381,7 +3381,7 @@ FUNCTION ISIStoVICAR()
  */
 {				/* Local Variables			     */
   int nlabrecs, nhistrecs, nrecs, bytes[MAXNUMOFFILES], nb[MAXNUMOFFILES],
-   inl[MAXNUMOFFILES], ns[MAXNUMOFFILES];
+    inl[MAXNUMOFFILES], ns[MAXNUMOFFILES];
 
   zvmessage("Inverse mode:  VICAR files will be generated from ISIS cube","");
   VICARlabels(&nlabrecs,&nhistrecs,&nrecs);	
@@ -3394,158 +3394,158 @@ int FUNCTION keyword_value(unit,pdsitem,type,vicaritem,objectindex)
 /*
  * Copy keyword/value pairs of PDS label to VICAR label.
  */
-char 	pdsitem[],				  /* PDS item name           */
-	type[],				  /* Type of label item: R/I/T/C     */
-	vicaritem[];				  /* VICAR item name         */
-int	objectindex,			          /* Index for object files  */
-	unit;					  /* Unit number of output   */
+     char 	pdsitem[],				  /* PDS item name           */
+     type[],				  /* Type of label item: R/I/T/C     */
+     vicaritem[];				  /* VICAR item name         */
+     int	objectindex,			          /* Index for object files  */
+  unit;					  /* Unit number of output   */
 
 {					/* Local Variables                   */
-int	count,				/* Counter/index		     */
-	vlen,
-	found,				/* Item found indicator              */
-	intitem[MAXBANDS],		/* Array of integer values           */
-	itemlength,			/* Item name length 		     */
-	labptr,			/* Pointer to label character        */
-	nlines;				/* Number of lines in input file     */
-float	realitem[MAXBANDS];		/* Array of real values 	     */
-char 	objectname[3][25],		/* Array of object file names        */
-	prevval,			/* Previous buffer character	     */
-	stritem[MAXBANDS][101],
-	message[80];
+  int	count,				/* Counter/index		     */
+    vlen,
+    found,				/* Item found indicator              */
+    intitem[MAXBANDS],		/* Array of integer values           */
+    itemlength,			/* Item name length 		     */
+    labptr,			/* Pointer to label character        */
+    nlines;				/* Number of lines in input file     */
+  float	realitem[MAXBANDS];		/* Array of real values 	     */
+  char 	objectname[3][25],		/* Array of object file names        */
+    prevval,			/* Previous buffer character	     */
+    stritem[MAXBANDS][101],
+    message[80];
 
-labptr = count = 0;
-prevval = 0;
-memset( line, 0, 120);
-vlen = strlen(vicaritem)-1;
+  labptr = count = 0;
+  prevval = 0;
+  memset( line, 0, 120);
+  vlen = strlen(vicaritem)-1;
 
-strcpy(objectname[0],"^HISTOGRAM_IMAGE");
-strcpy(objectname[1],"^SAMPLE_SPECTRUM_QUBE");
-strcpy(objectname[2],"^QUBE");
+  strcpy(objectname[0],"^HISTOGRAM_IMAGE");
+  strcpy(objectname[1],"^SAMPLE_SPECTRUM_QUBE");
+  strcpy(objectname[2],"^QUBE");
 
-lsef = find_keyword(objectname[objectindex-1],bufpoint,&labptr,&labend);
-if( lsef == 0 ) goto notfound;
-
-lsef = find_keyword(pdsitem,bufpoint,&labptr,&labend);
-if( lsef == 0 ) goto notfound;
-
-	/* (need to check specially for "-" sign, else this does
-	 * not get passed on to get_real_value:) */
-while(bufpoint[labptr]!='(' && bufpoint[labptr]!='\"' &&
-  bufpoint[labptr]!='-' && isalnum(bufpoint[labptr])==0)
-  {
-  lsef = incrm_check_buffer(&labptr);
+  lsef = find_keyword(objectname[objectindex-1],bufpoint,&labptr,&labend);
   if( lsef == 0 ) goto notfound;
-  }
-switch(bufpoint[labptr])
-{
-case '(':    /* Array of values - Real, Integer, or String */  
-  if (type[0]=='R') {
-    while ( bufpoint[ labptr]!=')' ) {
-       lsef = get_real_value( &realitem[count++], bufpoint, &labptr);
-       if( lsef == 0 ) goto notfound;
-    }
-    zladd( unit, "HISTORY", vicaritem, realitem,  "FORMAT", "REAL",
-     "NELEMENT", count,NULL);
-  }
-  else if (type[0]=='I') {
-    while ( bufpoint[labptr]!=')' ) {
-      lsef = get_integer_value( &intitem[count++], bufpoint, &labptr);
-      if( lsef == 0 ) goto notfound;
-    }
-    zladd( unit, "HISTORY", vicaritem, intitem,  "FORMAT", "INT",
-     "NELEMENT", count,NULL);
-  }
-  else {	/* default type = 'S' or 'C' <what's the difference??> */
-    lsef = incrm_check_buffer(&labptr);	/* step past the '(' */
-    if( lsef == 0 ) goto notfound;
-    while ( bufpoint[labptr] != ')' ) {
-      lsef = get_qstring_value( stritem[count++], 100, &labptr);
-      if( lsef == 0 ) goto notfound;
-      if ( bufpoint[labptr] != ')' ) 
-	lsef = incrm_check_buffer(&labptr);	/* step past terminator */
-      if( lsef == 0 ) goto notfound;
-    }
-    zladd( unit, "HISTORY", vicaritem, stritem,  "FORMAT", "STRING",
-     "NELEMENT", count, "ULEN", 101, NULL);
-  }
-  break;
 
-case '\"':    /* Value is a line comment 'Now is the time . . .'   */
-  lsef = incrm_check_buffer(&labptr);
+  lsef = find_keyword(pdsitem,bufpoint,&labptr,&labend);
   if( lsef == 0 ) goto notfound;
-  while(bufpoint[labptr]!='\"')
+
+  /* (need to check specially for "-" sign, else this does
+   * not get passed on to get_real_value:) */
+  while(bufpoint[labptr]!='(' && bufpoint[labptr]!='\"' &&
+	bufpoint[labptr]!='-' && isalnum(bufpoint[labptr])==0)
     {
-    if(bufpoint[labptr]!='\'')
-      line[count++]=bufpoint[labptr];
-    lsef = incrm_check_buffer(&labptr);  
-    if( lsef == 0 ) goto notfound;
-    }
-  zladd(unit,"HISTORY",vicaritem,line,"FORMAT","STRING",NULL);
-  break;
-
-default:    /* Value is not a line comment or array of values    */
-
-  switch(type[0]) {    /* Check for REAL, INT, TIME, or STRING type  */
-
-  case 'R':
-    lsef = get_real_value(&realitem[0],bufpoint,&labptr);
-    if( lsef == 0 ) goto notfound;
-    zladd(unit,"HISTORY",vicaritem,realitem,"FORMAT","REAL",NULL);
-    break;
-
-  case 'I': 
-    lsef = get_integer_value(&intitem[0],bufpoint,&labptr);
-    if( lsef == 0 ) goto notfound;
-    zladd(unit,"HISTORY",vicaritem,intitem,"FORMAT","INT",NULL);
-    break;
-
-  case 'T': 
-    prevval=' ';
-    while(bufpoint[labptr]!='\r' &&
-        (bufpoint[labptr]!='*' && prevval!='/')) {
-      if(isdigit(bufpoint[labptr])!=FALSE || 
-          bufpoint[labptr] == '.') {
-	if(count>1 && vicaritem[vlen]!='K' && vicaritem[vlen]!='T')
-	  line[count-2]=bufpoint[labptr];
-	else
-	  line[count]=bufpoint[labptr];
-      }
-      else {		/* punctuation becomes spaces, Month gets extra 0 */
-	if (count==4) {		/* start of Month string */
-	  line[count++] = ' ';
-	  line[count] = '0';
-	}
-	else line[count] = ' ';
-      }
-      count++;
-      prevval=bufpoint[labptr];
       lsef = incrm_check_buffer(&labptr);
       if( lsef == 0 ) goto notfound;
     }
-    zladd(unit,"HISTORY",vicaritem,line,"FORMAT","STRING",NULL);
-    break;
+  switch(bufpoint[labptr])
+    {
+    case '(':    /* Array of values - Real, Integer, or String */  
+      if (type[0]=='R') {
+	while ( bufpoint[ labptr]!=')' ) {
+	  lsef = get_real_value( &realitem[count++], bufpoint, &labptr);
+	  if( lsef == 0 ) goto notfound;
+	}
+	zladd( unit, "HISTORY", vicaritem, realitem,  "FORMAT", "REAL",
+	       "NELEMENT", count,NULL);
+      }
+      else if (type[0]=='I') {
+	while ( bufpoint[labptr]!=')' ) {
+	  lsef = get_integer_value( &intitem[count++], bufpoint, &labptr);
+	  if( lsef == 0 ) goto notfound;
+	}
+	zladd( unit, "HISTORY", vicaritem, intitem,  "FORMAT", "INT",
+	       "NELEMENT", count,NULL);
+      }
+      else {	/* default type = 'S' or 'C' <what's the difference??> */
+	lsef = incrm_check_buffer(&labptr);	/* step past the '(' */
+	if( lsef == 0 ) goto notfound;
+	while ( bufpoint[labptr] != ')' ) {
+	  lsef = get_qstring_value( stritem[count++], 100, &labptr);
+	  if( lsef == 0 ) goto notfound;
+	  if ( bufpoint[labptr] != ')' ) 
+	    lsef = incrm_check_buffer(&labptr);	/* step past terminator */
+	  if( lsef == 0 ) goto notfound;
+	}
+	zladd( unit, "HISTORY", vicaritem, stritem,  "FORMAT", "STRING",
+	       "NELEMENT", count, "ULEN", 101, NULL);
+      }
+      break;
 
-  default:  	/* type = 'S' assumed */
-    while (bufpoint[labptr]!='\r' &&
-           bufpoint[labptr]!=' '  && bufpoint[labptr]!='*' &&
-           bufpoint[labptr]!='\'' && prevval!='/') {
-      line[count++]=bufpoint[labptr];
-      prevval=bufpoint[labptr];
+    case '\"':    /* Value is a line comment 'Now is the time . . .'   */
       lsef = incrm_check_buffer(&labptr);
-       if( lsef == 0 ) goto notfound; 
-    }
-    if(prevval=='/')
-      line[count-1]=' ';
-    zladd(unit,"HISTORY",vicaritem,line,"FORMAT","STRING",NULL);
-    break;
-  }
-  break;
-}
-memset( line, 0, 120);
-return 1;
+      if( lsef == 0 ) goto notfound;
+      while(bufpoint[labptr]!='\"')
+	{
+	  if(bufpoint[labptr]!='\'')
+	    line[count++]=bufpoint[labptr];
+	  lsef = incrm_check_buffer(&labptr);  
+	  if( lsef == 0 ) goto notfound;
+	}
+      zladd(unit,"HISTORY",vicaritem,line,"FORMAT","STRING",NULL);
+      break;
 
-notfound:
+    default:    /* Value is not a line comment or array of values    */
+
+      switch(type[0]) {    /* Check for REAL, INT, TIME, or STRING type  */
+
+      case 'R':
+	lsef = get_real_value(&realitem[0],bufpoint,&labptr);
+	if( lsef == 0 ) goto notfound;
+	zladd(unit,"HISTORY",vicaritem,realitem,"FORMAT","REAL",NULL);
+	break;
+
+      case 'I': 
+	lsef = get_integer_value(&intitem[0],bufpoint,&labptr);
+	if( lsef == 0 ) goto notfound;
+	zladd(unit,"HISTORY",vicaritem,intitem,"FORMAT","INT",NULL);
+	break;
+
+      case 'T': 
+	prevval=' ';
+	while(bufpoint[labptr]!='\r' &&
+	      (bufpoint[labptr]!='*' && prevval!='/')) {
+	  if(isdigit(bufpoint[labptr])!=FALSE || 
+	     bufpoint[labptr] == '.') {
+	    if(count>1 && vicaritem[vlen]!='K' && vicaritem[vlen]!='T')
+	      line[count-2]=bufpoint[labptr];
+	    else
+	      line[count]=bufpoint[labptr];
+	  }
+	  else {		/* punctuation becomes spaces, Month gets extra 0 */
+	    if (count==4) {		/* start of Month string */
+	      line[count++] = ' ';
+	      line[count] = '0';
+	    }
+	    else line[count] = ' ';
+	  }
+	  count++;
+	  prevval=bufpoint[labptr];
+	  lsef = incrm_check_buffer(&labptr);
+	  if( lsef == 0 ) goto notfound;
+	}
+	zladd(unit,"HISTORY",vicaritem,line,"FORMAT","STRING",NULL);
+	break;
+
+      default:  	/* type = 'S' assumed */
+	while (bufpoint[labptr]!='\r' &&
+	       bufpoint[labptr]!=' '  && bufpoint[labptr]!='*' &&
+	       bufpoint[labptr]!='\'' && prevval!='/') {
+	  line[count++]=bufpoint[labptr];
+	  prevval=bufpoint[labptr];
+	  lsef = incrm_check_buffer(&labptr);
+	  if( lsef == 0 ) goto notfound; 
+	}
+	if(prevval=='/')
+	  line[count-1]=' ';
+	zladd(unit,"HISTORY",vicaritem,line,"FORMAT","STRING",NULL);
+	break;
+      }
+      break;
+    }
+  memset( line, 0, 120);
+  return 1;
+
+ notfound:
   sprintf( message, " Keyword %s not found in cube label", pdsitem);
   zvmessage( message,"");
   return 0;
@@ -3564,14 +3564,14 @@ int FUNCTION get_string_value( buf, maxlen, lptr)
  * this definition is NOT the same as that used for strings in function
  * keyword_value()!
  */
-char *buf;
-int maxlen, *lptr;
+     char *buf;
+     int maxlen, *lptr;
 {
   int i;
 
   for (i=0; i<maxlen; i++) buf[i] = 0;		/* intialize */
 
-	/* find beginning of string: */
+  /* find beginning of string: */
   while (bufpoint[*lptr] == '\r' || bufpoint[*lptr] == '\n' ||
          bufpoint[*lptr] == '/' || bufpoint[*lptr] == '=' ||
          bufpoint[*lptr] == '"' || 
@@ -3606,14 +3606,14 @@ int FUNCTION get_qstring_value( buf, maxlen, lptr)
  * by quotation marks ("), which are not themselves returned as part
  * of the string
  */
-char *buf;
-int maxlen, *lptr;
+     char *buf;
+     int maxlen, *lptr;
 {
   int i;
 
   for (i=0; i<maxlen; i++) buf[i] = 0;		/* intialize */
 
-	/* find beginning of string: */
+  /* find beginning of string: */
   while (bufpoint[*lptr] != '"') {
     lsef = incrm_check_buffer( lptr);
     if( lsef == 0 ) return 0;
@@ -3640,8 +3640,8 @@ FUNCTION process_parms(direction,inputfiles)
 /*
  * Process all user parameters and determine direction of transformation.
  */
-int *direction;				/* Direction of transform    */
-char inputfiles[][100];			/* Input files to CUBE	     */
+     int *direction;				/* Direction of transform    */
+     char inputfiles[][100];			/* Input files to CUBE	     */
 {
   int count, i, file_indices[MAXNUMOFFILES], flen[MAXNUMOFFILES], current_file;
   char file[1000];				/* Input file names	     */
@@ -3678,7 +3678,7 @@ char inputfiles[][100];			/* Input files to CUBE	     */
   for(current_file=1; current_file<=count; current_file++) {
     zvunit(&inunit[current_file-1],"INP",current_file,NULL);
     strcpy(inputfiles[current_file - 1],    /* Get input file names	     */
-	&file[file_indices[current_file - 1] - 1]);
+	   &file[file_indices[current_file - 1] - 1]);
   }
 
   /* Check if history file specified: */
@@ -3691,7 +3691,7 @@ char inputfiles[][100];			/* Input files to CUBE	     */
     /* Get task name for labels */
     zvp( "TASKNAME", tasknam, &i);
     if (!strncmp(tasknam,"NIMSCMM2",8) || !strncmp(tasknam,"NIMSCMM_",8))
-     mphase = 1;
+      mphase = 1;
     else if (!strncmp(tasknam,"NIMSCMM",7)) mphase = 0;
     if (strncmp(tasknam,"VISIS2",6) && !strncmp(tasknam,"VISIS",5)) mphase = 0;
 
@@ -3709,22 +3709,22 @@ FUNCTION verify_input_files(count)
 /*
  * Purpose: read labels of VICAR input files 
  */
-int 	count;				/* Number of input files	     */
+     int 	count;				/* Number of input files	     */
 {
   int	band,				/* Loop control variable	     */
-	ln,				/* Loop control - line	     	     */
-	object,				/* Loop control variable	     */
-	stat1,stat2,			/* lsef flags for history labels   */
-	x,y,z;				/* Loop control variables	     */
+    ln,				/* Loop control - line	     	     */
+    object,				/* Loop control variable	     */
+    stat1,stat2,			/* lsef flags for history labels   */
+    x,y,z;				/* Loop control variables	     */
   char	task[TASK_LIST_LEN * TASK_LEN]; /* Task names			     */
   int	instances[20],			/* Array of instances of history lbl */
-	file_indices[6],		/* Output file indices		     */
-	numtasks;			/* Number of tasks of history label  */
+    file_indices[6],		/* Output file indices		     */
+    numtasks;			/* Number of tasks of history label  */
 
   for(object=0;object<count;object++) {	/* Get inputs' dimensions    	     */
     vstat = zvopen(inunit[object],"OP","READ","OPEN_ACT","SA","IO_ACT","SA",NULL);
     vstat = zvget(inunit[object],"NL",&inl[object],"NS",&ns[object],
-		"NB",&nb[object],"PIX_SIZE",&bytes[object],NULL);
+		  "NB",&nb[object],"PIX_SIZE",&bytes[object],NULL);
   }
 
   if (count < MINNUMOFFILES)
@@ -3777,7 +3777,7 @@ int 	count;				/* Number of input files	     */
   iofcub = 0;
   ncubtasks = 20;		
   vstat = zlhinfo( inunit[object], cubtasks, instances, &ncubtasks,
-   "ERR_ACT", "SA", NULL);
+		   "ERR_ACT", "SA", NULL);
   vstat = x = 0;
   while( x < ncubtasks ) {
     if (strncmp(&cubtasks[x * TASK_LEN],tasknam,8)==0) vstat = 1;
@@ -3822,209 +3822,209 @@ FUNCTION VICARlabels(nlabrecs,nhistrecs,nrecs)
 /*
  * Generate VICAR format labels and get object pointers.
  */
-int	*nlabrecs,			/* Number of label records	     */
-	*nhistrecs,			/* Number of history records	     */
-	*nrecs;				/* Number of cube file records	     */
+     int	*nlabrecs,			/* Number of label records	     */
+     *nhistrecs,			/* Number of history records	     */
+     *nrecs;				/* Number of cube file records	     */
 {
-int count, i, object=0, radtyp;
-char file[100];
+  int count, i, object=0, radtyp;
+  char file[100];
 
-get_recinfo(nlabrecs,nhistrecs,nrecs);	
+  get_recinfo(nlabrecs,nhistrecs,nrecs);	
 
-	/* 2D HISTOGRAM output file */
+  /* 2D HISTOGRAM output file */
 
-vstat = zvopen(outunit[object],"OPEN_ACT","SA","IO_ACT","SA","OP","WRITE",
- "U_NL",inl[object],"U_NS",ns[object],"U_NB",1,"O_FORMAT","BYTE",
- "U_FORMAT","BYTE",NULL);
-keyword_value(outunit[object],"INSTRUMENT_ID","C",INSTRUMENT,3);
-keyword_value(outunit[object],"INSTRUMENT_MODE_ID","C",INS_MODE,3);
-keyword_value(outunit[object],"TARGET_NAME","S",TARGET,3);
-keyword_value(outunit[object],"MISSION_PHASE_NAME","C",PHASE,3);
-/*keyword_value(outunit[object],"PRODUCT_ID","C",PRODID,3);*/
-keyword_value(outunit[object],"OBSERVATION_NAME","C",OBSNAME,3);
-zvclose(outunit[object++],NULL);
+  vstat = zvopen(outunit[object],"OPEN_ACT","SA","IO_ACT","SA","OP","WRITE",
+		 "U_NL",inl[object],"U_NS",ns[object],"U_NB",1,"O_FORMAT","BYTE",
+		 "U_FORMAT","BYTE",NULL);
+  keyword_value(outunit[object],"INSTRUMENT_ID","C",INSTRUMENT,3);
+  keyword_value(outunit[object],"INSTRUMENT_MODE_ID","C",INS_MODE,3);
+  keyword_value(outunit[object],"TARGET_NAME","S",TARGET,3);
+  keyword_value(outunit[object],"MISSION_PHASE_NAME","C",PHASE,3);
+  /*keyword_value(outunit[object],"PRODUCT_ID","C",PRODID,3);*/
+  keyword_value(outunit[object],"OBSERVATION_NAME","C",OBSNAME,3);
+  zvclose(outunit[object++],NULL);
 
-	/* Spectra output files */
-if( specplots > 0 )
-  for (object=1;object<=specplots;object++) { 
-    vstat = zvopen(outunit[object],"OPEN_ACT","SA","IO_ACT","SA","OP","WRITE",
-     "U_NL",inl[object],"U_NS",ns[object],"U_NB",1,"O_FORMAT","BYTE",
-     "U_FORMAT","BYTE",NULL);
-    keyword_value(outunit[object],"INSTRUMENT_ID","C",INSTRUMENT,3);
-    keyword_value(outunit[object],"INSTRUMENT_MODE_ID","C",INS_MODE,3);
-    keyword_value(outunit[object],"TARGET_NAME","S",TARGET,3);
-    keyword_value(outunit[object],"MISSION_PHASE_NAME","C",PHASE,3);
-    keyword_value(outunit[object],"OBSERVATION_NAME","C",OBSNAME,3);
-    zvclose(outunit[object],NULL);
+  /* Spectra output files */
+  if( specplots > 0 )
+    for (object=1;object<=specplots;object++) { 
+      vstat = zvopen(outunit[object],"OPEN_ACT","SA","IO_ACT","SA","OP","WRITE",
+		     "U_NL",inl[object],"U_NS",ns[object],"U_NB",1,"O_FORMAT","BYTE",
+		     "U_FORMAT","BYTE",NULL);
+      keyword_value(outunit[object],"INSTRUMENT_ID","C",INSTRUMENT,3);
+      keyword_value(outunit[object],"INSTRUMENT_MODE_ID","C",INS_MODE,3);
+      keyword_value(outunit[object],"TARGET_NAME","S",TARGET,3);
+      keyword_value(outunit[object],"MISSION_PHASE_NAME","C",PHASE,3);
+      keyword_value(outunit[object],"OBSERVATION_NAME","C",OBSNAME,3);
+      zvclose(outunit[object],NULL);
+    }
+
+  /* VICAR MM cube file	*/
+
+  if (bytes[object]==2)
+    vstat = zvopen(outunit[object],"OP","WRITE","U_FORMAT","HALF","O_FORMAT",
+		   "HALF","U_NL",inl[object],"U_NS",ns[object],"U_NB",nb[object],
+		   "OPEN_ACT","SA","IO_ACT","SA",NULL);
+  else 			/* (bytes[object]==4) */
+    vstat = zvopen(outunit[object],"OP","WRITE","U_FORMAT","REAL","O_FORMAT",
+		   "REAL","U_NL",inl[object],"U_NS",ns[object],"U_NB",nb[object],
+		   "OPEN_ACT","SA","IO_ACT","SA",NULL);
+
+  /* first gather map projection data and write a standard
+   * Vicar MAPLABV2-format label:
+   * (this call also writes other label items that cannot be
+   * processed by keyword_value and determines mphase) */
+  nbb = nb[object];	/* for band_mask determination */
+  lsef = write_vlab( outunit[object], &radtyp);
+  if (lsef == 0) zvmessage("*** Unable to write Vicar MAP label ***","");
+
+  /* write other required NIMSCMM label items:
+   * (the following items are not written, since they are
+   * are not read by VISIS2:  COMMENT, SATURATED, ERTDATE/TIME) */
+
+  keyword_value( outunit[object], "MINIMUM_LATITUDE", "R", MIN_LAT, 3);
+  keyword_value( outunit[object], "MAXIMUM_LATITUDE", "R", MAX_LAT, 3);
+
+  keyword_value( outunit[object], "COORDINATE_SYSTEM_NAME", "C", LAT_TYPE, 3);
+
+  keyword_value( outunit[object], "EDR_FILE_NAME", "C", EDRS, 3);
+
+  keyword_value(outunit[object],"MISSION_PHASE_NAME","C",PHASE,3);
+  keyword_value(outunit[object],"TARGET_NAME","C",TARGET,3);
+  keyword_value(outunit[object],"START_TIME","T",BEG_SCET,3);
+  keyword_value(outunit[object],"STOP_TIME","T",END_SCET,3);
+  keyword_value( outunit[object], "START_SUB_SPACECRAFT_LATITUDE", "R", B_SSCLAT,
+		 3);
+  keyword_value( outunit[object], "STOP_SUB_SPACECRAFT_LATITUDE", "R", E_SSCLAT,
+		 3);
+  keyword_value( outunit[object], "START_SUB_SOLAR_LATITUDE", "R", B_SSOLLAT,
+		 3);
+  keyword_value( outunit[object], "STOP_SUB_SOLAR_LATITUDE", "R", E_SSOLLAT,
+		 3);
+  /*keyword_value(outunit[object],"PRODUCT_ID","C",PRODID,3);*/
+
+  /* obsext and mosnum are not in PDS label as separate items, so try
+   * to extract them from the cube name: */
+  zvp("INP",file,&count);
+  for (i=0; i<strlen(file); i++) if (file[i]=='.') break;
+  if (i<7 || i==strlen(file))
+    zvmessage("Unable to determine OBSEXT & MOS_NUM from qube name","");
+  else {
+    strncpy(v.mosnum,&file[i-2],2);
+    v.mosnum[2] = 0;
+    zladd( outunit[object], "HISTORY", MOSNUM, v.mosnum, "FORMAT", "STRING", NULL);
+    if (mphase) {
+      v.obsext[0] = file[i-7];
+      v.obsext[1] = 0;
+      zladd( outunit[object], "HISTORY", OBSEXT, v.obsext, "FORMAT", "STRING", NULL);
+    }
   }
 
-	/* VICAR MM cube file	*/
+  keyword_value( outunit[object], "DARK_UPDATE_TYPE", "C", DARK_TYPE, 3);
+  keyword_value( outunit[object], "PHOTOMETRIC_CORRECTION_TYPE", "C",PHOT_FUNC,3);
+  keyword_value( outunit[object], "PHOTO_CORR_CUTOFF_WAVELENGTH", "R",PHOT_CUT,3);
+  keyword_value( outunit[object], "MINNAERT_EXPONENT", "R", MINN_EXP, 3);
+  keyword_value( outunit[object], "MEAN_SCAN_RATE", "R", SLEW_RATE, 3);
 
-if (bytes[object]==2)
-  vstat = zvopen(outunit[object],"OP","WRITE","U_FORMAT","HALF","O_FORMAT",
-	"HALF","U_NL",inl[object],"U_NS",ns[object],"U_NB",nb[object],
-	"OPEN_ACT","SA","IO_ACT","SA",NULL);
-else 			/* (bytes[object]==4) */
-  vstat = zvopen(outunit[object],"OP","WRITE","U_FORMAT","REAL","O_FORMAT",
-	"REAL","U_NL",inl[object],"U_NS",ns[object],"U_NB",nb[object],
-	"OPEN_ACT","SA","IO_ACT","SA",NULL);
+  keyword_value( outunit[object], "SATURATION_THRESHOLD_WEIGHT", "R",SATTHRSH,3);
 
-	/* first gather map projection data and write a standard
-	 * Vicar MAPLABV2-format label:
-	 * (this call also writes other label items that cannot be
-	 * processed by keyword_value and determines mphase) */
-nbb = nb[object];	/* for band_mask determination */
-lsef = write_vlab( outunit[object], &radtyp);
-if (lsef == 0) zvmessage("*** Unable to write Vicar MAP label ***","");
+  keyword_value( outunit[object], "EXPANDED_RADIUS", "R", EQRAD_FUDG, 3);
+  keyword_value( outunit[object], "FILL_BOX_SIZE", "I", FILL_SIZE, 3);
+  keyword_value( outunit[object], "FILL_MIN_VALID_PIXELS", "I", FILL_NUM, 3);
 
-	/* write other required NIMSCMM label items:
-	 * (the following items are not written, since they are
-	 * are not read by VISIS2:  COMMENT, SATURATED, ERTDATE/TIME) */
-
-keyword_value( outunit[object], "MINIMUM_LATITUDE", "R", MIN_LAT, 3);
-keyword_value( outunit[object], "MAXIMUM_LATITUDE", "R", MAX_LAT, 3);
-
-keyword_value( outunit[object], "COORDINATE_SYSTEM_NAME", "C", LAT_TYPE, 3);
-
-keyword_value( outunit[object], "EDR_FILE_NAME", "C", EDRS, 3);
-
-keyword_value(outunit[object],"MISSION_PHASE_NAME","C",PHASE,3);
-keyword_value(outunit[object],"TARGET_NAME","C",TARGET,3);
-keyword_value(outunit[object],"START_TIME","T",BEG_SCET,3);
-keyword_value(outunit[object],"STOP_TIME","T",END_SCET,3);
-keyword_value( outunit[object], "START_SUB_SPACECRAFT_LATITUDE", "R", B_SSCLAT,
- 3);
-keyword_value( outunit[object], "STOP_SUB_SPACECRAFT_LATITUDE", "R", E_SSCLAT,
- 3);
-keyword_value( outunit[object], "START_SUB_SOLAR_LATITUDE", "R", B_SSOLLAT,
- 3);
-keyword_value( outunit[object], "STOP_SUB_SOLAR_LATITUDE", "R", E_SSOLLAT,
- 3);
-/*keyword_value(outunit[object],"PRODUCT_ID","C",PRODID,3);*/
-
-/* obsext and mosnum are not in PDS label as separate items, so try
- * to extract them from the cube name: */
-zvp("INP",file,&count);
-for (i=0; i<strlen(file); i++) if (file[i]=='.') break;
-if (i<7 || i==strlen(file))
-  zvmessage("Unable to determine OBSEXT & MOS_NUM from qube name","");
-else {
-  strncpy(v.mosnum,&file[i-2],2);
-  v.mosnum[2] = 0;
-  zladd( outunit[object], "HISTORY", MOSNUM, v.mosnum, "FORMAT", "STRING", NULL);
   if (mphase) {
-    v.obsext[0] = file[i-7];
-    v.obsext[1] = 0;
-    zladd( outunit[object], "HISTORY", OBSEXT, v.obsext, "FORMAT", "STRING", NULL);
+    if (!calib) {
+      keyword_value( outunit[object], "AACS_FILE_NAME", "C", AACS_FILE, 3);
+      keyword_value( outunit[object], "PLATFORM_CKERNEL_NAME", "C", PFM_CK, 3);
+      keyword_value( outunit[object], "ROTOR_CKERNEL_NAME", "C", ROT_CK, 3);
+    }
   }
-}
+  else
+    keyword_value( outunit[object], "POINTING_SOURCE", "C", POINT_SOURCE, 3);
+  keyword_value( outunit[object], "POINTING_OFFSET", "R", DPOINT, 3);
+  keyword_value( outunit[object], "WOBBLE_AMPLITUDE", "R", WAMP, 3);
+  keyword_value( outunit[object], "WOBBLE_FREQUENCY", "R", WFREQ, 3);
+  keyword_value( outunit[object], "WOBBLE_PHASE", "R", WPHASE, 3);
+  keyword_value( outunit[object], "WOBBLE_CONE_ESTIMATE", "C", WCONE, 3);
 
-keyword_value( outunit[object], "DARK_UPDATE_TYPE", "C", DARK_TYPE, 3);
-keyword_value( outunit[object], "PHOTOMETRIC_CORRECTION_TYPE", "C",PHOT_FUNC,3);
-keyword_value( outunit[object], "PHOTO_CORR_CUTOFF_WAVELENGTH", "R",PHOT_CUT,3);
-keyword_value( outunit[object], "MINNAERT_EXPONENT", "R", MINN_EXP, 3);
-keyword_value( outunit[object], "MEAN_SCAN_RATE", "R", SLEW_RATE, 3);
+  keyword_value( outunit[object], "SCLK_GAPS", "I", SC_GAPS, 3);
 
-keyword_value( outunit[object], "SATURATION_THRESHOLD_WEIGHT", "R",SATTHRSH,3);
+  keyword_value( outunit[object], "SP_KERNEL_FILE_NAME", "C", SP_KERNEL, 3);
+  keyword_value( outunit[object], "I_KERNEL_FILE_NAME", "C", IKERNEL, 3);
+  keyword_value( outunit[object], "SPIKE_FILE_NAME", "C", DESPIKE_FILE, 3);
+  keyword_value( outunit[object], "BOOM_FILE_NAME", "C", DEBOOM_FILE, 3);
+  keyword_value( outunit[object], "CALIBRATION_FILE_NAME", "C", CAL_FILE, 3);
+  keyword_value( outunit[object], "DARK_VALUE_FILE_NAME", "C", DARK_FILE, 3);
+  keyword_value( outunit[object], "SOLAR_FLUX_FILE_NAME", "C", SOL_FILE, 3);
 
-keyword_value( outunit[object], "EXPANDED_RADIUS", "R", EQRAD_FUDG, 3);
-keyword_value( outunit[object], "FILL_BOX_SIZE", "I", FILL_SIZE, 3);
-keyword_value( outunit[object], "FILL_MIN_VALID_PIXELS", "I", FILL_NUM, 3);
+  keyword_value( outunit[object], "INSTRUMENT_MODE_ID", "C", INS_MODE,3);
+  keyword_value( outunit[object], "GAIN_MODE_ID", "I", GAIN_STATE, 3);
+  keyword_value( outunit[object], "OFFSET_GRATING_POSITION","I",GRATING_OFFSET,3);
+  keyword_value( outunit[object], "START_GRATING_POSITION", "I", GRATING_START,3);
+  keyword_value( outunit[object], "GRATING_POSITION_INCREMENT", "I", GRATING_DELTA,3);
+  keyword_value( outunit[object], "GRATING_POSITIONS", "I", GRATING_STEPS,3);
 
-if (mphase) {
-  if (!calib) {
-    keyword_value( outunit[object], "AACS_FILE_NAME", "C", AACS_FILE, 3);
-    keyword_value( outunit[object], "PLATFORM_CKERNEL_NAME", "C", PFM_CK, 3);
-    keyword_value( outunit[object], "ROTOR_CKERNEL_NAME", "C", ROT_CK, 3);
+  keyword_value( outunit[object], "STOP_SLIDE_MODE_ID","C",STOP_SLIDE,3);
+
+  keyword_value( outunit[object],"STD_DEV_SELECTED_BAND_NUMBER","I",DN_STD_DEV,3);
+  keyword_value( outunit[object],"STD_DEV_SELECTED_BACKPLANE", "I",GEO_STD_DEV,3);
+
+  keyword_value( outunit[object],"INSTRUMENT_THRESHOLD", "I",THRESHVAL,3);
+  keyword_value( outunit[object],"GRATING_POSITION_CORRECTION", "R",PSHIFT,3);
+  keyword_value( outunit[object],"GRATING_STEP_INFLATION", "R",AINFL,3);
+
+  keyword_value( outunit[object], "INCIDENCE_ANGLE", "R", INCI_ANG, 3);
+  keyword_value( outunit[object], "EMISSION_ANGLE", "R", EMIS_ANG, 3);
+  keyword_value( outunit[object], "PHASE_ANGLE", "R", PHAS_ANG, 3);
+  keyword_value( outunit[object], "SOLAR_AZIMUTH", "R", SUN_AZI, 3);
+  keyword_value( outunit[object], "SUB_SPACECRAFT_AZIMUTH", "R", SC_AZI, 3);
+  keyword_value( outunit[object], "MINIMUM_SLANT_DISTANCE", "R",
+		 MIN_RANGE, 3);
+  keyword_value( outunit[object], "MAXIMUM_SLANT_DISTANCE", "R",
+		 MAX_RANGE, 3);
+  keyword_value( outunit[object], "MINIMUM_CENTRAL_BODY_DISTANCE", "R",
+		 MIN_CB_D, 3);
+  keyword_value( outunit[object], "MAXIMUM_CENTRAL_BODY_DISTANCE", "R",
+		 MAX_CB_D, 3);
+
+  /* read these as strings to avoid problem with floating-point
+   * format (they are the only items written with "%g" format
+   * -- needs to be fixed at some point -- TBD */
+  keyword_value( outunit[object], "MIN_SPACECRAFT_SOLAR_DISTANCE", "C",
+		 MIN_SUN_D, 3);
+  keyword_value( outunit[object], "MAX_SPACECRAFT_SOLAR_DISTANCE", "C",
+		 MAX_SUN_D, 3);
+
+  keyword_value(outunit[object],"MEAN_FOCAL_PLANE_TEMPERATURE","R",T_FOCAL,3);
+  keyword_value(outunit[object],"MEAN_RAD_SHIELD_TEMPERATURE","R",T_RAD_SHIELD,3);
+  keyword_value(outunit[object],"MEAN_TELESCOPE_TEMPERATURE","R",T_TELESCOPE,3);
+  keyword_value(outunit[object],"MEAN_GRATING_TEMPERATURE","R",T_GRATING,3);
+  keyword_value(outunit[object],"MEAN_CHOPPER_TEMPERATURE","R",T_CHOPPER,3);
+  keyword_value(outunit[object],"MEAN_ELECTRONICS_TEMPERATURE",
+		"R",T_ELECTRONICS,3);
+
+  keyword_value( outunit[object], "BAND_BIN_CENTER", "R", WAVELENGTHS, 3);
+
+  if (radtyp) {
+    keyword_value( outunit[object], "BAND_BIN_SOLAR_FLUX", "R", SOLAR_FLUX, 3);
+    keyword_value( outunit[object], "BAND_BIN_SENSITIVITY", "R", RAD_SENS, 3);
+    keyword_value( outunit[object], "MEAN_DARK_DATA_NUMBER", "R", DRK_AVE, 3);
+    keyword_value( outunit[object], "BAND_BIN_BASE", "R", RAD_BASE, 3);
+    keyword_value( outunit[object], "BAND_BIN_MULTIPLIER", "R", RAD_CONV, 3);
   }
-}
-else
-  keyword_value( outunit[object], "POINTING_SOURCE", "C", POINT_SOURCE, 3);
-keyword_value( outunit[object], "POINTING_OFFSET", "R", DPOINT, 3);
-keyword_value( outunit[object], "WOBBLE_AMPLITUDE", "R", WAMP, 3);
-keyword_value( outunit[object], "WOBBLE_FREQUENCY", "R", WFREQ, 3);
-keyword_value( outunit[object], "WOBBLE_PHASE", "R", WPHASE, 3);
-keyword_value( outunit[object], "WOBBLE_CONE_ESTIMATE", "C", WCONE, 3);
-
-keyword_value( outunit[object], "SCLK_GAPS", "I", SC_GAPS, 3);
-
-keyword_value( outunit[object], "SP_KERNEL_FILE_NAME", "C", SP_KERNEL, 3);
-keyword_value( outunit[object], "I_KERNEL_FILE_NAME", "C", IKERNEL, 3);
-keyword_value( outunit[object], "SPIKE_FILE_NAME", "C", DESPIKE_FILE, 3);
-keyword_value( outunit[object], "BOOM_FILE_NAME", "C", DEBOOM_FILE, 3);
-keyword_value( outunit[object], "CALIBRATION_FILE_NAME", "C", CAL_FILE, 3);
-keyword_value( outunit[object], "DARK_VALUE_FILE_NAME", "C", DARK_FILE, 3);
-keyword_value( outunit[object], "SOLAR_FLUX_FILE_NAME", "C", SOL_FILE, 3);
-
-keyword_value( outunit[object], "INSTRUMENT_MODE_ID", "C", INS_MODE,3);
-keyword_value( outunit[object], "GAIN_MODE_ID", "I", GAIN_STATE, 3);
-keyword_value( outunit[object], "OFFSET_GRATING_POSITION","I",GRATING_OFFSET,3);
-keyword_value( outunit[object], "START_GRATING_POSITION", "I", GRATING_START,3);
-keyword_value( outunit[object], "GRATING_POSITION_INCREMENT", "I", GRATING_DELTA,3);
-keyword_value( outunit[object], "GRATING_POSITIONS", "I", GRATING_STEPS,3);
-
-keyword_value( outunit[object], "STOP_SLIDE_MODE_ID","C",STOP_SLIDE,3);
-
-keyword_value( outunit[object],"STD_DEV_SELECTED_BAND_NUMBER","I",DN_STD_DEV,3);
-keyword_value( outunit[object],"STD_DEV_SELECTED_BACKPLANE", "I",GEO_STD_DEV,3);
-
-keyword_value( outunit[object],"INSTRUMENT_THRESHOLD", "I",THRESHVAL,3);
-keyword_value( outunit[object],"GRATING_POSITION_CORRECTION", "R",PSHIFT,3);
-keyword_value( outunit[object],"GRATING_STEP_INFLATION", "R",AINFL,3);
-
-keyword_value( outunit[object], "INCIDENCE_ANGLE", "R", INCI_ANG, 3);
-keyword_value( outunit[object], "EMISSION_ANGLE", "R", EMIS_ANG, 3);
-keyword_value( outunit[object], "PHASE_ANGLE", "R", PHAS_ANG, 3);
-keyword_value( outunit[object], "SOLAR_AZIMUTH", "R", SUN_AZI, 3);
-keyword_value( outunit[object], "SUB_SPACECRAFT_AZIMUTH", "R", SC_AZI, 3);
-keyword_value( outunit[object], "MINIMUM_SLANT_DISTANCE", "R",
- MIN_RANGE, 3);
-keyword_value( outunit[object], "MAXIMUM_SLANT_DISTANCE", "R",
- MAX_RANGE, 3);
-keyword_value( outunit[object], "MINIMUM_CENTRAL_BODY_DISTANCE", "R",
- MIN_CB_D, 3);
-keyword_value( outunit[object], "MAXIMUM_CENTRAL_BODY_DISTANCE", "R",
- MAX_CB_D, 3);
-
-	/* read these as strings to avoid problem with floating-point
-	 * format (they are the only items written with "%g" format
-	 * -- needs to be fixed at some point -- TBD */
-keyword_value( outunit[object], "MIN_SPACECRAFT_SOLAR_DISTANCE", "C",
- MIN_SUN_D, 3);
-keyword_value( outunit[object], "MAX_SPACECRAFT_SOLAR_DISTANCE", "C",
- MAX_SUN_D, 3);
-
-keyword_value(outunit[object],"MEAN_FOCAL_PLANE_TEMPERATURE","R",T_FOCAL,3);
-keyword_value(outunit[object],"MEAN_RAD_SHIELD_TEMPERATURE","R",T_RAD_SHIELD,3);
-keyword_value(outunit[object],"MEAN_TELESCOPE_TEMPERATURE","R",T_TELESCOPE,3);
-keyword_value(outunit[object],"MEAN_GRATING_TEMPERATURE","R",T_GRATING,3);
-keyword_value(outunit[object],"MEAN_CHOPPER_TEMPERATURE","R",T_CHOPPER,3);
-keyword_value(outunit[object],"MEAN_ELECTRONICS_TEMPERATURE",
-	"R",T_ELECTRONICS,3);
-
-keyword_value( outunit[object], "BAND_BIN_CENTER", "R", WAVELENGTHS, 3);
-
-if (radtyp) {
-  keyword_value( outunit[object], "BAND_BIN_SOLAR_FLUX", "R", SOLAR_FLUX, 3);
-  keyword_value( outunit[object], "BAND_BIN_SENSITIVITY", "R", RAD_SENS, 3);
-  keyword_value( outunit[object], "MEAN_DARK_DATA_NUMBER", "R", DRK_AVE, 3);
-  keyword_value( outunit[object], "BAND_BIN_BASE", "R", RAD_BASE, 3);
-  keyword_value( outunit[object], "BAND_BIN_MULTIPLIER", "R", RAD_CONV, 3);
-}
 
   zvclose(outunit[object++],NULL);
 
   /* Open VICAR GEO cube file	*/
   vstat = zvopen(outunit[object],"OP","WRITE","U_FORMAT","REAL","O_FORMAT",
-	"REAL","U_NL",inl[object],"U_NS",ns[object],"U_NB",nb[object],
-	"OPEN_ACT","SA","IO_ACT","SA",NULL);
+		 "REAL","U_NL",inl[object],"U_NS",ns[object],"U_NB",nb[object],
+		 "OPEN_ACT","SA","IO_ACT","SA",NULL);
   zvclose(outunit[object++],NULL);
 
   if( cubefiles == 3 ) {
     /* Open VICAR SII cube file	*/
     vstat = zvopen(outunit[object],"OP","WRITE","U_FORMAT","REAL","O_FORMAT","REAL",
-     "U_NL",inl[object],"U_NS",ns[object],"U_NB",nb[object],"OPEN_ACT","SA",
-     "IO_ACT","SA",NULL);
+		   "U_NL",inl[object],"U_NS",ns[object],"U_NB",nb[object],"OPEN_ACT","SA",
+		   "IO_ACT","SA",NULL);
     zvclose(outunit[object],NULL);
   }
 }
@@ -4035,7 +4035,7 @@ FUNCTION VICARtoISIS(inputfiles)
 /*
  *Purpose: Generate NIMS ISIS Cube file
  */
-char 	inputfiles[][100];		/* Input file names		     */
+     char 	inputfiles[][100];		/* Input file names		     */
 {					/* 	LOCAL VARIABLES		     */
   int band, ln, nhistrecs, nlabrecs, nrecs, object, stat1, stat2, x, y, z,
     instances[20], file_indices[6], numtasks;
@@ -4066,7 +4066,7 @@ char 	inputfiles[][100];		/* Input file names		     */
 
   /* at this point we have the observation ID, so can retrieve the
    * record from catalog (if present): */
-/*if (zvptst("USECAT")) get_cat();*/
+  /*if (zvptst("USECAT")) get_cat();*/
 
   /* Write PDS label to cube file */
   create_PDSlabel(&nrecs,&nlabrecs,&nhistrecs,inputfiles);             
@@ -4082,10 +4082,10 @@ FUNCTION write_object(dir,nlrecs,nhrecs,nrecs)
  * Copies object files to NIMS cube file or appropriate 
  * VICAR files, depending on direction of processing requested.
  */
-int dir,	/* Direction of processing */
-  nlrecs,	/* Number of label records */
-  nhrecs,	/* Number of history records */
-  nrecs; 	/* Number of file records */
+     int dir,	/* Direction of processing */
+     nlrecs,	/* Number of label records */
+     nhrecs,	/* Number of history records */
+     nrecs; 	/* Number of file records */
 
 {
   int band, bufsample;
@@ -4105,22 +4105,22 @@ int dir,	/* Direction of processing */
 
     /* Open ISIS cube file */
     vstat = zvopen(outunit[0],"U_FORMAT","BYTE","O_FORMAT","BYTE","OP","WRITE",
-     "OPEN_ACT","SA","IO_ACT","SA","U_NL",nrecs,"U_NS",BUFFERSIZE,"U_NB",1,
-     "COND","NOLABELS",NULL);
+		   "OPEN_ACT","SA","IO_ACT","SA","U_NL",nrecs,"U_NS",BUFFERSIZE,"U_NB",1,
+		   "COND","NOLABELS",NULL);
 
     for(x=0,ln=1;x<nlrecs;x++,ln++)  /* Write PDS label    */
       zvwrit(outunit[0],&bufpoint[x*BUFFERSIZE],"NSAMPS",BUFFERSIZE,
-       "LINE",ln,NULL);
+	     "LINE",ln,NULL);
     free( bufpoint );    /* Deallocate memory    */
 
     for( x=0;x<nhrecs;x++,ln++ )  /* Write History object    */
       zvwrit(outunit[0],&histpoint[x*BUFFERSIZE],"NSAMPS",BUFFERSIZE,
-       "LINE",ln,NULL);
+	     "LINE",ln,NULL);
     free( histpoint );    /* Deallocate memory    */
 
     /* Open 2D histogram file  */
     vstat = zvopen(inunit[object],"OP","READ","OPEN_ACT","SA","IO_ACT","SA",
-     "ADDRESS",&inptr,NULL);
+		   "ADDRESS",&inptr,NULL);
 
     size = inl[object]*ns[object];  /* Write 2D histogram to output  */
     for( x=0; x<size/BUFFERSIZE; x++,ln++,inptr+=BUFFERSIZE ) {
@@ -4145,7 +4145,7 @@ int dir,	/* Direction of processing */
 
       for( y=0, object=1; object<=specplots; object++ ) {
         vstat = zvopen(inunit[object],"OP","READ","OPEN_ACT","SA","IO_ACT","SA",
-	 "ADDRESS",&inptr,NULL);
+		       "ADDRESS",&inptr,NULL);
         for( x=0; x<size/specplots; x++, y++ ) {
           zmve( 1, 2, inptr, buf, 1, 1);
           nibbles[y] = (buf[0]&240) | (((int)buf[1]&240) >> 4);
@@ -4158,7 +4158,7 @@ int dir,	/* Direction of processing */
 
       for( x=0;x<size/BUFFERSIZE;x++,ln++)
         zvwrit(outunit[0],&nibbles[x*BUFFERSIZE],
-             "NSAMPS",BUFFERSIZE,"LINE",ln,NULL);
+	       "NSAMPS",BUFFERSIZE,"LINE",ln,NULL);
       size -= (int)(size/BUFFERSIZE)*BUFFERSIZE;
       if ( size != 0 ) {
         zmve( 1, size, &nibbles[x*BUFFERSIZE], outbuf, 1, 1);
@@ -4174,7 +4174,7 @@ int dir,	/* Direction of processing */
     /* Write MM, GEOCUBE and SIICUBE to ISIS cube */
     while ( object < numoffiles ) {
       vstat = zvopen(inunit[object],"OP","READ","OPEN_ACT","SA","IO_ACT","SA",
-       "ADDRESS",&inptr,NULL);
+		     "ADDRESS",&inptr,NULL);
   
       size1 = inl[object]*ns[object]*nb[object]*bytes[object];
       extrasamples = 0;
@@ -4207,11 +4207,11 @@ int dir,	/* Direction of processing */
       if( size > 0 )
         if( object != (numoffiles-1) )
           zmve( 1, size, inptr, outbuf, 1, 1);
-      else {
-        zmve( 1, size, inptr, outbuf, 1, 1);
-        memset( &outbuf[size], 0, BUFFERSIZE-size );
-        zvwrit(outunit[0],outbuf,"NSAMPS",size,"LINE",ln,NULL);
-      }
+	else {
+	  zmve( 1, size, inptr, outbuf, 1, 1);
+	  memset( &outbuf[size], 0, BUFFERSIZE-size );
+	  zvwrit(outunit[0],outbuf,"NSAMPS",size,"LINE",ln,NULL);
+	}
     
       zvclose(inunit[object++],NULL);
       sprintf(xstring,"FILE %d copied",object);
@@ -4222,8 +4222,8 @@ int dir,	/* Direction of processing */
   else {   /* Copy ISIS cube file objects to respective VICAR files     */
 
     vstat = zvopen(inunit[0],"OPEN_ACT","SA","IO_ACT","SA","ADDRESS",&inptr,
-     "U_FORMAT","BYTE","O_FORMAT","BYTE","COND","NOLABELS","U_NL",nrecs,
-     "U_NS",BUFFERSIZE,NULL);
+		   "U_FORMAT","BYTE","O_FORMAT","BYTE","COND","NOLABELS","U_NL",nrecs,
+		   "U_NS",BUFFERSIZE,NULL);
 
     object = indx = 0;    /* Refer to 2D histogram       */
 
@@ -4231,7 +4231,7 @@ int dir,	/* Direction of processing */
     inptr += (objptr[indx++]-1)*BUFFERSIZE;  
 
     vstat = zvopen(outunit[object],"OP","UPDATE","OPEN_ACT","SA","IO_ACT","SA",
-     "ADDRESS",&outptr,NULL);
+		   "ADDRESS",&outptr,NULL);
 
     size = inl[object]*ns[object];
     zmve( 1, size, inptr, outptr, 1, 1);
@@ -4255,7 +4255,7 @@ int dir,	/* Direction of processing */
         nibbles=(unsigned char *)calloc(size,sizeof(unsigned char));
 
         vstat = zvopen(outunit[object],"OP","UPDATE","OPEN_ACT","SA","IO_ACT","SA",
-	 "ADDRESS",&outptr,NULL);
+		       "ADDRESS",&outptr,NULL);
 
         for (ln=0;ln<inl[object];ln++) {
           size = ns[object]/2;
@@ -4266,18 +4266,18 @@ int dir,	/* Direction of processing */
 	      nibbuf = nibbles[sample]&testvalues[x];
 	      index = sample*2 + x;
 	      switch ( nibbuf ) {
-		default:
-		case 0: buf[index] = nibbuf;	/* Plot background */
-			break;
-		case 48:			/* Standard dev.   */
-		case 3:	buf[index] = 60;	/* gray level     */
-			break;
-		case 96:			/* Break band bar  */
-		case 6:	buf[index] = 100;	/* gray level     */
-			break;
-		case 240:			/* Mean and text   */
-		case 15: buf[index] = 255;	/* gray level      */
-			break;
+	      default:
+	      case 0: buf[index] = nibbuf;	/* Plot background */
+		break;
+	      case 48:			/* Standard dev.   */
+	      case 3:	buf[index] = 60;	/* gray level     */
+		break;
+	      case 96:			/* Break band bar  */
+	      case 6:	buf[index] = 100;	/* gray level     */
+		break;
+	      case 240:			/* Mean and text   */
+	      case 15: buf[index] = 255;	/* gray level      */
+		break;
 	      }
 	    }
 	  }
@@ -4330,7 +4330,7 @@ int dir,	/* Direction of processing */
     for( z = 0; z < cubefiles; z++ ) {
   
       vstat = zvopen(outunit[object],"OP","UPDATE","OPEN_ACT","SA","IO_ACT","SA",
-       "LAB_ACT","SA","CLOS_ACT","SA","ADDRESS",&outptr,NULL);
+		     "LAB_ACT","SA","CLOS_ACT","SA","ADDRESS",&outptr,NULL);
 
       size = ns[object] * inl[object] * bytes[object];
 
@@ -4363,22 +4363,22 @@ int dir,	/* Direction of processing */
       if (vstat<=0) zmabend(" invalid HOST!");
       zldel( outunit[x], "SYSTEM", "HOST", NULL);
       zladd( outunit[x], "SYSTEM", "HOST", hostname, "FORMAT", "STRING",
-       "NELEMENT", 1, "MODE", "REPLACE", NULL);
+	     "NELEMENT", 1, "MODE", "REPLACE", NULL);
       zldel( outunit[x], "SYSTEM", "INTFMT", NULL);
       zladd( outunit[x], "SYSTEM", "INTFMT", intfmt, "FORMAT", "STRING",
-       "NELEMENT", 1, "MODE", "REPLACE", NULL);
+	     "NELEMENT", 1, "MODE", "REPLACE", NULL);
       zldel( outunit[x], "SYSTEM", "REALFMT", NULL);
       zladd( outunit[x], "SYSTEM", "REALFMT", realfmt, "FORMAT", "STRING",
-       "NELEMENT", 1, "MODE", "REPLACE", NULL);
+	     "NELEMENT", 1, "MODE", "REPLACE", NULL);
       zldel( outunit[x], "SYSTEM", "BHOST", NULL);
       zladd( outunit[x], "SYSTEM", "BHOST", hostname, "FORMAT", "STRING",
-       "NELEMENT", 1, "MODE", "REPLACE", NULL);
+	     "NELEMENT", 1, "MODE", "REPLACE", NULL);
       zldel( outunit[x], "SYSTEM", "BINTFMT", NULL);
       zladd( outunit[x], "SYSTEM", "BINTFMT", intfmt, "FORMAT", "STRING",
-       "NELEMENT", 1, "MODE", "REPLACE", NULL);
+	     "NELEMENT", 1, "MODE", "REPLACE", NULL);
       zldel( outunit[x], "SYSTEM", "BREALFMT", NULL);
       zladd( outunit[x], "SYSTEM", "BREALFMT", realfmt, "FORMAT", "STRING",
-       "NELEMENT", 1, "MODE", "REPLACE", NULL);
+	     "NELEMENT", 1, "MODE", "REPLACE", NULL);
       zvclose(outunit[x],NULL);
     }
   }
@@ -4392,78 +4392,78 @@ FUNCTION write_PDS_aline(buf,type,labelitem,value,number)
  * This differs from write_PDS_line in that value points to a
  * single item, which is replicated in the label array.
  */
-char 	buf[],
-	type,
-	labelitem[];
-void	*value;
-int 	number;
+     char 	buf[],
+     type,
+     labelitem[];
+     void	*value;
+     int 	number;
 {
-int	x,y,z;
-char	strng[50],
-	ln[80];
-int	*ivalue;
-float	*fvalue;
-char 	*cvalue;
+  int	x,y,z;
+  char	strng[50],
+    ln[80];
+  int	*ivalue;
+  float	*fvalue;
+  char 	*cvalue;
 
-switch(type)	{
+  switch(type)	{
 
-case 'C':	/* String constant 	*/
-case 'c':	cvalue = value;
-		sprintf(ln,"%s = (",labelitem);
-		for( x = 0; x < number-1 ; x++ )
-			{
-			sprintf(strng,"%s,",cvalue);
-			strcat(ln,strng);
-			if( strlen(ln) > 60 )
-				{
-				strcat(ln,"\r\n");
-				strcat(buf,ln);
-				strcpy(ln,"     ");
-				}
-			}
-		sprintf(strng,"%s)\r\n",cvalue);
-		strcat(ln,strng);
-		strcat(buf,ln);
-		break;
+  case 'C':	/* String constant 	*/
+  case 'c':	cvalue = value;
+    sprintf(ln,"%s = (",labelitem);
+    for( x = 0; x < number-1 ; x++ )
+      {
+	sprintf(strng,"%s,",cvalue);
+	strcat(ln,strng);
+	if( strlen(ln) > 60 )
+	  {
+	    strcat(ln,"\r\n");
+	    strcat(buf,ln);
+	    strcpy(ln,"     ");
+	  }
+      }
+    sprintf(strng,"%s)\r\n",cvalue);
+    strcat(ln,strng);
+    strcat(buf,ln);
+    break;
 
-case 'I': 	/* Integer value 	*/
-case 'i':	ivalue = value;
-		sprintf(ln,"%s = (",labelitem);
-		for( x = 0; x < number-1 ; x++ )
-				{
-				sprintf(strng,"%d,",ivalue);
-				strcat(ln,strng);
-				if( strlen(ln) > 60 )
-					{
-					strcat(ln,"\r\n");
-					strcat(buf,ln);
-					strcpy(ln,"     ");
-					}
-				}
-		sprintf(strng,"%d)\r\n",ivalue);
-		strcat(ln,strng);
-		strcat(buf,ln);
-		break;
+  case 'I': 	/* Integer value 	*/
+  case 'i':	ivalue = value;
+    sprintf(ln,"%s = (",labelitem);
+    for( x = 0; x < number-1 ; x++ )
+      {
+  sprintf(strng,"%d,",(int)ivalue);
+	strcat(ln,strng);
+	if( strlen(ln) > 60 )
+	  {
+	    strcat(ln,"\r\n");
+	    strcat(buf,ln);
+	    strcpy(ln,"     ");
+	  }
+      }
+  sprintf(strng,"%d)\r\n",(int)ivalue);
+    strcat(ln,strng);
+    strcat(buf,ln);
+    break;
 
-default:
-case 'F': 	/* floating point value 	*/
-case 'f':	fvalue = value;
-		sprintf(ln,"%s = (",labelitem);
-		for( x = 0; x < number-1 ; x++ )
-				{
-				sprintf(strng,"%f,",*fvalue);
-				strcat(ln,strng);
-				if( strlen(ln) > 60 )
-					{
-					strcat(ln,"\r\n");
-					strcat(buf,ln);
-					strcpy(ln,"     ");
-					}
-				}
-		sprintf(strng,"%f)\r\n",*fvalue);
-		strcat(ln,strng);
-		strcat(buf,ln);
-		break;	}
+  default:
+  case 'F': 	/* floating point value 	*/
+  case 'f':	fvalue = value;
+    sprintf(ln,"%s = (",labelitem);
+    for( x = 0; x < number-1 ; x++ )
+      {
+	snprintf(strng,50,"%f,",*fvalue);
+	strcat(ln,strng);
+	if( strlen(ln) > 60 )
+	  {
+	    strcat(ln,"\r\n");
+	    strcat(buf,ln);
+	    strcpy(ln,"     ");
+	  }
+      }
+    snprintf(strng,50,"%f)\r\n",*fvalue);
+    strcat(ln,strng);
+    strcat(buf,ln);
+    break;	}
 }
 
 
@@ -4474,8 +4474,8 @@ FUNCTION write_PDS_cline( buf, item, value, num, slen)
  * Because of the lengths of some filenames, the buffers need
  * to exceed the normal PDS line length.
  */
-char buf[], item[], *value;
-int num, slen;
+     char buf[], item[], *value;
+     int num, slen;
 {
   int x,y,z;
   char strng[101], ln[101];
@@ -4521,11 +4521,11 @@ FUNCTION write_PDS_line(buf,type,labelitem,value,number,prec)
  * Write PDS label line to a given buffer for data types other than
  * character
  */
-char 	buf[],
-	type,
-	labelitem[];
-void	*value;
-int 	number,prec;
+     char 	buf[],
+     type,
+     labelitem[];
+     void	*value;
+     int 	number,prec;
 {
   int x, y, z, *ivalue;
   char strng[50], ln[80];
@@ -4533,47 +4533,47 @@ int 	number,prec;
 
   switch(type) {
 
-    case 'I': 	/* Integer value 	*/
-    case 'i':
-      ivalue = value;
-      if( number == 1 ) {
-	sprintf(strng,"%s = %d\r\n",labelitem,(*ivalue));
-	strcat(buf,strng);
-      }
-      else {
-	sprintf(ln,"%s = (",labelitem);
-	for( x = 0; x < number-1 ; x++ ) {
-	  sprintf(strng,"%d,",(*(ivalue+x)));
-	  strcat(ln,strng);
-	  if( strlen(ln) > 60 ) {
-	    strcat(ln,"\r\n");
-	    strcat(buf,ln);
-	    strcpy(ln,"     ");
-	  }
-	}
-	sprintf(strng,"%d)\r\n",(*(ivalue+x)));
+  case 'I': 	/* Integer value 	*/
+  case 'i':
+    ivalue = value;
+    if( number == 1 ) {
+      sprintf(strng,"%s = %d\r\n",labelitem,(*ivalue));
+      strcat(buf,strng);
+    }
+    else {
+      sprintf(ln,"%s = (",labelitem);
+      for( x = 0; x < number-1 ; x++ ) {
+	sprintf(strng,"%d,",(*(ivalue+x)));
 	strcat(ln,strng);
-	strcat(buf,ln);
+	if( strlen(ln) > 60 ) {
+	  strcat(ln,"\r\n");
+	  strcat(buf,ln);
+	  strcpy(ln,"     ");
+	}
       }
-      break;
+      sprintf(strng,"%d)\r\n",(*(ivalue+x)));
+      strcat(ln,strng);
+      strcat(buf,ln);
+    }
+    break;
 
-    default:
-    case 'F': 	/* floating point value 	*/
-    case 'f':	fvalue = value;
-      if( number == 1 ) {
+  default:
+  case 'F': 	/* floating point value 	*/
+  case 'f':	fvalue = value;
+    if( number == 1 ) {
+      if (prec<0)
+	sprintf(strng,"%s = %e\r\n",labelitem,(*fvalue));
+      else
+	sprintf(strng,"%s = %.*f\r\n",labelitem,prec,(*fvalue));
+      strcat(buf,strng);
+    }
+    else {
+      sprintf(ln,"%s = (",labelitem);
+      for( x = 0; x < number-1 ; x++ ) {
 	if (prec<0)
-	  sprintf(strng,"%s = %e\r\n",labelitem,(*fvalue));
+	  sprintf(strng,"%e,",(*(fvalue+x)));
 	else
-	  sprintf(strng,"%s = %.*f\r\n",labelitem,prec,(*fvalue));
-	strcat(buf,strng);
-      }
-      else {
-	sprintf(ln,"%s = (",labelitem);
-	for( x = 0; x < number-1 ; x++ ) {
-	  if (prec<0)
-	    sprintf(strng,"%e,",(*(fvalue+x)));
-	  else
-	    sprintf(strng,"%.*f,",prec,(*(fvalue+x)));
+	  sprintf(strng,"%.*f,",prec,(*(fvalue+x)));
 	strcat(ln,strng);
 	if( strlen(ln) > 60 ) {
 	  strcat(ln,"\r\n");
@@ -4600,17 +4600,17 @@ int FUNCTION write_vlab( unit, radtyp)
  * also process a few other labels here that cannot be directly
  * copied from PDS label using 'keyword_value'
  */
-int unit, *radtyp;
+     int unit, *radtyp;
 {
   int count, i, ival[3], lptr, lptr0, lptr1, lptr2, lptre, lptrq, 
-   to_orig, x;
+    to_orig, x;
   float ritem, sav;
   double ditem;
   char buf[332], lattyp[15];
   struct { float rr[38]; int ii[2];} mdat;	/* for MAPLABV2 */
   MP mpo;
 
-	/* zero the map buffer just to be safe: */
+  /* zero the map buffer just to be safe: */
   for (i=0; i<38; i++) mdat.rr[i] = 0.0;
   for (i=0; i<2; i++) mdat.ii[i] = 0;
 
@@ -4627,13 +4627,13 @@ int unit, *radtyp;
     }
   }
 
-	/* set the pointer to start of map group in qube object: */
+  /* set the pointer to start of map group in qube object: */
   lptr = lptrq = 0;
   lsef = find_keyword( "^QUBE", bufpoint, &lptrq, &labend);
   if (lsef == 0) return 0;
   lptr0 = lptrq;
 
-	/* find end of label so we don't search thru entire file: */
+  /* find end of label so we don't search thru entire file: */
   lsef = find_keyword( "END_OBJECT = QUBE", bufpoint, &lptre, &labend);
 
   /* check if target = CAL/SKY, in which case bypass Map stuff */
@@ -4644,14 +4644,14 @@ int unit, *radtyp;
   if (!strcmp(v.target,"SKY")) calib = 1;
   if (calib) goto endmap;
 
-	/* assume that MAP_PROJECTION_TYPE is the first keyword
-	 * in the map projection group: */
+  /* assume that MAP_PROJECTION_TYPE is the first keyword
+   * in the map projection group: */
   lsef = find_keyword( "MAP_PROJECTION_TYPE", bufpoint, &lptr0, &lptre);
   if (lsef == 0) return 0;
   lsef = get_string_value( v.projection, 24, &lptr0);
   if (lsef == 0) return 0;
 
-	/* check if it's planetographic or planetocentric */
+  /* check if it's planetographic or planetocentric */
   lptr = lptr0;
   lsef = find_keyword( "COORDINATE_SYSTEM_NAME", bufpoint, &lptr, &lptre);
   if (lsef == 0) pgraphic = -1;
@@ -4674,14 +4674,14 @@ int unit, *radtyp;
     if (lsef && !strcmp(buf,"EAST")) conv_lon = 1;
   }
 
-	/* for the following keywords, find end of map proj. group: */
+  /* for the following keywords, find end of map proj. group: */
   lptr2 = lptr0;
   lsef = find_keyword( "END_GROUP = IMAGE_MAP_PROJECTION", bufpoint, &lptr2,
-   &lptre);
+		       &lptre);
 
-	/* then find all required keywords: */
+  /* then find all required keywords: */
 
-	/* all projections need radii: */
+  /* all projections need radii: */
   lptr = lptr0;
   lsef = find_keyword( "A_AXIS_RADIUS", bufpoint, &lptr, &lptr2);
   if (lsef) get_double( &v.radii[0], bufpoint, &lptr);
@@ -4720,7 +4720,7 @@ int unit, *radtyp;
 
     lptr = lptr0;
     lsef = find_keyword( "LINE_SUB_SPACECRAFT_OFFSET", bufpoint, &lptr,
-     &lptr2);
+			 &lptr2);
     if (lsef) {
       get_double( &v.ssc_line, bufpoint, &lptr);
       if (to_orig) v.ssc_line = -v.ssc_line;
@@ -4729,17 +4729,17 @@ int unit, *radtyp;
 
     lptr = lptr0;
     lsef = find_keyword( "SAMPLE_SUB_SPACECRAFT_OFFSET", bufpoint, &lptr,
-     &lptr2);
+			 &lptr2);
     if (lsef) {
       get_double( &v.ssc_samp, bufpoint, &lptr);
       if (to_orig) v.ssc_samp = -v.ssc_samp;
       v.ssc_samp++;	/* relative to (1,1) */
     }
 
-	/* allow old aliases for the above 2: */
+    /* allow old aliases for the above 2: */
     lptr = lptr0;
     lsef = find_keyword( "X_AXIS_SUB_SPACECRAFT_OFFSET", bufpoint, &lptr,
-     &lptr2);
+			 &lptr2);
     if (lsef) {
       get_double( &v.ssc_line, bufpoint, &lptr);
       v.ssc_line++;	/* relative to (1,1) */
@@ -4747,7 +4747,7 @@ int unit, *radtyp;
 
     lptr = lptr0;
     lsef = find_keyword( "Y_AXIS_SUB_SPACECRAFT_OFFSET", bufpoint, &lptr,
-     &lptr2);
+			 &lptr2);
     if (lsef) {
       get_double( &v.ssc_samp, bufpoint, &lptr);
       v.ssc_samp++;	/* relative to (1,1) */
@@ -4767,17 +4767,17 @@ int unit, *radtyp;
 
     lptr = lptr0;
     lsef = find_keyword( "SAMPLE_OPTICAL_AXIS_OFFSET", bufpoint, &lptr,
-     &lptr2);
+			 &lptr2);
     if (lsef) {
       get_double( &v.oasamp, bufpoint, &lptr);
       if (to_orig) v.oasamp = -v.oasamp;
       v.oasamp++;	/* relative to (1,1) */
     }
 
-	/* allow old aliases for the above 2: */
+    /* allow old aliases for the above 2: */
     lptr = lptr0;
     lsef = find_keyword( "X_AXIS_OPTICAL_AXIS_OFFSET", bufpoint, &lptr,
-     &lptr2);
+			 &lptr2);
     if (lsef) {
       get_double( &v.oaline, bufpoint, &lptr);
       v.oaline++;	/* relative to (1,1) */
@@ -4785,7 +4785,7 @@ int unit, *radtyp;
 
     lptr = lptr0;
     lsef = find_keyword( "Y_AXIS_OPTICAL_AXIS_OFFSET", bufpoint, &lptr, 
-     &lptr2);
+			 &lptr2);
     if (lsef) {
       get_double( &v.oasamp, bufpoint, &lptr);
       v.oasamp++;	/* relative to (1,1) */
@@ -4803,7 +4803,7 @@ int unit, *radtyp;
     lsef = find_keyword( "MAP_PROJECTION_ROTATION", bufpoint, &lptr, &lptr2);
     if (lsef) get_double( &v.rotation, bufpoint, &lptr);
 
-	/* stuff values into maplab buffer: */
+    /* stuff values into maplab buffer: */
     mdat.ii[0] = 16;
     mdat.rr[26] = v.focal;
     mdat.rr[27] = v.oaline;
@@ -4850,7 +4850,7 @@ int unit, *radtyp;
       v.center_samp++;
     }
 
-	/* allow old aliases for the above 2: */
+    /* allow old aliases for the above 2: */
     lptr = lptr0;
     lsef = find_keyword( "X_AXIS_PROJECTION_OFFSET", bufpoint, &lptr, &lptr2);
     if (lsef) get_double( &v.center_line, bufpoint, &lptr);
@@ -4864,11 +4864,11 @@ int unit, *radtyp;
     if( v.projection[0] == 'L' ) {	/* Lambert */
       lptr = lptr0;
       lsef = find_keyword( "FIRST_STANDARD_PARALLEL", bufpoint, &lptr,
-       &lptr2);
+			   &lptr2);
       if (lsef) get_double( &v.projitem1, bufpoint, &lptr);
       lptr = lptr0;
       lsef = find_keyword( "SECOND_STANDARD_PARALLEL", bufpoint, &lptr,
-       &lptr2);
+			   &lptr2);
       if (lsef) get_double( &v.projitem2, bufpoint, &lptr);
     }
 
@@ -4879,7 +4879,7 @@ int unit, *radtyp;
         strcmp(v.projection,"OBLIQUE_STEREOGRAPHIC")==0 ) {
       lptr = lptr0;
       lsef = find_keyword( "MAP_PROJECTION_ROTATION", bufpoint, &lptr,
-       &lptr2);
+			   &lptr2);
       if (lsef) get_double( &v.rotation, bufpoint, &lptr);
     }
 
@@ -4887,7 +4887,7 @@ int unit, *radtyp;
     if (!strcmp(v.projection,"'SINUSOIDAL_EQUAL-AREA'")) 
       strcpy(v.projection,"SINUSOIDAL");
 
-	/* stuff values into maplab buffer: */
+    /* stuff values into maplab buffer: */
     if  (!strcmp( v.projection, "POLAR_ORTHOGRAPHIC")) mdat.ii[0] = 1;
     else if (!strcmp(v.projection,"OBLIQUE_ORTHOGRAPHIC")) mdat.ii[0]=2;
     else if (!strcmp(v.projection,"POLAR_STEREOGRAPHIC")) mdat.ii[0]=3;
@@ -4916,8 +4916,8 @@ int unit, *radtyp;
 
   if (tube) {
     zladd( unit, "HISTORY", "MAP00000",
-     "** TUBE FILE: map labels apply to cocube data only **",
-     "FORMAT", "STRING",NULL);
+	   "** TUBE FILE: map labels apply to cocube data only **",
+	   "FORMAT", "STRING",NULL);
     lptr = lptr0;
     lsef = find_keyword( "LINE_LAST_PIXEL", bufpoint, &lptr, &lptr2);
     if (lsef) get_integer_value(&cubsiz[0],bufpoint,&lptr);
@@ -4925,9 +4925,9 @@ int unit, *radtyp;
     lsef = find_keyword( "SAMPLE_LAST_PIXEL", bufpoint, &lptr, &lptr2);
     if (lsef) get_integer_value(&cubsiz[1],bufpoint,&lptr);
     zladd( unit, "HISTORY", CUBE_SIZE, cubsiz, "FORMAT", "INT",
-     "NELEMENT", 2, NULL);
+	   "NELEMENT", 2, NULL);
   }
-	/* write the Vicar map labels: */
+  /* write the Vicar map labels: */
   lsef = mpInit( &mpo);
   if (lsef!=mpSUCCESS) zmabend(" error initializing MP object");
   lsef = mpBuf2Mpo( &mdat, mpo);
@@ -4943,15 +4943,15 @@ int unit, *radtyp;
   lsef = mpLabelWrite( mpo, unit, "PROPERTY");
   if (lsef!=mpSUCCESS) zmabend(" error writing map labels");
 
-endmap:
-	/* PROJECT & INSTRMNT are always the same: */
+ endmap:
+  /* PROJECT & INSTRMNT are always the same: */
   zladd( unit, "HISTORY", PROJECT, "GLL", "FORMAT", "STRING",NULL);
   zladd( unit, "HISTORY", INSTRUMENT, "NIMS", "FORMAT", "STRING",NULL);
 
- 	/* need s/w phase in case cube is input again to VISIS2 forward mode: */
+  /* need s/w phase in case cube is input again to VISIS2 forward mode: */
   zladd( unit, "HISTORY", "SW_PHASE", &mphase, "FORMAT", "INT", NULL);
 
-	/* process other deviant label items: */
+  /* process other deviant label items: */
 
   /* OBSNAME needs to have OBSEXT stripped off end, also quotes, if present: */
   lptr = lptrq;
@@ -5235,7 +5235,7 @@ endmap:
       for (i=0; i<nbm; i++) bmask[i] = 0;
       for (i=0; i<nbb; i++) bmask[b.org_band[i]-1] = 1;
       zladd( unit, "HISTORY", B_MASK, bmask, "NELEMENT", nbm, "FORMAT", "INT",
-       NULL);
+	     NULL);
     }
   }
 

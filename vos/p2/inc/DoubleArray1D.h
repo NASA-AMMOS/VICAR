@@ -418,7 +418,7 @@ friend ostream& operator<<(ostream& outStream, const DoubleArray1D& V)
     if((i < begin)||(i  > end))
     {
     printf("Array index %d out of bounds \n",coordinate);
-    printf("Offending index value %d : Acceptable Range [%d, %d] \n",i, begin, end);
+    printf("Offending index value %ld : Acceptable Range [%ld, %ld] \n",i, begin, end);
     }
     }
 #else
@@ -430,7 +430,7 @@ static void boundsCheck(long, long, long, int){}
     {
     if(size1 != size2)
     {
-    printf("Array Sizes Are Incompatable %d != %d \n", size1, size2);
+    printf("Array Sizes Are Incompatable %ld != %ld \n", size1, size2);
     }
     }
 #else

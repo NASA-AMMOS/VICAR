@@ -54,7 +54,18 @@ WRITTEN BY: H. J. Frieden      12/22/70
 
 COGNIZANT PROGRAMMER: R. G. Deen   2/12/90
 
-REVISION: New
+REVISION HISTORY:
+  1981-04-12 GMY - Allow floating point numbers.
+  1982-03-29 GMY - Increase max output samples to 60k.
+  1982-12    LWK - Convert to Vax/Vicar1.
+  1983-08-17 HBD - Allow floating point numbers on vax version.
+  1984-06-08 HBD - Converted to Vicar2, rewrote GEN.
+  1984-07-18 LWK - Fixed bugs when sinc=0 & format=REAL.
+  1985-01-23 HBD - Handle REAL8 properly.
+  1990-02-13 RGD - Rewritten in C with Unix compatibility; removed all sublib
+                   references, added COMPlex.
+  2002-09-24 RGD - Changed parameters to double to avoid precision loss problems.
+  2019-05-28 WLB - Cleaned up declaration compiler warnings, docs, test.
 
 .LEVEL1
 .VARIABLE NL

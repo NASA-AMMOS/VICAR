@@ -287,6 +287,14 @@ FFLAGS = F77DefaultFlags ShareComp
 #define INC_MSLFSW
 #endif
 
+/* Automatically turn on LIB_EXCLUDE_MER_IDD if M20_SSIM is on */
+#if defined(LIB_M20_SSIM)
+#define INC_M20SSIM -I$(M20SSIMLIB)/../src/ssim/core/ -I$(M20SSIMLIB)/../src/ssim/core/m20fsw/src -DTGT_LINUX_SSIM
+#define LIB_EXCLUDE_MER_IDD
+#else
+#define INC_M20SSIM
+#endif
+
 /* Note: turning on MARS automatically turns on MER_IDD now...		*/
 /* unless LIB_EXCLUDE_MER_IDD is turned on.  Using LIB_EXCLUDE_MER_IDD	*/
 /* is likely to lead to link errors unless you stub out the necessary	*/
@@ -353,12 +361,6 @@ FFLAGS = F77DefaultFlags ShareComp
 #define INC_FEI -I$(MDMSINC)/feiinc
 #else
 #define INC_FEI
-#endif
-
-#if defined(LIB_FEI5CPP) || defined(FEI5CPP_SUBLIB) || defined (INC_FEI5CPP)
-#define INCFEI5CPP -I$(V2TOP)/fei5/inc -I$(V2JAVA_SYS_INC) -I$(V2JAVA_SYS_PLAT_INC)
-#else
-#define INCFEI5CPP
 #endif
 
 #if defined(LIB_MDMS) || defined(LIB_MDMS_FEI_3) || defined(LIB_MDMS_FEI_3_MISC) || defined(FEI3_MISC_SUBLIB) || defined(LIB_MDMS_DBI) || defined(MDMS_DBI_SUBLIS)
@@ -463,6 +465,12 @@ FFLAGS = F77DefaultFlags ShareComp
 #define INC_JPEG
 #endif
 
+#if defined(LIB_PNG)
+#define INC_PNG -I/usr/include 
+#else
+#define INC_PNG 
+#endif
+
 #if defined(LIB_FFTW)
 #define INC_FFTW -I$(FFTWLIB)/include
 #else
@@ -485,6 +493,18 @@ FFLAGS = F77DefaultFlags ShareComp
 #define INC_SIMBAD -I$(SIMBADLIB)
 #else
 #define INC_SIMBAD
+#endif
+
+#if defined(LIB_EMBREE)
+#define INC_EMBREE -I$(EMBREE_LIB)/include/embree3
+#else
+#define INC_EMBREE
+#endif
+
+#if defined(LIB_TINYOBJLOADER)
+#define INC_TINYOBJLOADER -I$(TINYOBJLOADER_LIB)
+#else
+#define INC_TINYOBJLOADER
 #endif
 
 #if defined(LIB_PGPLOT)
@@ -607,8 +627,19 @@ FFLAGS = F77DefaultFlags ShareComp
 #define INC_CPPUNIT
 #endif
 
-CPPFLAGS = INC_LOCAL -I$(V2INC) INC_TAE INC_VRDI INC_CILY INC_GUISUB INC_P1SUB INC_UPLINKSUB INC_UPLINKTOURSUB INC_SSVSUB INC_NEATSUB INC_P2SUB INC_CRUMBS INC_GLLSUB INC_CASSUB INC_P3SUB INC_MARSSUB INC_MROSUB INC_DIVSUB INC_MERIDD INC_MSLFSW INC_JNI INC_JAVA INC_FEI INCFEI5CPP INC_MDMS INC_KRB INC_KRB4 INC_SYBASE INC_MYSQL INC_ACEW INC_TAO INC_XERCES INC_CSPICE INC_PDSL INC_PDS INC_ISIS INC_HDF INC_GEOTRANS INC_NATGRID INC_TIFF INC_JPEG INC_FFTW INC_GDAL INC_GSL INC_SIMBAD INC_PGPLOT INC_EIGEN INC_GLOG INC_SIFT INC_CERES INC_PVM INC_MPI INC_TK INC_MA INC_MOTIF INC_XRT INC_CANDELA INC_RW INC_SIRTF INC_EXPAT INC_CPPUNIT INC_MYSQLCONCPP
+#if defined(LIB_BOOST)
+#define INC_BOOST -I$(BOOST_ROOT)/include/boost -I$(BOOST_ROOT)/include
+#else
+#define INC_BOOST
+#endif
 
+#if defined(LIB_TINYOBJLOADER)
+#define INC_TINYOBJLOADER -I$(TINYOBJLOADER_LIB)
+#else
+#define INC_TINYOBJLOADER
+#endif
+
+CPPFLAGS = INC_LOCAL -I$(V2INC) INC_TAE INC_VRDI INC_CILY INC_GUISUB INC_P1SUB INC_UPLINKSUB INC_UPLINKTOURSUB INC_SSVSUB INC_NEATSUB INC_P2SUB INC_CRUMBS INC_GLLSUB INC_CASSUB INC_P3SUB INC_MARSSUB INC_MROSUB INC_DIVSUB INC_MERIDD INC_MSLFSW INC_M20SSIM INC_JNI INC_JAVA INC_FEI INC_MDMS INC_KRB INC_KRB4 INC_SYBASE INC_MYSQL INC_ACEW INC_TAO INC_XERCES INC_CSPICE INC_PDSL INC_PDS INC_ISIS INC_HDF INC_GEOTRANS INC_NATGRID INC_TIFF INC_JPEG INC_FFTW INC_GDAL INC_GSL INC_SIMBAD INC_PGPLOT INC_EIGEN INC_GLOG INC_SIFT INC_CERES INC_PVM INC_MPI INC_TK INC_MA INC_MOTIF INC_XRT INC_CANDELA INC_RW INC_SIRTF INC_EXPAT INC_CPPUNIT INC_MYSQLCONCPP INC_BOOST INC_TINYOBJLOADER INC_EMBREE INC_PNG
 
 #endif
 
@@ -975,11 +1006,6 @@ SYSTEMLIB = $(V2OLB)/libmarssub.a
 SYSTEMINC = $(MARSINC)
 #endif
 
-#ifdef FEI5CPP_SUBLIB
-SYSTEMLIB = $(V2OLB)/libfei5cpp.a
-SYSTEMINC = $(FEI5INC)
-#endif
-
 /* For now, $(MDMSOLB) is where all MDMS object libraries are residing. */
 #ifdef FEI3_MISC_SUBLIB
 SYSTEMLIB = $(MDMSOLB)/libfeimisc.a
@@ -1153,6 +1179,15 @@ ERRFILE = TAE_ERRMSG.msg
 #define MSLFSWL
 #endif
 
+/* Note, we need the .o's too, not just the libraries */
+#if defined(LIB_M20_SSIM)
+/* Avoid mipl slash star .o looking like a comment below */
+#define LIBMIPL $(M20SSIMLIB)/lib/mipl/
+#define M20SSIML LIBMIPL*.o -L$(M20SSIMLIB)/lib/mipl -lsurface_sim -lrover_sim   -Wl,--start-group -lrcm  -lmath  -lipc  -lddi  -lrsm  -lsgnc  -lhsm  -lipc  -lmot  -lrm  -limf  -lcore  -lgbl  -lnav  -lplan  -lplanc  -lmom  -lnavlib  -lvtt  -lscsvis  -ldrill  -lgdrt -laca  -ldrive  -lhga  -larm  -lfm  -lacm  -larb  -lseq  -lpie  -lmem  -lscam  -lspam  -lcmod -lcbm   -Wl,--end-group     -lmathf   -ltimeline
+#else
+#define M20SSIML
+#endif
+
 #if defined(LIB_VRDI)
 #define VRDIL -lvrdi
 #else
@@ -1185,6 +1220,12 @@ ERRFILE = TAE_ERRMSG.msg
 #define CPPUNITL
 #endif
 
+#ifdef LIB_BOOST
+#define BOOSTL $(BOOST_ROOT)/lib
+#else
+#define BOOSTL
+#endif
+
 /*
  *  Add link declarations for the externally developed Pointing
  *  History Engine libraries.
@@ -1215,7 +1256,7 @@ ERRFILE = TAE_ERRMSG.msg
 #define SPICEL $(SPICEROOT)/c/$(VICCPU)/lib/cspice.a
 #endif
 
-#if(defined(LIB_SPICE) && defined(LIB_CSPICE))
+#if defined(LIB_SPICE) && defined(LIB_CSPICE)
 #undef SPICEL
 #define SPICEL **********You_may_not_define_both_'LIB_SPICE'_and_'LIB_CSPICE'\
 _in_a_single_imake_file*************
@@ -1280,6 +1321,12 @@ _in_a_single_imake_file*************
 #define PTHRL
 #endif
 
+#ifdef LIB_PNG
+#define PNGL -lpng
+#else
+#define PNGL
+#endif
+
 #ifndef LibFei3Path
 #define LibFei3Path -L$(MDMSOLB)
 #endif
@@ -1307,14 +1354,6 @@ _in_a_single_imake_file*************
 #else
 #define DBIL
 #endif
-
-#ifdef LIB_FEI5CPP
-#define FEI5CPPL $(V2OLB)/libfei5cpp.a
-#define LIB_CALLABLE_JAVA
-#else
-#define FEI5CPPL
-#endif
-
 
 
 /* Note: libmdmspwd1.a is for kerb V4 / pasword server V1 compatibility */
@@ -1366,7 +1405,7 @@ _in_a_single_imake_file*************
 #endif
 
 #ifdef LIB_XERCES
-#define XERL -L$(XERCES_C_ROOT)/lib -lxerces-c XERCES_EXTRAlib
+#define XERL XERCESlib
 #else
 #define XERL
 #endif
@@ -1653,7 +1692,13 @@ external, yet it is not used, apparently (!) */
 #define OMPL
 #endif
 
-LIBS = -L$(V2OLB) LOCL CJL P3SL MARSSL MROL MERIDDL MSLFSWL UPLINKTOURL SSVL NEATL GLLL CASL P2SL CRUMBSL GUISL P1SL DIVL CILYL VRDIL MATH77L SIRTFPHEL SPICEL FEI3L FEI5CPPL DBIL TSVCL TNAML TNOTL TPORL TAOL ACEWL PTHRL FEIL MDMSL SYBASEL MYSQLL XERL PDSLL PDSL HDFL GEOTRANSL NATGRIDL TIFFL JPEGL FFTWL GDALL GSLL SIMBADL PGPLOTL SIFTL CERESL GLOGL MCL MDCL PVML MPIL EXPL RWL THRL V2L ISISL NETL CRSL TAEL TCLL MAL XRTGRL XRT3DL MOTIFL CANDELAL FTNL CCCL MATHlib KRB4L KRBL OMPL SPECIALlib CPPUNITL MYSQLCONCPPL
+#if defined(LIB_EMBREE)
+#define EMBREEL $(EMBREE_LIB)/libembree3.a $(EMBREE_LIB)/libembree_avx.a $(EMBREE_LIB)/libembree_avx2.a $(EMBREE_LIB)/libembree_sse42.a $(EMBREE_LIB)/liblexers.a $(EMBREE_LIB)/libmath.a $(EMBREE_LIB)/libsimd.a $(EMBREE_LIB)/libsys.a $(EMBREE_LIB)/libtasking.a
+#else
+#define EMBREEL
+#endif
+
+LIBS = -L$(V2OLB) LOCL CJL P3SL MARSSL MROL MERIDDL MSLFSWL M20SSIML UPLINKTOURL SSVL NEATL GLLL CASL P2SL CRUMBSL GUISL P1SL DIVL CILYL VRDIL MATH77L SIRTFPHEL SPICEL FEI3L DBIL TSVCL TNAML TNOTL TPORL TAOL ACEWL PTHRL FEIL MDMSL SYBASEL MYSQLL XERL PDSLL PDSL HDFL GEOTRANSL NATGRIDL TIFFL JPEGL FFTWL GDALL GSLL SIMBADL PGPLOTL SIFTL CERESL GLOGL MCL MDCL PVML MPIL EXPL RWL THRL V2L ISISL NETL CRSL TAEL TCLL MAL XRTGRL XRT3DL MOTIFL CANDELAL CPPUNITL MYSQLCONCPPL BOOSTL EMBREEL FTNL CCCL MATHlib KRB4L KRBL OMPL PNGL SPECIALlib
 
 #endif			/* PROGRAM || CCC_TEMPLATES */
 
@@ -1831,10 +1876,10 @@ library.local: library.local.only TMPL_TARGET_LOCAL
 
 #ifdef NoRanlibAvail
 library.local.only: EXTRACT_TARGET OBJS_target
-	$(AR) $(LOCALLIB) $(OBJS)
+	-$(AR) $(LOCALLIB) $(OBJS)
 #else
 library.local.only: EXTRACT_TARGET OBJS_target
-	$(AR) $(LOCALLIB) $(OBJS)
+	-$(AR) $(LOCALLIB) $(OBJS)
 	$(RANLIB) $(LOCALLIB)
 #endif
 
@@ -1842,10 +1887,10 @@ library.system: library.system.only TMPL_TARGET_SYSTEM
 
 #ifdef NoRanlibAvail
 library.system.only: EXTRACT_TARGET OBJS_target
-	$(AR) $(SYSTEMLIB) $(OBJS)
+	-$(AR) $(SYSTEMLIB) $(OBJS)
 #else
 library.system.only: EXTRACT_TARGET OBJS_target
-	$(AR) $(SYSTEMLIB) $(OBJS)
+	-$(AR) $(SYSTEMLIB) $(OBJS)
 	$(RANLIB) $(SYSTEMLIB)
 #endif
 

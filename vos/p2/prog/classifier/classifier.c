@@ -9,6 +9,7 @@
 #include "ImageUtils.h"
 #include "ibishelper.h"
 #include "cartoClassUtils.h"
+#include "zifmessage.h"
 
 #define KMEANS 0
 #define EXPMAX 1
@@ -16,21 +17,21 @@
 void main44(void)
 {
    gsl_vector *dns;
-   int i, j, status, dumdef, dumcnt, inpCnt, outCnt, nClasses, isExpMax, gnu_errno;
+   int i, j, inpCnt, outCnt, nClasses, isExpMax, gnu_errno;
    double *dist;
    VICAR_IMAGE **inps, *out1, *out2;
    IBISStruct *ibis;
    CLASS **classes;
    CLASS_TMP *tmp;
 
-   zifmessage("classifier version 2017-08-03");
+   zifmessage("CLASSIFIER version 2019-08-22");
 
    isExpMax = zvptst("EXPMAX");
    printf("isExpMax: %d\n", isExpMax);
-   status = zvpcnt("inp", &inpCnt);
+   zvpcnt("inp", &inpCnt);
    inps = (VICAR_IMAGE**)malloc(sizeof(VICAR_IMAGE*)*(inpCnt));
    for(i = 0; i < inpCnt; i++) inps[i] = getVI_inp(i+1);
-   status = zvpcnt("out", &outCnt);
+   zvpcnt("out", &outCnt);
    out1 = getVI_out("HALF", 1, inps[0]->nl, inps[0]->ns);
    if(outCnt == 2)
       out2 = getVI_out("REAL", 2, inps[0]->nl, inps[0]->ns);

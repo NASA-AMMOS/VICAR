@@ -1,37 +1,12 @@
-                Version 5C/16C
-
-      ***********************************************************
-      *                                                         *
-      * VICAR Supervisor version 5C, TAE V5.2                   *
-      *   Debugger is now supported on all platforms            *
-      *   USAGE command now implemented under Unix              *
-      *                                                         *
-      * VRDI and VIDS now support X-windows and Unix            *
-      * New X-windows display program: xvd (for all but VAX/VMS)*
-      *                                                         *
-      * VICAR Run-Time Library version 16C                      *
-      *   '+' form of temp filename now avail. on all platforms *
-      *   ANSI C now fully supported                            *
-      *                                                         *
-      * See B.Deen(RGD059) with problems                        *
-      *                                                         *
-      ***********************************************************
-
-  --- Type NUT for the New User Tutorial ---
-
-  --- Type MENU for a menu of available applications ---
-
 local path type=string init="wms_test_work:[testdata.mipl.vgr]"
-if ($syschar(1) = "UNIX")
-    let path="/project/test_work/testdata/mipl/vgr/"
-end-if
+let path="/project/test_work/testdata/mipl/vgr/"
 write "***** Test nanowatts scale *****"
 ***** Test nanowatts scale *****
 ficor77 (/project/test_work/testdata/mipl/vgr/f1636832.raw,/proj+
 ect/test_work/testdata/mipl/vgr/ficor77.cal,/project/test_work/testdata/mipl/vgr/dc.cal)                  A (500,500,10,10) 'NOCO C+
 ONV=1.
 Beginning VICAR task ficor77
-FICOR77 version Sep 3 2015
+FICOR77 version 2020-04-02
 Dark-Current File input=          3
 Calibration File input=          2
 DARK-CURRENT LABEL...
@@ -104,21 +79,21 @@ FIXVGR Version 31-OCT-94
 SECOND CONV FACTOR =  4.9446E+00
  Correction factor=  4.6034136
 FIXVGR task completed
-label-l B
+label-l B 'nousrtim
 Beginning VICAR task label
-LABEL version 15-Nov-2010
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File B ************
                 3 dimensional IMAGE file
                 File organization is BSQ
-                Pixels are in HALF format from a X86-LINUX host
+                Pixels are in HALF format from a X86-64-LIN host
                 1 bands
                 10 lines per band
                 10 samples per line
                 0 lines of binary header
                 0 bytes of binary prefix per line
----- Task: CONV12 -- User: DFS -- Thu May  3 11:31:13 1984 ----
+---- Task: CONV12 -- User:  --  ----
 LAB01=
 '77                   800     800 800 800 L 1                          SC'
 LAB02=
@@ -142,12 +117,12 @@ LAB10=
 LAB11=
 'INSERT            05 06 83 13:12:50          JAM                      GL'
 NLABS=11
----- Task: FICOR77 -- User: wlb -- Thu Sep  3 15:31:26 2015 ----
+---- Task: FICOR77 -- User:  --  ----
 LABEL1='FICOR77  MINSAT=32767 NUMSAT=     0'
 LABEL2='FOR NANOWATTS/CM**2/STER/NM MULTIPLY DN VALUE BY     1.00000'
 LABEL3='FOR (I/F)*10000., MULTIPLY DN VALUE BY               4.94459'
 LABEL4='FICOR77  DARK CURRENT FDS = 13852.12'
----- Task: FIXVGR -- User: wlb -- Thu Sep  3 15:31:26 2015 ----
+---- Task: FIXVGR -- User:  --  ----
 COMMENT=' PICTURE MULTIPLIED BY    4.60      FIXVGR     8/06/90 VERSION'
 SCALE='JUPITER'
  
@@ -156,7 +131,7 @@ ficor77 (/project/test_work/testdata/mipl/vgr/f1636832.raw,/proj+
 ect/test_work/testdata/mipl/vgr/ficor77.cal,/project/test_work/testdata/mipl/vgr/dc.cal)          C (500,500,10,10) CONV=1. scf=/pr+
 oject/test_work/testdata/mipl/vgr/vgrscf.dat
 Beginning VICAR task ficor77
-FICOR77 version Sep 3 2015
+FICOR77 version 2020-04-02
 Dark-Current File input=          3
 Calibration File input=          2
 DARK-CURRENT LABEL...
@@ -222,12 +197,13 @@ Maximum value of an unsaturated pixel=        738
 Total number of saturated pixels=          0
 Total number of negative pixels=          0
 FICOR task completed
-list A
+list A 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
- Task:CONV12    User:DFS       Date_Time:Thu May  3 11:31:13 1984
- Task:FICOR77   User:wlb       Date_Time:Thu Sep  3 15:31:26 2015
+ Task:CONV12    User:          Date_Time:                        
+ Task:FICOR77   User:          Date_Time:                        
      Samp       1     2     3     4     5     6     7     8     9    10
    Line
       1       746   750   740   733   732   754   758   775   793   760
@@ -240,12 +216,13 @@ Beginning VICAR task list
       8       737   754   768   776   754   768   751   761   766   755
       9       747   758   770   772   772   768   767   773   773   779
      10       757   764   776   773   767   771   759   765   763   769
-list B
+list B 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
- Task:CONV12    User:DFS       Date_Time:Thu May  3 11:31:13 1984
- Task:FIXVGR    User:wlb       Date_Time:Thu Sep  3 15:31:26 2015
+ Task:CONV12    User:          Date_Time:                        
+ Task:FIXVGR    User:          Date_Time:                        
      Samp       1     2     3     4     5     6     7     8     9    10
    Line
       1      3434  3453  3407  3374  3370  3471  3489  3568  3651  3499
@@ -258,12 +235,13 @@ Beginning VICAR task list
       8      3393  3471  3535  3572  3471  3535  3457  3503  3526  3476
       9      3439  3489  3545  3554  3554  3535  3531  3558  3558  3586
      10      3485  3517  3572  3558  3531  3549  3494  3522  3512  3540
-list C
+list C 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
- Task:CONV12    User:DFS       Date_Time:Thu May  3 11:31:13 1984
- Task:FICOR77   User:wlb       Date_Time:Thu Sep  3 15:31:26 2015
+ Task:CONV12    User:          Date_Time:                        
+ Task:FICOR77   User:          Date_Time:                        
      Samp       1     2     3     4     5     6     7     8     9    10
    Line
       1       694   699   689   682   681   702   706   721   738   708
@@ -276,13 +254,13 @@ Beginning VICAR task list
       8       686   702   715   723   702   715   699   709   713   703
       9       695   706   717   719   719   715   714   719   720   725
      10       705   711   722   720   714   718   707   713   710   715
-write "*****Test I/F scale*****"
-*****Test I/F scale*****
+write "***** Test I/F scale *****"
+***** Test I/F scale *****
 ficor77 (/project/test_work/testdata/mipl/vgr/f1636832.raw,/proj+
 ect/test_work/testdata/mipl/vgr/ficor77.cal,/project/test_work/testdata/mipl/vgr/dc.cal)                  A (500,500,10,10) IOF=.5 +
 'NOCO
 Beginning VICAR task ficor77
-FICOR77 version Sep 3 2015
+FICOR77 version 2020-04-02
 Dark-Current File input=          3
 Calibration File input=          2
 DARK-CURRENT LABEL...
@@ -354,21 +332,21 @@ FIXVGR Version 31-OCT-94
 SECOND CONV FACTOR =  5.0000E-01
  Correction factor= 0.46550000
 FIXVGR task completed
-label-l B
+label-l B 'nousrtim
 Beginning VICAR task label
-LABEL version 15-Nov-2010
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File B ************
                 3 dimensional IMAGE file
                 File organization is BSQ
-                Pixels are in HALF format from a X86-LINUX host
+                Pixels are in HALF format from a X86-64-LIN host
                 1 bands
                 10 lines per band
                 10 samples per line
                 0 lines of binary header
                 0 bytes of binary prefix per line
----- Task: CONV12 -- User: DFS -- Thu May  3 11:31:13 1984 ----
+---- Task: CONV12 -- User:  --  ----
 LAB01=
 '77                   800     800 800 800 L 1                          SC'
 LAB02=
@@ -392,12 +370,12 @@ LAB10=
 LAB11=
 'INSERT            05 06 83 13:12:50          JAM                      GL'
 NLABS=11
----- Task: FICOR77 -- User: wlb -- Thu Sep  3 15:31:26 2015 ----
+---- Task: FICOR77 -- User:  --  ----
 LABEL1='FICOR77  MINSAT=32767 NUMSAT=     0'
 LABEL2='FOR NANOWATTS/CM**2/STER/NM MULTIPLY DN VALUE BY     0.10112'
 LABEL3='FOR (I/F)*10000., MULTIPLY DN VALUE BY               0.50000'
 LABEL4='FICOR77  DARK CURRENT FDS = 13852.12'
----- Task: FIXVGR -- User: wlb -- Thu Sep  3 15:31:26 2015 ----
+---- Task: FIXVGR -- User:  --  ----
 COMMENT=' PICTURE MULTIPLIED BY    0.47      FIXVGR     8/06/90 VERSION'
 SCALE='JUPITER'
  
@@ -406,7 +384,7 @@ ficor77 (/project/test_work/testdata/mipl/vgr/f1636832.raw,/proj+
 ect/test_work/testdata/mipl/vgr/ficor77.cal,/project/test_work/testdata/mipl/vgr/dc.cal)               C (500,500,10,10)scf=/projec+
 t/test_work/testdata/mipl/vgr/vgrscf.dat
 Beginning VICAR task ficor77
-FICOR77 version Sep 3 2015
+FICOR77 version 2020-04-02
 Dark-Current File input=          3
 Calibration File input=          2
 DARK-CURRENT LABEL...
@@ -471,21 +449,21 @@ Maximum value of an unsaturated pixel=       3652
 Total number of saturated pixels=          0
 Total number of negative pixels=          0
 FICOR task completed
-label-l C
+label-l C 'nousrtim
 Beginning VICAR task label
-LABEL version 15-Nov-2010
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File C ************
                 3 dimensional IMAGE file
                 File organization is BSQ
-                Pixels are in HALF format from a X86-LINUX host
+                Pixels are in HALF format from a X86-64-LIN host
                 1 bands
                 10 lines per band
                 10 samples per line
                 0 lines of binary header
                 0 bytes of binary prefix per line
----- Task: CONV12 -- User: DFS -- Thu May  3 11:31:13 1984 ----
+---- Task: CONV12 -- User:  --  ----
 LAB01=
 '77                   800     800 800 800 L 1                          SC'
 LAB02=
@@ -509,7 +487,7 @@ LAB10=
 LAB11=
 'INSERT            05 06 83 13:12:50          JAM                      GL'
 NLABS=11
----- Task: FICOR77 -- User: wlb -- Thu Sep  3 15:31:26 2015 ----
+---- Task: FICOR77 -- User:  --  ----
 LABEL1='FICOR77  MINSAT=32767 NUMSAT=     0'
 LABEL2='FOR NANOWATTS/CM**2/STER/NM MULTIPLY DN VALUE BY     0.20224'
 LABEL3='FOR (I/F)*10000., MULTIPLY DN VALUE BY               1.00000'
@@ -518,12 +496,13 @@ COMMENT=' PICTURE MULTIPLIED BY    0.93      FICOR      8/06/90 VERSION'
 SCALE='JUPITER'
  
 ************************************************************
-list A
+list A 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
- Task:CONV12    User:DFS       Date_Time:Thu May  3 11:31:13 1984
- Task:FICOR77   User:wlb       Date_Time:Thu Sep  3 15:31:26 2015
+ Task:CONV12    User:          Date_Time:                        
+ Task:FICOR77   User:          Date_Time:                        
      Samp       1     2     3     4     5     6     7     8     9    10
    Line
       1      7380  7425  7324  7253  7243  7463  7500  7665  7845  7523
@@ -536,12 +515,13 @@ Beginning VICAR task list
       8      7291  7460  7602  7680  7458  7600  7429  7533  7579  7472
       9      7387  7505  7622  7642  7640  7600  7592  7647  7651  7707
      10      7493  7561  7675  7650  7590  7633  7515  7574  7549  7605
-list B
+list B 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
- Task:CONV12    User:DFS       Date_Time:Thu May  3 11:31:13 1984
- Task:FIXVGR    User:wlb       Date_Time:Thu Sep  3 15:31:26 2015
+ Task:CONV12    User:          Date_Time:                        
+ Task:FIXVGR    User:          Date_Time:                        
      Samp       1     2     3     4     5     6     7     8     9    10
    Line
       1      3435  3456  3409  3376  3372  3474  3491  3568  3652  3502
@@ -554,12 +534,13 @@ Beginning VICAR task list
       8      3394  3473  3539  3575  3472  3538  3458  3507  3528  3478
       9      3439  3494  3548  3557  3556  3538  3534  3560  3562  3588
      10      3488  3520  3573  3561  3533  3553  3498  3526  3514  3540
-list C
+list C 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
- Task:CONV12    User:DFS       Date_Time:Thu May  3 11:31:13 1984
- Task:FICOR77   User:wlb       Date_Time:Thu Sep  3 15:31:26 2015
+ Task:CONV12    User:          Date_Time:                        
+ Task:FICOR77   User:          Date_Time:                        
      Samp       1     2     3     4     5     6     7     8     9    10
    Line
       1      3435  3456  3409  3376  3371  3474  3491  3568  3652  3502
@@ -572,4 +553,166 @@ Beginning VICAR task list
       8      3394  3472  3538  3575  3471  3537  3458  3506  3528  3478
       9      3439  3493  3548  3557  3556  3538  3534  3560  3561  3587
      10      3488  3519  3572  3561  3533  3553  3498  3526  3514  3540
-end-proc
+write "***** Test channel equivalence *****"
+***** Test channel equivalence *****
+let path="/project/test_work/testdata/p2/ficor77/"
+write "*** With no flag - THIS SHOULD ABEND - filter pos does not match !!! ***"
+*** With no flag - THIS SHOULD ABEND - filter pos does not match !!! ***
+ficor77 inp=(V1NA_0947106_RAW.vic,FICOR77_VG1_NA_CLEAR.DAT,V1NA_0946940_CLEAN.vic.ressar77,V1NA_0947132_CLEAN.vic.ressar77,V1NA_0947134_CLEAN.vic.ressar77)  +
+        out=V1NA_0231550_FICOR77_noflag.vic 'nocorrec
+Beginning VICAR task ficor77
+FICOR77 version 2020-04-02
+***Truncated input label, may cause problems
+***Truncated input label, may cause problems
+***Truncated input label, may cause problems
+***Truncated input label, may cause problems
+Dark-Current File input=          3
+Calibration File input=          2
+***Truncated input label, may cause problems
+DARK-CURRENT LABEL...
+
+          
+          
+          
+          
+          
+          
+          
+CALIBRATION FILE LABEL...
+
+          77                  2001    640020016400 I 2
+          MJS77 PHOTOMETRIC DATA FILE     S/N=7  1 CAMERA FILTER POSITION 0
+          DATE GENERATED  12/14/78  FRAMES LOW PASS FLTRD,DIV BY       9.000
+          SCAN RATE= 1   GAIN =0     TEMP  0.00   DEG. C  EXPOSURE *60  MSEC
+          INTAP=ISS241G  OUTAP=JS0565   FILE= 3
+             TEMP   32/1  31/2  27/3  29/0
+
+
+
+
+***FILTER POSITIONS DO NOT MATCH.
+DIV=  9.0000000
+  CAMERA PARAMETERS...
+                INPUT   DARK    CALIBRATION
+                FRAME   CURRENT FILE
+     S/N          7       7       7
+     FILTER       4       0       0    ***PARAMETERS DO NOT MATCH***
+     SCANRATE     1       1       1
+     GAIN         0       0       0
+     MODE       XXXXXXX  XXXXXXX
+***No acceptable calibration file found
+***FICOR task cancelled
+***Line=      32765
+ ** ABEND called **
+continue
+write "*** with filter=0 - this should work **"
+*** with filter=0 - this should work **
+ficor77 inp=(V1NA_0947106_RAW.vic,FICOR77_VG1_NA_CLEAR.DAT,V1NA_0946940_CLEAN.vic.ressar77,V1NA_0947132_CLEAN.vic.ressar77,V1NA_0947134_CLEAN.vic.ressar77)  +
+        out=V1NA_0231550_FICOR77_filter0.vic filter=0 'nocorrec
+Beginning VICAR task ficor77
+FICOR77 version 2020-04-02
+***Truncated input label, may cause problems
+Filter position overridden.
+***Truncated input label, may cause problems
+Dark-Current File input=          3
+Calibration File input=          2
+***Truncated input label, may cause problems
+DARK-CURRENT LABEL...
+
+          
+          
+          
+          
+          
+          
+          
+CALIBRATION FILE LABEL...
+
+          77                  2001    640020016400 I 2
+          MJS77 PHOTOMETRIC DATA FILE     S/N=7  1 CAMERA FILTER POSITION 0
+          DATE GENERATED  12/14/78  FRAMES LOW PASS FLTRD,DIV BY       9.000
+          SCAN RATE= 1   GAIN =0     TEMP  0.00   DEG. C  EXPOSURE *60  MSEC
+          INTAP=ISS241G  OUTAP=JS0565   FILE= 3
+             TEMP   32/1  31/2  27/3  29/0
+
+
+
+
+DIV=  9.0000000
+  CAMERA PARAMETERS...
+                INPUT   DARK    CALIBRATION
+                FRAME   CURRENT FILE
+     S/N          7       7       7
+     FILTER       0       0       0
+     SCANRATE     1       1       1
+     GAIN         0       0       0
+     MODE       XXXXXXX  XXXXXXX
+MAXL and luminances of calibration frames--
+
+    120.00      0.00      1.44      3.08      6.16     12.30     24.60     37.00     49.30     74.00     98.00
+Exposure time=  15360.000
+Radiance refers to solar spectrum
+FtL-sec to nanowatt conv factor=  3.3390000
+Ft-L to I/F conv factor=  16.510000
+Mean DN of DC=  6.3396420
+Minimum value of a saturated pixel=      32767
+Maximum value of an unsaturated pixel=         96
+Total number of saturated pixels=          0
+Total number of negative pixels=       2504
+FICOR task completed
+write "*** filteq - this should work, too ***"
+*** filteq - this should work, too ***
+ficor77 inp=(V1NA_0947106_RAW.vic,FICOR77_VG1_NA_CLEAR.DAT,V1NA_0946940_CLEAN.vic.ressar77,V1NA_0947132_CLEAN.vic.ressar77,V1NA_0947134_CLEAN.vic.ressar77)  +
+        out=V1NA_0231550_FICOR77_filteq.vic 'filteq 'nocorrec
+Beginning VICAR task ficor77
+FICOR77 version 2020-04-02
+Equating NA filter 0 with 4, and 5 with 6
+***Truncated input label, may cause problems
+***Truncated input label, may cause problems
+Dark-Current File input=          3
+Calibration File input=          2
+***Truncated input label, may cause problems
+DARK-CURRENT LABEL...
+
+          
+          
+          
+          
+          
+          
+          
+CALIBRATION FILE LABEL...
+
+          77                  2001    640020016400 I 2
+          MJS77 PHOTOMETRIC DATA FILE     S/N=7  1 CAMERA FILTER POSITION 0
+          DATE GENERATED  12/14/78  FRAMES LOW PASS FLTRD,DIV BY       9.000
+          SCAN RATE= 1   GAIN =0     TEMP  0.00   DEG. C  EXPOSURE *60  MSEC
+          INTAP=ISS241G  OUTAP=JS0565   FILE= 3
+             TEMP   32/1  31/2  27/3  29/0
+
+
+
+
+DIV=  9.0000000
+  CAMERA PARAMETERS...
+                INPUT   DARK    CALIBRATION
+                FRAME   CURRENT FILE
+     S/N          7       7       7
+     FILTER       0       0       0
+     SCANRATE     1       1       1
+     GAIN         0       0       0
+     MODE       XXXXXXX  XXXXXXX
+MAXL and luminances of calibration frames--
+
+    120.00      0.00      1.44      3.08      6.16     12.30     24.60     37.00     49.30     74.00     98.00
+Exposure time=  15360.000
+Radiance refers to solar spectrum
+FtL-sec to nanowatt conv factor=  3.3390000
+Ft-L to I/F conv factor=  16.510000
+Mean DN of DC=  6.3396420
+Minimum value of a saturated pixel=      32767
+Maximum value of an unsaturated pixel=         96
+Total number of saturated pixels=          0
+Total number of negative pixels=       2504
+FICOR task completed
+disable-log

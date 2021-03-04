@@ -183,6 +183,9 @@ Changes:
            currently officially supported VICAR platform of that flavor
 2017-08-15 wlb - removed DEBUG from imake.
 2018-02-27 wlb - fixed bug - uninitialized variable
+2019-06-14 wlb - IDS-7924 - Cast format args to expected types
+                 IDS-7922 - Initialized some variables
+2019-08-07 wlb IDS-7923 - Replaced some sprintf calls with snprintf.
 
 .LEVEL1
 .VARI INP

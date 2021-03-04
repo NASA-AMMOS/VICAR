@@ -281,7 +281,11 @@ extern "C" void pamoeba_base(double *simplex, double Y[], int ndim, int width,
 
 	    double result_YY = (*func)(&AR(j0,0), ndim, func_args);
 
-	    if (result_YY <= Y[best_idx]) {
+	    // The below originally had <= but was changed to < (see comment
+	    // in case 2 below).  Unlike case 2, this was never observed to
+	    // actually happen.
+
+	    if (result_YY < Y[best_idx]) {
 
 		// Case 1: continue with expansion point
 		// NOTE: The L-W paper has gamma=1 and AR+gamma*(AR-centroid).
@@ -299,11 +303,16 @@ extern "C" void pamoeba_base(double *simplex, double Y[], int ndim, int width,
 
 		    for (int i=0; i < ndim; i++) {
 			AR(j0,i) = AT(j0,i);
-			result_YY = trial_Y;
 		    }
+		    result_YY = trial_Y;
 		} // else use the reflection, already in AR
 
-	    } else if (result_YY <= Y[ms_index[j-1]]) {
+	    // The below originally had <= .  However, it should really only
+	    // accept the result if it is "better", so I changed it to < .
+	    // There was some evidence this sometimes caused an issue, although
+	    // that might have been due to the other bug (below). rgd 2019-07-22
+
+	    } else if (result_YY < Y[ms_index[j-1]]) {
 
 		// Case 2: Not best, but better than the next worse point
 		// so return the reflection point
@@ -334,8 +343,8 @@ extern "C" void pamoeba_base(double *simplex, double Y[], int ndim, int width,
 
 		    for (int i=0; i < ndim; i++) {
 			AR(j0,i) = AT(j0,i);
-			result_YY = trial_Y;
 		    }
+		    result_YY = trial_Y;
 		} else {
 
 		    // Contraction isn't better, use refl (already in AR) if
@@ -345,6 +354,10 @@ extern "C" void pamoeba_base(double *simplex, double Y[], int ndim, int width,
 		        for (int i=0; i < ndim; i++) {
 			    AR(j0,i) = A(simp_idx,i);	// reset to original
 			}
+			result_YY = Y[simp_idx];
+			// bug: the above result_YY = was missing originally,
+			// which caused it to go into an infinite loop on
+			// occasion.  Fixed rgd 2019-06-22.
 		    }
 #pragma omp atomic
 		    bad_count++;		// flag as no real improvement

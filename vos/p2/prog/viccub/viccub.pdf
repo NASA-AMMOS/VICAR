@@ -1,6 +1,7 @@
 process help=*
 PARM INP COUNT=(1:255)
 PARM OUT
+PARM BAND INTEGER DEFAULT=-- COUNT=(0:255)
 end-proc
 
 .Title
@@ -17,9 +18,29 @@ VICCUB copies input images into 1 multi-band image.
 All images must have the same size and the same format.
 The maximum number of input images is 255.
 
+If the BAND parameter is given, the selected band is read
+from each input.  If there are not enoungh BAND parameters,
+1 is assumed.  Thus a "colorglyph" could be made from two
+color stereo files like this:
+
+$R2LIB/viccub \( l r r \) cg band=\(1 2 3\)
+
 .LEVEL1
 .VARI INP
  Names of input files
 .VARI OUT
  Name of output file
+.VARI BAND
+Band to use for each file
+Defaults to 1.
+
+.LEVEL2
+.VARI INP
+ Names of input files
+.VARI OUT
+ Name of output file
+.VARI BAND
+Band to use for each file
+Defaults to 1.
+
 .End

@@ -80,6 +80,12 @@ static LblApiElement_typ	LabelTbl[] = {
         LBL_OFFSET(LblMiniHeader_typ, SpacecraftClockStartCount.Valid),
         LBL_NO_RETURN,  LBL_SIZE(SpacecraftClockStartCount.Value)},
 
+    {"SPACECRAFT_CLOCK_START_COUNT",        "STRING",       LBL_OPTIONAL,
+        LBL_NO_CONT,    1,  1,  LBL_NULL,
+        LBL_OFFSET(LblMiniHeader_typ, SpacecraftClockStartCountStr.Value),
+        LBL_OFFSET(LblMiniHeader_typ, SpacecraftClockStartCountStr.Valid),
+        LBL_NO_RETURN,  LBL_SIZE(SpacecraftClockStartCountStr.Value)},
+
 	{"DETECTOR_ERASE_COUNT",		"INT",		LBL_OPTIONAL,
 		LBL_NO_CONT,	1,	1,	LBL_NULL,
 		LBL_OFFSET(LblMiniHeader_typ, DetectorEraseCount.Value),
@@ -151,6 +157,12 @@ static LblApiElement_typ	LabelTbl[] = {
         LBL_OFFSET(LblMiniHeader_typ, InstrumentFocusSteps.Value),
         LBL_OFFSET(LblMiniHeader_typ, InstrumentFocusSteps.Valid),
         LBL_NO_RETURN,  LBL_SIZE(InstrumentFocusSteps.Value)},
+
+    {"AUTO_FOCUS_ZSTACK_FLAG",        "INT",       LBL_OPTIONAL,
+        LBL_NO_CONT,    1,  1,  LBL_NULL,
+        LBL_OFFSET(LblMiniHeader_typ, AutoFocusZstackFlag.Value),
+        LBL_OFFSET(LblMiniHeader_typ, AutoFocusZstackFlag.Valid),
+        LBL_NO_RETURN,  LBL_SIZE(AutoFocusZstackFlag.Value)},
 
     {"EXPOSURE_TYPE",        "STRING",       LBL_OPTIONAL,
         LBL_NO_CONT,    1,  1,  LBL_NULL,
@@ -338,6 +350,12 @@ static LblApiElement_typ	LabelTbl[] = {
         LBL_OFFSET(LblMiniHeader_typ, ArticulationDevPosition[1].Valid),
         LBL_NO_RETURN,  LBL_SIZE(ArticulationDevPosition[1].Value)},
 
+    {"ARTICULATION_DEV_POSITION",                "INT",   LBL_OPTIONAL,
+        LBL_CONTINUE,   1,  3,  LBL_NULL,
+        LBL_OFFSET(LblMiniHeader_typ, ArticulationDevPosition[2].Value),
+        LBL_OFFSET(LblMiniHeader_typ, ArticulationDevPosition[2].Valid),
+        LBL_NO_RETURN,  LBL_SIZE(ArticulationDevPosition[2].Value)},
+
     {"ARTICULATION_DEV_POSITION_NAME",                "STRING",   LBL_OPTIONAL,
         LBL_NO_CONT,    1,  1,  LBL_NULL,
         LBL_OFFSET(LblMiniHeader_typ, ArticulationDevPositionName[0].Value),
@@ -350,11 +368,23 @@ static LblApiElement_typ	LabelTbl[] = {
         LBL_OFFSET(LblMiniHeader_typ, ArticulationDevPositionName[1].Valid),
         LBL_NO_RETURN,  LBL_SIZE(ArticulationDevPositionName[1].Value)},
 
+    {"ARTICULATION_DEV_POSITION_NAME",                "STRING",   LBL_OPTIONAL,
+        LBL_CONTINUE,   1,  3,  LBL_NULL,
+        LBL_OFFSET(LblMiniHeader_typ, ArticulationDevPositionName[2].Value),
+        LBL_OFFSET(LblMiniHeader_typ, ArticulationDevPositionName[2].Valid),
+        LBL_NO_RETURN,  LBL_SIZE(ArticulationDevPositionName[2].Value)},
+
     {"OFFSET_MODE_ID",        "INT",       LBL_OPTIONAL,
         LBL_NO_CONT,    1,  1,  LBL_NULL,
         LBL_OFFSET(LblMiniHeader_typ, OffsetModeId.Value),
         LBL_OFFSET(LblMiniHeader_typ, OffsetModeId.Valid),
         LBL_NO_RETURN,  LBL_SIZE(OffsetModeId.Value)},
+
+    {"DC_OFFSET",             "INT",       LBL_OPTIONAL,
+        LBL_NO_CONT,    1,  1,  LBL_NULL,
+        LBL_OFFSET(LblMiniHeader_typ, DCOffset.Value),
+        LBL_OFFSET(LblMiniHeader_typ, DCOffset.Valid),
+        LBL_NO_RETURN,  LBL_SIZE(DCOffset.Value)},
 
     {"INITIAL_SIZE",        "INT",       LBL_OPTIONAL,
         LBL_NO_CONT,    1,  1,  LBL_NULL,
@@ -505,6 +535,13 @@ static LblApiElement_typ	LabelTbl[] = {
         LBL_OFFSET(LblMiniHeader_typ, InstrumentModeName[11].Value),
         LBL_OFFSET(LblMiniHeader_typ, InstrumentModeName[11].Valid),
         LBL_NO_RETURN,  LBL_SIZE(InstrumentModeName[11].Value)},
+
+    {"DETECTOR_READOUT_RATE",               "REAL",     LBL_OPTIONAL,
+        LBL_NO_CONT,    1,  1,  LBL_NULL,
+        LBL_OFFSET(LblMiniHeader_typ, DetectorReadoutRate.Value),
+        LBL_OFFSET(LblMiniHeader_typ, DetectorReadoutRate.Valid),
+        LBL_NO_RETURN,  LBL_SIZE(DetectorReadoutRate.Value)},
+
         
 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
 

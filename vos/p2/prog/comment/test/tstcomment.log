@@ -1,0 +1,56 @@
+comment ""
+Beginning VICAR task comment
+COMMENT version 2019-07-18
+--------------------
+
+Date: 18-Jul-2019    Time: 13:49:54
+
+--------------------
+comment message="Message"
+Beginning VICAR task comment
+COMMENT version 2019-07-18
+--------------------
+
+Date: 18-Jul-2019    Time: 13:49:54
+Message
+
+--------------------
+comment "***** Answer Comment: prompt with <RETURN> *****"
+Beginning VICAR task comment
+COMMENT version 2019-07-18
+--------------------
+
+Date: 18-Jul-2019    Time: 13:49:54
+***** Answer Comment: prompt with <RETURN> *****
+
+--------------------
+comment
+Beginning VICAR task comment
+COMMENT version 2019-07-18
+--------------------
+
+Date: 18-Jul-2019    Time: 13:49:54
+hello
+
+
+--------------------
+comment "***** Answer next Comment: prompt with some text + <RETURN> *****"
+Beginning VICAR task comment
+COMMENT version 2019-07-18
+--------------------
+
+Date: 18-Jul-2019    Time: 13:49:57
+***** Answer next Comment: prompt with some text + <RETURN> *****
+
+--------------------
+comment
+Beginning VICAR task comment
+COMMENT version 2019-07-18
+--------------------
+
+Date: 18-Jul-2019    Time: 13:49:57
+goodbye
+
+
+--------------------
+disable-log

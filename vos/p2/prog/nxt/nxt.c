@@ -35,23 +35,28 @@ void main44(void)
     int length;                 /* first record length                  */
     int count,def;		/* COUNT, DEF for XVPARM		*/
     struct PARBLK out_parb;	/* Local parameter block for XQ calls	*/
-    int next_file;		/* Next file to be retrieved		*/
+    int next_file = 0;		/* Next file to be retrieved		*/
     int stat,i;			/* Return status ind, increment var	*/
     int j;                      /* loop variable, first record length   */
-    int tape_pos;		/* File position number for tapes	*/
+    int tape_pos = 0;		/* File position number for tapes	*/
     int is_tape;		/* 1 if file is tape; 0 if not		*/
     char rec1[MAXR1];           /* buffer for first record in file.     */
     int rec_tmp[MAXR1];           /* buffer for first record in file.     */
-    char file_name[FILENAME_LEN];	/* name of file to reset	*/
-    char new_name[FILENAME_LEN];	/* process specific  file_name	*/
-    char output_name[FILENAME_LEN];	/* Name of file for output	*/
-    char output_name_final[FILENAME_LEN];	/* Name of file for output */
+    char file_name[FILENAME_LEN + 1];	/* name of file to reset	*/
+    char new_name[FILENAME_LEN + 1];	/* process specific  file_name	*/
+    char output_name[FILENAME_LEN + 1];	/* Name of file for output	*/
+    char output_name_final[FILENAME_LEN + 1];	/* Name of file for output */
     char *name_ptr;
     char msg[80];		/* Message buffer for zvmessage		*/
     long off_dst,off_src;	/* used for fseek */
     int c_buf_size, c_buf_indx;
 
-    zifmessage("*** nxt version 2016-03-07");
+    file_name[FILENAME_LEN] = '\0';
+    new_name[FILENAME_LEN] = '\0';
+    output_name[FILENAME_LEN] = '\0';
+    output_name_final[FILENAME_LEN] = '\0';
+
+    zifmessage("NXT version 2019-06-13");
     zvparm("INPUT",file_name,&count,&def,1,0);
     zvfilename(file_name,new_name,FILENAME_LEN);
 
@@ -148,7 +153,7 @@ void main44(void)
       for(i=0; i< (length-LENGTH1); i++)
         strcat(rec1," ");
       sprintf(&rec1[12+length-LENGTH1],"%5d\n",next_file);
-      stat = fprintf(unit,rec1);
+      stat = fprintf(unit, "%s", rec1);
       if (stat != length+1)
       {
  	zvmessage("??E -  Write (update) error on input","");

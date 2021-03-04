@@ -199,10 +199,11 @@ WRITTEN BY:            A. L. Zobrist, 29 August 1979
 COGNIZANT PROGRAMMER:  A. L. Zobrist
 
 REVISIONS: 
-  PORTED TO UNIX	C. R. Schenk (CRI)  31-Oct 1994
-  ALGORITHM UPDATED     A. L. Zobrist 19-Jul 1999
-  lsq update for poly   A. L. Zobrist 27-Aug 2002
-Fri Jan 11 2008 wlb switched to USES_ANSI_C AND LIB_CARTO; misc cleanup  
+  1994-10-31 C. R. Schenk (CRI) - PORTED TO UNIX
+  1999-07-19 A. L. Zobrist - ALGORITHM UPDATED
+  2002-08-27 A. L. Zobrist - lsq update for poly
+  2008-01-11 W. L. Bunch - switched to USES_ANSI_C AND LIB_CARTO; misc cleanup
+  2019-09-18 W. L. Bunch - IDS-7922 - initialized some variables; cleaned up -Wall warnings
 
 .LEVEL1
 .VARIABLE INP

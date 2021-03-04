@@ -303,6 +303,12 @@ if (-x $V2TOP/util/remove_element.csh) then
         setenv PATH $NEWPATH
       endif
    endif
+   if ($?REACH_SSIM_PATH != 0) then
+      setenv NEWPATH `$V2TOP/util/remove_element.csh "$PATH" $REACH_SSIM_PATH`
+      if ($status == 0) then
+        setenv PATH $NEWPATH
+      endif
+   endif
 endif
 #
 # CLASSPATH, for Java.
@@ -393,16 +399,6 @@ unsetenv CASSOURCE
 unsetenv CASSUB
 setenv CASINC $V2TOP
 unsetenv CASLIB
-@endif
-
-@ifdef SS_FEI5
-setenv 	FEI5LIB		$V2TOP/fei5/lib/$VICCPU
-setenv 	FEI5INC		$V2TOP/fei5/inc
-setenv 	FEI5SUB		$V2TOP/fei5/sub
-@else
-unsetenv FEI5LIB
-setenv FEI5INC $V2TOP
-unsetenv FEI5SUB
 @endif
 
 @ifdef SS_GUI
@@ -622,21 +618,17 @@ setenv	VIDSLIB		$V2TOP/vids/lib/$VICCPU
 unsetenv VIDSLIB
 @endif
 
-@ifdef SS_MDMS
-setenv	MDMSINC		$V2TOP/mdms/inc
-setenv	MDMSLIB		$V2TOP/mdms/lib/$VICCPU
-setenv	MDMSOLB		$V2TOP/mdms/olb/$VICCPU
-@else
-setenv MDMSINC $V2TOP
-unsetenv MDMSLIB
-unsetenv MDMSOLB
-@endif
+#@ifdef SS_MDMS
+#setenv	MDMSLIB		$V2TOP/mdms/lib/$VICCPU
+#@else
+#unsetenv MDMSLIB
+#@endif
 
-@ifdef SS_FEI
-setenv  FEI             $V2TOP/mdms/test
-@else
-unsetenv FEI
-@endif
+#@ifdef SS_FEI
+#setenv  FEI             $V2TOP/mdms/test
+#@else
+#unsetenv FEI
+#@endif
 
 @ifdef SS_JAVA
 setenv	V2JAVA		$V2TOP/java
@@ -730,7 +722,7 @@ unsetenv VRDITMP
 # This happens for MER (IDD params), PHX (RA params), and M98 (RAC params).
 # Note that M98 has been obsoleted.
 #
-setenv MARS_CONFIG_PATH /project/msl_work/config/calibration:/project/mer_work/calibration/${VICCPU}:/project/mer_work/calibration:/home/nsytmipl/calibration:/project/phx_work/calibration/${VICCPU}:/project/phx_work/calibration:/project/mpf/calibration:/project/mars_dev/fido/calibration
+setenv MARS_CONFIG_PATH /project/msl_work/config/calibration:/project/mer_work/calibration/${VICCPU}:/project/mer_work/calibration:/home/nsytmipl/calibration:/project/m20/calibration:/project/phx_work/calibration/${VICCPU}:/project/phx_work/calibration:/project/mpf/calibration:/project/mars_dev/fido/calibration
 # obsolete: /project/mars98/calibration/${VICCPU}:/project/mars98/calibration
 #
 @else
@@ -987,10 +979,22 @@ unsetenv GEOTRANSLIB
 # user-specifed rectangular grid.  
 # Source: http://www.ncl.ucar.edu/Download/ 
 #
-setenv NATGRID_ROOT $V2EXT/Natgrid/v6.2.0/$VICCPU
-setenv NATGRID_LIB $NATGRID_ROOT/lib
-setenv NATGRID_INCL $NATGRID_ROOT/include/ncarg
-setenv NATGRID_BIN $NATGRID_ROOT/bin
+if ($VICCPU == 'x86-macosx' || $VICCPU == 'mac64-osx') then
+  setenv NATGRID_ROOT $V2EXT/Natgrid/v6.5.0/$VICCPU
+  setenv NATGRID_LIB $NATGRID_ROOT/lib
+  setenv NATGRID_INCL $NATGRID_ROOT/include/ncarg
+  setenv NATGRID_BIN $NATGRID_ROOT/bin
+else if ($VICCPU == 'x86-64-linx') then
+  setenv NATGRID_ROOT $V2EXT/Natgrid/v6.4.0/$VICCPU
+  setenv NATGRID_LIB $NATGRID_ROOT/lib
+  setenv NATGRID_INCL $NATGRID_ROOT/include/ncarg
+  setenv NATGRID_BIN $NATGRID_ROOT/bin
+else
+  setenv NATGRID_ROOT $V2EXT/Natgrid/v6.3.0/$VICCPU
+  setenv NATGRID_LIB $NATGRID_ROOT/lib
+  setenv NATGRID_INCL $NATGRID_ROOT/include/ncarg
+  setenv NATGRID_BIN $NATGRID_ROOT/bin
+endif
 @else 
 unsetenv NATGRID_ROOT
 unsetenv NATGRID_LIB
@@ -1007,6 +1011,27 @@ setenv CPPUNIT_ROOT $V2EXT/cppunit/v1.12.1/$VICCPU
 @else
 unsetenv CPPUNIT_ROOT
 @endif
+#
+@ifdef EXT_BOOST
+#-----------------------------------------------------------------------
+#
+# Package: boost-c++
+# Classification: external
+# Version: 1.68.0
+# Source: https://www.boost.org/
+# Description: Boost provides free peer-reviewed portable C++ source libraries.
+#
+if ($VICCPU == 'x86-macosx' || $VICCPU == 'mac64-osx') then
+ setenv BOOST_ROOT $V2EXT/boost-c++/v1.68.0/$VICCPU
+ setenv BOOST_LIB $BOOST_ROOT/lib
+ setenv BOOST_INCL $BOOST_ROOT/include/boost
+else
+ setenv BOOST_ROOT $V2EXT/boost-c++/v1.68.0/$VICCPU
+endif
+@else
+unsetenv BOOST_ROOT
+@endif
+#
 @ifdef EXT_MSLMMMDecomp
 #-----------------------------------------------------------------------
 # MSLMMMDecomp - MMM_predictive_lossless_decompressor
@@ -1222,7 +1247,7 @@ unsetenv PGPLOT_DIR
 # and/or a $SPICEROOT/c directory containing the appropriate language toolkit.
 #
 if ($VICCPU == 'x86-macosx' || $VICCPU == 'mac64-osx') then
- setenv SPICEROOT	$V2EXT/spice/v65_gfortran423
+ setenv SPICEROOT	$V2EXT/spice/v65_gfortran820
 else 
  setenv SPICEROOT	$V2EXT/spice/v65_gfortran44
 endif
@@ -1474,7 +1499,11 @@ unsetenv MATH77LIB
 # #include "mpi_fake.h"
 # #endif
 #
+if ($VICCPU == 'x86-linux') then
 setenv MPILIB           $V2EXT/mpich/v1.2.4_rhe3/$VICCPU
+else
+setenv MPILIB           $V2EXT/mpich/v3.3.2/$VICCPU
+endif
 #
 @else
 unsetenv MPILIB
@@ -1524,6 +1553,23 @@ setenv MSLFSWLIB $V2PROP/msl_fsw/v10.5.6/$VICCPU/
 #
 @else
 unsetenv MSLFSWLIB
+@endif
+@ifdef EXT_M20SSIM
+#-----------------------------------------------------------------------
+#
+# The following defines the location of the M20 Surface Simulation (SSim)  
+# library. This library is used to compute arm reachability, preload, etc.  
+# It was obtained from git@github.jpl.nasa.gov:rsvp/ssim.git repostory.
+#
+# Note that this library conflicts with the MER_IDD library, in that many
+# symbols are defined in both.  If you use this library, make sure to also
+# define LIB_EXCLUDE_MER_IDD in your imake.  This will require some stubs for
+# PIG to link properly; see for example mslreach.com.
+#
+setenv M20SSIMLIB $V2PROP/m20_ssim/v6.2/$VICCPU/
+#
+@else
+unsetenv M20SSIMLIB
 @endif
 @ifdef EXT_SIRTF_PHE
 #-----------------------------------------------------------------------
@@ -1724,6 +1770,61 @@ setenv SIFT_LIB $V2PROP/sift/v1.0/$VICCPU
 unsetenv SIFT_LIB
 @endif
 #
+@ifdef EXT_TINYOBJLOADER
+#-----------------------------------------------------------------------
+# Package: TINYOBJLOADER
+# Classification: external
+# Version: 1.2.3
+# Source: https://github.com/syoyo/tinyobjloader/blob/master/tiny_obj_loader.h
+# 
+# This TPS is a header only, single file, C++ code that allows to load in 
+# containers mesh file in OBJ format.
+#
+setenv TINYOBJLOADER_LIB $V2EXT/tinyobjloader/v1.2.3
+@else
+unsetenv TINYOBJLOADER_LIB
+@endif
+#
+@ifdef EXT_EMBREE
+#----------------------------------------------------------------------
+# Package: EMBREE
+# Classification: external
+# Version: 3.3.0
+# Source: https://embree.github.io/downloads.html
+#
+# This software is a ray tracing software, allowing fast projection of image pixel on meshes.
+# 
+setenv EMBREE_LIB $V2EXT/embree/v3.7.0/$VICCPU
+@else
+unsetenv EMBREE_LIB
+@endif
+#
+@ifdef EXT_REACH
+#----------------------------------------------------------------------
+# Package: Reach
+# Classification: external
+# Version: 0.1.0
+# Source: https://github.jpl.nasa.gov/rsvp/reach.git
+#
+# This is a python wrapper for the (included) 'fsw_interface_server' program
+# that uses the ssim library to compute reachability based on the input
+# RMECH XYZ and UVW bands.
+# 
+if ($VICCPU == 'x86-64-linx') then
+  setenv REACH_RSVP_PATH $V2EXT/reach/v0.1.3/$VICCPU/rsvp-protos
+  setenv REACH_PY_PATH /pkg/anaconda/envs/reach/bin/python
+  setenv REACH_SSIM_PATH $V2EXT/reach/v0.1.3/$VICCPU/ssim/build/
+else
+  unsetenv REACH_RSVP_PATH
+  unsetenv REACH_PY_PATH
+  unsetenv REACH_SSIM_PATH
+endif
+@else
+unsetenv REACH_RSVP_PATH
+unsetenv REACH_PY_PATH
+unsetenv REACH_SSIM_PATH
+@endif
+#
 @ifdef EXT_JNI
 #-----------------------------------------------------------------------
 #
@@ -1831,6 +1932,19 @@ unsetenv V2CALLABLE_JAVA_LIB
 # $J2_XDOCLET: used for ejb_descriptor, build only
 # $J2_J2EESDK: used for ejb_descriptor, build and runtime
 #
+@endif
+@ifdef JEXT_OWASP
+#----------------------------------------------------------------------
+#
+# Package: owasp
+# Classification: external
+# Version: v1.2.2
+# Source: https://search.maven.org/remotecontent?filepath=org/owasp/encoder/encoder/1.2.2/
+# Description: 
+# 
+setenv J2_OWASP $V2EXT/owasp/v1.2.2
+@else
+unsetenv J2_OWASP
 @endif
 @ifdef JEXT_COMMONS_JCS
 #----------------------------------------------------------------------
@@ -2964,7 +3078,7 @@ unsetenv J2_JBPM
 # Version: 3.1.12
 # Source: http://dev.mysql.com/downloads
 # MySQL Connector/J is the official JDBC driver for MySQL.
-setenv J2_MYSQL /usr/local/src/database/MySQL
+setenv J2_MYSQL $V2EXT/mysql-connector-java
 #
 @else
 unsetenv J2_MYSQL
@@ -3246,18 +3360,29 @@ setenv J2_SXN $V2EXT/sxn/v0.9.3p1
 @else
 unsetenv J2_SXN
 @endif
-@ifdef JEXT_PDS_GENERATE_TOOL
+#@ifdef JEXT_PDS_GENERATE_TOOL
 #-----------------------------------------------------------------------
 # Package:pds_generate_tool
 # Classification: external
-# Version: v0.9.1
-# Source: https://starcell.jpl.nasa.gov/maven2/gov/nasa/pds/2010/preparation/generate/0.9.1/
+# Version: v0.16.0
+# Source: https://github.jpl.nasa.gov/PDSEN/generate/releases/tag/v0.17.0
 # Description: Software for generating PDS4 labels from either a PDS3 label 
 # or PDS3-specific Document Object Model (DOM) object.
 #
-setenv J2_PDS_GENERATE_TOOL $V2EXT/pds_generate_tool/v0.9.1/lib
+#setenv J2_PDS_GENERATE_TOOL $V2EXT/pds_generate_tool/v0.17.0/lib
+#@else
+#unsetenv J2_PDS_GENERATE_TOOL
+#@endif
+@ifdef JEXT_PDS_MI_LABEL
+#-----------------------------------------------------------------------
+# Package:pds_mi_label
+# Version: v1.1.2
+# Source: https://nasa-pds.github.io/mi-label/
+# Description: PDS generate tool replacing $V2EXT/pds_generate_tool
+# 
+setenv J2_PDS_MI_LABEL $V2EXT/pds_mi_label/v1.1.2/lib
 @else
-unsetenv J2_PDS_GENERATE_TOOL
+unsetenv J2_PDS_MI_LABEL 
 @endif
 @ifdef JEXT_PDS4_TOOLS
 #-----------------------------------------------------------------------
@@ -3464,9 +3589,6 @@ endif
 @ifdef SS_P2PROG
   setenv XFILESEARCHPATH ${XFILESEARCHPATH}:${R2LIB}/%N%S.xres
 @endif
-@ifdef SS_MDMS
-  setenv XFILESEARCHPATH ${XFILESEARCHPATH}:${V2TOP}/mdms/source/dbwindows/%N%S
-@endif
 @ifdef SS_MARS
   setenv XFILESEARCHPATH ${XFILESEARCHPATH}:${MARSLIB}/%N%S.xres
 @endif
@@ -3518,9 +3640,6 @@ endif
 #     setenv LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:${ACE_ROOT}/lib
 #   endif
 #@endif
-@ifdef SS_MDMS
-   setenv LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:${MDMSOLB}
-@endif
 @ifdef SS_MARS
    setenv LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:${MARSLIB}
 @endif
@@ -3575,7 +3694,6 @@ if ($VICCPU == 'mac-osx' || $VICCPU == 'x86-macosx' || $VICCPU == 'mac64-osx') t
    endif
 endif
 
-endif
 #
 # Set up for sgi IRIX6.5 n32 build
 #
@@ -3592,9 +3710,9 @@ set path = ($path $TAE/bin/{all,$TAEPLAT})
 @ifdef SS_GUI
 set path = ($path $GUILIB)
 @endif
-@ifdef SS_MDMS
-set path = ($path $MDMSLIB)
-@endif
+#@ifdef SS_MDMS
+#set path = ($path $MDMSLIB)
+#@endif
 set path = ($path $V2LIB)
 @ifdef SS_JAVA
 if ($?V2JDK != 0) then
@@ -3604,6 +3722,11 @@ endif
 @ifdef EXT_GNUPLOT
 if ($?GNUPLOT_LIB != 0) then
    set path = ($GNUPLOT_LIB/bin $path)
+endif
+@endif
+@ifdef EXT_REACH
+if ($?REACH_SSIM_PATH != 0) then
+   set path = ($REACH_SSIM_PATH $path)
 endif
 @endif
 set path = ($path $V2UTILEXE)

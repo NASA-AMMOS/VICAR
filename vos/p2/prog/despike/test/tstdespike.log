@@ -1,0 +1,220 @@
+local path type=string init="wms_test_work:[testdata.mipl.gll]"
+if ($syschar(1) = "UNIX")
+    let path="/project/test_work/testdata/mipl/gll/"
+end-if
+addnoise /project/test_work/testdata/mipl/gll/venus2.img n rate=100 seed=9699691
+Beginning VICAR task addnoise
+ADDNOISE version 2016-05-26
+Input format is HALF
+   51155 pixels hit by bit errors
+despike  n  d
+Beginning VICAR task despike
+DESPIKE version 11-Oct-2005
+pixels pass first gate=      91235
+spikes removed=      58683
+f2 (/project/test_work/testdata/mipl/gll/venus.img,d) diff func="abs(in1-in2)"
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 using hash table lookup
+FUNCTION EVALUATED 217077 TIMES
+hist diff 'nohist
+Beginning VICAR task hist
+*** HIST version 2017-08-08 ***
+
+
+AVERAGE GRAY LEVEL=14702.71       STANDARD DEVIATION=15811.66       NUMBER ELEMENTS=    640000
+MIN. DN=         0
+MAX. DN=     32767
+
+fit /project/test_work/testdata/mipl/gll/venus2.img byte perc=0.1 'byte
+Beginning VICAR task fit
+
+FIT version 5 August, 2003
+
+     RAW HISTOGRAM STATISTICS...
+AVERAGE GRAY LEVEL=   429.898 STANDARD DEVIATION=  2550.827 NUMBER OF ELEMENTS=  640000
+
+EXCLUDED HISTOGRAM STATISTICS...
+AVERAGE GRAY LEVEL=   606.208 STANDARD DEVIATION=   810.603 NUMBER OF ELEMENTS=  636619
+
+MINIMUM DN OF      0   SCALED TO     0
+
+MAXIMUM DN OF   2453   SCALED TO   255
+FIT task completed
+addnoise byte n rate=100 seed=9699691
+Beginning VICAR task addnoise
+ADDNOISE version 2016-05-26
+Input format is BYTE
+   51155 pixels hit by bit errors
+despike  n  d  scale=2 tol=4
+Beginning VICAR task despike
+DESPIKE version 11-Oct-2005
+pixels pass first gate=      32295
+spikes removed=      31069
+f2 (byte,d) diff func="abs(in1-in2)"
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 using byte table lookup
+FUNCTION EVALUATED 65536 TIMES
+hist diff 'nohist
+Beginning VICAR task hist
+*** HIST version 2017-08-08 ***
+
+
+AVERAGE GRAY LEVEL=0.116700       STANDARD DEVIATION=0.716814       NUMBER ELEMENTS=    640000
+MIN. DN=         0
+MAX. DN=       253
+
+f2 n nr 'real
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 640000 TIMES
+despike nr d
+Beginning VICAR task despike
+DESPIKE version 11-Oct-2005
+pixels pass first gate=      35235
+spikes removed=      32129
+f2 (/project/test_work/testdata/mipl/gll/venus2.img,d) diff func="(in1-in2)" 'real
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 640000 TIMES
+hist diff nlin=21 lim=(-100 300)
+Beginning VICAR task hist
+*** HIST version 2017-08-08 ***
+
+Bin Width =       20.0
+< LOW LIMIT     3381
+        -20*     225
+          0    21687   *****
+         20   213712   **************************************************  2
+         40   113644   **************************
+         60      492
+         80    11530   **
+        100     7961   *
+        120     2159
+        140     2535
+        160     2623
+        180     2854
+        200     2678
+        220     2217
+        240     2409
+        260     1095
+        280     1815
+        300     1765
+>HIGH LIMIT   245218   **************************************************  1
+
+AVERAGE GRAY LEVEL=367.2965
+STANDARD DEVIATION=2521.068
+NUMBER ELEMENTS=    640000
+MIN. DN=-32776.0
+MAX. DN=2234.000
+
+despike nr d 'posonly
+Beginning VICAR task despike
+DESPIKE version 11-Oct-2005
+pixels pass first gate=      35235
+spikes removed=      24907
+f2 (/project/test_work/testdata/mipl/gll/venus2.img,d) diff func="(in1-in2)" 'real
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 640000 TIMES
+hist diff nlin=21 lim=(-100 300)
+Beginning VICAR task hist
+*** HIST version 2017-08-08 ***
+
+Bin Width =       20.0
+< LOW LIMIT     3381
+        -20*     225
+          0    21684   *****
+         20   213707   **************************************************  2
+         40   113640   **************************
+         60      499
+         80    11519   **
+        100     7918   *
+        120     2209
+        140     2525
+        160     2630
+        180     2840
+        200     2670
+        220     2228
+        240     2392
+        260     1123
+        280     1809
+        300     1764
+>HIGH LIMIT   245237   **************************************************  1
+
+AVERAGE GRAY LEVEL=367.8824
+STANDARD DEVIATION=2521.357
+NUMBER ELEMENTS=    640000
+MIN. DN=-32776.0
+MAX. DN=2362.000
+
+gen a3d 100 100 3 BINC=10 LINC=20 SINC=10
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+addnoise a3d b3d rate=10 seed=9699691
+Beginning VICAR task addnoise
+ADDNOISE version 2016-05-26
+Input format is BYTE
+    7984 pixels hit by bit errors
+despike b3d c3d
+Beginning VICAR task despike
+DESPIKE version 11-Oct-2005
+pixels pass first gate=       1290
+spikes removed=        811
+pixels pass first gate=          0
+spikes removed=          0
+pixels pass first gate=          0
+spikes removed=          0
+f2 (a3d,c3d) diff func="abs(in1-in2)"
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 using hash table lookup
+FUNCTION EVALUATED 1744 TIMES
+hist diff 'nohist
+Beginning VICAR task hist
+*** HIST version 2017-08-08 ***
+
+
+AVERAGE GRAY LEVEL=90.36246       STANDARD DEVIATION=81.33788       NUMBER ELEMENTS=     30000
+MIN. DN=         0
+MAX. DN=       254
+
+gen a3d 100 100 3 ORG="BIL"
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+addnoise a3d b3d rate=20 seed=9699691
+Beginning VICAR task addnoise
+ADDNOISE version 2016-05-26
+Input format is BYTE
+    3980 pixels hit by bit errors
+despike b3d c3d
+Beginning VICAR task despike
+DESPIKE version 11-Oct-2005
+pixels pass first gate=       2397
+spikes removed=       2163
+pixels pass first gate=          0
+spikes removed=          0
+pixels pass first gate=          0
+spikes removed=          0
+f2 (a3d,c3d) diff func="abs(in1-in2)"
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 using hash table lookup
+FUNCTION EVALUATED 5082 TIMES
+hist diff 'nohist
+Beginning VICAR task hist
+*** HIST version 2017-08-08 ***
+
+
+AVERAGE GRAY LEVEL=77.79137       STANDARD DEVIATION=47.62574       NUMBER ELEMENTS=     30000
+MIN. DN=         0
+MAX. DN=       233
+
+ush rm a3d b3d byte c3d d n nr diff
+disable-log

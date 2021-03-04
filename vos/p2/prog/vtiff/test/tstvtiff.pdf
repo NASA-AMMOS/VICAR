@@ -2,6 +2,8 @@ procedure
 refgbl $autousage
 body
 
+enable-log
+
 let $autousage="none"
 
 write "each of the difpic calls should yield zero differences"
@@ -73,5 +75,7 @@ difpic (a,a1)
 
 !test dump facility:
 vtiff-tovic a.tif a1 'dump
+
+disable-log
 
 end-proc

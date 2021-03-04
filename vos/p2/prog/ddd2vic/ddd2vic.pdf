@@ -26,7 +26,8 @@ WRITTEN BY: Steve Levoe ( original perl script )
 
 COGNIZANT PROGRAMMER: Barbara McGuffie
 
-REVISION:  1.0 -- Original Version
+REVISION:
+  2019-08-22 Walt Bunch - IDS-7922 - Cleaned up -Wall warnings and two sprintfs.
 
 .LEVEL1
 .VARI INP

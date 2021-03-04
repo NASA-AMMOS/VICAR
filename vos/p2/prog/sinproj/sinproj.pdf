@@ -68,12 +68,14 @@ Original Author: ???
 Cognizant Programmer: m. jentoft-nilsen
 
 history:
-    Mar 6, 1992:  MJ-N - mcr 1290 allow projections with lon_cl
-                  or lon_cr outside of original longitude range of an
-                  image
-    22 Feb 1990 - FR 52797 mj-n
-    02 Jan 1995   Made portable for UNIX ... J. Turner (CRI) 
-
+  1990-02-22 FR 52797 mj-n
+  1992-03-06 MJ-N - mcr 1290 allow projections with lon_cl
+             or lon_cr outside of original longitude range of an
+             image
+  1995-01-02 J. Turner (CRI) - Made portable for UNIX 
+  2019-09-17 W. Bunch - IDS-7922 - Initialized a variable; cleaned up -Wall warnings.
+             Partially ported "bin" to UNIX to obtain "weight" and "terrain" input
+             files used by tstsinproj.pdf. Add those and tstsinproj.log to git.
 
 .level1
 .variable INP
