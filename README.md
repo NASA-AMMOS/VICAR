@@ -22,6 +22,9 @@ This release includes:
 
 For a full list of programs being released [click here](vos/docsource/vicar/VICAR_OS_contents_v4.0.pdf).
 
+## AFIDS-POMM
+AFIDS-POMM is a set of workstation tools supporting the automation of planetary orbital mosaicking and mapping requirements. AFIDS-POMM source code is intended to be incorporated and maintained in the VICAR open source repo in future releases. In the meantime, you can download the AFIDS-POMM docker image releases starting in May 2023 at: https://github.com/NASA-AMMOS/AFIDS-POMM
+
 ## VICAR Discussion Forum
 
 We have set up a [VICAR Open Source Google group](https://groups.google.com/forum/#!forum/vicar-open-source/), where you can find notifications of new releases, bug reports, and general discussion. You can join the group [here](https://groups.google.com/forum/#!forum/vicar-open-source/join). 
