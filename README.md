@@ -1,6 +1,18 @@
 # VICAR
-VICAR, which stands for Video Image Communication And Retrieval, is a general purpose image processing software system that has been developed since 1966 to digitally process multi-dimensional imaging data.
+[VICAR, which stands for Video Image Communication And Retrieval,](https://www.hou.usra.edu/meetings/planetdata2015/pdf/7059.pdf) is a general purpose image processing software system that has been developed since 1966 to digitally process multi-dimensional imaging data.
 
+# VISOR
+VISOR, VICAR In-Situ Operations for Robotics, formerly known as the “Mars Suite”, is the software used for operational and PDS
+archive image processing for all recent Mars surface missions at NASA Jet Propulsion Laboratory (JPL). VISOR is included as part of VICAR starting with Release 5.
+
+[VISOR will be presented at the Universities Space Research Association (USRA) 6th Planetary Data Workshop in Flagstaff, AZ on Wednesday, June 28, 2023.](https://www.hou.usra.edu/meetings/planetdata2023/technical_program/?session_no=303) Publication of the software is in process and will be available at the presentation. 
+
+## AFIDS-POMM
+[AFIDS-POMM, or Automatic Fusion of Image Data System - Planetary Orbital Mosaicking and Mapping,](https://www.hou.usra.edu/meetings/lpsc2023/pdf/1261.pdf) is a set of workstation tools supporting the automation of planetary orbital mosaicking and mapping requirements. In a future VICAR open source release, the AFIDS-POMM source code is intended to be merged and maintained as part of the VICAR open source repo.
+
+In the meantime, you can download the AFIDS-POMM docker releases from: https://github.com/NASA-AMMOS/AFIDS-POMM
+
+# Current Release
 We are pleased to announce that the VICAR Open Source Core version 4.0 is now available.
 Please visit the VICAR Open Source release homepage:
 
@@ -34,7 +46,7 @@ Note that for externals you'll find a tarball that contains all the platforms, a
 well as separate ones for each platform. Externals are 3rd party packages that are required to run VICAR. See section 2 of the [Building VICAR document](vos/docsource/vicar/VICAR_build_4.0.pdf) for more information. You need only the one that
 applies to your machine type.
 
-Pre-built VICAR binaries are available at https://github.com/nasa/VICAR/releases.
+Pre-built VICAR binaries are available at https://github.com/NASA-AMMOS/VICAR/releases.
 
 #### Tarballs
 
