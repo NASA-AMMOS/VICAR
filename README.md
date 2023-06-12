@@ -90,7 +90,7 @@ For VISOR, you will also need the calibration directory for the mission(s) you w
 
 * [VISOR Sample Data for User Guide](XXXX)
 
-# Getting Started
+# Getting Started and Documentation
 
 For any use of VICAR (including VISOR and AFIDS), we recommend the Quick-Start Guide:
 
@@ -103,6 +103,12 @@ The Installation Guide is useful for prebuilt binaries and critical if you want 
 If you want to use the VISOR Mars programs, first review the VICAR Quick-Start Guide and then the VISOR User Guide:
 
 * [VISOR User Guide](XXXX)
+
+Other less commonly referenced documents:
+* [VICAR File Format](https://www-mipl.jpl.nasa.gov/external/VICAR_file_fmt.pdf)
+* [VICAR Porting Guide](https://www-mipl.jpl.nasa.gov/portguide/portguide.html)
+* [Building and Delivering VICAR Applications](https://www-mipl.jpl.nasa.gov/buildapps/)
+* [VRDI User's Reference Guide (mostly obsolete)](https://www-mipl.jpl.nasa.gov/vrdi/vrdi.html)
 
 # VICAR Discussion Forum
 
