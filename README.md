@@ -18,24 +18,35 @@ In the meantime, you can download the AFIDS-POMM docker releases from: https://g
 Labelocity is a toolset for generating PDS4 labels.  It is included as part of the VICAR Open Source Release but is also available separately at [https://github.com/NASA-AMMOS/labelocity](https://github.com/NASA-AMMOS/labelocity), where you can find documentation for it.  Labelocity is also discussed in [6th Planetary Data Workshop(2023), abstract #7071](https://www.hou.usra.edu/meetings/planetdata2023/pdf/7071.pdf).
 
 # What's New in Release 5
-Please visit the VICAR Open Source release homepage:  (((XXXXXX IS THIS PARTICULARLY USEFUL ANY MORE?)))
-
-[http://www-mipl.jpl.nasa.gov/vicar_open.html](http://www-mipl.jpl.nasa.gov/vicar_open.html).
 
 This release includes:
 
-- Pre-built binaries for 32- and 64-bit Linux(Red Hat 7.3) and Mac OS X 64-bit. 
+- Pre-built binaries for 64-bit Linux (Red Hat 8.7) and Mac OS X 64-bit. 
 - A Docker Centos7 image that runs the 64-bit Linux binaries (Java 1.8).
-- A Docker Centos7 image preloaded with VOS 64-bit Linux(Red Hat 7.3) using Java 1.8.
+- A Docker Centos7 image preloaded with VOS 64-bit Linux(Red Hat 8) using Java 1.8.
 - All of VISOR (in $MARSLIB), XXXXX application programs
-- XXXXX new application programs: 
-  XXXXXavgpix 
-  XXXXXcomprs 
-  XXXXXcrosshair 
-  XXXXXmedval
-  XXXXXnimsr2iof 
-  XXXXXsdsems
-- XXXXX19 anomalies, 72 bug fixes/improvements. For release notes, [click here](vos/docsource/vicar/VOS5-Release-Notes.pdf).
+- 20 new application programs: 
+asc2tcl
+gengrid2
+getzval
+gridcomp
+gt2tcl
+gtcopy
+gtgenup
+ibislsq2
+imcorner
+rowop2
+tcl2tcl
+genpc
+gtpwarp
+gtwarpxd
+gtwrpsub
+mos_l2_dem
+rpc2grid
+rpcwarp
+rpcwarpm
+vextract2
+- 20 anomalies, 11 new capabilities, 80 bug fixes/improvements. For release notes, [click here](vos/docsource/vicar/VOS5-Release-Notes.pdf).
 
 For a full list of programs being released [click here](vos/docsource/vicar/VICAR_OS_contents_v4.0.pdf).
 
@@ -98,3 +109,7 @@ If you want to use the VISOR Mars programs, first review the VICAR Quick-Start G
 We have set up a [VICAR Open Source Google group](https://groups.google.com/forum/#!forum/vicar-open-source/), where you can find notifications of new releases, bug reports, and general discussion. You can join the group [here](https://groups.google.com/forum/#!forum/vicar-open-source/join).
 
 Questions:  vicar_help@jpl.nasa.gov
+
+# Modifying VICAR/VISOR
+
+One of the prime purposes of Open Source is to solicit contributions from the community, and we welcome such contributions.  However, at the current time, this git repo is read-only.  At some point in the future, we hope to make this easier, but for now, send any changes to vicar_help@jpl.nasa.gov and we can discuss them.  Since this software is used as part of surface operations for these missions, we must carefully vet any changes, which is the primary reason for this.  Getting more contributions from the community will help make the case for improved governance here.
