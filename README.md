@@ -22,33 +22,101 @@ Labelocity is a toolset for generating PDS4 labels.  It is included as part of t
 This release includes:
 
 - Pre-built binaries for 64-bit Linux (Red Hat 8.7) and Mac OS X 64-bit. 
-- A Docker Centos7 image that runs the 64-bit Linux binaries (Java 1.8).
-- A Docker Centos7 image preloaded with VOS 64-bit Linux(Red Hat 8) using Java 1.8.
 - All of VISOR (in $MARSLIB), 109 application programs
-- 20 new application programs: 
+- 88 new application programs: 
+accck
 asc2tcl
+astroref
+bowtie
+calfit
+compject
+comptab2
+comptab
+concompi
+concomp
+cutquad
+demfix
+deriv
+detrend
+detstat
+difnear
+ephref
+f2comp
+featherw
+fft2005
+
+fitg
+fitsout
 gengrid2
+gengrid
+genpc
+getpoint
 getzval
+grid3pt
+gridavg
+gridck
 gridcomp
 gt2tcl
+gtcomp
 gtcopy
+gtcrop
+gtdel
 gtgenup
-ibislsq2
-imcorner
-rowop2
-tcl2tcl
-genpc
+gtoffset
+gtp
 gtpwarp
+gtrot
+gtsize
+gtstat
+gtwarp
 gtwarpxd
 gtwrpsub
+ibis2asc
+ibis2img
+ibis2rpc
+ibisclst
+ibislsq2
+ibislsql
+ibisnlsq
+ibisx
+icat
+idgen
+ifthen
+ilist
+imcorner
+imgsum
+immerge
+imsplit
+medfill
+moore
 mos_l2_dem
+mvecall
+nacma
+norangle
+obj2gltf
+obj2plane
+picmtch4
+plab2tcl
+polygeov
+rastovec
+rowop2
 rpc2grid
-rpcwarp
+rpc2ibis
+rpcscal
 rpcwarpm
+rpcwarp
+sdsems
+surffit
+tcl2file
+tcl2tcl
+testtrnscol2
+trnscol2
 vextract2
+watermask    
+
 - 20 anomalies, 11 new capabilities, 80 bug fixes/improvements. For release notes, [click here](vos/docsource/vicar/VOS5-Release-Notes.pdf).
 
-For a full list of programs being released [click here](vos/docsource/vicar/VICAR_OS_contents_v4.0.pdf).
+For a full list of programs being released [click here](vos/docsource/vicar/VICAR_OS_contents_v5.0.pdf).
 
 # Obtaining VICAR
 
@@ -70,10 +138,8 @@ For VISOR, you will also need the calibration directory for the mission(s) you w
 
 ### Externals
 
-* Linux 32-bit externals:  [Click to download](http://www-mipl.jpl.nasa.gov/vicar_os/v5.0/vicar_open_ext_x86-linux_5.0.tar.gz)
 * Linux 64-bit externals:  [Click to download](http://www-mipl.jpl.nasa.gov/vicar_os/v5.0/vicar_open_ext_x86-64-linx_5.0.tar.gz)
 * Mac OS X externals:  [Click to download](http://www-mipl.jpl.nasa.gov/vicar_os/v5.0/vicar_open_ext_mac64-osx_5.0.tar.gz)
-* Solaris externals:  [Click to download](http://www-mipl.jpl.nasa.gov/vicar_os/v5.0/vicar_open_ext_sun-solr_5.0.tar.gz)
 * All externals (don't get unless you know you need this): [Click to download](http://www-mipl.jpl.nasa.gov/vicar_os/v5.0/vicar_open_ext_5.0.tar.gz)
 
 ### VISOR Calibration files
