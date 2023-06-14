@@ -44,7 +44,6 @@ ephref
 f2comp
 featherw
 fft2005
-
 fitg
 fitsout
 gengrid2
@@ -114,7 +113,7 @@ trnscol2
 vextract2
 watermask    
 
-- 20 anomalies, 11 new capabilities, 80 bug fixes/improvements. For release notes, [click here](vos/docsource/vicar/VOS5-Release-Notes.pdf).
+- 20 anomalies, 11 new capabilities, 222 bug fixes/improvements. For release notes, [click here](vos/docsource/vicar/VOS5-Release-Notes.pdf).
 
 For a full list of programs being released [click here](vos/docsource/vicar/VICAR_OS_contents_v5.0.pdf).
 
@@ -160,11 +159,11 @@ For VISOR, you will also need the calibration directory for the mission(s) you w
 
 For any use of VICAR (including VISOR and AFIDS), we recommend the Quick-Start Guide:
 
-* [VICAR Quick-Start Guide](vos/docsource/vicar/VICAR_guide_4.0.pdf).
+* [VICAR Quick-Start Guide](vos/docsource/vicar/VICAR_guide_5.0.pdf).
 
 The Installation Guide is useful for prebuilt binaries and critical if you want to attempt to build VICAR:
 
-* [VICAR installation guide](vos/docsource/vicar/VICAR_build_4.0.pdf).
+* [VICAR installation guide](vos/docsource/vicar/VICAR_build_5.0.pdf).
 
 If you want to use the VISOR Mars programs, first review the VICAR Quick-Start Guide and then the VISOR User Guide:
 
