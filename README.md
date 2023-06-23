@@ -153,7 +153,7 @@ For VISOR, you will also need the calibration directory for the mission(s) you w
 
 ### VISOR Sample Data
 
-* [VISOR Sample Data for User Guide](XXXX)
+* [VISOR Sample Data for User Guide](http://www-mipl.jpl.nasa.gov/vicar_os/v5.0/visor/visor_sample_data_20230614.tar.gz)
 
 # Getting Started and Documentation
 
