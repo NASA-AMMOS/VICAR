@@ -121,7 +121,7 @@ For a full list of programs being released [click here](vos/docsource/vicar/VICA
 
 VICAR can be obtained in two ways: pre-built binaries via tarball download (which includes source), or source code via github.com.
 
-In addition to the VICAR source code an externals package containing 3rd party software is required.  The externals come in the form of a tarball that contains all the platforms, as well as separate tarballs for each platform.  Externals are 3rd party packages that are required to run VICAR. See section 2 of the [Building VICAR document](vos/docsource/vicar/VICAR_build_4.0.pdf) for more information. You need only the one that
+In addition to the VICAR source code an externals package containing 3rd party software is required.  The externals come in the form of a tarball that contains all the platforms, as well as separate tarballs for each platform.  Externals are 3rd party packages that are required to run VICAR. See section 2 of the [Building VICAR document](vos/docsource/vicar/VICAR_build_5.0.pdf) for more information. You need only the one that
 applies to your machine type.
 
 For VISOR, you will also need the calibration directory for the mission(s) you will be working with.  Sample data for use with the VISOR User Guide is also available.
