@@ -1,0 +1,31 @@
+/***********************************************************************
+
+                     IMAKE FILE FOR PROGRAM trnscol2
+
+   To Create the build file give the command:
+
+		$ vimake trnscol2 			(VMS)
+   or
+		% vimake trnscol2          		(Unix)
+
+
+************************************************************************/
+
+#define PROGRAM	trnscol2
+
+#define MODULE_LIST trnscol2.c
+
+#define MAIN_LANG_C
+#define R2LIB
+
+/* Comment this out before delivery.
+#define DEBUG
+*/
+
+#define USES_ANSI_C
+
+#define LIB_CARTO
+#define LIB_P2SUB
+#define LIB_TAE
+#define LIB_RTL
+/************************* End of Imake file ***************************/

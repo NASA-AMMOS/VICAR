@@ -1,0 +1,85 @@
+procedure
+parm out type=(string,99)
+parm pixdeg type=real default=3600.0
+parm mpix type=real default=30.0
+parm lon type=real
+parm lat type=real
+parm rastypstr type=string default="1(RasterPixelIsArea)" +
+   valid=("1(RasterPixelIsArea)","2(RasterPixelIsPoint)")
+parm aspect string valid=("square","geographic") default="geographic"
+
+local ilon int
+local ilat int
+local mlon real
+local mlat real
+local eastp1 real
+local northm1 real
+local mpixdeg real
+local mpixhoriz real
+body
+write "GENPC version 2021-05-24"
+
+let ilon = $fix(&lon)
+let mlon = $float(ilon)
+let ilat = $fix(&lat)
+let mlat = $float(ilat)
+let eastp1 = mlon+1.0
+let northm1 = mlat-1.0
+
+let mpixdeg = pixdeg
+if (mpix<>30.0)
+   let mpixdeg = 108000.0/&mpix
+   write "resetting pixdeg &mpixdeg"
+end-if
+
+if (aspect = "square")
+    ibis-gen &out nc=2 nr=1 deffmt="DOUB" datacol=1 data=(&mlat)
+    mf3 &out f="c2=&mpixdeg*@cos(c1*3.1415926536/180.0)"
+    ibis2tcl &out v1=mpixhoriz vartype=-1 ibisloc=(1,2)
+else
+    let mpixhoriz = mpixdeg
+end-if
+
+gtgen out=&out 'tiecnvrt 'rectfit +
+   geotiff=("ModelTiePointTag=(0,0,0,&mlon,&mlat,0.0)", +
+   "ModelTiePointTag=(0,&mpixdeg,0,&mlon,&northm1,0.0)", +
+   "ModelTiePointTag=(&mpixhoriz,0,0,&eastp1,&mlat,0.0)", +
+   "GTModelTypeGeoKey=2(ModelTypeGeographic)", +
+   "GeogAngularUnitsGeoKey=9102(Angular_Degree)", +
+   "GeographicTypeGeoKey=4326(GCS_WGS_84)", +
+   "GTRasterTypeGeoKey=&rastypstr", +
+   "GeogEllipsoidGeoKey=7030(Ellipse_WGS84)")
+
+end-proc
+
+.TITLE
+GENPC - Creates a Plate Carree (PC) map projection georeference label.
+.HELP
+PURPOSE
+     GENPC Creates a Plate Carree (PC) map projection georeference label
+     file for AFIDS  "GT" programs requiring a reference file input 
+     (that might not otherwise be available).
+
+CALL
+     genpc OUTPUT PARAMS
+  
+OPERATION
+
+PERFORMANCE
+
+RESTRICTIONS
+
+.PAGE
+Original Programmer: A. L. Zobrist
+Copied from AFIDS on 2021-05-24.
+
+.LEVEL1
+.VARI OUT
+Output file name
+.LEVEL2
+.VARI OUT
+Output file name. This parameter is input as:
+     OUT=outnam
+where:
+"outnam" is the output file name
+.END

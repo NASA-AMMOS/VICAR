@@ -22,7 +22,8 @@ C
          CALL COMPUTE_HISTOGRAM(FORMAT,hist,buf,tmean,tsigma,npts)
       END IF
 
-      IF (NPTS.LT.1) THEN
+C     This has a rollover problem
+      IF (NPTS.EQ.0) THEN
          CALL XVMESSAGE('***Histogram is empty',' ')
          CALL ABEND
       END IF

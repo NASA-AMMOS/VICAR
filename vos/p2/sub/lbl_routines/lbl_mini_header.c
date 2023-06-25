@@ -200,6 +200,12 @@ static LblApiElement_typ	LabelTbl[] = {
         LBL_OFFSET(LblMiniHeader_typ, InstCmprsMode.Valid),
         LBL_NO_RETURN,  LBL_SIZE(InstCmprsMode.Value)},
 
+    {"INST_CMPRS_NAME",         "STRING",   LBL_OPTIONAL,
+        LBL_NO_CONT,    1,  1,  LBL_NULL,
+        LBL_OFFSET(LblMiniHeader_typ, InstCmprsName.Value),
+        LBL_OFFSET(LblMiniHeader_typ, InstCmprsName.Valid),
+        LBL_NO_RETURN,  LBL_SIZE(InstCmprsName.Value)},
+
     {"INST_CMPRS_QUALITY",        "INT",       LBL_OPTIONAL,
         LBL_NO_CONT,    1,  1,  LBL_NULL,
         LBL_OFFSET(LblMiniHeader_typ, InstCmprsQuality.Value),

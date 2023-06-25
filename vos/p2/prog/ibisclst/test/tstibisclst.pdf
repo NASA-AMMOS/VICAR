@@ -1,0 +1,31 @@
+procedure
+refgbl $echo
+refgbl $autousage
+body
+
+let $autousage="none"
+!let _onfail="continue"
+let $echo="yes"
+
+enable-log
+
+!  simple case
+
+ibis-gen xxa nc=4 nr=9 datacols=(1,2,3) +
+    data=(1.0, 317.0, 0.0, +
+          1.0, -324.8, 206.0, +
+          1.0, 210.1, 0.0, +
+          1.0, -324.6, 205.9, +
+          2.0, 0.0, -69.8, +
+          2.0, 0.0, -311.8, +
+          2.0, -0.1, 0.0, +
+          2.0, -325.7, 206.3, +
+          2.0, -326.0, 210.1)
+ 
+ibisclst inp=xxa cols=(1,2,3) concol=1 outcol=4
+
+ibis-l xxa
+
+disable-log
+
+END-PROC

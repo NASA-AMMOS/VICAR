@@ -1,12 +1,13 @@
 gen out=b.img nl=500 ns=500
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 areaiso out=  +
  (area_lat.img,area_lon.img,area_map.img,angle_map.img,del_area_lat.img,  +
  del_area_lon.img)  +
  planet=phobos 'north
 Beginning VICAR task areaiso
+AREAISO version 2019-08-07
 /project/test_work/testdata/general/phobos.model
 North projection only
 mapaux inp=(b.img,area_lat.img,area_lon.img,area_map.img)  +
@@ -20,6 +21,7 @@ areaiso out=  +
  del_area_lon.img)  +
  planet=phobos 'south
 Beginning VICAR task areaiso
+AREAISO version 2019-08-07
 /project/test_work/testdata/general/phobos.model
 South projection only
 mapaux inp=(b.img,area_lat.img,area_lon.img,area_map.img)  +
@@ -66,7 +68,7 @@ Beginning VICAR task concat
  image=            4  min dn=    0.00000000      max dn=    255.000000
 gen out=b.img nl=10 ns=10
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 MAP3 b.img north_target.img NL=500 NS=500 'STEREOGR SCAL=.1  +
    NORANGLE=0 LINE=250 SAMP=250 LATI=90 LONG=0  +
@@ -120,36 +122,43 @@ PROJECTION IS POLAR STEREOGRAPHIC
             0.000E+00  0.000E+00  0.000E+00  0.000E+00  0.000E+00  0.000E+00  0.000E+00  0.000E+00
 efgiso out=(E.img,F.img,G.img,R.img) planet=phobos nl=180 ns=360
 Beginning VICAR task efgiso
+EFGISO version 2019-07-18
 /project/test_work/testdata/general/phobos.model
 Model file: #rows= 39, #cols=75
 efgiso out=(E6.img,F6.img,G6.img,R6.img) planet=phobos nl=180 ns=360  +
  nlw=19 nsw=37
 Beginning VICAR task efgiso
+EFGISO version 2019-07-18
 /project/test_work/testdata/general/phobos.model
 Model file: #rows= 39, #cols=75
 efgiso out=(E5.img,F5.img,G5.img,R5.img) planet=phobos nl=180 ns=360  +
  nlw=11 nsw=19
 Beginning VICAR task efgiso
+EFGISO version 2019-07-18
 /project/test_work/testdata/general/phobos.model
 Model file: #rows= 39, #cols=75
 efgiso out=(E4.img,F4.img,G4.img,R4.img) planet=phobos nl=180 ns=360  +
  nlw=7 nsw=9
 Beginning VICAR task efgiso
+EFGISO version 2019-07-18
 /project/test_work/testdata/general/phobos.model
 Model file: #rows= 39, #cols=75
 efgiso out=(E3.img,F3.img,G3.img,R3.img) planet=phobos nl=180 ns=360  +
  nlw=5 nsw=5
 Beginning VICAR task efgiso
+EFGISO version 2019-07-18
 /project/test_work/testdata/general/phobos.model
 Model file: #rows= 39, #cols=75
 efgiso out=(E2.img,F2.img,G2.img,R2.img) planet=phobos nl=180 ns=360  +
  nlw=3 nsw=3
 Beginning VICAR task efgiso
+EFGISO version 2019-07-18
 /project/test_work/testdata/general/phobos.model
 Model file: #rows= 39, #cols=75
 efgiso out=(SE.img,SF.img,SG.img,SR.img) planet=phobos nl=180 ns=360  +
   triaxial=(11.7,11.7,11.7)
 Beginning VICAR task efgiso
+EFGISO version 2019-07-18
 Triaxial radii: 11.700000 11.700000 11.700000
 /project/test_work/testdata/general/phobos.model
 Model file: #rows= 39, #cols=75
@@ -204,7 +213,7 @@ Beginning VICAR task concat
  image=            6  min dn=    0.00000000      max dn=    23.2660980
 gen out=b.img nl=10 ns=10
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 MAP3 b.img sinu_target.img NL=350 NS=750 'SINUSOID SCAL=.1  +
    LINE=175 SAMP=375 LATI=0 LONG=0 NORANGLE=0  +
@@ -233,11 +242,13 @@ PROJECTION SPECIFIED IS SINUSOIDAL
             0.000E+00  0.000E+00  0.000E+00  0.000E+00  0.000E+00  0.000E+00  0.000E+00  0.000E+00
 efgiso out=(E.img,F.img,G.img,R.img) planet=phobos nl=180 ns=360
 Beginning VICAR task efgiso
+EFGISO version 2019-07-18
 /project/test_work/testdata/general/phobos.model
 Model file: #rows= 39, #cols=75
 efgiso out=(SE.img,SF.img,SG.img,SR.img) planet=phobos nl=180 ns=360  +
   triaxial=(11.7,11.7,11.7)
 Beginning VICAR task efgiso
+EFGISO version 2019-07-18
 Triaxial radii: 11.700000 11.700000 11.700000
 /project/test_work/testdata/general/phobos.model
 Model file: #rows= 39, #cols=75

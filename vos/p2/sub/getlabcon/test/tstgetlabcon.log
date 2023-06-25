@@ -1,0 +1,1157 @@
+  TGETLABCON INP=@GllFlightFull
+Beginning VICAR task TGETLABCON
+**********fortran callable***********
+GETLABCON:
+warning indicator=          1
+flight label
+frame number             18494400
+exposure time  msec    25.000000
+filter position                 3
+frame or scan rate              3
+camera serial number            1
+gain state                      2
+S/C event time year          1990
+S/C event time day             44
+S/C event time hour             5
+S/C event time minute          58
+S/C event time second          16
+S/C event time milsec         962
+S/C ID                       -999
+Camera Flood State           -999
+DC Offset State              -999
+FIBE                            0
+Boom flag                       1
+Image Scale  m/pixel         -999
+FOV Height                   -999
+FOV Width                    -999
+Range                        -999
+clock                          10
+Frame Start Count            -999
+target body in label is:
+          VENUS       
+DN to reflectance IOVF 0.00100000
+DN to radiance    CONV  9.381E-11
+Range target to sun     7.779E+08
+input tape name
+          !     
+Input  file #                -999
+output tape name
+                
+Output file #                -999
+picno
+          ?         
+dark calibration file
+          2F30.DC   
+radiance cal file
+          VIO100.CAL
+blemish correction file
+          VIO2F.BLM 
+shutter offset file
+          CALIBRATION.SO
+Earth rcvd time year         -999
+Earth rcvd time day          -999
+Earth rcvd time hour         -999
+Earth rcvd time minute       -999
+Earth rcvd time second       -999
+Uneven bit weighting            1
+Camera ID (1 or 2)           -999
+Partition(#RIM cycles)       -999
+
+**********c callable***********
+ZGETLABCON:
+warning indicator=          1
+flight label
+frame number             18494400
+exposure time  msec    25.000000
+filter position                 3
+frame or scan rate              3
+camera serial number            1
+gain state                      2
+S/C event time year          1990
+S/C event time day             44
+S/C event time hour             5
+S/C event time minute          58
+S/C event time second          16
+S/C event time milsec         962
+S/C ID                       -999
+Camera Flood State           -999
+DC Offset State              -999
+FIBE                            0
+Boom flag                       1
+Image Scale  m/pixel         -999
+FOV Height                   -999
+FOV Width                    -999
+Range                        -999
+clock                          10
+Frame Start Count            -999
+target body in label is: 
+          VENUS       
+DN to reflectance IOVF 0.00100000
+DN to radiance    CONV  9.381E-11
+Range target to sun     7.779E+08
+input tape name 
+          !     
+Input  file #                -999
+output tape name 
+                
+Output file #                -999
+picno 
+          ?         
+dark calibration file 
+          2F30.DC   
+radiance cal file 
+          VIO100.CAL
+blemish correction file 
+          VIO2F.BLM 
+shutter offset file 
+          CALIBRATION.SO
+Earth rcvd time year         -999
+Earth rcvd time day          -999
+Earth rcvd time hour         -999
+Earth rcvd time minute       -999
+Earth rcvd time second       -999
+Uneven bit weighting            1
+Camera ID (1 or 2)           -999
+Partition(#RIM cycles)       -999
+  
+  TGETLABCON INP=@GllFlightSum
+Beginning VICAR task TGETLABCON
+**********fortran callable***********
+GETLABCON:
+data(1)=          3
+frame number            383694600
+exposure time  msec    6.2500000
+filter position                 0
+frame or scan rate              1
+camera serial number            2
+gain state                      1
+S/C event time year          1997
+S/C event time day             51
+S/C event time hour            12
+S/C event time minute          55
+S/C event time second          34
+S/C event time milsec         255
+S/C ID                       -999
+Camera Flood State           -999
+DC Offset State              -999
+FIBE                         1000
+Boom flag                       1
+Image Scale  m/pixel         -999
+FOV Height                   -999
+FOV Width                    -999
+Range                        -999
+clock                          50
+Frame Start Count            -999
+target body in label is:
+          EUROPA      
+DN to reflectance IOVF  1.000E-04
+DN to radiance    CONV  1.796E-13
+Range target to sun     7.779E+08
+input tape name
+          !     
+Input  file #                -999
+output tape name
+                
+Output file #                -999
+picno
+          E6E0001   
+dark calibration file
+          1s2.dc03  
+radiance cal file
+          clrs.cal02
+blemish correction file
+          clr1s.blm0
+shutter offset file
+          calibration.so
+Earth rcvd time year         -999
+Earth rcvd time day          -999
+Earth rcvd time hour         -999
+Earth rcvd time minute       -999
+Earth rcvd time second       -999
+Uneven bit weighting            0
+Camera ID (1 or 2)           -999
+Partition(#RIM cycles)          1
+
+**********c callable***********
+ZGETLABCON:
+data[0]=          3
+frame number            383694600
+exposure time  msec    6.2500000
+filter position                 0
+frame or scan rate              1
+camera serial number            2
+gain state                      1
+S/C event time year          1997
+S/C event time day             51
+S/C event time hour            12
+S/C event time minute          55
+S/C event time second          34
+S/C event time milsec         255
+S/C ID                       -999
+Camera Flood State           -999
+DC Offset State              -999
+FIBE                         1000
+Boom flag                       1
+Image Scale  m/pixel         -999
+FOV Height                   -999
+FOV Width                    -999
+Range                        -999
+clock                          50
+Frame Start Count            -999
+target body in label is: 
+          EUROPA      
+DN to reflectance IOVF  1.000E-04
+DN to radiance    CONV  1.796E-13
+Range target to sun     7.779E+08
+input tape name 
+          !     
+Input  file #                -999
+output tape name 
+                
+Output file #                -999
+picno 
+          E6E0001   
+dark calibration file 
+          1s2.dc03  
+radiance cal file 
+          clrs.cal02
+blemish correction file 
+          clr1s.blm0
+shutter offset file 
+          calibration.so
+Earth rcvd time year         -999
+Earth rcvd time day          -999
+Earth rcvd time hour         -999
+Earth rcvd time minute       -999
+Earth rcvd time second       -999
+Uneven bit weighting            0
+Camera ID (1 or 2)           -999
+Partition(#RIM cycles)          1
+  
+  TGETLABCON INP=@GllCalibFull
+Beginning VICAR task TGETLABCON
+**********fortran callable***********
+GETLABCON:
+warning indicator=          1
+ground calibration label
+frame number                    7
+exposure time  msec    1600.0000
+filter position                 3
+frame or scan rate              4
+camera serial number            1
+gain state                      1
+S/C event time year          1985
+S/C event time day            137
+S/C event time hour            11
+S/C event time minute          19
+S/C event time second          48
+S/C event time milsec        -999
+S/C ID                       -999
+Camera Flood State           -999
+DC Offset State              -999
+FIBE                         -999
+Boom flag                    -999
+Image Scale  m/pixel         -999
+FOV Height                   -999
+FOV Width                    -999
+Range                        -999
+clock                        -999
+Frame Start Count            -999
+target body in label is:
+          !           
+DN to reflectance IOVF  6.086E-06
+DN to radiance    CONV  1.000E-14
+Range target to sun     7.779E+08
+input tape name
+          !     
+Input  file #                -999
+output tape name
+                
+Output file #                -999
+picno
+          !         
+dark calibration file
+          DC445.100 
+radiance cal file
+          RAD445.100
+blemish correction file
+          BLEM445.10
+shutter offset file
+          85SHUTOFF.MED 
+Earth rcvd time year         -999
+Earth rcvd time day          -999
+Earth rcvd time hour         -999
+Earth rcvd time minute       -999
+Earth rcvd time second       -999
+Uneven bit weighting            1
+Camera ID (1 or 2)           -999
+Partition(#RIM cycles)       -999
+
+**********c callable***********
+ZGETLABCON:
+warning indicator=          1
+ground calibration label
+frame number                    7
+exposure time  msec    1600.0000
+filter position                 3
+frame or scan rate              4
+camera serial number            1
+gain state                      1
+S/C event time year          1985
+S/C event time day            137
+S/C event time hour            11
+S/C event time minute          19
+S/C event time second          48
+S/C event time milsec        -999
+S/C ID                       -999
+Camera Flood State           -999
+DC Offset State              -999
+FIBE                         -999
+Boom flag                    -999
+Image Scale  m/pixel         -999
+FOV Height                   -999
+FOV Width                    -999
+Range                        -999
+clock                        -999
+Frame Start Count            -999
+target body in label is: 
+          !           
+DN to reflectance IOVF  6.086E-06
+DN to radiance    CONV  1.000E-14
+Range target to sun     7.779E+08
+input tape name 
+          !     
+Input  file #                -999
+output tape name 
+                
+Output file #                -999
+picno 
+          !         
+dark calibration file 
+          DC445.100 
+radiance cal file 
+          RAD445.100
+blemish correction file 
+          BLEM445.10
+shutter offset file 
+          85SHUTOFF.MED 
+Earth rcvd time year         -999
+Earth rcvd time day          -999
+Earth rcvd time hour         -999
+Earth rcvd time minute       -999
+Earth rcvd time second       -999
+Uneven bit weighting            1
+Camera ID (1 or 2)           -999
+Partition(#RIM cycles)       -999
+  
+  TGETLABCON INP=@GllCalibSum
+Beginning VICAR task TGETLABCON
+**********fortran callable***********
+GETLABCON:
+warning indicator=          1
+ground calibration label
+frame number                   34
+exposure time  msec    0.000E+00
+filter position                 0
+frame or scan rate              1
+camera serial number            2
+gain state                      4
+S/C event time year          1985
+S/C event time day            129
+S/C event time hour            10
+S/C event time minute          56
+S/C event time second          22
+S/C event time milsec        -999
+S/C ID                       -999
+Camera Flood State           -999
+DC Offset State              -999
+FIBE                         -999
+Boom flag                    -999
+Image Scale  m/pixel         -999
+FOV Height                   -999
+FOV Width                    -999
+Range                        -999
+clock                        -999
+Frame Start Count            -999
+target body in label is:
+          !           
+DN to reflectance IOVF -0.09990000
+DN to radiance    CONV -9.990E-10
+Range target to sun    -999.00000
+input tape name
+          !     
+Input  file #                -999
+output tape name
+                
+Output file #                -999
+picno
+          !         
+dark calibration file
+          !         
+radiance cal file
+          !         
+blemish correction file
+          !         
+shutter offset file
+          !             
+Earth rcvd time year         -999
+Earth rcvd time day          -999
+Earth rcvd time hour         -999
+Earth rcvd time minute       -999
+Earth rcvd time second       -999
+Uneven bit weighting         -999
+Camera ID (1 or 2)           -999
+Partition(#RIM cycles)       -999
+
+**********c callable***********
+ZGETLABCON:
+warning indicator=          1
+ground calibration label
+frame number                   34
+exposure time  msec    0.000E+00
+filter position                 0
+frame or scan rate              1
+camera serial number            2
+gain state                      4
+S/C event time year          1985
+S/C event time day            129
+S/C event time hour            10
+S/C event time minute          56
+S/C event time second          22
+S/C event time milsec        -999
+S/C ID                       -999
+Camera Flood State           -999
+DC Offset State              -999
+FIBE                         -999
+Boom flag                    -999
+Image Scale  m/pixel         -999
+FOV Height                   -999
+FOV Width                    -999
+Range                        -999
+clock                        -999
+Frame Start Count            -999
+target body in label is: 
+          !           
+DN to reflectance IOVF -0.09990000
+DN to radiance    CONV -9.990E-10
+Range target to sun    -999.00000
+input tape name 
+          !     
+Input  file #                -999
+output tape name 
+                
+Output file #                -999
+picno 
+          !         
+dark calibration file 
+          !         
+radiance cal file 
+          !         
+blemish correction file 
+          !         
+shutter offset file 
+          !             
+Earth rcvd time year         -999
+Earth rcvd time day          -999
+Earth rcvd time hour         -999
+Earth rcvd time minute       -999
+Earth rcvd time second       -999
+Uneven bit weighting         -999
+Camera ID (1 or 2)           -999
+Partition(#RIM cycles)       -999
+  
+  TGETLABCON INP=@VGR1
+Beginning VICAR task TGETLABCON
+**********fortran callable***********
+GETLABCON:
+Warning::year number is not 4-digit.
+Warning::year number is not 4-digit.
+flight label
+frame number              1636832
+exposure time  msec    360.00000
+filter position                 0
+frame or scan rate              1
+camera serial number            7
+gain state                      0
+S/C event time year          1979
+S/C event time day             63
+S/C event time hour            19
+S/C event time minute          22
+S/C event time second          59
+S/C event time milsec         820
+S/C ID                          1
+Camera Flood State           -999
+DC Offset State              -999
+FIBE                         -999
+Boom flag                    -999
+Image Scale  m/pixel         -999
+FOV Height                   -999
+FOV Width                    -999
+Range                        -999
+clock                        -999
+Frame Start Count            -999
+target body in label is:
+                      
+DN to reflectance IOVF  1.000E-04
+DN to radiance    CONV  2.022E-13
+Range target to sun    -999.00000
+input tape name
+          107971
+Input  file #                   7
+output tape name
+          JS4459
+Output file #                   2
+picno
+          0548J1-001
+dark calibration file
+                    
+radiance cal file
+                    
+blemish correction file
+                    
+shutter offset file
+                        
+Earth rcvd time year         1979
+Earth rcvd time day            63
+Earth rcvd time hour           20
+Earth rcvd time minute          0
+Earth rcvd time second         36
+Uneven bit weighting         -999
+Camera ID (1 or 2)              1
+Partition(#RIM cycles)       -999
+
+**********c callable***********
+ZGETLABCON:
+Warning::year number is not 4-digit.
+Warning::year number is not 4-digit.
+flight label
+frame number              1636832
+exposure time  msec    360.00000
+filter position                 0
+frame or scan rate              1
+camera serial number            7
+gain state                      0
+S/C event time year          1979
+S/C event time day             63
+S/C event time hour            19
+S/C event time minute          22
+S/C event time second          59
+S/C event time milsec         820
+S/C ID                          1
+Camera Flood State           -999
+DC Offset State              -999
+FIBE                         -999
+Boom flag                    -999
+Image Scale  m/pixel         -999
+FOV Height                   -999
+FOV Width                    -999
+Range                        -999
+clock                        -999
+Frame Start Count            -999
+target body in label is: 
+                      
+DN to reflectance IOVF  1.000E-04
+DN to radiance    CONV  2.022E-13
+Range target to sun    -999.00000
+input tape name 
+          107971
+Input  file #                   7
+output tape name 
+          JS4459
+Output file #                   2
+picno 
+          0548J1-001
+dark calibration file 
+                    
+radiance cal file 
+                    
+blemish correction file 
+                    
+shutter offset file 
+                        
+Earth rcvd time year         1979
+Earth rcvd time day            63
+Earth rcvd time hour           20
+Earth rcvd time minute          0
+Earth rcvd time second         36
+Uneven bit weighting         -999
+Camera ID (1 or 2)              1
+Partition(#RIM cycles)       -999
+  
+  TGETLABCON INP=@VGR2
+Beginning VICAR task TGETLABCON
+**********fortran callable***********
+GETLABCON:
+Warning::year number is not 4-digit.
+Warning::year number is not 4-digit.
+warning indicator=          1
+flight label
+frame number              2062130
+exposure time  msec    1920.0000
+filter position                 7
+frame or scan rate              2
+camera serial number            5
+gain state                      1
+S/C event time year          1979
+S/C event time day            189
+S/C event time hour            16
+S/C event time minute           6
+S/C event time second          22
+S/C event time milsec          40
+S/C ID                          2
+Camera Flood State           -999
+DC Offset State              -999
+FIBE                         -999
+Boom flag                    -999
+Image Scale  m/pixel         -999
+FOV Height                   -999
+FOV Width                    -999
+Range                        -999
+clock                        -999
+Frame Start Count            -999
+target body in label is:
+                      
+DN to reflectance IOVF  1.000E-04
+DN to radiance    CONV  2.181E-13
+Range target to sun    -999.00000
+input tape name
+          205430
+Input  file #                  13
+output tape name
+          !     
+Output file #                -999
+picno
+          1323J2-002
+dark calibration file
+                    
+radiance cal file
+                    
+blemish correction file
+                    
+shutter offset file
+                        
+Earth rcvd time year         1979
+Earth rcvd time day           189
+Earth rcvd time hour           16
+Earth rcvd time minute         58
+Earth rcvd time second          1
+Uneven bit weighting         -999
+Camera ID (1 or 2)              1
+Partition(#RIM cycles)       -999
+
+**********c callable***********
+ZGETLABCON:
+Warning::year number is not 4-digit.
+Warning::year number is not 4-digit.
+warning indicator=          1
+flight label
+frame number              2062130
+exposure time  msec    1920.0000
+filter position                 7
+frame or scan rate              2
+camera serial number            5
+gain state                      1
+S/C event time year          1979
+S/C event time day            189
+S/C event time hour            16
+S/C event time minute           6
+S/C event time second          22
+S/C event time milsec          40
+S/C ID                          2
+Camera Flood State           -999
+DC Offset State              -999
+FIBE                         -999
+Boom flag                    -999
+Image Scale  m/pixel         -999
+FOV Height                   -999
+FOV Width                    -999
+Range                        -999
+clock                        -999
+Frame Start Count            -999
+target body in label is: 
+                      
+DN to reflectance IOVF  1.000E-04
+DN to radiance    CONV  2.181E-13
+Range target to sun    -999.00000
+input tape name 
+          205430
+Input  file #                  13
+output tape name 
+          !     
+Output file #                -999
+picno 
+          1323J2-002
+dark calibration file 
+                    
+radiance cal file 
+                    
+blemish correction file 
+                    
+shutter offset file 
+                        
+Earth rcvd time year         1979
+Earth rcvd time day           189
+Earth rcvd time hour           16
+Earth rcvd time minute         58
+Earth rcvd time second          1
+Uneven bit weighting         -999
+Camera ID (1 or 2)              1
+Partition(#RIM cycles)       -999
+  
+  TGETLABCON INP=@CssCalib
+Beginning VICAR task TGETLABCON
+**********fortran callable***********
+GETLABCON:
+ground calibration label
+frame number            763839162
+exposure time  msec    1000.0000
+filter position              1001
+frame or scan rate           -999
+camera serial number           21
+gain state                   -999
+S/C event time year          1994
+S/C event time day             75
+S/C event time hour             9
+S/C event time minute          32
+S/C event time second          41
+S/C event time milsec         500
+S/C ID                       -999
+Camera Flood State              0
+DC Offset State              -999
+FIBE                         -999
+Boom flag                    -999
+Image Scale  m/pixel         -999
+FOV Height                   -999
+FOV Width                    -999
+Range                        -999
+clock                   763839162
+Frame Start Count            -999
+target body in label is:
+          ISS_LAB     
+DN to reflectance IOVF -999.00000
+DN to radiance    CONV -999.00000
+Range target to sun    -999.00000
+input tape name
+                
+Input  file #                -999
+output tape name
+                
+Output file #                -999
+picno
+                    
+dark calibration file
+                    
+radiance cal file
+                    
+blemish correction file
+                    
+shutter offset file
+                        
+Earth rcvd time year         -999
+Earth rcvd time day          -999
+Earth rcvd time hour         -999
+Earth rcvd time minute       -999
+Earth rcvd time second       -999
+Uneven bit weighting         -999
+Camera ID (1 or 2)              1
+Partition(#RIM cycles)       -999
+
+**********c callable***********
+ZGETLABCON:
+ground calibration label
+frame number            763839162
+exposure time  msec    1000.0000
+filter position              1001
+frame or scan rate           -999
+camera serial number           21
+gain state                   -999
+S/C event time year          1994
+S/C event time day             75
+S/C event time hour             9
+S/C event time minute          32
+S/C event time second          41
+S/C event time milsec         500
+S/C ID                       -999
+Camera Flood State              0
+DC Offset State              -999
+FIBE                         -999
+Boom flag                    -999
+Image Scale  m/pixel         -999
+FOV Height                   -999
+FOV Width                    -999
+Range                        -999
+clock                   763839162
+Frame Start Count            -999
+target body in label is: 
+          ISS_LAB     
+DN to reflectance IOVF -999.00000
+DN to radiance    CONV -999.00000
+Range target to sun    -999.00000
+input tape name 
+                
+Input  file #                -999
+output tape name 
+                
+Output file #                -999
+picno 
+                    
+dark calibration file 
+                    
+radiance cal file 
+                    
+blemish correction file 
+                    
+shutter offset file 
+                        
+Earth rcvd time year         -999
+Earth rcvd time day          -999
+Earth rcvd time hour         -999
+Earth rcvd time minute       -999
+Earth rcvd time second       -999
+Uneven bit weighting         -999
+Camera ID (1 or 2)              1
+Partition(#RIM cycles)       -999
+  
+  TGETLABCON INP=@CssFlight
+Beginning VICAR task TGETLABCON
+**********fortran callable***********
+GETLABCON:
+flight label
+frame number           1356781097
+exposure time  msec    2000.0000
+filter position             11001
+frame or scan rate             24
+camera serial number            1
+gain state                      3
+S/C event time year          2000
+S/C event time day            364
+S/C event time hour            11
+S/C event time minute          26
+S/C event time second          39
+S/C event time milsec         266
+S/C ID                       -999
+Camera Flood State              1
+DC Offset State               112
+FIBE                         -999
+Boom flag                    -999
+Image Scale  m/pixel         -999
+FOV Height                   -999
+FOV Width                    -999
+Range                        -999
+clock                  1356781097
+Frame Start Count            -999
+target body in label is:
+          IO          
+DN to reflectance IOVF -999.00000
+DN to radiance    CONV -999.00000
+Range target to sun    -999.00000
+input tape name
+                
+Input  file #                -999
+output tape name
+                
+Output file #                -999
+picno
+                    
+dark calibration file
+                    
+radiance cal file
+                    
+blemish correction file
+                    
+shutter offset file
+                        
+Earth rcvd time year         2000
+Earth rcvd time day           365
+Earth rcvd time hour            6
+Earth rcvd time minute          7
+Earth rcvd time second          5
+Uneven bit weighting         -999
+Camera ID (1 or 2)              1
+Partition(#RIM cycles)          1
+
+**********c callable***********
+ZGETLABCON:
+flight label
+frame number           1356781097
+exposure time  msec    2000.0000
+filter position             11001
+frame or scan rate             24
+camera serial number            1
+gain state                      3
+S/C event time year          2000
+S/C event time day            364
+S/C event time hour            11
+S/C event time minute          26
+S/C event time second          39
+S/C event time milsec         266
+S/C ID                       -999
+Camera Flood State              1
+DC Offset State               112
+FIBE                         -999
+Boom flag                    -999
+Image Scale  m/pixel         -999
+FOV Height                   -999
+FOV Width                    -999
+Range                        -999
+clock                  1356781097
+Frame Start Count            -999
+target body in label is: 
+          IO          
+DN to reflectance IOVF -999.00000
+DN to radiance    CONV -999.00000
+Range target to sun    -999.00000
+input tape name 
+                
+Input  file #                -999
+output tape name 
+                
+Output file #                -999
+picno 
+                    
+dark calibration file 
+                    
+radiance cal file 
+                    
+blemish correction file 
+                    
+shutter offset file 
+                        
+Earth rcvd time year         2000
+Earth rcvd time day           365
+Earth rcvd time hour            6
+Earth rcvd time minute          7
+Earth rcvd time second          5
+Uneven bit weighting         -999
+Camera ID (1 or 2)              1
+Partition(#RIM cycles)          1
+  
+  TGETLABCON INP=@CssS2
+Beginning VICAR task TGETLABCON
+**********fortran callable***********
+GETLABCON:
+flight label
+frame number           1308947518
+exposure time  msec    60.000000
+filter position              8003
+frame or scan rate             24
+camera serial number           21
+gain state                      1
+S/C event time year          1999
+S/C event time day            175
+S/C event time hour            20
+S/C event time minute          25
+S/C event time second          41
+S/C event time milsec         579
+S/C ID                       -999
+Camera Flood State              1
+DC Offset State              -999
+FIBE                         -999
+Boom flag                    -999
+Image Scale  m/pixel         -999
+FOV Height                   -999
+FOV Width                    -999
+Range                        -999
+clock                  1308947518
+Frame Start Count            -999
+target body in label is:
+          VENUS       
+DN to reflectance IOVF -999.00000
+DN to radiance    CONV -999.00000
+Range target to sun    -999.00000
+input tape name
+                
+Input  file #                -999
+output tape name
+                
+Output file #                -999
+picno
+                    
+dark calibration file
+                    
+radiance cal file
+                    
+blemish correction file
+                    
+shutter offset file
+                        
+Earth rcvd time year         -999
+Earth rcvd time day          -999
+Earth rcvd time hour         -999
+Earth rcvd time minute       -999
+Earth rcvd time second       -999
+Uneven bit weighting         -999
+Camera ID (1 or 2)              1
+Partition(#RIM cycles)       -999
+
+**********c callable***********
+ZGETLABCON:
+flight label
+frame number           1308947518
+exposure time  msec    60.000000
+filter position              8003
+frame or scan rate             24
+camera serial number           21
+gain state                      1
+S/C event time year          1999
+S/C event time day            175
+S/C event time hour            20
+S/C event time minute          25
+S/C event time second          41
+S/C event time milsec         579
+S/C ID                       -999
+Camera Flood State              1
+DC Offset State              -999
+FIBE                         -999
+Boom flag                    -999
+Image Scale  m/pixel         -999
+FOV Height                   -999
+FOV Width                    -999
+Range                        -999
+clock                  1308947518
+Frame Start Count            -999
+target body in label is: 
+          VENUS       
+DN to reflectance IOVF -999.00000
+DN to radiance    CONV -999.00000
+Range target to sun    -999.00000
+input tape name 
+                
+Input  file #                -999
+output tape name 
+                
+Output file #                -999
+picno 
+                    
+dark calibration file 
+                    
+radiance cal file 
+                    
+blemish correction file 
+                    
+shutter offset file 
+                        
+Earth rcvd time year         -999
+Earth rcvd time day          -999
+Earth rcvd time hour         -999
+Earth rcvd time minute       -999
+Earth rcvd time second       -999
+Uneven bit weighting         -999
+Camera ID (1 or 2)              1
+Partition(#RIM cycles)       -999
+  
+  TGETLABCON INP=@CssTour
+Beginning VICAR task TGETLABCON
+**********fortran callable***********
+GETLABCON:
+flight label
+frame number           1358285193
+exposure time  msec    380.00000
+filter position              3001
+frame or scan rate             24
+camera serial number            1
+gain state                      2
+S/C event time year          2001
+S/C event time day             15
+S/C event time hour            21
+S/C event time minute          14
+S/C event time second          45
+S/C event time milsec         660
+S/C ID                       -999
+Camera Flood State              1
+DC Offset State               112
+FIBE                         -999
+Boom flag                    -999
+Image Scale  m/pixel         -999
+FOV Height                   -999
+FOV Width                    -999
+Range                        -999
+clock                  1358285193
+Frame Start Count            -999
+target body in label is:
+          JUPITER     
+DN to reflectance IOVF -999.00000
+DN to radiance    CONV -999.00000
+Range target to sun    -999.00000
+input tape name
+                
+Input  file #                -999
+output tape name
+                
+Output file #                -999
+picno
+                    
+dark calibration file
+                    
+radiance cal file
+                    
+blemish correction file
+                    
+shutter offset file
+                        
+Earth rcvd time year         2001
+Earth rcvd time day            17
+Earth rcvd time hour            1
+Earth rcvd time minute         24
+Earth rcvd time second         41
+Uneven bit weighting         -999
+Camera ID (1 or 2)              1
+Partition(#RIM cycles)          1
+
+**********c callable***********
+ZGETLABCON:
+flight label
+frame number           1358285193
+exposure time  msec    380.00000
+filter position              3001
+frame or scan rate             24
+camera serial number            1
+gain state                      2
+S/C event time year          2001
+S/C event time day             15
+S/C event time hour            21
+S/C event time minute          14
+S/C event time second          45
+S/C event time milsec         660
+S/C ID                       -999
+Camera Flood State              1
+DC Offset State               112
+FIBE                         -999
+Boom flag                    -999
+Image Scale  m/pixel         -999
+FOV Height                   -999
+FOV Width                    -999
+Range                        -999
+clock                  1358285193
+Frame Start Count            -999
+target body in label is: 
+          JUPITER     
+DN to reflectance IOVF -999.00000
+DN to radiance    CONV -999.00000
+Range target to sun    -999.00000
+input tape name 
+                
+Input  file #                -999
+output tape name 
+                
+Output file #                -999
+picno 
+                    
+dark calibration file 
+                    
+radiance cal file 
+                    
+blemish correction file 
+                    
+shutter offset file 
+                        
+Earth rcvd time year         2001
+Earth rcvd time day            17
+Earth rcvd time hour            1
+Earth rcvd time minute         24
+Earth rcvd time second         41
+Uneven bit weighting         -999
+Camera ID (1 or 2)              1
+Partition(#RIM cycles)          1
+  
+  let $echo="no"

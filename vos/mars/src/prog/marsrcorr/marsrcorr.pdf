@@ -1,0 +1,948 @@
+process help=*
+PARM INP TYPE=STRING COUNT=2
+PARM OUT TYPE=STRING COUNT=1
+PARM BANDS TYPE=INTEGER COUNT=(0:2) DEFAULT=1
+
+! Approach for finding disparity
+PARM DISP_SEARCH TYPE=KEYWORD COUNT=1 VALID=("PLANE_SWEEP","STD") DEFAULT="STD"
+
+! Image correlation parameters
+PARM MATCH_IMG TYPE=KEYWORD COUNT=1 VALID=("NCC", "ZSSD") DEFAULT="NCC"
+PARM TEMPLATE TYPE=INTEGER COUNT=(0:2) DEFAULT=7
+PARM SEARCH TYPE=INTEGER COUNT=(0:2) DEFAULT=3
+PARM SUBPIXEL TYPE=INTEGER COUNT=(0:2) DEFAULT=0
+
+! Disparity Prior parameters for Standard Area-based disparity search
+PARM IN_DISP TYPE=STRING COUNT=(0:1)
+PARM AFFINE_PARAM TYPE=REAL COUNT=(0,2,6) DEFAULT=--
+PARM AFFINE_SIZE TYPE=INTEGER COUNT=(0,2) DEFAULT=--
+
+! Regularization parameters
+PARM REGULARIZATION TYPE=KEYWORD COUNT=1 VALID=("NOREG", "MGM", "SGM") DEFAULT="MGM"
+PARM DIRECTIONS TYPE=INTEGER COUNT=1 VALID=(4,8) DEFAULT=8
+PARM REG_PARAMS TYPE=REAL COUNT=(0:10) DEFAULT=--
+PARM AUTOCORRELATION TYPE=KEYWORD COUNT=1 VALID=("NOAUTOCORRELATION", "AUTOCORRELATION") +
+                     DEFAULT="NOAUTOCORRELATION"
+
+! General processing option
+PARM RUN_PYR TYPE=KEYWORD COUNT=1 VALID=("RUN_PYR","NORUN_PYR") DEFAULT="RUN_PYR"
+PARM MAX_PYR_SIZE TYPE=INTEGER COUNT=1 VALID=(128:10000) DEFAULT=500 
+PARM PYRLEVEL TYPE=INTEGER COUNT=1 DEFAULT=0 VALID=0:16
+PARM FILTER TYPE=KEYWORD COUNT=1 VALID=("nofilter", "filter") DEFAULT="nofilter"
+PARM FILTER_SIZE TYPE=REAL COUNT=(1:2) DEFAULT=1.1
+PARM FILTER_CONST TYPE=REAL COUNT=1 DEFAULT=0.6
+PARM OMP_ON TYPE=KEYWORD VALID=(OMP_ON,OMP_OFF) DEFAULT=OMP_ON
+
+
+
+PARM NAVTABLE TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM CONFIG_PATH STRING DEFAULT="$MARS_CONFIG_PATH"
+PARM MATCH_METHOD TYPE=STRING COUNT=(0:1) VALID=("LOOSE", "TIGHT") +
+        DEFAULT=LOOSE
+PARM MATCH_TOL TYPE=REAL COUNT=1 DEFAULT=.002
+PARM POINT_METHOD TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM NOSITE TYPE=KEYWORD COUNT=(0:1) VALID=NOSITE DEFAULT=--
+PARM DATA_SET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM DATA_SET_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM RELEASE_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCT_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_INST TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_TYPE TYPE=STRING COUNT=(0:1) DEFAULT=--
+
+PARM RSF TYPE=STRING COUNT=0:100 DEFAULT=--
+PARM DEBUG_RSF TYPE=KEYWORD COUNT=0:1 VALID=DEBUG_RSF DEFAULT=--
+PARM COORD TYPE=KEYWORD VALID=("FIXED", "INSTRUMENT", "SITE", "ROVER", +
+	"LOCAL_LEVEL") DEFAULT="INSTRUMENT"
+PARM COORD_INDEX TYPE=INTEGER COUNT=0:10 DEFAULT=--
+PARM FIXED_SITE TYPE=INTEGER COUNT=0:1 DEFAULT=--
+PARM SOLUTION_ID TYPE=STRING COUNT=0:1 DEFAULT=--
+
+END-PROC
+
+.TITLE
+VICAR program MARSRCORR.
+
+
+.HELP
+PURPOSE:
+Marsrcorr, which stands for Mars Regularized Correlation, is an image matching
+program that computes regularized disparity maps. Traditionaly, image matching 
+programs such as marscor3 and marsecorr, compute the disparity for each pixel
+independently of the disparity found for neighbooring pixels. That is, no 
+constraints are used between the disparity found at one pixel and the disparity
+found at the pixel next to it. The merit of such approach is to have independant
+measurements between pixels without any "effect" from the neighbors measurements.
+(note that the measurements are not stictly independant because of the template
+size, but we're referring here to the influence of the disparity found at one
+pixel to the disparity found at the next pixel). The drawback of the approach 
+however is the complete permeability to noise and outliers. Matching measurement
+noise and outliers are ubiquitous to any matching algorithms; the wrong 
+disparity will get the best matching score and will be selected as the winner.
+Two neighbooring pixels could have a difference in measurements that do not make
+sense and nothing will prevent that to happen. This leaves noise and outliers in
+the disparity maps. The regularized approach on the other hand enforces a 
+minimum of coherence in disparity found between neighbooring pixels. 
+Essentially, a regularized approach is still looking for the best matching score
+(as the standard approach does), but is willing to select not the best matching
+score (but still a good one) if the relative disparity coherence between 
+neighbooring pixels is improved. "Coherence" here is the assumption that from 
+one pixel to the next, the change in disparity should be smooth, which is a 
+translation of the assumption that the ground surface should be continuous and 
+change smoothly - at the scale of the pixel. Note that occlusion causes sharp 
+discontinuities in the ground surface, which invalidates the surface smoothness,
+but this situation is also accounted for in the regularization scheme.
+How much "coherence" to enforce does not have unfortunately a magic number and
+is essentially a "knob" to adjust based on the scene and image noise. Too much
+regularization and the process will "erase" topographic surface, not enough 
+regularization and noise/outliers will be left in the disparity map.
+
+There are roughly 2 approaches for regularization. Global method and Semi-Global
+methods (SGM). The Global approach regularizes the disparity map based on the 
+minimization of a cost that is accounting at once for all the pixel of the 
+image. The resource needed (hardware and time) is usually prohibitively high. 
+The second approach lessen the requirement on the resources by not accounting 
+for all the pixels at once, but only accounting for a subset of them. Instead of
+doing a full 2-dimensional minimization, SGM does a series of 1-dimensional 
+minimization. There's a vast swath of litterature on various implementations of
+the SGM, with various ways to define the smoothness criteria. See Hirschmuller, 
+2008, "Stereo processing by semiglobal matching and mutual information" for SGM 
+landmark paper. In 2005, an improved SGM algorithm was introduced, MGM (More
+Global Matching) which reduces some of the typical SGM artefact (light striking
+artefact in the disparity maps, along the regularization directions) without 
+significant processing time penalty. See Facciolo, 2015, "MGM: A Significantly
+More Global Matching for Stereovision". Both methods are available in this
+program.
+
+
+
+
+
+EXECUTION:
+Here are some expected calls:
+
+First, if the user has not a good idea on how to adjust the regularization
+parameters, the program should be run first with all the needed parameters and
+-AUTOCORR to get an estimate of the regularization parameter
+
+The simplest call (disparity with pixel accuracy, no subpixel):
+
+marsrcorr inp=\(leftImage, rightImage\) out=disparity.img -AUTOCORR
+
+This will print out the regularization parameters to use (for the given 
+images, and default template size, matching algorithm, and disparity search 
+approach), but will not compute the disparity maps proper. The process needs to
+be launched again with the regularization parameters:
+
+marsrcorr inp=\(leftImage, rightImage\) out=disparity REG_PARAMS=\(...\)
+
+
+Some prior information on the disparity map can be supplied to the program to
+reduce the search space. For instance a global offset between the two images
+or a disparity map at a lower resolution:
+
+marsrcorr inp=\(leftImage, rightImage\) out=disparity REG_PARAMS=\(...\)
+          IN_DISP=priorMap.VIC
+
+
+Subpixel matching precision is controlable via a parameter (SUBPIXEL):
+
+marsrcorr inp=\(leftImage, rightImage\) out=disparity REG_PARAMS=\(...\)
+          SUBPIX=4
+
+
+
+
+PROCESSING:
+The goal is to get, for each pixel of the left image, the corresponding pixel
+in the right image.
+
+At a high level, this is a 2-steps process:
+- Compute the matching score volume: Run the matching algorithm as it would be
+done with standard matching programs, except that instead of storing only the 
+best matching score within the search space for a given pixel, store all the 
+scores. This, depending on the image size and search space, can grow quite 
+large (a pyramidal approach is available to limit the memory footprint needed)
+- Apply regularization to the score volume to find the scores winners (based on 
+SGM cost function to minimize). From the location of the score winners in the 
+search area, derive the disparity maps.
+
+Note that, currently, marsrcorr is expecting and looking for local 2D 
+translations only. That is, the input images should be relatively close to what
+is called a stereo-pair: roughly same resolution, baseline about perpendicular 
+to viewing angle. It does not support the wider range of possibilities that
+marsecorr support for instance.
+
+
+DISPARITY SEARCH APPROACH:
+To compute the disparity file, independently of any regularization, there could
+be different approaches. The standard approach is to do a 2D search around an
+apriori initial location. Marsecorr program on the other hand runs a plane sweep
+appoach (which require camera models), which essentially look for a matching 
+pixel not around a 2D patch, but along the epipolar line. Although it is our 
+hope to eventually implement a regularized plane sweep approach, as of now, the 
+standard approach is implemented. The type of disparity search to use is 
+controlled with DISP_SEARCH. By default, it is assumed that the Left and Right 
+image are coregistered, that is, for any pixel in the Left image, the apriori 
+location in the Right image is at the same (x,y). This could be modified using 
+IN_DISP or AFFINE_PARAM which allows to supply different apriori location.
+ 
+IMAGE MATCHING ALGORITHM:
+The core of the matching step is an image to image comparison. There are two
+algorithms available at the moment. The Normalized Cross-Correlation (NCC) and
+the Zero-mean Sum of Square Difference (ZSSD). The algoritm of choice can be 
+selected with MATCH_IMG. The NCC is insensitive to affine constrast change 
+whereas the ZSSD is insensitive to additional constract change only. ZSSD is 
+therefore applicable in less scenarii than the NCC but is less computing
+intensive. Nevertheless it is recommended to use the NCC as it is overall more
+robust.
+
+REGULARIZATION:
+The regularization is the motivation for marsrcorr. It is formulated as finding
+the disparity map that minimizes a cost E defined as:
+
+E = sum(Cp(Dp)) + sum(V(Dp,Dq))
+with Cp(Dp): matching score of pixel p at disparity Dp (note that matching score
+is reversed: smaller is better). 
+V(Dp, Dq): penalty change in disparity between pixel p and pixel q
+
+V follows this rule:
+V(d, d') = 0   if d=d'
+V(d, d') = P1  if |d-d'| = 1
+V(d, d') = P2  if |d-d'| > 1
+Which means that there is no penalty for pixel that have the same disparity, a 
+small penalty (P1) for small jump (1 pixel) in disparity, and a larger penalty
+(P2) for disparity larger than that.
+
+The energy is computed recursively along 1D directions (usually along the 4 or 8
+cardinal directions) that runs from one edge to the image to the opposite edge.
+
+For instance, assume a NxN image pair matching with a 3x3 search space (9 search 
+locations), and consider the SGM process when it is running along the line 
+direction. We start at a given pixel on the left edge of the image (samp=0, 
+line=y), and will end on the right side of the image (samp=N, line=y).
+Along that direction a cost will be computed for each pixel and at each search 
+position. It's a recursive cost that is computed as follow:
+At a given pixel position (samp=x, line=y) and at search location (d), we will 
+compute a list of "overall" costs with all the search locations of the previous
+pixel (samp=x-1, line=y). These overall costs L(x,d) are:
+L(x,d) = C(x,d) + L(x-1,d') + V(d,d')  with d' = {d1, d2, ..., d9}
+with L(x,d) the "overall" cost, C(x,d) the matching score a pixel (x,y), search 
+position (d), L(x-1,d') the "overall" cost at the previous pixel, at search 
+position d', and V(d,d') the penalty for jumping from search location d to d'.
+that is:
+L(x,d) = C(x,d) + L(x-1, d1) + V(d,d1)  
+L(x,d) = C(x,d) + L(x-1, d2) + V(d,d2)  
+...
+L(x,d) = C(x,d) + L(x-1, d9) + V(d,d9)  
+and we select the smallest L(x,d) of all, which will be the overall cost for 
+pixel (samp=x, line=Y) at disparity (d). 
+That process is done for each pixel of the line, for all the lines (starting on
+the left side of the image, up to the right side).
+
+That process is done for all the 4 or 8 cardinal directions (user select):
+along the line, going left to right      |
+along the line, going right to left      |  4 directions
+along the sample, going top to bottom    |
+along the sample, going bottom to top    |
+along the diagonal, going topLeft to bottomRight   |
+along the diagonal, going bottomRight to topLeft   |  4 directions
+along the diagonal, going topRight to bottomLeft   |
+along the diagonal, going bottomLeft to topRight   |
+
+All the 4 (or 8) "overall" scores maps are then summed up, and for each pixel,
+the disparity location with the overall best score win.
+
+
+
+REGULARIZATION PARAMETERS:
+The intensity of the regularization to apply is quite subjective. There's no
+hard and fast rule, but more a continuum of increasing smoothness for which the
+user must decide what is a good tradeoff between acceptable noise and too
+smooth. These are essentially "knobs" to adjust.
+
+The parameters depends on the type of regularization applied. For now, only
+one type of minimization function is available (see above), that is, a penalty
+V is applied depending on the jump from search location from one pixel to the
+next:
+V(d, d') = 0   if d=d'
+V(d, d') = P1  if |d-d'| = 1
+V(d, d') = P2  if |d-d'| > 1
+
+There are therefore 2 regularization parameters to define (P1, P2). They are not
+intuitively defined as they depends on the matching score. 
+In the "penalized" score:
+C(p) + V(d,d')
+V needs to be sized properly against C, so it has some effect, but not too
+much. C(p) depends on the images themselves (mainly texture, noise, and 
+disparity) and image matching technique (NCC, ZDSSD) which renders the 
+definition of P1/P2 situation dependent.
+To facilitate the definition, marsrcorr provides estimates of P1/P2 (
+-AUTOCORRELATION), by computing the autocorrelation of one image (the left in 
+practice). The autocorrelation is the correlation of the image with a shifted 
+version of itself. The autocorrelation is computed for a 1-pixel shift and a 
+2-pixel shift, and are estimates for P1 and P2, respectively.
+
+Note that if subpixel precision is required, 2 sets of P1 and P2 are needed. One
+for pixel-wise matching, and one for subpixel matching. Remember that marsrcorr
+do subpixel matching in 2 steps: first pixel-wise search, then subpixel search.
+The matching score varies significantly between pixel-wise search and subpixel
+search, which requires separate penalty coefficients. The estimates of the 2 
+sets are also provided by the autocorrelation process.
+
+
+SUBPIXEL PRECISION:
+By default, the image matching is done at the integer pixel level. No subpixel
+precision. This can be modified using the SUBPIXEL parameter. If used, the 
+process operates in 2-steps: First a pixel-wise disparity map is computed, then
+a subpixel search between [-1,1] pixel is done, centered on the pixel-wise 
+best location found and with a shift increment based on SUBPIXEL value.
+This is done in two steps to limit the search space at any moment given the
+likely possibility of running out of memory. For example, a process running a 
+full resolution M20 ncam pair (5120x3840) with a search space of 3 pixels on 
+each side and a subpixel resolution of 0.2 pixel would require 70GB (!!!) of
+memory to store the matching score volume.
+If a pyramidal approach is used, the matches are done with a pixel-wise
+precision for all the pyramidal level. Once done, an extra match step is done 
+with subpixel precision.
+
+
+.page
+
+HISTORY:
+2022-06 ayoubfra  Initial implementation. 
+
+COGNIZANT PROGRAMMER:  F. Ayoub
+
+.LEVEL1
+
+.VARI INP
+Input images.
+
+.VARI OUT
+Output disparity map.
+
+.VARI BANDS
+Band id to process
+
+.VARI DISP_SEARCH
+Disparity search 
+strategy
+
+.VARI MATCH_IMG
+Matching algorithm
+
+.VARI TEMPLATE
+Correlation window 
+size.
+
+.VARI SEARCH
+Search range in X and Y
+directions.
+
+.VARI SUBPIXEL
+Subpixel matching accuracy
+
+.VARI IN_DISP
+Prior input disparity
+file
+
+.VARI AFFINE_PARAM
+Prior affine transform
+between left and right
+
+.VARI AFFINE_SIZE
+Size of image the 
+affine params are expressed in
+
+.VARI REGULARIZATION
+Type of regularization to
+apply
+
+.VARI DIRECTIONS
+Number of directions to regularize
+
+.REG_PARAMS
+Regularization parameters
+
+.VARI AUTOCORRELATION
+Autocorrelation to estimate
+regularization parameters
+
+.VARI PYRLEVEL
+Pyramid level.
+
+.VARI MAX_PYR_SIZE
+Left or Right side
+size max for pyramid
+
+.VARI PYR_LEVEL
+Final pyramid level
+
+.VARI FILTER
+pre low-pass images.
+
+.VARI FILTER_SIZE
+Low-pass filter
+intensity.
+
+.VARI FILTER_CONST
+Scale low-pass filter
+intensity.
+
+.VARI OMP_ON
+Turns on or off parallel
+processing (default: on)
+
+.VARI NAVTABLE
+Corrected navigation filename
+
+.VARI CONFIG_PATH
+Path used to find
+configuration/calibration
+files.
+
+.VARI MATCH_METHOD
+Specifies a method
+for pointing corrections.
+
+.VARI MATCH_TOL
+Tolerance value for
+matching pointing params
+in pointing corrections file.
+
+.VARI POINT_METHOD
+Specifies a mission-
+specific pointing
+method to use
+
+.VARI NOSITE
+Disables coordinate
+system sites.
+
+
+.VARI DATA_SET_NAME
+Specifies the full name given
+to a data set or a data product.
+
+.VARI DATA_SET_ID
+Specifies a unique alphanumeric
+identifier for a data set or data
+product.
+
+.VARI RELEASE_ID
+Specifies the unique identifier
+associated with the release to the
+public of all or part of a data set.
+The release number is associated with
+the data set, not the mission.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique
+identifier assigned to a data
+product by its producer.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier
+of an entity associated with the
+production a data set.
+
+.VARI PRODUCER_INST
+Specifies the full name of the
+identity of an entity associated
+with the production of a data set.
+
+.VARI TARGET_NAME
+Specifies a target.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target.
+
+.VARI RSF
+Rover State File(s) to use.
+
+.VARI DEBUG_RSF
+Turns on debugging of RSF
+parameter.
+
+.VARI COORD
+Coordinate system to use
+
+.VARI COORD_INDEX
+Coordinate system index for
+some COORD/mission combos.
+
+.VARI FIXED_SITE
+Which site is FIXED for
+rover missions.
+
+.VARI SOLUTION_ID
+Solution ID to use for
+pointing correction.
+
+
+
+.LEVEL2
+.VARI INP
+Input images. Needs to be 2 images, the left and the right images of the 
+stereo pair.
+
+.VARI OUT
+Output disparity image. It's a two bands files containing the disparity
+in line and sample. It has the same size as the left image scaled with the
+pyramid level factor (left size / 2^(pyramid level)).
+
+.VARI BANDS
+Band index of the *left* and *right* images to process. Default is the first
+band for both image. If one number is entered, that band index is applied to 
+both image. If two numbers are entered, the first one applies to the first
+image and the second one to the second image. If the band number is larger 
+than the number of bands in the images, the last band is quietly selected.  
+
+.VARI DISP_SEARCH
+Which disparity search strategy to use. As of now, there's only one strategy
+available (STD), but eventually there could be a plane sweep approach for
+instance. The standard search strategy (STD) is the classical approach where
+a matching pixel is searched for in a 2D patch surrounding an apriori matching
+location. No information on the camera model is necessary, just an image to
+image comparison. The default apriori matching location assumes pre-registered
+images (a given pixel (x,y) in the left image has its apriori location in the
+right image at the same (x,y)). However, this assumption can be changed using
+apriori external information with IN_DISP and AFFINE_PARAM.
+
+.VARI IN_DISP
+Prior input disparity. If a prior disparity map is available, it could be use 
+by the process to reduce the search space. This is similar to the use of 
+input disparities for marscor3, which needs a starting point. The IN_DISP must
+be a 2-band file (line, sample disparities). For each pixel, the process will 
+center the search space at the location pointed at by the input disparities.
+The input disparity file does not need to be the size of the input images, but
+should have the same line/sample ratio. Input disparity files should not contain
+non valid values (NaN, Inf).
+
+.VARI AFFINE_PARAM
+To supply a prior mapping between left and right image, which allow the 
+reduction of the search space. It's a 6-parameter field (a, b, c, d, e, f):
+Xright = a * Xleft + b * Yleft + c 
+Yright = d * Xleft + e * Yleft + f
+For convenience, a 2-parameters entry is also allowed which correspond to a
+global shift (c, f). 
+For each pixel, the search space will be centered at the affine-transformed 
+location in the right image.
+
+VARI AFFINE_SIZE
+Not used if AFFINE_PARAM is not used.
+This parameter is to supply the size of the image corresponding to the 
+AFFINE_PARAM values. If not supplied, the default is to assume that the
+values are expressed w.r.t. the left image size. If the AFFINE_PARAM values
+are expressed in a downsampled version of the left image for instance, then the
+X,Y size of that downsampled image must be entered here. The altenative if for 
+the user to convert the values to the Left image size and supply these. 
+
+.VARI MATCH_IMG
+Select the core matching algorithm. There are currently two options:
+NCC: The Normalized Cross-Correlation (Pearson correlation coefficient). This 
+approach is insensitive to affine constrast change.
+ZSSD: The Zero-mean Sum of Square Difference. Faster than NCC but insensitive 
+to additive contrast change only.
+
+.VARI TEMPLATE
+Size of the correlation window in pixels. Default : 7. 
+Tuning this parameter is an art. Typically, larger values give smooth maps at 
+coarse resolution and not very sensitive to small objects. Small values give 
+finer resolution of disparity maps, but may not converge on some pixels. 
+Correlation window can be rectangular using two parameters (line, sample), but
+each side must be odd
+
+.VARI SEARCH
+Define the search area of the correlation between the left patch and the right 
+patch. It represents the search distance on one side of the template. So, for
+instance, if SEARCH=2, then the search area is 2 pixels to the left, to the
+right, up and down. The search can be different in X and Y using tow parameters
+(line, samp), but can't be different in one direction (search to the left and
+to the right is the same. Same thing with up and down). Default is 3.
+A TEMPLATE of 7x7 and a SEARCH of 3 will result in a total search box of
+(7+2*3)x(7+2*3) pixels. 
+The SEARCH inputs are always set w.r.t. the full size input image, irrespective
+of a pyramidal approach (RUN_PYR) or a final pyramid level (PYRLEVEL). The
+process will adjust SEARCH based on which pyramid level is computed.
+
+.VARI SUBPIXEL
+This adjust how much subpixel precision is needed. Default is 0, which means
+no subpixel measurement. 
+SUBPIXEL = 0 means no subpixel precision
+SUBPIXEL = 1 means 1/2 pixel precision
+SUBPIXEL = 2 means 1/3 pixel precision
+SUBPIXEL = 3 means 1/4 pixel precision
+etc...
+Similarly to TEMPLATE and SEARCH, the subpixel precision can be different
+in X and Y (line, samp).
+
+.VARI REGULARIZATION
+Select which regularization scheme to use:
+- NOREG: No regularization. This is euivalent to a standard matching approach
+where the best matching score is selected.
+- SGM: Standard Semi-Global Matching. 
+- MGM: More Global Matching. 
+The number of regualrization directions for SGM and MGM is selected with 
+DIRECTIONS (either 4 or 8).
+See comment above for further details on SGM and MGM. MGM is slightly more time
+consuming than SGM but produces disparity map with reduced striking artefact.
+
+.VARI DIRECTIONS:
+Either 4 or 8. Default is 8.
+The number of regularization directions to use with SGM or MGM. If no 
+regularization is selected, this parameter has no effect.
+4: Four directions of regularization: 2 along the line, from left to right and
+from right to left. 2 along the sample, going up and going down.
+8: Eight directions of regularization: the 4 above plus 2 along the diagonal
+going top/left to bottom right and vice-vers, and 2 along the other diagonal 
+going from top right to bottom left, and vice versa.
+8 directions takes longer to process, but provide better constraints to the
+regularization.
+
+.VARI REG_PARAMS
+Supply the regularization parameters. These are mandatory if using SGM or
+MGM and don't have any default values. Use AUTOCORRELATION to get an 
+estimate of the parameters to get started.
+Depending on the disparity search approach used (DISP_SEARCH), different 
+sets of parameters can be expected. As of now, only one disparity search mode
+is available.
+DISP_SEARCH=STD:
+This is the standard 2D search approach. See description above for detailed
+explanation The regularization parameters number are either 2 (P1, P2) or 4 
+if using subpixel accuracy (P1 P2 P1subpixel P2subpixel). 
+
+
+.VARI AUTOCORRELATION
+Generally speaking, autocorrelation is the correlation of a signal with a 
+shifted version of itself. In our context, autocorrelation is the matching
+score of a template with the same template shifted by 1 or 2 pixels. It
+gives an idea of the change in matching score when the correct matching 
+location is 1 or 2 pixels away, which is a good estimate of what the 
+regularization score should be. 
+If set, the process will run the autocorrelation on the left image, for
+all the pixel, and compute the average correlation score obtained by shifting
+the template by 1 and 2 pixels, which would give the estimate for P1 and P2.
+Only a shift in the X direction is done, we assume the results would be
+approximately the same in the Y direction. When subpixel is requested, the same
+autocorrelation process is carried out on the left image and a shifted (by
+subpixel step) version of itself. The resulting autocorrelation score are
+printed out on the console and the process exits without running. The process 
+should be run again, this time removing the AUTOCORRELATION parameter and adding
+the REG_PARAMS values.
+If a call to marsrcorr is done without AUTOCORRELATION and without 
+REG_PARAMS, AUTOCORRELATION is by automatically turned on.
+
+
+.VARI FILTER
+Activate a pre-processing gaussian low-pass filter applied to both input
+images. This is useful to reduce the noise of the input images.
+Note that this filter is not necessary if PYRLEVEL > 0, as the images are
+automatically filtered before downsampling.
+
+.VARI FILTER_SIZE.
+Scales the intensity of the gaussian low-pass filtering.
+If 1 or less, no filtering.
+The value of FILTER_SIZE corresponds approximately to the low pass filtering
+that should be done to subsample the image with a factor of FILTER_SIZE. For
+instance, if set to 2, this corresponds to the low pass filtering that would 
+be done if we were to reduce the resolution by a factor of 2. 
+In the case for instance of MSL mastcam images (x3 difference resolution between
+left and right - right being higher resolution), a FILTER_SIZE of (1,3) should 
+be used. Or if one wants to also denoise a little the first image (the second
+image is automatically denoised due to the FILTER_SIZE=3), then (1.1, 3) could 
+be used. If left and right images have the same resolution, and only a small low
+pass filtering is needed to denoise, then a FILTER_SIZE of 1.1 to 1.4 depending
+on the noise level. 
+No effect if FILTER is off.
+
+.VARI FILTER_CONST
+When FILTER is on, the images are low pass filtered with a Gaussian kernel. The
+kernel support is sized to 3-sigmas and the sigma value is defined from 
+FILTER_SIZE. However, FILTER_SIZE value is not equal to sigma. The latter 
+is derived from the former using this relation, which is generally accepted in
+the litterature:
+sigma = Cst * SQRT(filter_size ^2 -1) with Cst ~0.5 - 0.8
+FILTER_CONST controls this Cst. Default is 0.6.
+As one can see FILTER_CONST and FILTER_SIZE are related, so the overall low
+pass filtering can be tuned with both. However, FILTER_SIZE should be used
+primarily, with FILTER_CONST being rarely changed. It's actually a parameter
+mostly to avoid having a hard-coded value in the code. 
+No effect if FILTER is off.
+
+.VARI PYRLEVEL
+Pyramid level of the output disparity. Default is 0. 0 is full resolution, 1 is 
+half resolution in each dimension, 2 is quarter, etc.  
+Pyramid level drastically reduces processing times as the number of pixels
+in the left image to match reduces, but also the length of the epipolar curves
+in the right image reduces.
+
+.VARI RUN_PYR
+This parameter activates a pyramidal approach. This is mainly useful to speed
+up the process, although experience shows that it also help the general quality
+of the correlation resutl. When activated, the images are downsampled to a 
+critical size (controlled by MAX_PYR_SIZE). Then the images are correlated at 
+that size on full search range and/or ranges defined from a prior (IN_MESH,
+IN_RANGE). Results are passed on to the next level where the images are one size
+up and the range bracket is narrowed down around the range found in the previous 
+scale. This is reiterated until the final pyramid level of the output 
+correlation. Either full resolution or level given by PYR_LEVEL.
+
+.VARI MAX_PYR_SIZE
+This parameters controls the minimum size of the images allowable by the 
+pyramidal approach. This parameter is only relevant if RUN_PYR is used.
+When pyramical approach is used, the input images are downsampled by a 
+factor of 2, 4, 8, etc.. until one side (col or row) or either the Left or Right
+image is smaller than MAX_PYR_SIZE. When the side size is less than MAX_PYR_SIZE
+then the downsampling stops and the correlation process begins.
+
+
+
+
+.VARI NAVTABLE
+Corrected navigation filename.
+If marsnav was run on the input images it created a table of corrected
+pointing parameters. If you refer to this table using NAVTABLE it
+will override the pointing parameters (e.g. azimuth and elevation) in the
+picture labels, giving you a better registered output.
+ 
+.VARI CONFIG_PATH
+A colon-separated list of directories in which to look for configuration
+and calibration files.  Environment variables are allowed in the list
+(and may themselves contain colon-separated lists).  The directories are
+searched in order for each config/cal file when it is loaded.  This allows
+multiple projectes to be supported simultaneously, and allows the user to
+override any given config/cal file.  Note that the directory structure below
+the directories specified in this path must match what the project expects.
+For example, Mars 98 expects flat fields to be in a subdirectory named
+"flat_fields" while Mars Pathfinder expects them to be directly in the
+directory specified by the path (i.e. no intermediate subdirectories).
+
+.VARI MATCH_METHOD
+Specifies a method for pointing corrections.
+
+Loose method matchs with pointing parameters of the image.
+Tight method matchs with unique id of the image.
+
+.VARI MATCH_TOL
+Tolerance value for matching pointing parameters in the pointing corrections file.
+Used if MATCH_METHOD=LOOSE
+Default value is pretty arbitrary, though seems to work well so far....
+
+.VARI POINT_METHOD
+Specifies a mission-specific pointing method to use.  Normally this
+parameter is not used, in which case the "default" pointing methods
+are used.  Some missions may have special, or alternate, pointing
+methods available, which are indicated by this string (for example,
+backlash models, using arm joint angles instead of x/y/z/az/el, etc).
+A substring search is used, so multiple methods (where that makes sense)
+can be specified by separating the keywords with commas.
+
+Note that nav files created using one pointing method will most likely
+not be compatible with a mosaic created using a different pointing method.
+
+The methods available vary per mission, but some methods available at
+the time of this writing are:
+
+CAHV_FOV: All Missions using CAHV-based camera models.  Valid values are:
+* MIN or INTERSECT:    Aligning stereo-pair cameras produces virtual camera 
+                       with FOV equal to INTERSECTION area of two input 
+	               cameras. (default) As a result, the output image is 
+                       missing,sometimes a significant, (depending on camera 
+                       geometry) part of overlap area between two cameras but 
+                       there are no black areas on the side.  The image data
+	               is stretched in horizontal direction.
+
+* MAX or UNION:        Aligning stereo-pair cameras produces virtual camera 
+                       with FOV equal to UNION area of two input cameras.
+         	       The result is the opposite of the MIN option: 
+                       wide black areas on the side, but the stereo-pair's 
+	               intersection area is preserved.  The image data
+	               is squeezed in horizontal direction.
+
+Note that the above two entries have two names each, which are equivalent
+and it's up to the user to decide which one is more intuitive to him/her.
+
+* LINEAR:              Uses only CAHV vectors and ignores higher order terms 
+                       OR(E) while aligning the cameras.  As a result, this
+                       mode has advantage of best preserving horizontal
+	               aspect ratio.  The features in the image look
+                       similar, scale-wise, to the original.
+
+BACKLASH : Mars 98 SSI only.  Selects a backlash pointing model,
+which adjusts the telemetered azimuth and elevation values based on
+knowledge of the camera's mechanical backlash and the direction the
+motor was travelling when the image was taken.
+
+.VARI NOSITE
+Disables all label-derived parameters to the Site mechanism which underlies
+coordinate systems.  This forces all sites to be identical, with all rotations
+and offsets set the same.  In the case of MPF or Mars 98, this disables
+the lander quaternion and offset (sets them to identity and 0, respectively).
+This option should not be used with images taken from different vantage
+points (e.g. the spacecraft moved, or mixing a lander and a rover) or
+invalid results will be obtained.  The use of this option invalidates the
+Fixed coordinate frame; any values reported in the Fixed frame will not
+correctly reflect the orientation of the lander/rover.
+
+Obviously, this option should be rarely used; it is intended for when the
+image labels defining the site are invalid or inconsistent.
+
+.VARI OMP_ON
+Turns on or off parallel processing.  The default is on.  The main help
+describes some environment variables that can further control parallel
+processing.  Note that this program uses standard OpenMP (which is built in
+to the gcc/g++ compilers), so further details can be found in the OpenMP
+documentation.
+
+.VARI DATA_SET_NAME
+The DATA_SET_NAME typically identifies the instrument that acquired the
+data, the target of that instrument, and the processing level of the data.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_NAME.
+
+.VARI DATA_SET_ID
+The DATA_SET_ID value for a given data set or product is constructed
+according to flight project naming conventions.  In most cases the
+DATA_SET_ID is an abbreviation of the DATA_SET_NAME.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_ID.
+
+.VARI RELEASE_ID
+When a data set is released incrementally, such as every three months during
+a mission, the RELEASE_ID is updated each time part of the data set is released.
+For each mission(or host id if multiple spacecrafts), the first release of a data
+set should have a value of "0001".
+This value is copied to the output label, property IDENTIFICATION,
+keyword RELEASE_ID.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique identifier assigned to a data product by
+its producer. Most commonly, it is the filename minus the extension.
+This value is copied to the output label, property IDENTIFICATION,
+keyword PRODUCT_ID.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier of an entity associated with the
+production of a data set. This value is copied to the output label,
+property IDENTIFICATION, keyword PRODUCER_ID.
+
+.VARI PRODUCER_INST
+Specifies the identity of a university, research center, NASA center or other
+institution associated with the production of a data set.
+This value is copied to the output label, property IDENTIFICATION, keyword
+PRODUCER_INSTITUTION_NAME.
+
+.VARI TARGET_NAME
+Specifies a target.  The target may be a planet, satelite, ring, region, feature,
+asteroid or comet.  This value is copied to the output label, property
+IDENTIFICATION, keyword TARGET_NAME.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target. This value is copied to the output
+label, property IDENTIFICATION, keyword TARGET_NAME.
+
+.VARI RSF
+Rover State File.  This is a list of filenames to load containing
+Rover State information.  These files contain position and orientation
+information for a rover (or other mobile spacecraft) at various sites.
+They are in XML format.  See the "Rover Motion Counter (RMC) Master File SIS
+"
+for details on these files.
+
+Rover State Files have a priority order.  The files listed first have
+the highest priority.
+
+Environment variables may be used in the list.
+
+For MER, if a directory is specified, then that directory is searched for
+RMC Master files and any found are loaded.  The directory structure and
+filename convention is covered in the RMC SIS.  The directory specified
+is the one containing "master", so if <dir> is the name specified in the
+RSF parameter, the following files will be searched for:
+
+<dir>/master/<mission>_Master.svf
+<dir>/master/<mission>_Site_<n>_Master.rvf
+The name of each file loaded is printed to the stdout log for reference.
+
+.VARI DEBUG_RSF
+If enabled, this causes the internal database of RMC locations to be
+printed out to the stdout log.  This is after the RSF files have been
+loaded and the coordinate systems read from the input label(s).
+
+.VARI COORD
+The coordinate system to use for the output camera model.  Also the coordinate
+system used for the actual ray tracing.  Note that the surface model parameters
+are always expressed in the Fixed site, however.
+
+The interpretation of the values is dependent on the mission.  Some
+representative missions are listed here:
+
+Fixed - The Fixed frame (default).  This is the ultimate reference frame
+    (see also FIXED_SITE for rover missions).
+Instrument - The "natural" frame for the instrument (of the first input
+    image).  MPF: Lander or Rover; M98: MVACS; MER: Rover.
+Site - A major Site frame.  For rover missions, COORD_INDEX specifies which
+    Site frame to use.  Non-rover missions treat this as Fixed.
+Rover - An instance of the Rover frame.  For rover missions, COORD_INDEX
+    specifies which instance of the rover frame to use.  Non-rover mission
+    use the spacecraft frame (e.g. Lander for M98).
+Local_Level - An instance of a Local Level frame.  This is typically
+    coincident with the Rover frame (in XYZ) but oriented toward North
+    like the Site and Fixed frames.  For MER, this is an instance of a
+    Drive index move.
+
+.VARI COORD_INDEX
+The index specifies which instance of a coordinate system to use.  It is
+currently applicable only to rover-based missions, but could have other
+uses.  The index is equivalent to the Rover Motion Counter (RMC) for MER
+and FIDO.
+
+For MER/FIDO, there are many Site frames.  Each is numbered with a single
+index.  For Site Frames, coord_index specifies which to use.  Likewise,
+there are many Local_Level and Rover frames, corresponding to values of
+the RMC.  The multiple instances of this frame are selected by COORD_INDEX.
+
+Generally COORD_INDEX defaults sensibly so you don't usually need to
+specify it.  It will default to the instance used by the first input.
+
+.VARI FIXED_SITE
+Specifies which major Site is the "Fixed" Site for this run.
+
+Historically, MPF and M98 had a single "Surface Fixed" frame which never
+moved, and which all other coordinate system frames were referenced to.
+With the advent of long-range rovers (such as MER and FIDO), that became
+insufficient.  The rover traverses far enough that errors in knowledge of
+coordinate system offset and orientation become unacceptable.
+
+For this reason, a system of major Sites was introduced.  Periodically
+during the mission, a Site frame is declared.  This then becomes the
+reference frame for all activities until the next Site is declared.
+References are kept local, and errors don't propogate across Sites.
+
+However, if images from more than one Site are combined together, the
+Site's must be placed relative to each other.  Therefore a single reference
+frame is still needed to combine different sites.
+
+The FIXED_SITE parameter controls which of the major Site frames is
+the reference ("fixed") site for this program run.  This fixed frame
+can vary in different program runs, but is constant throughout one
+execution.
+
+If not specified, FIXED_SITE defaults to the minimum Site number (i.e.
+lowest numbered, or earliest chronologically) used in all input images.
+Normally this default is sufficient; rarely must FIXED_SITE be specified.
+
+One or more Rover State Files must usually be specified in order to combine
+image from more than one Site.  These describe the relationship between
+sites.  See the RSF parameter.
+
+.VARI SOLUTION_ID
+Specifies which solution ID to use for pointng corrections.
+
+There are potentially many different definitions for the same coordinate
+system.  These are identified via a unique Solution ID.  If this parameter
+is given, only the specified solution's definition is searched for.
+

@@ -1,0 +1,25 @@
+procedure
+refgbl $echo
+parm version string def="ibis-1"
+parm org string def="column"
+body
+!let _onfail="continue"
+let $echo="yes"
+enable-log
+! test getpoint
+
+local ixclosest int
+
+ibis-gen xxx1 nc=2 nr=10 
+mf3 xxx1 f="c1=@rand" seed=1
+mf3 xxx1 f="c2=@rand" seed=2
+   
+getpoint fname=xxx1 seq="pqr" resname=xxxparm xval=0.9 yval=0.1
+restore-variable file=xxxparm variable=(ixclosest)
+
+ibis-list xxx1
+
+write "ixclosest &ixclosest"
+
+disable-log
+end-proc

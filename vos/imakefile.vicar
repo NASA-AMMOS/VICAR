@@ -33,7 +33,7 @@ v2: make_vrdi make_motifapp make_subs make_crumbs make_progs make_vids make_done
 #
 
 opens1: make_dirs make_util make_docs make_stae make_shvic make_rtl make_gdalplugin
-opens2: make_vrdi make_motifapp make_opensubs make_opensprogs make_vids make_done
+opens2: make_vrdi make_motifapp make_opensubs make_crumbs make_opensprogs make_vids make_done
 
 opensall: make_dirs make_util make_stae make_shvic make_rtl make_gdalplugin make_vrdi make_motifapp
 opensall: make_opensubs make_opensprogs make_vids make_done

@@ -1,6 +1,7 @@
 Procedure
 Refgbl  $echo
 Body
+enable-log
 Let  _onfail="Continue"
 Let  $Echo="Yes"
 ! THIS IS A TEST OF SUBROUTINE VOSN6.
@@ -11,4 +12,5 @@ Let  $Echo="Yes"
 ! SUBROUTINE.
 TVOSN6
 Let $Echo="No"
+disable-log
 End-Proc

@@ -16,8 +16,10 @@
 
 #define LIB_RTL
 #define LIB_TAE
-#define LIB_P2SUB
-#define LIB_LOCAL
 
 #define USES_FORTRAN
 #define MAIN_LANG_FORTRAN
+
+#define LIB_P2SUB
+/* #define LIB_LOCAL	/ * for development, remove on delivery */ 
+/* #define DEBUG	/ * for development, remove on delivery */ 

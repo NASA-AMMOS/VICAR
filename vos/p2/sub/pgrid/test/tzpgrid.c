@@ -5,7 +5,7 @@
 #include "vicmain_c"
 #include "ftnbridge.h"
 
-main44()
+void main44()
 {
 
      int inunit, status, s1, ss, nl, nli, nsi;
@@ -20,7 +20,7 @@ main44()
      status = zvunit(&inunit,"INP",1,0);
      status = zvopen(inunit,"OP", "READ","OPEN_ACT","SA",0);
 
-     zvsize(&s1,&ss,&nl,&ns,&nli,&nsi,0);
+     zvsize(&s1,&ss,&nl,&ns,&nli,&nsi);
     
      if (nli >= nl) 
           max = nli;

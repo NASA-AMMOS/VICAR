@@ -2,7 +2,11 @@
 procedure help=*
 refgbl $echo
 body
+enable-log
+
 let _onfail="continue"
 let $echo="yes"
 tellipse_proj
+
+disable-log
 end-proc

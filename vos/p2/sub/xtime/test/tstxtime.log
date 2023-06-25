@@ -1,0 +1,14 @@
+txtime
+Beginning VICAR task txtime
+Test the C interface
+ 
+The time in HHMMSS format is:
+ 
+173549
+ 
+Test the Fortran interface
+ 
+The time in HHMMSS format is:
+
+173549
+disable-log

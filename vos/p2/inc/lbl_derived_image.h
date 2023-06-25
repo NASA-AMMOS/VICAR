@@ -135,6 +135,7 @@ typedef struct
 	LblApiIntItem_typ		CorrelationPixelCount;
 	LblApiRealItem_typ		CorrelationAverageScale;
         LblApiRealItem_typ              CorrelationOverlapPercentage;
+	LblApiIntItem_typ		CorrelationPyramidLevel;
         LblApiRealItem_typ              AverageFilterWindow;
         LblApiRealItem_typ              MinFilterWindow;
         LblApiRealItem_typ              MaxFilterWindow;

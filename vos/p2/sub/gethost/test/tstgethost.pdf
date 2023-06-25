@@ -1,8 +1,8 @@
 procedure
-refgbl $echo
 body
-let _onfail="continue"
-let $echo="yes"
+enable-log
+
 tgethost
-let $echo="no"
+
+disable-log
 end-proc

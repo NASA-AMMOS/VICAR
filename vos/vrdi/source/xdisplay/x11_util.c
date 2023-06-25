@@ -132,7 +132,7 @@ extern GC message_gc, button_gc;
 extern XFontStruct *font_struct;
 extern Colormap colormap;
 extern int fontx, fonty;
-
+void DisplayErrorMsg();
 
 display_message(dpy, win, buf, refresh)
 Display *dpy;
@@ -332,7 +332,7 @@ Window   win;
 }
 
 
-DisplayErrorMsg(dpy, win, buf)
+void DisplayErrorMsg(dpy, win, buf)
 Display *dpy;
 MAIN_WINDOW *win;
 char *buf;

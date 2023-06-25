@@ -9,7 +9,7 @@ write "Generate a VICAR file"
 Generate a VICAR file
 if ($syschar(1) = "VAX_VMS")
 else
-   ddd2vic /home/bam/porting/sun-solr/M12-963.DDD ddd.vic
+   ddd2vic data/M12-963.DDD ddd.vic
 Beginning VICAR task ddd2vic
 DDD2VIC version 2019-08-22
 end-if
@@ -17,7 +17,7 @@ write "Now list out the labels and a chunk of the data"
 Now list out the labels and a chunk of the data
    label-list ddd.vic 'nousrtim
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File ddd.vic ************
@@ -34,7 +34,7 @@ LABEL version 2019-05-28
 ************************************************************
    list ddd.vic nl=10 ns=5 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:DDD2VIC   User:          Date_Time:                        
@@ -54,12 +54,12 @@ write "And compare this to the original perl script data"
 And compare this to the original perl script data
 if ($syschar(1) = "VAX_VMS")
 else
-   label-list /home/bam/porting/sun-solr/M12.VIC 'nousrtim
+   label-list data/M12.VIC 'nousrtim
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 ************************************************************
  
-        ************  File /home/bam/porting/sun-solr/M12.VIC ************
+        ************  File data/M12.VIC ************
                 3 dimensional IMAGE file
                 File organization is BSQ
                 Pixels are in BYTE format from a SUNOS host
@@ -74,9 +74,9 @@ COMMENT=
 'decompressed-from 634540789.963.msdp id 963 time 634540789:95 gain 0xaa offset 24 start 0 cross 256 down 1536 cmd na 025faf00c30360009f0d00cd0000000000 sensor 1425 clocking 4821 system-id 0x35 '
  
 ************************************************************
-   list /home/bam/porting/sun-solr/M12.VIC nl=10 ns=5 'nousrtim
+   list data/M12.VIC nl=10 ns=5 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:DDD2VICA  User:          Date_Time:                        

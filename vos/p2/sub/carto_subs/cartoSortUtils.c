@@ -10,7 +10,7 @@
 /* This function is a helper function for          */
 /* get*SortIndices to swap the indices.            */
 /***************************************************/
-void swap(int *array, int i, int j)
+static void swap(int *array, int i, int j)
 {
    int tmp;
 
@@ -44,7 +44,7 @@ void swap(int *array, int i, int j)
 /*         0  if equal                             */
 /*         1  if index2 is greater than index1     */
 /***************************************************/
-int compare(void *array, int index1, int index2, int type)
+static int compare(void *array, int index1, int index2, int type)
 {
    switch(type)
    {
@@ -113,6 +113,7 @@ int compare(void *array, int index1, int index2, int type)
 /*           10 = unsigned long int                */
 /*                                                 */
 /* OUT: int *indices - returns sorted index order  */
+/*      indices must be allocated before calling   */
 /***************************************************/
 void getSelectionSortIndices(void *unsorted, int *indices, int n, int type)
 {

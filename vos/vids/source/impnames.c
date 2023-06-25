@@ -10,7 +10,7 @@
  * values.
  */
  
-InitNames(env)
+void InitNames(env)
 
   VIDSEnvironment	*env;
 {

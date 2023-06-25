@@ -14,7 +14,8 @@ source $V2TOP/vicset2.csh	# get aliases for vunpack and vimake
 set temp=$cwd			# save current directory
 cd $2				# change to destination directory
 #vunpack $temp/$1.com -q system	# unpack the application
-cp $temp/$1/* .
+cp -R $temp/$1/* .		# copy subdirs too
+rm -fr test/			# remove test subdir
 vimake $1			# create the build file
 if (${#argv} == 3) then
   make -f $1.make $3		# build it with given target

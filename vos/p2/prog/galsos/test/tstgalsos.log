@@ -1,7 +1,6 @@
 let $autousage="none"
-galsos /project/test_work/testdata/gll/7213r.img 7213.cal dircal=/p+
-roject/test_work/testdata/gll/ diroff=/project/test_work/testdata/gll/   dirdc=/project/test_work/testdata/gll/ dirblm=/project/tes+
-t_work/testdata/gll/
+galsos data/7213r.img 7213.cal dircal=data/ diroff=data/   dirdc=da+
+ta/ dirblm=data/
 Beginning VICAR task galsos
 GALSOS version 2019-07-23
 Solar range from image label=752771968.0
@@ -23,11 +22,13 @@ Solar range from image label=752771968.0
  Exposure = 9.5833e+01 msec
  GALSOS replaced 222 pixels by interpolation
  GALSOS task completed
-f2 (7213.cal /project/test_work/testdata/gll/7213.cal) d func="in1-in2"
+f2 (7213.cal data/7213.cal) d func="in1-in2"
 Beginning VICAR task f2
 F2 version 98-Aug-2015
 F2 using hash table lookup
 FUNCTION EVALUATED 3153 TIMES
+write "HIST SHOULD HAVE MIN AND MAX == 0"
+HIST SHOULD HAVE MIN AND MAX == 0
 hist d 'nohist
 Beginning VICAR task hist
 *** HIST version 2017-08-08 ***

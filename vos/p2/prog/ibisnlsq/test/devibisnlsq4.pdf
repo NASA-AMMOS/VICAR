@@ -1,0 +1,38 @@
+procedure
+
+body
+
+! DEVELOPMENT SCRIPT FOR ibisnlsq
+
+ibis-gen xxxa nr=80 nc=4 format=("DOUB","DOUB","DOUB","DOUB")
+
+!label-list /home/alz/ikapp/xxchip2.img
+rpc2ibis (/home/alz/ikapp/xxchip2.img,xxxa) cols=(3,4)
+mf3 xxxa f="c1=c3*(1.0+(@rand-0.5)*0.01*(@index>20)*(@index<24))"
+mf3 xxxa f="c1=c3*(1.0+(@rand-0.5)*0.01*(@index>24)*(@index<26))"
+mf3 xxxa f="c1=c3*(1.0+(@rand-0.5)*0.01*(@index>27)*(@index<30))"
+mf3 xxxa f="c1=c3*(1.0+(@rand-0.5)*0.01*(@index>31)*(@index<34))"
+mf3 xxxa f="c1=c3*(1.0+(@rand-0.5)*0.01*(@index>34)*(@index<37))"
+ibis-l xxxa cols=(1,3,4) csiz=(18,18,18) cfor="%16.10f %16.10f %16.9f" nr=5
+ibis-l xxxa cols=(1,3,4) csiz=(18,18,18) +
+      cfor="%16.10f %16.10f %16.9f" nr=5 sr=19
+
+gengrid2 out=xxxb ncol=10 nah=10 nav=10 +
+     l1=44.825279 s1=35.881943 l2=45.080002 s2=35.87611 +
+     l3=45.075832 s3=35.84 l4=44.825832 s4=35.845833
+pixmap (xxxb,/export/data4/tll/gui_test/dtedmos/qb1_iraq_dem.hlf) +
+    mapcol=(1,2) pixcol=(4,5) 'maptopix
+getzval (/export/data4/tll/gui_test/dtedmos/qb1_iraq_dem.hlf, +
+    xxxb) cols=(4,5,3) win=2
+
+rpcfwd (xxxb,/home/alz/ikapp/xxchip2.img)
+rpcscale (xxxa,xxxb) rpccol=4 'scale
+ibis-l xxxb nr=4 cols=(1,2,3,4) csiz=(18,18,18,18) +
+    cfor="%16.10f %16.10f %16.9f %16.7f"
+
+ibisnlsq (xxxb,xxxa) func="rpcd10" datacol=(1,2,3) depcol=4 rescol=6 +
+    solcol=(1,2,3) rpctype=B rpcls=L
+rpcfix21 xxxa col=2
+ibis-l xxxa cols=(1,2,3) csiz=(18,18,18) cfor="%16.10f %16.10f %16.9f" nr=40
+
+end-proc

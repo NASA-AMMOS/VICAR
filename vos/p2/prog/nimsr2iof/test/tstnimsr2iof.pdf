@@ -10,10 +10,10 @@ let $echo="yes"
 
 enable-log
 
-ush ln -fs /project/test_work/testdata/gll/g7jnfeap4101a.3 edr_file
-ush ln -fs /project/test_work/testdata/gll/n0389703400.3 udr_file
+ush ln -fs /project/test_work/testdata/gll/g7jnfeap4101a.3.vic edr_file
+ush ln -fs /project/test_work/testdata/gll/n0389703400.3.vic udr_file
 ush ln -fs /project/test_work/testdata/gll/g7jnfeap4101a.aacs aacs_file
-ush ln -fs /project/test_work/testdata/gll/s980326b.bsp spk_file
+ush ln -fs /project/test_work/testdata/gll/s980326b.bsp.dat spk_file
 ush ln -fs /project/test_work/testdata/gll/nims_ikernel_mab.dat ik_file
 ush ln -fs /project/test_work/testdata/gll/boom_obscuration.nim dbm_file
 ush ln -fs /project/test_work/testdata/gll/nims_solar.dat sol_file

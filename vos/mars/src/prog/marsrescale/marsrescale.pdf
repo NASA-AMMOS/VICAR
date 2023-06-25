@@ -1,0 +1,231 @@
+process help=*
+PARM INP TYPE=STRING COUNT=1
+PARM OUT TYPE=STRING COUNT=1
+PARM BAND TYPE=INTEGER COUNT=(0:1) DEFAULT=--
+PARM NL TYPE=INTEGER COUNT=0:1 DEFAULT=--
+PARM NS TYPE=INTEGER COUNT=0:1 DEFAULT=--
+PARM ZOOM TYPE=REAL COUNT=0:1 DEFAULT=--
+PARM METHOD TYPE=KEYWORD COUNT=1 VALID=(NEAREST,BILINEAR,BICUBIC) DEFAULT=BICUBIC
+
+PARM NAVTABLE TYPE=STRING COUNT=(0:1) DEFAULT=--
+
+PARM CONFIG_PATH STRING DEFAULT="$MARS_CONFIG_PATH"
+PARM POINT_METHOD TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM NOSITE TYPE=KEYWORD COUNT=(0:1) VALID=NOSITE DEFAULT=--
+
+
+END-PROC
+
+.TITLE
+VICAR program MARSRESCALE
+.HELP
+PURPOSE:
+
+MARSRESCALE program is used to rescale an image from the current grid
+to an arbitrary grid.  Currently two interpolation methods are supported:
+bilinear and bicubic spline.  Bicubic spline method is default.
+
+The image can be either upsampled or downsampled.  Upsampling and 
+downsampling rates are specified using either NL and NS parameters or 
+ZOOM parameter.  If both NL,NS and ZOOM parameters are specified, ZOOM 
+parameter value is ignored.
+
+Marsrescale will handle multi-band images automatically if the BAND 
+parameter is not specified. If BAND is specified, only that single band 
+(in the multi-band images) is processed. If a non-existent band (e.g. 4th 
+band for a 3-band image) is specified, the first band is processed.
+
+
+EXECUTION:
+
+marsrescale inp=in_image out=out_image NL=nl_new NS=ns_new -method
+
+marsrescale inp=in_image out=out_image ZOOM=zoom -method
+
+marsrescale inp=in_image out=out_image BAND = band ZOOM=zoom -method
+
+Upsampling and downsampling rates are specified using either NL and NS 
+parameters or ZOOM parameter.  If both NL,NS and ZOOM parameters are 
+specified, ZOOM parameter value is ignored.
+
+Examples:
+
+Single-band image:
+
+marsrescale NLB_532342096RAS_F0592578NCAM00278M1.IMG test_2048x2048_bilinear.vic NL = 2048 NS = 2048 -bilinear
+marsrescale NLB_532342096RAS_F0592578NCAM00278M1.IMG test_zoom2_bilinear.vic ZOOM = 2 -bilinear
+marsrescale NLB_532342096RAS_F0592578NCAM00278M1.IMG test_2048x2048_bicubic.vic NL = 2048 NS = 2048 -bicubic
+marsrescale NLB_532342096RAS_F0592578NCAM00278M1.IMG test_zoom2_bicubic.vic ZOOM = 2 -bicubic
+marsrescale NLB_532342096RAS_F0592578NCAM00278M1.IMG test_512x512_bicubic.vic NL = 512 NS = 512 -bicubic
+marsrescale NLB_532342096RAS_F0592578NCAM00278M1.IMG test_zoom0.5_bicubic.vic ZOOM = 0.5 -bicubic
+
+Multiple-band image:
+
+Process all bands:
+
+marsrescale MH0_445788563EDR_S0261274MHLI00350M1.IMG MH0_zoom2_bicubic.vic ZOOM = 2 -bicubic
+
+Process band 2:
+
+marsrescale MH0_445788563EDR_S0261274MHLI00350M1.IMG MH0_zoom2_bicubic_band2.vic BAND = 2 ZOOM = 2 -bicubic
+
+If set to process a non-existing band (e.g. 4), the processing would be performed on band 1: 
+
+marsrescale MH0_445788563EDR_S0261274MHLI00350M1.IMG MH0_zoom2_bicubic_band4.vic BAND = 4 ZOOM = 2 -bicubic
+
+
+METHOD:
+
+Marsrescale program loops over pixels in the specified/new grid and
+identifies the corresponding pixels in original grid, which are used
+for interpolation.  In order to consider pixels as areas instead of points,
+we consider the transformation:
+
+ ii = (i+0.5) * nl_old / nl_new - 0.5
+
+This transformation maps -0.5 -> -0.5 and nl_new-0.5 -> nl_old-0.5
+using 0-based indexing.
+
+
+REFERENCES:
+
+[1] Igor Yanovsky, Bilinear and Bicubic Interpolation, Report, 2017.
+[2] Bicubic interpolation. (2016, November 28). In Wikipedia, The Free Encyclopedia, https://en.wikipedia.org/wiki/Bicubic_interpolation.
+[3] Generalized Bicubic Interpolation, GIASSA.NET, https://www.giassa.net/?page_id=371.
+[4] Xiao Shu, Bicubic Interpolation slides, http://www.ece.mcmaster.ca/~xwu/3sk3/interpolation.pdf, Mar. 2013.
+[5] Don Lancaster, A Review of Some Image Pixel Interpolation Algorithms, https://www.tinaja.com/glib/pixintpl.pdf, Mar. 2013.
+
+
+HISTORY:
+  2017-09    Igor Yanovsky - Initial Version
+  2017-11    Igor Yanovsky - Revised to allow color imagery to be processed with a single call
+  2018-08    Francois Ayoub - Added Nearest Neighbor sampler
+  2020-02-06 Walt Bunch - IDS-7928 - Corrected format string to match arg, added unit test
+  2020-05-15 Walt Bunch - IDS-7927 - Replaced sprintf calls
+
+COGNIZANT PROGRAMMER: Igor Yanovsky
+
+.LEVEL1
+.VARI INP
+Input image
+
+.VARI OUT
+Output rescaled image
+
+.VARI BAND
+The input file band number to use
+
+.VARI NL
+Number of lines in the rescaled image
+
+.VARI NS
+Number of samples in the rescaled image
+
+.VARI ZOOM
+Zoom factor for rescaled image
+
+.VARI METHOD
+Interpolation method to use
+
+.VARI NAVTABLE
+Corrected navigation filename
+
+.VARI CONFIG_PATH
+Path used to find configuration/
+calibration files
+
+.VARI POINT_METHOD
+Specifies a mission-specific
+pointing method to use
+
+.VARI NOSITE
+Disables coordinate system sites.
+
+.LEVEL2
+.VARI INP
+Input image.  Can be any format (except complex).
+The image data and the bulk of the label is taken from the image.
+
+.VARI OUT
+Output rescaled image.
+
+By default, the output will have the same number of bands as the 
+input, and all bands will be processed. If BAND is specified, 
+the output will have a single band.
+
+.VARI BAND
+The input file band number to use.  By default, the output will 
+have the same number of bands as the input, and all bands will 
+be processed. If BAND is specified, the output will have a single 
+band. If a non-existent band (e.g. 4th band for a 3-band image) 
+is specified, the first band is processed.
+
+.VARI NL
+Number of lines in the rescaled image.  Values for NL and NS 
+parameters should be specified at the same time.  If values for 
+NL and NS parameters are specified, value for ZOOM parameter is
+ignored.
+
+.VARI NS
+Number of samples in the rescaled image.  Values for NL and NS 
+parameters should be specified at the same time.  If values for 
+NL and NS parameters are specified, value for ZOOM parameter is
+ignored.
+
+.VARI ZOOM
+Zoom factor for the rescaled image.  Creates in image bigger or
+smaller than the input image.  If values for  NL and NS 
+parameters are specified, value for ZOOM parameter is ignored.
+
+.VARI METHOD
+Interpolation method to use.  Currently three interpolation methods 
+are supported: nearest neighboor, bilinear and bicubic spline.  Bicubic 
+spline method is default.
+
+.VARI NAVTABLE
+Corrected navigation filename.
+If marsnav was run on the input images it created a table of corrected
+pointing parameters. If you refer to this table using NAVTABLE it
+will override the pointing parameters (e.g. azimuth and elevation) in the
+picture labels, giving you a better registered mosaic.
+
+.VARI CONFIG_PATH
+A colon-separated list of directories in which to look for configuration
+and calibration files.  Environment variables are allowed in the list
+(and may themselves contain colon-separated lists).  The directories are
+searched in order for each config/cal file when it is loaded.  This allows
+multiple projectes to be supported simultaneously, and allows the user to
+override any given config/cal file.  Note that the directory structure below
+the directories specified in this path must match what the project expects.
+For example, Mars 98 expects flat fields to be in a subdirectory named
+"flat_fields" while Mars Pathfinder expects them to be directly in the
+directory specified by the path (i.e. no intermediate subdirectories).
+
+.VARI POINT_METHOD
+Specifies a mission-specific pointing method to use.  Normally this
+parameter is not used, in which case the "default" pointing methods
+are used.  Some missions may have special, or alternate, pointing
+methods available, which are indicated by this string (for example,
+backlash models, using arm joint angles instead of x/y/z/az/el, etc).
+A substring search is used, so multiple methods (where that makes sense)
+can be specified by separating the keywords with commas.
+
+Note that nav files created using one pointing method will most likely
+not be compatible with a mosaic created using a different pointing method.
+
+Also used for general but uncommonly used parameters in the PIG library.
+
+.VARI NOSITE
+Disables all label-derived parameters to the Site mechanism which underlies
+coordinate systems.  This forces all sites to be identical, with all rotations
+and offsets set the same.  In the case of MPF or Mars 98, this disables
+the lander quaternion and offset (sets them to identity and 0, respectively).
+This option should not be used with images taken from different vantage
+points (e.g. the spacecraft moved, or mixing a lander and a rover) or
+invalid results will be obtained.  The use of this option invalidates the
+Fixed coordinate frame; any values reported in the Fixed frame will not
+correctly reflect the orientation of the lander/rover.
+
+Obviously, this option should be rarely used; it is intended for when the
+image labels defining the site are invalid or inconsistent.
+

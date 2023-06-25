@@ -1,0 +1,93 @@
+gen xxxim1 nl=4 ns=6
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+list xxxim1 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1       0   1   2   3   4   5
+      2       1   2   3   4   5   6
+      3       2   3   4   5   6   7
+      4       3   4   5   6   7   8
+imsplit xxxim1 (xxxim2,xxxim3)
+Beginning VICAR task imsplit
+imsplit version 2015-11-05
+list xxxim2 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:IMSPLIT   User:          Date_Time:                        
+     Samp     1       3
+   Line
+      1       0   2   4
+      2       1   3   5
+      3       2   4   6
+      4       3   5   7
+list xxxim3 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:IMSPLIT   User:          Date_Time:                        
+     Samp     1       3
+   Line
+      1       1   3   5
+      2       2   4   6
+      3       3   5   7
+      4       4   6   8
+gen xxxim1 nl=4 ns=5
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+list xxxim1 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1       0   1   2   3   4
+      2       1   2   3   4   5
+      3       2   3   4   5   6
+      4       3   4   5   6   7
+imsplit xxxim1 (xxxim2,xxxim3)
+Beginning VICAR task imsplit
+imsplit version 2015-11-05
+list xxxim2 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:IMSPLIT   User:          Date_Time:                        
+     Samp     1
+   Line
+      1       0   2
+      2       1   3
+      3       2   4
+      4       3   5
+list xxxim3 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:IMSPLIT   User:          Date_Time:                        
+     Samp     1
+   Line
+      1       1   3
+      2       2   4
+      3       3   5
+      4       4   6
+ush rm -f xxxim1  xxxim2  xxxim3
+enable-log
+end-proc

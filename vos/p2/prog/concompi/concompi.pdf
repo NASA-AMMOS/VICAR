@@ -1,0 +1,105 @@
+process help=*
+LOCAL DUMINT  TYPE=INTEGER
+PARM INP TYPE=STRING COUNT=2
+PARM OUT TYPE=STRING COUNT=2
+PARM SIZE TYPE=INTEGER COUNT=4 DEFAULT=(1,1,0,0)
+PARM SL TYPE=INTEGER DEFAULT=1
+PARM SS TYPE=INTEGER DEFAULT=1
+PARM NL TYPE=INTEGER DEFAULT=0
+PARM NS TYPE=INTEGER DEFAULT=0
+PARM THRESH TYPE=INTEGER DEFAULT=0
+PARM ZEDGE TYPE=KEYWORD COUNT=(0:1) VALID=ZEDGE DEFAULT=--
+PARM STARTCMP TYPE=INTEGER DEFAULT=1 VALID=(1:999999)
+PARM LASTCMP TYPE=NAME default="DUMINT"
+END-PROC
+.TITLE
+concompi - find connected components with selection by additional image
+.HELP
+PURPOSE:
+concompi uses connectivity defined by adjacency (not diagonal) of pixels
+to turn an image into a connected component image.  Each connected
+component receives a unique pixel number.  The input and output must be
+halfword or fullword.
+
+This version of the concomp program has an additional image input.  The
+values in this image are treated as a boolean (0=false, non-0=true) and
+only components that intersect or touch a true value are kept in the
+output.  All other components are zero'd.  The components that are kept
+are resequenced 1..n.
+
+The highest numbered component can be output to a tcl variable named
+LASTCMP.  The component numbering can also be started at a user selected
+number with the parm STARTCMP.
+
+EXECUTION:
+
+Example
+
+concompi (A,C) (B,WORK)      The image A will be turned into connected 
+                        components in image B, but only components that
+                        touch a non-0 value in C will be kept.  The WORK
+                        image is needed for calcualtions and can be deleted.
+                               
+OPERATION:
+
+
+
+TIMING: 
+
+As fast as VICAR can read and write the lines.  
+
+ ORIGINAL PROGRAMMER:    A. Zobrist          11 Sep 2007
+ COGNIZANT PROGRAMMER:   A. Zobrist          11 Sep 2007
+ 
+ REVISION HISTORY
+  2007-09-11 AZ  Initial version
+  2008-01-03 WLB switched to USES_ANSI_C AND LIB_CARTO; misc cleanup  
+  2016-01-13 WLB Migrated to MIPL; replaced printfs with zifmessages
+  2022-07-14 B. Crocco afids to opensource
+  
+.LEVEL1
+.VARIABLE INP
+The input image, and a
+masking image to select
+which components to keep
+.VARIABLE OUT
+The output image, and the
+name of a working image, to
+be discarded later
+.VARIABLE SIZE
+Region of input file to be
+operated on
+.VARIABLE SL
+Starting line
+.VARIABLE SS
+Starting sample
+.VARIABLE NL
+Number of lines
+.VARIABLE NS
+Number of samples
+.VARIABLE THRESH
+Components smaller than this
+are discarded
+.VARIABLE ZEDGE
+All components touching edge
+are zeroed out
+.VARIABLE STARTCMP
+Start component numbering with 
+this value
+.VARIABLE LASTCMP
+Output highest component number
+in this integer TCL variable
+.LEVEL2
+.VARIABLE SIZE
+The default (1,1,0,0) means use the whole image.
+.VARIABLE SL
+INTEGER - Starting line (see SIZE)
+.VARIABLE SS
+INTEGER - Starting sample (see SIZE)
+.VARIABLE NL
+INTEGER - Number of lines (see SIZE)
+.VARIABLE NS
+INTEGER - Number of samples (see SIZE)
+.VARIABLE THRESH
+Set to two to discard single pixel components, etc.
+.END

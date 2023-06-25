@@ -1,0 +1,536 @@
+process help=*
+local dummy real count=(0:2)
+PARM INP TYPE=STRING COUNT=1:2
+PARM POINTING TYPE=REAL COUNT=(0:10) DEFAULT=--
+PARM HOTSPOT TYPE=REAL COUNT=(0,2) DEFAULT=--
+PARM IMAGE_POS TYPE=NAME defualt=dummy
+PARM INSTRUMENT TYPE=KEYWORD COUNT=(0:1) DEFAULT=-- +
+	VALID=("SCAM-LIBS","SCAM-IR","SCAM-OTHER", "CCAM-LIBS")
+PARM INTERP TYPE=KEYWORD VALID=INTERP COUNT=0:1 DEFAULT=--
+
+PARM NAVTABLE TYPE=STRING COUNT=0:1 DEFAULT=--
+
+PARM CONFIG_PATH STRING DEFAULT="$MARS_CONFIG_PATH"
+PARM POINT_METHOD TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM MATCH_METHOD TYPE=STRING COUNT=(0:1) VALID=("LOOSE", "TIGHT") +
+        DEFAULT=LOOSE
+PARM MATCH_TOL TYPE=REAL COUNT=1 DEFAULT=.002
+
+PARM NORMAL  TYPE=REAL COUNT=(0:3) DEFAULT=--
+PARM GROUND  TYPE=REAL COUNT=(0:3) DEFAULT=--
+PARM SURF_COORD TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM SURF_MESH TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM SURF_CSFILE TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM SURFACE TYPE=KEYWORD COUNT=(0:1) +
+  VALID=("INFINITY","PLANE", "SPHERE1", "SPHERE2", "MESH") +
+  DEFAULT=INFINITY
+
+PARM RSF TYPE=STRING COUNT=0:100 DEFAULT=--
+PARM DEBUG_RSF TYPE=KEYWORD COUNT=0:1 VALID=DEBUG_RSF DEFAULT=--
+PARM COORD TYPE=KEYWORD VALID=("FIXED", "INSTRUMENT", "SITE", "ROVER", +
+        "LOCAL_LEVEL", "RMECH") DEFAULT="FIXED"
+PARM COORD_INDEX TYPE=INTEGER COUNT=0:10 DEFAULT=--
+PARM FIXED_SITE TYPE=INTEGER COUNT=0:1 DEFAULT=--
+PARM SOLUTION_ID TYPE=STRING COUNT=0:1 DEFAULT=--
+
+END-PROC
+
+.TITLE
+VICAR program MARSSHOT
+
+.HELP
+PURPOSE:
+Simple program to determine where a spectral shot is on an accompanying context
+image.
+
+While designed for M2020 SuperCam, there is nothing inherently mission-specific
+about this program, other than the instrument name shortcut (which can be
+overridden with a specific hotspot location).  It works equally well with
+MSL ChecmCam for example, and likely other instruments.
+
+EXECUTION:
+
+marsshot inp=context.img pointing=\(.1 .2\) -scam-libs
+- or -
+marsshot inp=\(context.img pre.img\) pointing=\(.1 .2\) -ccam-libs -interp
+
+then
+
+set line = `v2param -i 0 image_pos`
+set samp = `v2param -i 0 image_pos`
+
+.PAGE
+METHOD:
+There are two different modes - interp and no interp.  The default (and
+simpler case) is no interp.
+
+NO INTERP MODE
+----
+marsshot takes the given context image, and repoints it to the designated
+pointing.  This pointing should be the pointing used when the spectral
+observation was taken.  This creates a virtual camera model, as if the mast
+(or other device) was pointed as it was for the actual spectral observation.
+
+It then determines the "hotspot", the location where the spectral observation
+would be if the context image were taken with the same pointing.  This can be
+provided directly via parameter, or using the INSTRUMENT keyword.  In the
+latter case, one of the various SuperCam instrument modes is used to look up
+the hotspot in an internal table (see INSTRUMENT keyword help below for table).
+
+The hotspot is then projected through the virtual camera model into space.
+The ray is intersected with the surface model (default is the infinity model;
+the surface model usually shouldn't matter), and then projected back into the
+*real* camera model provided as input.  The resulting location is printed to
+the screen, as well as provided in output variables that can be accessed via
+v2param.
+
+.page
+INTERP MODE
+----
+In interp mode, the program does the same basic thing.  However, you provide
+it with TWO context images (generally, one before and one after the shots).
+These images should be tiepointed and nav'd together to eliminate (relative)
+pointing errors between them.  In other words, make a seam-corrected mosaic
+that includes the two images (the nav file can contain more images, but only
+the two given are relevant).
+
+The program then looks at both images, both before and after the nav correction
+is applied.  It uses that information to interpolate the given location, in
+order to apply the pointing corrections to it.
+
+The result is that the shot location is corrected via the pointing adjustments,
+so it better matches the images.  The first image is what the image locations
+are reported relative to.
+
+Specifically, the interpolation works as follows.  Each pointing parameter is
+handled independently.  Pointing parameters are usually azimuth and elevation
+for a mast-mounted camera, but that depends on the specific pointing model
+used (these pointing parameters are what must be supplied in the POINTING
+parameter).
+
+It then computes the ratio:
+
+	ratio = (shot param - raw param 1) / (raw param 2 - raw param 1)
+
+which is used as the interpolation control variable.  Then it computes the
+delta pointing parameters given the nav file:
+
+	delta1 = nav param 1 - raw param 1
+	delta2 = nav param 2 - raw param 2
+
+It then uses those to compute the final adjusted pointing parameter:
+
+	final = shot param + delta1 + ratio * (delta2 - delta1)
+
+These adjusted pointings are printed out, and then used as with the non-
+interp case.
+
+.page
+NOTES:
+
+The surface model can be specified if desired, although in normal usage the
+infinity camera model is appropriate. That's because there should not be enough
+parallax between the two locations for the surface model to matter.
+
+The pointing parameters given are those directly used by the PointingModel
+associated with the image.  There is no check that the parameters are
+appropriate; the given ones are simply set.  The pointing model and parameters
+are printed, so one could run the program without providing any POINTING
+parameters (which should return the hotspot value unchanged), see what the
+params are, and then provide the proper updates.  For the SuperCam RMI, the
+pointing parameters should be (azimuth, elevation) in radians.
+
+While a nav file is not strictly needed for INTERP mode, lack of one negates
+the purpose of -interp, so one should consider it required (although this is
+not enforced).  In no-interp mode, a nav file should not generally be used,
+because it implies corrections to the image without accompanying corrections
+to the shot locations, which is likely wrong.  Again, this is not enforced.
+
+The hotspot, as well as the reported positions, are all 1-based image
+coordinates, in (line, samp) order.
+
+Note that the hotspot image coordinates are expressed with respect to the
+full image sensor, regardless of any downsampling or subframing that might
+have occurred for this image.  However, the output coordinates are specifically
+for the given image - they DO take into account downsampling or subframing.
+
+HISTORY:
+
+2020-01-29 rgd	Initial version
+2020-02-13 rgd	Added interp mode
+
+COGNIZANT PROGRAMMER:  Bob Deen
+
+.LEVEL1
+.VARI INP
+Input image.
+1 for no-interp.
+2 for interp.
+
+.VARI POINTING
+Pointing params for
+virtual camera model
+
+.VARI HOTSPOT
+Hotspot override
+
+.VARI IMAGE_POS
+Optional output
+line/sample coordinate
+
+.VARI INSTRUMENT
+Shortcut for specifying
+hotspot
+
+.VARI INTERP
+Turns on interp mode
+
+.VARI NAVTABLE
+Corrected navigation
+filename.
+
+.VARI CONFIG_PATH
+Path used to find
+configuration/calibration
+files.
+
+.VARI POINT_METHOD
+Specifies a mission-
+specific pointing
+method to use
+
+.VARI MATCH_METHOD
+Specifies a method
+for pointing corrections.
+
+.VARI MATCH_TOL
+Tolerance value for
+matching pointing params
+in pointing corrections file.
+
+.VARI NORMAL
+Surface normal vector.
+
+.VARI GROUND
+Surface ground point.
+
+.VARI SURF_COORD
+Coordinate system used to define
+surface parameters.
+
+.VARI SURFACE
+The type of mars
+surface to use INFINITY, PLANE, 
+SPHERE1, SPHERE2, MESH.
+
+.VARI SURF_MESH 
+Mesh file for surface model
+
+VARI SURF_CSFILE 
+File containing CS for surface
+model
+
+.VARI RSF
+Rover State File(s) to use.
+
+.VARI DEBUG_RSF
+Turns on debugging of RSF
+parameter.
+
+.VARI COORD
+Coordinate system to use.
+
+.VARI COORD_INDEX
+Coordinate system index for
+some COORD/mission combos.
+
+.VARI FIXED_SITE
+Which site is FIXED for
+rover missions.
+
+.VARI SOLUTION_ID
+Solution ID to use for
+COORD_INDEX
+
+.LEVEL2
+.VARI INP
+One or two files containing the input image(s).  Must be something supported
+by PIG.  The actual image is not used; only the pointing and camera models are.
+
+In no-interp mode, one image is required.  In interp mode, two images are
+required.
+
+A single file list file may also be specified (a la marsmos, etc.), but the
+file list must have only one or two entries.
+
+.VARI POINTING
+Pointing parameters for the pointing model used by the image.  These are used to
+construct the virtual camera model.  See the main program help, and the NOTES
+section regarding the use of the POINTING parameter.
+
+.VARI HOTSPOT
+One-based coordinate for the location of the hotspot, which is the point that
+is translated to the output camera model.  This is an override; in normal
+usage the INSTRUMENT parameter will be used to select the hotspot from the
+known instrument modes.  The hotspot is in (line, samp) order.
+
+Note that the coordinates are w.r.t. the full image sensor, regardless of any
+downsampling or subframing that might have occurred for this image.
+
+.VARI IMAGE_POS
+Output parameter containing the (line, sample) coordinate of the result.
+Note that per VICAR conventions, these are 1-based values - upper left corner
+is (1,1) and are in (line, samp) order.  They are actual coordinates in the
+supplied image - if the image is subframed or downsampled, that is taken into
+account.
+
+.VARI INSTRUMENT
+Shortcut for specifying the hotspot for known instruments.  The known
+instruments, and their associated (1-based) hotspots, are shown below.
+SCAM is shorthand for the SuperCam instrument on Mars 2020, and CCAM is
+the (related) ChemCam on MSL.
+
+The SuperCam values are from an email by Olivier Gasnault, 2020-08-28.
+Yes, it's the same for all 3 spots.
+
+The ChecmCam value is correct.
+
+INSTRUMENT		LINE	SAMP
+----			----	----
+SCAM-LIBS		1055	1060
+SCAM-IR			1055	1060
+SCAM-OTHER		1055	1060
+CCAM-LIBS		492	521
+
+.VARI INTERP
+Turns on interp mode.  The default is no-interp.  See the main help for
+description of interp mode.
+
+.VARI NAVTABLE
+Corrected navigation filename.
+If marsnav was run on the input images it created a table of corrected
+pointing parameters. If you refer to this table using NAVTABLE it
+will override the pointing parameters (e.g. azimuth and elevation) in the
+picture labels, giving different (and presumably better) output coordinates.
+
+.VARI CONFIG_PATH
+A colon-separated list of directories in which to look for configuration
+and calibration files.  Environment variables are allowed in the list
+(and may themselves contain colon-separated lists).  The directories are
+searched in order for each config/cal file when it is loaded.  This allows
+multiple projectes to be supported simultaneously, and allows the user to
+override any given config/cal file.  Note that the directory structure below
+the directories specified in this path must match what the project expects.
+For example, Mars 98 expects flat fields to be in a subdirectory named
+"flat_fields" while Mars Pathfinder expects them to be directly in the
+directory specified by the path (i.e. no intermediate subdirectories).
+
+.VARI MATCH_METHOD
+Specifies a method for pointing corrections.
+
+Loose method matches with pointing parameters of the image.
+Tight method matches with unique id of the image.
+
+.VARI MATCH_TOL
+Tolerance value for matching pointing parameters in the pointing corrections file.
+Used if MATCH_METHOD=LOOSE
+Default value is pretty arbitrary, though seems to work well so far....
+
+.VARI POINT_METHOD
+Specifies a mission-specific pointing method to use.  Normally this
+parameter is not used, in which case the "default" pointing methods
+are used.  Some missions may have special, or alternate, pointing
+methods available, which are indicated by this string (for example,
+backlash models, using arm joint angles instead of x/y/z/az/el, etc).
+A substring search is used, so multiple methods (where that makes sense)
+can be specified by separating the keywords with commas.
+
+Note that nav files created using one pointing method will most likely
+not be compatible with a mosaic created using a different pointing method.
+
+The methods available vary per mission, but some methods available at
+the time of this writing are:
+
+BACKLASH : Mars 98 SSI only.  Selects a backlash pointing model,
+which adjusts the telemetered azimuth and elevation values based on
+knowledge of the camera's mechanical backlash and the direction the
+motor was travelling when the image was taken.
+
+.VARI NORMAL
+The local mars surface normal vector coordinate system specified by SURF_COORD 
+parameter (defaults to surface fixed).
+For most pan/tilt cameras, if the lander is not tilted this vector
+would be: normal=(0,0,-1).  ie: x_component=0, y_component=0, z_component=-1.
+This need not be a unit vector.  This vector is used to define the
+surface plane to which image points are projected in order to minimize
+parallax.
+For SPHERE1/2 surface models, normal's first parameter is used to
+denote sphere's radius.  Thus to describe sphere of radius R, user
+would specify normal=(R, 0, 0).
+
+.VARI GROUND
+Any point on the surface, in coordinate system specified by SURF_COORD parameter
+(defaults to surface fixed).  This defines where the tilted plane is in space.  
+Although any point may be used, normally the point just "under" the origin is selected.
+Defaults:
+Mars Pathfinder:  (0.0, 0.0, 0.0)       (lander zero point is on the ground)
+Mars 98 Lander:   (0.0, 0.0, 1.64)      (lander zero point is on top of deck)
+MER           :   (0.0, 0.0, 0.294)
+For MER images taken on top of the lander, the ground is roughly at (0.0, 0.0, 0.7)
+For SPHERE1/2 surface models, GROUND parameter is used to denote sphere's
+center.  
+    
+.VARI SURF_COORD
+The coordinate system that surface parameters like GROUND and NORMAL are defined in.
+For valid values refer to COORD parameter description.  The interpretation of the 
+values is dependent on the mission. Defaults to surface fixed coordinate system.
+Note that no validation is done for input strings because COORD is using the same
+values.  So user needs to be extra careful in specifying SURF_COORD value.  For 
+example COORD=local would be correctly interpreted to mean LOCAL_LEVEL because of
+validation process.  On the other hand specifying SURF_COORD=local would lead
+to underlying code treating the input value as invalid and reverting to default
+which is FIXED frame.  So the values for SURF_COORD should be spelled exactly as
+found in the list of valid values for COORD parameter.
+
+
+.VARI SURFACE
+The type of mars surface to use. The surface is used to intercept view rays
+emanating from the cameras in order to model out parallax between the
+stereo cameras. The options are surface=INFINITY which means no surface
+is used, surface=PLANE (the default case). If surface = PLANE then the plane
+is defined by the NORMAL and GROUND parameters.  For the cases when PLANE 
+doesn't match local topography sufficiently well, here are two sphere surface
+models: surface=SPHERE1 and surface=SPHERE2.  SPHERE1 is useful to model
+convex surfaces like hills, it returns closest(first) ray-surface intersection 
+point.  SPHERE2 is useful to model concave surfaces, like crater when the
+camera point is outside looking in, it returns farthest(second) ray-surface 
+intersection point.  For the case when camera is inside the sphere surface, 
+like rover sitting in the crater, there is only a single intersection point
+and SPHERE1 and SPHERE2 behave exactly the same. Last, MESH is a surface
+model defined by a mesh file (.obj) which path is given with SURF_MESH.
+
+Unlike most other Mars programs, the default is -INFINITY for this program.
+
+.VARI SURF_MESH 
+Mesh OBJ file to use as the surface model. For the mesh to be used,
+SURFACE must be set to MESH. The coordinates of the mesh vertices can be 
+expressed in any CS. However the mesh CS must be supplied via SURF_CSFILE.
+If SURF_CSFILE is not used, then the mesh is assumed to be to the CS that
+results from COORD or SURF_COORD
+
+VARI SURF_CSFILE 
+File name of a vicar file whose CS (contained in the labels) will be read and
+assigned to the SURFACE model. The type of image and its content are of no
+interest, we are just reading the CS. That CS will supersede any other surface 
+CS definition (COORD or SURF_COORD). Its typical use is to supply a CS to a
+given mesh file (expectedly the XYZ from which the mesh is computed from, but
+doesn't have to). But SURF_CSFILE could be use to define a CS in which NORMAL 
+and GROUND for a PLANE surface are expressed in.
+
+.VARI RSF
+Rover State File.  This is a list of filenames to load containing
+Rover State information.  These files contain position and orientation
+information for a rover (or other mobile spacecraft) at various sites.
+They are in XML format.  See the "Rover Motion Counter (RMC) Master File SIS"
+for details on these files.
+
+Rover State Files have a priority order.  The files listed first have
+the highest priority.
+
+Environment variables may be used in the list.
+
+For MER, if a directory is specified, then that directory is searched for
+RMC Master files and any found are loaded.  The directory structure and
+filename convention is covered in the RMC SIS.  The directory specified
+is the one containing "master", so if <dir> is the name specified in the
+RSF parameter, the following files will be searched for:
+
+<dir>/master/<mission>_Master.svf
+<dir>/master/<mission>_Site_<n>_Master.rvf
+
+The name of each file loaded is printed to the stdout log for reference.
+
+.VARI DEBUG_RSF
+If enabled, this causes the internal database of RMC locations to be
+printed out to the stdout log.  This is after the RSF files have been
+loaded and the coordinate systems read from the input label(s).
+
+.VARI COORD
+Specifies the coordinate system to use to interpret the XYZ value.
+
+The interpretation of the values is dependent on the mission.  Some
+representative missions are listed here:
+
+Fixed - The Fixed frame (default).  This is the ultimate reference frame
+    (see also FIXED_SITE for rover missions).
+Instrument - The "natural" frame for the instrument (of the first input
+    image).  MPF: Lander or Rover; M98: MVACS; MER: Rover.
+Site - A major Site frame.  For rover missions, COORD_INDEX specifies which
+    Site frame to use.  Non-rover missions treat this as Fixed.
+Rover - An instance of the Rover frame.  For rover missions, COORD_INDEX
+    specifies which instance of the rover frame to use.  Non-rover mission
+    use the spacecraft frame (e.g. Lander for M98).
+Local_Level - An instance of a Local Level frame.  This is typically
+    coincident with the Rover frame (in XYZ) but oriented toward North
+    like the Site and Fixed frames.  For MER, this is an instance of a
+    Drive index move.
+
+.VARI COORD_INDEX
+The index specifies which instance of a coordinate system to use.  It is
+currently applicable only to rover-based missions, but could have other
+uses.  The index is equivalent to the Rover Motion Counter (RMC) for MER
+and FIDO.
+
+For MER/FIDO, there are many Site frames.  Each is numbered with a single
+index.  For Site Frames, coord_index specifies which to use.  Likewise,
+there are many Local_Level and Rover frames, corresponding to values of
+the RMC.  The multiple instances of this frame are selected by COORD_INDEX.
+
+Generally COORD_INDEX defaults sensibly so you don't usually need to
+specify it.  It will default to the instance used by the first input.
+
+.VARI FIXED_SITE
+Specifies which major Site is the "Fixed" Site for this run.
+
+Historically, MPF and M98 had a single "Surface Fixed" frame which never
+moved, and which all other coordinate system frames were referenced to.
+With the advent of long-range rovers (such as MER and FIDO), that became
+insufficient.  The rover traverses far enough that errors in knowledge of
+coordinate system offset and orientation become unacceptable.
+
+For this reason, a system of major Sites was introduced.  Periodically
+during the mission, a Site frame is declared.  This then becomes the
+reference frame for all activities until the next Site is declared.
+References are kept local, and errors don't propogate across Sites.
+
+However, if images from more than one Site are combined together, the
+Site's must be placed relative to each other.  Therefore a single reference
+frame is still needed to combine different sites.
+
+The FIXED_SITE parameter controls which of the major Site frames is
+the reference ("fixed") site for this program run.  This fixed frame
+can vary in different program runs, but is constant throughout one
+execution.
+
+If not specified, FIXED_SITE defaults to the minimum Site number (i.e.
+lowest numbered, or earliest chronologically) used in all input images.
+Normally this default is sufficient; rarely must FIXED_SITE be specified.
+
+One or more Rover State Files must usually be specified in order to combine
+image from more than one Site.  These describe the relationship between
+sites.  See the RSF parameter.
+
+.VARI SOLUTION_ID
+Specifies which solution ID to use when specifying the coordinate system.
+
+There are potentially many different definitions for the same coordinate
+system.  These are identified via a unique Solution ID.  If this parameter
+is given, only the specified solution's definition is searched for.  Without
+it, the "best" available solution is chosen.
+
+It is extremely rare that this parameter should be needed.  The default
+will be sufficient in almost every case.
+
+Note that the current MER implementation requires that a value for COORD_INDEX
+also be provided, in order for this parameter to take effect.
+

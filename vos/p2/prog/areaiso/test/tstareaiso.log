@@ -1,14 +1,14 @@
 areaiso out=  +
  (area_lat.img,area_lon.img,area_map.img,angle_map.img,del_area_lat.img,  +
  del_area_lon.img)  +
- planet=phobos 'north
+ planet=phobos 'north path=.
 Beginning VICAR task areaiso
 AREAISO version 2019-08-07
-/project/test_work/testdata/general/phobos.model
+./phobos.model
 North projection only
 list area_lat.img     'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    REAL     samples are interpreted as  REAL*4  data
  Task:AREAISO   User:          Date_Time:                        
@@ -347,7 +347,7 @@ list version 2017-03-29
      37      -9.000E+01  -9.000E+01  -9.000E+01
 list area_lon.img     'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    REAL     samples are interpreted as  REAL*4  data
  Task:AREAISO   User:          Date_Time:                        
@@ -686,7 +686,7 @@ list version 2017-03-29
      37       1.900E+02   1.850E+02   1.800E+02
 list area_map.img     'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    REAL     samples are interpreted as  REAL*4  data
  Task:AREAISO   User:          Date_Time:                        
@@ -1025,7 +1025,7 @@ list version 2017-03-29
      37       1.000E+00   1.000E+00   1.000E+00
 list angle_map.img    'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    REAL     samples are interpreted as  REAL*4  data
  Task:AREAISO   User:          Date_Time:                        
@@ -1356,7 +1356,7 @@ list version 2017-03-29
      36       1.982E-05  -2.570E-05  -2.568E-05
 list del_area_lat.img 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    REAL     samples are interpreted as  REAL*4  data
  Task:AREAISO   User:          Date_Time:                        
@@ -1687,7 +1687,7 @@ list version 2017-03-29
      36      -5.000E+00  -5.000E+00  -5.000E+00
 list del_area_lon.img 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    REAL     samples are interpreted as  REAL*4  data
  Task:AREAISO   User:          Date_Time:                        
@@ -2000,4 +2000,10 @@ list version 2017-03-29
      34      -1.985E+00  -1.198E+00  -5.159E-01
      35      -1.968E+00  -1.175E+00  -4.956E-01
      36      -1.965E+00  -1.170E+00  -4.884E-01
+ush rm angle_map.img
+ush rm area_lat.img
+ush rm area_lon.img
+ush rm area_map.img
+ush rm del_area_lat.img
+ush rm del_area_lon.img
 disable-log

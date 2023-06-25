@@ -27,11 +27,15 @@
 #include "xvmaininc.h"
 #include "ftnbridge.h"
 #define NIB_MASK 15      /* mask for right nibble */
+
+void znibble( unsigned char *in, unsigned char *out, register int nbytes_out);
+
 /************************************************************************/
 /* Fortran-Callable Version                                             */
 /************************************************************************/
 
 
+void znibble();
 void FTN_NAME2(nibble, NIBBLE) (in, out, nbytes_out)
      unsigned char *in, *out;
      int *nbytes_out;
@@ -43,7 +47,7 @@ void FTN_NAME2(nibble, NIBBLE) (in, out, nbytes_out)
 /* C-Callable Version                                                   */
 /************************************************************************/
 
-znibble( in, out, nbytes_out)
+void znibble( in, out, nbytes_out)
    unsigned char *in, *out;
    register int nbytes_out;
 {

@@ -1,0 +1,4 @@
+$ vpack create_site_rmc.com -mixed -
+	-s create_site_rmc.sh -
+	-i create_site_rmc.imake
+$ Exit

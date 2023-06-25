@@ -1,6 +1,8 @@
 procedure
 refgbl $echo
 body
+enable-log
+
 let _onfail="continue"
 let $echo="yes"
 !trealtr
@@ -18,4 +20,6 @@ let $echo="yes"
 !FILE OF EACH ROUTINE.
 GEN A 16 64 'REAL4
 TREALTR A
+
+disable-log
 end-proc

@@ -26,7 +26,7 @@ if ($syschar(1) = "UNIX")
   defcmd more "ush more"
   defcmd pr   "ush pr"
   defcmd ls   "ush ls"
-  setlib ($V2LIB, $VIDSLIB, $R1LIB, $R2LIB, $CASLIB, $GLLLIB, $TAEBIN/$TAEPLAT, $R3LIB, $GUILIB, $MARSLIB, $VSLLIB, $HWLIB, $DEVISISEXE $ISISEXE $PICEXE $ISISR/local/exe)
+  setlib ($V2LIB, $VIDSLIB, $R1LIB, $R2LIB, $CASLIB, $GLLLIB, $TAEBIN/$TAEPLAT, $R3LIB, $GUILIB, $MARSLIB, $VSLLIB, $HWLIB, $GEOCALLIB, $DEVISISEXE $ISISEXE $PICEXE $ISISR/local/exe)
   defcmd use*disp "ush $VRDILIB/usedisp a"
   defcmd free*disp "ush $VRDILIB/usedisp d"
 else-if ($syschar(1) = "VAX_VMS")

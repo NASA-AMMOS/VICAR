@@ -92,7 +92,7 @@ void main44(void)
     fclose(unit);
 }
 
-make_file_process_specific(old_name,new_name)
+void make_file_process_specific(old_name,new_name)
 
     char old_name[];		/* User supplied file name		*/
     char new_name[];		/* Output: new process specific name	*/

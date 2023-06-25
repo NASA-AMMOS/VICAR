@@ -1,0 +1,4 @@
+$ vpack mpf_labels.com -
+	-s mpf_gen_lbls.c mpf_apx_lbls.c mpf_imp_lbls.c mpf_rvr_lbls.c -
+	-i mpf_labels.imake
+$ Exit

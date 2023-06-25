@@ -1,0 +1,26 @@
+procedure
+refgbl $echo
+
+local lstcmp int
+
+body
+enable-log
+
+let $echo="yes"
+
+! TEST SCRIPT FOR concompi
+
+gen xxx1 nl=6 ns=6 'half
+f2 xxx1 out=xxx2 func="line*((samp<4)+(samp>4))"
+f2 xxx1 out=xxx2a +
+  func="(line==3)*(samp==5)"
+list xxx2  'nousrtim
+list xxx2a 'zer 'nousrtim
+
+concompi (xxx2,xxx2a) (xxx4,xxx3)
+list xxx4 ndig=2 'nousrtim
+
+ush rm -f xxx1  xxx2  xxx2a  xxx3  xxx4 
+
+disable-log
+end-proc

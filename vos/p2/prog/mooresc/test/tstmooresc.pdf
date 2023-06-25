@@ -27,6 +27,8 @@ mooresc xxxim3 (xxxim4,xxxim5) dmax=2 pixval=(2,3) numpix=2
 list xxxim4 'zer 'nousrtim
 list xxxim5 'zer 'nousrtim
 
+ush rm xxxim1 xxxim2 xxxim3 xxxim4 xxxim5
+
 disable-log
 
 theend>

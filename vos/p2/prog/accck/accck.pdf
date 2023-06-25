@@ -1,0 +1,316 @@
+procedure help=*
+parm image1 type=(string,99)
+parm image2 type=(string,99)
+parm remap type=string count=1 valid=("n","y") default="y"
+parm wmask type=string count=1 valid=("n","y") default="y"
+parm fftsize int default=128
+parm seq type=string default="qq"
+parm outfile type=(string,99) count=1 default=""
+parm outnl type=int count=1 default=1200
+parm labeladd type=(string,2) count=1 valid=("n","y") default="y"
+parm timage2 type=(string,99) count=0:1 default=""
+parm magnif type=real count=1 default=1.0
+parm rmscrit type=real count=1 default=90.0
+parm echo type=(string,3) count=1 valid=("no","yes") default="yes"
+parm zerolim default=0.1
+parm zerolim2 default=0.1
+parm redo type=int default=20
+
+local mag type=real
+local tmag type=real
+
+local xxxgrid string
+local xxxgrid1 string
+local xxxgrid2 string
+local labelimg type=(string,99)
+local regimg type=(string,99)
+
+local l1 real
+local s1 real
+local l2 real
+local s2 real
+local l3 real
+local s3 real
+local l4 real
+local s4 real
+local rms real
+local cep real
+
+local inside int
+local clen int
+local fclen real
+local fnl real
+local fns real
+local foutnl real
+local demag real
+local errl real
+local errs real
+
+local sl int
+local ss int
+local nl int
+local ns int
+local outns int
+local rmsfac real
+local clen2 int
+
+refgbl $echo
+body
+let _onfail="goto error1"
+let $echo="&echo"
+
+write "accck 08/30/2016"
+
+let xxxgrid = "xxxgrid" // "&seq"
+let xxxgrid1 = "xxxgrid1" // "&seq"
+let xxxgrid2 = "xxxgrid2" // "&seq"
+let inside = fftsize/2 + 3
+
+! outfile used as a temporary
+
+if (remap="y")
+   let regimg = "&outfile"
+   gtwarp &image2 &outfile ref=&image1 'coverref nah=300 nav=300
+else
+   let regimg = "&image2"
+end-if
+
+imcorner &image1 line1=l1 samp1=s1 line2=l2 samp2=s2 +
+   line3=l3 samp3=s3 line4=l4 samp4=s4 inside=&inside
+write "l1 &l1"
+gengrid2 out=&xxxgrid2 ncol=11 nah=15 nav=15 +
+  l1=&l1 s1=&s1 l2=&l2 s2=&s2 l3=&l3 s3=&s3 l4=&l4 s4=&s4
+
+pixmap (&xxxgrid2,&image1) mapcols=(3,4) pixcols=(1,2) 'pixtomap
+if (wmask="y")
+    watermask &xxxgrid2 &xxxgrid cols=(3,4,5,6,7) auxmap=&image1
+else
+    ibis-copy &xxxgrid2 &xxxgrid
+end-if
+!Check for all-water case (ibis file becomes empty)
+ibis2tcl  &xxxgrid vclen=clen2
+if        (clen2 = 0) goto error2
+mf3 &xxxgrid f="c11=@rand"
+sort &xxxgrid sortcol=11
+
+let  _onfail="goto error3"
+picmtch5 (&image1,&regimg,&xxxgrid) SEARCH=&fftsize  fftsize=&fftsize +
+       minsrch=&fftsize zrej=5 auto=14 redo=&redo ffthalf=0 zerolim=&zerolim +
+       zerolim2=&zerolim2 magnif=(&magnif,&magnif)
+let  _onfail="goto error1"
+
+!  do the statistics
+
+rowop2 &xxxgrid &xxxgrid2 keycol=9 range=(-10000.0,-9998.0) 'delete
+mf3 &xxxgrid2 f="c11=(@index<101)"
+rowop2 &xxxgrid2 &xxxgrid1 keycol=11 range=(1.0,1.0) prec=0.5 'select
+gtproj2 (&xxxgrid1,&regimg,&image1) incol=(6,7) outcol=(6,7) 'image
+mf3 &xxxgrid1 f="c3=c6-c1$c4=c7-c2$c10=-@sqrt(c3*c3+c4*c4)"
+!ibis-l &xxxgrid1 cols=(1,2,3,4,9,10)
+sort &xxxgrid1 sortcol=10 indexcol=11
+ibis2tcl &xxxgrid1 vclen=clen vartype=1
+let rmsfac = 1.0-rmscrit*0.01
+let fclen = $float(clen)*rmsfac
+let clen = $fix(fclen+0.5)
+rowop2 &xxxgrid1 &xxxgrid2 keycol=11 range=(0,&clen) prec=0.0001 'delete
+mf3 &xxxgrid2 +
+   f="c10=-c10$c11=c10*c10$@avg(c11)$c11=@sqrt(c11)$@avg(c3)$@avg(c4)"
+!ibis-l &xxxgrid2 cols=(3,4,9,10,11) 'format
+ibis2tcl &xxxgrid2 v1=rms v2= errl v3=errs vartype=(-1,-1,-1) +
+   ibisloc=(1,11,1,3,1,4)
+let cep = rms*1.1774
+write "MSG: ACCURACY CHECK (USING CORRELATION) IS &rms PIXELS RMS"
+write "MSG: &cep PIXELS CEP"
+write "MSG: CENTERING ACCURACY: &errl LINES &errs SAMPLES"
+write "MSG: REFERENCE IMAGE WAS &image2"
+if (rms>3.0 and rms<=7.0)
+   write "MSG: RESULTS VERY POOR"
+end-if
+if (rms>7.0)
+   write "MSG: RESULTS EXTREMELY POOR"
+end-if
+
+!  do a plot if there is a plotfile parameter
+
+if (outfile<>"")
+
+!  prepare the residual vectors in format for polyscrb
+
+let sl = 0
+let ss = 0
+lab2tcl &image1 v1=nl v2=ns keyword=(nl,ns) 'system
+
+let fnl=$float(nl)
+let foutnl=$float(outnl)
+let demag = foutnl/fnl
+let fns = $float(ns)
+let fns = fns*demag
+let outns = $fix(fns)
+
+let mag = (16.0/rms)*(fnl/1000.0)
+let tmag = (0.12)*(fnl/1000.0)
+
+ibis-copy &xxxgrid2 +
+   xxxxxpq36&seq incols=(1,2,3,4) outcols=(1,2,3,4) nc=6
+mf3 xxxxxpq36&seq f=("c3=c1+&mag*c3$c4=c2+&mag*c4$", +
+   "c1=c1-(&sl)+1$c3=c3-(&sl)+1$c2=c2-(&ss)+1$c4=c4-(&ss)+1$c5=0$c6=0")
+mf3 xxxxxpq36&seq f=("c1=c1*(&demag)$c2=c2*(&demag)$", +
+   "c3=c3*(&demag)$c4=c4*(&demag)")
+ibis-copy xxxxxpq36&seq +
+   xxxxxpq39&seq sr=1 sc=1 nc=6 'row 'ibis-1
+ibis-copy xxxxxpq39&seq xxxxxpq37&seq nc=2 'col outcol=(1,2) +
+   gr1dim=2
+
+!  prepare the little T's at base of vectors in format for polyscrb
+
+ibis-copy &xxxgrid2 +
+   xxxxxpq36&seq incols=(1,2,3,4) outcols=(1,2,3,4) nc=6
+mf3 xxxxxpq36&seq +
+  f=("c6=@sqrt(c3*c3+c4*c4)*0.04/(&tmag)$c5=c1+c4/c6$c4=c2-c3/c6$c3=c5$", +
+   "c1=2*c1-c3$c2=2*c2-c4$", +
+   "c1=c1-(&sl)+1$c3=c3-(&sl)+1$c2=c2-(&ss)+1$c4=c4-(&ss)+1$c5=0$c6=0")
+mf3 xxxxxpq36&seq f=("c1=c1*(&demag)$c2=c2*(&demag)$", +
+   "c3=c3*(&demag)$c4=c4*(&demag)")
+ibis-copy xxxxxpq36&seq +
+   xxxxxpq39&seq sr=1 sc=1 nc=6 'row 'ibis-1
+ibis-copy xxxxxpq39&seq xxxxxpq38&seq nc=2 'col outcol=(1,2) +
+   gr1dim=2
+
+!  concatenate and scribe into image
+
+icat (xxxxxpq37&seq,xxxxxpq38&seq) xxxxxpq39&seq 'v
+polyscrb xxxxxpq39&seq +
+   &outfile nl=&outnl ns=&outns dn=0 bdn=255
+
+gtgenup inp=&outfile geotiff="accuracy=&rms" +
+     property="COREG_META_DATA"
+gtgenup inp=&outfile geotiff="accuracy_cep=&cep" +
+     property="COREG_META_DATA"
+gtgenup inp=&outfile geotiff="centering_accuracy=(&errl,&errs)" +
+     property="COREG_META_DATA"
+gtgenup inp=&outfile geotiff="accuracy_unit=pixels" +
+     property="COREG_META_DATA"
+gtgenup inp=&outfile geotiff="accref=&image2" +
+     property="COREG_META_DATA"
+
+end-if
+
+if (labeladd="y")
+   if (timage2="")
+      let labelimg = "&image2"
+   else
+      let labelimg = "&timage2"
+   end-if
+   gtgenup inp=&image1 geotiff="accuracy=&rms" +
+        property="COREG_META_DATA"
+   gtgenup inp=&image1 geotiff="accuracy_cep=&cep" +
+        property="COREG_META_DATA"
+   gtgenup inp=&image1 geotiff="centering_accuracy=(&errl,&errs)" +
+        property="COREG_META_DATA"
+   gtgenup inp=&image1 geotiff="accuracy_unit=pixels" +
+        property="COREG_META_DATA"
+   gtgenup inp=&image1 geotiff="accref=&labelimg" +
+        property="COREG_META_DATA"
+end-if
+goto theend
+
+!Error Processing
+error1>
+write   " "
+write   "MSG: ACCURACY CHECK ABORTED---Unknown Failure"
+write   " "
+goto    theend
+
+error2>
+write   " "
+write   "MSG: ACCURACY CHECK ABORTED---Watermask Suggests The Image is all Water"
+write   " "
+goto    theend
+
+error3>
+write   " "
+write   "MSG: ACCURACY CHECK ABORTED---Picmatch Failed"
+goto    theend
+
+theend>
+end-proc
+.TITLE
+accck - check accuracy of two coregistered images using picmtch5
+.HELP
+PURPOSE
+    
+Generates a grid over the intersection of data in the two input images.
+Then correlates on the grid points using picmtch5.  The non-correlating
+points are thrown out.  Then the best 90% of points are selected, the
+offsets (not the residuals) are root-mean-squared to give an accuracy
+measure in pixels.  If a plot file name is given, a plot of the offsets
+will placed in that file.  The plot is an image and can be viewed with
+xvd.
+
+Use the smaller of the two images for input 1.  Otherwise the plot will
+have huge blank areas.
+   
+CALL
+
+  accck apr03.img dec02.img outfile=xxxplot
+  
+OPERATION
+
+Generates a grid over the intersection of data in the two input images.
+Then correlates on the grid points using picmtch5.  The non-correlating
+points are thrown out.  Then the best 90% of points are selected, the
+offsets (not the residuals) are root-mean-squared to give an accuracy
+measure in pixels.  If a plot file name is given, a plot of the offsets
+will placed in that file.  The plot is an image and can be viewed with
+xvd.
+
+PERFORMANCE
+
+Restrictions
+------------
+
+Use the smaller of the two images for input 1.  Otherwise the plot will
+have huge blank areas.
+
+Original Programmer: A. L. Zobrist, 25 Feb, 2004
+Current Cognizant Programmer: A. L. Zobrist
+Last change by: Mike Smyth,  30 Aug, 2016
+
+REVISIONS
+   2022-08-10 B. Crocco afids to opensource (untested)
+   
+.LEVEL1
+.var image1
+base image
+.var image2
+mapped or coregistered image
+.var fftsize
+picmtch5 fft size
+.var seq
+letter key to make files unique
+.var out
+output plot file
+.var mag
+magnification of plot vectors
+.var tmag
+magnification of plot tails
+.var sl
+plot image sl
+.var ss
+plot image ss
+.var nl
+plot image nl
+.var ns
+plot image ns
+.var timage2
+true name of image2 in case of
+conversion from GeoTIFF
+.var wmask
+If n skip using the watermask
+.LEVEL2
+.var timage2
+this name is placed in the label, otherwise not used
+.var redo
+picmtch5 will redo the first points
+up to this count
+.END

@@ -1,0 +1,5 @@
+$ vpack marsxyzsurf.com -mixed -
+	-s marsxyzsurf.cc -
+	-i marsxyzsurf.imake -
+	-p marsxyzsurf.pdf
+$ Exit

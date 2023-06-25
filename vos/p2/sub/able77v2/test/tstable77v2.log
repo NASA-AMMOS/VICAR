@@ -1,0 +1,239 @@
+WRITE "Testing subroutine ABLE77V2"
+Testing subroutine ABLE77V2
+table77v2 inp=f1636832.vic
+Beginning VICAR task table77v2
+*****************FORTRAN CALLABLE*********
+ABLE77 TEST RUN--SIZE=  39.
+ label type=          3
+ FDS COUNT=    1636832
+ EXPOSURE=  360.00000
+ FILTER POSITION=          0
+ SCAN RATE=          1
+ CAMERA SERIAL NUMBER=          7
+ CAMERA =          1
+ GAIN =           0
+ EVENT YEAR =         79
+ EVENT DAY =          63
+ EVENT HOUR =         19
+ EVENT MINUTE =         23
+ EVENT SECOND =          0
+ S/C ID =          1
+PICNO =
+          0548J1-001
+INPUT TAPE =
+          107971
+OUTPUT TAPE =
+          !     
+INPUT FILE =          7
+OUTPUT FILE =       -999
+ERT YEAR =         79
+ERT DAY =          63
+ERT HOUR =         20
+ERT MINUTE =          0
+ERT SECOND =         36
+IND =         -1
+ABLE77 TEST RUN--SIZE=   6.
+ label type=          3
+ FDS COUNT=    1636832
+ EXPOSURE=  360.00000
+ FILTER POSITION=          0
+ SCAN RATE=          1
+ CAMERA SERIAL NUMBER=          7
+6 VALUES RETURNED, ................
+IND =          0
+ABLE77 TEST RUN--SIZE=  22.
+ label type=          3
+ FDS COUNT=    1636832
+ EXPOSURE=  360.00000
+ FILTER POSITION=          0
+ SCAN RATE=          1
+ CAMERA SERIAL NUMBER=          7
+ CAMERA =          1
+ GAIN =           0
+ EVENT YEAR =         79
+ EVENT DAY =          63
+ EVENT HOUR =         19
+ EVENT MINUTE =         23
+ EVENT SECOND =          0
+ S/C ID =          1
+PICNO =
+          0548J1-001
+ 22 VALUES RETURNED, ................
+IND =          0
+*****************C  CALLABLE***************
+ABLE77 TEST RUN--SIZE=  39.
+ label type=          3
+ FDS COUNT=    1636832
+ EXPOSURE=  360.00000
+ FILTER POSITION=          0
+ SCAN RATE=          1
+ CAMERA SERIAL NUMBER=          7
+ CAMERA =          1
+ GAIN =           0
+ EVENT YEAR =         79
+ EVENT DAY =          63
+ EVENT HOUR =         19
+ EVENT MINUTE =         23
+ EVENT SECOND =          0
+ S/C ID =          1
+PICNO =
+          0548J1-001
+INPUT TAPE =
+          107971
+OUTPUT TAPE =
+          !     
+INPUT FILE =          7
+OUTPUT FILE =       -999
+ERT YEAR =         79
+ERT DAY =          63
+ERT HOUR =         20
+ERT MINUTE =          0
+ERT SECOND =         36
+IND =         -1
+ABLE77 TEST RUN--SIZE=   6.
+ label type=          3
+ FDS COUNT=    1636832
+ EXPOSURE=  360.00000
+ FILTER POSITION=          0
+ SCAN RATE=          1
+ CAMERA SERIAL NUMBER=          7
+6 VALUES RETURNED, ................
+IND =          0
+ABLE77 TEST RUN--SIZE=  22.
+ label type=          3
+ FDS COUNT=    1636832
+ EXPOSURE=  360.00000
+ FILTER POSITION=          0
+ SCAN RATE=          1
+ CAMERA SERIAL NUMBER=          7
+ CAMERA =          1
+ GAIN =           0
+ EVENT YEAR =         79
+ EVENT DAY =          63
+ EVENT HOUR =         19
+ EVENT MINUTE =         23
+ EVENT SECOND =          0
+ S/C ID =          1
+PICNO =
+          0548J1-001
+ 22 VALUES RETURNED, ................
+IND =          0
+table77v2 inp=able77v2.vic
+Beginning VICAR task table77v2
+*****************FORTRAN CALLABLE*********
+ABLE77 TEST RUN--SIZE=  39.
+ label type=          3
+ FDS COUNT=    2644554
+ EXPOSURE=  15360.000
+ FILTER POSITION=          7
+ SCAN RATE=         10
+ CAMERA SERIAL NUMBER=          5
+ CAMERA =          1
+ GAIN =           0
+ EVENT YEAR =         86
+ EVENT DAY =          11
+ EVENT HOUR =          8
+ EVENT MINUTE =         25
+ EVENT SECOND =         35
+ S/C ID =          2
+PICNO =
+          1082U2-014
+INPUT TAPE =
+          !     
+OUTPUT TAPE =
+          !     
+INPUT FILE =       -999
+OUTPUT FILE =       -999
+ERT YEAR =         86
+ERT DAY =          11
+ERT HOUR =         11
+ERT MINUTE =         10
+ERT SECOND =         40
+IND =         -1
+ABLE77 TEST RUN--SIZE=   6.
+ label type=          3
+ FDS COUNT=    2644554
+ EXPOSURE=  15360.000
+ FILTER POSITION=          7
+ SCAN RATE=         10
+ CAMERA SERIAL NUMBER=          5
+6 VALUES RETURNED, ................
+IND =          0
+ABLE77 TEST RUN--SIZE=  22.
+ label type=          3
+ FDS COUNT=    2644554
+ EXPOSURE=  15360.000
+ FILTER POSITION=          7
+ SCAN RATE=         10
+ CAMERA SERIAL NUMBER=          5
+ CAMERA =          1
+ GAIN =           0
+ EVENT YEAR =         86
+ EVENT DAY =          11
+ EVENT HOUR =          8
+ EVENT MINUTE =         25
+ EVENT SECOND =         35
+ S/C ID =          2
+PICNO =
+          1082U2-014
+ 22 VALUES RETURNED, ................
+IND =          0
+*****************C  CALLABLE***************
+ABLE77 TEST RUN--SIZE=  39.
+ label type=          3
+ FDS COUNT=    2644554
+ EXPOSURE=  15360.000
+ FILTER POSITION=          7
+ SCAN RATE=         10
+ CAMERA SERIAL NUMBER=          5
+ CAMERA =          1
+ GAIN =           0
+ EVENT YEAR =         86
+ EVENT DAY =          11
+ EVENT HOUR =          8
+ EVENT MINUTE =         25
+ EVENT SECOND =         35
+ S/C ID =          2
+PICNO =
+          1082U2-014
+INPUT TAPE =
+          !     
+OUTPUT TAPE =
+          !     
+INPUT FILE =       -999
+OUTPUT FILE =       -999
+ERT YEAR =         86
+ERT DAY =          11
+ERT HOUR =         11
+ERT MINUTE =         10
+ERT SECOND =         40
+IND =         -1
+ABLE77 TEST RUN--SIZE=   6.
+ label type=          3
+ FDS COUNT=    2644554
+ EXPOSURE=  15360.000
+ FILTER POSITION=          7
+ SCAN RATE=         10
+ CAMERA SERIAL NUMBER=          5
+6 VALUES RETURNED, ................
+IND =          0
+ABLE77 TEST RUN--SIZE=  22.
+ label type=          3
+ FDS COUNT=    2644554
+ EXPOSURE=  15360.000
+ FILTER POSITION=          7
+ SCAN RATE=         10
+ CAMERA SERIAL NUMBER=          5
+ CAMERA =          1
+ GAIN =           0
+ EVENT YEAR =         86
+ EVENT DAY =          11
+ EVENT HOUR =          8
+ EVENT MINUTE =         25
+ EVENT SECOND =         35
+ S/C ID =          2
+PICNO =
+          1082U2-014
+ 22 VALUES RETURNED, ................
+IND =          0
+disable-log

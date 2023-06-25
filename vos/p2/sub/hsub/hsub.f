@@ -35,12 +35,20 @@ C
       IMPLICIT INTEGER (A-Z)
       DIMENSION HIST(*)
       INTEGER*2 BUF(*)
+      INTEGER*4 MAX_INT4
+
+      MAX_INT4 = 2147483647
+
       DO 10 I = 1,NS
 	K = BUF(I)
 	IF(K .LT. ILOW ) K = ILOW
 	IF(K .GT. IHIGH) K = IHIGH
 	K = K - ILOW + 1
 	HIST(K) = HIST(K) + 1
+        IF(HIST(K) .LT. 0) THEN
+           HIST(K) = MAX_INT4
+           CALL XVMESSAGE('**** WARNING: HSUBH OVERFLOW ****', ' ')
+        ENDIF
    10 CONTINUE
 C
       RETURN
@@ -53,12 +61,18 @@ C
 
       DIMENSION HIST(*)
       BYTE BUF(*)
-C==================================================================
+      INTEGER*4 MAX_INT4
 
-      DO 10 I = 1,NS
+      MAX_INT4 = 2147483647
+
+      DO 20 I = 1,NS
 	K = BYTE2INT(BUF(I))+1
 	HIST(K) = HIST(K) + 1
-   10 CONTINUE
+        IF(HIST(K) .LT. 0) THEN
+           HIST(K) = MAX_INT4
+           CALL XVMESSAGE('**** WARNING: HSUBB OVERFLOW ****', ' ')
+        ENDIF
+   20 CONTINUE
 C
       RETURN
       END

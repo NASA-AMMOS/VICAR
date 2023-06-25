@@ -1,0 +1,13 @@
+/*
+*****************************************************************************
+*  MARS RMC PROCESSING SCRIPTS
+*****************************************************************************
+*/
+#define PROCEDURE lock_file
+
+#define MODULE_LIST lock_file.sh
+
+#define USES_SH
+
+#define MARSLIB
+

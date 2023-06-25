@@ -62,4 +62,6 @@ LABEL-LIST TGEN1 'nousrtim
 
 disable-log
 
+ush rm TGEN1 TGEN3 TGEN4
+
 end-proc

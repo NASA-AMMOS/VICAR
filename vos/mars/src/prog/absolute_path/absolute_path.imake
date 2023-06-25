@@ -1,0 +1,13 @@
+/*
+*****************************************************************************
+*  MARS RMC PROCESSING SCRIPTS
+*****************************************************************************
+*/
+#define PROCEDURE absolute_path
+
+#define MODULE_LIST absolute_path.sh
+
+#define USES_SH
+
+#define MARSLIB
+

@@ -1,8 +1,12 @@
 Procedure
 Refgbl $Echo
 Body
+enable-log
+
 Let  _onfail="continue"
 Let  $Echo="Yes"
 TGETRES             
 Let  $Echo="No"
+
+disable-log
 End-proc

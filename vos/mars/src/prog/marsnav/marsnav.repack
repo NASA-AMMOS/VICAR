@@ -1,0 +1,5 @@
+$ vpack marsnav.com -mixed -
+	-s marsnav.cc -
+	-i marsnav.imake -
+	-p marsnav.pdf
+$ Exit

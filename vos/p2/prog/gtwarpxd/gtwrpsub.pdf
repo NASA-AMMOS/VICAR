@@ -1,0 +1,109 @@
+procedure
+
+parm seq type=(string,99) count=1 def="qq"
+parm typref type=keyword count=(0:1) valid=(coverref,coverinp) +
+     default=coverinp
+parm dfile type=string
+parm poly type=string
+parm dcols type=int count=(4:20)
+parm dcolsix type=int count=1
+parm nah type=int count=1 default=100
+parm nav type=int count=1 default=100
+
+local xxg2 string
+local xxg3 string
+local xxg4 string
+local xxg7 string
+
+local sl int
+local ss int
+local nl int
+local ns int
+local dmaxl int
+local dmaxs int
+local dcol1 int
+local dcol2 int
+local dcol3 int
+local dcol4 int
+
+local goresl int
+local goress int
+local gorenl int
+local gorens int
+
+local version (string,10)
+local org (string,10)
+
+body
+
+write "GTWRPSUB version 2021-05-24"
+
+let version="ibis-2"
+let org="column"
+
+let xxg2 = "xx" // "&seq" // "g2"
+let xxg3 = "xx" // "&seq" // "g3"
+let xxg4 = "xx" // "&seq" // "g4"
+let xxg7 = "xx" // "&seq" // "g7.par"
+
+! SUBROUTINE TO ADJUST SL,SS,NL,NS FOR EACH DISTORTION AND COMPOSE THE GRID
+
+restore-variable file=&xxg7 variable=(sl,ss,nl,ns)
+write "gtwrpsub version 13-jan-02"
+
+let dmaxl = &sl+&nl
+let dmaxs = &ss+&ns
+let dcol1 = dcols(dcolsix)
+let dcol2 = dcols(dcolsix+1)
+let dcol3 = dcols(dcolsix+2)
+let dcol4 = dcols(dcolsix+3)
+
+if ("&typref"="coverinp")
+   tieconv INP=&dfile COLS=(&dcol1,&dcol2,&dcol3,&dcol4)  OUT=&xxg3 +
+        NAH=40,NAV=40,MINL=&sl,MINS=&ss,MAXL=&dmaxl,MAXS=&dmaxs +
+        'GEOMV poly="&poly" gridtol=15.0 
+  
+   gtgore (&xxg2,&xxg3) slvar=goresl ssvar=goress nlvar=gorenl nsvar=gorens
+   write "gtgore: &goresl,&goress,&gorenl,&gorens"
+   let sl = sl-goresl
+   let ss = ss-goress
+   let nl = nl-gorenl
+   let ns = ns-gorens
+   
+   write "new:sl,ss,nl,ns &sl,&ss,&nl,&ns"
+   let dmaxl = &sl+&nl
+   let dmaxs = &ss+&ns
+
+end-if
+tieconv INP=&dfile COLS=(&dcol1,&dcol2,&dcol3,&dcol4)  OUT=&xxg3 +
+     NAH=&nah,NAV=&nav,MINL=&sl,MINS=&ss,MAXL=&dmaxl,MAXS=&dmaxs +
+     'GEOMV poly="&poly" gridtol=15.0 
+gridcomp inp=(&xxg2,&xxg3) out=&xxg4
+ibis-copy &xxg4 &xxg2
+
+save-variable file=&xxg7 variable=(sl,ss,nl,ns)
+
+end-proc
+
+.TITLE
+GTWRPSUB - subroutine called by gtwarpxd to adjust corners.
+.HELP
+PURPOSE
+     GTWRPSUB adjusts the image corner points in a distortion
+     file and composes a modified grid.
+
+CALL
+  
+OPERATION
+
+PERFORMANCE
+
+RESTRICTIONS
+
+.PAGE
+Original Programmer: A. L. Zobrist
+Copied from AFIDS on 2021-05-24.
+
+.LEVEL1
+.LEVEL2
+.END

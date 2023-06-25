@@ -20,7 +20,8 @@
             lbl_product_request.c lbl_observation_request.c \
             lbl_chem_bin_table.c  lbl_chem_request.c lbl_mini_header.c \
             lbl_initstate.c lbl_nav_site_transform.c \
-            lbl_scam_mini_header.c lbl_illumination_parms.c
+            lbl_scam_mini_header.c lbl_illumination_parms.c \
+            lbl_video_parms.c lbl_aci_scanner_articulation_state.c
 
 #define MAIN_LANG_C
 

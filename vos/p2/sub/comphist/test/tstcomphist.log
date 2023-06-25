@@ -1,0 +1,25 @@
+WRITE "This is a test of subroutine comphist"
+This is a test of subroutine comphist
+GEN A 128 128
+Beginning VICAR task GEN
+GEN Version 2019-05-28
+GEN task completed
+tcomphist A  (4,4,100,100) 'ZEROES
+Beginning VICAR task tcomphist
+ ***Test from Fortran
+ Mean=  105.00000000   Sigma=   40.82278824   Total number of pixels=     10000
+ ***Test from C
+ Mean=  105.00000000   Sigma=   40.82278824   Total number of pixels=     10000
+WRITE "Test on halfword image (ramp)"
+Test on halfword image (ramp)
+GEN A 1000 1000 'HALF
+Beginning VICAR task GEN
+GEN Version 2019-05-28
+GEN task completed
+tcomphist A 'ZEROES
+Beginning VICAR task tcomphist
+ ***Test from Fortran
+ Mean=  999.00000000   Sigma=  408.24807739   Total number of pixels=   1000000
+ ***Test from C
+ Mean=  999.00000000   Sigma=  408.24807739   Total number of pixels=   1000000
+disable-log

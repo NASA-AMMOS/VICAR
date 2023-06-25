@@ -1,0 +1,5 @@
+$ vpack marsnav2.com -mixed -
+	-s marsnav2.cc tradiprojection.h tradiprojection.cc -
+	-i marsnav2.imake -
+	-p marsnav2.pdf
+$ Exit

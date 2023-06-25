@@ -3,8 +3,8 @@
  * routines.
  */
 /************************************************************************/
-InitEnvironment(env)
-    
+void InitPlane();
+void InitEnvironment(env)
   VIDSEnvironment	*env;
     
 {
@@ -61,7 +61,7 @@ InitEnvironment(env)
   return;
 }
 /************************************************************************/
-InitPlane(plane)		/* Initialize a PlaneInfo structure	*/
+void InitPlane(plane)		/* Initialize a PlaneInfo structure	*/
 
   PlaneInfo	*plane;
   
@@ -81,7 +81,7 @@ InitPlane(plane)		/* Initialize a PlaneInfo structure	*/
   return;
 }
 /************************************************************************/
-InitFile(file)
+void InitFile(file)
 
   FileInfo		*file;	/* file info structure to clear out	*/
   

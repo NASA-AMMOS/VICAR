@@ -1,0 +1,14 @@
+This test should be replaced with a numpy.isclose-based test:
+
+Running test script tstnorangle.pdf
+Using diff ignoring versions to compare tstnorangle.log with session.log
+/Vicar-tools-jpl/Jenkins_support/log_diff_ignore_version tstnorangle.log session.log
+32c32
+< TEST 8 - h = -9 w =  -5 : -1.509453887939e+02  degrees  (-2.634494066238e+00 radians)
+---
+> TEST 8 - h = -9 w =  -5 : -1.509454040527e+02  degrees  (-2.634494304657e+00 radians)
+44c44
+< TEST 11 - h = 60 w =  -10 : -9.462322235107e+00  degrees  (-1.651486754417e-01 radians)
+---
+> TEST 11 - h = 60 w =  -10 : -9.462321281433e+00  degrees  (-1.651486754417e-01 radians)
+log_diff_ignore_version returning 1

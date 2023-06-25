@@ -1,0 +1,4 @@
+$ vpack edr_lbl_get_value.com -mixed -
+	-s edr_lbl_get_value.sh -
+	-i edr_lbl_get_value.imake
+$ Exit

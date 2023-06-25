@@ -1,0 +1,5 @@
+$ vpack marsautotie.com -mixed -
+	-s marsautotie.cc -
+	-i marsautotie.imake -
+	-p marsautotie.pdf
+$ Exit

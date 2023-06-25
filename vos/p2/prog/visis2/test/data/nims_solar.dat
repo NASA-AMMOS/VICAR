@@ -1,0 +1,20 @@
+  16 points
+  0.7    2.19 
+  0.75   1.90
+  0.8    1.68
+  0.9    1.32
+  1.0    1.08
+  1.1    0.88
+  1.2    0.73
+  1.4    0.512
+  1.6    0.375
+  1.8    0.248  
+  2.0    0.171
+  2.5    0.0756
+  3.0    0.0386
+  4.0    0.0130
+  5.0    0.0055
+  6.0    0.0031
+ 1st column = wavelength in microns
+ 2nd column = flux at solar surface in 10**10 erg/cm**2/sec/sterad/mu
+ source:  Allen  Astrophys.Quant.  3rd ed. 

@@ -1,0 +1,110 @@
+CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+C Output a polygon in edge and/or polygon form
+C
+      SUBROUTINE OUTPOL(IPOL,IVCNT,IOCF,IHVTX,IOTYP,LUNFLG,
+     +		SERL,VXREF,XYA,IVBUF,IVPTR)
+      IMPLICIT NONE
+      INTEGER*4 IPOL,IVCNT,IOCF,IHVTX,IOTYP
+      INTEGER*4 SERL(4,1),VXREF(4,1)
+      INTEGER*4 IVBUF(1),IVPTR(1)
+      INTEGER*2 XYA(2,1)
+      LOGICAL LUNFLG
+
+      COMMON/CSAVE/IEDGE,ISLCNT,IPVCNT,IPPCNT,LVPTR,IPCNT,IPCNT0
+      INTEGER*4 IEDGE,ISLCNT,IPVCNT,IPPCNT,LVPTR,IPCNT,IPCNT0
+
+      COMMON/CMAX/MAXPOLY,MAXVERT,MAXSIZE
+      INTEGER*4 MAXPOLY,MAXVERT,MAXSIZE
+
+      INTEGER*4 I,J,IBEG,IEND,LSTBEG,LCNT
+      INTEGER*4 IFIRST,IFRSTP,IFVTX,IV,I2V
+      REAL*4 EPSLON
+      LOGICAL REPEAT
+
+      EPSLON = SQRT(2.)
+      IF (IOCF.EQ.1) THEN	!Main polygon - reset counters
+         ISLCNT = 0
+         IPVCNT = 0
+         IPPCNT = 0
+      ELSE
+         ISLCNT = ISLCNT + 1
+      ENDIF
+
+      IFIRST = IPVCNT + 1
+      IFRSTP = IPPCNT + 1
+
+      IF (.NOT.LUNFLG .AND. IOTYP.EQ.1) GOTO 30
+
+      IF (IHVTX.EQ.0) THEN
+         IVBUF(IFIRST) = -IVBUF(IFIRST)	!Cycle with no high order vertices
+         GOTO 30
+      ENDIF
+
+C     ....Rotate polygon to begin on high order vertex
+   10 IV = IVBUF(IFIRST)
+      IF (IV.LE.0) GOTO 30
+      DO J=IFIRST+1,IVCNT
+         IVBUF(J-1) = IVBUF(J)
+      ENDDO
+      IVBUF(IVCNT) = IV
+      GOTO 10
+
+   30 IF (IVCNT.GE.MAXSIZE) GOTO 990
+      IVCNT = IVCNT + 1
+      IVBUF(IVCNT) = IVBUF(IFIRST)		!Repeat first vertex
+
+      IFVTX = IABS(IVBUF(IFIRST))
+      IVPTR(IFRSTP) = IABS(IFIRST)
+      IPCNT = IFRSTP
+      LSTBEG = IPCNT
+      IBEG = IFIRST
+      LCNT = 1
+      REPEAT = .FALSE.
+
+      DO 40 I=IFIRST+1,IVCNT
+      IV = IVBUF(I)
+      LCNT = LCNT + 1
+      IF (LCNT.EQ.2) I2V=IABS(IV)
+      IF (IPCNT.GE.MAXSIZE) GOTO 990
+      IPCNT = IPCNT + 1
+      IVPTR(IPCNT) = I
+      IEND = I
+      IF (IV.GE.0) GOTO 40
+
+      REPEAT = .FALSE.			!End of edge
+      IF (IFVTX.EQ.IABS(IV)) THEN
+         REPEAT = .TRUE.
+         LCNT = LCNT - 1
+      ENDIF
+      IF (LUNFLG.AND.LCNT.EQ.3) CALL REDUCE(EPSLON,IBEG,LCNT,LSTBEG,
+     $        IPCNT,XYA,IVBUF,IVPTR)
+      IF (IOTYP.NE.1) CALL OUTEDG(IEDGE,IFVTX,I2V,IBEG,IEND,
+     +		SERL,VXREF,XYA,IVBUF,IVPTR)
+      IF (REPEAT .AND. LUNFLG) THEN
+         IF (IPCNT.GT.MAXSIZE) GOTO 990
+         IPCNT = IPCNT + 1
+         IVPTR(IPCNT) = I
+      ENDIF
+      LSTBEG = IPCNT
+      IFVTX = IABS(IV)
+      IBEG = IEND
+      LCNT = 1
+   40 CONTINUE
+
+      IF (IOTYP.EQ.2) GOTO 90
+
+      IF (IOCF.EQ.1) THEN	!Main polygon
+         LVPTR = IEND
+         IPCNT0 = IPCNT
+      ELSE			!Island polygon
+         IF (IPCNT.GE.MAXSIZE) GOTO 990
+         IPCNT = IPCNT+1
+         IVPTR(IPCNT) = LVPTR	!Repeat last vertex of main polygon
+      ENDIF
+
+   90 IPVCNT = IVCNT
+      IPPCNT = IPCNT
+      RETURN
+
+  990 CALL MABEND('MAXSIZE exceeded')
+      END

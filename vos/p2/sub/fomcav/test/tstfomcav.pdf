@@ -1,8 +1,12 @@
 Procedure
 Refgbl $Echo
 Body
+Enable-Log
+
 Let  _Onfail="Continue"
 Let  $Echo="Yes"
 TFOMCAV
 Let  $Echo="No"
+
+Disable-Log
 End-Proc

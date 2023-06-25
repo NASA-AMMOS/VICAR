@@ -1,0 +1,59 @@
+PROCEDURE
+BODY
+
+enable-log
+
+!let _onfail="continue"
+!goto start
+!This job converts a raster image into vector coordinates,
+!and scribes those coordinates back into an image with the
+!coordinates boundaries having the same dn as the original raster.
+
+!Prepare test image of five rectangles with DNs 100, 175, 225, 250 & 40.
+GEN    A NL=100 NS=100 LINC=0 SINC=0 IVAL=0
+QSAR   A TESTIMG.IMG AREA=(10,30,30,40,100 +
+                           10,40,20,20,-100 +             
+                           50,10,20,10,175 +
+                           60,40,30,50,225 +
+                           70,60,10,10,-225 +
+                            3, 3, 2, 2,250 +
+                           15,25, 5, 5, 40)
+HIST   TESTIMG.IMG
+
+!Raster-to-vector conversion
+RASTOVEC TESTIMG.IMG (A,b.int,d.int,e.gr1,f.int) 'GR1
+LABEL-L  b.int 'nousrtim
+IBIS-L   b.int
+
+MF       b.int FUNC="C2=INDEX-1"	!Insert index in COL 2
+IBIS-L   b.int
+LABEL-L  e.gr1 'nousrtim
+
+GRUTIL   e.gr1 G OUTDIM=4 'REDIM	!Expand GR1 file to 4 dimensions
+GF       G FUNC="X3=POLY-1" DIM=4	!Insert index for each polygon
+IBIS-CO  G F GR1DIM=4 OUTC=(1,2,3,4) NC=4	!Convert to IBIS2 format
+IBIS-L   F NR=50
+
+!Copy region labels from b.int to f
+ZIPCOL   (F,b.int) INCOL=3 OUTCOL=4 FILE=(2,1) NULL=0
+IBIS-L   F NR=50
+IBIS-CO  F G SR=1 SC=1 NC=3 INCOL=(1,2,4) 'ROW 'IBIS-1	!Convert back to GR1
+
+POLYSCRB G H SIZE=(1,1,100,100) DIM=3 'EXCLOSE	!Scribe polygons
+FLOT     H I 'VERT  	!Flip origin
+HIST     I
+
+!Fill polygons with their original dn for comparison with TESTIMG.IMG
+!Note that the polygon boundaries are set to DN255.
+!STRETCH  SCRB.IMG J TABLE=(0,0.,1,255.,255,255.)
+STRETCH  I J TABLE=(0,0.,1,255.,255,255.)
+PAINT    J (K,L)
+HIST     K
+STRETCH  K PAINT.IMG TABLE=(1,0.,2,250.,3,100.,4,40., +
+          5,175.,6,225.,7,255.,255,255.)
+HIST     PAINT.IMG
+HIST     TESTIMG.IMG
+
+disable-log
+
+END-PROC

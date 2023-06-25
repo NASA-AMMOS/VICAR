@@ -1,0 +1,69 @@
+ttiechv
+Beginning VICAR task ttiechv
+**** FORTRAN-callable RFT2 ****
+ test of tiechv without distortion correction
+ these points were determined using PHOTCALV2 with
+ vgr image 1636832 using nominal GEOMA correction
+parameters
+                      LINE      SAMPLE    LATITUDE  LONGITUDE
+ new tiepoint=
+            4.000E+02  4.000E+02  2.666E+00  1.792E+02
+ new tiepoint=
+            4.000E+02  5.000E+02  8.865E+00  1.570E+02
+ new tiepoint=
+            5.000E+02  5.000E+02 -1.385E+01  1.498E+02
+ new tiepoint=
+            6.000E+02  4.000E+02 -4.794E+01  1.724E+02
+ new tiepoint=
+            6.000E+02  5.000E+02 -3.938E+01  1.405E+02
+ 5 TIEPOINTS SUPPLIED BY USER
+ A zero returned indicates tiepoints are in correct format
+ tiechv return ind=          0
+ tiepoints after geometric correction
+ 5 TIEPOINTS SUPPLIED BY USER
+ A zero returned indicates tiepoints are in correct format
+ tiechv return ind=          0
+ new tiepoint=
+            4.980E+02  4.994E+02  2.666E+00  1.792E+02
+ new tiepoint=
+            4.977E+02  6.162E+02  8.865E+00  1.570E+02
+ new tiepoint=
+            6.147E+02  6.154E+02 -1.385E+01  1.498E+02
+ new tiepoint=
+            7.323E+02  4.976E+02 -4.794E+01  1.724E+02
+ new tiepoint=
+            7.320E+02  6.147E+02 -3.938E+01  1.405E+02
+**** C-callable RFT2 ****
+ test of tiechv without distortion correction
+ these points were determined using PHOTCALV2 with
+ vgr image 1636832 using nominal GEOMA correction
+parameters
+                      LINE      SAMPLE    LATITUDE  LONGITUDE
+ new tpoint=
+            4.000E+02  4.000E+02  2.666E+00  1.792E+02
+ new tpoint=
+            4.000E+02  5.000E+02  8.865E+00  1.570E+02
+ new tpoint=
+            5.000E+02  5.000E+02 -1.385E+01  1.498E+02
+ new tpoint=
+            6.000E+02  4.000E+02 -4.794E+01  1.724E+02
+ new tpoint=
+            6.000E+02  5.000E+02 -3.938E+01  1.405E+02
+ 5 TIEPOINTS SUPPLIED BY USER
+ A zero returned indicates tpoints are in correct format
+ tztiechv return ind=          0
+ tpoints after geometric correction
+ 5 TIEPOINTS SUPPLIED BY USER
+ A zero returned indicates tpoints are in correct format
+ tztiechv return ind=          0
+ new tpoint=
+            4.980E+02  4.994E+02  2.666E+00  1.792E+02
+ new tpoint=
+            4.977E+02  6.162E+02  8.865E+00  1.570E+02
+ new tpoint=
+            6.147E+02  6.154E+02 -1.385E+01  1.498E+02
+ new tpoint=
+            7.323E+02  4.976E+02 -4.794E+01  1.724E+02
+ new tpoint=
+            7.320E+02  6.147E+02 -3.938E+01  1.405E+02
+disable-log

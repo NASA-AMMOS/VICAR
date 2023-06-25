@@ -1,0 +1,180 @@
+refgbl $syschar
+local img1    type=string
+local img2    type=string
+let img1 = "218s01.vic"
+let img2 = "218s02.vic"
+label-list @img1
+Beginning VICAR task label
+LABEL version 2019-09-06
+************************************************************
+ 
+        ************  File 218s01.vic ************
+                2 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in BYTE format from a VAX-VMS host
+                1056 lines
+                1204 samples per line
+                0 lines of binary header
+                0 bytes of binary prefix per line
+---- Task: VICAR2 -- User: JAM059 -- MON MAR 17, 1986 22:30:45 ----
+LAB01=
+'VO75 1A  PICNO= 218S01                                                 C'
+LAB02=
+'                        FILTER 4 (CLEAR) EXP   17 MSEC  FGD 111        C'
+LAB03=
+'FSC  49546136       OET-GMT  77 302 12 58 51     TPER +** ** **        C'
+LAB04=
+'RNG= ***** KM  HFOV= **** KM  VFOV= **** KM    SCL= ****  M/PXL        C'
+LAB05=
+'SMEAR= **.* PXLS         SMRDIR= *** DEG FROM UP     HRA *** DG        C'
+LAB06=
+'NOR AZ *** DG SUN AZ *** DG S/C AZ *** DG  INA ** DG  EMA ** DG        C'
+LAB07=
+'PHA *** DG  SUNS LS= ***.* DG  EDR= CN3905 09  MAX-D=                  C'
+LAB08=
+'LAT   C= +**.**  UL= +**.**  UR= +**.**  LL= +**.**  LR= +**.**        C'
+LAB09=
+'LONG  C= ***.**  UL= ***.**  UR= ***.**  LL= ***.**  LR= ***.**        L'
+NLABS=9
+ 
+************************************************************
+tvolabv2 inp=@img1
+Beginning VICAR task tvolabv2
+**************fortran callable***********
+ IND=          0
+ DATA FORMAT    =           2
+ CAMERA SERIAL #=           7
+ SERIAL #  =                1
+ CAMERA   =                 1
+ FRAME #  =              -999
+ FSC #    =          49546136
+ FILTER POS  =              4
+ EXPOSURE    =             17
+ FLOOD STATE  =             1
+ GAIN STATE   =             1
+ DC OFFSET STATE=           1
+ SCALE IN M/PIXEL=       -999
+ FOV HEIGHT   =          -999
+ FOV WIDTH    =          -999
+ RANGE        =          -999
+ PICNO=
+ 218S01
+ SCET YEAR    =            77
+ SCET DAY     =           302
+ SCET HOUR    =            12
+ SCET MIN     =            58
+ SCET SEC     =            51
+ SCET MS      =             0
+**************c callable***********
+ IND=          0
+ DATA FORMAT    =           2
+ CAMERA SERIAL #=           7
+ SERIAL #  =                1
+ CAMERA   =                 1
+ FRAME #  =              -999
+ FSC #    =          49546136
+ FILTER POS  =              4
+ EXPOSURE    =             17
+ FLOOD STATE  =             1
+ GAIN STATE   =             1
+ DC OFFSET STATE=           1
+ SCALE IN M/PIXEL=       -999
+ FOV HEIGHT   =          -999
+ FOV WIDTH    =          -999
+ RANGE        =          -999
+ PICNO=
+ 218S01
+ SCET YEAR    =            77
+ SCET DAY     =           302
+ SCET HOUR    =            12
+ SCET MIN     =            58
+ SCET SEC     =            51
+ SCET MS      =             0
+label-list @img2
+Beginning VICAR task label
+LABEL version 2019-09-06
+************************************************************
+ 
+        ************  File 218s02.vic ************
+                2 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in BYTE format from a VAX-VMS host
+                1056 lines
+                1204 samples per line
+                0 lines of binary header
+                0 bytes of binary prefix per line
+---- Task: VICAR2 -- User: JAM059 -- MON MAR 17, 1986 22:31:02 ----
+LAB01=
+'VO75 1B  PICNO= 218S02                                                 C'
+LAB02=
+'                        FILTER 4 (CLEAR) EXP   17 MSEC  FGD 111        C'
+LAB03=
+'FSC  49546137       OET-GMT  77 302 13 00 15     TPER +** ** **        C'
+LAB04=
+'RNG= ***** KM  HFOV= **** KM  VFOV= **** KM    SCL= ****  M/PXL        C'
+LAB05=
+'SMEAR= **.* PXLS         SMRDIR= *** DEG FROM UP     HRA *** DG        C'
+LAB06=
+'NOR AZ *** DG SUN AZ *** DG S/C AZ *** DG  INA ** DG  EMA ** DG        C'
+LAB07=
+'PHA *** DG  SUNS LS= ***.* DG  EDR= CN3905 10  MAX-D=                  C'
+LAB08=
+'LAT   C= +**.**  UL= +**.**  UR= +**.**  LL= +**.**  LR= +**.**        C'
+LAB09=
+'LONG  C= ***.**  UL= ***.**  UR= ***.**  LL= ***.**  LR= ***.**        L'
+NLABS=9
+ 
+************************************************************
+tvolabv2 inp=@img2
+Beginning VICAR task tvolabv2
+**************fortran callable***********
+ IND=          0
+ DATA FORMAT    =           2
+ CAMERA SERIAL #=           4
+ SERIAL #  =                1
+ CAMERA   =                 2
+ FRAME #  =              -999
+ FSC #    =          49546137
+ FILTER POS  =              4
+ EXPOSURE    =             17
+ FLOOD STATE  =             1
+ GAIN STATE   =             1
+ DC OFFSET STATE=           1
+ SCALE IN M/PIXEL=       -999
+ FOV HEIGHT   =          -999
+ FOV WIDTH    =          -999
+ RANGE        =          -999
+ PICNO=
+ 218S02
+ SCET YEAR    =            77
+ SCET DAY     =           302
+ SCET HOUR    =            13
+ SCET MIN     =             0
+ SCET SEC     =            15
+ SCET MS      =             0
+**************c callable***********
+ IND=          0
+ DATA FORMAT    =           2
+ CAMERA SERIAL #=           4
+ SERIAL #  =                1
+ CAMERA   =                 2
+ FRAME #  =              -999
+ FSC #    =          49546137
+ FILTER POS  =              4
+ EXPOSURE    =             17
+ FLOOD STATE  =             1
+ GAIN STATE   =             1
+ DC OFFSET STATE=           1
+ SCALE IN M/PIXEL=       -999
+ FOV HEIGHT   =          -999
+ FOV WIDTH    =          -999
+ RANGE        =          -999
+ PICNO=
+ 218S02
+ SCET YEAR    =            77
+ SCET DAY     =           302
+ SCET HOUR    =            13
+ SCET MIN     =             0
+ SCET SEC     =            15
+ SCET MS      =             0
+disable-log

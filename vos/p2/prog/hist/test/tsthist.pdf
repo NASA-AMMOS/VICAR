@@ -54,9 +54,9 @@ hist g1515 'nohist SIGMA=SD  MEAN=AVG sum=sum	!Compute SD and AVG
 let $echo="no"
 putmsg "Print average and stdev variables" ""
 let $echo="yes"
-disp avg
-disp sd
-disp sum
+write "avg: &avg"
+write "sd: &sd"
+write "sum: &sum"
 !!  Throw in some extra tests for good coverage.
 !
 ! test SCREEN keyword
@@ -109,9 +109,9 @@ hist g1515 'nohist sigma=sd  mean=avg sum=sum 	!Compute SD and AVG
 let $echo="no"
 putmsg "Print average and stdev variables" ""
 let $echo="yes"
-disp AVG
-disp SD
-disp sum
+write "AVG: &AVG"
+write "SD: &SD"
+write "sum: &sum"
 !!
 ! try a case that HIST used to get wrong.  Should not be any
 ! > HIGH LIMIT entry.
@@ -146,9 +146,9 @@ hist f1515 'nohist SIGMA=SD  MEAN=AVG sum=sum	!Compute SD and AVG
 let $echo="no"
 putmsg "Print average and stdev variables" ""
 let $echo="yes"
-disp avg
-disp sd
-disp sum
+write "avg: &avg"
+write "sd: &sd"
+write "sum: &sum"
 !!
 !    ! test REAL*4 data
 gen r1515 15 15 linc=1.e8 sinc=1.e8 'real4
@@ -178,9 +178,9 @@ hist r1515 'nohist SIGMA=SD  MEAN=AVG sum=sum	!Compute SD and AVG
 let $echo="no"
 putmsg "Print average and stdev variables" ""
 let $echo="yes"
-disp AVG
-disp SD
-disp sum
+write "AVG: &AVG"
+write "SD: &SD"
+write "sum: &sum"
 !!
 gen r1515 15 15 linc=-123456789.e4 sinc=-1234567890.e4 'real4
 let $echo="no"
@@ -217,9 +217,9 @@ hist d1515 'nohist SIGMA=SD  MEAN=AVG sum=sum	!Compute SD and AVG
 let $echo="no"
 putmsg "Print a1verage and stdev variables" ""
 let $echo="yes"
-disp AVG
-disp SD
-disp sum
+write "AVG: &AVG"
+write "SD: &SD"
+write "sum: &sum"
 !
 !  test of bands capability
 gen x1515 NS=10 NL=10 NB=10

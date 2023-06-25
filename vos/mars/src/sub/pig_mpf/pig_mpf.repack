@@ -1,0 +1,3 @@
+$ vpack pig_mpf.com -mixed -
+	-s PigMPF.cc PigPointMpfImp.cc PigFileModelMpf.cc pig_mpf.imake
+$ Exit

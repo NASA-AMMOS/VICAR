@@ -1,0 +1,85 @@
+gen xxx1 nl=7 ns=7 'half
+Beginning VICAR task gen
+GEN Version 6
+GEN task completed
+f2 xxx1 out=xxx2 func="line*((samp<5)+(samp>5))"
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 49 TIMES
+list xxx2 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   HALF     samples are interpreted as HALFWORD data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2        User:          Date_Time:                        
+     Samp       1     2     3     4     5     6     7
+   Line
+      1         1     1     1     1     0     1     1
+      2         2     2     2     2     0     2     2
+      3         3     3     3     3     0     3     3
+      4         4     4     4     4     0     4     4
+      5         5     5     5     5     0     5     5
+      6         6     6     6     6     0     6     6
+      7         7     7     7     7     0     7     7
+concomp xxx2 (xxx4,xxx3)
+Beginning VICAR task concomp
+concomp version Thu Jul  3 2014
+list xxx4 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   FULL     samples are interpreted as FULLWORD data
+ Task:GEN       User:          Date_Time:                        
+ Task:CONCOMP   User:          Date_Time:                        
+     Samp            1          2          3          4          5          6          7
+   Line
+      1              1          1          1          1          0          2          2
+      2              1          1          1          1          0          2          2
+      3              1          1          1          1          0          2          2
+      4              1          1          1          1          0          2          2
+      5              1          1          1          1          0          2          2
+      6              1          1          1          1          0          2          2
+      7              1          1          1          1          0          2          2
+comptab2 (xxx4,xxx2) xxx5
+Beginning VICAR task comptab2
+comptab2 version 2017-08-03
+ibis-l xxx5 'format
+Beginning VICAR task ibis
+ 
+Number of Rows:2  Number of Columns: 23      
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:2
++-----------+-----------+-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4         C:5         C:6
+        FULL        FULL        FULL        FULL        DOUB        DOUB
++-----------+-----------+-----------+-----------+-----------+-----------
+           1          28           1           1        6.78        4.00
+           2          14           1           6        6.16        4.00
+ 
+Rows: 1:2
++-----------+-----------+-----------+-----------+-----------+-----------
+         C:7         C:8         C:9        C:10        C:11        C:12
+        DOUB        DOUB        DOUB        DOUB        DOUB        DOUB
++-----------+-----------+-----------+-----------+-----------+-----------
+        2.50        0.00        0.00        0.00        0.00        4.00
+        6.50        0.00        0.00        0.00        0.00        4.00
+ 
+Rows: 1:2
++-----------+-----------+-----------+-----------+-----------+-----------
+        C:13        C:14        C:15        C:16        C:17        C:18
+        DOUB        DOUB        DOUB        DOUB        DOUB        DOUB
++-----------+-----------+-----------+-----------+-----------+-----------
+        4.00        0.00        0.00        0.00        0.00        0.00
+        4.00        0.00        0.00        0.00        0.00        0.00
+ 
+Rows: 1:2
++-----------+-----------+-----------+-----------+-----------
+        C:19        C:20        C:21        C:22        C:23
+        DOUB        DOUB        DOUB        DOUB        DOUB
++-----------+-----------+-----------+-----------+-----------
+        0.00        0.00        0.00        0.00        0.00
+        0.00        0.00        0.00        0.00        0.00
+disable-log

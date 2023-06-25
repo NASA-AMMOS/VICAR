@@ -1,0 +1,94 @@
+ibis-gen xxa nc=4 nr=44 deffmt=DOUB
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+mf3 xxa func="c1=@sqrt(@index*17+2763)$c2=@sqrt(@index*7+3431)"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+mf3 xxa func="c1=@mod(c1,0.0001)*1000000$c2=@mod(c2,0.0001)*1000000"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+mf3 xxa func="c3=c1*1.1+@index/10$c4=c2*1.1+@index/10"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+ibis-gen xxb nc=4 nr=1 datacols=(1,2) deffmt=DOUB  +
+   data=(5.94,67.05)
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+polygeov INP=(xxa,xxb) COLS=(1,2,3,4)  DCOLS=(1,2,3,4)
+Beginning VICAR task polygeov
+POLYGEOV version 2019-09-06
+no grid detected
+ibis-list xxb 'format
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:1  Number of Columns: 4       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:1
++-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4
+        DOUB        DOUB        DOUB        DOUB
++-----------+-----------+-----------+-----------
+        5.94       67.05        5.31       60.86
+tieconv INP=xxa out=xxc COLS=(1,2,3,4)  +
+ nah=1 nav=1 minl=5.31 mins=60.86 maxl=7.01 maxs=68.55 'geomv
+Beginning VICAR task tieconv
+tieconv version Tue Mar 01 2011
+ibis-list xxc 'format
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:4  Number of Columns: 4       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:4
++-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4
+        DOUB        DOUB        DOUB        DOUB
++-----------+-----------+-----------+-----------
+        5.31       60.86        5.94       67.05
+        5.31       68.55        6.70       76.26
+        7.01       60.86        7.97       67.20
+        7.01       68.55        8.60       76.29
+ibis-gen xxb nc=4 nr=1 datacols=(1,2) deffmt=DOUB  +
+   data=(7.25,68.35)
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+polygeov INP=(xxa,xxb) COLS=(1,2,3,4)  DCOLS=(1,2,3,4) poly=quad
+Beginning VICAR task polygeov
+POLYGEOV version 2019-09-06
+ibis-list xxb 'format
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:1  Number of Columns: 4       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:1
++-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4
+        DOUB        DOUB        DOUB        DOUB
++-----------+-----------+-----------+-----------
+        7.25       68.35        5.33       60.88
+tieconv INP=xxa out=xxc COLS=(1,2,3,4) poly=quad  +
+ nah=1 nav=1 minl=5.31 mins=60.86 maxl=7.01 maxs=68.55 'geomv
+Beginning VICAR task tieconv
+tieconv version Tue Mar 01 2011
+ibis-list xxc 'format
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:4  Number of Columns: 4       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:4
++-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4
+        DOUB        DOUB        DOUB        DOUB
++-----------+-----------+-----------+-----------
+        5.31       60.86        7.25       68.35
+        5.31       68.55        7.36       76.92
+        7.01       60.86        9.18       68.41
+        7.01       68.55        9.29       76.98
+disable-log

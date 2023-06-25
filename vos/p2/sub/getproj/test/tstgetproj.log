@@ -1,0 +1,133 @@
+  tgetproj INP=@GllFlightFull
+Beginning VICAR task tgetproj
+******fortran callable*******
+GETPROJ:
+project=     GLL
+camera serial number=          1
+frame number=           18494400
+*********c callable**********
+ZGETPROJ:
+project=     GLL  
+camera serial number=          1
+frame number=           18494400
+  tgetproj INP=@GllFlightSum
+Beginning VICAR task tgetproj
+******fortran callable*******
+GETPROJ:
+project=     GLL
+camera serial number=          2
+frame number=          383694600
+*********c callable**********
+ZGETPROJ:
+project=     GLL  
+camera serial number=          2
+frame number=          383694600
+  tgetproj INP=@GllCalibFull
+Beginning VICAR task tgetproj
+******fortran callable*******
+GETPROJ:
+project=     GLL
+camera serial number=          1
+frame number=                  7
+*********c callable**********
+ZGETPROJ:
+project=     GLL  
+camera serial number=          1
+frame number=                  7
+  tgetproj INP=@GllCalibSum
+Beginning VICAR task tgetproj
+******fortran callable*******
+GETPROJ:
+project=     GLL
+camera serial number=          2
+frame number=                 34
+*********c callable**********
+ZGETPROJ:
+project=     GLL  
+camera serial number=          2
+frame number=                 34
+  tgetproj INP=@VGR1
+Beginning VICAR task tgetproj
+******fortran callable*******
+GETPROJ:
+project=     VGR-1
+camera serial number=          7
+frame number=            1636832
+*********c callable**********
+ZGETPROJ:
+project=     VGR-1
+camera serial number=          7
+frame number=            1636832
+  tgetproj INP=@VGR2
+Beginning VICAR task tgetproj
+******fortran callable*******
+GETPROJ:
+project=     VGR-2
+camera serial number=          5
+frame number=            2062130
+*********c callable**********
+ZGETPROJ:
+project=     VGR-2
+camera serial number=          5
+frame number=            2062130
+  tgetproj INP=@CssCalib
+Beginning VICAR task tgetproj
+******fortran callable*******
+GETPROJ:
+project=     CASSI
+camera serial number=         21
+frame number=          763839162
+*********c callable**********
+ZGETPROJ:
+project=     CASSI
+camera serial number=         21
+frame number=          763839162
+  tgetproj INP=@CssFlight
+Beginning VICAR task tgetproj
+******fortran callable*******
+GETPROJ:
+project=     CASSI
+camera serial number=          1
+frame number=         1356781097
+*********c callable**********
+ZGETPROJ:
+project=     CASSI
+camera serial number=          1
+frame number=         1356781097
+  tgetproj INP=@CssS2
+Beginning VICAR task tgetproj
+******fortran callable*******
+GETPROJ:
+project=     CASSI
+camera serial number=         21
+frame number=         1308947518
+*********c callable**********
+ZGETPROJ:
+project=     CASSI
+camera serial number=         21
+frame number=         1308947518
+  tgetproj INP=@CssTour
+Beginning VICAR task tgetproj
+******fortran callable*******
+GETPROJ:
+project=     CASSI
+camera serial number=          1
+frame number=         1358285193
+*********c callable**********
+ZGETPROJ:
+project=     CASSI
+camera serial number=          1
+frame number=         1358285193
+  tgetproj INP=@Mpf
+Beginning VICAR task tgetproj
+******fortran callable*******
+GETPROJ:
+project=     MPF
+camera serial number=          0
+frame number=                  0
+*********c callable**********
+ZGETPROJ:
+project=     MPF
+camera serial number=          0
+frame number=                  0
+  let $echo="no"

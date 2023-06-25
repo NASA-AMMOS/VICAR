@@ -1,0 +1,19 @@
+#define PROGRAM mslrough
+
+#define MODULE_LIST mslrough.cc xyz_uvw_to_roughness.cc
+#define INCLUDE_LIST xyz_uvw_to_roughness.h
+
+#define MAIN_LANG_C_PLUS_PLUS
+#define MARSLIB
+
+#define USES_C_PLUS_PLUS
+#define USES_ANSI_C
+
+#define LIB_TAE_NOSHR
+#define LIB_RTL_NOSHR
+#define LIB_P2SUB
+#define LIB_MARSSUB
+#define LIB_FORTRAN
+#define LIB_XERCES
+#define LIB_OMP
+

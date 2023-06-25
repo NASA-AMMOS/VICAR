@@ -16,4 +16,5 @@
 #define LIB_RTL
 #define LIB_TAE
 #define LIB_P2SUB
-#define LIB_LOCAL
+
+/* #define LIB_LOCAL */

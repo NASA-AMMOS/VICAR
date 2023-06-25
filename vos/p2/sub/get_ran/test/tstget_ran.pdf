@@ -1,8 +1,12 @@
 procedure
 refgbl $echo
 body
+enable-log
+
 write "Results will vary depending on what system you are using"
 let _onfail="continue"
 let $echo="yes"
 tget_ran
+
+disable-log
 end-proc

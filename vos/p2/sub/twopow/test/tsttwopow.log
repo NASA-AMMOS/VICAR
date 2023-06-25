@@ -1,0 +1,32 @@
+ttwopow
+Beginning VICAR task ttwopow
+Test the C interface
+ 
+number = -16
+  power of 2 = 4
+number = -11
+  next power of 2 = 4
+number = -6
+  next power of 2 = 3
+number = -1
+  power of 2 = 0
+number = 4
+  power of 2 = 2
+number = 9
+  next power of 2 = 4
+ 
+Test the FORTRAN interface
+ 
+number =   -16
+  power of 2 =     4
+number =   -11
+  next power of 2 =     4
+number =    -6
+  next power of 2 =     3
+number =    -1
+  power of 2 =     0
+number =     4
+  power of 2 =     2
+number =     9
+  next power of 2 =     4
+disable-log

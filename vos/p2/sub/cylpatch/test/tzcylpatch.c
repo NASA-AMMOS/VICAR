@@ -1,3 +1,5 @@
+#include <stdio.h>
+#include <string.h>
 #include "xvmaininc.h"
 #include "ftnbridge.h"
 

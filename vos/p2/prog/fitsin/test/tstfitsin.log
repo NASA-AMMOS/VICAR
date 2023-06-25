@@ -1,8 +1,8 @@
 translog INP=AFIDS_ROOT TRANS=afidsroot
 if (afidsroot = "")
-    ush ln -s /project/test_work/testdata/gll tt
-    ush ln -s /project/test_work/testdata/neat nn
-    ush ln -s /project/test_work/testdata/carto ct
+    ush ln -s data tt
+    ush ln -s data nn
+    ush ln -s data ct
 else
 end-if
 fitsin tt/1980ly1.fits
@@ -45,21 +45,21 @@ END
  Total FITS keywords to transfer =     15
 
 *** 16-bit FITS to VICAR HALF (no conversion) ***
-label-list 1980ly1.vic
+label-list 1980ly1.vic 'nousrtim
 Beginning VICAR task label
-LABEL version 15-Nov-2010
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File 1980ly1.vic ************
                 3 dimensional IMAGE file
                 File organization is BSQ
-                Pixels are in HALF format from a X86-LINUX host
+                Pixels are in HALF format from a X86-64-LIN host
                 1 bands
                 516 lines per band
                 516 samples per line
                 0 lines of binary header
                 0 bytes of binary prefix per line
----- Task: FITSIN -- User: wlb -- Fri Jan  8 12:43:22 2016 ----
+---- Task: FITSIN -- User:  --  ----
 VF001='SIMPLE  =                    T'
 VF002='BITPIX  =                   16'
 VF003='NAXIS   =                    2'
@@ -77,11 +77,12 @@ VF014='IMAGETYP= "OBJECT  "'
 VF015='END'
  
 ************************************************************
-list 1980ly1.vic sl=1 ss=1 nl=10 ns=10
+list 1980ly1.vic sl=1 ss=1 nl=10 ns=10 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
- Task:FITSIN    User:wlb       Date_Time:Fri Jan  8 12:43:22 2016
+ Task:FITSIN    User:          Date_Time:                        
      Samp       1     2     3     4     5     6     7     8     9    10
    Line
       1         0   130   404   519   553   550   560   559   564   550
@@ -116,21 +117,21 @@ END
  Total FITS keywords to transfer =     15
 
 *** 16-bit FITS to VICAR HALF (no conversion) ***
-label-list 1980ly1.vic
+label-list 1980ly1.vic 'nousrtim
 Beginning VICAR task label
-LABEL version 15-Nov-2010
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File 1980ly1.vic ************
                 3 dimensional IMAGE file
                 File organization is BSQ
-                Pixels are in HALF format from a X86-LINUX host
+                Pixels are in HALF format from a X86-64-LIN host
                 1 bands
                 516 lines per band
                 516 samples per line
                 0 lines of binary header
                 0 bytes of binary prefix per line
----- Task: FITSIN -- User: wlb -- Fri Jan  8 12:43:22 2016 ----
+---- Task: FITSIN -- User:  --  ----
 VF001='SIMPLE  =                    T'
 VF002='BITPIX  =                   16'
 VF003='NAXIS   =                    2'
@@ -148,11 +149,12 @@ VF014='IMAGETYP= "OBJECT  "'
 VF015='END'
  
 ************************************************************
-list 1980ly1.vic sl=1 ss=1 nl=10 ns=10
+list 1980ly1.vic sl=1 ss=1 nl=10 ns=10 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
- Task:FITSIN    User:wlb       Date_Time:Fri Jan  8 12:43:22 2016
+ Task:FITSIN    User:          Date_Time:                        
      Samp       1     2     3     4     5     6     7     8     9    10
    Line
       1         0   130   404   519   553   550   560   559   564   550
@@ -208,21 +210,21 @@ END
  Total FITS keywords to transfer =     36
 
 *** 16-bit FITS to VICAR HALF (no conversion) ***
-label-list l637.vic
+label-list l637.vic 'nousrtim
 Beginning VICAR task label
-LABEL version 15-Nov-2010
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File l637.vic ************
                 3 dimensional IMAGE file
                 File organization is BSQ
-                Pixels are in HALF format from a X86-LINUX host
+                Pixels are in HALF format from a X86-64-LIN host
                 1 bands
                 60 lines per band
                 800 samples per line
                 0 lines of binary header
                 0 bytes of binary prefix per line
----- Task: FITSIN -- User: wlb -- Fri Jan  8 12:43:22 2016 ----
+---- Task: FITSIN -- User:  --  ----
 VF001='SIMPLE  =                    T /'
 VF002='BITPIX  =                   16 /'
 VF003='NAXIS   =                    2 /'
@@ -261,11 +263,12 @@ VF035='CTYPE2  = "COLUMN #          " /'
 VF036='END'
  
 ************************************************************
-list l637.vic sl=1 ss=1 nl=10 ns=10
+list l637.vic sl=1 ss=1 nl=10 ns=10 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
- Task:FITSIN    User:wlb       Date_Time:Fri Jan  8 12:43:22 2016
+ Task:FITSIN    User:          Date_Time:                        
      Samp       1     2     3     4     5     6     7     8     9    10
    Line
       1    -30462-30371-30479-30464-30495-30491-30504-30474-30439-30450
@@ -322,21 +325,21 @@ END
  Total FITS keywords to transfer =     36
 
 *** 16-bit FITS to VICAR HALF (no conversion) ***
-label-list l637.vic
+label-list l637.vic 'nousrtim
 Beginning VICAR task label
-LABEL version 15-Nov-2010
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File l637.vic ************
                 3 dimensional IMAGE file
                 File organization is BSQ
-                Pixels are in HALF format from a X86-LINUX host
+                Pixels are in HALF format from a X86-64-LIN host
                 1 bands
                 60 lines per band
                 800 samples per line
                 0 lines of binary header
                 0 bytes of binary prefix per line
----- Task: FITSIN -- User: wlb -- Fri Jan  8 12:43:22 2016 ----
+---- Task: FITSIN -- User:  --  ----
 VF001='SIMPLE  =                    T /'
 VF002='BITPIX  =                   16 /'
 VF003='NAXIS   =                    2 /'
@@ -419,21 +422,21 @@ END
  Total FITS keywords to transfer =     30
 
 *** 16-bit FITS to VICAR HALF (no conversion) ***
-label-list l637.vic
+label-list l637.vic 'nousrtim
 Beginning VICAR task label
-LABEL version 15-Nov-2010
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File l637.vic ************
                 3 dimensional IMAGE file
                 File organization is BSQ
-                Pixels are in HALF format from a X86-LINUX host
+                Pixels are in HALF format from a X86-64-LIN host
                 1 bands
                 60 lines per band
                 800 samples per line
                 0 lines of binary header
                 0 bytes of binary prefix per line
----- Task: FITSIN -- User: wlb -- Fri Jan  8 12:43:22 2016 ----
+---- Task: FITSIN -- User:  --  ----
 VF001='SIMPLE  =                    T /'
 VF002='BITPIX  =                   16 /'
 VF003='NAXIS   =                    2 /'
@@ -509,21 +512,21 @@ END
  Total FITS keywords to transfer =     36
 
 *** 16-bit FITS to VICAR HALF (no conversion) ***
-label-list l637.vic
+label-list l637.vic 'nousrtim
 Beginning VICAR task label
-LABEL version 15-Nov-2010
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File l637.vic ************
                 3 dimensional IMAGE file
                 File organization is BSQ
-                Pixels are in HALF format from a X86-LINUX host
+                Pixels are in HALF format from a X86-64-LIN host
                 1 bands
                 60 lines per band
                 800 samples per line
                 0 lines of binary header
                 0 bytes of binary prefix per line
----- Task: FITSIN -- User: wlb -- Fri Jan  8 12:43:22 2016 ----
+---- Task: FITSIN -- User:  --  ----
 VF001='SIMPLE  =                    T /'
 VF002='BITPIX  =                   16 /'
 VF003='NAXIS   =                    2 /'
@@ -562,11 +565,12 @@ VF035='CTYPE2  = "COLUMN #          " /'
 VF036='END'
  
 ************************************************************
-list l637.vic sl=1 ss=1 nl=10 ns=10
+list l637.vic sl=1 ss=1 nl=10 ns=10 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
- Task:FITSIN    User:wlb       Date_Time:Fri Jan  8 12:43:22 2016
+ Task:FITSIN    User:          Date_Time:                        
      Samp       1     2     3     4     5     6     7     8     9    10
    Line
       1    -30462-30371-30479-30464-30495-30491-30504-30474-30439-30450
@@ -663,11 +667,12 @@ END
 
 *** 16-bit FITS to VICAR HALF (no conversion) ***
 ush cat l637.hdr
-list l637.vic sl=1 ss=1 nl=10 ns=10
+list l637.vic sl=1 ss=1 nl=10 ns=10 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
- Task:FITSIN    User:wlb       Date_Time:Fri Jan  8 12:43:23 2016
+ Task:FITSIN    User:          Date_Time:                        
      Samp       1     2     3     4     5     6     7     8     9    10
    Line
       1    -30462-30371-30479-30464-30495-30491-30504-30474-30439-30450
@@ -723,21 +728,21 @@ END
  Total FITS keywords to transfer =     36
 
 *** 16-bit FITS to VICAR HALF (no conversion) ***
-label-list l637.vic
+label-list l637.vic 'nousrtim
 Beginning VICAR task label
-LABEL version 15-Nov-2010
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File l637.vic ************
                 3 dimensional IMAGE file
                 File organization is BSQ
-                Pixels are in HALF format from a X86-LINUX host
+                Pixels are in HALF format from a X86-64-LIN host
                 1 bands
                 60 lines per band
                 800 samples per line
                 0 lines of binary header
                 0 bytes of binary prefix per line
----- Task: FITSIN -- User: wlb -- Fri Jan  8 12:43:23 2016 ----
+---- Task: FITSIN -- User:  --  ----
 VF001='SIMPLE  =                    T /'
 VF002='BITPIX  =                   16 /'
 VF003='NAXIS   =                    2 /'
@@ -1609,21 +1614,21 @@ END
  Total FITS keywords to transfer =    273
 
 *** 16-bit FITS to VICAR HALF (no conversion) ***
-label-list pcf230w_a.vic
+label-list pcf230w_a.vic  'nousrtim
 Beginning VICAR task label
-LABEL version 15-Nov-2010
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File pcf230w_a.vic ************
                 3 dimensional IMAGE file
                 File organization is BSQ
-                Pixels are in HALF format from a X86-LINUX host
+                Pixels are in HALF format from a X86-64-LIN host
                 1 bands
                 256 lines per band
                 256 samples per line
                 0 lines of binary header
                 0 bytes of binary prefix per line
----- Task: FITSIN -- User: wlb -- Fri Jan  8 12:43:23 2016 ----
+---- Task: FITSIN -- User:  --  ----
 VF001='SIMPLE  =                    T'
 VF002='BITPIX  =                   16'
 VF003='NAXIS   =                    3'
@@ -2012,11 +2017,12 @@ VF272='BSCALE  =  4.0751308202744E-02'
 VF273='END'
  
 ************************************************************
-list pcf230w_a.vic sl=1 ss=1 nl=10 ns=10
+list pcf230w_a.vic sl=1 ss=1 nl=10 ns=10 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
- Task:FITSIN    User:wlb       Date_Time:Fri Jan  8 12:43:23 2016
+ Task:FITSIN    User:          Date_Time:                        
      Samp       1     2     3     4     5     6     7     8     9    10
    Line
       1    -32599-32572-32583-32648-32619-32495-32563-32596-32617-32570
@@ -2207,21 +2213,21 @@ END
  Total FITS keywords found       =     52
  Total FITS keywords to transfer =     52
 
-label-list p1.vic
+label-list p1.vic 'nousrtim
 Beginning VICAR task label
-LABEL version 15-Nov-2010
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File p1.vic ************
                 3 dimensional IMAGE file
                 File organization is BSQ
-                Pixels are in REAL format from a X86-LINUX host
+                Pixels are in REAL format from a X86-64-LIN host
                 1 bands
                 500 lines per band
                 500 samples per line
                 0 lines of binary header
                 0 bytes of binary prefix per line
----- Task: FITSIN -- User: wlb -- Fri Jan  8 12:43:24 2016 ----
+---- Task: FITSIN -- User:  --  ----
 VF001='SIMPLE  =                    T'
 VF002='BITPIX  =                  -32'
 VF003='NAXIS   =                    3        / # OF AXES'
@@ -2279,11 +2285,12 @@ VF051='HISTORY * IN=flat7822.1.fits OUT=p1 OP=pow C=.2'
 VF052='END'
  
 ************************************************************
-list p1.vic sl=1 ss=1 nl=6 ns=6
+list p1.vic sl=1 ss=1 nl=6 ns=6 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    REAL     samples are interpreted as  REAL*4  data
- Task:FITSIN    User:wlb       Date_Time:Fri Jan  8 12:43:24 2016
+ Task:FITSIN    User:          Date_Time:                        
      Samp             1           2           3           4           5           6
    Line
       1      -8.508E-01  -8.649E-01  -8.500E-01  -8.596E-01  -8.581E-01  -8.688E-01
@@ -2306,21 +2313,21 @@ END
  Total FITS keywords found       =      8
  Total FITS keywords to transfer =      8
 
-label-li psf.vic
+label-list psf.vic 'nousrtim
 Beginning VICAR task label
-LABEL version 15-Nov-2010
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File psf.vic ************
                 3 dimensional IMAGE file
                 File organization is BSQ
-                Pixels are in REAL format from a X86-LINUX host
+                Pixels are in REAL format from a X86-64-LIN host
                 1 bands
                 1024 lines per band
                 1024 samples per line
                 0 lines of binary header
                 0 bytes of binary prefix per line
----- Task: FITSIN -- User: wlb -- Fri Jan  8 12:43:24 2016 ----
+---- Task: FITSIN -- User:  --  ----
 VF001='SIMPLE  =                    T'
 VF002='BITPIX  =                  -32'
 VF003='NAXIS   =                    2'
@@ -2331,11 +2338,12 @@ VF007='CREATOR = "Matlab  "'
 VF008='END'
  
 ************************************************************
-list psf.vic sl=1 ss=1 nl=6 ns=6
+list psf.vic sl=1 ss=1 nl=6 ns=6 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    REAL     samples are interpreted as  REAL*4  data
- Task:FITSIN    User:wlb       Date_Time:Fri Jan  8 12:43:24 2016
+ Task:FITSIN    User:          Date_Time:                        
      Samp             1           2           3           4           5           6
    Line
       1       9.586E-09   1.028E-08   1.116E-08   1.216E-08   1.329E-08   1.453E-08
@@ -2444,21 +2452,21 @@ END
  Total FITS keywords found       =     94
  Total FITS keywords to transfer =     94
 
-label-li af784.vic
+label-list af784.vic 'nousrtim
 Beginning VICAR task label
-LABEL version 15-Nov-2010
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File af784.vic ************
                 3 dimensional IMAGE file
                 File organization is BSQ
-                Pixels are in DOUB format from a X86-LINUX host
+                Pixels are in DOUB format from a X86-64-LIN host
                 1 bands
                 606 lines per band
                 666 samples per line
                 0 lines of binary header
                 0 bytes of binary prefix per line
----- Task: FITSIN -- User: wlb -- Fri Jan  8 12:43:24 2016 ----
+---- Task: FITSIN -- User:  --  ----
 VF001=
 'SIMPLE  =                    T / Written by IDL:   8-Aug-1994 14:31:31.00'
 VF002='BITPIX  =                  -64 / IEEE double precision floating point'
@@ -2557,11 +2565,12 @@ VF093='SCALED  = "[1,1]"              /'
 VF094='END'
  
 ************************************************************
-list af784.vic sl=1 ss=1 nl=5 ns=5
+list af784.vic sl=1 ss=1 nl=5 ns=5 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    DOUB     samples are interpreted as  REAL*8  data
- Task:FITSIN    User:wlb       Date_Time:Fri Jan  8 12:43:24 2016
+ Task:FITSIN    User:          Date_Time:                        
      Samp             1           2           3           4           5
    Line
       1       1.370E+02   1.500E+02   1.620E+02   1.670E+02   1.660E+02
@@ -2622,21 +2631,21 @@ END
  Total FITS keywords to transfer =     41
 
 *** 16-bit FITS to VICAR HALF (no conversion) ***
-label-li iras_12b1.vic
+label-list iras_12b1.vic 'nousrtim
 Beginning VICAR task label
-LABEL version 15-Nov-2010
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File iras_12b1.vic ************
                 3 dimensional IMAGE file
                 File organization is BSQ
-                Pixels are in HALF format from a X86-LINUX host
+                Pixels are in HALF format from a X86-64-LIN host
                 1 bands
                 325 lines per band
                 649 samples per line
                 0 lines of binary header
                 0 bytes of binary prefix per line
----- Task: FITSIN -- User: wlb -- Fri Jan  8 12:43:25 2016 ----
+---- Task: FITSIN -- User:  --  ----
 VF001='SIMPLE  =                    T'
 VF002='BITPIX  =                   16'
 VF003='NAXIS   =                    3'
@@ -2690,11 +2699,12 @@ VF040='COMMENT  END OF SOURCE VICAR HEADER'
 VF041='END'
  
 ************************************************************
-list iras_12b1.vic sl=293 ss=480 nl=6 ns=6
+list iras_12b1.vic sl=293 ss=480 nl=6 ns=6 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
- Task:FITSIN    User:wlb       Date_Time:Fri Jan  8 12:43:25 2016
+ Task:FITSIN    User:          Date_Time:                        
      Samp     480   481   482   483   484   485
    Line
     293      1389  1865  2555  2494  1594  1405
@@ -2756,21 +2766,21 @@ END
  Total FITS keywords to transfer =     41
 
 *** 16-bit FITS to VICAR HALF (no conversion) ***
-label-li iras_12b1.vic
+label-list iras_12b1.vic 'nousrtim
 Beginning VICAR task label
-LABEL version 15-Nov-2010
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File iras_12b1.vic ************
                 3 dimensional IMAGE file
                 File organization is BSQ
-                Pixels are in HALF format from a X86-LINUX host
+                Pixels are in HALF format from a X86-64-LIN host
                 1 bands
                 325 lines per band
                 649 samples per line
                 0 lines of binary header
                 0 bytes of binary prefix per line
----- Task: FITSIN -- User: wlb -- Fri Jan  8 12:43:25 2016 ----
+---- Task: FITSIN -- User:  --  ----
 VF001='SIMPLE  =                    T'
 VF002='BITPIX  =                   16'
 VF003='NAXIS   =                    3'
@@ -2824,11 +2834,12 @@ VF040='COMMENT  END OF SOURCE VICAR HEADER'
 VF041='END'
  
 ************************************************************
-list iras_12b1.vic sl=293 ss=480 nl=6 ns=6
+list iras_12b1.vic sl=293 ss=480 nl=6 ns=6 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
- Task:FITSIN    User:wlb       Date_Time:Fri Jan  8 12:43:25 2016
+ Task:FITSIN    User:          Date_Time:                        
      Samp     480   481   482   483   484   485
    Line
     293      1389  1865  2555  2494  1594  1405
@@ -2861,21 +2872,21 @@ END
  Total FITS keywords to transfer =     17
 
 *** 16-bit FITS to VICAR FULL(0 to 65535) ***
-label-li neat668.vic
+label-list neat668.vic  'nousrtim
 Beginning VICAR task label
-LABEL version 15-Nov-2010
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File neat668.vic ************
                 3 dimensional IMAGE file
                 File organization is BSQ
-                Pixels are in FULL format from a X86-LINUX host
+                Pixels are in FULL format from a X86-64-LIN host
                 1 bands
                 1024 lines per band
                 1100 samples per line
                 0 lines of binary header
                 0 bytes of binary prefix per line
----- Task: FITSIN -- User: wlb -- Fri Jan  8 12:43:25 2016 ----
+---- Task: FITSIN -- User:  --  ----
 VF001='SIMPLE  =                    T          ; FITS type'
 VF002='BITPIX  =                   16          ; Bits per pixel'
 VF003='NAXIS   =                    2          ; Number of axis'
@@ -2898,11 +2909,12 @@ VF016='INTEG   =                30000                ; Integration time (ms)'
 VF017='END'
  
 ************************************************************
-list neat668.vic sl=100 ss=100 nl=6 ns=6
+list neat668.vic sl=100 ss=100 nl=6 ns=6 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    FULL     samples are interpreted as FULLWORD data
- Task:FITSIN    User:wlb       Date_Time:Fri Jan  8 12:43:25 2016
+ Task:FITSIN    User:          Date_Time:                        
      Samp          100        101        102        103        104        105
    Line
     100          29867      32337      34686      32136      42566      28005
@@ -2973,15 +2985,15 @@ TFORM10 = 'A1      '           / Logical flag, 1 character field
 END
  Total FITS keywords found       =     53
  Total FITS keywords to transfer =     53
-label-li 0001.ibis
+label-list 0001.ibis 'nousrtim
 Beginning VICAR task label
-LABEL version 15-Nov-2010
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File 0001.ibis ************
                 3 dimensional TABULAR file
                 File organization is BSQ
-                Pixels are in BYTE format from a X86-LINUX host
+                Pixels are in BYTE format from a X86-64-LIN host
                 1 bands
                 0 lines per band
                 512 samples per line
@@ -3011,7 +3023,7 @@ GROUP_10=10
 SEGMENT=64
 BLOCKSIZE=512
 COFFSET=(0, 4, 8, 12, 16, 20, 24, 28, 32, 37)
----- Task: FITSIN -- User: wlb -- Fri Jan  8 12:43:25 2016 ----
+---- Task: FITSIN -- User:  --  ----
 VF001='XTENSION= "TABLE   "           / Table Extension'
 VF002='BITPIX  =                    8 / Character Information'
 VF003='NAXIS   =                    2 / Two-dimensional table'
@@ -3074,6 +3086,7 @@ VF053='END'
 ibis-list 0001.ibis nr=15 nc=20 units=units groups=groups formats=formats  +
 	screen=120
 Beginning VICAR task ibis
+IBIS version 2019-07-31
  
 Number of Rows:2605  Number of Columns: 10      
 File Version:IBIS-2  Organization:ROW  SubType:FITS TABLE CONVERSION
@@ -3092,8 +3105,8 @@ Rows: 1:15
 +-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------
          C:1         C:2         C:3         C:4         C:5         C:6         C:7         C:8         C:9
         FULL        REAL        REAL        REAL        REAL        REAL        FULL        FULL          A4
-GSC_ID      RA_DEG      DEC_DEG     POS_ERR     MAG         MAG_ERR     MAG_BAND    CLASS       PLATE_ID    
- --          --          --          --          --          --          --          --          --         
+GSC_ID      RA_DEG      DEC_DEG     POS_ERR     MAG         MAG_ERR     MAG_BAND
+ --          --          --          --          --          --          --     
 +-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------
            1        0.99        2.33        0.30       14.76        0.41           0           0        012J
            1        0.99        2.33        0.20       14.34        0.42           1           0        0516
@@ -5804,15 +5817,15 @@ GSC_ID    RA_DEG    DEC_DEG   POS_ERR   MAG       MAG_ERR   MAG_BAND  CLASS     
 01499  1.45189  1.19921  1.215.370.42 130516F
 
  2605 Rows written
-label-li 0001.ibis
+label-list 0001.ibis 'nousrtim
 Beginning VICAR task label
-LABEL version 15-Nov-2010
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File 0001.ibis ************
                 3 dimensional TABULAR file
                 File organization is BSQ
-                Pixels are in BYTE format from a X86-LINUX host
+                Pixels are in BYTE format from a X86-64-LIN host
                 1 bands
                 0 lines per band
                 512 samples per line
@@ -5842,7 +5855,7 @@ GROUP_10=10
 SEGMENT=64
 BLOCKSIZE=512
 COFFSET=(0, 4, 8, 12, 16, 20, 24, 28, 32, 37)
----- Task: FITSIN -- User: wlb -- Fri Jan  8 12:43:25 2016 ----
+---- Task: FITSIN -- User:  --  ----
 VF001='XTENSION= "TABLE   "           / Table Extension'
 VF002='BITPIX  =                    8 / Character Information'
 VF003='NAXIS   =                    2 / Two-dimensional table'
@@ -5905,6 +5918,7 @@ VF053='END'
 ibis-list 0001.ibis nr=15 nc=20 units=units groups=groups formats=formats  +
 	screen=120
 Beginning VICAR task ibis
+IBIS version 2019-07-31
  
 Number of Rows:2605  Number of Columns: 10      
 File Version:IBIS-2  Organization:ROW  SubType:FITS TABLE CONVERSION
@@ -5923,8 +5937,8 @@ Rows: 1:15
 +-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------
          C:1         C:2         C:3         C:4         C:5         C:6         C:7         C:8         C:9
         FULL        REAL        REAL        REAL        REAL        REAL        FULL        FULL          A4
-GSC_ID      RA_DEG      DEC_DEG     POS_ERR     MAG         MAG_ERR     MAG_BAND    CLASS       PLATE_ID    
- --          --          --          --          --          --          --          --          --         
+GSC_ID      RA_DEG      DEC_DEG     POS_ERR     MAG         MAG_ERR     MAG_BAND
+ --          --          --          --          --          --          --     
 +-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------
            1        0.99        2.33        0.30       14.76        0.41           0           0        012J
            1        0.99        2.33        0.20       14.34        0.42           1           0        0516
@@ -5964,7 +5978,7 @@ MULTIPLE
             
             
             
-ush rm -f tt
-ush rm -f nn
-ush rm -f ct
+ush rm -f tt nn ct
+ush rm 0001.ibis 1980ly1.vic af784.vic iras_12b1.vic l637.hdr l637.vic neat668.vic p1.hdr
+ush rm p1.vic pcf230w_a.hdr pcf230w_a.vic psf.vic
 let $echo="no"

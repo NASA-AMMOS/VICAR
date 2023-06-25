@@ -152,4 +152,17 @@ concat inp=(a.img,sinu_aux.img,sinu_resid_proj.img) +
 
 disable-log
 
+ush rm  a.img angle_map.img area_lat.img area_lon.img area_map.img
+ush rm area_projection.img b.img cen_lat.img cen_lon.img del_area_lat.img
+ush rm del_area_lon.img del_lat.img del_lon.img E2.img E3.img E4.img
+ush rm E5.img E6.img E.img F2.img F3.img F4.img F5.img F6.img F.img
+ush rm G2.img G3.img G4.img G5.img G6.img G.img n_area_projection.img
+ush rm n_area_residual.img north_target.img n_ster_aux.img n_tissot.img
+ush rm R2.img R3.img R4.img R5.img R6.img R.img s_area_projection.img
+ush rm s_area_residual.img SE.img SF.img SG.img
+ush rm sinu_aux.img sinu_cen_lat.img sinu_cen_lon.img sinu_del_lat.img
+ush rm sinu_del_lon.img sinu_mos.img sinu_resid.img sinu_resid_proj.img
+ush rm sinu_target.img south_target.img SR.img s_ster_aux.img ster_mos.img
+ush rm s_tissot.img tissot.img x.img y.img
+
 end-proc

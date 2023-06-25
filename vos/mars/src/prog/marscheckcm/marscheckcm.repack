@@ -1,0 +1,5 @@
+$ vpack marscheckcm.com -mixed -
+	-s marscheckcm.cc -
+	-i marscheckcm.imake -
+	-p marscheckcm.pdf
+$ Exit

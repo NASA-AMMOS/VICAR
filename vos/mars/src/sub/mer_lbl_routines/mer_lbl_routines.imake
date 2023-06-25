@@ -1,0 +1,57 @@
+/******************************************************************************
+/*
+/*                     IMAKE FILE FOR MODULE mer_lbl_routines
+/*
+/*   To Create the build file give the command:
+/*
+/*		$ vimake mer_lbl_routines			(VMS)
+/*   or
+/*		% vimake mer_lbl_routines			(Unix)
+/*
+/*****************************************************************************/
+
+/***  Define for whom this file exisits  ***/
+#define SUBROUTINE mer_lbl_routines		/* Only one of these */
+
+/***  List all modules which are used by locally by this module  ***/
+
+#define MODULE_LIST mer_lbl_observation_request.c mer_lbl_product_request.c \
+		mer_lbl_articulation.c mer_lbl_coordinate.c \
+		mer_lbl_derived_geometry.c
+
+#define MAIN_LANG_C
+
+#define USES_ANSI_C
+
+/***  Specify  Program or Subroutine specific DEFINES  ***/
+#ifdef PROGRAM
+#define R2LIB
+#define LIB_RTL
+#define LIB_TAE
+#define LIB_P2SUB
+#endif
+
+#ifdef SUBROUTINE
+#define MARS_SUBLIB
+#endif
+
+/***  Defines required for both Programs and Subroutines  ***/
+#define LIB_P2SUB
+#define LIB_MARSSUB
+
+/***  Local library definitions ...
+/***  ... must be commented out when delivered
+/***
+#define DEBUG
+#ifdef PROGRAM
+#define LIB_LOCAL
+#endif
+
+#if VMS_OS
+#define LOCAL_LIBRARY test_lib.olb
+#else
+#define LOCAL_INCLUDE -I$(IncludePath)
+#define LOCAL_LIBRARY $(ObjectPath)/librts.a
+#endif
+/***  End of local library definitions  ***/
+/**********  End of mer_lbl_routines imake file  **********/

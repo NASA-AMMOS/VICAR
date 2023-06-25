@@ -1,0 +1,168 @@
+process help=*
+PARM INP TYPE=STRING COUNT=2
+PARM OUT TYPE=STRING COUNT=1
+PARM O_THRESH TYPE=REAL COUNT=1 DEFAULT=2
+PARM MINDIST  TYPE=REAL COUNT=1 DEFAULT=4.0 
+PARM QUALITYRL TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM QUALITYLR TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM QUALITY_THRESH TYPE=REAL COUNT=(1:2) DEFAULT= 0.4
+PARM SCALING TYPE=KEYWORD COUNT=1 VALID=("SCALING", "NOSCALING") DEFAULT="NOSCALING"
+PARM POINT_METHOD TYPE=STRING COUNT=(0:1) DEFAULT=--
+END-PROC
+
+.TITLE
+VICAR program  MARSDISPCOMPARE
+
+.HELP
+PURPOSE:
+This program is meant to be part of processing chain which ends up 
+with L->R disparity image, a R->L disparity image, and  a mask 
+indicating which values in the l->R disparity image should be ignored.
+This is determined by comparing the L->R and R->L results for consistency.
+If they don't map to the same result, the pixel is rejected.
+
+EXECUTION:
+marsdispcompare inp=(left,right) out=disparity_mask 
+
+
+where:
+left is the L->R disparity image
+right is the R->L disparity image
+out is the output mask indicating which disparity values in the left 
+image to be ignored.
+
+All of these images can be created with marscor3. 
+.PAGE
+
+METHOD:
+
+The program loops through every pixel in the disparity image.  
+For each pixel (optionally satisfying a quality threshold) in the L->R 
+disparity image, 
+the  location in the R->L disparity image is found. At this location, 
+which is commonly not an integer, A bilinear interpolation is 
+performed using the 4 nearest neighbors. 
+(Optionally, the interpolation may be limited to the case where all nearest
+neighbors satisfy a quality threshold) 
+This interpolated value gives a location in L->R image. If this location 
+is close to the original pixel, satisfying a user specified threshold, 
+the output mask value is set to 0. Otherwise, it is set to 1. 
+This creates the mask for the L->R disparity image. The mask for the R->L
+disparity image may be obtained by running marsdispcompare again with 
+RL and LR switched.
+
+The following set of commands demonstrate how the mask is created
+1) ./marsjplstereo inp= \(SS009FFL897017919_11A7EL1M1.IMG,
+SS009FFL897017919_11A7ER1M1.IMG \) out=DISPLR.IMG MAXDISP=25   
+This creates the low quality L->R disparity image
+2)~/marsdispinvert/marsdispinvert INP=DISPLR.IMG OUT=DISPRL.IMG FILL_VALUE=127
+This creates a low quality R->L disparity image with default value set to 127. 
+The default value can be determined by inspection of the original images. 
+Note: This value is a delta value;
+3)./marscor3 inp=\(SS009FFL897017919_11A7EL1M1.IMG,SS009FFL897017919_11A7ER1M1.IMG\) 
+out=DISP2LR.IMG in_disp=DISPLR.IMG  
+This creates the high quality disparity. 
+4)./marscor3 inp=\(SS009FFL897017919_11A7ER1M1.IMG,SS009FFL897017919_11A7EL1M1.IMG\) 
+out=DISP2RL.IMG in_disp=DISPRL.IMG
+The creates the high quality R->L disparity.
+5)  ./marsdispcompare INP=\(DISP2LR.IMG,DISP2RL.IMG\) OUT=out.msk
+This creates the disparity mask. 
+
+
+.PAGE
+
+HISTORY:
+09-16-09 Initial
+08-27-20 F.Ayoub: Addition of SCALING
+
+COGNIZANT PROGRAMMER:  Mathew Yeates
+
+.LEVEL1
+.VARI INP
+input images.
+first: left to right disparity 
+image
+second:  right  to left 
+disparity image
+
+.VARI O_THRESH
+outlier (in pixels)
+threshold.
+
+.VARI MINDIST
+distance (in pixels) threshold.
+
+.VARI OUT
+output disparity mask
+
+.VARI QUALITYRL
+input R-> L disparity quality 
+image
+
+.VARI QUALITYLR
+input L-> R disparity quality 
+image
+
+.VARI SCALING
+Activate scaling of thresholds
+
+.VARI QUALITY_THRESH
+Two thresholds that the values 
+in the quality images must 
+satisfy.
+first  - left disparity image
+second - right disparity image
+
+
+.LEVEL2
+
+.VARI INP
+input images.
+first: left to right disparity image
+second:  right  to left disparity image
+
+.VARI O_THRESH
+Used to test for outliers.
+All four neighbors used in the bilinear interpolation must
+be within this distance (in pixels) of each  other.
+
+.VARI MINDIST
+Threshold on the acceptable distance (in pixels) after projecting 
+back into the L->R disparity image.
+
+.VARI OUT
+output disparity mask wich is a single banded byte file.  The pixels
+dn values can be either 0 or 255, no other values are allowed.
+Pixels with dn value of 0 are the ones that passed consistency check.
+Pixels with dn value of 255 either failed consistency check or had
+no correlation value to begin with.
+
+
+.VARI QUALITYRL
+(Optional)
+input R-> L disparity quality image
+
+.VARI QUALITYLR
+(Optional)
+input L-> R disparity quality image
+
+
+.VARI QUALITY_THRESH
+(Optional)
+Two thresholds that the values in the quality images must satisfy.
+first  - left disparity image
+second - right disparity image
+(If only one quality image is provided, only 1 threshold is required)
+
+.VARI SCALING
+The default threshold parameters (O_THRESH and MINDIST) assumes a scaling ratio
+of about 1 between the images. That is L and R have about the same scale. In 
+situation where the scale is different, say L is high resolution compared to
+R, then these thresholds can be adjusted to account for it. For instance if 
+the two images have a scale ratio of 10, the disparity map accuracy will be 
+driven by the low resolution image. When comparing the disparity for the high
+resolution image, we cannot expect an accuracy of mindist of 2 pixels (default)
+which would require a correlation subpixel precision of 2/10 of a pixel.
+If SCALING is activated, the average scale factor contained in the label of the
+disparities is accounted for and adjust O_THRESH and MINDIST accordingly (
+simple multiplication by the average scaling factor)

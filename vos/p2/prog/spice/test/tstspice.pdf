@@ -16,8 +16,8 @@ let $echo="yes"
 !
 if ($syschar(1) = "UNIX")
 !
-    let path1="/project/it/testdata/mipl/vgr/"
-    let path2="/project/it/testdata/mipl/gll/"
+    let path1="/project/test_work/testdata/mipl/vgr/"
+    let path2="/project/test_work/testdata/mipl/gll/"
     let path3="/project/gll/ssi/rad/"
 end-if
 !

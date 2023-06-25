@@ -108,8 +108,11 @@ extern Cursor v6_cursor;
 extern Cursor watch_cursor;
 extern Cursor empty_cursor;
 
+void turn_vcursor_on(Display *dpy, MAIN_WINDOW *win, int cnum);
+void turn_vcursor_off(Display *dpy, MAIN_WINDOW *win, int cnum);
+
 
-set_vcursor_autotrack(dpy, win, cnum, flag)
+void set_vcursor_autotrack(dpy, win, cnum, flag)
 Display *dpy;
 MAIN_WINDOW *win;
 int cnum, flag;
@@ -287,7 +290,7 @@ int cnum, ctype;
 }
 
 
-turn_vcursor_on(dpy, win, cnum)
+void turn_vcursor_on(dpy, win, cnum)
 Display *dpy;
 MAIN_WINDOW *win;
 int cnum;
@@ -373,7 +376,7 @@ int cnum;
 }
 
 
-turn_vcursor_off(dpy, win, cnum)
+void turn_vcursor_off(dpy, win, cnum)
 Display *dpy;
 MAIN_WINDOW *win;
 int cnum;

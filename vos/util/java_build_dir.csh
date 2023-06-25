@@ -591,4 +591,3 @@ if ("$jni_classes" != "") then
       javah -jni -d $V2HTML/inc ${package}.${class}
    end
 endif
-

@@ -1,0 +1,32 @@
+procedure
+refgbl $echo
+parm version string def="ibis-1"
+parm org string def="column"
+
+local nah int
+local nav int
+
+body
+
+!let _onfail="continue"
+let $echo="yes"
+
+enable-log
+
+! test all parameters
+
+gengrid2 out=xxx1 ncol=8 nah=3 nav=4 +
+     l1=2.2 s1=5.5 +
+     l2=2.6 s2=7.5 +
+     l3=2.4 s3=5.7 +
+     l4=2.8 s4=7.7
+     
+ibis-list xxx1 cols=(1,2)
+
+gridck xxx1 cols=(1,2) valnah=nah valnav=nav
+
+write "nah,nav = &nah &nav"
+
+disable-log
+
+end-proc

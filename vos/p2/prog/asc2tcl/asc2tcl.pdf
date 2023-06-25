@@ -1,0 +1,319 @@
+process help=*
+LOCAL DUMMY   TYPE=INTEGER
+parm inp      type=string
+parm sequence type=int valid=1:999999999 default=1
+parm lineno   type=int valid=0:999999999 default=0
+parm keyword  type=(string,99) count=0:50 default=("", +
+ "","","","","","","","","","","","","","","","", +
+ "","","","","","","","","","","","","","","","", +
+ "","","","","","","","","","","","","","","","","")
+parm val      type=name
+parm v2       type=name default="DUMMY"
+parm v3       type=name default="DUMMY"
+parm v4       type=name default="DUMMY"
+parm v5       type=name default="DUMMY"
+parm v6       type=name default="DUMMY"
+parm v7       type=name default="DUMMY"
+parm v8       type=name default="DUMMY"
+parm v9       type=name default="DUMMY"
+parm v10       type=name default="DUMMY"
+parm v11       type=name default="DUMMY"
+parm v12       type=name default="DUMMY"
+parm v13       type=name default="DUMMY"
+parm v14       type=name default="DUMMY"
+parm v15       type=name default="DUMMY"
+parm v16       type=name default="DUMMY"
+parm v17       type=name default="DUMMY"
+parm v18       type=name default="DUMMY"
+parm v19       type=name default="DUMMY"
+parm v20       type=name default="DUMMY"
+parm v21       type=name default="DUMMY"
+parm v22       type=name default="DUMMY"
+parm v23       type=name default="DUMMY"
+parm v24       type=name default="DUMMY"
+parm v25       type=name default="DUMMY"
+parm v26       type=name default="DUMMY"
+parm v27       type=name default="DUMMY"
+parm v28       type=name default="DUMMY"
+parm v29       type=name default="DUMMY"
+parm v30       type=name default="DUMMY"
+parm v31       type=name default="DUMMY"
+parm v32       type=name default="DUMMY"
+parm v33       type=name default="DUMMY"
+parm v34       type=name default="DUMMY"
+parm v35       type=name default="DUMMY"
+parm v36       type=name default="DUMMY"
+parm v37       type=name default="DUMMY"
+parm v38       type=name default="DUMMY"
+parm v39       type=name default="DUMMY"
+parm v40       type=name default="DUMMY"
+parm v41       type=name default="DUMMY"
+parm v42       type=name default="DUMMY"
+parm v43       type=name default="DUMMY"
+parm v44       type=name default="DUMMY"
+parm v45       type=name default="DUMMY"
+parm v46       type=name default="DUMMY"
+parm v47       type=name default="DUMMY"
+parm v48       type=name default="DUMMY"
+parm v49       type=name default="DUMMY"
+parm v50       type=name default="DUMMY"
+parm vtype    type=int valid=(0,2,4,7,8)
+parm btrim    type=int valid=0:999999999 default=0
+parm etrim    type=int valid=0:999999999 default=0
+parm septype  type=keyword valid=(SPACE,COMMA) default=SPACE
+parm met      type=keyword count=0:1 valid=MET default=--
+END-PROC
+.TITLE
+asc2tcl - get values from ascii file to TAE TCL variable
+.HELP
+PURPOSE:
+asc2tcl gets a value (int, double, or string) and puts it into
+a TAE TCL variable.  It can find the value by position in the
+file, position in a line in the file, or position after a keyword
+in the file.  The separators can be whitespaces, commas, or both.
+
+If the selection is not found, or wrong type, etc., a special value
+of -999 (int) -999.0 (real) or "-999" (character string) is output
+to the TAE TCL variable.
+
+(.met) files are a special case... the keyword option will find a
+specific keyword and the value will be taken from the next line that has
+that has the "VALUE      =" followed by the value in quotes.
+
+If more than one value is desired, keyword is a vector input with up
+to 50 values, and the output variables v2,..v50 are provided.  The
+other parameters are not vectorized and so the single values for the
+other parameters are applied to each case of the multiple get.
+
+EXECUTION:
+
+Examples
+
+asc2tcl LOCATIONS seq=7 val=latitude vtype=8
+
+          gets the 7th number from the file LOCATIONS and puts
+          into the TCL variable latitude
+
+asc2tcl LOCATIONS seq=7 val=latitude vtype=8 'comma
+
+          gets the 7th number from the file LOCATIONS and puts
+          into the TCL variable latitude, numbers are separated
+          by commas
+
+asc2tcl LOCATIONS seq=7 lineno=2 val=latitude vtype=8 'comma
+
+          gets the 7th number starting from the second line
+          from the file LOCATIONS and puts into the TCL variable
+          latitude, numbers are separated by commas
+
+asc2tcl LOCATIONS seq=2 keyword="GZERO =" val=latitude vtype=8
+
+          gets the 2d number starting from text GZERO = from
+          the file LOCATIONS and puts into the TCL variable
+          latitude.  Note that the equals sign and the space
+          preceding it are part of the text.
+
+OPERATION:
+asc2tcl does not use VICAR I/O.  It uses C I/O to parse the
+input per the parameters to find the value to put into the 
+TCL variable.
+ TIMING: 
+
+As fast as C can read the lines.  
+
+ ORIGINAL PROGRAMMER:    A. Zobrist          26 May 2000
+ COGNIZANT PROGRAMMER:   A. Zobrist          26 May 2000
+ 
+ REVISION HISTORY
+  2000-06-26 AZ - Initial version
+  2002-10-17 AZ - Fix blanks in keyword and add 'MET format
+  2006-04-04 AZ - allow leading blanks in number
+  2006-05-16 AZ - 50 inputs for amt project speedup
+  2008-01-02 WLB - switched to USES_ANSI_C AND LIB_CARTO; misc cleanup  
+  2011-05-25 RJB - Added warning when input file not found; gives
+                [TAE-PRCSTRM] Abnormal process termination; process status code = 11.;
+                [not a graceful way to report missing file]
+                removed all warnings with gcc4.4.4
+                Put in fseek in code due to failure with met keyword, which also gave
+                [TAE-PRCSTRM] Abnormal process termination; process status code = 11.;
+  2011-09-02 RJB - Removed a printf statment that printed out "vtype <number>"
+  2012-07-02 RJB - replaced cartlab's zifmessage with zvmessage
+                    and removed cartoVicarProto.h to make compatible
+                    with transfer to MIPL
+  2013-09-26 RJB - Fixed pointer for long files, increased MAXTEXT value to 25000 
+  2016-01-13 WLB - Migrated to MIPL; replaced printf with zifmessage
+  2019-06-12 WLB - IDS-7925: null-terminated some buffers
+  2019-08-07 WLB - IDS-7922: initialized some variables
+
+.LEVEL1
+.variable inp
+Ascii input file name
+.variable sequence
+the position of the item
+desired
+.variable lineno
+skip to this line before
+counting items to sequence
+.variable keyword
+skip to this text before
+counting items to sequence
+can have internal blanks
+.variable val
+TAE TCL name without &, gets
+the found value or -999
+.variable vtype
+0 - string
+2 - integer
+4 - integer
+7 - double
+8 - double
+.variable v2
+TAE TCL name 2
+.variable v3
+TAE TCL name 3
+.variable v4
+TAE TCL name 4
+.variable v5
+TAE TCL name 5
+.variable v6
+TAE TCL name 6
+.variable v7
+TAE TCL name 7
+.variable v8
+TAE TCL name 8
+.variable v9
+TAE TCL name 9
+.variable v10
+TAE TCL name 10
+.variable v11
+TAE TCL name 11
+.variable v12
+TAE TCL name 12
+.variable v13
+TAE TCL name 13
+.variable v14
+TAE TCL name 14
+.variable v15
+TAE TCL name 15
+.variable v16
+TAE TCL name 16
+.variable v17
+TAE TCL name 17
+.variable v18
+TAE TCL name 18
+.variable v19
+TAE TCL name 19
+.variable v20
+TAE TCL name 20
+.variable v21
+TAE TCL name 21
+.variable v22
+TAE TCL name 22
+.variable v23
+TAE TCL name 23
+.variable v24
+TAE TCL name 24
+.variable v25
+TAE TCL name 25
+.variable v26
+TAE TCL name 26
+.variable v27
+TAE TCL name 27
+.variable v28
+TAE TCL name 28
+.variable v29
+TAE TCL name 29
+.variable v30
+TAE TCL name 30
+.variable v31
+TAE TCL name 31
+.variable v32
+TAE TCL name 32
+.variable v33
+TAE TCL name 33
+.variable v34
+TAE TCL name 34
+.variable v35
+TAE TCL name 35
+.variable v36
+TAE TCL name 36
+.variable v37
+TAE TCL name 37
+.variable v38
+TAE TCL name 38
+.variable v39
+TAE TCL name 39
+.variable v40
+TAE TCL name 40
+.variable v41
+TAE TCL name 41
+.variable v42
+TAE TCL name 42
+.variable v43
+TAE TCL name 43
+.variable v44
+TAE TCL name 44
+.variable v45
+TAE TCL name 45
+.variable v46
+TAE TCL name 46
+.variable v47
+TAE TCL name 47
+.variable v48
+TAE TCL name 48
+.variable v49
+TAE TCL name 49
+.variable v50
+TAE TCL name 50
+.variable btrim
+trims from beginning of
+string result
+.variable etrim
+trims from end of
+string result
+.variable septype
+SPACE - blanks, tabs, retns
+COMMA - commas or spaces
+.variable met
+use this to find a value for
+a keyword in a .met file
+.level2
+.variable sequence
+This will be the position of the desired item relative to either:
+
+1.  the start of the file (default case)
+2.  the line number specified by the lineno parameter, if it is not zero
+3.  the first occurrence of the text matched by the keyword
+
+in the case where both lineno and keyword is used, the program skips
+to the line, then hunts for the first occurrence of the keyword, then
+sequences to the desired item.  If the keyword is not found by the
+end of the file, the search will NOT restart at the beginning.
+.variable keyword
+The text given is case sensitive and must include the equals sign,
+colon, or left parenthesis.  For example, if the file contains
+
+       LOC=(35.332,118.927)
+
+then the keyword must be 
+      
+       LOC=(
+.variable val
+don't forget to declare the TAE TCL variable, proper type.
+
+All floating values are double precision.
+
+If the selection is not found, or wrong type, etc., a special value
+of -999 (int) -999.0 (real) or "-999" (character string) is output
+to the TAE TCL variable.
+.variable vtype
+The types 2 and 7 are provided for convenience, TAE TCL has only the
+three types string, integer, and double.
+.variable septype
+Multiple adjacent whitespace is treated as a single separator.
+.variable met
+this finds the keyword (usually in quotes in the file, do not use the
+quotes in the vicar parameter) then looks for a subsequent VALUE   =
+statement with a value in quotes again.  That value is converted and 
+returned.
+.END

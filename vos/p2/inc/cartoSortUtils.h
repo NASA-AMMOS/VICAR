@@ -13,6 +13,32 @@
 #define CART_ULONG  10
 #define CANNOT_COMPARE -2
 
+/***************************************************/
+/* This function performs selection sort on the    */
+/* unsorted array and stores the SORTED ORDER      */
+/* INDICES into indices array.  This function      */
+/* does not move around the data but only returns  */
+/* what the sorted index would be inside indices.  */
+/*                                                 */
+/* IN: void *unsorted - buffer containing unsorted */
+/*     data                                        */
+/*     int n - number of entries in unsorted buf   */
+/*     int type - type of elements in unsorted     */
+/*                buffer                           */
+/*           1 = char                              */
+/*           2 = short int                         */
+/*           3 = int                               */
+/*           4 = float                             */
+/*           5 = double                            */
+/*           6 = long int                          */
+/*           7 = unsigned char                     */
+/*           8 = unsigned short int                */
+/*           9 = unsigned int                      */
+/*           10 = unsigned long int                */
+/*                                                 */
+/* OUT: int *indices - returns sorted index order  */
+/*      indices must be allocated before calling   */
+/***************************************************/
 void getSelectionSortIndices(void *unsorted, int *indices, int n, int type);
 
 void sort8( double * buf, int * ptr, int n );

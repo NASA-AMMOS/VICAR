@@ -1,0 +1,5 @@
+$ vpack marsrelabel.com -mixed -
+	-s marsrelabel.cc -
+	-i marsrelabel.imake -
+	-p marsrelabel.pdf
+$ Exit

@@ -72,7 +72,8 @@ extern "C" {
 #define HISTOGRAM_REQUEST_PARMS_PROPERTY_NAME         "HISTOGRAM_REQUEST_PARMS"
 #define REFERENCE_PIXEL_REQUEST_PARMS_PROPERTY_NAME   "REFERENCE_PIXEL_REQUEST_PARMS"
 #define SUBFRAME_REQUEST_PARMS_PROPERTY_NAME          "SUBFRAME_REQUEST_PARMS"
-#define ZSTACK_REQUEST_PARMS_PROPERTY_NAME          "ZSTACK_REQUEST_PARMS"
+#define ZSTACK_REQUEST_PARMS_PROPERTY_NAME            "ZSTACK_REQUEST_PARMS"
+#define VIDEO_REQUEST_PARMS_PROPERTY_NAME             "VIDEO_REQUEST_PARMS"
 
 typedef struct
 	{
@@ -94,21 +95,32 @@ typedef struct
 	LblApiTypeItem_typ		PixelDownsampleOption;
 	LblApiIntItem_typ		PixelAveragingHeight;
 	LblApiIntItem_typ		PixelAveragingWidth;
-	LblApiIntItem_typ               ReferencePixelDpFlag;
-	LblApiIntItem_typ               ReferencePixelPriority;
-	LblApiIntItem_typ               ThumbnailPriority;
-	LblApiStringItem_typ            ThumbnailSize;
-	LblApiStringItem_typ            ImageId;
-    LblApiFlagItem_typ              InstCmprsDeferredFlag;
-	LblApiStringItem_typ            InstCmprsName;
-    LblApiIntItem_typ               InstFocusPositionCnt;
-    LblApiIntItem_typ               InstFocusStepSize;
-    LblApiIntItem_typ               InstZoomPositionCnt;
+	LblApiIntItem_typ       ReferencePixelDpFlag;
+	LblApiIntItem_typ       ReferencePixelPriority;
+	LblApiIntItem_typ       ThumbnailPriority;
+	LblApiStringItem_typ    ThumbnailSize;
+	LblApiStringItem_typ    ImageId;
+    LblApiFlagItem_typ      InstCmprsDeferredFlag;
+	LblApiStringItem_typ    InstCmprsName;
+    LblApiIntItem_typ       InstFocusPositionCnt;
+    LblApiIntItem_typ       InstFocusStepSize;
+    LblApiIntItem_typ       InstZoomPositionCnt;
     LblApiIntItem_typ       InstFocusSteps;
     LblApiIntItem_typ       ZstackImageDepth;
     LblApiIntItem_typ       ZstackDeltaFocusCount;
     LblApiRealItem_typ      CommandedFocalLength;
     LblApiTypeItem_typ      CommandedFocalLengthUnit; 
+    LblApiStringItem_typ    ImageBlendingFlag;
+    LblApiStringItem_typ    ImageRegistrationFlag;
+    LblApiIntItem_typ       InterframeDelay;
+    LblApiRealItem_typ      FrameRate;
+    LblApiIntItem_typ       FrameIndex; 
+    LblApiIntItem_typ       CommandedVideoFrames;
+    LblApiIntItem_typ       GOPFrameIndex;
+    LblApiIntItem_typ       GOPTotalFrames;
+    LblApiIntItem_typ       GOPOffset;
+    LblApiIntItem_typ       GOPLength;
+    LblApiIntItem_typ       StartImageId;
 } LblProdRequest_typ;
 
 int	LblProductRequest( int, int, LblProdRequest_typ *, int,const char* );

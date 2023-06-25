@@ -3,6 +3,8 @@ procedure
   RefGbl $echo
   RefGbl $SYSCHAR
 body
+enable-log
+
   Local IBISReseauFile
 
   let $echo="NO"
@@ -21,4 +23,6 @@ body
 !!!!!! Test on Voyager 1
 PHOTLIST FDS=1636832 SCET=(1979,63,19,23,0,0) TARGET=IO CRAFT=VGR-1 +
  CAMERA=ISSN UL=(250,300) UR=(250,600) LL=(500,300) LR=(500,600) C=(400,400)
+
+disable-log
 end-proc

@@ -1,6 +1,8 @@
 procedure
 refgbl $echo
 body
+enable-log
+
 let _onfail="continue"
 let $echo="yes"
 WRITE "This is a test of subroutine comphist"
@@ -12,4 +14,5 @@ WRITE "Test on halfword image (ramp)"
 GEN A 1000 1000 'HALF
 tcomphist A 'ZEROES
 
+disable-log
 end-proc

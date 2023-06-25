@@ -1,0 +1,13 @@
+let $autousage="none"
+tcebcdc
+Beginning VICAR task tcebcdc
+  START =  
+           E3C5E2E3 7AE2E3D9 C9D5C7   ####z######
+  RESULT = 
+           54455354 3A535452 494E47   TEST:STRING
+Test the C interface
+start =  
+           E3C5E2E3 7AE2E3D9 C9D5C7   ####z######
+result =  
+           54455354 3A535452 494E47   TEST:STRING
+disable-log

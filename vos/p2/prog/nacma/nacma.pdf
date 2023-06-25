@@ -1,0 +1,215 @@
+PROCESS      HELP=*
+PARM INP          TYPE=STRING COUNT=7
+PARM META         TYPE=STRING COUNT=1
+PARM OUT          TYPE=STRING COUNT=1
+
+PARM MASKSNOW      TYPE=STRING COUNT=0:1   DEF=--
+PARM MASKDESERT    TYPE=STRING COUNT=0:1   DEF=--
+PARM MASKWARMCLOUD TYPE=STRING COUNT=0:1   DEF=--
+PARM MASKCOLDCLOUD TYPE=STRING COUNT=0:1   DEF=--
+PARM MASKICE       TYPE=STRING COUNT=0:1   DEF=--
+PARM MASKCIRRUS    TYPE=STRING COUNT=0:1   DEF=--
+PARM MASKAMBIG     TYPE=STRING COUNT=0:1   DEF=--
+PARM MASKVALID     TYPE=STRING COUNT=0:1   DEF=-- 
+
+PARM RAD1OUT      TYPE=STRING COUNT=0:1    DEF=--
+PARM RAD2OUT      TYPE=STRING COUNT=0:1    DEF=--
+PARM RAD3OUT      TYPE=STRING COUNT=0:1    DEF=--
+PARM RAD4OUT      TYPE=STRING COUNT=0:1    DEF=--
+PARM RAD5OUT      TYPE=STRING COUNT=0:1    DEF=--
+PARM RAD13OUT     TYPE=STRING COUNT=0:1    DEF=--
+PARM RAD14OUT     TYPE=STRING COUNT=0:1    DEF=--
+
+PARM REF1OUT      TYPE=STRING COUNT=1      DEF=default_ref1out
+PARM REF2OUT      TYPE=STRING COUNT=1      DEF=default_ref2out
+PARM REF3OUT      TYPE=STRING COUNT=1      DEF=default_ref3out
+PARM REF4OUT      TYPE=STRING COUNT=1      DEF=default_ref4out
+PARM REF5OUT      TYPE=STRING COUNT=1      DEF=default_ref5out
+PARM BTEMP13OUT   TYPE=STRING COUNT=1      DEF=default_btemp13out
+PARM BTEMP14OUT   TYPE=STRING COUNT=1      DEF=default_btemp14out
+
+PARM REF1DSOUT    TYPE=STRING COUNT=1      DEF=default_ref1dsout
+PARM REF2DSOUT    TYPE=STRING COUNT=1      DEF=default_ref2dsout
+PARM REF3DSOUT    TYPE=STRING COUNT=1      DEF=default_ref3dsout
+PARM REF4DSOUT    TYPE=STRING COUNT=1      DEF=default_ref4dsout
+PARM REF5DSOUT    TYPE=STRING COUNT=1      DEF=default_ref5dsout
+
+PARM FILTER1OUT   TYPE=STRING COUNT=0:1    DEF=--
+PARM FILTER2OUT   TYPE=STRING COUNT=0:1    DEF=--
+PARM FILTER3OUT   TYPE=STRING COUNT=0:1    DEF=--
+PARM FILTER4OUT   TYPE=STRING COUNT=0:1    DEF=--
+PARM FILTER5OUT   TYPE=STRING COUNT=0:1    DEF=--
+PARM FILTER6OUT   TYPE=STRING COUNT=0:1    DEF=--
+PARM FILTER7OUT   TYPE=STRING COUNT=0:1    DEF=--
+PARM FILTER8OUT   TYPE=STRING COUNT=0:1    DEF=--
+
+PARM TEMPCOMPOUT  TYPE=STRING COUNT=1      DEF=default_tempcompout
+PARM NDSIOUT      TYPE=STRING COUNT=1      DEF=default_ndsiout
+PARM GVOUT        TYPE=STRING COUNT=1      DEF=default_gvout
+PARM SVOUT        TYPE=STRING COUNT=1      DEF=default_svout
+PARM RSOUT        TYPE=STRING COUNT=1      DEF=default_rsout
+
+END-PROC
+
+.TITLE
+VICAR/IBIS Program "nacma"
+.HELP
+PURPOSE
+
+   Glynn Hulley and Simon Hook deserves much credit for this
+work.  It was their idea to apply the LANDSAT cloud detection
+algorithm to ASTER and their MATLAB scripts were used as
+the groundtruth for this program.
+
+   This program creates a cloud mask from a given ASTER image.
+The output is a binary image where clouds are marked as 1s and
+nonclouds are marked as 0s.  ASTER band images are passed to
+the program in the inp parameter and are ordered 1, 2, 3, 4, 5,
+13, and 14.
+
+   This program will create temporary working files needed for
+storing reflectance values and downsampled reflectance values.
+Also tempcomp, ndsi, gv (growing vegetation), sv (scenesing
+vegatation), rs (reflective soil), are also store in temporary
+files.
+
+   If no output files are specified for the temporary data then
+default names will be given.  Please see parameter list for the
+default names.
+
+   The user may need to grow the final cloud mask by a few
+pixels.
+
+EXECUTION
+
+   The program consists of 2 pass cloud detection system.  The
+general run of the program is:
+
+   1. calculate reflectance from raw dn
+   2. calculate brightness temperature from TIR raw dn
+   3. downsample reflectance files
+   4. perform pass1
+   5. perform pass2
+
+   For details of the pass1 and pass2 algorithms, please see
+"Characterization of the Landsat-7 ETM+ Automated Cloud-Cover
+Assessment (ACCA) Algorithm" by Richard R. Irish,
+John L. Barker, Samuel N. Goward, and Terry Arvidson.  The
+article can be found in "Photogrammetric Engineering & Remote
+Sensing", Vol. 72, No. 10, October 2006, pp. 1179 - 1188.
+
+EXAMPLES
+
+   The only parameters that are necessary are ASTER bands
+(1, 2, 3, 4, 5, 13, 14) as inp, metafile, and output mask
+file as out.  Other files can be specified for debugging
+purposes.
+
+   nacma inp=(b1, b2, b3, b4, b5, b13, b14) meta=meta +
+        out=cloudmask
+
+RESTRICTIONS
+
+Original Programmer: P. Kim, 18 Aug 2009
+
+Revisions:
+  2016-05-16 W. Bunch - Migrated to MIPL; replaced printf with zifmessage
+  2017-08-09 W. Bunch - Removed DEBUG from imake.
+  2022-07-14 B. Crocco afids to opensource
+  
+.LEVEL1
+.VARIABLE INP
+ 7 ASTER bands
+(1, 2, 3, 4, 5, 13, 14)
+.VARIABLE META
+ metafile
+.VARIABLE OUT
+ output binary final cloud file
+.VARIABLE MASKSNOW
+ debug output binary snow file
+.VARIABLE MASKDESERT
+ debug output binary desert file
+.VARIABLE MASKWARMCLOUD
+ debug output binary warm cloud file
+.VARIABLE MASKCOLDCLOUD
+ debug output binary cold cloud file
+.VARIABLE MASKICE
+ debug output binary ice file
+.VARIABLE MASKCIRRUS
+ debug output binary cirrus file
+.VARIABLE MASKAMBIG
+ debug output binary ambiguous clouds file
+.VARIABLE MASKVALID
+ debug output binary valid pixel file
+.VARIABLE RAD1OUT
+ debug output real band 1 radiance file
+.VARIABLE RAD2OUT
+ debug output real band 2 radiance file
+.VARIABLE RAD3OUT
+ debug output real band 3 radiance file
+.VARIABLE RAD4OUT
+ debug output real band 4 radiance file
+.VARIABLE RAD5OUT
+ debug output real band 5 radiance file
+.VARIABLE RAD13OUT
+ debug output real band 13 radiance file
+.VARIABLE RAD14OUT
+ debug output real band 14 radiance file
+.VARIABLE REF1OUT
+ output real reflectance band 1 file
+.VARIABLE REF2OUT
+ output real reflectance band 2 file
+.VARIABLE REF3OUT
+ output real reflectance band 3 file
+.VARIABLE REF4OUT
+ output real reflectance band 4 file
+.VARIABLE REF5OUT
+ output real reflectance band 5 file
+.VARIABLE BTEMP13OUT
+ output real brightness temperature file
+.VARIABLE BTEMP14OUT
+ output real brightness temperature file
+.VARIABLE REF1DSOUT
+ output downsampled real reflectance band 1 file
+.VARIABLE REF2DSOUT
+ output downsampled real reflectance band 2 file
+.VARIABLE REF3DSOUT
+ output downsampled real reflectance band 2 file
+.VARIABLE REF4DSOUT
+ output downsampled real reflectance band 2 file
+.VARIABLE REF5DSOUT
+ output downsampled real reflectance band 2 file
+.VARIABLE FILTER1OUT
+ debug output byte pass1 filter1 file
+.VARIABLE FILTER2OUT
+ debug output byte pass1 filter2 file
+.VARIABLE FILTER3OUT
+ debug output byte pass1 filter3 file
+.VARIABLE FILTER4OUT
+ debug output byte pass1 filter4 file
+.VARIABLE FILTER5OUT
+ debug output byte pass1 filter5 file
+.VARIABLE FILTER6OUT
+ debug output byte pass1 filter6 file
+.VARIABLE FILTER7OUT
+ debug output byte pass1 filter7 file
+.VARIABLE FILTER8OUT
+ debug output byte pass1 filter8 file
+.VARIABLE TEMPCOMPOUT
+ debug output real tempcomp file
+.VARIABLE NDSIOUT
+ debug output real ndsi file
+.VARIABLE GVOUT
+ debug output real growing vegetation file
+.VARIABLE SVOUT
+ debug output real scenesing vegetation file
+.VARIABLE RSOUT
+ debug output real reflective soil file
+
+.LEVEL2
+.VARIABLE INP
+
+ 7 ASTER bands in this order:
+ 1, 2, 3, 4, 5, 13, and 14
+
+.END

@@ -1,0 +1,5 @@
+$ vpack nsytgood.com -mixed -
+	-s nsytgood.cc -
+	-i nsytgood.imake -
+	-p nsytgood.pdf
+$ Exit

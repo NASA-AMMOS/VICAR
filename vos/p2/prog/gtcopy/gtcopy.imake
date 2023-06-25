@@ -1,0 +1,28 @@
+/***********************************************************************
+
+                     IMAKE FILE FOR PROGRAM gtcopy
+
+   To Create the build file give the command:
+
+		$ vimake gtcopy			(VMS)
+   or
+		% vimake gtcopy			(Unix)
+
+
+************************************************************************/
+
+
+#define PROGRAM	gtcopy
+
+#define MODULE_LIST gtcopy.c
+
+#define MAIN_LANG_C
+#define R2LIB
+#define USES_ANSI_C
+/* #define DEBUG */
+
+#define LIB_CARTO
+#define LIB_RTL
+#define LIB_TAE
+#define LIB_P2SUB
+/************************* End of Imake file ***************************/

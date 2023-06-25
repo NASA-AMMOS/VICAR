@@ -1,0 +1,110 @@
+process help=*
+ !
+ PARM INP      TYPE=STRING COUNT=(2:50)
+ PARM OUT      TYPE=STRING COUNT=1
+ PARM NEWCOLS  TYPE=INTEGER COUNT=2 DEFAULT=(1,2)
+ PARM OLDCOLS  TYPE=INTEGER COUNT=2 DEFAULT=(3,4)
+ !
+ END-PROC
+!
+! HELP TEXT FOR GRIDAVG
+.TITLE
+GRIDAVG - averaging of two or more warp grids to produce a single grid.
+.HELP
+PURPOSE
+     GRIDAVG is a VICAR applications program which averages two or
+     more GEOMV grids into a single grid so that a GEOMV can produce
+     the average move of the grids.  This would improve the accuracy
+     of the results if the grids were independent estimates of the
+     desired GEOM.  The averaging is rowwise.  Only the OLDCOLS are 
+     averaged.  The NEWCOLS are checked for agreement, they must be
+     the same.
+     
+     The resulting grid is in a four column IBIS file with the normal
+     GEOMV column order (1,2,3,4) in double precision.  The inputs
+     can be single or double precision, or integer.  The output will
+     be double precision.  See below for a description of the GEOMV
+     format.
+	   
+CALL
+     gridavg (GRID_A1,GRID_A2,...) GRID_OUT NEWCOLS=(C1,C2) OLDCOLS=(C3,C4)
+  WHERE:
+     GRID_A1        is the first grid in an IBIS file.
+     GRID_A2        is the second grid in an IBIS file.
+     ...            more grids, up to 50 total
+     GRID_OUT       is the output grid in GEOMV format.
+     NEWCOLS        are the columns of the "new" grid, to be checked.
+     OLDCOLS        are the columns of the "old" grid, to be averaged.
+     
+     The GEOMV format of the warp grid will now be described.
+
+     The IBIS-file form of the grid contains four columns of
+single or double precision tiepoint records.  The columns in
+order are (newline,newsamp,oldline,oldsamp); or the column order
+can be user specified.  NAH and NAV will be calculated from the
+grid and the grid must be rectangular.
+
+     The TIEPOINT-GRID is a set of points describing the relation
+of the output file to that of the input file using the keyword
+TIEPOINT and optionally NAH and NAV which are ignored.
+   NAH=nah  NAV=nav
+     tiepoint=(nl1,ns1,ol1,os1,nl2,ns2,ol2,os2,...
+                   ...nlk,nsk,olk,osk)
+
+where the grid is rectangular in the output image space, nah is
+the number of grid cells horizontally (across the top in the sample
+direction), nav is the number of grid cells vertically in the output
+image space, the point pairs (nli,nsi,oli,osi) are line-sample
+coordinates in the output (new) and input (old) spaces respectively.
+the number of pairs k must equal (nah+1)*(nav+1).  The grid must be
+perfectly rectangular in the output image space (the rows and
+columns must be perfectly horizontal and vertical respectively).
+Each direction must be evenly spaced as well, but all values can
+br fractional.  There are no keywords NAH and NAV, the true
+values are calculated from the grid.
+  
+OPERATION
+
+GRIDAVG copies the second input, keeping the output grid as is
+(except perhaps for conversion to double precision), and substituting
+for the input grid points, the values that passed through the first
+grid would yield the inputs.
+
+For points that fall outside the first grid, an extrapolation process
+similar to that of tieconv is used.  This should be avoided, but is
+provided as a convenience in case the edge effects are not significant.
+
+PERFORMANCE
+
+Guess about 10 seconds for a two 500 x 500 grids.
+
+.PAGE
+Restrictions
+------------
+
+THE "NEW" PARTS OF THE GRIDS MUST BE IDENTICAL.
+
+THE COLUMNS OF BOTH "NEW" AND "OLD" MUST BE THE SAME IN ALL OF THE
+INPUT FILES, BUT DON'T HAVE TO BE COLUMNS 1,2,3,4.
+
+.PAGE
+Original Programmer: A. L. Zobrist, 13 Jul. 2005.
+Current Cognizant Programmer: A. L. Zobrist
+Revisions:
+  2007-12-29 WLB - Switched to USES_ANSI_C AND LIB_CARTO; misc cleanup
+  2015-10-23 WLB - Migrated to MIPL
+  2019-09-04 WLB - Initialized some variables.
+  2021-11-12 WLB - Initialized another variable.
+  2022-07-14 B. Crocco afids to opensource
+  
+.LEVEL1
+.VARI INP
+IBIS tables containing the
+grids to be averaged.
+.VARI OUT
+Output IBIS table for GEOMV
+.VARI NEWCOLS
+columns with rectilinear grid
+.VARI OLDCOLS
+columns with warped grid
+.END

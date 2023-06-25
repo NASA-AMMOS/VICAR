@@ -1,0 +1,70 @@
+process help=*
+PARM INP TYPE=STRING COUNT=1
+PARM OUT TYPE=STRING COUNT=1
+PARM WINDOW TYPE=INTEGER DEFAULT=3 VALID=(3:99)
+PARM MODE   TYPE=KEYWORD VALID=(MEAN,SDEV) DEFAULT=SDEV
+PARM FACTOR TYPE=REAL DEFAULT=1.0
+
+END-PROC
+.TITLE
+gtstat - apply mean or standard deviation box filter to an image
+.HELP
+PURPOSE:
+
+gtstat applies a window to each pixel location (mirroring at the 
+edges, see OPERATION), calculates the mean or standard deviation,
+multiplies by a user selected constant, and outputs the value for
+the center pixel of the window.  The result is an image.
+
+EXECUTION:
+
+Example
+
+gtstat A B        will calculate the standard deviation of A using 
+                  the default 3x3 window and put the result in C.
+                               
+gtstat A B 'MEAN  will calculate the mean of A using the default
+                  3x3 window and put the result in C.
+                               
+OPERATION:
+
+Because of the window, the program uses a "rolling barrel" of input
+lines to avoid rereading a line more than once in the second input.
+
+The image is not really mirrored at the edges, but calculates the
+calculated statistic on the intersection of the window with the image.
+The difference is an overweighting of the non-reflected pixels in
+the calculated statistic, but this is a minor effect.  In a sense, 
+mirroring would overweight the reflected pixels, so who is to say
+which is better.
+
+TIMING: 
+
+About the same speed as convolution filter.  
+
+ ORIGINAL PROGRAMMER:    A. Zobrist          15 Dec 2003
+ COGNIZANT PROGRAMMER:   A. Zobrist          15 Dec 2003
+ 
+ REVISION HISTORY
+  2003-12-15 AZ  Initial version
+  2003-12-22 AZ  Added mean, kept sigma as default
+  2008-01-02 WLB Switched to USES_ANSI_C AND LIB_CARTO; misc cleanup  
+  2015-10-23 WLB Migrated to MIPL
+  2022-07-14 B. Crocco afids to opensource
+  
+.LEVEL1
+.VARIABLE INP
+STRING - Input image file
+.VARIABLE OUT
+STRING - Output image file
+.VARIABLE WINDOW
+Size of the stat window,
+must be odd
+.VARIABLE MODE
+'MEAN - calculate the mean
+'SDEV - calculate the standard
+        deviation
+.VARIABLE FACTOR
+Multiply output image by
+this factor
+.END

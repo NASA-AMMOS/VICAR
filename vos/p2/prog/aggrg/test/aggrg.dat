@@ -1,0 +1,7 @@
+header data not desired in ibis file
+another header data
+    1.00    2.00    aaaaa   12.00   15.12345678901
+    1.00    2.00    aaaaa   12.00   15.000000000002
+    1.00    2.00    aaaaa   12.00   15.00
+    9.00    8.00    bbbbb   12.00   10.00
+    9.00    8.00    bbbbb   12.00   10.00

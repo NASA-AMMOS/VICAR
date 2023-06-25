@@ -60,6 +60,7 @@ typedef struct
 	LblApiStringItem_typ    IlluminationDeviceName;
 	LblApiStringItem_typ    IlluminationLedName[14];
 	LblApiStringItem_typ    IlluminationLedState[14];
+	LblApiStringItem_typ    IlluminationMode;
 	LblApiIntItem_typ       IllumLedWaveLength[14];
 	LblApiStringItem_typ    IllumLedWaveLengthUnit[14];
 	LblApiIntItem_typ       PixlIllumCurrent[17];

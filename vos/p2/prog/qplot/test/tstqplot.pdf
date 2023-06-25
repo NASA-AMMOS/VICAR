@@ -1,6 +1,8 @@
 procedure
 refgbl $echo
 body
+enable-log
+
 let _onfail="continue"
 let $echo="yes"
 
@@ -30,5 +32,10 @@ qplot inp1 yscale=(0,70) proc=(1,1,1,20,20) plotout="YES"
 ! Change output file name
 
 qplot inp1 yscale=(0,70) proc=(1,1,1,20,20) plotout="qplot1" plotfmt="eps"
+
+disable-log
+
+ush rm inp1 inp2 inp3 qplot1.asc1 qplot1.eps.gpi qplot1.gpi qplot.asc1
+ush rm qplot.eps qplot.eps.gpi qplot.gpi tmptbl.1 tmptbl.2 tmptbl.3
 
 end-proc

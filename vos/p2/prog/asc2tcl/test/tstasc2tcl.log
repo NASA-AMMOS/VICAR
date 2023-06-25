@@ -1,0 +1,74 @@
+asc2tcl ct/asc2tcl.dat seq=5 val=tclint vtype=4
+Beginning VICAR task asc2tcl
+ASC2TCL version 2019-08-07
+vtype 4
+let $echo="no"
+tclint = 41
+asc2tcl ct/asc2tcl.dat lineno=2 seq=2 val=tclint vtype=4
+Beginning VICAR task asc2tcl
+ASC2TCL version 2019-08-07
+vtype 4
+let $echo="no"
+tclint = 42
+asc2tcl ct/asc2tcl.dat lineno=6 seq=2 val=tclreal vtype=8
+Beginning VICAR task asc2tcl
+ASC2TCL version 2019-08-07
+vtype 8
+let $echo="no"
+tclreal = 3.141592653590e+02
+asc2tcl ct/asc2tcl.dat lineno=2 seq=5 val=tclstr vtype=0
+Beginning VICAR task asc2tcl
+ASC2TCL version 2019-08-07
+vtype 0
+let $echo="no"
+tclstr = lat=22,118
+asc2tcl ct/asc2tcl.dat keyword="lat=" val=tclint vtype=4
+Beginning VICAR task asc2tcl
+ASC2TCL version 2019-08-07
+vtype 4
+let $echo="no"
+tclint = 22
+asc2tcl ct/asc2tcl.dat lineno=6 seq=4 val=tclint vtype=4 'comma
+Beginning VICAR task asc2tcl
+ASC2TCL version 2019-08-07
+vtype 4
+let $echo="no"
+tclint = 2
+asc2tcl ct/asc2tcl.dat keyword="lat=" seq=2 val=tclint vtype=4 'comma
+Beginning VICAR task asc2tcl
+ASC2TCL version 2019-08-07
+vtype 4
+let $echo="no"
+tclint = 118
+asc2tcl ct/asc2tcl.dat  keyword="ZONEIDENTIFIER" val=tclint vtype=4 'met
+Beginning VICAR task asc2tcl
+ASC2TCL version 2019-08-07
+vtype 4
+let $echo="no"
+tclint = 39
+asc2tcl ct/asc2tcl.dat keyword="ReferencePixelNorthing" val=tclreal vtype=8 'met
+Beginning VICAR task asc2tcl
+ASC2TCL version 2019-08-07
+vtype 8
+let $echo="no"
+tclreal = 6.473775000000e+06
+asc2tcl ct/asc2tcl.dat keyword="test param with blanks =" val=tclint vtype=4
+Beginning VICAR task asc2tcl
+ASC2TCL version 2019-08-07
+vtype 4
+let $echo="no"
+tclint = 77
+asc2tcl ct/asc2tcl.dat keyword=("lon=","lat=")  +
+   val=tclint v2=tclint2 vtype=4 'comma
+Beginning VICAR task asc2tcl
+ASC2TCL version 2019-08-07
+vtype 4
+vtype 4
+let $echo="no"
+tclint,tclint2 = 44 22
+asc2tcl ct/sample.pvl keyword=("firstLineAcquisitionDateTime =") val=TLCTime vtype=0 etrim=1
+Beginning VICAR task asc2tcl
+ASC2TCL version 2019-08-07
+vtype 0
+let $echo="no"
+TCLCTime =  2011-10-18T14:22:14.285344Z

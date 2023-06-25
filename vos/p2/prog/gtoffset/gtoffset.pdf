@@ -1,0 +1,81 @@
+procedure help=*
+parm in1 type=string count=1
+parm in2 type=string count=1
+parm ibistab type=string count=1 default="xxqqmap1"
+
+body
+
+ibis-gen &ibistab nc=8 nr=1 deffmt=DOUB
+mf3 &ibistab func="c1=0$c2=0"
+pixmap (&ibistab,&in2) mapcols=(3,4) pixcols=(1,2) 'pixtomap
+pixmap (&ibistab,&in1) mapcols=(3,4) pixcols=(5,6) 'maptopix
+mf3 &ibistab func="c7=c5+1$c8=c6+1"
+ibis-list &ibistab cols=(5,6,7,8) csiz=(16,16,16,16) +
+     cfor="%16.6f%16.6f%16.6f%16.6f"
+
+end-proc
+.TITLE
+GTOFFSET - Calculate/print the offset of two images using GeoTIFF labels
+.HELP
+PURPOSE
+     GTOFFSET reads the GeoTIFF labels of two images and prints the 
+     offset of the second (in line,sample) relative to the first.
+     These values can be used in programs such as FASTMOS or FEATHERV
+     to perform image mosaicking.
+     
+     THE PROCEDURE DOES NOT CHECK THE MAPPINGS FOR CONSISTENCY.  THE
+     TWO IMAGES MUST HAVE A CONSISTENT MAPPING (SAME PROJECTION, ZONE,
+     STANDARD PARALLELS, SCALE, ETC.).  ONLY THE OFFSET CAN VARY.
+     
+     The user can name an ibis table for the result to be in.  The
+     values will be double precision in columns (5,6).
+     
+     THE RESULTS ARE THE RELATIVE OFFSETS OF THE TWO IMAGES.  WHEN
+     MOSAICKING, IF THE FIRST IMAGE IS PLACED AT (1,1) THEN THE 
+     RELATIVE OFFSETS PLUS ONE MUST BE USED FOR THE MOSAIC/OFFSET OF
+     THE SECOND IMAGE.  THESE ARE PRINTED IN COLUMNS 7 AND 8.
+     
+CALL
+     gtoffset INPUT1 INPUT2
+  WHERE:
+     INPUT1   is the first input data set (must have a GeoTIFF label).
+     INPUT2   is the second input data set (must have a GeoTIFF label).
+       
+OPERATION
+
+Pixel (0,0) of the second image is converted to a geographic coordinate
+using the second image geotiff label and the routine PIXMAP.  Then the
+coordinate is converted to pixel again using PIXMAP but using the
+geotiff label of the first image.  The result is the offset of the
+second image.  The result is printed.
+
+PERFORMANCE
+
+Less than a second.
+.PAGE
+Restrictions
+------------
+
+The input images must have GeoTIFF labels.
+The mappings of the two images must differ only
+by offset.
+
+.PAGE
+History: 
+
+Original Programmer: A. L. Zobrist, 07 Jul, 2000
+Current Cognizant Programmer: B. A. McGuffie
+
+2022-06-27 B. Crocco afids to opensource
+
+.LEVEL1
+.VARI IN1
+First image with GeoTIFF label
+.VARI IN2
+Second image with GeoTIFF label
+.VARI IBISTAB
+Optional IBIS table with offset
+in columns (5,6) of record 1; 
+also the offset relative (1,1)
+in columns (7,8)
+.END

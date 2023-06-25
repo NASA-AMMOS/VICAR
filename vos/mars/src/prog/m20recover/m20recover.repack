@@ -1,0 +1,5 @@
+$ vpack m20recover.com -mixed -
+	-s m20recover.cc -
+	-i m20recover.imake -
+	-p m20recover.pdf
+$ Exit

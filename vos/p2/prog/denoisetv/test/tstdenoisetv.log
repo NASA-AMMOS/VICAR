@@ -110,11 +110,11 @@ grad = 33.041528   fid = 51.196861   E = 84.238389
 grad = 33.036669   fid = 51.197753   E = 84.234423   
 grad = 33.031852   fid = 51.198626   E = 84.230478   
 grad = 33.027080   fid = 51.199477   E = 84.226556   
-Filtering time  : 93082.000000 milliseconds.  (timeb.h)
-Filtering time  : 93.082000 seconds.      (timeb.h)
+Filtering time  : 85530.000000 milliseconds.  (timeb.h)
+Filtering time  : 85.530000 seconds.      (timeb.h)
 Write output.
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File denoised.IMG ************
@@ -848,11 +848,11 @@ grad = 8.360244   fid = 2.631245   E = 10.991489
 grad = 8.360270   fid = 2.630380   E = 10.990650   
 grad = 8.360310   fid = 2.629581   E = 10.989891   
 grad = 8.360377   fid = 2.628773   E = 10.989150   
-Filtering time  : 516730.000000 milliseconds.  (timeb.h)
-Filtering time  : 516.730000 seconds.      (timeb.h)
+Filtering time  : 439134.000000 milliseconds.  (timeb.h)
+Filtering time  : 439.134000 seconds.      (timeb.h)
 Write output.
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File denoised_multiband.IMG ************
@@ -1329,11 +1329,11 @@ grad = 9.008358   fid = 2.456514   E = 11.464872
 grad = 9.008442   fid = 2.455705   E = 11.464147   
 grad = 9.008521   fid = 2.454931   E = 11.463452   
 grad = 9.008576   fid = 2.454198   E = 11.462775   
-Filtering time  : 162140.000000 milliseconds.  (timeb.h)
-Filtering time  : 162.140000 seconds.      (timeb.h)
+Filtering time  : 141960.000000 milliseconds.  (timeb.h)
+Filtering time  : 141.960000 seconds.      (timeb.h)
 Write output.
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File denoised_band2.IMG ************

@@ -88,8 +88,17 @@ if (status != 1)
       }
 
    int band = 1;
+   // If we weren't given enough BAND params, assume 1
    if (lauf <= band_count)
       band = bands[lauf-1];
+
+   // If the band # is higher than the # of bands, use the # of bands
+   if (band > nb) {
+      sprintf(outstring, "Band number %d too high for input %d, %d used instead",
+		band, lauf, nb);
+      zvmessage(outstring, "");
+      band = nb;
+   }
 
    for (lauf_nl=1; lauf_nl <= nl; lauf_nl++)         
       {

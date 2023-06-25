@@ -1,0 +1,746 @@
+gen yya nl=64 ns=64 ival=0 linc=1 sinc=1 modulo=6 'real
+Beginning VICAR task gen
+GEN Version 6
+GEN task completed
+gen yyb nl=64 ns=64 ival=0 linc=1 sinc=3 modulo=8.3 'real
+Beginning VICAR task gen
+GEN Version 6
+GEN task completed
+gen yyc nl=64 ns=64 ival=0 linc=1 sinc=6 modulo=12.7 'real
+Beginning VICAR task gen
+GEN Version 6
+GEN task completed
+f2 yya yyax func=("in1*51")
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 4096 TIMES
+fft2005 yyax yya1 'quadswap
+Beginning VICAR task fft2005
+fft2005 version 2015-11-24
+ccomp yya1 (yya1a,yya1p)
+Beginning VICAR task ccomp
+CCOMP version 18 Dec 2012 (64-bit) - rjb
+list yyax size=(1,1,10,10)
+Beginning VICAR task list
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:wlb       Date_Time:Thu Mar 23 13:25:28 2017
+ Task:F2        User:wlb       Date_Time:Thu Mar 23 13:25:28 2017
+     Samp             1           2           3           4           5           6           7           8           9          10
+   Line
+      1       0.000E+00   5.100E+01   1.020E+02   1.530E+02   2.040E+02   2.550E+02   0.000E+00   5.100E+01   1.020E+02   1.530E+02
+      2       5.100E+01   1.020E+02   1.530E+02   2.040E+02   2.550E+02   0.000E+00   5.100E+01   1.020E+02   1.530E+02   2.040E+02
+      3       1.020E+02   1.530E+02   2.040E+02   2.550E+02   0.000E+00   5.100E+01   1.020E+02   1.530E+02   2.040E+02   2.550E+02
+      4       1.530E+02   2.040E+02   2.550E+02   0.000E+00   5.100E+01   1.020E+02   1.530E+02   2.040E+02   2.550E+02   0.000E+00
+      5       2.040E+02   2.550E+02   0.000E+00   5.100E+01   1.020E+02   1.530E+02   2.040E+02   2.550E+02   0.000E+00   5.100E+01
+      6       2.550E+02   0.000E+00   5.100E+01   1.020E+02   1.530E+02   2.040E+02   2.550E+02   0.000E+00   5.100E+01   1.020E+02
+      7       0.000E+00   5.100E+01   1.020E+02   1.530E+02   2.040E+02   2.550E+02   0.000E+00   5.100E+01   1.020E+02   1.530E+02
+      8       5.100E+01   1.020E+02   1.530E+02   2.040E+02   2.550E+02   0.000E+00   5.100E+01   1.020E+02   1.530E+02   2.040E+02
+      9       1.020E+02   1.530E+02   2.040E+02   2.550E+02   0.000E+00   5.100E+01   1.020E+02   1.530E+02   2.040E+02   2.550E+02
+     10       1.530E+02   2.040E+02   2.550E+02   0.000E+00   5.100E+01   1.020E+02   1.530E+02   2.040E+02   2.550E+02   0.000E+00
+list yya1a size=(28,28,10,10)
+Beginning VICAR task list
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:wlb       Date_Time:Thu Mar 23 13:25:28 2017
+ Task:CCOMP     User:wlb       Date_Time:Thu Mar 23 13:25:28 2017
+     Samp            28          29          30          31          32          33          34          35          36          37
+   Line
+     28       4.313E+02   3.573E+02   3.025E+02   2.603E+02   2.267E+02   1.995E+02   1.773E+02   1.596E+02   1.469E+02   1.408E+02
+     29       3.573E+02   2.941E+02   2.474E+02   2.116E+02   1.833E+02   1.609E+02   1.434E+02   1.310E+02   1.247E+02   1.267E+02
+     30       3.025E+02   2.474E+02   2.069E+02   1.760E+02   1.522E+02   1.341E+02   1.213E+02   1.145E+02   1.149E+02   1.247E+02
+     31       2.603E+02   2.116E+02   1.760E+02   1.495E+02   1.298E+02   1.161E+02   1.084E+02   1.075E+02   1.145E+02   1.310E+02
+     32       2.267E+02   1.833E+02   1.522E+02   1.298E+02   1.144E+02   1.055E+02   1.033E+02   1.084E+02   1.213E+02   1.434E+02
+     33       1.995E+02   1.609E+02   1.341E+02   1.161E+02   1.055E+02   5.223E+05   1.055E+02   1.161E+02   1.341E+02   1.609E+02
+     34       1.773E+02   1.434E+02   1.213E+02   1.084E+02   1.033E+02   1.055E+02   1.144E+02   1.298E+02   1.522E+02   1.833E+02
+     35       1.596E+02   1.310E+02   1.145E+02   1.075E+02   1.084E+02   1.161E+02   1.298E+02   1.495E+02   1.760E+02   2.116E+02
+     36       1.469E+02   1.247E+02   1.149E+02   1.145E+02   1.213E+02   1.341E+02   1.522E+02   1.760E+02   2.069E+02   2.474E+02
+     37       1.408E+02   1.267E+02   1.247E+02   1.310E+02   1.434E+02   1.609E+02   1.833E+02   2.116E+02   2.474E+02   2.941E+02
+list yya1p size=(28,28,10,10)
+Beginning VICAR task list
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:wlb       Date_Time:Thu Mar 23 13:25:28 2017
+ Task:CCOMP     User:wlb       Date_Time:Thu Mar 23 13:25:28 2017
+     Samp            28          29          30          31          32          33          34          35          36          37
+   Line
+     28       5.025E-01   5.282E-01   5.475E-01   5.584E-01   5.583E-01   5.432E-01   5.077E-01   4.439E-01   3.421E-01   1.936E-01
+     29       5.282E-01   5.454E-01   5.535E-01   5.500E-01   5.311E-01   4.914E-01   4.242E-01   3.217E-01   1.787E-01  -5.606E-16
+     30       5.475E-01   5.535E-01   5.473E-01   5.252E-01   4.821E-01   4.119E-01   3.084E-01   1.689E-01   9.894E-16  -1.787E-01
+     31       5.584E-01   5.500E-01   5.252E-01   4.790E-01   4.060E-01   3.009E-01   1.629E-01  -9.258E-16  -1.689E-01  -3.217E-01
+     32       5.583E-01   5.311E-01   4.821E-01   4.060E-01   2.985E-01   1.601E-01  -9.971E-16  -1.629E-01  -3.084E-01  -4.242E-01
+     33       5.432E-01   4.914E-01   4.119E-01   3.009E-01   1.601E-01   0.000E+00  -1.601E-01  -3.009E-01  -4.119E-01  -4.914E-01
+     34       5.077E-01   4.242E-01   3.084E-01   1.629E-01   9.971E-16  -1.601E-01  -2.985E-01  -4.060E-01  -4.821E-01  -5.311E-01
+     35       4.439E-01   3.217E-01   1.689E-01   9.258E-16  -1.629E-01  -3.009E-01  -4.060E-01  -4.790E-01  -5.252E-01  -5.500E-01
+     36       3.421E-01   1.787E-01  -9.894E-16  -1.689E-01  -3.084E-01  -4.119E-01  -4.821E-01  -5.252E-01  -5.473E-01  -5.535E-01
+     37       1.936E-01   5.606E-16  -1.787E-01  -3.217E-01  -4.242E-01  -4.914E-01  -5.311E-01  -5.500E-01  -5.535E-01  -5.454E-01
+f2 yyb yybx func=("in1*16")
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 4096 TIMES
+fft2005 yybx yyb1 'quadswap
+Beginning VICAR task fft2005
+fft2005 version 2015-11-24
+ccomp yyb1 (yyb1a,yyb1p)
+Beginning VICAR task ccomp
+CCOMP version 18 Dec 2012 (64-bit) - rjb
+list yybx size=(1,1,10,10)
+Beginning VICAR task list
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:wlb       Date_Time:Thu Mar 23 13:25:28 2017
+ Task:F2        User:wlb       Date_Time:Thu Mar 23 13:25:28 2017
+     Samp             1           2           3           4           5           6           7           8           9          10
+   Line
+      1       0.000E+00   4.800E+01   9.600E+01   1.120E+01   5.920E+01   1.072E+02   2.240E+01   7.040E+01   1.184E+02   3.360E+01
+      2       1.600E+01   6.400E+01   1.120E+02   2.720E+01   7.520E+01   1.232E+02   3.840E+01   8.640E+01   1.600E+00   4.960E+01
+      3       3.200E+01   8.000E+01   1.280E+02   4.320E+01   9.120E+01   6.400E+00   5.440E+01   1.024E+02   1.760E+01   6.560E+01
+      4       4.800E+01   9.600E+01   1.120E+01   5.920E+01   1.072E+02   2.240E+01   7.040E+01   1.184E+02   3.360E+01   8.160E+01
+      5       6.400E+01   1.120E+02   2.720E+01   7.520E+01   1.232E+02   3.840E+01   8.640E+01   1.600E+00   4.960E+01   9.760E+01
+      6       8.000E+01   1.280E+02   4.320E+01   9.120E+01   6.400E+00   5.440E+01   1.024E+02   1.760E+01   6.560E+01   1.136E+02
+      7       9.600E+01   1.120E+01   5.920E+01   1.072E+02   2.240E+01   7.040E+01   1.184E+02   3.360E+01   8.160E+01   1.296E+02
+      8       1.120E+02   2.720E+01   7.520E+01   1.232E+02   3.840E+01   8.640E+01   1.600E+00   4.960E+01   9.760E+01   1.280E+01
+      9       1.280E+02   4.320E+01   9.120E+01   6.400E+00   5.440E+01   1.024E+02   1.760E+01   6.560E+01   1.136E+02   2.880E+01
+     10       1.120E+01   5.920E+01   1.072E+02   2.240E+01   7.040E+01   1.184E+02   3.360E+01   8.160E+01   1.296E+02   4.480E+01
+list yyb1a size=(28,28,10,10)
+Beginning VICAR task list
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:wlb       Date_Time:Thu Mar 23 13:25:28 2017
+ Task:CCOMP     User:wlb       Date_Time:Thu Mar 23 13:25:28 2017
+     Samp            28          29          30          31          32          33          34          35          36          37
+   Line
+     28       5.460E+02   2.094E+02   1.266E+02   3.268E+02   1.668E+02   2.144E+02   1.929E+02   2.891E+02   9.586E+01   1.989E+02
+     29       5.436E+02   1.904E+02   5.357E+01   3.438E+02   1.444E+02   1.597E+02   1.501E+02   2.608E+02   3.420E+01   1.735E+02
+     30       8.328E+02   3.074E+02   9.883E+01   4.901E+02   2.110E+02   2.070E+02   1.975E+02   3.245E+02   4.734E+01   1.923E+02
+     31       2.361E+03   7.440E+02   4.631E+01   7.225E+02   2.285E+02   1.687E+02   1.666E+02   3.572E+02   2.213E+01   2.129E+02
+     32       1.069E+03   1.589E+03   1.790E+03   2.929E+03   6.151E+02   3.643E+02   3.159E+02   5.838E+02   5.711E+00   2.741E+02
+     33       4.740E+02   5.243E+02   3.635E+02   1.140E+03   4.270E+02   2.748E+05   4.270E+02   1.140E+03   3.635E+02   5.243E+02
+     34       2.399E+02   2.741E+02   5.711E+00   5.838E+02   3.159E+02   3.643E+02   6.151E+02   2.929E+03   1.790E+03   1.589E+03
+     35       1.935E+02   2.129E+02   2.213E+01   3.572E+02   1.666E+02   1.687E+02   2.285E+02   7.225E+02   4.631E+01   7.440E+02
+     36       1.136E+02   1.923E+02   4.734E+01   3.245E+02   1.975E+02   2.070E+02   2.110E+02   4.901E+02   9.883E+01   3.074E+02
+     37       1.136E+02   1.735E+02   3.420E+01   2.608E+02   1.501E+02   1.597E+02   1.444E+02   3.438E+02   5.357E+01   1.904E+02
+list yyb1p size=(28,28,10,10)
+Beginning VICAR task list
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:wlb       Date_Time:Thu Mar 23 13:25:28 2017
+ Task:CCOMP     User:wlb       Date_Time:Thu Mar 23 13:25:28 2017
+     Samp            28          29          30          31          32          33          34          35          36          37
+   Line
+     28      -2.898E+00  -2.085E+00  -2.646E+00  -1.910E+00  -1.995E+00  -2.564E+00  -2.219E+00  -2.836E+00  -2.555E+00   3.076E+00
+     29      -2.935E+00  -1.406E+00  -2.358E+00  -1.566E+00  -1.547E+00  -2.394E+00  -1.994E+00  -2.784E+00  -2.512E+00   2.916E+00
+     30      -2.951E+00  -1.198E+00  -2.228E+00  -1.448E+00  -1.544E+00  -2.202E+00  -1.939E+00  -2.608E+00  -2.145E+00   3.091E+00
+     31       3.061E+00  -4.585E-01   8.775E-01  -1.130E+00  -1.167E+00  -2.027E+00  -1.847E+00  -2.591E+00   1.444E+00   2.898E+00
+     32      -1.887E-01   2.809E+00   2.449E+00  -1.028E+00  -1.265E+00  -1.800E+00  -1.857E+00  -2.407E+00   1.413E+00   3.114E+00
+     33      -8.559E-01  -2.742E+00  -1.709E+00   2.599E+00   2.874E+00   0.000E+00  -2.874E+00  -2.599E+00   1.709E+00   2.742E+00
+     34      -6.044E-01  -3.114E+00  -1.413E+00   2.407E+00   1.857E+00   1.800E+00   1.265E+00   1.028E+00  -2.449E+00  -2.809E+00
+     35      -8.511E-01  -2.898E+00  -1.444E+00   2.591E+00   1.847E+00   2.027E+00   1.167E+00   1.130E+00  -8.775E-01   4.585E-01
+     36      -8.878E-01  -3.091E+00   2.145E+00   2.608E+00   1.939E+00   2.202E+00   1.544E+00   1.448E+00   2.228E+00   1.198E+00
+     37      -1.143E+00  -2.916E+00   2.512E+00   2.784E+00   1.994E+00   2.394E+00   1.547E+00   1.566E+00   2.358E+00   1.406E+00
+f2 yyc yycx func=("in1*13")
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 4096 TIMES
+fft2005 yycx yyc1 'quadswap
+Beginning VICAR task fft2005
+fft2005 version 2015-11-24
+ccomp yyc1 (yyc1a,yyc1p)
+Beginning VICAR task ccomp
+CCOMP version 18 Dec 2012 (64-bit) - rjb
+list yycx size=(1,1,10,10)
+Beginning VICAR task list
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:wlb       Date_Time:Thu Mar 23 13:25:28 2017
+ Task:F2        User:wlb       Date_Time:Thu Mar 23 13:25:28 2017
+     Samp             1           2           3           4           5           6           7           8           9          10
+   Line
+      1       0.000E+00   7.800E+01   1.560E+02   6.890E+01   1.469E+02   5.980E+01   1.378E+02   5.070E+01   1.287E+02   4.160E+01
+      2       1.300E+01   9.100E+01   3.900E+00   8.190E+01   1.599E+02   7.280E+01   1.508E+02   6.370E+01   1.417E+02   5.460E+01
+      3       2.600E+01   1.040E+02   1.690E+01   9.490E+01   7.800E+00   8.580E+01   1.638E+02   7.670E+01   1.547E+02   6.760E+01
+      4       3.900E+01   1.170E+02   2.990E+01   1.079E+02   2.080E+01   9.880E+01   1.170E+01   8.970E+01   2.600E+00   8.060E+01
+      5       5.200E+01   1.300E+02   4.290E+01   1.209E+02   3.380E+01   1.118E+02   2.470E+01   1.027E+02   1.560E+01   9.360E+01
+      6       6.500E+01   1.430E+02   5.590E+01   1.339E+02   4.680E+01   1.248E+02   3.770E+01   1.157E+02   2.860E+01   1.066E+02
+      7       7.800E+01   1.560E+02   6.890E+01   1.469E+02   5.980E+01   1.378E+02   5.070E+01   1.287E+02   4.160E+01   1.196E+02
+      8       9.100E+01   3.900E+00   8.190E+01   1.599E+02   7.280E+01   1.508E+02   6.370E+01   1.417E+02   5.460E+01   1.326E+02
+      9       1.040E+02   1.690E+01   9.490E+01   7.800E+00   8.580E+01   1.638E+02   7.670E+01   1.547E+02   6.760E+01   1.456E+02
+     10       1.170E+02   2.990E+01   1.079E+02   2.080E+01   9.880E+01   1.170E+01   8.970E+01   2.600E+00   8.060E+01   1.586E+02
+list yyc1a size=(28,28,10,10)
+Beginning VICAR task list
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:wlb       Date_Time:Thu Mar 23 13:25:28 2017
+ Task:CCOMP     User:wlb       Date_Time:Thu Mar 23 13:25:28 2017
+     Samp            28          29          30          31          32          33          34          35          36          37
+   Line
+     28       9.727E+02   1.041E+03   1.386E+03   1.128E+03   1.144E+03   1.063E+03   1.346E+03   1.177E+03   1.694E+03   8.468E+02
+     29       2.017E+02   2.164E+02   3.528E+02   1.359E+02   4.267E+01   1.089E+02   2.091E+02   3.899E+01   5.602E+02   4.934E+02
+     30       1.504E+02   1.156E+02   4.136E+02   6.252E+01   1.529E+02   5.604E+00   2.250E+02   8.952E+01   6.250E+02   3.382E+02
+     31       2.310E+02   1.803E+02   5.816E+02   3.949E+00   1.652E+02   5.277E+01   1.585E+02   7.339E+01   6.401E+02   3.191E+02
+     32       3.530E+02   3.281E+02   2.062E+03   1.403E+02   6.478E+01   1.120E+02   1.247E+02   3.801E+01   8.448E+02   3.417E+02
+     33       2.272E+02   3.003E+02   2.205E+03   8.858E+00   1.469E+02   3.354E+05   1.469E+02   8.858E+00   2.205E+03   3.003E+02
+     34       2.578E+02   3.417E+02   8.448E+02   3.801E+01   1.247E+02   1.120E+02   6.478E+01   1.403E+02   2.062E+03   3.281E+02
+     35       2.038E+02   3.191E+02   6.401E+02   7.339E+01   1.585E+02   5.277E+01   1.652E+02   3.949E+00   5.816E+02   1.803E+02
+     36       2.170E+02   3.382E+02   6.250E+02   8.952E+01   2.250E+02   5.604E+00   1.529E+02   6.252E+01   4.136E+02   1.156E+02
+     37       3.315E+02   4.934E+02   5.602E+02   3.899E+01   2.091E+02   1.089E+02   4.267E+01   1.359E+02   3.528E+02   2.164E+02
+list yyc1p size=(28,28,10,10)
+Beginning VICAR task list
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:wlb       Date_Time:Thu Mar 23 13:25:28 2017
+ Task:CCOMP     User:wlb       Date_Time:Thu Mar 23 13:25:28 2017
+     Samp            28          29          30          31          32          33          34          35          36          37
+   Line
+     28      -1.142E+00  -1.236E+00  -1.188E+00  -1.116E+00  -9.125E-01  -9.850E-01  -8.876E-01  -7.965E-01  -6.348E-01  -1.243E+00
+     29       2.168E+00   2.945E+00  -1.838E+00  -2.575E+00   1.936E-01  -2.915E+00  -1.100E+00  -1.058E+00  -4.621E-01  -2.957E+00
+     30       1.581E+00   2.734E+00  -1.671E+00  -1.491E+00   2.322E-01  -2.049E+00  -6.540E-01   9.620E-02  -3.926E-01  -2.983E+00
+     31       1.605E+00   2.331E+00  -1.958E+00  -3.039E+00   6.743E-01   2.078E+00  -4.589E-01   9.641E-01  -4.320E-01  -3.091E+00
+     32       2.506E+00   2.752E+00  -2.232E+00  -2.670E+00   1.124E+00  -3.059E+00  -1.058E+00   2.864E+00  -6.515E-01  -2.953E+00
+     33       2.388E+00   3.030E+00   7.681E-01  -9.269E-02   6.958E-01   0.000E+00  -6.958E-01   9.269E-02  -7.681E-01  -3.030E+00
+     34       2.428E+00   2.953E+00   6.515E-01  -2.864E+00   1.058E+00   3.059E+00  -1.124E+00   2.670E+00   2.232E+00  -2.752E+00
+     35       2.526E+00   3.091E+00   4.320E-01  -9.641E-01   4.589E-01  -2.078E+00  -6.743E-01   3.039E+00   1.958E+00  -2.331E+00
+     36       2.366E+00   2.983E+00   3.926E-01  -9.620E-02   6.540E-01   2.049E+00  -2.322E-01   1.491E+00   1.671E+00  -2.734E+00
+     37       2.504E+00   2.957E+00   4.621E-01   1.058E+00   1.100E+00   2.915E+00  -1.936E-01   2.575E+00   1.838E+00  -2.945E+00
+gen xxb nl=8 ns=8 ival=3 linc=20 sinc=3 'real
+Beginning VICAR task gen
+GEN Version 6
+GEN task completed
+f2 inp=xxb out=xxa func="sqrt(im1)"
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 64 TIMES
+list xxa
+Beginning VICAR task list
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:wlb       Date_Time:Thu Mar 23 13:25:28 2017
+ Task:F2        User:wlb       Date_Time:Thu Mar 23 13:25:28 2017
+     Samp             1           2           3           4           5           6           7           8
+   Line
+      1       1.732E+00   2.449E+00   3.000E+00   3.464E+00   3.873E+00   4.243E+00   4.583E+00   4.899E+00
+      2       4.796E+00   5.099E+00   5.385E+00   5.657E+00   5.916E+00   6.164E+00   6.403E+00   6.633E+00
+      3       6.557E+00   6.782E+00   7.000E+00   7.211E+00   7.416E+00   7.616E+00   7.810E+00   8.000E+00
+      4       7.937E+00   8.124E+00   8.307E+00   8.485E+00   8.660E+00   8.832E+00   9.000E+00   9.165E+00
+      5       9.110E+00   9.274E+00   9.434E+00   9.592E+00   9.747E+00   9.899E+00   1.005E+01   1.020E+01
+      6       1.015E+01   1.030E+01   1.044E+01   1.058E+01   1.072E+01   1.086E+01   1.100E+01   1.114E+01
+      7       1.109E+01   1.122E+01   1.136E+01   1.149E+01   1.162E+01   1.175E+01   1.187E+01   1.200E+01
+      8       1.196E+01   1.208E+01   1.221E+01   1.233E+01   1.245E+01   1.257E+01   1.269E+01   1.281E+01
+fft22 xxa xxa0
+Beginning VICAR task fft22
+FFT22 version 1-JUL-94
+FORWARD TRANSFORM
+TRANSFORM COMPLETED
+ccomp xxa0 (xxa0a,xxa0p)
+Beginning VICAR task ccomp
+CCOMP version 18 Dec 2012 (64-bit) - rjb
+fftflip xxa0a xxa1a
+Beginning VICAR task fftflip
+FFTFLIP version 2016-06-08
+fft2005 xxa xxa2 'quadswap
+Beginning VICAR task fft2005
+fft2005 version 2015-11-24
+fft22 xxa xxb1 size=(2,3,4,2) 'forward 'comp
+Beginning VICAR task fft22
+FFT22 version 1-JUL-94
+FORWARD TRANSFORM
+TRANSFORM COMPLETED
+list xxb1
+Beginning VICAR task list
+
+   COMP     samples are interpreted as COMPLEX  data
+ Task:GEN       User:wlb       Date_Time:Thu Mar 23 13:25:28 2017
+ Task:FFT22     User:wlb       Date_Time:Thu Mar 23 13:25:29 2017
+     Samp                         1                       2                       3                       4
+   Line
+      1       6.107E+01   0.000E+00  -5.750E+00  -4.815E+00  -5.403E+00   0.000E+00  -5.750E+00   4.815E+00
+      2      -8.191E-01   0.000E+00  -9.303E-02  -5.342E-02  -8.156E-02   0.000E+00  -9.303E-02   5.342E-02
+fft2005 xxa xxb2 size=(2,3,4,2) 'forward 'comp
+Beginning VICAR task fft2005
+fft2005 version 2015-11-24
+list xxb2
+Beginning VICAR task list
+
+   COMP     samples are interpreted as COMPLEX  data
+ Task:GEN       User:wlb       Date_Time:Thu Mar 23 13:25:28 2017
+ Task:FFT2005   User:wlb       Date_Time:Thu Mar 23 13:25:29 2017
+     Samp                         1                       2
+   Line
+      1       6.107E+01   0.000E+00  -8.191E-01   0.000E+00
+      2      -5.750E+00   4.815E+00  -9.303E-02   5.342E-02
+      3      -5.403E+00   0.000E+00  -8.156E-02   0.000E+00
+      4      -5.750E+00  -4.815E+00  -9.303E-02  -5.342E-02
+fft2005 xxb2 xxc2 size=(1,1,4,2) 'inverse 'real
+Beginning VICAR task fft2005
+fft2005 version 2015-11-24
+list xxc2
+Beginning VICAR task list
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:wlb       Date_Time:Thu Mar 23 13:25:28 2017
+ Task:FFT2005   User:wlb       Date_Time:Thu Mar 23 13:25:29 2017
+     Samp             1           2
+   Line
+      1       5.385E+00   5.657E+00
+      2       7.000E+00   7.211E+00
+      3       8.307E+00   8.485E+00
+      4       9.434E+00   9.592E+00
+fft2005 xxb2 xxc3 size=(1,1,4,2) 'inverse 'byte
+Beginning VICAR task fft2005
+fft2005 version 2015-11-24
+list xxc3
+Beginning VICAR task list
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:wlb       Date_Time:Thu Mar 23 13:25:28 2017
+ Task:FFT2005   User:wlb       Date_Time:Thu Mar 23 13:25:29 2017
+     Samp     1
+   Line
+      1       5   6
+      2       7   7
+      3       8   8
+      4       9  10
+gen xxf nl=3375 ns=3648 ival=0 linc=0 sinc=0 'byte
+Beginning VICAR task gen
+GEN Version 6
+GEN task completed
+f2 inp=xxf out=xxp func="(line==1688)*(samp==1825)"
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 12312000 TIMES
+list xxp sl=1686 ss=1823 nl=5 ns=5 'zer
+Beginning VICAR task list
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:wlb       Date_Time:Thu Mar 23 13:25:29 2017
+ Task:F2        User:wlb       Date_Time:Thu Mar 23 13:25:29 2017
+     Samp  1823    1825    1827
+   Line
+   1686       0   0   0   0   0
+   1687       0   0   0   0   0
+   1688       0   0   1   0   0
+   1689       0   0   0   0   0
+   1690       0   0   0   0   0
+gen xxg nl=3375 ns=3648 ival=1 linc=2 sinc=1 'half
+Beginning VICAR task gen
+GEN Version 6
+GEN task completed
+fft2005 xxp xxo
+Beginning VICAR task fft2005
+fft2005 version 2015-11-24
+fft2005 xxp xxq 'quadswap
+Beginning VICAR task fft2005
+fft2005 version 2015-11-24
+ccomp xxq (xxqa,xxqp)
+Beginning VICAR task ccomp
+CCOMP version 18 Dec 2012 (64-bit) - rjb
+fft2005 xxg xxh 'quadswap
+Beginning VICAR task fft2005
+fft2005 version 2015-11-24
+ccomp xxh (xxha,xxhp)
+Beginning VICAR task ccomp
+CCOMP version 18 Dec 2012 (64-bit) - rjb
+list xxha size=(1682,1819,10,10)
+Beginning VICAR task list
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:wlb       Date_Time:Thu Mar 23 13:25:30 2017
+ Task:CCOMP     User:wlb       Date_Time:Thu Mar 23 13:25:38 2017
+     Samp          1819        1820        1821        1822        1823        1824        1825        1826        1827        1828
+   Line
+   1682       1.023E-08   3.665E-08   2.389E-08   1.384E-08   1.406E-08   1.174E-08   2.204E+09   1.664E-08   1.254E-08   1.467E-08
+   1683       1.313E-08   1.822E-08   1.331E-08   2.115E-08   1.459E-08   2.154E-08   2.645E+09   2.336E-08   2.050E-08   2.280E-08
+   1684       1.473E-08   2.271E-08   3.637E-08   2.002E-08   1.514E-08   1.179E-08   3.307E+09   1.144E-08   2.531E-08   2.625E-08
+   1685       3.400E-08   7.115E-08   3.599E-08   2.700E-08   2.932E-08   1.671E-08   4.409E+09   2.050E-08   3.301E-08   3.180E-08
+   1686       3.194E-08   2.992E-08   7.728E-08   4.040E-08   3.214E-08   5.459E-08   6.613E+09   5.553E-08   6.773E-08   3.860E-08
+   1687       1.107E-07   6.929E-08   1.009E-07   8.861E-08   7.858E-08   7.995E-08   1.323E+10   9.080E-08   7.383E-08   1.012E-07
+   1688       1.191E+09   1.430E+09   1.787E+09   2.383E+09   3.574E+09   7.148E+09   6.400E+10   7.148E+09   3.574E+09   2.383E+09
+   1689       1.181E-07   1.030E-07   1.472E-07   8.861E-08   7.893E-08   8.138E-08   1.323E+10   9.080E-08   1.632E-07   6.959E-08
+   1690       4.143E-08   4.369E-08   8.841E-08   4.040E-08   3.139E-08   5.443E-08   6.613E+09   5.553E-08   8.415E-08   4.406E-08
+   1691       1.952E-08   8.076E-08   3.183E-08   2.700E-08   2.662E-08   1.671E-08   4.409E+09   2.050E-08   2.771E-08   2.670E-08
+wiener (xxh,xxo) out=xxi option=direct SN=30.0
+Beginning VICAR task wiener
+WIENER version Nov 1996
+ccomp xxi (xxia,xxip)
+Beginning VICAR task ccomp
+CCOMP version 18 Dec 2012 (64-bit) - rjb
+list xxia  size=(1682,1819,10,10)
+Beginning VICAR task list
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:wlb       Date_Time:Thu Mar 23 13:25:30 2017
+ Task:CCOMP     User:wlb       Date_Time:Thu Mar 23 13:25:41 2017
+     Samp          1819        1820        1821        1822        1823        1824        1825        1826        1827        1828
+   Line
+   1682       1.023E-08   3.665E-08   2.389E-08   1.384E-08   1.406E-08   1.174E-08   2.204E+09   1.664E-08   1.254E-08   1.467E-08
+   1683       1.313E-08   1.822E-08   1.331E-08   2.115E-08   1.459E-08   2.154E-08   2.645E+09   2.336E-08   2.050E-08   2.280E-08
+   1684       1.473E-08   2.271E-08   3.637E-08   2.002E-08   1.514E-08   1.179E-08   3.307E+09   1.144E-08   2.531E-08   2.625E-08
+   1685       3.400E-08   7.115E-08   3.599E-08   2.700E-08   2.932E-08   1.671E-08   4.409E+09   2.050E-08   3.301E-08   3.180E-08
+   1686       3.194E-08   2.992E-08   7.728E-08   4.040E-08   3.214E-08   5.459E-08   6.613E+09   5.553E-08   6.773E-08   3.860E-08
+   1687       1.107E-07   6.929E-08   1.009E-07   8.861E-08   7.858E-08   7.995E-08   1.323E+10   9.080E-08   7.383E-08   1.012E-07
+   1688       1.191E+09   1.430E+09   1.787E+09   2.383E+09   3.574E+09   7.148E+09   6.400E+10   7.148E+09   3.574E+09   2.383E+09
+   1689       1.181E-07   1.030E-07   1.472E-07   8.861E-08   7.893E-08   8.138E-08   1.323E+10   9.080E-08   1.632E-07   6.959E-08
+   1690       4.143E-08   4.369E-08   8.841E-08   4.040E-08   3.139E-08   5.443E-08   6.613E+09   5.553E-08   8.415E-08   4.406E-08
+   1691       1.952E-08   8.076E-08   3.183E-08   2.700E-08   2.662E-08   1.671E-08   4.409E+09   2.050E-08   2.771E-08   2.670E-08
+let _onfail="continue"
+fft2005 xxi xxj 'inverse 'half 'quadswap
+Beginning VICAR task fft2005
+fft2005 version 2015-11-24
+??E - Quadswap of inverse option is not yet implemented.
+ ** ABEND called **
+continue
+let _onfail="stop"
+list xxj sl=1686 ss=1823 nl=5 ns=5
+Beginning VICAR task list
+ ** The specified window is all zero.
+list xxj sl=0 ss=0 nl=5 ns=5
+Beginning VICAR task list
+ ** The specified window is all zero.
+list xxj sl=3371 ss=0 nl=5 ns=5
+Beginning VICAR task list
+ ** The specified window is all zero.
+list xxj sl=0 ss=3644 nl=5 ns=5
+Beginning VICAR task list
+ ** The specified window is all zero.
+list xxj sl=3371 ss=3644 nl=5 ns=5
+Beginning VICAR task list
+ ** The specified window is all zero.
+gen xxm nl=3 ns=3 ival=0 linc=0 sinc=0 'byte
+Beginning VICAR task gen
+GEN Version 6
+GEN task completed
+f2 inp=xxm out=xxn func="(line==2)*(samp==2)"
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 9 TIMES
+list xxn 'zer
+Beginning VICAR task list
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:wlb       Date_Time:Thu Mar 23 13:25:43 2017
+ Task:F2        User:wlb       Date_Time:Thu Mar 23 13:25:43 2017
+     Samp     1       3
+   Line
+      1       0   0   0
+      2       0   1   0
+      3       0   0   0
+fft2005 xxn xxo2 insect=(3375,3648)
+Beginning VICAR task fft2005
+fft2005 version 2015-11-24
+difpic (xxo,xxo2)
+Beginning VICAR task difpic
+DIFPIC version 06Oct11
+ NUMBER OF DIFFERENCES =   0
+gen xxr nl=4 ns=4 ival=0 linc=0 sinc=0 'byte
+Beginning VICAR task gen
+GEN Version 6
+GEN task completed
+f2 inp=xxr out=xxs func="(line==3)*(samp==3)"
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 16 TIMES
+list xxs 'zer
+Beginning VICAR task list
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:wlb       Date_Time:Thu Mar 23 13:25:46 2017
+ Task:F2        User:wlb       Date_Time:Thu Mar 23 13:25:46 2017
+     Samp     1       3
+   Line
+      1       0   0   0   0
+      2       0   0   0   0
+      3       0   0   1   0
+      4       0   0   0   0
+fft2005 xxs xxt insect=(3375,3648)
+Beginning VICAR task fft2005
+fft2005 version 2015-11-24
+difpic (xxo,xxt)
+Beginning VICAR task difpic
+DIFPIC version 06Oct11
+ NUMBER OF DIFFERENCES =   0
+if (mode = "nobatch" or mode = "inter")
+end-if
+gen iib nl=2048 ns=2048 ival=3 linc=20 sinc=3 'real
+Beginning VICAR task gen
+GEN Version 6
+GEN task completed
+f2 inp=iib out=iia func="sqrt(im1)"
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 4194304 TIMES
+fft22 iia iib 'forward 'comp
+Beginning VICAR task fft22
+FFT22 version 1-JUL-94
+FORWARD TRANSFORM
+TRANSFORM COMPLETED
+fft22 iib iic 'inverse 'real
+Beginning VICAR task fft22
+FFT22 version 1-JUL-94
+INVERSE TRANSFORM
+USING SCRATCH FILE: /tmp/fft2scrx.wlb
+TRANSFORM COMPLETED
+f2 inp=(iia,iic) out=iid func="abs(im1-im2)"
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 4194304 TIMES
+hist iid
+Beginning VICAR task hist
+*** HIST version Aug 10 2015 ***
+
+Bin Width =        0.0
+  0.0000000   591886   ************************************
+  0.0000008        8
+  0.0000016       97
+  0.0000024        1
+  0.0000031       12
+  0.0000039     9614
+  0.0000047        6
+  0.0000055      128
+  0.0000063        1
+  0.0000071       11
+  0.0000079   214562   *************
+  0.0000086       10
+  0.0000094      178
+  0.0000102       12
+  0.0000110        1
+  0.0000118     9259
+  0.0000126       16
+  0.0000134      201
+  0.0000141        6
+  0.0000149  1151745   **************************************************  1
+  0.0000157        2
+  0.0000165        6
+  0.0000173      214
+  0.0000181        9
+  0.0000188     8596
+  0.0000204*       5
+  0.0000212      217
+  0.0000220        9
+  0.0000228   188714   ***********
+  0.0000236        8
+  0.0000251*     165
+  0.0000259        3
+  0.0000267     8172
+  0.0000275        5
+  0.0000283      183
+  0.0000291        1
+  0.0000298        4
+  0.0000306   817948   **************************************************  2
+  0.0000314        4
+  0.0000322      169
+  0.0000338*       6
+  0.0000346     7610
+  0.0000353        4
+  0.0000361      207
+  0.0000369        9
+  0.0000385*  139695   ********
+  0.0000393        4
+  0.0000401      197
+  0.0000408        5
+  0.0000416     6526
+  0.0000424        1
+  0.0000432        7
+  0.0000440      202
+  0.0000448        4
+  0.0000456   526696   ********************************
+  0.0000463        1
+  0.0000471        4
+  0.0000479      198
+  0.0000487        5
+  0.0000495     5069
+  0.0000503        3
+  0.0000518*     195
+  0.0000526        4
+  0.0000534    75969   ****
+  0.0000542        4
+  0.0000550      153
+  0.0000565*       4
+  0.0000573     3779
+  0.0000581        3
+  0.0000589      131
+  0.0000605*       5
+  0.0000613   237670   **************
+  0.0000620        3
+  0.0000628      127
+  0.0000636        1
+  0.0000652*    2637
+  0.0000660        6
+  0.0000668       96
+  0.0000675        3
+  0.0000683    29536   *
+  0.0000707*      86
+  0.0000715        1
+  0.0000723     1838
+  0.0000738*       1
+  0.0000746       79
+  0.0000754        2
+  0.0000762    95435   *****
+  0.0000770        2
+  0.0000785*      72
+  0.0000793        3
+  0.0000801     1344
+  0.0000817*      99
+  0.0000833*       3
+  0.0000840     8787
+  0.0000848        2
+  0.0000856       88
+  0.0000872*       4
+  0.0000880      917
+  0.0000895*      84
+  0.0000903        3
+  0.0000919*   28737   *
+  0.0000927        1
+  0.0000935       64
+  0.0000950*     667
+  0.0000966*       2
+  0.0000974       61
+  0.0000982        4
+  0.0000990     3052
+  0.0001005*       2
+  0.0001013       44
+  0.0001021        3
+  0.0001029      445
+  0.0001037        1
+  0.0001052*      47
+  0.0001060        1
+  0.0001068     8122
+  0.0001084*      36
+  0.0001107*     310
+  0.0001115        2
+  0.0001123       44
+  0.0001139*       1
+  0.0001147      803
+  0.0001162*      34
+  0.0001186*     170
+  0.0001202*      32
+  0.0001209        2
+  0.0001217     1604
+  0.0001233*       2
+  0.0001241       39
+  0.0001257*      95
+  0.0001280*      14
+  0.0001296*     461
+  0.0001319*      10
+  0.0001335*     151
+  0.0001351*       7
+  0.0001374*     504
+  0.0001390*       6
+  0.0001414*     163
+  0.0001429*       9
+  0.0001453*     174
+  0.0001469*       7
+  0.0001484*     122
+  0.0001508*      21
+  0.0001524*     131
+  0.0001547*      36
+  0.0001563*      84
+  0.0001586*      22
+  0.0001602*      43
+  0.0001618*      20
+  0.0001641*      32
+  0.0001657*      10
+  0.0001681*      15
+  0.0001696*       6
+  0.0001720*       1
+  0.0001736*       2
+  0.0001751*       2
+  0.0001775*       2
+  0.0001791*       1
+  0.0001830*       2
+  0.0001853*       1
+  0.0002003*       1
+
+AVERAGE GRAY LEVEL=0.000027
+STANDARD DEVIATION=0.000021
+NUMBER ELEMENTS=   4194304
+MIN. DN=0.000000
+MAX. DN=0.000200
+
+gen jjb nl=2048 ns=2048 ival=3 linc=20 sinc=3 'real
+Beginning VICAR task gen
+GEN Version 6
+GEN task completed
+f2 inp=jjb out=jja func="sqrt(im1)"
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 4194304 TIMES
+fft2005 jja jjb 'forward 'comp
+Beginning VICAR task fft2005
+fft2005 version 2015-11-24
+fft2005 jjb jjc 'inverse 'real
+Beginning VICAR task fft2005
+fft2005 version 2015-11-24
+f2 inp=(jja,jjc) out=jjd func="abs(im1-im2)"
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 4194304 TIMES
+hist jjd
+Beginning VICAR task hist
+*** HIST version Aug 10 2015 ***
+
+Bin Width =        0.0
+ 0.00000000  2385254   **************************************************  1
+ 0.00000383*      50
+ 0.00000670*     557
+ 0.00000682*       1
+ 0.00000694*       4
+ 0.00000718*      21
+ 0.00000766* 1363438   **************************************************  2
+ 0.00001526*  444979   ****************
+
+AVERAGE GRAY LEVEL=0.000004
+STANDARD DEVIATION=0.000005
+NUMBER ELEMENTS=   4194304
+MIN. DN=0.000000
+MAX. DN=0.000015
+
+gen kkb nl=29 ns=1155 ival=3 linc=20 sinc=3 'real
+Beginning VICAR task gen
+GEN Version 6
+GEN task completed
+f2 inp=kkb out=kka func="sqrt(im1)"
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 33495 TIMES
+fft2005 kka kkb 'forward 'comp
+Beginning VICAR task fft2005
+fft2005 version 2015-11-24
+fft2005 kkb kkc 'inverse 'real
+Beginning VICAR task fft2005
+fft2005 version 2015-11-24
+f2 inp=(kka,kkc) out=kkd func="abs(im1-im2)"
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 33495 TIMES
+hist kkd
+Beginning VICAR task hist
+*** HIST version Aug 10 2015 ***
+
+Bin Width =        0.0
+0.000000000    13985   **************************************************  1
+0.000001436*       8
+0.000001675*       3
+0.000001795*       1
+0.000001915*    7170   *****************************
+0.000003815*   12328   **************************************************  2
+
+AVERAGE GRAY LEVEL=0.000002
+STANDARD DEVIATION=0.000002
+NUMBER ELEMENTS=     33495
+MIN. DN=0.000000
+MAX. DN=0.000004
+
+disable-log

@@ -144,7 +144,10 @@ extern "C" {
     LblApiIntItem_typ       MarsYear;
     LblApiRealItem_typ		MarsHelioCentricDistance;
     LblApiTypeItem_typ		MarsHelioCentricDistanceUnit;
-    LblApiIdItem_typ      CameraProductId;
+    LblApiIdItem_typ        CameraProductId;
+    LblApiIdItem_typ        MovieProductId;
+    LblApiIdItem_typ        MovieFilename;
+    LblApiIdItem_typ        TrackingId;
   } LblIdentification_typ;
 
 

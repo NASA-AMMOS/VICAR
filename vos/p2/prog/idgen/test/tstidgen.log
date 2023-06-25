@@ -1,0 +1,47 @@
+                Version 5C/16C
+
+      ***********************************************************
+      *                                                         *
+      *                  Welcome to VICAR                       *
+      *                                                         *
+      *          VICAR Supervisor version 5C, TAE V5.3          *
+      *                 Distribution 29.0                       *
+      *                                                         *
+      *          #    #  #####   ###     ##    #####            *
+      *          #    #    #    #   #   #  #   #    #           *
+      *          #    #    #   #       #    #  #    #           *
+      *          #    #    #   #       ######  #####            *
+      *           #  #     #    #   #  #    #  #   #            *
+      *            ##    #####   ###   #    #  #    #           *
+      *                                                         *
+      *         Video Image Communication and Retrieval         *
+      *        and Image Based Information System (IBIS)        *
+      *            ** AFIDS Package Distribution **             *
+      *                                                         *
+      ***********************************************************
+
+  --- Type NUT for the New User Tutorial ---
+
+  --- Type MENU for a menu of available applications ---
+
+$R2LIB set to /data/afids5/vdev
+Disabling interrupts ...
+
+Beginning VICAR task idgen
+idgen version Thu Jan  3 2008
+myvar My_Prefix_Tue_Apr__8_14_04_34_2008
+Beginning VICAR task idgen
+idgen version Thu Jan  3 2008
+myvar (lower) My_Prefix_tue_apr__8_14_04_34_2008
+Beginning VICAR task idgen
+idgen version Thu Jan  3 2008
+myvar (shorter) My_Prefix_Apr81404342008
+Beginning VICAR task idgen
+idgen version Thu Jan  3 2008
+myvar (lower and shorter) My_Prefix_apr81404342008
+Beginning VICAR task idgen
+idgen version Thu Jan  3 2008
+myvar bob_Tue_Apr__8_14_04_34_2008
+Beginning VICAR task idgen
+idgen version Thu Jan  3 2008
+myvar Tue_Apr__8_14_04_34_2008

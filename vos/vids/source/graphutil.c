@@ -9,7 +9,7 @@
 /************************************************************************/
 /* PointsToRect returns the bounding rectangle for a set of points
  */
-PointsToRect(points, nPoints, theRect)
+void PointsToRect(points, nPoints, theRect)
   Point		points[];	/* in: array of points			*/
   int		nPoints;	/* in: number of points in points[]	*/
   Rect		*theRect;	/* out: bounding rectangle of points	*/
@@ -31,7 +31,7 @@ PointsToRect(points, nPoints, theRect)
 /************************************************************************/
 /* SizeToRect converts between a SizeField and a Rect.
  */
-SizeToRect(s, r)
+void SizeToRect(s, r)
   SizeField	*s;	/* in: a size field (sl,ss,nl,ns)		*/
   Rect		*r;	/* out: equivalent Rect				*/
 {
@@ -42,7 +42,7 @@ SizeToRect(s, r)
 /************************************************************************/
 /* RectToSize converts between a Rect to a SizeField.
  */
-RectToSize(r, s)
+void RectToSize(r, s)
   Rect		*r;	/* out: equivalent Rect				*/
   SizeField	*s;	/* in: a size field (sl,ss,nl,ns)		*/
 {
@@ -88,7 +88,7 @@ Boolean EmptyRect(r)
 /* OffsetRect will offset rect r1 by the h/v increments dh,dv and store
  * the resulting rect in r1.
  */
-OffsetRect(r1, dv, dh)
+void OffsetRect(r1, dv, dh)
   Rect	*r1;			/* input/output rectangle		*/
   int	dv,dh;			/* vertical/horizontal increments	*/
 {
@@ -104,7 +104,7 @@ OffsetRect(r1, dv, dh)
  * ns to make it fit within the bounds.  The resulting rect is stored
  * in r2.
  */
-HomeRect(r1, r2, nl, ns)
+void HomeRect(r1, r2, nl, ns)
   Rect	*r1,*r2;		/* input/output rectangles		*/
   int	nl,ns;			/* lines/samps in home area		*/
 {
@@ -123,7 +123,7 @@ HomeRect(r1, r2, nl, ns)
  * (1,1,nl,ns) and shift it by multiples of nl or ns to make it
  * fit within the bounds.  The resulting point is stored in p2.
  */
-HomePoint(p1, p2, nl, ns)
+void HomePoint(p1, p2, nl, ns)
   Point	*p1,*p2;		/* input/output points			*/
   int	nl,ns;			/* lines/samps in home area		*/
 {
@@ -137,7 +137,7 @@ HomePoint(p1, p2, nl, ns)
  * not intersect they will automatically satisfy the conditions of
  * the routine EmptyRect.
  */
-SectRect(r1, r2, r3)
+void SectRect(r1, r2, r3)
   Rect		*r1,*r2;		/* input rectangles		*/
   Rect		*r3;			/* output rectangle		*/
 {
@@ -150,7 +150,7 @@ SectRect(r1, r2, r3)
 /************************************************************************/
 /* ZoomRect will apply the zoom factor zoom to the rectangle r.
  */
-ZoomRect(r, zoom)
+void ZoomRect(r, zoom)
   Rect	*r;
   int	zoom;
 {
@@ -193,7 +193,7 @@ Boolean EqualPoint(p1, p2)
 /* SquarePoints takes the four x,y locations of a rectangle, makes a
  * square out of them, keeping the first point in the same spot.
  */
-SquarePoints(x0,y0,x1,y1)
+void SquarePoints(x0,y0,x1,y1)
   int x0,y0;			/* in: x,y of one corner of rectangle	*/
   int *x1,*y1;			/* in/out: x,y of opposite corner	*/
 {

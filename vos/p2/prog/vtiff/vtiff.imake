@@ -33,4 +33,4 @@ t_swab.c \
 t_tile.c \
 t_vers.c
 
-#define DEBUG	/* comment out on delivery */
+/* #define DEBUG	/ * comment out on delivery */

@@ -1,0 +1,23 @@
+procedure
+refgbl $echo
+refgbl $autousage
+body
+enable-log
+
+let $autousage="none"
+let $echo="yes"
+
+! TEST SCRIPT FOR rpc2ibis
+
+ibis-gen xxxa nr=80 nc=2 format=("DOUB","DOUB")
+
+label-list tstrpc2ibis.vic 'nousrtim
+
+rpc2ibis (tstrpc2ibis.vic,xxxa)
+
+ibis-l xxxa  csiz=(18,18) cfor="%16.14 f%16.9f"
+
+ush rm -f xxxa
+
+disable-log
+end-proc

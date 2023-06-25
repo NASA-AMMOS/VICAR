@@ -83,6 +83,7 @@ procedure
    end-proc
 
 body
+enable-log
 
 tstphopdf_parms |save=tstphopdf_parms|
 
@@ -90,4 +91,5 @@ tzpho_routines |restore=tstphopdf_parms|	PHO_FUNC=MINNAERT
 
 txpho_routines |restore=tstphopdf_parms|	PHO_FUNC=MOSHER
 
+disable-log
 end-proc

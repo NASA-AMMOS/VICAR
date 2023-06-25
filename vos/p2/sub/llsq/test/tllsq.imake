@@ -12,8 +12,8 @@
 
 #define LIB_RTL
 #define LIB_TAE
-#define LIB_P2SUB
 #define LIB_MATH77
-/* #define LIB_LOCAL must be removed before delivery, but used during */
-/* developer testing on VAX and SUN.                                  */ 
-#define LIB_LOCAL
+
+#define LIB_P2SUB
+/* #define LIB_LOCAL	/ * for development, remove on delivery */ 
+/* #define DEBUG	/ * for development, remove on delivery */ 

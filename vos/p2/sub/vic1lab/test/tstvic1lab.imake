@@ -10,4 +10,5 @@
 #define USES_FORTRAN
 
 #define LIB_RTL
+#define LIB_P2SUB
 

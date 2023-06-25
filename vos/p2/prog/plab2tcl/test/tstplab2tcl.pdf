@@ -1,0 +1,53 @@
+procedure
+
+local s1 type=(string,90)
+local n1 type=int
+local r1 type=real
+
+
+body
+enable-log
+
+gtgen out=xxxlab1 'tiecnvrt geotiff= +
+   ("ModelTiePointTag=(2,3,0,350807.4,5317081.3,123456789.123456789)", +
+          "ModelTiePointTag=(202,103,0,351807.4,5316081.3,0.0)", +
+          "ModelTiePointTag=(2,103,0,350807.4,5316081.3,0.0)", +
+          "GTRasterTypeGeoKey=2(RasterPixelIsPoint)")
+
+plab2tcl xxxlab1 property=Geotiff val=s1 keyword=GTRASTERtypEGEOKEY vtype=0
+write "s1 &s1"
+
+plab2tcl xxxlab1 property=Geotiff val=n1 keyword=GTrasTERTYPEGEOKEY vtype=4
+write "n1 &n1"
+   
+plab2tcl xxxlab1 property=Geotiff val=s1 keyword=NeverFindThisKey vtype=0
+write "s1 &s1"
+
+plab2tcl xxxlab1 property=Geotiff val=s1 keyword=ModelTiePointTag vtype=0 sequence=6
+write "s1 &s1"
+
+plab2tcl xxxlab1 property=Geotiff val=r1 keyword=ModelTiePointTag vtype=8 sequence=6
+write "r1 &r1"
+
+plab2tcl xxxlab1 property=Geotiff val=s1 keyword=ModelTiePointTag vtype=0 sequence=7
+write "s1 &s1"
+
+plab2tcl xxxlab1 property=Geotiff val=r1 keyword=ModelTiePointTag vtype=8 sequence=7
+write "r1 &r1"
+
+gtgen out=xxxlab1 'tiecnvrt +
+   geotiff=("ModelTiePointTag=(2,3,0,350807.4,5317081.3,0.0)", +
+          "ModelTiePointTag=(202,103,0,351807.4,5316081.3,0.0)", +
+          "ModelTiePointTag=(2,103,0,350807.4,5316081.3,0.0)", +
+          "GTRasterTypeGeoKey=2(RasterPixelIsPoint)", +
+          "GTRasterTypeGeoKey=1(RasterPixelIsArea)")
+
+  
+plab2tcl xxxlab1 property=Geotiff val=s1 keyword=GTrasTERTYPEGEOKEY vtype=0 element=1
+write "s1 &s1"
+   
+plab2tcl xxxlab1 property=Geotiff val=s1 keyword=GTrasTERTYPEGEOKEY vtype=0 element=2
+write "s1 &s1"
+
+disable-log
+end-proc

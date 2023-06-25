@@ -1,0 +1,275 @@
+procedure help=*
+parm inp type=(string,99) count=1
+parm out type=(string,99) count=1
+parm ref type=(string,99) count=1
+parm typref type=keyword count=(0:1) valid=(coverref,coverinp) +
+     default=coverinp
+parm interp type=keyword count=(0:1) valid=(noin,bilin,cubconv,cubsplin) +
+     default=bilin
+parm znoin type=keyword count=(0:1) valid=znoin default=--
+parm nah type=int count=1 default=100
+parm nav type=int count=1 default=100
+parm gorewid type=int count=1 default=0
+parm memsize type=int default=300000000
+parm seq type=string default="qq"
+parm echo type=(string,4) count=1 valid=("no","yes") default="yes"
+
+local tnl int
+local tns int
+local rminl real
+local rmaxl real
+local rmins real
+local rmaxs real
+local minl int
+local maxl int
+local mins int
+local maxs int
+local sl int
+local ss int
+local nl int
+local ns int
+local nahp1 int
+local navp1 int
+local nahxnav int
+local inpsize int
+
+local xxqqgrid1 string
+local xxqqgrid2 string
+
+refgbl $echo
+local version (string,10)
+local org (string,10)
+body
+!let _onfail="continue"
+let version="ibis-2"
+let org="column"
+
+let $echo="&echo"
+write "gtwarp version 08-jun-10"
+
+!  GTWARP HANDYPROC
+
+!  for the 'coverinp case only, we need the corner points.
+!  map the input grid to the reference image space and get min-max
+!  (which are not necessarily at the corners for conics and stereogr.
+!  the grid is rectangular in the input space
+
+let xxqqgrid1 = "xxqqgrid1&seq"
+let xxqqgrid2 = "xxqqgrid2&seq"
+
+lab2tcl &inp v1=tnl v2=tns keyword=(nl,ns) 'system
+let inpsize = tnl*tns
+
+if ("&typref"="coverinp")
+   lab2tcl &inp v1=tnl v2=tns keyword=(nl,ns) 'system
+   ibis-gen &xxqqgrid1 version=&version org=&org  nc=12 nr=961 deffmt=DOUB
+   mf3 &xxqqgrid1 func=("c1=(@int((@index-1)/31)/30)*&tnl+0.5$", +
+            "c2=(@mod(@index+30,31)/30)*&tns+0.5")
+   pixmap (&xxqqgrid1,&inp) mapcols=(3,4) pixcols=(1,2) 'pixtomap
+   gtproj (&xxqqgrid1,&inp,&ref) incol=(3,4) outcol=(5,6)
+   pixmap (&xxqqgrid1,&ref) mapcols=(5,6) pixcols=(7,8) 'maptopix
+   mf3 &xxqqgrid1 func=("c9=c7$@vmin(c9)$c10=c7$@vmax(c10)$", +
+            "c11=c8$@vmin(c11)$c12=c8$@vmax(c12)")
+   ibis2tcl &xxqqgrid1 v1=rminl v2=rmaxl v3=rmins v4=rmaxs vartype=(-1,-1,-1,-1) +
+    ibisloc=(1,9,1,10,1,11,1,12)
+   let rminl=rminl+0.5
+   let rmaxl=rmaxl+0.5
+   let rmins=rmins+0.5
+   let rmaxs=rmaxs+0.5
+   let minl=$fix(rminl)-gorewid-2
+   let maxl=$fix(rmaxl)+gorewid+2
+   let mins=$fix(rmins)-gorewid-2
+   let maxs=$fix(rmaxs)+gorewid+2
+   !ibis-list &xxqqgrid1 nr=32 'format
+   write "input covers (&minl,&mins,&maxl,&maxs) in reference pixel space"
+   let sl=minl
+   let ss=mins
+   let nl=maxl-minl+1
+   let ns=maxs-mins+1
+else
+   lab2tcl &ref v1=tnl v2=tns keyword=(nl,ns) 'system
+   let sl=1-gorewid
+   let ss=1-gorewid
+   let nl=tnl+gorewid*2
+   let ns=tns+gorewid*2
+end-if
+write "geomv parameter (sl,ss,nl,ns) = (&sl,&ss,&nl,&ns)"
+
+! now make the geomv grid, it is rectangular in the output space
+
+let nahp1=nah+1
+let navp1=nav+1
+let nahxnav=nahp1*navp1
+
+ibis-gen &xxqqgrid2 version=&version org=&org  nc=8 nr=&nahxnav deffmt=DOUB
+mf3 &xxqqgrid2 func=("c1=(@int((@index-1)/&nahp1)/&nav)*&nl+(&sl-0.5)$", +
+            "c2=(@mod(@index+&nah,&nahp1)/&nah)*&ns+(&ss-0.5)")
+pixmap (&xxqqgrid2,&ref) mapcols=(3,4) pixcols=(1,2) 'pixtomap
+gtproj (&xxqqgrid2,&ref,&inp) incol=(3,4) outcol=(5,6)
+pixmap (&xxqqgrid2,&inp) mapcols=(5,6) pixcols=(7,8) 'maptopix
+!ibis-list &xxqqgrid2 nr=32 'format
+
+geomv INP=(&inp,&xxqqgrid2,&ref) OUT=&out size=(&sl,&ss,&nl,&ns) +
+       cols=(1,2,7,8) interp="&interp" znoin="&znoin" vmemsize=&memsize
+
+end-proc
+.TITLE
+GTWARP - Warp an image to a new map projection using GeoTIFF labels.
+.HELP
+PURPOSE
+     GTWARP reads the GeoTIFF label of a "master" or "reference" image,
+     then reads the GeoTIFF label of the input image.  It calculates
+     a set of GEOMV parameters from these and then calls GEOMV to warp
+     the input image to match the mapping of the "reference" image.
+     
+     1.  The keyword 'coverinp causes the procedure to map all of the
+     input image to an output image that will just contain it.   The
+     keyword gorewid allows the user to specify a zero-filled margin
+     to make the output a little larger (or negative trims smaller).
+	
+     2.  The keyword 'coverref causes the procedure to map the input
+     image to an output image that exactly matches the "reference" image.
+     Some parts of the input can be lost, or huge areas of zero-fill
+     could be added to make the images match.  The gorewid keyword
+     enlarges the output on all 4 sides by the specified number of pixels
+     while keeping the correct mapping.
+	   
+CALL
+     gtwarp INPUT OUTPUT REF '(QUALIFIERS) PARAMS
+  WHERE:
+     INPUT          is the input data set (must have a GeoTIFF label).
+     OUTPUT         is the output data set (will have a GeoTIFF label).
+     REF            is the reference data set (must have a GeoTIFF label).
+     QUALIFIERS     consist of any of the following keywords:
+          COVERINP         smallest output that covers the input geographic area
+          COVERREF         output exactly matches the reference image.
+     PARAMS         interp,nah,nav,gorewid.
+
+  
+OPERATION
+
+First, for the 'coverinp case only, the procedure calculates the
+extrema of the input in the output pixel space.  For the 'coverref
+case, the extrema are the boundaries of the reference image.
+
+Then the procedure calculates (in an ibis file) a grid that is
+rectangular in the output space using the extrema calculated above.
+Then new columns are calculated using the GeoTIFF map projections
+in the labels of the input and reference images yielding the grid
+in the input image.  Then GEOMV is called to calculate the result.
+
+PERFORMANCE
+
+The time will consist of the IBIS file grid generation and mapping
+which could be minutes for a 1000 x 1000 grid plus the GEOMV time.
+See the GEOMV document for GEOMV timing (a 4000 by 4000 image was
+transformed by a 500 x 500 grid in 99 seconds on a SPARCstation 20.
+Reducing the grid to 30 x 30 cut the time to 39 seconds.  This shows
+that the use of a large grid doesn't penalize the time too much, 1999).
+
+.PAGE
+Restrictions
+------------
+
+The input and reference images must have GeoTIFF labels.
+
+
+.PAGE
+Original Programmer: A. L. Zobrist, 02 Mar, 2000
+Corrected June 8, 2010 znoin corrections, cubic interpolations added. ALZ
+Current Cognizant Programmer: A. L. Zobrist
+.LEVEL1
+.VARI INP
+Input file name with GeoTIFF
+label
+.VARI OUT
+Output file name
+.VARI REF
+Reference file name with GeoTIFF
+label
+.VARI TYPREF
+'COVERINP - output minimally covers
+         the input data
+'COVERREF - output matches the ref
+         image exactly
+.VARI NAH
+Number of grid cells horiz.
+.VARI NAV
+Number of grid cells vert.
+.VARI INTERP
+interpolation options
+Valid: NOIN,BILIN,CUBCONV,CUBSPLIN
+.VARI GOREWID
+Added width of gores for
+'coverinp case only
+.VARI MEMSIZE
+sets vmvmsize for call
+of geomv (q.v.)
+.LEVEL2
+.VARI INP
+Input file name.  This parameter is input as:
+     INP=innam
+where "innam" is the input file name.
+.VARI OUT
+Output file name. This parameter is input as:
+     OUT=outnam
+where:
+"outnam" is the output file name.VARI OUT
+.VARI REF
+reference file name. This parameter is input as:
+     REF=refnam
+where:
+"refnam" is the reference file name.
+
+This is a VICAR image that has a GeoTIFF label to specify a mapping.
+It could be an image of a geographic area, or it could be a single 
+pixel image that serves as the holder of the GeoTIFF mapping information
+only.  In the latter case only the 'coverinp case would make sense.
+.VARI INTERP
+This parameter has three valid keyword values: NOIN and BILIN.
+
+NOIN means no interpolation.   The default method (used when neither keyword 
+is specified) for computing the
+DN values of the output picture is to use a bi-linear interpolation
+on the four nearest neighbors in the input picture.  With NOIN, the
+value of the nearest point is simply used.
+For example, say a point in the output picture was determined
+to have come from point (R,P) in the input picture.  Since R and P
+are real values, we must somehow calculate a DN value for that
+point.  Take IR and IP as the truncated values.  We then have
+          VAL1                                 VAL2
+           *                                    *
+         (IR,IP)                              (IR,IP+1)
+                     POINT
+                       *
+                     (R,P)
+          VAL3                                 VAL4
+           *                                    *
+         (IR+1,IP)                           (IR+1,IP+1)
+Here, POINT is the result of a bilinear interpolation using
+VAL1, VAL2, VAL3, and VAL4.
+If NOIN is specified, then POINT would be VAL1, the nearest
+neighbor.
+
+ZNOIN specifies that a four-point interpolation is done except
+when one or more of the points used has a value equal to zero. 
+In that case the nearest method is used.
+This allows preparation of sharp edges (no interpolation rolloff)
+for mosaicking.
+
+.VARI TYPREF
+     1.  The keyword 'coverinp causes the procedure to map all of the
+     input image to an output image that will just contain it.   The
+     keyword gorewid allows the user to specify a zero-filled margin
+     to make the output a little larger (or negative trims smaller).
+	
+     2.  The keyword 'coverref causes the procedure to map the input
+     image to an output image that exactly matches the "reference" image.
+     Some parts of the input can be lost, or huge areas of zero-fill
+     could be added to make the images match.  The gorewid keyword has
+     no effect in this case.
+	   
+.VARI GOREWID
+Added width of gores for 'coverinp case only.  This number of pixel
+columns or rows is added to all four sides.  Zero fill is used.
+.END

@@ -1,0 +1,748 @@
+process help=*
+PARM INP TYPE=STRING COUNT=2
+PARM OUT TYPE=STRING COUNT=(1:3)
+PARM DISPAR TYPE=STRING COUNT=(1:2)
+PARM XYZ TYPE=STRING COUNT=(1:3)
+PARM NAVTABLE TYPE=STRING COUNT=0:1 DEFAULT=--
+
+PARM DISP_ERR TYPE=STRING COUNT=0:2 DEFAULT=--
+
+PARM MASK TYPE=STRING COUNT=0:1 DEFAULT=--
+PARM RANGE TYPE=STRING COUNT=0:1 DEFAULT=--
+PARM RNG_ERR_MAGNT TYPE=STRING COUNT=0:1 DEFAULT=--
+PARM XYZ_ERR TYPE=STRING COUNT=0:3 DEFAULT=--
+PARM XYZ_ERR_VOL TYPE=STRING COUNT=0:1 DEFAULT=--
+PARM RNG_ERR_VOL TYPE=STRING COUNT=0:1 DEFAULT=--
+
+PARM DELTA_REF_LINE TYPE=REAL COUNT=1 DEFAULT=.1
+PARM DELTA_REF_SAMP TYPE=REAL COUNT=1 DEFAULT=.1
+PARM DELTA_DISP_LINE TYPE=REAL COUNT=1 DEFAULT=.5
+PARM DELTA_DISP_SAMP TYPE=REAL COUNT=1 DEFAULT=.5
+
+PARM WRITE_CM TYPE=KEYWORD VALID="WRITE_CM" COUNT=(0:1) DEFAULT=--
+
+PARM CONFIG_PATH STRING DEFAULT="$MARS_CONFIG_PATH"
+PARM MATCH_METHOD TYPE=STRING COUNT=(0:1) VALID=("LOOSE", "TIGHT") +
+     DEFAULT=LOOSE
+PARM MATCH_TOL TYPE=REAL COUNT=1 DEFAULT=.002
+PARM POINT_METHOD TYPE=STRING COUNT=(0:1) DEFAULT=--
+
+PARM DATA_SET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM DATA_SET_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM RELEASE_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCT_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_INST TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_TYPE TYPE=STRING COUNT=(0:1) DEFAULT=--
+
+PARM RSF TYPE=STRING COUNT=0:100 DEFAULT=--
+PARM DEBUG_RSF TYPE=KEYWORD COUNT=0:1 VALID=DEBUG_RSF DEFAULT=--
+PARM COORD TYPE=KEYWORD VALID=("FIXED", "INSTRUMENT", "SITE", "ROVER", +
+        "LOCAL_LEVEL", "RMECH") DEFAULT="FIXED"
+PARM COORD_INDEX TYPE=INTEGER COUNT=0:10 DEFAULT=--
+PARM FIXED_SITE TYPE=INTEGER COUNT=0:1 DEFAULT=--
+PARM SOLUTION_ID TYPE=STRING COUNT=0:1 DEFAULT=--
+
+END-PROC
+
+.TITLE
+VICAR program MARSERROR.
+
+.HELP
+PURPOSE:
+Given XYZ coordinates, disparity map, disparity errors, and perturbations 
+in positions of left (reference) pixels, compute range errors in down-range, 
+cross-range 1, and cross range 2 coordinate frame, along with an associated 
+error ellipsoid volumes for each pixel. Compute range errors in x-y-z 
+coordinate frame, along with associated error ellipsoid volumes for each pixel. 
+Compute the magnitude of range error for each pixel.
+
+This multimission program supports any mission, instrument, and 
+camera model supported by the Planetary Image Geometry (Pig) software 
+suite.
+
+The inputs for MARSERROR are 
+- left and right stereo pair.  Left and right images may be of different dimensions.
+- a disparity image such as that created by the MARSCORR program.
+  This can be a single 2-band file or two 1-band files.
+- a disparity error image created by the MARSERRDISP program.
+  This can be a single 2-band file or two 1-band files.
+- an XYZ image such as that created by the MARSXYZ program.
+  This can be a single 3-band file or three 1-band files; 
+  see MARSXYZ for details.
+
+
+EXECUTION:
+
+./marserror inp=\( left right \)  out=range_error_vector  dispar=disparity  xyz=XYZ  disp_err=disparity_error  mask=mask  range=range_values  rng_err_magnt=range_error_magnitude  rng_err_vol=range_error_volume  xyz_err=xyz_error_vector  xyz_err_vol=xyz_error_volume  delta_ref_line=line_perturbation_in_reference  delta_ref_samp=sample_perturbation_in_reference  delta_disp_line=line_perturbation_in_disparity  delta_ref_samp=sample_perturbation_in_disparity  point=cm=label
+
+./marserror inp=\( left right \)  out=\( down_range_error cross1_range_error cross2_range_error \)  dispar=(\ line_disparity sample_disparity \)  xyz=\( x y z \)  disp_err=\( disparity_line_error disparity_samp_error \)  mask=mask  range=range_values  rng_err_magnt=range_error_magnitude  rng_err_vol=range_error_volume  xyz_err=xyz_error_vector  xyz_err_vol=xyz_error_volume  delta_ref_line=line_perturbation_in_reference  delta_ref_samp=sample_perturbation_in_reference  delta_disp_line=line_perturbation_in_disparity  delta_ref_samp=sample_perturbation_in_disparity  point=cm=label
+
+where:
+
+left - input - the left eye image of a stereo pair
+right - input - the corresponding right eye image of a stereo pair
+line_disparity - input - right eye line value computed by marscorr or other
+  correlator.
+sample_disparity - input - the right eye sample value computed by marscorr or other
+  correlator.
+disparity - input - 2-band file containing line_disparity and sample_disparity. 
+XYZ - input - 3-band file with the X, Y, and Z values at that pixel in meters.
+delta_ref_line  - specifies line perturbation in reference pixel.
+delta_ref_samp  - specifies sample perturbation in reference pixel.
+delta_disp_line - specifies line perturbation in disparity.
+delta_disp_samp - specifies sample perturbation in disparity.
+disparity_error - input - 2-band file containing disparity line and sample errors;
+  computed by marserrdisp
+disparity_line_error - input - disparity line error computed by marserrdisp 
+disparity_samp_error - input - disparity sample error computed by marserrdisp
+mask - output - 1-band file containing information on pixels 
+  with valid XYZ coordinates.
+range - output - 1-band image where each value is a distance between 
+  reference point (by default camera position) and (x,y,z) point.
+range_error_magnitude - output - 1-band file containing range error magnitude.
+down_range_error - output - 1-band file containing down-range error
+  for each pixel.
+cross1_range_error - output - 1-band file containing cross-range 1 error
+  for each pixel.
+cross2_range_error - output - 1-band file containing cross-range 2 error
+  for each pixel.
+range_error_vector - output - 3-band file containing 
+  down_range_error, cross1_range_error, and cross2_range_error.
+range_error_volume - output - 1-band file containing volume of error ellipsoid
+  for each pixel in down-range/cross-range coordinate frame.
+xyz_error_vector - output - 3-band file containing x-y-z errors.
+xyz_error_volume - output - 1-band file containing volume of error ellipsoid
+  for each pixel in x-y-z coordinate frame.
+
+Any correlation program producing the correct kind of disparity map may
+be used; marscorr is simply an example.
+
+
+EXAMPLES:
+
+***** MSL data: *****
+
+*** With two-band disp_err file specified: ***
+
+$MARSLIB/marserror  inp=\( /home/yanovsky/marsxyz_data/FLA_406377036RADLF0010000FHAZ02504Z1.IMG /home/yanovsky/marsxyz_data/FRA_406377036RADLF0010000FHAZ02504Z1.IMG \)  out=rng_err.vic  dispar=/home/yanovsky/marsxyz_data/FLA_406377036DSPLF0010000FHAZ02504Z1.IMG  disp_err=/home/yanovsky/marserrdisp1/disperr2.vic  xyz=/home/yanovsky/marserror_v2_2/XYZ.vic  mask=mask.vic  range=range.vic  rng_err_magnt=rng_err_magnitude.vic  rng_err_vol=rng_err_vol.vic  xyz_err=xyz_err.vic  xyz_err_vol=xyz_err_vol.vic  delta_ref_line=0.1  delta_ref_samp=0.1  delta_disp_line=0.5  delta_disp_samp=0.5  point=cm=label
+
+*** No disp_err file (default disparity errors are assigned): ***
+
+$MARSLIB/marserror  inp=\( /home/yanovsky/marsxyz_data/FLA_406377036RADLF0010000FHAZ02504Z1.IMG /home/yanovsky/marsxyz_data/FRA_406377036RADLF0010000FHAZ02504Z1.IMG \)  out=rng_err.vic  dispar=/home/yanovsky/marsxyz_data/FLA_406377036DSPLF0010000FHAZ02504Z1.IMG  xyz=/home/yanovsky/marserror_v2_2/XYZ.vic  mask=mask.vic  range=range.vic  rng_err_magnt=rng_err_magnitude.vic  rng_err_vol=rng_err_vol.vic  xyz_err=xyz_err.vic  xyz_err_vol=xyz_err_vol.vic  delta_ref_line=0.1  delta_ref_samp=0.1  delta_disp_line=0.5  delta_disp_samp=0.5  point=cm=label
+
+$MARSLIB/marserror  inp=\( /home/yanovsky/marsxyz_data/FLA_406377036RADLF0010000FHAZ02504Z1.IMG /home/yanovsky/marsxyz_data/FRA_406377036RADLF0010000FHAZ02504Z1.IMG \)  out=\( down_range.vic cross1_range.vic cross2_range.vic \)  dispar=/home/yanovsky/marsxyz_data/FLA_406377036DSPLF0010000FHAZ02504Z1.IMG  xyz=/home/yanovsky/marserror_v2_2/XYZ.vic  mask=mask.vic  range=range.vic  rng_err_magnt=rng_err_magnitude.vic  rng_err_vol=rng_err_vol.vic  xyz_err=\( x_error.vic y_error.vic z_error.vic \)  xyz_err_vol=xyz_err_vol.vic  delta_ref_line=0.1  delta_ref_samp=0.1  delta_disp_line=0.5  delta_disp_samp=0.5  point=cm=label
+
+$MARSLIB/marserror  inp=\( /home/yanovsky/marsxyz_data/FLA_406377036RADLF0010000FHAZ02504Z1.IMG /home/yanovsky/marsxyz_data/FRA_406377036RADLF0010000FHAZ02504Z1.IMG \)  out=\( down_range.vic cross1_range.vic cross2_range.vic \)  dispar=/home/yanovsky/marsxyz_data/FLA_406377036DSPLF0010000FHAZ02504Z1.IMG  xyz=\(x.vic,y.vic,z.vic\)  mask=mask.vic  range=range.vic  rng_err_magnt=rng_err_magnitude.vic  rng_err_vol=rng_err_vol.vic  xyz_err=\( x_error.vic,y_error.vic,z_error.vic \)  xyz_err_vol=xyz_err_vol.vic  delta_ref_line=0.1  delta_ref_samp=0.1  delta_disp_line=0.5  delta_disp_samp=0.5  point=cm=label
+
+
+***** MER data: *****
+
+*** With two-band disp_err file specified: ***
+
+$MARSLIB/marserror  inp=\( /home/yanovsky/Compression4/l3.IMG /home/yanovsky/Compression4/r3.IMG \)  out=rng_err1.vic  dispar=/home/yanovsky/Compression4_other/cor3disp_LeftRight3.vic  disp_err=/home/yanovsky/marserrdisp_v2/disperr1.vic  xyz=/home/yanovsky/Compression4_other/XYZ_cor3disp_LeftRight3.vic  mask=mask1.vic  range=range1.vic  rng_err_magnt=rng_err_magnitude1.vic  rng_err_vol=rng_err_vol1.vic  xyz_err=xyz_err1.vic  xyz_err_vol=xyz_err_vol1.vic  delta_ref_line=0.1  delta_ref_samp=0.1  delta_disp_line=0.5  delta_disp_samp=0.5  point=cm=label
+
+$MARSLIB/marserror  inp=\( /home/yanovsky/Compression4/l3.IMG /home/yanovsky/Compression4/r3.IMG \)  out=rng_err1.vic  dispar=/home/yanovsky/Compression4_other/cor3disp_LeftRight3.vic  disp_err=/home/yanovsky/marserrdisp_v2/disperr1.vic  xyz=/home/yanovsky/Compression4_other/XYZ_cor3disp_LeftRight3.vic  mask=mask1.vic  range=range1.vic  rng_err_magnt=rng_err_magnitude1.vic  rng_err_vol=rng_err_vol1.vic  xyz_err=xyz_err1.vic  xyz_err_vol=xyz_err_vol1.vic  delta_ref_line=0.0  delta_ref_samp=0.0  delta_disp_line=0.5  delta_disp_samp=0.5  point=cm=label
+
+*** No disp_err file  (default disparity errors are assigned): ***
+
+$MARSLIB/marserror  inp=\( /home/yanovsky/Compression4/l3.IMG /home/yanovsky/Compression4/r3.IMG \)  out=rng_err2.vic  dispar=/home/yanovsky/Compression4_other/cor3disp_LeftRight3.vic  xyz=/home/yanovsky/Compression4_other/XYZ_cor3disp_LeftRight3.vic  mask=mask2.vic  range=range2.vic  rng_err_magnt=rng_err_magnitude2.vic  rng_err_vol=rng_err_vol2.vic  xyz_err=xyz_err2.vic  xyz_err_vol=xyz_err_vol2.vic  delta_ref_line=0.1  delta_ref_samp=0.1  delta_disp_line=0.5  delta_disp_samp=0.5  point=cm=label
+
+$MARSLIB/marserror  inp=\( /home/yanovsky/Compression4/l3.IMG /home/yanovsky/Compression4/r3.IMG \)  out=rng_err2.vic  dispar=/home/yanovsky/Compression4_other/cor3disp_LeftRight3.vic  xyz=/home/yanovsky/Compression4_other/XYZ_cor3disp_LeftRight3.vic  mask=mask2.vic  range=range2.vic  rng_err_magnt=rng_err_magnitude2.vic  rng_err_vol=rng_err_vol2.vic  xyz_err=xyz_err2.vic  xyz_err_vol=xyz_err_vol2.vic  delta_ref_line=0.0  delta_ref_samp=0.0  delta_disp_line=0.5  delta_disp_samp=0.5  point=cm=label
+
+
+.PAGE
+
+METHOD:
+MARSERROR computes, for each pixel:
+- range error magnitude;
+- range error vector in down/cross-range coordinate frame (dr-c1-c2 coordinate frame);
+- volume of error ellipsoid in dr-c1-c2 coordinate frame;
+- range error vector in x-y-z coordinate frame;
+- volume of error ellipsoid in x-y-z coordinate frame;
+The program uses input camera models, disparity maps, XYZ coordinates for each pixel,
+and line/sample perturbation values for pixels in left and right images.
+Similar to marsxyz, the program calculates XYZ values for each perturbed pair
+for each pixel.  The error is found when comparing perturbed XYZ coordinates with 
+MARSXYZ program's calculated XYZ points, giving the range error vector in x-y-z
+coordinate frame.  The error is projected onto down-range, cross-range 1, and 
+cross-range 2 axis, resulting in range error in dr-c1-c2 coordinate frame.
+
+Input file contents:
+
+INP: left eye view, right eye view
+
+Note that there's no actual requirement that the first input be left or the
+second right.  The two images can be given in any order.  The first image,
+though, is the "master" image; the disparity maps and output files match the
+first image's pixels.  Convention places left first, however.
+
+Also, the actual image pixels are not used from these files; only the label
+information (to get the pointing and thus camera models) are used.
+
+DISPAR: REAL-formatted images giving the line and sample disparity.  Either
+two files may be given (line, sample order), or a single file with two bands. 
+
+The disparities are interpreted as follows:  Each pixel in the disparity
+map corresponds to the same pixel in the first (left) input.  The value of
+the pixel in the disparity map is the line and sample of the point in the
+second (right) image, which matches this location in the first (left).  Note
+that these are standard VICAR 1-based file coordinates.  If both line and
+sample disparity values are 0, the point has no value.
+
+DISP_ERR: marserrdisp-generated. It consists of either two separate one-band
+  files (disparity line error, disparity sample error), or a single 2-band
+  file.
+
+XYZ:  marsxyz(or similar)-generated. It consists of either three separate 
+  one-band files (x, y, z), or a single 3-band file.  
+  Units of XYZ input file(s) are in meters, in the coordinate system specified 
+  by the COORD and COORD_SYS parameters.
+
+Output file contents:
+
+OUT:  marserror will generate either three separate one-band files 
+  (down-range, cross-range1, cross-range2), or a single 3-band file, depending 
+  on the number of filenames given.
+
+RNG_ERR_VOL: single-band file with volume of error ellipsoid in
+  dr-c1-c2 coordinate frame, for each pixel.
+
+MASK: single-band image file with values equal 100 for pixels containing
+  valid XYZ coordinates, and values equal 0 for pixels missing XYZ coordinates.
+
+RANGE: single-band image where each value is a distance between reference point 
+  (by default camera position) and (x,y,z) point.  This is the same product that 
+  can be generated using marsrange program.
+
+RNG_ERR_MAGNT: single-band image with range error magnitude values.
+
+XYZ_ERR: 3-band file with range error vector in x-y-z coordinate frame.
+
+XYZ_ERR_VOL: single-band file with volume of error ellipsoid in
+  x-y-z coordinate frame, for each pixel. 
+
+
+.PAGE
+
+HISTORY:
+  2012-06-07 I. Yanovsky and B. Deen - Initial marserror
+  2013-03-01 Igor Yanovsky. - Added functionality for accepting disparity line and error file
+             as input.  Disparity error file contains pixel-to-pixel estimates 
+             of error and is generated with marserrdisp program.
+  2019-10-16 W. Bunch - IDS-7926 - initialized some variables; cleaned up -Wall warnings.
+  2020-03-20 W. Bunch - IDS-7927 - replaced sprintfs calls.
+
+COGNIZANT PROGRAMMER: I. Yanovsky
+
+.LEVEL1
+.VARI INP
+Input images.
+Must be 2.
+
+.VARI OUT
+Output files
+(dr,c1,c2) triplet
+or 1 3-band file.
+
+.VARI DISPAR
+Disparity map
+input files.
+(l,s) or 1 2-band file.
+
+.VARI DISP_ERR
+Input images.
+(line error, sample error)
+or 1 2-band file.
+
+.VARI XYZ
+Input images.
+Must be 1 3-band file
+or (x,y,z) triplet.
+
+.VARI NAVTABLE
+Corrected navigation
+filename.
+
+.VARI MASK
+Output file
+Must be 1 
+single band file.
+
+.VARI RANGE
+Output file
+Must be 1 
+single band file.
+
+.VARI RNG_ERR_MAGNT
+Output file
+Must be 1
+single band file.
+
+.VARI XYZ_ERR
+Output files
+(x_err,y_err,z_err) triplet
+or 1 3-band file.
+
+.VARI XYZ_ERR_VOL
+Output file
+Must be 1
+single band file.
+
+.VARI RNG_ERR_VOL
+Output file
+Must be 1
+single band file.
+
+.VARI DELTA_REF_LINE
+Specifies line perturbation
+in reference pixel.
+
+.VARI DELTA_SAMP_LINE
+Specifies sample perturbation
+in reference pixel.
+
+.VARI DELTA_DISP_LINE
+Specifies line perturbation
+in disparity.
+
+.VARI DELTA_REF_LINE
+Specifies samp perturbation
+in disparity.
+
+.VARI WRITE_CM
+Writes the camera model
+to the file.
+
+.VARI CONFIG_PATH
+Path used to find
+configuration/calibration
+files.
+
+.VARI MATCH_METHOD
+Specifies a method
+for pointing corrections.
+
+.VARI MATCH_TOL
+Tolerance value for
+matching pointing params
+in pointing corrections file.
+
+.VARI POINT_METHOD
+Specifies a mission-
+specific pointing
+method to use
+
+.VARI DATA_SET_NAME
+Specifies the full name given
+to a data set or a data product.
+
+.VARI DATA_SET_ID
+Specifies a unique alphanumeric
+identifier for a data set or data
+product.
+
+.VARI RELEASE_ID
+Specifies the unique identifier
+associated with the release to the
+public of all or part of a data set.
+The release number is associated with
+the data set, not the mission.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique
+identifier assigned to a data
+product by its producer.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier
+of an entity associated with the
+production a data set.
+
+.VARI PRODUCER_INST
+Specifies the full name of the
+identity of an entity associated
+with the production of a data set.
+
+.VARI TARGET_NAME
+Specifies a target.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target.
+
+.VARI RSF
+Rover State File(s) to use.
+
+.VARI DEBUG_RSF
+Turns on debugging of RSF
+parameter.
+
+.VARI COORD
+Coordinate system to use.
+
+.VARI COORD_INDEX
+Coordinate system index for
+some COORD/mission combos.
+
+.VARI FIXED_SITE
+Which site is FIXED for
+rover missions.
+
+.VARI SOLUTION_ID
+Solution ID to use for
+COORD_INDEX
+
+.LEVEL2
+.VARI INP
+Two files containing the input stereo pair images.  The pixel data from these
+files are not used; only the label information is used to determine the
+pointing and camera models.
+
+A single file list file may also be specified (a la marsmos, etc.), but the
+file list must have only two entries.
+
+Note that there's no actual requirement that the first input be left or the
+second right.  The two images can be given in any order.  The first image,
+though, is the "master" image; the disparity maps and output files match the
+first image's pixels.  Convention places left first, however.
+
+.VARI OUT
+Output files containing down-range (dr), cross-range 1 (c1), and
+cross-range 2 (c2) errors.
+
+If three filenames are given, three separate 1-band files will be created,
+one each for dr, c1, and c2.  If only one filename is given, a single 3-band
+file will be created, with bands in (dr,c1,c2) order.
+
+For each pixel, line and sample in left image are perturbed by 
+  +/- delta_ref_line and +/- delta_ref_samp.
+This results in four different perturbations.
+For each pixel, line and sample in right image are perturbed by 
+  +/- delta_disp_line and +/- delta_disp_samp.
+This also results in four different perturbations.
+There are sixteen different perturbations.  For each perturbation, range error
+is calculated as the difference between XYZ value and perturbed XYZ value.  
+Each of sixteen range error vectors are projected onto dr-c1-c2 axes.  
+Maximums (in absolute value) of these projections are dr, c1, c2 errors.
+
+The output files are in REAL (float) format.
+
+.VARI DISPAR
+REAL-formatted images giving the line and sample disparity.  Either
+two files may be given (line, sample order), or a single file with two bands.
+
+The disparities are interpreted as follows:  Each pixel in the disparity
+map corresponds to the same pixel in the first (left) input.  The value of
+the pixel in the disparity map is the line and sample of the point in the
+second (right) image, which matches this location in the first (left).  Note
+that these are standard VICAR 1-based file coordinates.  If both line and
+sample disparity values are 0, the point has no value.
+
+.VARI DISP_ERR
+Input files contain disparity line and sample errors. Either
+two files may be given (line disparity error, sample disparity error), 
+or a single file with two bands.
+If DISP_ERR file is not provided, specified values of DELTA_DISP_LINE 
+and DELTA_DISP_SAMP are used for each pixel.
+
+.VARI XYZ
+Input files contain the XYZ coordinates. If three filenames are given,
+they all should be single band files each containing X, Y and Z values
+in that order.  If only one filename is given, it should be a 3-band
+file with bands in (X,Y,Z) order.
+
+The input files are in REAL (float) format.
+
+.VARI NAVTABLE
+Corrected navigation filename.
+If marsnav was run on the input images it created a table of corrected
+pointing parameters. If you refer to this table using NAVTABLE it
+will override the pointing parameters (e.g. azimuth and elevation) in the
+picture labels, giving different (and presumably better) output coordinates.
+
+.VARI MASK
+Output single-band image file with values equal 100 for pixels containing 
+valid XYZ coordinates, and values equal 0 for pixels missing XYZ coordinates.
+
+.VARI RANGE
+Output single-band image where each value is a distance between reference 
+point (by default camera position) and (x,y,z) point.  This is the same 
+product that can be generated using marsrange program
+
+.VARI XYZ_ERR
+Output 3-band file with range error vector in x-y-z coordinate frame.
+
+If three filenames are given, three separate 1-band files will be created,
+one for each x-error, y-error, and z-error.  If only one filename is given, 
+a single 3-band file will be created, with bands in (x_err,y_err,z_err) order.
+
+For each pixel, line and sample in left image are perturbed by 
+  +/- delta_ref_line and +/- delta_ref_samp.
+This results in four different perturbations.
+For each pixel, line and sample in right image are perturbed by 
+  +/- delta_disp_line and +/- delta_disp_samp.
+This also results in four different perturbations.
+There are sixteen different perturbations.  For each perturbation, range error
+is calculated as the difference between XYZ value and perturbed XYZ value.  
+Each of sixteen range error vectors are projected onto x-y-z axes.  
+Maximums (in absolute value) of these projections are x, y, z errors.
+
+.VARI XYZ_ERR_VOL
+Output single-band file with volume of error ellipsoid in x-y-z coordinate 
+frame, for each pixel.  Given the maximum and minimum values of error 
+projected onto each of x-y-z axes, the error volume is calculated as:
+a1 = min(xmin,0), a2 = max(xmax,0),
+b1 = min(ymin,0), b2 = max(ymax,0),
+c1 = min(zmin,0), c2 = max(zmax,0),
+volume = 4/24 *(a2-a1)*(b2-b1)*(c2-c1).
+
+.VARI RNG_ERR_MAGNT
+For each pixel, line and sample in left image are perturbed by 
+  +/- delta_ref_line and +/- delta_ref_samp.
+This results in four different perturbations.
+For each pixel, line and sample in right image are perturbed by 
+  +/- delta_disp_line and +/- delta_disp_samp.
+This also results in four different perturbations.
+There are sixteen different perturbations.  For each perturbation, range error
+is calculated as the difference between XYZ value and perturbed XYZ value.
+The maximum magnitude of range errors is the range error magnitude.
+
+.VARI RNG_ERR_VOL
+Output single-band file with volume of error ellipsoid in dr-c1-c2 
+coordinate frame, for each pixel.  Given the maximum and minimum values of error 
+projected onto each of dr-c1-c2 axes, the error volume is calculated as:
+a1 = min(dr_min,0), a2 = max(dr_max,0),
+b1 = min(c1_min,0), b2 = max(c1_max,0),
+c1 = min(c2_min,0), c2 = max(c2_max,0),
+volume = 4/24 *(a2-a1)*(b2-b1)*(c2-c1).
+
+.VARI DELTA_REF_LINE
+Specifies line perturbation in reference pixel. Default is 0.1.
+
+.VARI DELTA_REF_SAMP
+Specifies sample perturbation in reference pixel. Default is 0.1.
+
+.VARI DELTA_DISP_LINE
+Specifies line perturbation in disparity. Default is 0.5.
+If DISP_ERR file is provided, line disparity error values from DISP_ERR file
+are used instead, in which case delta_disp_line is set to 0.0 (for purposes
+of writing a label).
+
+.VARI DELTA_DISP_SAMPLE
+Specifies sample perturbation in disparity. Default is 0.5.
+If DISP_ERR file is provided, sample disparity error values from DISP_ERR file
+are used instead, in which case delta_disp_samp is set to 0.0 (for purposes
+of writing a label).
+
+.VARI WRITE_CM
+If specified, the program will write an updated camera model to the output
+file.  This camera model is for the left image, as modified by the nav file.
+The purpose of this is to be able to create a properly-labeled XYZ file
+from unmodified FFL (linearized) files and a nav file, for the purpose of
+pointing-correction of a mesh.
+
+Note that point=cm=label should NOT be specified, as that will override the
+nav file.  Also, you may need to specify point=cahv_fohv=xxx (often, "max"),
+in order for the camera model to match the FFL.  Basically, whatever is given
+to marscahv, should be given in this case as well.
+
+.VARI CONFIG_PATH
+A colon-separated list of directories in which to look for configuration
+and calibration files.  Environment variables are allowed in the list
+(and may themselves contain colon-separated lists).  The directories are
+searched in order for each config/cal file when it is loaded.  This allows
+multiple projectes to be supported simultaneously, and allows the user to
+override any given config/cal file.  Note that the directory structure below
+the directories specified in this path must match what the project expects.
+For example, Mars 98 expects flat fields to be in a subdirectory named
+"flat_fields" while Mars Pathfinder expects them to be directly in the
+directory specified by the path (i.e. no intermediate subdirectories).
+
+.VARI MATCH_METHOD
+Specifies a method for pointing corrections.
+
+Loose method matchs with pointing parameters of the image.
+Tight method matchs with unique id of the image.
+
+.VARI MATCH_TOL
+Tolerance value for matching pointing parameters in the pointing corrections file.
+Used if MATCH_METHOD=LOOSE
+Default value is pretty arbitrary, though seems to work well so far....
+
+.VARI POINT_METHOD
+Specifies a mission-specific pointing method to use.  Normally this
+parameter is not used, in which case the "default" pointing methods
+are used.  Some missions may have special, or alternate, pointing
+methods available, which are indicated by this string (for example,
+backlash models, using arm joint angles instead of x/y/z/az/el, etc).
+A substring search is used, so multiple methods (where that makes sense)
+can be specified by separating the keywords with commas.
+
+Note that nav files created using one pointing method will most likely
+not be compatible with a mosaic created using a different pointing method.
+
+The methods available vary per mission, but some methods available at
+the time of this writing are:
+
+BACKLASH : Mars 98 SSI only.  Selects a backlash pointing model,
+which adjusts the telemetered azimuth and elevation values based on
+knowledge of the camera's mechanical backlash and the direction the
+motor was travelling when the image was taken.
+
+.VARI DATA_SET_NAME
+The DATA_SET_NAME typically identifies the instrument that acquired the
+data, the target of that instrument, and the processing level of the data.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_NAME.
+
+.VARI DATA_SET_ID
+The DATA_SET_ID value for a given data set or product is constructed
+according to flight project naming conventions.  In most cases the
+DATA_SET_ID is an abbreviation of the DATA_SET_NAME.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_ID.
+
+.VARI RELEASE_ID
+When a data set is released incrementally, such as every three months during
+a mission, the RELEASE_ID is updated each time part of the data set is released.
+For each mission(or host id if multiple spacecrafts), the first release of a data
+set should have a value of "0001".
+This value is copied to the output label, property IDENTIFICATION,
+keyword RELEASE_ID.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique identifier assigned to a data product by
+its producer. Most commonly, it is the filename minus the extension.
+This value is copied to the output label, property IDENTIFICATION,
+keyword PRODUCT_ID.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier of an entity associated with the
+production of a data set. This value is copied to the output label,
+property IDENTIFICATION, keyword PRODUCER_ID.
+
+.VARI PRODUCER_INST
+Specifies the identity of a university, research center, NASA center or other
+institution associated with the production of a data set.
+This value is copied to the output label, property IDENTIFICATION, keyword
+PRODUCER_INSTITUTION_NAME.
+
+.VARI TARGET_NAME
+Specifies a target.  The target may be a planet, satelite, ring, region, feature,
+asteroid or comet.  This value is copied to the output label, property
+IDENTIFICATION, keyword TARGET_NAME.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target. This value is copied to the output
+label, property IDENTIFICATION, keyword TARGET_NAME.
+
+.VARI RSF
+Rover State File.  This is a list of filenames to load containing
+Rover State information.  These files contain position and orientation
+information for a rover (or other mobile spacecraft) at various sites.
+They are in XML format.  See the "Rover Motion Counter (RMC) Master File SIS"
+for details on these files.
+
+Rover State Files have a priority order.  The files listed first have
+the highest priority.
+
+Environment variables may be used in the list.
+
+For MER, if a directory is specified, then that directory is searched for
+RMC Master files and any found are loaded.  The directory structure and
+filename convention is covered in the RMC SIS.  The directory specified
+is the one containing "master", so if <dir> is the name specified in the
+RSF parameter, the following files will be searched for:
+
+<dir>/master/<mission>_Master.svf
+<dir>/master/<mission>_Site_<n>_Master.rvf
+
+The name of each file loaded is printed to the stdout log for reference.
+
+.VARI DEBUG_RSF
+If enabled, this causes the internal database of RMC locations to be
+printed out to the stdout log.  This is after the RSF files have been
+loaded and the coordinate systems read from the input label(s).
+
+.VARI COORD
+The coordinate system to use for all input parameters and output values,
+and the XYZ points themselves.  The interpretation of the values is dependent
+on the mission.  Some representative missions are listed here:
+
+Fixed - The Fixed frame (default).  This is the ultimate reference frame
+    (see also FIXED_SITE for rover missions).
+Instrument - The "natural" frame for the instrument (of the first input
+    image).  MPF: Lander or Rover; M98: MVACS; MER: Rover.
+Site - A major Site frame.  For rover missions, COORD_INDEX specifies which
+    Site frame to use.  Non-rover missions treat this as Fixed.
+Rover - An instance of the Rover frame.  For rover missions, COORD_INDEX
+    specifies which instance of the rover frame to use.  Non-rover mission
+    use the spacecraft frame (e.g. Lander for M98).  For MSL, this is the
+    Rover Nav frame.
+Local_Level - An instance of a Local Level frame.  This is typically
+    coincident with the Rover frame (in XYZ) but oriented toward North
+    like the Site and Fixed frames.  For MER, this is an instance of a
+    Drive index move.
+RMECH - For MSL, this is the Rover Mechanical frame.  It should not normally
+    be used except for testing.
+
+.VARI COORD_INDEX
+The index specifies which instance of a coordinate system to use.  It is
+currently applicable only to rover-based missions, but could have other
+uses.  The index is equivalent to the Rover Motion Counter (RMC) for MER
+and FIDO.
+
+For MER/FIDO, there are many Site frames.  Each is numbered with a single
+index.  For Site Frames, coord_index specifies which to use.  Likewise,
+there are many Local_Level and Rover frames, corresponding to values of
+the RMC.  The multiple instances of this frame are selected by COORD_INDEX.
+
+Generally COORD_INDEX defaults sensibly so you don't usually need to
+specify it.  It will default to the instance used by the first input.
+
+.VARI FIXED_SITE
+Specifies which major Site is the "Fixed" Site for this run.
+
+Historically, MPF and M98 had a single "Surface Fixed" frame which never
+moved, and which all other coordinate system frames were referenced to.
+With the advent of long-range rovers (such as MER and FIDO), that became
+insufficient.  The rover traverses far enough that errors in knowledge of
+coordinate system offset and orientation become unacceptable.
+
+For this reason, a system of major Sites was introduced.  Periodically
+during the mission, a Site frame is declared.  This then becomes the
+reference frame for all activities until the next Site is declared.
+References are kept local, and errors don't propogate across Sites.
+
+However, if images from more than one Site are combined together, the
+Site's must be placed relative to each other.  Therefore a single reference
+frame is still needed to combine different sites.
+
+The FIXED_SITE parameter controls which of the major Site frames is
+the reference ("fixed") site for this program run.  This fixed frame
+can vary in different program runs, but is constant throughout one
+execution.
+
+If not specified, FIXED_SITE defaults to the minimum Site number (i.e.
+lowest numbered, or earliest chronologically) used in all input images.
+Normally this default is sufficient; rarely must FIXED_SITE be specified.
+
+One or more Rover State Files must usually be specified in order to combine
+image from more than one Site.  These describe the relationship between
+sites.  See the RSF parameter.
+
+.VARI SOLUTION_ID
+Specifies which solution ID to use when specifying the coordinate system.
+
+There are potentially many different definitions for the same coordinate
+system.  These are identified via a unique Solution ID.  If this parameter
+is given, only the specified solution's definition is searched for.  Without
+it, the "best" available solution is chosen.
+
+It is extremely rare that this parameter should be needed.  The default
+will be sufficient in almost every case.
+
+Note that the current MER implementation requires that a value for COORD_INDEX
+also be provided, in order for this parameter to take effect.
+

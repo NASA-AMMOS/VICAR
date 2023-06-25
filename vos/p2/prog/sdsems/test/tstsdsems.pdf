@@ -11,7 +11,7 @@ translog INP=AFIDS_TESTDATA TRANS=aftestdata
 ush rm -f ct
 if (afidsroot = "")
 !MIPL
-    ush ln -fns /project/test_work/testdata/carto ct
+    ush ln -fns data ct
 else
 !CARTLAB
     if (aftestdata = "")

@@ -1,0 +1,106 @@
+process help=*
+PARM INP TYPE=STRING COUNT=1
+PARM OUT TYPE=STRING COUNT=1
+PARM DECIMATION TYPE=INTEGER COUNT=1 DEFAULT=1
+PARM ALGO TYPE=STRING COUNT=1
+END-PROC
+
+.TITLE
+VICAR program OBJ2PLANE
+
+.HELP
+PURPOSE:
+Perform plane fitting to a set of mesh vertices. See method section for more 
+details. The input is a mesh. The output is a file containing the 3D average 
+vertex position and the 3D plane normal vector.
+
+EXECUTION:
+
+   OBJ2PLANE INP=mesh.obj OUT=params.txt DECIMATION=integer_value ALGO=string
+
+.PAGE
+METHOD:
+
+The mesh vertices are first read using TINY_OBJLOADER and averaged. 
+Additionally, the plane parameters are computed.
+
+A plane is generally described by a normal vector n = [a, b, c]^T and a distance
+d, such that for point p = [x, y, z]^T on the plane n dot p + d = 0. We can 
+write this as:
+	ax + by + cz + d = 0
+
+Given the (x,y,z) positions of each vertex, a linear system of the form "AX=0" 
+can be set up, where the matrix A is composed of each vertex (x,y,z) per row 
+minus the centroid, and X = (a,b,c,d). The solution corresponds to the singular 
+vector corresponding to the least singular value from the Singular Value 
+Decomposition (SVD) of the matrix A, which is performed using the Eigen 
+Library. If A is decomposed as U*S*V^T, this vector typically corresponds to the
+right-most column of the matrix V, where the S maatrix contains the singular 
+values of A along its diagonal. This solution does not make any assumptions 
+about the input data, but can be slower for large meshes. It minimizes the 
+"geometric fit", or orthogonal distance from points to the plane.
+
+A simplified solution is to assume that z = f(x,y), which is accurate for 
+certain planar meshes but is not as robust to different types of terrain as the 
+SVD-based method. In this case, the system can be written as follows:
+	ax + by + c = z
+
+Given N data points (x[i], y[i], z[i]), the 3x3 symmetric matrix A is formed:
+
+	sum_i x[i]*x[i],    sum_i x[i]*y[i],    sum_i x[i]
+	sum_i x[i]*y[i],    sum_i y[i]*y[i],    sum_i y[i]
+	sum_i x[i],         sum_i y[i],         N
+
+Also compute the 3-element right-hand side vector b:
+	(sum_i x[i]*z[i],   sum_i y[i]*z[i],    sum_i z[i])^T
+
+Finally, the system "Ax = b" is solved, and the three components of the solution 
+vector are the coefficients to the least-square fit plane {a,b,c}. 
+
+The DECIMATION parameter controls how many mesh vertices are used as part of the
+linear system. A value of '1' indicates that all available vertices should be 
+used, while '10' is used to take every tenth value, etc.
+
+The ALGO parameter defines whether the faster regression-based method, 
+"regression", or the slower but more accurate SVD-based method, "svd", should 
+be used.  
+
+
+.PAGE:
+HISTORY:
+08-Feb-2021  Initial delivery
+15-Mar-2021  Added the 'ALGO' parameter
+COGNIZANT PROGRAMMER:  Mauricio Hess-Flores
+
+.LEVEL1
+.VARI INP
+Input mesh.
+
+.VARI OUT
+Output plane parameters file.
+
+.VARI DECIMATION 
+Integer value for mesh triangle decimation.
+
+.VARI ALGO
+String value to distinguish between algorithm types.
+
+.LEVEL2
+.VARI INP
+An OBJ triangle mesh in any format readable by TINY_OBJLOADER.  
+
+.VARI OUT
+A text file specifying the average 3D vertex position as well as the 3D plane 
+normal. The output format is of the form displayed in the following example:
+	average=(1.2 3.4 5.6) normal=(0.2 -0.1 -0.8)
+
+.VARI DECIMATION 
+Defines the decimation value for the vertices. A value of '1' processes all 
+vertices, '10' every tenth, and so on. See method section for detailed 
+information.
+
+.VARI ALGO
+Defines the algorithm to use. Choosing "regression" computes 'z' as a function of 
+'x' and 'y', which is fast but can lead to inaccuracies for non-planar data. On 
+the other hand, "svd" does not make any assumptions about the input data, but is
+significantly slower than regression for big data. 

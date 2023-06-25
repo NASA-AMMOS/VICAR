@@ -1,0 +1,13 @@
+#define SUBROUTINE meshman
+
+#define MODULE_LIST meshman.cc
+#define MARS_SUBLIB
+
+#define USES_C_PLUS_PLUS
+#define STD_CPP_11
+
+#define LIB_P2SUB
+#define LIB_TINYOBJLOADER
+#define LIB_EMBREE
+#define LIB_XERCES
+

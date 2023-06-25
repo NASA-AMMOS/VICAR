@@ -5,9 +5,6 @@ body
 let $autousage="none"
 let $echo="yes"
 
-ush rm -f data
-ush ln -s /project/test_work/testdata/carto/lsat7 data
-
 enable-log
 
 ! Landsat 7 imagery of Saticoy acquired 2000-07-27
@@ -22,5 +19,8 @@ classifier inp=(data/band1.vic,data/band2.vic,data/band3.vic,data/band4.vic,data
 hist classifiedResult.img
 
 disable-log
+
+ush rm classifiedResultDist.img classifiedResult.img classifiedsubsamples.ibis
+ush rm subclusters.ibis subsamples.ibis
 
 end-proc

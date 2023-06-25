@@ -1,0 +1,22 @@
+Test subroutine ASTRCH
+     There are 256 levels in the histogram
+     Each level has frequency 5
+     After saturating 25% at the low and high ends,
+     the results should be LOWDN=63 and HIGHDN=192
+ 
+     2nd test: When all DNs are at 255
+     Results should be LOWDN=254, HIGHDN=255
+TASTRCH
+Beginning VICAR task TASTRCH
+Testing Fortran-callable subroutine
+   Low DN  =         63
+   High DN =        192
+   Low DN  =        254
+   High DN =        255
+Testing C-callable subroutine
+Results should be identical
+   Low DN  =         63
+   High DN =        192
+   Low DN  =        254
+   High DN =        255
+disable-log

@@ -65,7 +65,7 @@
         write(msg,101) randout
         call xvmessage(msg,' ') 
 
- 100    format(' The input seed value: ', I)
+ 100    format(' The input seed value: ', I10)
  101    format(' The output seed value: ', F12.6)
 
 	return

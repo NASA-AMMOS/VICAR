@@ -1,0 +1,81 @@
+process help=*
+parm inp    type=string count=1
+parm out    type=string count=1
+parm cols   type=int count=1:100
+parm sr     type=int count=1 default=0
+parm nr     type=int count=1 default=0
+parm sep    type=(string,2) default=" "
+parm quote  type=keyword count=(0:1) valid=(--,quote) default=--
+parm penupval type=real default=-9999.0
+end-proc
+
+end-proc
+.TITLE
+ibis2asc - turn IBIS columns into text file columns with no extraneous text
+.HELP
+PURPOSE
+   The user can choose which columns to write to the ascii file and the starting
+   record and number of records.  The columns are separated by blanks by default
+   but the user can choose another separator such as comma.
+
+   The quote keyword causes strings to be enclosed in double quotes.
+
+   The program will write a blank for any value within .1% of the penupval.
+   This provides for passing penup commands to the plot package.
+CALL
+     ibis2asc INP OUT COLS=(C1,C2,C3,...) SR=I1 NR=I2
+  WHERE:
+     INP          is an ibis file
+     OUT          is an ascii file with selected data printed in columns
+     COLS         are the columns in the INP file to be printed
+     SR           is the starting record to print
+     NR           is the number of records to print
+     
+OPERATION
+
+
+PERFORMANCE
+
+.PAGE
+Restrictions
+------------
+
+
+
+
+.PAGE
+Original Programmer: A. L. Zobrist, 14 Dec, 2005
+Current Cognizant Programmer: A. L. Zobrist
+Revisions:
+  2008-01-03 WLB - Switched to USES_ANSI_C AND LIB_CARTO; misc cleanup  
+  2012-06-27 RJB - Changed 99 character internal file name limit to 255
+                   Limit often exceeded in scripts where full pathnames
+                   occur.
+  2012-07-02 RJB - Replaced cartlab's zifmessage with zvmessage
+                   and removed cartoVicarProto.h to make compatible
+                   with transfer to MIPL
+  2015-11-01 WLB - Migrated to MIPL
+  2019-09-05 WLB - IDS-7922 - Initialized some variables
+  2022-07-14 B. Crocco afids to opensource
+  
+.LEVEL1
+.VARI INP
+An IBIS file
+.VARI OUT
+A generated ascii file with data
+in columns
+.VARI COLS
+The columns to be printed to
+output
+.VARI SR
+The starting record in IBIS file
+.VARI NR
+The number of records in IBIS file
+.VARI SEP
+Separator character in output
+.VARI QUOTE
+Causes strings to be enclosed in
+quotes
+.VARI penupval
+value to create blank for penup
+.END

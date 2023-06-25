@@ -65,6 +65,7 @@ typedef struct
 	LblApiTypeItem_typ		SurfaceModelType;
 	LblApiRealVectorItem_typ	SurfaceNormalVector;
 	LblApiRealVectorItem_typ	SurfaceGroundLocation;
+	LblApiDescItem_typ		SurfaceMeshName;
 	} LblSurfaceModel_typ;
 
 /***  Function prototypes  ***/

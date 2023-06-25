@@ -41,7 +41,7 @@ translog INP=AFIDS_ROOT TRANS=afidsroot
 translog INP=AFIDS_TESTDATA TRANS=aftestdata
 if (afidsroot = "")
 !MIPL
-    ush ln -s /project/test_work/testdata/mipl/vgr vt
+    ush ln -s data vt
 else
 !CARTLAB
     if (aftestdata = "")

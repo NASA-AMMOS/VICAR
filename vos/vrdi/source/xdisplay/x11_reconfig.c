@@ -476,7 +476,7 @@ int ss, sl, es, el, imp;
 }
 
 
-refresh_icon(dpy, win)
+void refresh_icon(dpy, win)
 Display *dpy;
 MAIN_WINDOW *win;
 {

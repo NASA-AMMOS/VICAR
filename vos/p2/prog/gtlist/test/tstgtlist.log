@@ -4,7 +4,7 @@ gtgen out=xxxlab1 'tiecnvrt  +
           "ModelTiePointTag=(100,0,0,351000.4,5307000.3,0.0)",  +
           "GTRasterTypeGeoKey=1(RasterPixelIsArea)")
 Beginning VICAR task gtgen
-gtgen version Fri Jan 11 2008
+GTGEN version 2019-09-05
 gtlist xxxlab1
 Beginning VICAR task gtlist
 gtlist version 2016-01-13
@@ -46,7 +46,7 @@ gtgen out=xxxlab2 'tiecnvrt  +
           "ModelTiePointTag=(100,0,0,350000.4,5306000.3,0.0)",  +
           "GTRasterTypeGeoKey=1(RasterPixelIsArea)")
 Beginning VICAR task gtgen
-gtgen version Fri Jan 11 2008
+GTGEN version 2019-09-05
 gtlist xxxlab2
 Beginning VICAR task gtlist
 gtlist version 2016-01-13
@@ -88,7 +88,7 @@ gtgen out=xxxlab2 'tiecnvrt  +
           "ModelTiePointTag=(100,0,0,351000.4,5306000.3,0.0)",  +
           "GTRasterTypeGeoKey=1(RasterPixelIsArea)")
 Beginning VICAR task gtgen
-gtgen version Fri Jan 11 2008
+GTGEN version 2019-09-05
 gtlist xxxlab2
 Beginning VICAR task gtlist
 gtlist version 2016-01-13
@@ -130,7 +130,7 @@ gtgen out=xxxlab2 'tiecnvrt  +
           "ModelTiePointTag=(0,100,0,350000.4,5307000.3,0.0)",  +
           "GTRasterTypeGeoKey=1(RasterPixelIsArea)")
 Beginning VICAR task gtgen
-gtgen version Fri Jan 11 2008
+GTGEN version 2019-09-05
 gtlist xxxlab2
 Beginning VICAR task gtlist
 gtlist version 2016-01-13
@@ -172,7 +172,7 @@ gtgen out=xxxlab2 'tiecnvrt  +
           "ModelTiePointTag=(100,0,0,350000.4,5307000.3,0.0)",  +
           "GTRasterTypeGeoKey=1(RasterPixelIsArea)")
 Beginning VICAR task gtgen
-gtgen version Fri Jan 11 2008
+GTGEN version 2019-09-05
 gtlist xxxlab2
 Beginning VICAR task gtlist
 gtlist version 2016-01-13
@@ -214,7 +214,7 @@ gtgen out=xxxlab2 'tiecnvrt  +
           "ModelTiePointTag=(0,100,0,351000.4,5306000.3,0.0)",  +
           "GTRasterTypeGeoKey=1(RasterPixelIsArea)")
 Beginning VICAR task gtgen
-gtgen version Fri Jan 11 2008
+GTGEN version 2019-09-05
 gtlist xxxlab2
 Beginning VICAR task gtlist
 gtlist version 2016-01-13
@@ -223,7 +223,7 @@ The file is a standalone VICAR GeoTIFF label
 A hypothetical 1000 x 2000 VICAR image will
 be used to illustrate the mapping of corner points.
 The VICAR GeoTIFF label is:
-MODELTRANSFORMATIONTAG=(-0.0,10.0,0,350000.4,10.0,-0.0,0,5306000.3,0,0,0,0,0,0,0,1)
+MODELTRANSFORMATIONTAG=(0.0,10.0,0,350000.4,10.0,0.0,0,5306000.3,0,0,0,0,0,0,0,1)
 GTRASTERTYPEGEOKEY=1(RasterPixelIsArea)
 
 The image raster is an 'area' type
@@ -255,7 +255,7 @@ gtgen out=xxxlab2 'tiecnvrt  +
           "ModelTiePointTag=(0,100,0,350000.4,5307000.3,0.0)",  +
           "GTRasterTypeGeoKey=1(RasterPixelIsArea)")
 Beginning VICAR task gtgen
-gtgen version Fri Jan 11 2008
+GTGEN version 2019-09-05
 gtlist xxxlab2
 Beginning VICAR task gtlist
 gtlist version 2016-01-13
@@ -264,7 +264,7 @@ The file is a standalone VICAR GeoTIFF label
 A hypothetical 1000 x 2000 VICAR image will
 be used to illustrate the mapping of corner points.
 The VICAR GeoTIFF label is:
-MODELTRANSFORMATIONTAG=(0.0,-10.0,0,351000.4,-10.0,-0.0,0,5307000.3,0,0,0,0,0,0,0,1)
+MODELTRANSFORMATIONTAG=(0.0,-10.0,0,351000.4,-10.0,0.0,0,5307000.3,0,0,0,0,0,0,0,1)
 GTRASTERTYPEGEOKEY=1(RasterPixelIsArea)
 
 The image raster is an 'area' type
@@ -296,7 +296,7 @@ gtgen out=xxxlab2 'tiecnvrt  +
           "ModelTiePointTag=(0,100,0,351000.4,5307000.3,0.0)",  +
           "GTRasterTypeGeoKey=1(RasterPixelIsArea)")
 Beginning VICAR task gtgen
-gtgen version Fri Jan 11 2008
+GTGEN version 2019-09-05
 gtlist xxxlab2
 Beginning VICAR task gtlist
 gtlist version 2016-01-13
@@ -305,7 +305,7 @@ The file is a standalone VICAR GeoTIFF label
 A hypothetical 1000 x 2000 VICAR image will
 be used to illustrate the mapping of corner points.
 The VICAR GeoTIFF label is:
-MODELTRANSFORMATIONTAG=(-0.0,10.0,0,350000.4,-10.0,-0.0,0,5307000.3,0,0,0,0,0,0,0,1)
+MODELTRANSFORMATIONTAG=(0.0,10.0,0,350000.4,-10.0,0.0,0,5307000.3,0,0,0,0,0,0,0,1)
 GTRASTERTYPEGEOKEY=1(RasterPixelIsArea)
 
 The image raster is an 'area' type
@@ -337,7 +337,7 @@ gtgen out=xxxlab2 'tiecnvrt  +
           "ModelTiePointTag=(0,100,0,350000.4,5306000.3,0.0)",  +
           "GTRasterTypeGeoKey=1(RasterPixelIsArea)")
 Beginning VICAR task gtgen
-gtgen version Fri Jan 11 2008
+GTGEN version 2019-09-05
 gtlist xxxlab2
 Beginning VICAR task gtlist
 gtlist version 2016-01-13
@@ -346,7 +346,7 @@ The file is a standalone VICAR GeoTIFF label
 A hypothetical 1000 x 2000 VICAR image will
 be used to illustrate the mapping of corner points.
 The VICAR GeoTIFF label is:
-MODELTRANSFORMATIONTAG=(0.0,-10.0,0,351000.4,10.0,-0.0,0,5306000.3,0,0,0,0,0,0,0,1)
+MODELTRANSFORMATIONTAG=(0.0,-10.0,0,351000.4,10.0,0.0,0,5306000.3,0,0,0,0,0,0,0,1)
 GTRASTERTYPEGEOKEY=1(RasterPixelIsArea)
 
 The image raster is an 'area' type
@@ -378,7 +378,7 @@ gtgen out=xxxlab3 'tiecnvrt  +
           "ModelTiePointTag=(101,1,0,350000.4,5307000.3,0.0)",  +
           "GTRasterTypeGeoKey=2(RasterPixelIsPoint)")
 Beginning VICAR task gtgen
-gtgen version Fri Jan 11 2008
+GTGEN version 2019-09-05
 gtlist xxxlab3
 Beginning VICAR task gtlist
 gtlist version 2016-01-13
@@ -387,7 +387,7 @@ The file is a standalone VICAR GeoTIFF label
 A hypothetical 1000 x 2000 VICAR image will
 be used to illustrate the mapping of corner points.
 The VICAR GeoTIFF label is:
-MODELTRANSFORMATIONTAG=(-0.0,10.0,0,349990.4,10.0,0.0,0,5305990.3,0,0,0,0,0,0,0,1)
+MODELTRANSFORMATIONTAG=(0.0,10.0,0,349990.4,10.0,0.0,0,5305990.3,0,0,0,0,0,0,0,1)
 GTRASTERTYPEGEOKEY=2(RasterPixelIsPoint)
 
 The image raster is a 'point' or 'post' type
@@ -419,7 +419,7 @@ gtgen out=xxxlab4 'tiecnvrt +
         "ModelTiePointTag=(0,1200,0,122.0,25.0,0.0)",  +
         "GTRasterTypeGeoKey=2(RasterPixelIsPoint)")
 Beginning VICAR task gtgen
-gtgen version Fri Jan 11 2008
+GTGEN version 2019-09-05
 gtlist xxxlab4 mapunitm=75500.0 mapinch=20.0 listnl=1201 listns=1201
 Beginning VICAR task gtlist
 gtlist version 2016-01-13
@@ -428,7 +428,7 @@ The file is a standalone VICAR GeoTIFF label
 A hypothetical 1201 x 1201 VICAR image will
 be used to illustrate the mapping of corner points.
 The VICAR GeoTIFF label is:
-MODELTRANSFORMATIONTAG=(-0.0,0.0008333333333,0,121.0,0.0008333333333,-0.0,0,25.0,0,0,0,0,0,0,0,1)
+MODELTRANSFORMATIONTAG=(0.0,0.0008333333333,0,121.0,0.0008333333333,0.0,0,25.0,0,0,0,0,0,0,0,1)
 GTRASTERTYPEGEOKEY=2(RasterPixelIsPoint)
 
 The image raster is a 'point' or 'post' type
@@ -460,7 +460,7 @@ gtgen out=xxxlab5 'tiecnvrt  +
           "ModelTiePointTag=(102,3,0,351000.4,5307000.3,0.0)",  +
           "GTRasterTypeGeoKey=1(RasterPixelIsArea)")
 Beginning VICAR task gtgen
-gtgen version Fri Jan 11 2008
+GTGEN version 2019-09-05
 gtlist xxxlab5
 Beginning VICAR task gtlist
 gtlist version 2016-01-13
@@ -498,7 +498,7 @@ The scale fraction is 1 /  78000.0
 (assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
 gen xxxim1 nl=500 ns=500
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gtgen inp=xxxim1 out=xxxim2 'tiecnvrt  +
    geotiff=("ModelTiePointTag=(0,0,0,350807.4,5317081.3,0.0)",  +
@@ -506,16 +506,16 @@ gtgen inp=xxxim1 out=xxxim2 'tiecnvrt  +
           "ModelTiePointTag=(100,0,0,351807.4,5317081.3,0.0)",  +
           "GTRasterTypeGeoKey=1(RasterPixelIsArea)")
 Beginning VICAR task gtgen
-gtgen version Fri Jan 11 2008
-label-list xxxim2
+GTGEN version 2019-09-05
+label-list xxxim2 'nousrtim
 Beginning VICAR task label
-LABEL version 15-Nov-2010
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File xxxim2 ************
                 3 dimensional IMAGE file
                 File organization is BSQ
-                Pixels are in BYTE format from a X86-LINUX host
+                Pixels are in BYTE format from a X86-64-LIN host
                 1 bands
                 500 lines per band
                 500 samples per line
@@ -525,13 +525,13 @@ LABEL version 15-Nov-2010
 MODELTIEPOINTTAG='(0,0,0,350807.4,5317081.3,0.0)'
 MODELPIXELSCALETAG='(10.0,10.0,0.0)'
 GTRASTERTYPEGEOKEY='1(RasterPixelIsArea)'
----- Task: GEN -- User: wlb -- Wed Jan 13 14:35:34 2016 ----
+---- Task: GEN -- User:  --  ----
 IVAL=0.0
 SINC=1.0
 LINC=1.0
 BINC=1.0
 MODULO=0.0
----- Task: GTGEN -- User: wlb -- Wed Jan 13 14:35:34 2016 ----
+---- Task: GTGEN -- User:  --  ----
  
 ************************************************************
 gtlist xxxim2
@@ -569,16 +569,16 @@ The scale fraction is 1 /  19500.0
 gtgen inp=xxxim1 out=xxxim2 'add geotiff=(  +
   "PCSCitationGeoKey=""UTM Zone 60 N with WGS84""")
 Beginning VICAR task gtgen
-gtgen version Fri Jan 11 2008
-label-list xxxim2
+GTGEN version 2019-09-05
+label-list xxxim2 'nousrtim
 Beginning VICAR task label
-LABEL version 15-Nov-2010
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File xxxim2 ************
                 3 dimensional IMAGE file
                 File organization is BSQ
-                Pixels are in BYTE format from a X86-LINUX host
+                Pixels are in BYTE format from a X86-64-LIN host
                 1 bands
                 500 lines per band
                 500 samples per line
@@ -586,13 +586,13 @@ LABEL version 15-Nov-2010
                 0 bytes of binary prefix per line
 ---- Property: GEOTIFF ----
 PCSCITATIONGEOKEY='"UTM Zone 60 N with WGS84"'
----- Task: GEN -- User: wlb -- Wed Jan 13 14:35:34 2016 ----
+---- Task: GEN -- User:  --  ----
 IVAL=0.0
 SINC=1.0
 LINC=1.0
 BINC=1.0
 MODULO=0.0
----- Task: GTGEN -- User: wlb -- Wed Jan 13 14:35:34 2016 ----
+---- Task: GTGEN -- User:  --  ----
  
 ************************************************************
 gtlist xxxim2
@@ -608,16 +608,16 @@ gtgen inp=xxxim1 out=xxxim2  +
           "ModelTiePointTag=(100,0,0,351807.4,5317081.3,0.0)",  +
           "GTRasterTypeGeoKey=1(RasterPixelIsArea)")
 Beginning VICAR task gtgen
-gtgen version Fri Jan 11 2008
-label-list xxxim2
+GTGEN version 2019-09-05
+label-list xxxim2 'nousrtim
 Beginning VICAR task label
-LABEL version 15-Nov-2010
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File xxxim2 ************
                 3 dimensional IMAGE file
                 File organization is BSQ
-                Pixels are in BYTE format from a X86-LINUX host
+                Pixels are in BYTE format from a X86-64-LIN host
                 1 bands
                 500 lines per band
                 500 samples per line
@@ -627,13 +627,13 @@ LABEL version 15-Nov-2010
 MODELTIEPOINTTAG=('(0,0,0,350807.4,5317081.3,0.0)', 
 '(100,100,0,351807.4,5316081.3,0.0)', '(100,0,0,351807.4,5317081.3,0.0)')
 GTRASTERTYPEGEOKEY='1(RasterPixelIsArea)'
----- Task: GEN -- User: wlb -- Wed Jan 13 14:35:34 2016 ----
+---- Task: GEN -- User:  --  ----
 IVAL=0.0
 SINC=1.0
 LINC=1.0
 BINC=1.0
 MODULO=0.0
----- Task: GTGEN -- User: wlb -- Wed Jan 13 14:35:34 2016 ----
+---- Task: GTGEN -- User:  --  ----
  
 ************************************************************
 gtlist xxxim2
@@ -649,7 +649,7 @@ GTRASTERTYPEGEOKEY=1(RasterPixelIsArea)
 gtgen out=xxxlab6   +
   geotiff=("GTRasterTypeGeoKey=1(RasterPixelIsArea)")
 Beginning VICAR task gtgen
-gtgen version Fri Jan 11 2008
+GTGEN version 2019-09-05
 gtlist xxxlab6
 Beginning VICAR task gtlist
 gtlist version 2016-01-13
@@ -657,4 +657,5 @@ No mapping in GeoTIFF label
 The GeoTIFF label is:
 GTRASTERTYPEGEOKEY=1(RasterPixelIsArea)
 
+ush rm xxxim1 xxxim2 xxxlab1 xxxlab2 xxxlab3 xxxlab4 xxxlab5 xxxlab6
 disable-log

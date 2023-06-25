@@ -1,0 +1,47 @@
+gen xxxa nl=3 ns=3
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+ibis-gen xxxb nc=4 nr=9 deffmt=DOUB
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+astroref (xxxa,xxxb) urange=(1.0,1823.5,3648.0)  +
+  vrange=(1.0,1687.0,3375.0)  +
+  ACS_time=215076679.47174  +
+  TOD_t_SV=(6852365.174,240762.2817,-1542082.687)  +
+  TOD_q_SV=(1.0,0.0,0.0,0.0)   +
+  SV_t_C=(0.0,0.0,0.0)  +
+  SV_q_C=(1.0,0.0,0.0,0.0)   +
+  fu=2500000    +
+  fv=2500000   +
+  q=0.0  +
+  u0=1824.5  +
+  v0=1688  +
+  kappa=(0.0,0.0,0.0,0.0,0.0)
+Beginning VICAR task astroref
+ASTROREF version 2016-01-13
+gr,gc 9 4
+
+ibis-l xxxb nr=9 csiz=(12,12,12,12,12)  +
+   cfor="%12.7f %12.7f %12.7f %12.7f %12.7f"
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:9  Number of Columns: 4       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:9
++------------+------------+------------+------------
+          C:1          C:2          C:3          C:4
++------------+------------+------------+------------
+   1.0000000    1.0000000  -96.0973775   89.9637209 
+   1.0000000 1688.0000000  145.6911333   89.9954062 
+   1.0000000 3375.0000000   95.1741638   89.9585788 
+1824.5000000    1.0000000  -43.6077440   89.9476052 
+1824.5000000 1688.0000000    3.8026569   89.9619192 
+1824.5000000 3375.0000000   47.2638390   89.9439218 
+3648.0000000    1.0000000  -24.4205651   89.9124367 
+3648.0000000 1688.0000000    1.7672129   89.9201736 
+3648.0000000 3375.0000000   27.2504285   89.9101842 
+ush rm xxxa xxxb
+disable-log

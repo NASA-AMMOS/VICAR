@@ -1,0 +1,99 @@
+process help=*
+parm inp type=string count=1:5000
+parm out type=string count=1
+parm img type=string count=1:5000
+
+! used by library beneath mars_setup()
+PARM CONFIG_PATH STRING DEFAULT="$MARS_CONFIG_PATH"
+PARM POINT_METHOD TYPE=STRING COUNT=(0:1) DEFAULT=--
+end-proc
+
+.title
+VICAR Program cattp - concatenates a list of tiepoint files
+.help
+PURPOSE
+
+    CATTP generates an XML tiepoint file concatenating two or more input tiepoint files
+
+.PAGE
+TAE COMMAND LINE FORMAT
+
+    CATTP INP=(intiefiles) OUT=outtie IMG=(inimgfiles)
+     
+    where
+
+    intiefiles is two or more input tiepoint files
+    outtie     is an output XML text file representing a set of tiepoints.
+    inimgfiles is two or more input image files
+
+    Examples
+      disp2tp intie.lis out.tie inimg.lis
+
+.PAGE
+OPERATION
+
+    CATTP generates an XML tiepoint file concatenating two or more
+    input tiepoint files. The associated image files MUST be provided
+    in the img parm.
+   
+    Following is a minimal example of an XML tiepoint file:
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <tiepoint_file version="1.0">
+    <tiepoint_set>
+      <reference_frame name="FIXED" index1="22" />
+      <images>
+        <image unique_id="MLG_436644282DSR_S0220000MCAM01813M1" key="0" />
+        <image unique_id="MRG_436644282DSR_S0220000MCAM01813M1" key="1" />
+      </images>
+      <tiepoints>
+        <tie type="0" left_key="0" right_key="1">
+          <left      line="71" samp="491" />
+          <projected line="145.984558" samp="138.428513" />
+          <right     line="145.984558" samp="138.428513" />
+          <flags quality="1.0" interactive="0" />
+        </tie>
+      </tiepoints>
+    </tiepoint_set>
+
+.PAGE
+
+RESTRICTIONS
+
+     None known.
+
+.PAGE
+WRITTEN BY:            W. L. Bunch
+
+COGNIZANT PROGRAMMER:  W. L. Bunch
+
+REVISIONS: 
+  Thu Sep 18 2014
+    Initial version
+
+.level1
+
+.var inp
+Input tiepoint files.
+
+.var out
+Output tiepoint file.
+
+.var IMG
+Input image files.
+
+.level2
+
+.var inp
+Two or more input tiepoint files to be concatenated.
+
+.var out
+An XML text file representing a set of tiepoints. The concatenation of
+the input files.
+
+.var IMG
+The image files associated with the input tiepoint files. IMG must
+include every image referenced by the input tiepoint files. Only the
+IMG labels are used, so either EDR or RDR files can be used.
+
+.end

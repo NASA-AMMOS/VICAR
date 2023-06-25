@@ -1,0 +1,539 @@
+process help=*
+PARM INP TYPE=STRING COUNT=(1:3)
+PARM OUT TYPE=STRING COUNT=1
+PARM UVW TYPE=STRING COUNT=(1:3)
+PARM TYPE TYPE=KEYWORD COUNT=1 VALID=("slope", "heading", "magnitude", +
+        "direction", "ntilt", "solar") DEFAULT="slope"
+
+PARM NAVTABLE TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM ORIGIN TYPE=REAL COUNT=(0:3) DEFAULT=--
+PARM SA TYPE=REAL COUNT=(0:1) DEFAULT=0
+
+PARM CONFIG_PATH STRING DEFAULT="$MARS_CONFIG_PATH"
+PARM POINT_METHOD TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM NOSITE TYPE=KEYWORD COUNT=(0:1) VALID=NOSITE DEFAULT=--
+
+PARM DATA_SET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM DATA_SET_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM RELEASE_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCT_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_INST TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_TYPE TYPE=STRING COUNT=(0:1) DEFAULT=--
+
+PARM RSF TYPE=STRING COUNT=0:100 DEFAULT=--
+PARM DEBUG_RSF TYPE=KEYWORD COUNT=0:1 VALID=DEBUG_RSF DEFAULT=--
+PARM COORD TYPE=KEYWORD VALID=("FIXED", "INSTRUMENT", "SITE", "ROVER", +
+        "LOCAL_LEVEL") DEFAULT="FIXED"
+PARM COORD_INDEX TYPE=INTEGER COUNT=0:10 DEFAULT=--
+PARM FIXED_SITE TYPE=INTEGER COUNT=0:1 DEFAULT=--
+PARM SOLUTION_ID TYPE=STRING COUNT=0:1 DEFAULT=--
+
+END-PROC
+
+.TITLE
+VICAR program MARSSLOPE.
+
+.HELP
+PURPOSE:
+MARSSLOPE computes one of the following slope function types:
+  Slope
+  Slope Heading
+  Slope Magnitude
+  Slope Rover Direction
+  Northerly Tilt
+  Solar Energy
+
+The inputs for MARSSLOPE are an XYZ image such as that created by the
+MARSXYZ program, and a UVW image such as that created by MARSUVW.
+These can each be single 3-band files or three 1-band files; see 
+MARSXYZ and MARSUVW for details.
+
+EXECUTION:
+marsslope inp=xyz_data out=slope_data.vic uvw=uvw_data type=slope
+marsslope inp=xyz_data out=slope_data.vic uvw=uvw_data type=heading
+marsslope inp=xyz_data out=slope_data.vic uvw=uvw_data type=magnitude
+marsslope inp=xyz_data out=slope_data.vic uvw=uvw_data 
+        origin=\( 0.0,0.0,0.0\) type=direction
+marsslope inp=xyz_data out=slope_data.vic uvw=uvw_data type=ntilt
+marsslope inp=xyz_data out=slope_data.vic uvw=uvw_data type=solar sa=68.9
+
+marsslope inp=\(x.vic,y.vic,z.vic\) out=slope_data.vic uvw=\(u.vic,v.vic,w.vic\) type=slope
+
+where:
+type is one of the following slope functions to be computed:
+  slope     - Slope
+  heading   - Slope Heading
+  magnitude - Slope Magnitude
+  direction - Slope Rover Direction
+  ntilt     - Northerly Tilt
+  solar     - Solar Energy
+
+origin is an override for the input reference point. It is used only when 
+calculating Slope Rover Direction (direction)
+
+sa is a solar angle, which is the angle between the vector to the sun and 
+its projection to the XY-plane at local noon. Ideally this should be the 
+elevation of the sun at local noon, but approximations to this may be used. 
+It is used only when calculating Solar Energy (solar).
+
+TBD: The solar angle should be derived from SPICE eventually.
+
+.PAGE
+
+METHOD:
+
+Input file contents:
+
+INP:  marsxyz(or similar)-generated. It consists of either three separate 
+one-band files (x, y, z), or a single 3-band file.  
+Units of XYZ input file(s) are in meters, in the coordinate system specified 
+by the COORD and COORD_SYS parameters.
+
+UVW: marsuvw(or similar)-generated normalized normal vector. It consists of 
+either three separate one-band files (x, y, z), or a single 3-band file.
+
+Calculations:
+
+Given XYZ = (x,y,z) is a point/location, and N = (u,v,w) is a normal vector,
+and origin = (x0,y0,z0), the formulas for computing slope functions are:
+
+Slope (slope):
+  S = (180/PI) * ( (PI/2) + atan( w/ sqrt( u*u + v*v ) ) );
+Pixels represent the slope of the surface at that point, in
+degrees, with 0 being horizontal (surface parallel to the X-Y coordinate
+plane).
+
+Slope Heading (heading):
+  S = (180/PI) * ( atan2(v,u) );
+Pixels represent the direction in which the slope tilts, defined as the 
+azimuth of the projection of the surface normal to the X-Y coordinate plane.
+
+Slope Magnitude (magnitude):
+  S = sqrt(u*u + v*v);
+Pixels represent the magnitude of the slope as a value between 0 (flat) 
+and 1 (vertical), equivalent to sin(slope).
+
+Slope Rover Direction (direction):
+   d = sqrt( (x-x0)*(x-x0) + (y-y0)*(y-y0) ),
+   Vx = (x-x0) / d,
+   Vy = (y-y0) / d,
+   S = -(180/PI) * atan2( Vx*u + Vy*v, -w );
+Pixels represent the component of slope (in degrees) in the radial direction 
+towards or away from the specified origin (generally the rover position),
+with positive tilting toward the origin (representing a climb from the 
+rover's perspective).
+
+Northerly Tilt (ntilt):
+  S = (180/PI) * asin(u);
+Pixels represent the component of slope (in degrees) that points north. 
+This is defined as the complement of angle between the surface normal 
+and a vector pointing north (i.e. (1,0,0) or along the +X axis in a 
+local level frame), with a value equal (180/pi)*arcsin(nx) degrees, 
+where nx is the X component of the surface normal.  90 degrees indicates 
+the surface faces north (normal parallel to +X) while 0 indicates there 
+is no north-facing component (e.g. flat or tilted east-west only).
+Negative numbers indicate a south-facing surface.
+
+Solar Energy (solar):
+   S = u * cos(SA*PI/180) - w * cos((90-SA)*PI/180).
+Pixels represent the relative amount of solar energy
+available at that point due solely to rover tilt, defined as the dot
+product between the surface normal and the vector to the sun at local
+noon.
+
+.PAGE
+
+COGNIZANT PROGRAMMER: I. Yanovsky
+
+HISTORY:
+  2012-01-08 I. Yanovsky and B. Deen - Initial marsslope
+  2019-12-10 W. Bunch - Initialized some variables; cleaned up some -Wall warnings; added unit test.
+  2020-05-19 W. Bunch - Replaced sprintf calls.
+  2020-07-08 rgd	Removed size limitations
+
+.LEVEL1
+.VARI INP
+Input images.
+Must be 1 3-band file
+or (x,y,z) triplet.
+
+.VARI OUT
+Output file
+Will be 1 
+single band file.
+
+.VARI UVW
+Input image containing
+normal vector. 
+Must be 1 3-band file
+or (u,v,w) triplet.
+
+.VARI TYPE
+Specifies function to be computed
+
+.VARI ORIGIN
+3D origin point, used only for
+Slope Rover Direction (direction)
+
+.VARI SA
+Solar angle, used only for
+Solar Energy.
+
+.VARI CONFIG_PATH
+Path used to find
+configuration/calibration
+files.
+
+.VARI POINT_METHOD
+Specifies a mission-
+specific pointing
+method to use
+
+.VARI NOSITE
+Disables coordinate
+system sites.
+
+.VARI RSF
+Rover State File(s) to use.
+
+.VARI DEBUG_RSF
+Turns on debugging of RSF
+parameter.
+
+.VARI COORD
+Coordinate system to use.
+
+.VARI COORD_INDEX
+Coordinate system index for
+some COORD/mission combos.
+
+.VARI FIXED_SITE
+Which site is FIXED for
+rover missions.
+
+.VARI SOLUTION_ID
+Solution ID to use for
+COORD_INDEX
+
+.VARI DATA_SET_NAME
+Specifies the full name given
+to a data set or a data product.
+
+.VARI DATA_SET_ID
+Specifies a unique alphanumeric
+identifier for a data set or data
+product.
+
+.VARI RELEASE_ID
+Specifies the unique identifier
+associated with the release to the
+public of all or part of a data set.
+The release number is associated with
+the data set, not the mission.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique
+identifier assigned to a data
+product by its producer.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier
+of an entity associated with the
+production a data set.
+
+.VARI PRODUCER_INST
+Specifies the full name of the
+identity of an entity associated
+with the production of a data set.
+
+.VARI TARGET_NAME
+Specifies a target.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target.
+
+
+.LEVEL2
+.VARI INP
+Input files contain the XYZ coordinates. If three filenames are given,
+they all should be single band files each containing X, Y and Z values
+in that order.  If only one filename is given, it should be a 3-band
+file with bands in (X,Y,Z) order.
+
+The input files are in REAL (float) format.
+
+.VARI OUT
+The output of MARSSLOPE is a single 1-band file of type REAL (float) 
+
+.VARI UVW
+Input files contain the UVW coordinates. If three filenames are given,
+they all should be single band files each containing U, V and W values
+in that order.  If only one filename is given, it should be a 3-band
+file with bands in (U,V,W) order.
+
+.VARI TYPE
+Specifies one of the following slope functions to be computed (formulas are
+profided in the main help):
+
+Slope (slope): Pixels represent the slope of the surface at that point, in
+degrees, with 0 being horizontal (surface parallel to the X-Y coordinate
+plane).
+
+Slope Heading (heading): Pixels represent the direction in which the slope 
+tilts, defined as the azimuth of the projection of the surface normal to 
+the X-Y coordinate plane.
+
+Slope Magnitude (magnitude): Pixels represent the magnitude of the slope as
+a value between 0 (flat) and 1 (vertical), equivalent to sin(slope).
+
+Slope Rover Direction (direction): Pixels represent the component of 
+slope (in degrees) in the radial direction towards or away from the 
+specified origin (generally the rover position), with positive tilting 
+toward the origin (representing a climb from the rover's perspective).
+For radial slope products, this keyword specifies the origin from
+which the radial slopes are measured (see DERIVED_IMAGE_TYPE=RADIAL_SLOPE_MAP).
+Typically this is the location of the rover itself (i.e. the origin of the 
+Rover coordinate frame), but could be set to other values.
+
+Northerly Tilt (ntilt): Pixels represent the component of slope (in degrees) 
+that points north. This is defined as the complement of angle between the 
+surface normal and a vector pointing north (i.e. (1,0,0) or along the +X axis 
+in a local level frame), with a value equal (180/pi)*arcsin(nx) degrees, 
+where nx is the X component of the surface normal.  90 degrees indicates 
+the surface faces north (normal parallel to +X) while 0 indicates there 
+is no north-facing component (e.g. flat or tilted east-west only).
+Negative numbers indicate a south-facing surface.
+
+Solar Energy (solar): Pixels represent the relative amount of solar energy
+available at that point due solely to rover tilt, defined as the dot
+product between the surface normal and the vector to the sun at local
+noon.
+
+.VARI ORIGIN
+Specifies the 3D point to compute the range from.  By default it's set to
+camera location as specified by C-point for CAHV-based instruments.
+
+.VARI SA
+Specifies the elevation angle (in degrees) of the sun that was used for solar 
+energy computations (see DERIVED_IMAGE_TYPE=SOLAR_ENERGY_MAP).  Values between 
+0 and 90 indicate the sun is in the northern part of the sky; 
+90 to 180 indicates south. Ideally this should be the elevation of the sun at 
+local noon, but approximations to this may be used. By default it's set to 0.
+
+.VARI COORD
+Specifies the coordinate system to use for the output XYZ points.  The
+available coordinate systems depend on the mission, but currently are:
+
+Mars Pathfinder:
+ * Fixed: Surface Fixed.  X points north, Z points down, origin fixed to 
+ground.
+ * Local Level: Same rotation as Fixed, with origin attached to spacecraft.
+ * Lander: Rotation fixed relative to spacecraft.  Z is down.
+Mars 98 Polar Lander:
+ * Fixed: Surface Fixed.  X points north, Z points up, origin fixed to ground.
+ * Local Level: Same rotation as Fixed, with origin attached to spacecraft.
+ * Lander: Rotation fixed relative to spacecraft.  Z is down.
+ * MVACS: Rotation fixed to S/C, Z is up, origin at base of SSI mast.
+
+.VARI CONFIG_PATH
+A colon-separated list of directories in which to look for configuration
+and calibration files.  Environment variables are allowed in the list
+(and may themselves contain colon-separated lists).  The directories are
+searched in order for each config/cal file when it is loaded.  This allows
+multiple projectes to be supported simultaneously, and allows the user to
+override any given config/cal file.  Note that the directory structure below
+the directories specified in this path must match what the project expects.
+For example, Mars 98 expects flat fields to be in a subdirectory named
+"flat_fields" while Mars Pathfinder expects them to be directly in the
+directory specified by the path (i.e. no intermediate subdirectories).
+
+.VARI POINT_METHOD
+Specifies a mission-specific pointing method to use.  Normally this
+parameter is not used, in which case the "default" pointing methods
+are used.  Some missions may have special, or alternate, pointing
+methods available, which are indicated by this string (for example,
+backlash models, using arm joint angles instead of x/y/z/az/el, etc).
+A substring search is used, so multiple methods (where that makes sense)
+can be specified by separating the keywords with commas.
+
+Note that nav files created using one pointing method will most likely
+not be compatible with a mosaic created using a different pointing method.
+
+The methods available vary per mission, but some methods available at
+the time of this writing are:
+
+BACKLASH : Mars 98 SSI only.  Selects a backlash pointing model,
+which adjusts the telemetered azimuth and elevation values based on
+knowledge of the camera's mechanical backlash and the direction the
+motor was travelling when the image was taken.
+
+.VARI NOSITE
+Disables all label-derived parameters to the Site mechanism which underlies
+coordinate systems.  This forces all sites to be identical, with all rotations
+and offsets set the same.  In the case of MPF or Mars 98, this disables
+the lander quaternion and offset (sets them to identity and 0, respectively).
+This option should not be used with images taken from different vantage
+points (e.g. the spacecraft moved, or mixing a lander and a rover) or
+invalid results will be obtained.  The use of this option invalidates the
+Fixed coordinate frame; any values reported in the Fixed frame will not
+correctly reflect the orientation of the lander/rover.
+
+Obviously, this option should be rarely used; it is intended for when the
+image labels defining the site are invalid or inconsistent.
+
+.VARI RSF
+Rover State File.  This is a list of filenames to load containing
+Rover State information.  These files contain position and orientation
+information for a rover (or other mobile spacecraft) at various sites.
+They are in XML format.  See the "Rover Motion Counter (RMC) Master File SIS"
+for details on these files.
+
+Rover State Files have a priority order.  The files listed first have
+the highest priority.
+
+Environment variables may be used in the list.
+
+For MER, if a directory is specified, then that directory is searched for
+RMC Master files and any found are loaded.  The directory structure and
+filename convention is covered in the RMC SIS.  The directory specified
+is the one containing "master", so if <dir> is the name specified in the
+RSF parameter, the following files will be searched for:
+
+<dir>/master/<mission>_Master.svf
+<dir>/master/<mission>_Site_<n>_Master.rvf
+
+The name of each file loaded is printed to the stdout log for reference.
+
+.VARI DEBUG_RSF
+If enabled, this causes the internal database of RMC locations to be
+printed out to the stdout log.  This is after the RSF files have been
+loaded and the coordinate systems read from the input label(s).
+
+.VARI COORD
+The coordinate system to use for all input parameters and output values,
+and the XYZ points themselves.  The interpretation of the values is dependent
+on the mission.  Some representative missions are listed here:
+
+Fixed - The Fixed frame (default).  This is the ultimate reference frame
+    (see also FIXED_SITE for rover missions).
+Instrument - The "natural" frame for the instrument (of the first input
+    image).  MPF: Lander or Rover; M98: MVACS; MER: Rover.
+Site - A major Site frame.  For rover missions, COORD_INDEX specifies which
+    Site frame to use.  Non-rover missions treat this as Fixed.
+Rover - An instance of the Rover frame.  For rover missions, COORD_INDEX
+    specifies which instance of the rover frame to use.  Non-rover mission
+    use the spacecraft frame (e.g. Lander for M98).
+Local_Level - An instance of a Local Level frame.  This is typically
+    coincident with the Rover frame (in XYZ) but oriented toward North
+    like the Site and Fixed frames.  For MER, this is an instance of a
+    Drive index move.
+
+.VARI COORD_INDEX
+The index specifies which instance of a coordinate system to use.  It is
+currently applicable only to rover-based missions, but could have other
+uses.  The index is equivalent to the Rover Motion Counter (RMC) for MER
+and FIDO.
+
+For MER/FIDO, there are many Site frames.  Each is numbered with a single
+index.  For Site Frames, coord_index specifies which to use.  Likewise,
+there are many Local_Level and Rover frames, corresponding to values of
+the RMC.  The multiple instances of this frame are selected by COORD_INDEX.
+
+Generally COORD_INDEX defaults sensibly so you don't usually need to
+specify it.  It will default to the instance used by the first input.
+
+.VARI FIXED_SITE
+Specifies which major Site is the "Fixed" Site for this run.
+
+Historically, MPF and M98 had a single "Surface Fixed" frame which never
+moved, and which all other coordinate system frames were referenced to.
+With the advent of long-range rovers (such as MER and FIDO), that became
+insufficient.  The rover traverses far enough that errors in knowledge of
+coordinate system offset and orientation become unacceptable.
+
+For this reason, a system of major Sites was introduced.  Periodically
+during the mission, a Site frame is declared.  This then becomes the
+reference frame for all activities until the next Site is declared.
+References are kept local, and errors don't propogate across Sites.
+
+However, if images from more than one Site are combined together, the
+Site's must be placed relative to each other.  Therefore a single reference
+frame is still needed to combine different sites.
+
+The FIXED_SITE parameter controls which of the major Site frames is
+the reference ("fixed") site for this program run.  This fixed frame
+can vary in different program runs, but is constant throughout one
+execution.
+
+If not specified, FIXED_SITE defaults to the minimum Site number (i.e.
+lowest numbered, or earliest chronologically) used in all input images.
+Normally this default is sufficient; rarely must FIXED_SITE be specified.
+
+One or more Rover State Files must usually be specified in order to combine
+image from more than one Site.  These describe the relationship between
+sites.  See the RSF parameter.
+
+.VARI SOLUTION_ID
+Specifies which solution ID to use when specifying the coordinate system.
+
+There are potentially many different definitions for the same coordinate
+system.  These are identified via a unique Solution ID.  If this parameter
+is given, only the specified solution's definition is searched for.  Without
+it, the "best" available solution is chosen.
+
+It is extremely rare that this parameter should be needed.  The default
+will be sufficient in almost every case.
+
+Note that the current MER implementation requires that a value for COORD_INDEX
+also be provided, in order for this parameter to take effect.
+
+.VARI DATA_SET_NAME
+The DATA_SET_NAME typically identifies the instrument that acquired the
+data, the target of that instrument, and the processing level of the data.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_NAME.
+
+.VARI DATA_SET_ID
+The DATA_SET_ID value for a given data set or product is constructed
+according to flight project naming conventions.  In most cases the
+DATA_SET_ID is an abbreviation of the DATA_SET_NAME.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_ID.
+
+.VARI RELEASE_ID
+When a data set is released incrementally, such as every three months during
+a mission, the RELEASE_ID is updated each time part of the data set is 
+released.
+For each mission(or host id if multiple spacecrafts), the first release of a 
+data set should have a value of "0001".
+This value is copied to the output label, property IDENTIFICATION,
+keyword RELEASE_ID.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique identifier assigned to a data product by
+its producer. Most commonly, it is the filename minus the extension.
+This value is copied to the output label, property IDENTIFICATION,
+keyword PRODUCT_ID.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier of an entity associated with the
+production of a data set. This value is copied to the output label,
+property IDENTIFICATION, keyword PRODUCER_ID.
+
+.VARI PRODUCER_INST
+Specifies the identity of a university, research center, NASA center or other
+institution associated with the production of a data set.
+This value is copied to the output label, property IDENTIFICATION, keyword
+PRODUCER_INSTITUTION_NAME.
+
+.VARI TARGET_NAME
+Specifies a target.  The target may be a planet, satelite, ring, region, 
+feature,asteroid or comet.  This value is copied to the output label, property
+IDENTIFICATION, keyword TARGET_NAME.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target. This value is copied to the output
+label, property IDENTIFICATION, keyword TARGET_NAME.
+

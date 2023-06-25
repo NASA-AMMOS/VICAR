@@ -1,6 +1,8 @@
 procedure  help=*
 refgbl $echo
 body
+enable-log
+
 let _onfail="continue"
 let $echo="no"
 Write " "
@@ -20,4 +22,5 @@ ttimeout date=(80,198,35,42,16,53)
 Write " "
 Write " *************TEST COMPLETED************"
 
+disable-log
 end-proc

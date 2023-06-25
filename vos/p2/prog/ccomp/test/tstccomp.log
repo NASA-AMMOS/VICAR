@@ -1,46 +1,23 @@
-                Version 5C/16C
-
-      ***********************************************************
-      *                                                         *
-      * VICAR Supervisor version 5C, TAE V5.2                   *
-      *   Debugger is now supported on all platforms            *
-      *   USAGE command now implemented under Unix              *
-      *                                                         *
-      * VRDI and VIDS now support X-windows and Unix            *
-      * New X-windows display program: xvd (for all but VAX/VMS)*
-      *                                                         *
-      * VICAR Run-Time Library version 16C                      *
-      *   '+' form of temp filename now avail. on all platforms *
-      *   ANSI C now fully supported                            *
-      *                                                         *
-      * See B.Deen(RGD059) with problems                        *
-      *                                                         *
-      ***********************************************************
-
-  --- Type NUT for the New User Tutorial ---
-
-  --- Type MENU for a menu of available applications ---
-
 let $autousage="none"
 gen ccimg1 50 50 linc=10 sinc=4 ival=0 'comp
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
-label-list ccimg1
+label-list ccimg1 'nousrtim
 Beginning VICAR task label
-LABEL version 15-Nov-2010
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File ccimg1 ************
                 3 dimensional IMAGE file
                 File organization is BSQ
-                Pixels are in COMP format from a X86-LINUX host
+                Pixels are in COMP format from a X86-64-LIN host
                 1 bands
                 50 lines per band
                 50 samples per line
                 0 lines of binary header
                 0 bytes of binary prefix per line
----- Task: GEN -- User: wlb -- Wed Dec 17 13:32:00 2014 ----
+---- Task: GEN -- User:  --  ----
 IVAL=(0.0, 0.0)
 SINC=(4.0, 1.0)
 LINC=(10.0, 1.0)
@@ -48,11 +25,12 @@ BINC=(1.0, 1.0)
 MODULO=(0.0, 0.0)
  
 ************************************************************
-list ccimg1
+list ccimg1  'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    COMP     samples are interpreted as COMPLEX  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
+ Task:GEN       User:          Date_Time:                        
      Samp                         1                       2                       3                       4                       5
    Line
       1       0.000E+00   0.000E+00   4.000E+00   1.000E+00   8.000E+00   2.000E+00   1.200E+01   3.000E+00   1.600E+01   4.000E+00
@@ -106,13 +84,13 @@ Beginning VICAR task list
      49       4.800E+02   4.800E+01   4.840E+02   4.900E+01   4.880E+02   5.000E+01   4.920E+02   5.100E+01   4.960E+02   5.200E+01
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
+ Task:GEN       User:          Date_Time:                        
      Samp                         1                       2                       3                       4                       5
    Line
      50       4.900E+02   4.900E+01   4.940E+02   5.000E+01   4.980E+02   5.100E+01   5.020E+02   5.200E+01   5.060E+02   5.300E+01
 
    COMP     samples are interpreted as COMPLEX  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
+ Task:GEN       User:          Date_Time:                        
      Samp                         6                       7                       8                       9                      10
    Line
       1       2.000E+01   5.000E+00   2.400E+01   6.000E+00   2.800E+01   7.000E+00   3.200E+01   8.000E+00   3.600E+01   9.000E+00
@@ -166,13 +144,13 @@ Beginning VICAR task list
      49       5.000E+02   5.300E+01   5.040E+02   5.400E+01   5.080E+02   5.500E+01   5.120E+02   5.600E+01   5.160E+02   5.700E+01
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
+ Task:GEN       User:          Date_Time:                        
      Samp                         6                       7                       8                       9                      10
    Line
      50       5.100E+02   5.400E+01   5.140E+02   5.500E+01   5.180E+02   5.600E+01   5.220E+02   5.700E+01   5.260E+02   5.800E+01
 
    COMP     samples are interpreted as COMPLEX  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
+ Task:GEN       User:          Date_Time:                        
      Samp                        11                      12                      13                      14                      15
    Line
       1       4.000E+01   1.000E+01   4.400E+01   1.100E+01   4.800E+01   1.200E+01   5.200E+01   1.300E+01   5.600E+01   1.400E+01
@@ -226,13 +204,13 @@ Beginning VICAR task list
      49       5.200E+02   5.800E+01   5.240E+02   5.900E+01   5.280E+02   6.000E+01   5.320E+02   6.100E+01   5.360E+02   6.200E+01
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
+ Task:GEN       User:          Date_Time:                        
      Samp                        11                      12                      13                      14                      15
    Line
      50       5.300E+02   5.900E+01   5.340E+02   6.000E+01   5.380E+02   6.100E+01   5.420E+02   6.200E+01   5.460E+02   6.300E+01
 
    COMP     samples are interpreted as COMPLEX  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
+ Task:GEN       User:          Date_Time:                        
      Samp                        16                      17                      18                      19                      20
    Line
       1       6.000E+01   1.500E+01   6.400E+01   1.600E+01   6.800E+01   1.700E+01   7.200E+01   1.800E+01   7.600E+01   1.900E+01
@@ -286,13 +264,13 @@ Beginning VICAR task list
      49       5.400E+02   6.300E+01   5.440E+02   6.400E+01   5.480E+02   6.500E+01   5.520E+02   6.600E+01   5.560E+02   6.700E+01
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
+ Task:GEN       User:          Date_Time:                        
      Samp                        16                      17                      18                      19                      20
    Line
      50       5.500E+02   6.400E+01   5.540E+02   6.500E+01   5.580E+02   6.600E+01   5.620E+02   6.700E+01   5.660E+02   6.800E+01
 
    COMP     samples are interpreted as COMPLEX  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
+ Task:GEN       User:          Date_Time:                        
      Samp                        21                      22                      23                      24                      25
    Line
       1       8.000E+01   2.000E+01   8.400E+01   2.100E+01   8.800E+01   2.200E+01   9.200E+01   2.300E+01   9.600E+01   2.400E+01
@@ -346,13 +324,13 @@ Beginning VICAR task list
      49       5.600E+02   6.800E+01   5.640E+02   6.900E+01   5.680E+02   7.000E+01   5.720E+02   7.100E+01   5.760E+02   7.200E+01
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
+ Task:GEN       User:          Date_Time:                        
      Samp                        21                      22                      23                      24                      25
    Line
      50       5.700E+02   6.900E+01   5.740E+02   7.000E+01   5.780E+02   7.100E+01   5.820E+02   7.200E+01   5.860E+02   7.300E+01
 
    COMP     samples are interpreted as COMPLEX  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
+ Task:GEN       User:          Date_Time:                        
      Samp                        26                      27                      28                      29                      30
    Line
       1       1.000E+02   2.500E+01   1.040E+02   2.600E+01   1.080E+02   2.700E+01   1.120E+02   2.800E+01   1.160E+02   2.900E+01
@@ -406,13 +384,13 @@ Beginning VICAR task list
      49       5.800E+02   7.300E+01   5.840E+02   7.400E+01   5.880E+02   7.500E+01   5.920E+02   7.600E+01   5.960E+02   7.700E+01
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
+ Task:GEN       User:          Date_Time:                        
      Samp                        26                      27                      28                      29                      30
    Line
      50       5.900E+02   7.400E+01   5.940E+02   7.500E+01   5.980E+02   7.600E+01   6.020E+02   7.700E+01   6.060E+02   7.800E+01
 
    COMP     samples are interpreted as COMPLEX  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
+ Task:GEN       User:          Date_Time:                        
      Samp                        31                      32                      33                      34                      35
    Line
       1       1.200E+02   3.000E+01   1.240E+02   3.100E+01   1.280E+02   3.200E+01   1.320E+02   3.300E+01   1.360E+02   3.400E+01
@@ -466,13 +444,13 @@ Beginning VICAR task list
      49       6.000E+02   7.800E+01   6.040E+02   7.900E+01   6.080E+02   8.000E+01   6.120E+02   8.100E+01   6.160E+02   8.200E+01
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
+ Task:GEN       User:          Date_Time:                        
      Samp                        31                      32                      33                      34                      35
    Line
      50       6.100E+02   7.900E+01   6.140E+02   8.000E+01   6.180E+02   8.100E+01   6.220E+02   8.200E+01   6.260E+02   8.300E+01
 
    COMP     samples are interpreted as COMPLEX  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
+ Task:GEN       User:          Date_Time:                        
      Samp                        36                      37                      38                      39                      40
    Line
       1       1.400E+02   3.500E+01   1.440E+02   3.600E+01   1.480E+02   3.700E+01   1.520E+02   3.800E+01   1.560E+02   3.900E+01
@@ -526,13 +504,13 @@ Beginning VICAR task list
      49       6.200E+02   8.300E+01   6.240E+02   8.400E+01   6.280E+02   8.500E+01   6.320E+02   8.600E+01   6.360E+02   8.700E+01
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
+ Task:GEN       User:          Date_Time:                        
      Samp                        36                      37                      38                      39                      40
    Line
      50       6.300E+02   8.400E+01   6.340E+02   8.500E+01   6.380E+02   8.600E+01   6.420E+02   8.700E+01   6.460E+02   8.800E+01
 
    COMP     samples are interpreted as COMPLEX  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
+ Task:GEN       User:          Date_Time:                        
      Samp                        41                      42                      43                      44                      45
    Line
       1       1.600E+02   4.000E+01   1.640E+02   4.100E+01   1.680E+02   4.200E+01   1.720E+02   4.300E+01   1.760E+02   4.400E+01
@@ -586,13 +564,13 @@ Beginning VICAR task list
      49       6.400E+02   8.800E+01   6.440E+02   8.900E+01   6.480E+02   9.000E+01   6.520E+02   9.100E+01   6.560E+02   9.200E+01
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
+ Task:GEN       User:          Date_Time:                        
      Samp                        41                      42                      43                      44                      45
    Line
      50       6.500E+02   8.900E+01   6.540E+02   9.000E+01   6.580E+02   9.100E+01   6.620E+02   9.200E+01   6.660E+02   9.300E+01
 
    COMP     samples are interpreted as COMPLEX  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
+ Task:GEN       User:          Date_Time:                        
      Samp                        46                      47                      48                      49                      50
    Line
       1       1.800E+02   4.500E+01   1.840E+02   4.600E+01   1.880E+02   4.700E+01   1.920E+02   4.800E+01   1.960E+02   4.900E+01
@@ -646,42 +624,43 @@ Beginning VICAR task list
      49       6.600E+02   9.300E+01   6.640E+02   9.400E+01   6.680E+02   9.500E+01   6.720E+02   9.600E+01   6.760E+02   9.700E+01
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
+ Task:GEN       User:          Date_Time:                        
      Samp                        46                      47                      48                      49                      50
    Line
      50       6.700E+02   9.400E+01   6.740E+02   9.500E+01   6.780E+02   9.600E+01   6.820E+02   9.700E+01   6.860E+02   9.800E+01
 ccomp ccimg1 (ccire,cciim) 'rect 'forward
 Beginning VICAR task ccomp
 CCOMP version 18 Dec 2012 (64-bit) - rjb
-label-list ccire
+label-list ccire 'nousrtim
 Beginning VICAR task label
-LABEL version 15-Nov-2010
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File ccire ************
                 3 dimensional IMAGE file
                 File organization is BSQ
-                Pixels are in REAL format from a X86-LINUX host
+                Pixels are in REAL format from a X86-64-LIN host
                 1 bands
                 50 lines per band
                 50 samples per line
                 0 lines of binary header
                 0 bytes of binary prefix per line
----- Task: GEN -- User: wlb -- Wed Dec 17 13:32:00 2014 ----
+---- Task: GEN -- User:  --  ----
 IVAL=(0.0, 0.0)
 SINC=(4.0, 1.0)
 LINC=(10.0, 1.0)
 BINC=(1.0, 1.0)
 MODULO=(0.0, 0.0)
----- Task: CCOMP -- User: wlb -- Wed Dec 17 13:32:00 2014 ----
+---- Task: CCOMP -- User:  --  ----
  
 ************************************************************
-list ccire
+list ccire 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    REAL     samples are interpreted as  REAL*4  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp             1           2           3           4           5           6           7           8           9          10
    Line
       1       0.000E+00   4.000E+00   8.000E+00   1.200E+01   1.600E+01   2.000E+01   2.400E+01   2.800E+01   3.200E+01   3.600E+01
@@ -734,16 +713,16 @@ Beginning VICAR task list
      48       4.700E+02   4.740E+02   4.780E+02   4.820E+02   4.860E+02   4.900E+02   4.940E+02   4.980E+02   5.020E+02   5.060E+02
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp             1           2           3           4           5           6           7           8           9          10
    Line
      49       4.800E+02   4.840E+02   4.880E+02   4.920E+02   4.960E+02   5.000E+02   5.040E+02   5.080E+02   5.120E+02   5.160E+02
      50       4.900E+02   4.940E+02   4.980E+02   5.020E+02   5.060E+02   5.100E+02   5.140E+02   5.180E+02   5.220E+02   5.260E+02
 
    REAL     samples are interpreted as  REAL*4  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp            11          12          13          14          15          16          17          18          19          20
    Line
       1       4.000E+01   4.400E+01   4.800E+01   5.200E+01   5.600E+01   6.000E+01   6.400E+01   6.800E+01   7.200E+01   7.600E+01
@@ -796,16 +775,16 @@ Beginning VICAR task list
      48       5.100E+02   5.140E+02   5.180E+02   5.220E+02   5.260E+02   5.300E+02   5.340E+02   5.380E+02   5.420E+02   5.460E+02
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp            11          12          13          14          15          16          17          18          19          20
    Line
      49       5.200E+02   5.240E+02   5.280E+02   5.320E+02   5.360E+02   5.400E+02   5.440E+02   5.480E+02   5.520E+02   5.560E+02
      50       5.300E+02   5.340E+02   5.380E+02   5.420E+02   5.460E+02   5.500E+02   5.540E+02   5.580E+02   5.620E+02   5.660E+02
 
    REAL     samples are interpreted as  REAL*4  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp            21          22          23          24          25          26          27          28          29          30
    Line
       1       8.000E+01   8.400E+01   8.800E+01   9.200E+01   9.600E+01   1.000E+02   1.040E+02   1.080E+02   1.120E+02   1.160E+02
@@ -858,16 +837,16 @@ Beginning VICAR task list
      48       5.500E+02   5.540E+02   5.580E+02   5.620E+02   5.660E+02   5.700E+02   5.740E+02   5.780E+02   5.820E+02   5.860E+02
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp            21          22          23          24          25          26          27          28          29          30
    Line
      49       5.600E+02   5.640E+02   5.680E+02   5.720E+02   5.760E+02   5.800E+02   5.840E+02   5.880E+02   5.920E+02   5.960E+02
      50       5.700E+02   5.740E+02   5.780E+02   5.820E+02   5.860E+02   5.900E+02   5.940E+02   5.980E+02   6.020E+02   6.060E+02
 
    REAL     samples are interpreted as  REAL*4  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp            31          32          33          34          35          36          37          38          39          40
    Line
       1       1.200E+02   1.240E+02   1.280E+02   1.320E+02   1.360E+02   1.400E+02   1.440E+02   1.480E+02   1.520E+02   1.560E+02
@@ -920,16 +899,16 @@ Beginning VICAR task list
      48       5.900E+02   5.940E+02   5.980E+02   6.020E+02   6.060E+02   6.100E+02   6.140E+02   6.180E+02   6.220E+02   6.260E+02
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp            31          32          33          34          35          36          37          38          39          40
    Line
      49       6.000E+02   6.040E+02   6.080E+02   6.120E+02   6.160E+02   6.200E+02   6.240E+02   6.280E+02   6.320E+02   6.360E+02
      50       6.100E+02   6.140E+02   6.180E+02   6.220E+02   6.260E+02   6.300E+02   6.340E+02   6.380E+02   6.420E+02   6.460E+02
 
    REAL     samples are interpreted as  REAL*4  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp            41          42          43          44          45          46          47          48          49          50
    Line
       1       1.600E+02   1.640E+02   1.680E+02   1.720E+02   1.760E+02   1.800E+02   1.840E+02   1.880E+02   1.920E+02   1.960E+02
@@ -982,41 +961,42 @@ Beginning VICAR task list
      48       6.300E+02   6.340E+02   6.380E+02   6.420E+02   6.460E+02   6.500E+02   6.540E+02   6.580E+02   6.620E+02   6.660E+02
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp            41          42          43          44          45          46          47          48          49          50
    Line
      49       6.400E+02   6.440E+02   6.480E+02   6.520E+02   6.560E+02   6.600E+02   6.640E+02   6.680E+02   6.720E+02   6.760E+02
      50       6.500E+02   6.540E+02   6.580E+02   6.620E+02   6.660E+02   6.700E+02   6.740E+02   6.780E+02   6.820E+02   6.860E+02
-label-list cciim
+label-list cciim 'nousrtim
 Beginning VICAR task label
-LABEL version 15-Nov-2010
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File cciim ************
                 3 dimensional IMAGE file
                 File organization is BSQ
-                Pixels are in REAL format from a X86-LINUX host
+                Pixels are in REAL format from a X86-64-LIN host
                 1 bands
                 50 lines per band
                 50 samples per line
                 0 lines of binary header
                 0 bytes of binary prefix per line
----- Task: GEN -- User: wlb -- Wed Dec 17 13:32:00 2014 ----
+---- Task: GEN -- User:  --  ----
 IVAL=(0.0, 0.0)
 SINC=(4.0, 1.0)
 LINC=(10.0, 1.0)
 BINC=(1.0, 1.0)
 MODULO=(0.0, 0.0)
----- Task: CCOMP -- User: wlb -- Wed Dec 17 13:32:00 2014 ----
+---- Task: CCOMP -- User:  --  ----
  
 ************************************************************
-list cciim
+list cciim 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    REAL     samples are interpreted as  REAL*4  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp             1           2           3           4           5           6           7           8           9          10
    Line
       1       0.000E+00   1.000E+00   2.000E+00   3.000E+00   4.000E+00   5.000E+00   6.000E+00   7.000E+00   8.000E+00   9.000E+00
@@ -1069,16 +1049,16 @@ Beginning VICAR task list
      48       4.700E+01   4.800E+01   4.900E+01   5.000E+01   5.100E+01   5.200E+01   5.300E+01   5.400E+01   5.500E+01   5.600E+01
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp             1           2           3           4           5           6           7           8           9          10
    Line
      49       4.800E+01   4.900E+01   5.000E+01   5.100E+01   5.200E+01   5.300E+01   5.400E+01   5.500E+01   5.600E+01   5.700E+01
      50       4.900E+01   5.000E+01   5.100E+01   5.200E+01   5.300E+01   5.400E+01   5.500E+01   5.600E+01   5.700E+01   5.800E+01
 
    REAL     samples are interpreted as  REAL*4  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp            11          12          13          14          15          16          17          18          19          20
    Line
       1       1.000E+01   1.100E+01   1.200E+01   1.300E+01   1.400E+01   1.500E+01   1.600E+01   1.700E+01   1.800E+01   1.900E+01
@@ -1131,16 +1111,16 @@ Beginning VICAR task list
      48       5.700E+01   5.800E+01   5.900E+01   6.000E+01   6.100E+01   6.200E+01   6.300E+01   6.400E+01   6.500E+01   6.600E+01
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp            11          12          13          14          15          16          17          18          19          20
    Line
      49       5.800E+01   5.900E+01   6.000E+01   6.100E+01   6.200E+01   6.300E+01   6.400E+01   6.500E+01   6.600E+01   6.700E+01
      50       5.900E+01   6.000E+01   6.100E+01   6.200E+01   6.300E+01   6.400E+01   6.500E+01   6.600E+01   6.700E+01   6.800E+01
 
    REAL     samples are interpreted as  REAL*4  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp            21          22          23          24          25          26          27          28          29          30
    Line
       1       2.000E+01   2.100E+01   2.200E+01   2.300E+01   2.400E+01   2.500E+01   2.600E+01   2.700E+01   2.800E+01   2.900E+01
@@ -1193,16 +1173,16 @@ Beginning VICAR task list
      48       6.700E+01   6.800E+01   6.900E+01   7.000E+01   7.100E+01   7.200E+01   7.300E+01   7.400E+01   7.500E+01   7.600E+01
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp            21          22          23          24          25          26          27          28          29          30
    Line
      49       6.800E+01   6.900E+01   7.000E+01   7.100E+01   7.200E+01   7.300E+01   7.400E+01   7.500E+01   7.600E+01   7.700E+01
      50       6.900E+01   7.000E+01   7.100E+01   7.200E+01   7.300E+01   7.400E+01   7.500E+01   7.600E+01   7.700E+01   7.800E+01
 
    REAL     samples are interpreted as  REAL*4  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp            31          32          33          34          35          36          37          38          39          40
    Line
       1       3.000E+01   3.100E+01   3.200E+01   3.300E+01   3.400E+01   3.500E+01   3.600E+01   3.700E+01   3.800E+01   3.900E+01
@@ -1255,16 +1235,16 @@ Beginning VICAR task list
      48       7.700E+01   7.800E+01   7.900E+01   8.000E+01   8.100E+01   8.200E+01   8.300E+01   8.400E+01   8.500E+01   8.600E+01
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp            31          32          33          34          35          36          37          38          39          40
    Line
      49       7.800E+01   7.900E+01   8.000E+01   8.100E+01   8.200E+01   8.300E+01   8.400E+01   8.500E+01   8.600E+01   8.700E+01
      50       7.900E+01   8.000E+01   8.100E+01   8.200E+01   8.300E+01   8.400E+01   8.500E+01   8.600E+01   8.700E+01   8.800E+01
 
    REAL     samples are interpreted as  REAL*4  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp            41          42          43          44          45          46          47          48          49          50
    Line
       1       4.000E+01   4.100E+01   4.200E+01   4.300E+01   4.400E+01   4.500E+01   4.600E+01   4.700E+01   4.800E+01   4.900E+01
@@ -1317,8 +1297,8 @@ Beginning VICAR task list
      48       8.700E+01   8.800E+01   8.900E+01   9.000E+01   9.100E+01   9.200E+01   9.300E+01   9.400E+01   9.500E+01   9.600E+01
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp            41          42          43          44          45          46          47          48          49          50
    Line
      49       8.800E+01   8.900E+01   9.000E+01   9.100E+01   9.200E+01   9.300E+01   9.400E+01   9.500E+01   9.600E+01   9.700E+01
@@ -1326,36 +1306,37 @@ Beginning VICAR task list
 ccomp (ccire,cciim) ccimg2 'rect 'inverse
 Beginning VICAR task ccomp
 CCOMP version 18 Dec 2012 (64-bit) - rjb
-label-list ccimg2
+label-list ccimg2 'nousrtim
 Beginning VICAR task label
-LABEL version 15-Nov-2010
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File ccimg2 ************
                 3 dimensional IMAGE file
                 File organization is BSQ
-                Pixels are in COMP format from a X86-LINUX host
+                Pixels are in COMP format from a X86-64-LIN host
                 1 bands
                 50 lines per band
                 50 samples per line
                 0 lines of binary header
                 0 bytes of binary prefix per line
----- Task: GEN -- User: wlb -- Wed Dec 17 13:32:00 2014 ----
+---- Task: GEN -- User:  --  ----
 IVAL=(0.0, 0.0)
 SINC=(4.0, 1.0)
 LINC=(10.0, 1.0)
 BINC=(1.0, 1.0)
 MODULO=(0.0, 0.0)
----- Task: CCOMP -- User: wlb -- Wed Dec 17 13:32:00 2014 ----
----- Task: CCOMP -- User: wlb -- Wed Dec 17 13:32:01 2014 ----
+---- Task: CCOMP -- User:  --  ----
+---- Task: CCOMP -- User:  --  ----
  
 ************************************************************
-list ccimg2
+list ccimg2 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    COMP     samples are interpreted as COMPLEX  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp                         1                       2                       3                       4                       5
    Line
       1       0.000E+00   0.000E+00   4.000E+00   1.000E+00   8.000E+00   2.000E+00   1.200E+01   3.000E+00   1.600E+01   4.000E+00
@@ -1408,16 +1389,16 @@ Beginning VICAR task list
      48       4.700E+02   4.700E+01   4.740E+02   4.800E+01   4.780E+02   4.900E+01   4.820E+02   5.000E+01   4.860E+02   5.100E+01
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp                         1                       2                       3                       4                       5
    Line
      49       4.800E+02   4.800E+01   4.840E+02   4.900E+01   4.880E+02   5.000E+01   4.920E+02   5.100E+01   4.960E+02   5.200E+01
      50       4.900E+02   4.900E+01   4.940E+02   5.000E+01   4.980E+02   5.100E+01   5.020E+02   5.200E+01   5.060E+02   5.300E+01
 
    COMP     samples are interpreted as COMPLEX  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp                         6                       7                       8                       9                      10
    Line
       1       2.000E+01   5.000E+00   2.400E+01   6.000E+00   2.800E+01   7.000E+00   3.200E+01   8.000E+00   3.600E+01   9.000E+00
@@ -1470,16 +1451,16 @@ Beginning VICAR task list
      48       4.900E+02   5.200E+01   4.940E+02   5.300E+01   4.980E+02   5.400E+01   5.020E+02   5.500E+01   5.060E+02   5.600E+01
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp                         6                       7                       8                       9                      10
    Line
      49       5.000E+02   5.300E+01   5.040E+02   5.400E+01   5.080E+02   5.500E+01   5.120E+02   5.600E+01   5.160E+02   5.700E+01
      50       5.100E+02   5.400E+01   5.140E+02   5.500E+01   5.180E+02   5.600E+01   5.220E+02   5.700E+01   5.260E+02   5.800E+01
 
    COMP     samples are interpreted as COMPLEX  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp                        11                      12                      13                      14                      15
    Line
       1       4.000E+01   1.000E+01   4.400E+01   1.100E+01   4.800E+01   1.200E+01   5.200E+01   1.300E+01   5.600E+01   1.400E+01
@@ -1532,16 +1513,16 @@ Beginning VICAR task list
      48       5.100E+02   5.700E+01   5.140E+02   5.800E+01   5.180E+02   5.900E+01   5.220E+02   6.000E+01   5.260E+02   6.100E+01
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp                        11                      12                      13                      14                      15
    Line
      49       5.200E+02   5.800E+01   5.240E+02   5.900E+01   5.280E+02   6.000E+01   5.320E+02   6.100E+01   5.360E+02   6.200E+01
      50       5.300E+02   5.900E+01   5.340E+02   6.000E+01   5.380E+02   6.100E+01   5.420E+02   6.200E+01   5.460E+02   6.300E+01
 
    COMP     samples are interpreted as COMPLEX  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp                        16                      17                      18                      19                      20
    Line
       1       6.000E+01   1.500E+01   6.400E+01   1.600E+01   6.800E+01   1.700E+01   7.200E+01   1.800E+01   7.600E+01   1.900E+01
@@ -1594,16 +1575,16 @@ Beginning VICAR task list
      48       5.300E+02   6.200E+01   5.340E+02   6.300E+01   5.380E+02   6.400E+01   5.420E+02   6.500E+01   5.460E+02   6.600E+01
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp                        16                      17                      18                      19                      20
    Line
      49       5.400E+02   6.300E+01   5.440E+02   6.400E+01   5.480E+02   6.500E+01   5.520E+02   6.600E+01   5.560E+02   6.700E+01
      50       5.500E+02   6.400E+01   5.540E+02   6.500E+01   5.580E+02   6.600E+01   5.620E+02   6.700E+01   5.660E+02   6.800E+01
 
    COMP     samples are interpreted as COMPLEX  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp                        21                      22                      23                      24                      25
    Line
       1       8.000E+01   2.000E+01   8.400E+01   2.100E+01   8.800E+01   2.200E+01   9.200E+01   2.300E+01   9.600E+01   2.400E+01
@@ -1656,16 +1637,16 @@ Beginning VICAR task list
      48       5.500E+02   6.700E+01   5.540E+02   6.800E+01   5.580E+02   6.900E+01   5.620E+02   7.000E+01   5.660E+02   7.100E+01
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp                        21                      22                      23                      24                      25
    Line
      49       5.600E+02   6.800E+01   5.640E+02   6.900E+01   5.680E+02   7.000E+01   5.720E+02   7.100E+01   5.760E+02   7.200E+01
      50       5.700E+02   6.900E+01   5.740E+02   7.000E+01   5.780E+02   7.100E+01   5.820E+02   7.200E+01   5.860E+02   7.300E+01
 
    COMP     samples are interpreted as COMPLEX  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp                        26                      27                      28                      29                      30
    Line
       1       1.000E+02   2.500E+01   1.040E+02   2.600E+01   1.080E+02   2.700E+01   1.120E+02   2.800E+01   1.160E+02   2.900E+01
@@ -1718,16 +1699,16 @@ Beginning VICAR task list
      48       5.700E+02   7.200E+01   5.740E+02   7.300E+01   5.780E+02   7.400E+01   5.820E+02   7.500E+01   5.860E+02   7.600E+01
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp                        26                      27                      28                      29                      30
    Line
      49       5.800E+02   7.300E+01   5.840E+02   7.400E+01   5.880E+02   7.500E+01   5.920E+02   7.600E+01   5.960E+02   7.700E+01
      50       5.900E+02   7.400E+01   5.940E+02   7.500E+01   5.980E+02   7.600E+01   6.020E+02   7.700E+01   6.060E+02   7.800E+01
 
    COMP     samples are interpreted as COMPLEX  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp                        31                      32                      33                      34                      35
    Line
       1       1.200E+02   3.000E+01   1.240E+02   3.100E+01   1.280E+02   3.200E+01   1.320E+02   3.300E+01   1.360E+02   3.400E+01
@@ -1780,16 +1761,16 @@ Beginning VICAR task list
      48       5.900E+02   7.700E+01   5.940E+02   7.800E+01   5.980E+02   7.900E+01   6.020E+02   8.000E+01   6.060E+02   8.100E+01
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp                        31                      32                      33                      34                      35
    Line
      49       6.000E+02   7.800E+01   6.040E+02   7.900E+01   6.080E+02   8.000E+01   6.120E+02   8.100E+01   6.160E+02   8.200E+01
      50       6.100E+02   7.900E+01   6.140E+02   8.000E+01   6.180E+02   8.100E+01   6.220E+02   8.200E+01   6.260E+02   8.300E+01
 
    COMP     samples are interpreted as COMPLEX  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp                        36                      37                      38                      39                      40
    Line
       1       1.400E+02   3.500E+01   1.440E+02   3.600E+01   1.480E+02   3.700E+01   1.520E+02   3.800E+01   1.560E+02   3.900E+01
@@ -1842,16 +1823,16 @@ Beginning VICAR task list
      48       6.100E+02   8.200E+01   6.140E+02   8.300E+01   6.180E+02   8.400E+01   6.220E+02   8.500E+01   6.260E+02   8.600E+01
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp                        36                      37                      38                      39                      40
    Line
      49       6.200E+02   8.300E+01   6.240E+02   8.400E+01   6.280E+02   8.500E+01   6.320E+02   8.600E+01   6.360E+02   8.700E+01
      50       6.300E+02   8.400E+01   6.340E+02   8.500E+01   6.380E+02   8.600E+01   6.420E+02   8.700E+01   6.460E+02   8.800E+01
 
    COMP     samples are interpreted as COMPLEX  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp                        41                      42                      43                      44                      45
    Line
       1       1.600E+02   4.000E+01   1.640E+02   4.100E+01   1.680E+02   4.200E+01   1.720E+02   4.300E+01   1.760E+02   4.400E+01
@@ -1904,16 +1885,16 @@ Beginning VICAR task list
      48       6.300E+02   8.700E+01   6.340E+02   8.800E+01   6.380E+02   8.900E+01   6.420E+02   9.000E+01   6.460E+02   9.100E+01
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp                        41                      42                      43                      44                      45
    Line
      49       6.400E+02   8.800E+01   6.440E+02   8.900E+01   6.480E+02   9.000E+01   6.520E+02   9.100E+01   6.560E+02   9.200E+01
      50       6.500E+02   8.900E+01   6.540E+02   9.000E+01   6.580E+02   9.100E+01   6.620E+02   9.200E+01   6.660E+02   9.300E+01
 
    COMP     samples are interpreted as COMPLEX  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp                        46                      47                      48                      49                      50
    Line
       1       1.800E+02   4.500E+01   1.840E+02   4.600E+01   1.880E+02   4.700E+01   1.920E+02   4.800E+01   1.960E+02   4.900E+01
@@ -1966,55 +1947,57 @@ Beginning VICAR task list
      48       6.500E+02   9.200E+01   6.540E+02   9.300E+01   6.580E+02   9.400E+01   6.620E+02   9.500E+01   6.660E+02   9.600E+01
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp                        46                      47                      48                      49                      50
    Line
      49       6.600E+02   9.300E+01   6.640E+02   9.400E+01   6.680E+02   9.500E+01   6.720E+02   9.600E+01   6.760E+02   9.700E+01
      50       6.700E+02   9.400E+01   6.740E+02   9.500E+01   6.780E+02   9.600E+01   6.820E+02   9.700E+01   6.860E+02   9.800E+01
 difpic (ccimg1,ccimg2) diff
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  NUMBER OF POS DIFF=   0
  NUMBER OF NEG DIFFS=   0
  TOTAL NUMBER OF DIFFERENT PIXELS=   0
  AVE VAL OF DIFFS=  0.000E+00  0.000E+00
  % DIFF PIXELS=  0.00000
-list diff
+list diff 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
  ** The specified window is all zero.
 ccomp ccimg1 (cciamp,cciph) 'polar
 Beginning VICAR task ccomp
 CCOMP version 18 Dec 2012 (64-bit) - rjb
-label-list cciamp
+label-list cciamp 'nousrtim
 Beginning VICAR task label
-LABEL version 15-Nov-2010
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File cciamp ************
                 3 dimensional IMAGE file
                 File organization is BSQ
-                Pixels are in REAL format from a X86-LINUX host
+                Pixels are in REAL format from a X86-64-LIN host
                 1 bands
                 50 lines per band
                 50 samples per line
                 0 lines of binary header
                 0 bytes of binary prefix per line
----- Task: GEN -- User: wlb -- Wed Dec 17 13:32:00 2014 ----
+---- Task: GEN -- User:  --  ----
 IVAL=(0.0, 0.0)
 SINC=(4.0, 1.0)
 LINC=(10.0, 1.0)
 BINC=(1.0, 1.0)
 MODULO=(0.0, 0.0)
----- Task: CCOMP -- User: wlb -- Wed Dec 17 13:32:01 2014 ----
+---- Task: CCOMP -- User:  --  ----
  
 ************************************************************
-list cciamp
+list cciamp 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    REAL     samples are interpreted as  REAL*4  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp             1           2           3           4           5           6           7           8           9          10
    Line
       1       0.000E+00   4.123E+00   8.246E+00   1.237E+01   1.649E+01   2.062E+01   2.474E+01   2.886E+01   3.298E+01   3.711E+01
@@ -2067,16 +2050,16 @@ Beginning VICAR task list
      48       4.723E+02   4.764E+02   4.805E+02   4.846E+02   4.887E+02   4.928E+02   4.968E+02   5.009E+02   5.050E+02   5.091E+02
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp             1           2           3           4           5           6           7           8           9          10
    Line
      49       4.824E+02   4.865E+02   4.906E+02   4.946E+02   4.987E+02   5.028E+02   5.069E+02   5.110E+02   5.151E+02   5.191E+02
      50       4.924E+02   4.965E+02   5.006E+02   5.047E+02   5.088E+02   5.129E+02   5.169E+02   5.210E+02   5.251E+02   5.292E+02
 
    REAL     samples are interpreted as  REAL*4  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp            11          12          13          14          15          16          17          18          19          20
    Line
       1       4.123E+01   4.535E+01   4.948E+01   5.360E+01   5.772E+01   6.185E+01   6.597E+01   7.009E+01   7.422E+01   7.834E+01
@@ -2129,16 +2112,16 @@ Beginning VICAR task list
      48       5.132E+02   5.173E+02   5.213E+02   5.254E+02   5.295E+02   5.336E+02   5.377E+02   5.418E+02   5.459E+02   5.500E+02
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp            11          12          13          14          15          16          17          18          19          20
    Line
      49       5.232E+02   5.273E+02   5.314E+02   5.355E+02   5.396E+02   5.437E+02   5.478E+02   5.518E+02   5.559E+02   5.600E+02
      50       5.333E+02   5.374E+02   5.414E+02   5.455E+02   5.496E+02   5.537E+02   5.578E+02   5.619E+02   5.660E+02   5.701E+02
 
    REAL     samples are interpreted as  REAL*4  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp            21          22          23          24          25          26          27          28          29          30
    Line
       1       8.246E+01   8.659E+01   9.071E+01   9.483E+01   9.895E+01   1.031E+02   1.072E+02   1.113E+02   1.154E+02   1.196E+02
@@ -2191,16 +2174,16 @@ Beginning VICAR task list
      48       5.541E+02   5.582E+02   5.622E+02   5.663E+02   5.704E+02   5.745E+02   5.786E+02   5.827E+02   5.868E+02   5.909E+02
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp            21          22          23          24          25          26          27          28          29          30
    Line
      49       5.641E+02   5.682E+02   5.723E+02   5.764E+02   5.805E+02   5.846E+02   5.887E+02   5.928E+02   5.969E+02   6.010E+02
      50       5.742E+02   5.783E+02   5.823E+02   5.864E+02   5.905E+02   5.946E+02   5.987E+02   6.028E+02   6.069E+02   6.110E+02
 
    REAL     samples are interpreted as  REAL*4  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp            31          32          33          34          35          36          37          38          39          40
    Line
       1       1.237E+02   1.278E+02   1.319E+02   1.361E+02   1.402E+02   1.443E+02   1.484E+02   1.526E+02   1.567E+02   1.608E+02
@@ -2253,16 +2236,16 @@ Beginning VICAR task list
      48       5.950E+02   5.991E+02   6.032E+02   6.073E+02   6.114E+02   6.155E+02   6.196E+02   6.237E+02   6.278E+02   6.319E+02
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp            31          32          33          34          35          36          37          38          39          40
    Line
      49       6.050E+02   6.091E+02   6.132E+02   6.173E+02   6.214E+02   6.255E+02   6.296E+02   6.337E+02   6.378E+02   6.419E+02
      50       6.151E+02   6.192E+02   6.233E+02   6.274E+02   6.315E+02   6.356E+02   6.397E+02   6.438E+02   6.479E+02   6.520E+02
 
    REAL     samples are interpreted as  REAL*4  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp            41          42          43          44          45          46          47          48          49          50
    Line
       1       1.649E+02   1.690E+02   1.732E+02   1.773E+02   1.814E+02   1.855E+02   1.897E+02   1.938E+02   1.979E+02   2.020E+02
@@ -2315,41 +2298,42 @@ Beginning VICAR task list
      48       6.360E+02   6.401E+02   6.442E+02   6.483E+02   6.524E+02   6.565E+02   6.606E+02   6.647E+02   6.688E+02   6.729E+02
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp            41          42          43          44          45          46          47          48          49          50
    Line
      49       6.460E+02   6.501E+02   6.542E+02   6.583E+02   6.624E+02   6.665E+02   6.706E+02   6.747E+02   6.788E+02   6.829E+02
      50       6.561E+02   6.602E+02   6.643E+02   6.684E+02   6.725E+02   6.766E+02   6.807E+02   6.848E+02   6.889E+02   6.930E+02
-label-list cciph
+label-list cciph 'nousrtim
 Beginning VICAR task label
-LABEL version 15-Nov-2010
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File cciph ************
                 3 dimensional IMAGE file
                 File organization is BSQ
-                Pixels are in REAL format from a X86-LINUX host
+                Pixels are in REAL format from a X86-64-LIN host
                 1 bands
                 50 lines per band
                 50 samples per line
                 0 lines of binary header
                 0 bytes of binary prefix per line
----- Task: GEN -- User: wlb -- Wed Dec 17 13:32:00 2014 ----
+---- Task: GEN -- User:  --  ----
 IVAL=(0.0, 0.0)
 SINC=(4.0, 1.0)
 LINC=(10.0, 1.0)
 BINC=(1.0, 1.0)
 MODULO=(0.0, 0.0)
----- Task: CCOMP -- User: wlb -- Wed Dec 17 13:32:01 2014 ----
+---- Task: CCOMP -- User:  --  ----
  
 ************************************************************
-list cciph
+list cciph 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    REAL     samples are interpreted as  REAL*4  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp             1           2           3           4           5           6           7           8           9          10
    Line
       1       0.000E+00   2.450E-01   2.450E-01   2.450E-01   2.450E-01   2.450E-01   2.450E-01   2.450E-01   2.450E-01   2.450E-01
@@ -2402,16 +2386,16 @@ Beginning VICAR task list
      48       9.967E-02   1.009E-01   1.022E-01   1.034E-01   1.046E-01   1.057E-01   1.069E-01   1.080E-01   1.091E-01   1.102E-01
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp             1           2           3           4           5           6           7           8           9          10
    Line
      49       9.967E-02   1.009E-01   1.021E-01   1.033E-01   1.045E-01   1.056E-01   1.067E-01   1.078E-01   1.089E-01   1.100E-01
      50       9.967E-02   1.009E-01   1.021E-01   1.032E-01   1.044E-01   1.055E-01   1.066E-01   1.077E-01   1.088E-01   1.098E-01
 
    REAL     samples are interpreted as  REAL*4  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp            11          12          13          14          15          16          17          18          19          20
    Line
       1       2.450E-01   2.450E-01   2.450E-01   2.450E-01   2.450E-01   2.450E-01   2.450E-01   2.450E-01   2.450E-01   2.450E-01
@@ -2464,16 +2448,16 @@ Beginning VICAR task list
      48       1.113E-01   1.124E-01   1.134E-01   1.144E-01   1.155E-01   1.165E-01   1.174E-01   1.184E-01   1.194E-01   1.203E-01
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp            11          12          13          14          15          16          17          18          19          20
    Line
      49       1.111E-01   1.121E-01   1.132E-01   1.142E-01   1.152E-01   1.161E-01   1.171E-01   1.181E-01   1.190E-01   1.199E-01
      50       1.109E-01   1.119E-01   1.129E-01   1.139E-01   1.149E-01   1.158E-01   1.168E-01   1.177E-01   1.187E-01   1.196E-01
 
    REAL     samples are interpreted as  REAL*4  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp            21          22          23          24          25          26          27          28          29          30
    Line
       1       2.450E-01   2.450E-01   2.450E-01   2.450E-01   2.450E-01   2.450E-01   2.450E-01   2.450E-01   2.450E-01   2.450E-01
@@ -2526,16 +2510,16 @@ Beginning VICAR task list
      48       1.212E-01   1.221E-01   1.230E-01   1.239E-01   1.248E-01   1.257E-01   1.265E-01   1.273E-01   1.282E-01   1.290E-01
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp            21          22          23          24          25          26          27          28          29          30
    Line
      49       1.208E-01   1.217E-01   1.226E-01   1.235E-01   1.244E-01   1.252E-01   1.260E-01   1.269E-01   1.277E-01   1.285E-01
      50       1.205E-01   1.214E-01   1.222E-01   1.231E-01   1.239E-01   1.248E-01   1.256E-01   1.264E-01   1.272E-01   1.280E-01
 
    REAL     samples are interpreted as  REAL*4  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp            31          32          33          34          35          36          37          38          39          40
    Line
       1       2.450E-01   2.450E-01   2.450E-01   2.450E-01   2.450E-01   2.450E-01   2.450E-01   2.450E-01   2.450E-01   2.450E-01
@@ -2588,16 +2572,16 @@ Beginning VICAR task list
      48       1.298E-01   1.306E-01   1.313E-01   1.321E-01   1.329E-01   1.336E-01   1.344E-01   1.351E-01   1.358E-01   1.365E-01
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp            31          32          33          34          35          36          37          38          39          40
    Line
      49       1.293E-01   1.301E-01   1.308E-01   1.316E-01   1.323E-01   1.331E-01   1.338E-01   1.345E-01   1.352E-01   1.359E-01
      50       1.288E-01   1.296E-01   1.303E-01   1.311E-01   1.318E-01   1.326E-01   1.333E-01   1.340E-01   1.347E-01   1.354E-01
 
    REAL     samples are interpreted as  REAL*4  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp            41          42          43          44          45          46          47          48          49          50
    Line
       1       2.450E-01   2.450E-01   2.450E-01   2.450E-01   2.450E-01   2.450E-01   2.450E-01   2.450E-01   2.450E-01   2.450E-01
@@ -2650,8 +2634,8 @@ Beginning VICAR task list
      48       1.372E-01   1.379E-01   1.386E-01   1.393E-01   1.399E-01   1.406E-01   1.413E-01   1.419E-01   1.425E-01   1.432E-01
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp            41          42          43          44          45          46          47          48          49          50
    Line
      49       1.366E-01   1.373E-01   1.380E-01   1.387E-01   1.393E-01   1.400E-01   1.406E-01   1.413E-01   1.419E-01   1.425E-01
@@ -2659,36 +2643,37 @@ Beginning VICAR task list
 ccomp (cciamp,cciph) ccimg3 'inverse
 Beginning VICAR task ccomp
 CCOMP version 18 Dec 2012 (64-bit) - rjb
-label-list ccimg3
+label-list ccimg3 'nousrtim
 Beginning VICAR task label
-LABEL version 15-Nov-2010
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File ccimg3 ************
                 3 dimensional IMAGE file
                 File organization is BSQ
-                Pixels are in COMP format from a X86-LINUX host
+                Pixels are in COMP format from a X86-64-LIN host
                 1 bands
                 50 lines per band
                 50 samples per line
                 0 lines of binary header
                 0 bytes of binary prefix per line
----- Task: GEN -- User: wlb -- Wed Dec 17 13:32:00 2014 ----
+---- Task: GEN -- User:  --  ----
 IVAL=(0.0, 0.0)
 SINC=(4.0, 1.0)
 LINC=(10.0, 1.0)
 BINC=(1.0, 1.0)
 MODULO=(0.0, 0.0)
----- Task: CCOMP -- User: wlb -- Wed Dec 17 13:32:01 2014 ----
----- Task: CCOMP -- User: wlb -- Wed Dec 17 13:32:01 2014 ----
+---- Task: CCOMP -- User:  --  ----
+---- Task: CCOMP -- User:  --  ----
  
 ************************************************************
-list ccimg3
+list ccimg3 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    COMP     samples are interpreted as COMPLEX  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp                         1                       2                       3                       4                       5
    Line
       1       0.000E+00   0.000E+00   4.000E+00   1.000E+00   8.000E+00   2.000E+00   1.200E+01   3.000E+00   1.600E+01   4.000E+00
@@ -2741,16 +2726,16 @@ Beginning VICAR task list
      48       4.700E+02   4.700E+01   4.740E+02   4.800E+01   4.780E+02   4.900E+01   4.820E+02   5.000E+01   4.860E+02   5.100E+01
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp                         1                       2                       3                       4                       5
    Line
      49       4.800E+02   4.800E+01   4.840E+02   4.900E+01   4.880E+02   5.000E+01   4.920E+02   5.100E+01   4.960E+02   5.200E+01
      50       4.900E+02   4.900E+01   4.940E+02   5.000E+01   4.980E+02   5.100E+01   5.020E+02   5.200E+01   5.060E+02   5.300E+01
 
    COMP     samples are interpreted as COMPLEX  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp                         6                       7                       8                       9                      10
    Line
       1       2.000E+01   5.000E+00   2.400E+01   6.000E+00   2.800E+01   7.000E+00   3.200E+01   8.000E+00   3.600E+01   9.000E+00
@@ -2803,16 +2788,16 @@ Beginning VICAR task list
      48       4.900E+02   5.200E+01   4.940E+02   5.300E+01   4.980E+02   5.400E+01   5.020E+02   5.500E+01   5.060E+02   5.600E+01
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp                         6                       7                       8                       9                      10
    Line
      49       5.000E+02   5.300E+01   5.040E+02   5.400E+01   5.080E+02   5.500E+01   5.120E+02   5.600E+01   5.160E+02   5.700E+01
      50       5.100E+02   5.400E+01   5.140E+02   5.500E+01   5.180E+02   5.600E+01   5.220E+02   5.700E+01   5.260E+02   5.800E+01
 
    COMP     samples are interpreted as COMPLEX  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp                        11                      12                      13                      14                      15
    Line
       1       4.000E+01   1.000E+01   4.400E+01   1.100E+01   4.800E+01   1.200E+01   5.200E+01   1.300E+01   5.600E+01   1.400E+01
@@ -2865,16 +2850,16 @@ Beginning VICAR task list
      48       5.100E+02   5.700E+01   5.140E+02   5.800E+01   5.180E+02   5.900E+01   5.220E+02   6.000E+01   5.260E+02   6.100E+01
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp                        11                      12                      13                      14                      15
    Line
      49       5.200E+02   5.800E+01   5.240E+02   5.900E+01   5.280E+02   6.000E+01   5.320E+02   6.100E+01   5.360E+02   6.200E+01
      50       5.300E+02   5.900E+01   5.340E+02   6.000E+01   5.380E+02   6.100E+01   5.420E+02   6.200E+01   5.460E+02   6.300E+01
 
    COMP     samples are interpreted as COMPLEX  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp                        16                      17                      18                      19                      20
    Line
       1       6.000E+01   1.500E+01   6.400E+01   1.600E+01   6.800E+01   1.700E+01   7.200E+01   1.800E+01   7.600E+01   1.900E+01
@@ -2927,16 +2912,16 @@ Beginning VICAR task list
      48       5.300E+02   6.200E+01   5.340E+02   6.300E+01   5.380E+02   6.400E+01   5.420E+02   6.500E+01   5.460E+02   6.600E+01
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp                        16                      17                      18                      19                      20
    Line
      49       5.400E+02   6.300E+01   5.440E+02   6.400E+01   5.480E+02   6.500E+01   5.520E+02   6.600E+01   5.560E+02   6.700E+01
      50       5.500E+02   6.400E+01   5.540E+02   6.500E+01   5.580E+02   6.600E+01   5.620E+02   6.700E+01   5.660E+02   6.800E+01
 
    COMP     samples are interpreted as COMPLEX  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp                        21                      22                      23                      24                      25
    Line
       1       8.000E+01   2.000E+01   8.400E+01   2.100E+01   8.800E+01   2.200E+01   9.200E+01   2.300E+01   9.600E+01   2.400E+01
@@ -2989,16 +2974,16 @@ Beginning VICAR task list
      48       5.500E+02   6.700E+01   5.540E+02   6.800E+01   5.580E+02   6.900E+01   5.620E+02   7.000E+01   5.660E+02   7.100E+01
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp                        21                      22                      23                      24                      25
    Line
      49       5.600E+02   6.800E+01   5.640E+02   6.900E+01   5.680E+02   7.000E+01   5.720E+02   7.100E+01   5.760E+02   7.200E+01
      50       5.700E+02   6.900E+01   5.740E+02   7.000E+01   5.780E+02   7.100E+01   5.820E+02   7.200E+01   5.860E+02   7.300E+01
 
    COMP     samples are interpreted as COMPLEX  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp                        26                      27                      28                      29                      30
    Line
       1       1.000E+02   2.500E+01   1.040E+02   2.600E+01   1.080E+02   2.700E+01   1.120E+02   2.800E+01   1.160E+02   2.900E+01
@@ -3051,16 +3036,16 @@ Beginning VICAR task list
      48       5.700E+02   7.200E+01   5.740E+02   7.300E+01   5.780E+02   7.400E+01   5.820E+02   7.500E+01   5.860E+02   7.600E+01
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp                        26                      27                      28                      29                      30
    Line
      49       5.800E+02   7.300E+01   5.840E+02   7.400E+01   5.880E+02   7.500E+01   5.920E+02   7.600E+01   5.960E+02   7.700E+01
      50       5.900E+02   7.400E+01   5.940E+02   7.500E+01   5.980E+02   7.600E+01   6.020E+02   7.700E+01   6.060E+02   7.800E+01
 
    COMP     samples are interpreted as COMPLEX  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp                        31                      32                      33                      34                      35
    Line
       1       1.200E+02   3.000E+01   1.240E+02   3.100E+01   1.280E+02   3.200E+01   1.320E+02   3.300E+01   1.360E+02   3.400E+01
@@ -3113,16 +3098,16 @@ Beginning VICAR task list
      48       5.900E+02   7.700E+01   5.940E+02   7.800E+01   5.980E+02   7.900E+01   6.020E+02   8.000E+01   6.060E+02   8.100E+01
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp                        31                      32                      33                      34                      35
    Line
      49       6.000E+02   7.800E+01   6.040E+02   7.900E+01   6.080E+02   8.000E+01   6.120E+02   8.100E+01   6.160E+02   8.200E+01
      50       6.100E+02   7.900E+01   6.140E+02   8.000E+01   6.180E+02   8.100E+01   6.220E+02   8.200E+01   6.260E+02   8.300E+01
 
    COMP     samples are interpreted as COMPLEX  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp                        36                      37                      38                      39                      40
    Line
       1       1.400E+02   3.500E+01   1.440E+02   3.600E+01   1.480E+02   3.700E+01   1.520E+02   3.800E+01   1.560E+02   3.900E+01
@@ -3175,16 +3160,16 @@ Beginning VICAR task list
      48       6.100E+02   8.200E+01   6.140E+02   8.300E+01   6.180E+02   8.400E+01   6.220E+02   8.500E+01   6.260E+02   8.600E+01
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp                        36                      37                      38                      39                      40
    Line
      49       6.200E+02   8.300E+01   6.240E+02   8.400E+01   6.280E+02   8.500E+01   6.320E+02   8.600E+01   6.360E+02   8.700E+01
      50       6.300E+02   8.400E+01   6.340E+02   8.500E+01   6.380E+02   8.600E+01   6.420E+02   8.700E+01   6.460E+02   8.800E+01
 
    COMP     samples are interpreted as COMPLEX  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp                        41                      42                      43                      44                      45
    Line
       1       1.600E+02   4.000E+01   1.640E+02   4.100E+01   1.680E+02   4.200E+01   1.720E+02   4.300E+01   1.760E+02   4.400E+01
@@ -3237,16 +3222,16 @@ Beginning VICAR task list
      48       6.300E+02   8.700E+01   6.340E+02   8.800E+01   6.380E+02   8.900E+01   6.420E+02   9.000E+01   6.460E+02   9.100E+01
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp                        41                      42                      43                      44                      45
    Line
      49       6.400E+02   8.800E+01   6.440E+02   8.900E+01   6.480E+02   9.000E+01   6.520E+02   9.100E+01   6.560E+02   9.200E+01
      50       6.500E+02   8.900E+01   6.540E+02   9.000E+01   6.580E+02   9.100E+01   6.620E+02   9.200E+01   6.660E+02   9.300E+01
 
    COMP     samples are interpreted as COMPLEX  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp                        46                      47                      48                      49                      50
    Line
       1       1.800E+02   4.500E+01   1.840E+02   4.600E+01   1.880E+02   4.700E+01   1.920E+02   4.800E+01   1.960E+02   4.900E+01
@@ -3299,205 +3284,213 @@ Beginning VICAR task list
      48       6.500E+02   9.200E+01   6.540E+02   9.300E+01   6.580E+02   9.400E+01   6.620E+02   9.500E+01   6.660E+02   9.600E+01
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:CCOMP     User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:CCOMP     User:          Date_Time:                        
      Samp                        46                      47                      48                      49                      50
    Line
      49       6.600E+02   9.300E+01   6.640E+02   9.400E+01   6.680E+02   9.500E+01   6.720E+02   9.600E+01   6.760E+02   9.700E+01
      50       6.700E+02   9.400E+01   6.740E+02   9.500E+01   6.780E+02   9.600E+01   6.820E+02   9.700E+01   6.860E+02   9.800E+01
 difpic (ccimg1,ccimg3) diff1
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
- AVE VAL OF POS DIFFS=  7.222E-06  3.599E-07
- NUMBER OF POS DIFF= 891
- AVE VAL OF NEG DIFFS= -2.832E-05 -1.183E-06
+DIFPIC version 2021-03-09
+ AVE VAL OF POS DIFFS=  6.240E-06  1.210E-07
+ NUMBER OF POS DIFF=1024
+ AVE VAL OF NEG DIFFS= -2.799E-05 -1.359E-06
  NUMBER OF NEG DIFFS= 206
- TOTAL NUMBER OF DIFFERENT PIXELS=1097
- AVE VAL OF DIFFS=  2.402E-07  3.080E-08
- % DIFF PIXELS=  43.8800
-list diff1
+ TOTAL NUMBER OF DIFFERENT PIXELS=1230
+ AVE VAL OF DIFFS=  2.494E-07 -6.242E-08
+ % DIFF PIXELS=  49.2000
+list diff1 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    COMP     samples are interpreted as COMPLEX  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:DIFPIC    User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:DIFPIC    User:          Date_Time:                        
      Samp                         1                       2                       3                       4                       5
    Line
       1       0.000E+00   0.000E+00   2.384E-07   5.960E-08   4.768E-07   1.192E-07   0.000E+00   0.000E+00   9.537E-07   2.384E-07
-      2       0.000E+00   5.960E-08   0.000E+00   1.192E-07   0.000E+00   2.384E-07   0.000E+00   2.384E-07   0.000E+00   0.000E+00
-      3       0.000E+00   1.192E-07   0.000E+00   0.000E+00   0.000E+00   2.384E-07   0.000E+00  -4.768E-07   0.000E+00   4.768E-07
-      4      -1.907E-06   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   4.768E-07   0.000E+00   4.768E-07
-      5       0.000E+00   2.384E-07   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06  -4.768E-07   0.000E+00   4.768E-07
-
+      2       0.000E+00   5.960E-08   0.000E+00   0.000E+00   0.000E+00   2.384E-07   0.000E+00   2.384E-07   0.000E+00   0.000E+00
+      3       0.000E+00   1.192E-07   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -4.768E-07   0.000E+00   4.768E-07
+      4      -1.907E-06   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00  -4.768E-07   0.000E+00   4.768E-07
+      5       0.000E+00   2.384E-07   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06  -4.768E-07   0.000E+00   0.000E+00
+      6       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   4.768E-07   0.000E+00   0.000E+00   0.000E+00   0.000E+00
       7      -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -7.629E-06   0.000E+00
       8       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -9.537E-07
-      9       0.000E+00   4.768E-07   0.000E+00   9.537E-07   0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00
-     10       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -9.537E-07   7.629E-06   0.000E+00   0.000E+00   0.000E+00
-     11       0.000E+00   0.000E+00  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   9.537E-07   0.000E+00   0.000E+00
+      9       0.000E+00   4.768E-07   0.000E+00   0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00
+     10       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00
+     11       0.000E+00   0.000E+00  -7.629E-06  -9.537E-07   0.000E+00   0.000E+00   0.000E+00   9.537E-07   0.000E+00   9.537E-07
 
-     13      -7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     14       0.000E+00   9.537E-07   0.000E+00   9.537E-07   0.000E+00   0.000E+00   0.000E+00   9.537E-07   0.000E+00   0.000E+00
+     13      -7.629E-06   0.000E+00   0.000E+00   9.537E-07   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     14       0.000E+00   9.537E-07   0.000E+00   9.537E-07   0.000E+00   9.537E-07   0.000E+00   9.537E-07   0.000E+00   0.000E+00
 
-     16       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -1.907E-06
-     17       0.000E+00   9.537E-07   0.000E+00   0.000E+00   0.000E+00   1.907E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     17       0.000E+00   9.537E-07   0.000E+00   1.907E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     18       0.000E+00   0.000E+00   0.000E+00  -1.907E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     19       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   1.526E-05   0.000E+00   0.000E+00   0.000E+00
+     20       0.000E+00   0.000E+00   1.526E-05   0.000E+00   1.526E-05  -1.907E-06   0.000E+00   0.000E+00   0.000E+00   1.907E-06
+     21       0.000E+00   0.000E+00   0.000E+00   0.000E+00  -1.526E-05  -1.907E-06   0.000E+00   1.907E-06   0.000E+00   0.000E+00
 
-     19       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   1.526E-05   0.000E+00   0.000E+00  -1.907E-06
-     20       0.000E+00   0.000E+00   1.526E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -1.907E-06   0.000E+00   1.907E-06
-     21       0.000E+00   0.000E+00   0.000E+00   0.000E+00  -1.526E-05   0.000E+00   0.000E+00   1.907E-06   0.000E+00   0.000E+00
-
-     23       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -1.907E-06   0.000E+00   0.000E+00
-     24       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   1.907E-06   0.000E+00   0.000E+00   1.526E-05   1.907E-06
-     25      -1.526E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   1.907E-06   0.000E+00   0.000E+00
+     23       0.000E+00   0.000E+00   0.000E+00  -1.907E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     24       0.000E+00   0.000E+00   0.000E+00  -1.907E-06   0.000E+00   1.907E-06   0.000E+00   0.000E+00   1.526E-05   1.907E-06
+     25      -1.526E-05   0.000E+00   0.000E+00   1.907E-06   0.000E+00   1.907E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
      26       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   1.907E-06   0.000E+00  -1.907E-06  -3.052E-05   0.000E+00
-     27       0.000E+00   1.907E-06   0.000E+00   1.907E-06   0.000E+00   1.907E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     28       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   1.907E-06   0.000E+00   0.000E+00   0.000E+00  -1.907E-06
+     27       0.000E+00   1.907E-06   0.000E+00   1.907E-06   0.000E+00   1.907E-06   0.000E+00   0.000E+00   0.000E+00   1.907E-06
+
      29       0.000E+00   0.000E+00   0.000E+00  -1.907E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
      30       0.000E+00   1.907E-06   0.000E+00   0.000E+00   3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
 
-     33       0.000E+00   1.907E-06   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06
-     34       0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06
-
+     32       0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     33       0.000E+00   1.907E-06   0.000E+00   3.815E-06   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     34       0.000E+00   0.000E+00   0.000E+00   3.815E-06  -3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06
+     35       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
      36       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.052E-05   0.000E+00
-     37       0.000E+00   0.000E+00  -3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     37       0.000E+00   0.000E+00  -3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00
      38       0.000E+00   0.000E+00  -3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00
-     39       0.000E+00   0.000E+00  -3.052E-05  -3.815E-06   3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     39       0.000E+00   0.000E+00  -3.052E-05  -3.815E-06   3.052E-05   0.000E+00   0.000E+00   0.000E+00   3.052E-05  -3.815E-06
      40       0.000E+00   0.000E+00   3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.052E-05   0.000E+00
-     41       0.000E+00   0.000E+00   3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.052E-05   0.000E+00
+     41       0.000E+00   0.000E+00   3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.052E-05  -3.815E-06
      42       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00
 
-     44       0.000E+00   0.000E+00   3.052E-05   0.000E+00   0.000E+00   3.815E-06   0.000E+00   3.815E-06  -3.052E-05   0.000E+00
-     45       0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     44       0.000E+00   0.000E+00   3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06  -3.052E-05  -3.815E-06
+     45       0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
      46      -3.052E-05   0.000E+00   3.052E-05   0.000E+00   3.052E-05   3.815E-06  -3.052E-05   0.000E+00   0.000E+00   0.000E+00
-     47       0.000E+00   0.000E+00   3.052E-05   3.815E-06   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   3.815E-06
+     47       0.000E+00   0.000E+00   3.052E-05   3.815E-06   0.000E+00  -3.815E-06   0.000E+00  -3.815E-06   0.000E+00   3.815E-06
      48       0.000E+00   0.000E+00  -3.052E-05  -3.815E-06   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00
-     49      -3.052E-05   0.000E+00  -3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     49      -3.052E-05   0.000E+00  -3.052E-05   0.000E+00   0.000E+00   3.815E-06   0.000E+00   3.815E-06   0.000E+00   3.815E-06
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:DIFPIC    User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:DIFPIC    User:          Date_Time:                        
      Samp                         1                       2                       3                       4                       5
    Line
-     50       0.000E+00   0.000E+00  -3.052E-05   0.000E+00  -3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     50       0.000E+00   0.000E+00  -3.052E-05   0.000E+00  -3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06
 
    COMP     samples are interpreted as COMPLEX  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:DIFPIC    User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:DIFPIC    User:          Date_Time:                        
      Samp                         6                       7                       8                       9                      10
    Line
       1       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   1.907E-06   4.768E-07   0.000E+00   0.000E+00
       2       0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
       3       0.000E+00   4.768E-07   0.000E+00   4.768E-07   0.000E+00   9.537E-07   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-      4       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   9.537E-07
-      5       0.000E+00   0.000E+00   0.000E+00  -9.537E-07   0.000E+00   0.000E+00   0.000E+00   9.537E-07   0.000E+00   0.000E+00
-      6       0.000E+00   9.537E-07   0.000E+00  -9.537E-07   0.000E+00   0.000E+00   0.000E+00  -9.537E-07   7.629E-06   9.537E-07
-      7       0.000E+00   0.000E+00   0.000E+00   9.537E-07   0.000E+00   0.000E+00   0.000E+00   9.537E-07   0.000E+00   0.000E+00
-      8      -7.629E-06   0.000E+00   7.629E-06   0.000E+00   0.000E+00   9.537E-07   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-      9       0.000E+00  -9.537E-07  -7.629E-06  -9.537E-07   0.000E+00   0.000E+00   0.000E+00   9.537E-07  -7.629E-06   0.000E+00
-     10       0.000E+00   9.537E-07   0.000E+00   9.537E-07   0.000E+00   0.000E+00   0.000E+00  -1.907E-06   0.000E+00   1.907E-06
+      4       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   9.537E-07   0.000E+00   9.537E-07
+      5       0.000E+00  -9.537E-07   0.000E+00  -9.537E-07   0.000E+00   0.000E+00   0.000E+00   9.537E-07   0.000E+00   0.000E+00
+      6       0.000E+00   0.000E+00   0.000E+00  -9.537E-07   0.000E+00   0.000E+00   0.000E+00  -9.537E-07   7.629E-06  -9.537E-07
+      7       0.000E+00  -9.537E-07   0.000E+00  -9.537E-07   0.000E+00   9.537E-07   0.000E+00   9.537E-07   0.000E+00   0.000E+00
+      8      -7.629E-06   0.000E+00   7.629E-06   9.537E-07   0.000E+00  -9.537E-07   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+      9      -7.629E-06   9.537E-07  -7.629E-06  -9.537E-07   0.000E+00  -9.537E-07   0.000E+00   0.000E+00  -7.629E-06   0.000E+00
+     10       0.000E+00   9.537E-07   0.000E+00   9.537E-07   0.000E+00   0.000E+00   0.000E+00  -1.907E-06   0.000E+00   0.000E+00
      11       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   1.907E-06
 
      13       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -1.526E-05   0.000E+00   0.000E+00  -1.907E-06
      14       0.000E+00   0.000E+00   0.000E+00   1.907E-06   0.000E+00   1.907E-06   0.000E+00   1.907E-06   0.000E+00   0.000E+00
      15       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -1.907E-06   0.000E+00   0.000E+00
-     16       0.000E+00   0.000E+00   0.000E+00  -1.907E-06   0.000E+00   0.000E+00   0.000E+00   1.907E-06   1.526E-05   0.000E+00
+     16       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -1.907E-06   1.526E-05   0.000E+00
      17       0.000E+00   0.000E+00   1.526E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   1.907E-06
      18       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -1.907E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
      19       0.000E+00   0.000E+00   1.526E-05   0.000E+00   0.000E+00   1.907E-06   0.000E+00   0.000E+00   1.526E-05   1.907E-06
-     20       1.526E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   1.907E-06   0.000E+00   0.000E+00
-     21       0.000E+00   0.000E+00   0.000E+00   1.907E-06   0.000E+00  -1.907E-06   0.000E+00   0.000E+00   0.000E+00   1.907E-06
+     20       1.526E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     21       0.000E+00   0.000E+00   0.000E+00   1.907E-06   0.000E+00  -1.907E-06   0.000E+00   1.907E-06   0.000E+00   1.907E-06
      22       0.000E+00   0.000E+00   1.526E-05   1.907E-06   0.000E+00   0.000E+00  -1.526E-05   0.000E+00   1.526E-05   1.907E-06
-     23       0.000E+00  -1.907E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   1.526E-05   0.000E+00
-     24       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -1.907E-06   0.000E+00  -1.907E-06   0.000E+00  -3.815E-06
+     23       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   1.526E-05   0.000E+00
+     24       0.000E+00   0.000E+00   0.000E+00   1.907E-06   0.000E+00  -3.815E-06   0.000E+00  -3.815E-06   0.000E+00  -3.815E-06
 
-     26       0.000E+00  -1.907E-06   0.000E+00   0.000E+00   0.000E+00   1.907E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     26       0.000E+00  -1.907E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
      27       0.000E+00   0.000E+00   0.000E+00   1.907E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     28       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06
+     28       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00  -3.815E-06
      29       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06
+     30       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06
 
-     31       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00
-     32       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06
-
+     33       0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
      34       0.000E+00   0.000E+00   3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
      35       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.052E-05   0.000E+00
      36       0.000E+00   0.000E+00   3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.052E-05   0.000E+00
-     37       0.000E+00   0.000E+00   3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00
-     38       3.052E-05   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00
-     39       3.052E-05   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   3.815E-06   0.000E+00   3.815E-06  -3.052E-05  -3.815E-06
+     37       0.000E+00   0.000E+00   3.052E-05   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     38       3.052E-05   3.815E-06   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     39       3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   3.815E-06  -3.052E-05  -3.815E-06
      40       0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00  -3.052E-05   0.000E+00
-     41       0.000E+00   3.815E-06   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     42       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00  -3.815E-06
+     41       0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     42       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00
+     43       0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     44       0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.052E-05   3.815E-06   3.052E-05   3.815E-06   0.000E+00   0.000E+00
+     45       0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.052E-05   3.815E-06   0.000E+00   0.000E+00   3.052E-05   0.000E+00
+     46      -3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.052E-05   0.000E+00
+     47      -3.052E-05  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.052E-05   3.815E-06   0.000E+00   0.000E+00
+     48       0.000E+00   0.000E+00  -3.052E-05   0.000E+00   0.000E+00  -3.815E-06  -3.052E-05   0.000E+00   0.000E+00   0.000E+00
+     49       0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06
 
-     44       0.000E+00   3.815E-06   0.000E+00   0.000E+00   3.052E-05   0.000E+00   3.052E-05   3.815E-06   0.000E+00   0.000E+00
-     45       0.000E+00   0.000E+00   0.000E+00  -3.815E-06   3.052E-05   3.815E-06   0.000E+00   0.000E+00   3.052E-05   0.000E+00
-     46      -3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00   3.052E-05   0.000E+00
-     47      -3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.052E-05   3.815E-06   0.000E+00   0.000E+00
-     48       0.000E+00   0.000E+00  -3.052E-05   0.000E+00   0.000E+00   0.000E+00  -3.052E-05   0.000E+00   0.000E+00   0.000E+00
 
-
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:DIFPIC    User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:DIFPIC    User:          Date_Time:                        
      Samp                         6                       7                       8                       9                      10
    Line
-     49       0.000E+00   3.815E-06   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06
      50       3.052E-05   3.815E-06   0.000E+00   3.815E-06   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
 
    COMP     samples are interpreted as COMPLEX  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:DIFPIC    User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:DIFPIC    User:          Date_Time:                        
      Samp                        11                      12                      13                      14                      15
    Line
       1       0.000E+00   0.000E+00   3.815E-06   9.537E-07   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
       2       0.000E+00   0.000E+00   0.000E+00  -9.537E-07   0.000E+00  -9.537E-07   3.815E-06   0.000E+00   0.000E+00   0.000E+00
       3       0.000E+00   0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-
+      4       0.000E+00   0.000E+00   0.000E+00  -9.537E-07   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
       5       0.000E+00   9.537E-07   0.000E+00   9.537E-07   0.000E+00   9.537E-07  -7.629E-06   0.000E+00   0.000E+00   1.907E-06
-      6       0.000E+00   0.000E+00  -7.629E-06  -1.907E-06   0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00  -1.907E-06
-
-      8       0.000E+00   1.907E-06  -7.629E-06   0.000E+00   0.000E+00  -1.907E-06  -7.629E-06  -1.907E-06   0.000E+00   0.000E+00
-      9       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -1.907E-06   0.000E+00  -1.907E-06   0.000E+00   0.000E+00
-     10       0.000E+00   1.907E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   1.907E-06
-     11       0.000E+00   1.907E-06   0.000E+00   1.907E-06   0.000E+00  -1.907E-06   0.000E+00  -1.907E-06   0.000E+00   0.000E+00
-     12       1.526E-05   0.000E+00   0.000E+00   1.907E-06   1.526E-05   1.907E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     13       0.000E+00   0.000E+00   0.000E+00   1.907E-06   0.000E+00   1.907E-06   1.526E-05   0.000E+00   0.000E+00   0.000E+00
-     14       0.000E+00   0.000E+00   0.000E+00   1.907E-06   0.000E+00   1.907E-06   0.000E+00   1.907E-06   0.000E+00   0.000E+00
-     15      -1.526E-05   0.000E+00   1.526E-05   0.000E+00   1.526E-05   0.000E+00   0.000E+00  -1.907E-06   0.000E+00   1.907E-06
-     16       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   1.907E-06   0.000E+00   0.000E+00
-     17       0.000E+00  -1.907E-06   0.000E+00   0.000E+00  -1.526E-05  -1.907E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+      6       0.000E+00   0.000E+00  -7.629E-06  -1.907E-06   0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00
+      7       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   1.907E-06   0.000E+00   0.000E+00
+      8       0.000E+00   0.000E+00  -7.629E-06   0.000E+00   0.000E+00  -1.907E-06  -7.629E-06   0.000E+00   0.000E+00   0.000E+00
+      9       0.000E+00  -1.907E-06   0.000E+00   0.000E+00   0.000E+00  -1.907E-06   0.000E+00  -1.907E-06   0.000E+00   0.000E+00
+     10       0.000E+00   1.907E-06   0.000E+00   1.907E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   1.907E-06
+     11       0.000E+00   0.000E+00   0.000E+00   1.907E-06   0.000E+00  -1.907E-06   0.000E+00  -1.907E-06   0.000E+00   0.000E+00
+     12       1.526E-05   0.000E+00   0.000E+00  -1.907E-06   1.526E-05   1.907E-06   0.000E+00   0.000E+00   0.000E+00  -1.907E-06
+     13       0.000E+00  -1.907E-06   0.000E+00   1.907E-06   0.000E+00  -1.907E-06   1.526E-05   0.000E+00   0.000E+00   1.907E-06
+     14       0.000E+00   0.000E+00   0.000E+00   1.907E-06   0.000E+00   1.907E-06   0.000E+00  -1.907E-06   0.000E+00   0.000E+00
+     15      -1.526E-05   0.000E+00   1.526E-05   1.907E-06   1.526E-05   1.907E-06   0.000E+00  -1.907E-06   0.000E+00  -1.907E-06
+     16       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -1.907E-06   0.000E+00   1.907E-06
+     17      -1.526E-05   1.907E-06   0.000E+00   0.000E+00  -1.526E-05  -1.907E-06   0.000E+00   0.000E+00   0.000E+00  -1.907E-06
      18       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -1.907E-06   0.000E+00   3.815E-06   1.526E-05   0.000E+00
-     19       0.000E+00   1.907E-06   0.000E+00  -1.907E-06   0.000E+00   1.907E-06   0.000E+00   1.907E-06   0.000E+00   0.000E+00
-     20       0.000E+00   1.907E-06   0.000E+00   0.000E+00  -1.526E-05   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00
-     21       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -1.526E-05   0.000E+00   0.000E+00   0.000E+00
+     19       0.000E+00   1.907E-06   0.000E+00   1.907E-06   0.000E+00   1.907E-06   0.000E+00  -1.907E-06   0.000E+00   0.000E+00
+     20       0.000E+00   1.907E-06   0.000E+00   0.000E+00  -1.526E-05  -3.815E-06   0.000E+00   1.907E-06   0.000E+00   0.000E+00
+     21       0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00  -1.526E-05   0.000E+00   0.000E+00   0.000E+00
      22       0.000E+00  -1.907E-06   0.000E+00   1.907E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     23       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00
 
      25       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00
-     26       0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06
+     26       0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06
      27       0.000E+00   0.000E+00  -3.052E-05   0.000E+00   0.000E+00   3.815E-06   3.052E-05   3.815E-06   0.000E+00   3.815E-06
      28       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00  -3.815E-06
      29       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.052E-05   0.000E+00   0.000E+00   0.000E+00
+     30       0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     31       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00
 
-     31       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     32       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     33       0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     34       0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.052E-05   0.000E+00   0.000E+00   0.000E+00   3.052E-05   0.000E+00
+     33       0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.052E-05   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00
+     34       0.000E+00   3.815E-06   0.000E+00   0.000E+00  -3.052E-05   0.000E+00   0.000E+00   0.000E+00   3.052E-05   0.000E+00
      35       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00  -3.815E-06
-     36       3.052E-05   3.815E-06   0.000E+00   3.815E-06   3.052E-05   0.000E+00   0.000E+00   0.000E+00   3.052E-05   0.000E+00
+     36       3.052E-05   3.815E-06   0.000E+00   3.815E-06   3.052E-05   0.000E+00   0.000E+00   0.000E+00   3.052E-05   3.815E-06
      37       0.000E+00   0.000E+00   0.000E+00  -3.815E-06   3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06
-     38       0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00  -3.815E-06
+     38       0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00  -3.815E-06   0.000E+00   3.815E-06   0.000E+00  -3.815E-06
      39       3.052E-05   0.000E+00  -3.052E-05  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
 
      41       0.000E+00   0.000E+00  -3.052E-05   0.000E+00   0.000E+00   3.815E-06   0.000E+00   3.815E-06   0.000E+00  -3.815E-06
      42       0.000E+00   0.000E+00   3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.052E-05  -3.815E-06
-     43       0.000E+00   0.000E+00   0.000E+00  -3.815E-06   3.052E-05   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     43       0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.052E-05   3.815E-06   0.000E+00  -3.815E-06   0.000E+00   0.000E+00
      44       0.000E+00   0.000E+00   0.000E+00  -3.815E-06   3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06
-     45       0.000E+00  -3.815E-06   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     46      -3.052E-05  -3.815E-06  -3.052E-05   0.000E+00   0.000E+00   0.000E+00   3.052E-05   3.815E-06   0.000E+00   0.000E+00
-     47       0.000E+00   0.000E+00  -3.052E-05  -3.815E-06   0.000E+00   0.000E+00   3.052E-05   3.815E-06   0.000E+00  -3.815E-06
+     45       0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00
+     46      -3.052E-05   0.000E+00  -3.052E-05   0.000E+00   0.000E+00   3.815E-06   3.052E-05   3.815E-06   0.000E+00   0.000E+00
+     47       0.000E+00   0.000E+00  -3.052E-05  -3.815E-06   0.000E+00   3.815E-06   3.052E-05   3.815E-06   0.000E+00  -7.629E-06
      48      -3.052E-05  -3.815E-06   0.000E+00   0.000E+00   6.104E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     49       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00
+
+
+ Task:GEN       User:          Date_Time:                        
+ Task:DIFPIC    User:          Date_Time:                        
+     Samp                        11                      12                      13                      14                      15
+   Line
+     49       0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00
+     50       0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00
 
    COMP     samples are interpreted as COMPLEX  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:DIFPIC    User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:DIFPIC    User:          Date_Time:                        
      Samp                        16                      17                      18                      19                      20
    Line
       1       0.000E+00   0.000E+00   3.815E-06   9.537E-07   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
@@ -3505,417 +3498,419 @@ Beginning VICAR task list
 
       4       0.000E+00   0.000E+00   0.000E+00  -1.907E-06   0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00
       5       7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -7.629E-06   0.000E+00
-      6       0.000E+00   1.907E-06  -7.629E-06   1.907E-06   0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00
-      7      -7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   1.907E-06   0.000E+00   1.907E-06   0.000E+00   1.907E-06
-      8       0.000E+00  -1.907E-06   0.000E+00   1.907E-06   0.000E+00  -1.907E-06   0.000E+00  -1.907E-06   0.000E+00   0.000E+00
-      9       0.000E+00  -1.907E-06   0.000E+00   1.907E-06   0.000E+00   1.907E-06   0.000E+00   0.000E+00   1.526E-05   3.815E-06
+      6       0.000E+00   1.907E-06  -7.629E-06   1.907E-06   0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00  -1.907E-06
+      7      -7.629E-06   0.000E+00   0.000E+00   1.907E-06   0.000E+00   1.907E-06   0.000E+00   1.907E-06   0.000E+00   1.907E-06
+      8       0.000E+00  -1.907E-06   0.000E+00   1.907E-06   0.000E+00  -1.907E-06   0.000E+00  -1.907E-06   0.000E+00  -1.907E-06
+      9       0.000E+00  -1.907E-06   0.000E+00   1.907E-06   0.000E+00   1.907E-06   0.000E+00   0.000E+00   1.526E-05   1.907E-06
      10       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -1.907E-06   0.000E+00   0.000E+00   1.526E-05   0.000E+00
-     11       0.000E+00   0.000E+00   0.000E+00  -1.907E-06   0.000E+00   0.000E+00   1.526E-05   1.907E-06   0.000E+00   0.000E+00
-     12       0.000E+00   0.000E+00   0.000E+00   0.000E+00  -1.526E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     13       0.000E+00   1.907E-06   0.000E+00   1.907E-06  -1.526E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -1.907E-06
-     14       0.000E+00  -1.907E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   1.907E-06   0.000E+00  -3.815E-06
+     11       0.000E+00   0.000E+00   0.000E+00  -1.907E-06   0.000E+00   1.907E-06   1.526E-05  -1.907E-06   0.000E+00  -1.907E-06
+     12       0.000E+00  -3.815E-06   0.000E+00   1.907E-06  -1.526E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     13       0.000E+00  -1.907E-06   0.000E+00   1.907E-06  -1.526E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -1.907E-06
+     14       0.000E+00   1.907E-06   0.000E+00   1.907E-06   0.000E+00   0.000E+00   0.000E+00   1.907E-06   0.000E+00  -3.815E-06
      15       0.000E+00   1.907E-06   0.000E+00   0.000E+00   0.000E+00  -1.907E-06   0.000E+00   0.000E+00   1.526E-05   0.000E+00
-     16       0.000E+00   1.907E-06   0.000E+00  -1.907E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     17       0.000E+00   1.907E-06   0.000E+00   1.907E-06   0.000E+00   0.000E+00  -1.526E-05   0.000E+00   0.000E+00   0.000E+00
-     18       0.000E+00   0.000E+00   1.526E-05   0.000E+00   0.000E+00   3.815E-06  -1.526E-05   0.000E+00   0.000E+00  -3.815E-06
-     19      -1.526E-05   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   3.815E-06   1.526E-05   0.000E+00
-     20       0.000E+00   0.000E+00  -1.526E-05  -3.815E-06   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     16       0.000E+00  -1.907E-06   0.000E+00  -1.907E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     17       0.000E+00   1.907E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -1.526E-05   0.000E+00   0.000E+00   0.000E+00
+     18       0.000E+00   0.000E+00   1.526E-05   0.000E+00   0.000E+00   0.000E+00  -1.526E-05   0.000E+00   0.000E+00   0.000E+00
+     19      -1.526E-05  -3.815E-06   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   1.526E-05   0.000E+00
+     20       0.000E+00  -3.815E-06  -1.526E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00  -3.815E-06
      21       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   3.815E-06   0.000E+00   0.000E+00
-     22       0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00  -3.815E-06   3.052E-05   0.000E+00   0.000E+00  -3.815E-06
-     23       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.052E-05  -3.815E-06
-     24       0.000E+00   0.000E+00   3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00
-     25       0.000E+00  -3.815E-06  -3.052E-05   0.000E+00   0.000E+00   3.815E-06   0.000E+00  -3.815E-06   3.052E-05   3.815E-06
-
-     27       0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06
-     28       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     22       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   3.052E-05   3.815E-06   0.000E+00  -3.815E-06
+     23       0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.052E-05  -3.815E-06
+     24       0.000E+00   0.000E+00   3.052E-05   0.000E+00   0.000E+00   3.815E-06   0.000E+00  -3.815E-06   0.000E+00   0.000E+00
+     25       0.000E+00   3.815E-06  -3.052E-05   0.000E+00   0.000E+00  -3.815E-06   0.000E+00  -3.815E-06   3.052E-05   3.815E-06
+     26       0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     27       0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     28       0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00  -3.815E-06
      29       0.000E+00  -3.815E-06   0.000E+00  -3.815E-06  -3.052E-05  -3.815E-06   0.000E+00   0.000E+00   3.052E-05   3.815E-06
-     30      -3.052E-05   0.000E+00   3.052E-05   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00  -3.815E-06
-     31       0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00   3.052E-05   0.000E+00   0.000E+00  -3.815E-06
-     32       3.052E-05   3.815E-06   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   3.815E-06  -3.052E-05  -3.815E-06
-     33       0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00
+     30      -3.052E-05   0.000E+00   3.052E-05   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   3.815E-06
+     31       0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   3.052E-05   0.000E+00   0.000E+00  -3.815E-06
+     32       3.052E-05   3.815E-06   0.000E+00  -3.815E-06   0.000E+00  -7.629E-06   0.000E+00   3.815E-06  -3.052E-05  -3.815E-06
+     33       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   3.815E-06   0.000E+00   0.000E+00
      34       0.000E+00   0.000E+00   3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00
-
-     36       0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.052E-05   0.000E+00  -3.052E-05   0.000E+00   0.000E+00  -3.815E-06
-     37       3.052E-05   0.000E+00   0.000E+00   0.000E+00   3.052E-05   0.000E+00   3.052E-05   3.815E-06   0.000E+00   3.815E-06
+     35       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06
+     36       0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.052E-05   0.000E+00  -3.052E-05   0.000E+00   0.000E+00   3.815E-06
+     37       3.052E-05   0.000E+00   0.000E+00   0.000E+00   3.052E-05   0.000E+00   3.052E-05   3.815E-06   0.000E+00  -3.815E-06
      38       0.000E+00   0.000E+00  -3.052E-05   0.000E+00   0.000E+00   0.000E+00  -3.052E-05  -3.815E-06   0.000E+00   0.000E+00
-     39       0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     39       0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
      40       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06
-     41       3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   3.815E-06   0.000E+00   0.000E+00
-     42       0.000E+00   3.815E-06   0.000E+00  -3.815E-06  -3.052E-05  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     41       3.052E-05   0.000E+00   0.000E+00   3.815E-06   0.000E+00   3.815E-06   0.000E+00   3.815E-06   0.000E+00   0.000E+00
+     42       0.000E+00   0.000E+00   0.000E+00  -3.815E-06  -3.052E-05  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
      43       0.000E+00   0.000E+00  -3.052E-05   0.000E+00   0.000E+00   0.000E+00   3.052E-05   3.815E-06   0.000E+00  -3.815E-06
-     44       0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     45       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06   3.052E-05   0.000E+00   0.000E+00   0.000E+00
-     46       3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00   6.104E-05   3.815E-06
-     47       0.000E+00  -3.815E-06   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00  -7.629E-06   0.000E+00   0.000E+00
+     44       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   3.815E-06
+     45       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.052E-05   0.000E+00   0.000E+00   0.000E+00
+     46       3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   3.815E-06   6.104E-05   3.815E-06
+     47       0.000E+00  -3.815E-06   0.000E+00  -7.629E-06   0.000E+00   0.000E+00   0.000E+00  -7.629E-06   0.000E+00   0.000E+00
      48       0.000E+00   0.000E+00   6.104E-05   3.815E-06   0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:DIFPIC    User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:DIFPIC    User:          Date_Time:                        
      Samp                        16                      17                      18                      19                      20
    Line
      49       0.000E+00   0.000E+00   0.000E+00   0.000E+00  -6.104E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
      50       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -6.104E-05   0.000E+00
 
    COMP     samples are interpreted as COMPLEX  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:DIFPIC    User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:DIFPIC    User:          Date_Time:                        
      Samp                        21                      22                      23                      24                      25
    Line
       1       0.000E+00   0.000E+00   0.000E+00   0.000E+00   7.629E-06   1.907E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
       2       0.000E+00  -1.907E-06   0.000E+00   0.000E+00   0.000E+00  -1.907E-06   0.000E+00   1.907E-06   0.000E+00   1.907E-06
-      3       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -1.907E-06   0.000E+00   0.000E+00   0.000E+00  -1.907E-06
+      3       0.000E+00   0.000E+00   0.000E+00   1.907E-06   0.000E+00  -1.907E-06   0.000E+00   0.000E+00   0.000E+00  -1.907E-06
       4       0.000E+00   1.907E-06   0.000E+00   1.907E-06   7.629E-06   0.000E+00  -7.629E-06  -1.907E-06   7.629E-06   1.907E-06
-      5       0.000E+00   0.000E+00   0.000E+00   1.907E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   1.526E-05   0.000E+00
-      6       0.000E+00   0.000E+00   0.000E+00  -1.907E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -1.526E-05   0.000E+00
-      7       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   1.907E-06   0.000E+00   0.000E+00
+      5       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   1.526E-05   0.000E+00
+      6       0.000E+00   0.000E+00   0.000E+00  -1.907E-06   0.000E+00   0.000E+00   0.000E+00  -1.907E-06  -1.526E-05   0.000E+00
+      7       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -1.907E-06   0.000E+00   1.907E-06   0.000E+00   0.000E+00
       8       0.000E+00  -1.907E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   1.907E-06
       9       0.000E+00   1.907E-06   1.526E-05   0.000E+00   0.000E+00   1.907E-06   0.000E+00   0.000E+00   0.000E+00   1.907E-06
-     10       0.000E+00   0.000E+00   1.526E-05   1.907E-06   0.000E+00   0.000E+00   0.000E+00   1.907E-06   0.000E+00   0.000E+00
+     10       0.000E+00  -3.815E-06   1.526E-05   1.907E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
      11       0.000E+00   0.000E+00   0.000E+00  -1.907E-06  -1.526E-05  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     12      -1.526E-05   0.000E+00   0.000E+00   0.000E+00  -1.526E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06
+     12      -1.526E-05   0.000E+00   0.000E+00   0.000E+00  -1.526E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
      13       0.000E+00   0.000E+00  -1.526E-05   0.000E+00   0.000E+00   0.000E+00   1.526E-05   3.815E-06   0.000E+00   0.000E+00
-     14       0.000E+00   0.000E+00   0.000E+00   0.000E+00  -1.526E-05  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     15       0.000E+00   3.815E-06   1.526E-05   0.000E+00  -1.526E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06
+     14       0.000E+00   0.000E+00   0.000E+00   0.000E+00  -1.526E-05  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   3.815E-06
+     15       0.000E+00   0.000E+00   1.526E-05   0.000E+00  -1.526E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06
      16       0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     17       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06
-     18       0.000E+00  -3.815E-06   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00
-     19       0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00
-     20       0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     21       0.000E+00   3.815E-06   0.000E+00  -3.815E-06   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00  -3.815E-06
-     22       0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06
-     23       3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00   3.052E-05   3.815E-06
-     24       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.052E-05   0.000E+00
-     25       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   3.815E-06
+     17       0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06
+     18       0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00  -3.815E-06   0.000E+00   0.000E+00
+     19       0.000E+00   3.815E-06   0.000E+00   3.815E-06   0.000E+00   3.815E-06   0.000E+00  -3.815E-06   0.000E+00   0.000E+00
+     20       0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     21       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00  -3.815E-06   0.000E+00  -3.815E-06
+     22       0.000E+00  -3.815E-06   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06
+     23       3.052E-05   0.000E+00   0.000E+00   3.815E-06   0.000E+00  -3.815E-06   0.000E+00   3.815E-06   3.052E-05   3.815E-06
+     24       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   3.052E-05   0.000E+00
+     25       0.000E+00  -3.815E-06   0.000E+00  -3.815E-06   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00  -3.815E-06
      26       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   3.815E-06
-     27       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06   3.052E-05   0.000E+00   0.000E+00   3.815E-06
+     27       0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   3.815E-06   3.052E-05   0.000E+00   0.000E+00   3.815E-06
      28       0.000E+00   0.000E+00   0.000E+00  -3.815E-06  -3.052E-05   0.000E+00  -3.052E-05   3.815E-06   0.000E+00  -3.815E-06
-     29      -3.052E-05   0.000E+00   0.000E+00   0.000E+00   3.052E-05   0.000E+00   0.000E+00  -3.815E-06   3.052E-05   0.000E+00
-     30       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00  -3.815E-06
+     29      -3.052E-05   0.000E+00   0.000E+00   0.000E+00   3.052E-05   3.815E-06   0.000E+00  -3.815E-06   3.052E-05   3.815E-06
+     30       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -7.629E-06   0.000E+00   3.815E-06   0.000E+00  -3.815E-06
      31       0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     32       0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00
-     33       0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06  -3.052E-05  -3.815E-06
-     34       0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06
-     35       0.000E+00   0.000E+00   0.000E+00  -7.629E-06   0.000E+00   0.000E+00  -3.052E-05   0.000E+00   0.000E+00  -3.815E-06
-     36       0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06
-     37       0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   3.815E-06   0.000E+00   3.815E-06
+     32       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   7.629E-06
+     33      -3.052E-05   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06  -3.052E-05  -3.815E-06
+     34       0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00  -3.815E-06
+     35       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -7.629E-06   0.000E+00  -3.815E-06
+     36       0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00   3.815E-06
+     37       0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   3.815E-06   0.000E+00   3.815E-06
      38      -3.052E-05   0.000E+00   0.000E+00  -3.815E-06   3.052E-05  -3.815E-06  -3.052E-05   0.000E+00   0.000E+00   3.815E-06
-     39       0.000E+00   3.815E-06   3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06  -3.052E-05   0.000E+00
-     40       0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   3.815E-06   0.000E+00   3.815E-06   0.000E+00   7.629E-06
-     41       0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00  -3.052E-05  -3.815E-06   0.000E+00   0.000E+00
-     42      -3.052E-05  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   7.629E-06
+     39       0.000E+00   3.815E-06   3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06  -3.052E-05  -7.629E-06
+     40       0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00  -3.815E-06   0.000E+00  -3.815E-06   0.000E+00   7.629E-06
+     41       0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   7.629E-06  -3.052E-05  -3.815E-06   0.000E+00   0.000E+00
+     42      -3.052E-05  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
      43       0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00  -7.629E-06   0.000E+00   0.000E+00
-     44      -3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     44      -3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
 
-     46       6.104E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   6.104E-05   7.629E-06
+     46       6.104E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   6.104E-05   0.000E+00
 
      48       6.104E-05   0.000E+00   6.104E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
 
    COMP     samples are interpreted as COMPLEX  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:DIFPIC    User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:DIFPIC    User:          Date_Time:                        
      Samp                        26                      27                      28                      29                      30
    Line
       1       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   7.629E-06   1.907E-06
-      2       7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   7.629E-06   1.907E-06   0.000E+00   0.000E+00
-      3       0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00   1.907E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+      2       7.629E-06   0.000E+00   0.000E+00  -1.907E-06   0.000E+00   0.000E+00   7.629E-06   1.907E-06   0.000E+00   0.000E+00
+      3       0.000E+00   1.907E-06   7.629E-06   0.000E+00   0.000E+00   1.907E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
       4       0.000E+00   0.000E+00   0.000E+00  -1.907E-06   0.000E+00   1.907E-06   0.000E+00  -1.907E-06   0.000E+00   0.000E+00
       5       0.000E+00  -1.907E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-      6       0.000E+00   0.000E+00   0.000E+00   1.907E-06  -1.526E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-      7       0.000E+00  -1.907E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-      8       0.000E+00   0.000E+00   0.000E+00   0.000E+00   1.526E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-      9       0.000E+00   0.000E+00  -1.526E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00
-     10       0.000E+00   0.000E+00  -1.526E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06
-     11       0.000E+00   0.000E+00   1.526E-05   0.000E+00  -1.526E-05   0.000E+00   0.000E+00  -3.815E-06  -1.526E-05   0.000E+00
-     12       0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00
+      6       0.000E+00   0.000E+00   0.000E+00   1.907E-06  -1.526E-05  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
 
-     15       0.000E+00   0.000E+00  -1.526E-05  -3.815E-06  -1.526E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06
-     16       0.000E+00   0.000E+00  -1.526E-05  -3.815E-06   0.000E+00   3.815E-06   0.000E+00  -3.815E-06   0.000E+00   3.815E-06
-     17       0.000E+00   3.815E-06   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     18       3.052E-05   0.000E+00  -3.052E-05   0.000E+00   0.000E+00   0.000E+00   3.052E-05   7.629E-06   0.000E+00  -3.815E-06
-     19       0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00
-     20       0.000E+00   3.815E-06   0.000E+00   0.000E+00  -3.052E-05   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00
-     21       0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00  -3.815E-06
+      8       0.000E+00   0.000E+00   0.000E+00   0.000E+00   1.526E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+      9       0.000E+00   0.000E+00  -1.526E-05   0.000E+00   0.000E+00   3.815E-06   0.000E+00   3.815E-06   0.000E+00   0.000E+00
+     10       0.000E+00   0.000E+00  -1.526E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06
+     11       0.000E+00   0.000E+00   1.526E-05   0.000E+00  -1.526E-05   0.000E+00   0.000E+00   0.000E+00  -1.526E-05   0.000E+00
+     12       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00
+     13       0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+
+     15       0.000E+00   3.815E-06  -1.526E-05   0.000E+00  -1.526E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06
+     16       0.000E+00   0.000E+00  -1.526E-05   0.000E+00   0.000E+00   0.000E+00  -3.052E-05   0.000E+00   0.000E+00   3.815E-06
+     17       0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     18       3.052E-05   0.000E+00  -3.052E-05   0.000E+00   0.000E+00   0.000E+00   3.052E-05   7.629E-06   0.000E+00   0.000E+00
+     19       0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   3.815E-06
+     20       0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.052E-05   0.000E+00   0.000E+00  -3.815E-06   0.000E+00  -3.815E-06
+     21       0.000E+00  -3.815E-06   0.000E+00  -3.815E-06   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
      22       0.000E+00   0.000E+00   3.052E-05   3.815E-06   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00  -3.815E-06
-     23       0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     24       3.052E-05   3.815E-06   0.000E+00   3.815E-06   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   3.815E-06
-     25       3.052E-05   0.000E+00   3.052E-05   0.000E+00  -3.052E-05  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     26       0.000E+00   0.000E+00   0.000E+00  -3.815E-06  -3.052E-05   0.000E+00   0.000E+00   3.815E-06   0.000E+00  -3.815E-06
-     27       0.000E+00   3.815E-06   0.000E+00   3.815E-06   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00  -3.815E-06
-     28       0.000E+00  -3.815E-06  -3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.052E-05  -3.815E-06
-     29       0.000E+00  -3.815E-06   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00
-     30       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     31       0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     23       0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00
+     24       3.052E-05   3.815E-06   0.000E+00   7.629E-06   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   3.815E-06
+     25       3.052E-05   0.000E+00   3.052E-05   0.000E+00  -3.052E-05  -3.815E-06   0.000E+00   3.815E-06   0.000E+00   0.000E+00
+     26       0.000E+00  -3.815E-06   0.000E+00  -3.815E-06  -3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06
+     27       0.000E+00   3.815E-06   0.000E+00  -3.815E-06   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00  -3.815E-06
+     28       0.000E+00  -3.815E-06  -3.052E-05  -7.629E-06   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   3.052E-05  -3.815E-06
+     29       0.000E+00  -3.815E-06   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00
+     30       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00  -3.815E-06
+     31       0.000E+00  -7.629E-06   0.000E+00  -3.815E-06   0.000E+00   3.815E-06   0.000E+00   3.815E-06   0.000E+00  -3.815E-06
      32      -3.052E-05  -3.815E-06   0.000E+00   3.815E-06   0.000E+00   0.000E+00  -3.052E-05  -3.815E-06   0.000E+00   3.815E-06
-     33      -3.052E-05  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     34       3.052E-05   7.629E-06   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     33      -3.052E-05  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00
+     34       3.052E-05   7.629E-06   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06
      35       0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   3.815E-06   3.052E-05   0.000E+00   0.000E+00   0.000E+00
      36      -3.052E-05   0.000E+00   0.000E+00   3.815E-06   0.000E+00   3.815E-06   0.000E+00   0.000E+00  -3.052E-05   0.000E+00
-     37       0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     38       0.000E+00   3.815E-06   3.052E-05   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   7.629E-06
-     39      -3.052E-05   3.815E-06   0.000E+00  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.052E-05   0.000E+00
-     40       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.052E-05  -7.629E-06
-     41       0.000E+00   0.000E+00  -3.052E-05   0.000E+00   3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -7.629E-06
-     42       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   6.104E-05   0.000E+00
-     43       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -6.104E-05  -7.629E-06
-     44      -6.104E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -6.104E-05   0.000E+00   0.000E+00  -7.629E-06
-     45      -6.104E-05  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     46       0.000E+00   0.000E+00   0.000E+00  -7.629E-06   0.000E+00   0.000E+00   6.104E-05   0.000E+00   0.000E+00   0.000E+00
+     37       0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00  -7.629E-06
+     38       0.000E+00   0.000E+00   3.052E-05   0.000E+00   0.000E+00   3.815E-06   0.000E+00  -7.629E-06   0.000E+00   7.629E-06
+     39      -3.052E-05   3.815E-06   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.052E-05  -7.629E-06
+     40       0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.052E-05  -7.629E-06
+     41      -3.052E-05   7.629E-06  -3.052E-05   0.000E+00   3.052E-05   7.629E-06   0.000E+00   0.000E+00   0.000E+00  -1.526E-05
+     42       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -7.629E-06   0.000E+00   0.000E+00   6.104E-05   0.000E+00
+     43       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -6.104E-05   0.000E+00
+     44      -6.104E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -7.629E-06  -6.104E-05  -7.629E-06   0.000E+00  -7.629E-06
+     45      -6.104E-05  -7.629E-06   0.000E+00  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     46       0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00   6.104E-05   0.000E+00   0.000E+00   7.629E-06
      47      -6.104E-05  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     48       0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -7.629E-06
-     49       0.000E+00  -7.629E-06   0.000E+00   7.629E-06   0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00  -7.629E-06
+     48       0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   7.629E-06   0.000E+00  -7.629E-06
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:DIFPIC    User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:DIFPIC    User:          Date_Time:                        
      Samp                        26                      27                      28                      29                      30
    Line
-     50       0.000E+00   0.000E+00   0.000E+00   0.000E+00   6.104E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -7.629E-06
+     49       0.000E+00   7.629E-06   0.000E+00   7.629E-06   0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00  -7.629E-06
+     50       0.000E+00   0.000E+00   0.000E+00   0.000E+00   6.104E-05  -7.629E-06   0.000E+00   0.000E+00   0.000E+00  -7.629E-06
 
    COMP     samples are interpreted as COMPLEX  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:DIFPIC    User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:DIFPIC    User:          Date_Time:                        
      Samp                        31                      32                      33                      34                      35
    Line
       1       0.000E+00   0.000E+00   0.000E+00   0.000E+00   7.629E-06   1.907E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-      2       0.000E+00   0.000E+00   0.000E+00   1.907E-06   0.000E+00   0.000E+00   0.000E+00  -3.815E-06  -1.526E-05   0.000E+00
+      2       0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00  -3.815E-06  -1.526E-05   0.000E+00
       3       0.000E+00   1.907E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06  -1.526E-05   0.000E+00
-      4       0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06
+      4       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06
 
       6       0.000E+00  -3.815E-06  -1.526E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -1.526E-05   0.000E+00
       7       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   3.815E-06   0.000E+00   0.000E+00
       8       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00  -3.815E-06   0.000E+00   0.000E+00
       9       1.526E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     10       0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   1.526E-05   0.000E+00
+     10       0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   1.526E-05   0.000E+00
      11       0.000E+00   3.815E-06   1.526E-05   0.000E+00  -1.526E-05   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     12       0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     13      -1.526E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06
-     14       0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     12       0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06
+     13      -1.526E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   3.815E-06
+     14       0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   3.815E-06   0.000E+00   3.815E-06   0.000E+00   3.815E-06
      15       0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00  -3.815E-06
-     16       0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.052E-05   0.000E+00
+     16       0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06
      17       0.000E+00  -3.815E-06  -3.052E-05   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   3.815E-06
      18       0.000E+00   0.000E+00   0.000E+00  -3.815E-06   3.052E-05   3.815E-06   0.000E+00  -3.815E-06   0.000E+00   0.000E+00
      19       0.000E+00   0.000E+00  -3.052E-05  -3.815E-06   0.000E+00   0.000E+00   3.052E-05   0.000E+00   0.000E+00  -3.815E-06
-     20       0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     21       0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00  -3.815E-06   0.000E+00   3.815E-06   0.000E+00   0.000E+00
-     22       0.000E+00   3.815E-06   0.000E+00  -3.815E-06   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   3.815E-06
-     23       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.052E-05   0.000E+00
-     24       0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   3.815E-06   0.000E+00   3.815E-06   0.000E+00   3.815E-06
-     25       0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   3.815E-06  -3.052E-05  -3.815E-06  -3.052E-05   0.000E+00
-     26       0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     27       0.000E+00  -3.815E-06   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     28       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     20       0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00
+     21       0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00  -3.815E-06   0.000E+00   3.815E-06   0.000E+00   3.815E-06
+     22       0.000E+00  -3.815E-06   0.000E+00  -3.815E-06   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   3.815E-06
+     23       0.000E+00  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00  -3.052E-05   0.000E+00
+     24       0.000E+00   3.815E-06   0.000E+00  -3.815E-06   0.000E+00   3.815E-06   0.000E+00   3.815E-06   0.000E+00   3.815E-06
+     25       0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   3.815E-06  -3.052E-05  -3.815E-06  -3.052E-05   0.000E+00
+     26       0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     27       0.000E+00   3.815E-06   0.000E+00  -3.815E-06   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     28       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   7.629E-06   0.000E+00   0.000E+00
      29       0.000E+00   3.815E-06   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00  -3.815E-06
-     30       0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.052E-05   3.815E-06
-     31       0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   3.815E-06   0.000E+00   0.000E+00
-     32       0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     33       0.000E+00   3.815E-06   0.000E+00   3.815E-06   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     34       0.000E+00  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.052E-05  -7.629E-06
-     35       0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.052E-05   0.000E+00   3.052E-05   0.000E+00   0.000E+00   7.629E-06
-     36       0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -7.629E-06
-     37      -3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -7.629E-06   0.000E+00   7.629E-06   0.000E+00   0.000E+00
-     38       0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.052E-05   0.000E+00   0.000E+00   0.000E+00
-     39       0.000E+00   0.000E+00   0.000E+00  -7.629E-06  -3.052E-05  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   7.629E-06
+     30       0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00  -7.629E-06   0.000E+00   0.000E+00   3.052E-05   3.815E-06
+     31       0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   3.815E-06   0.000E+00   0.000E+00
+     32       0.000E+00  -3.815E-06   0.000E+00  -3.815E-06   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     33       0.000E+00   3.815E-06   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     34       0.000E+00  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -7.629E-06  -3.052E-05   0.000E+00
+     35       0.000E+00   0.000E+00   0.000E+00   7.629E-06   3.052E-05   0.000E+00   3.052E-05   0.000E+00   0.000E+00   0.000E+00
+     36       0.000E+00   7.629E-06   0.000E+00   0.000E+00   3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -7.629E-06
+     37      -3.052E-05  -7.629E-06   0.000E+00   7.629E-06   0.000E+00  -7.629E-06   0.000E+00   7.629E-06   0.000E+00   0.000E+00
+     38       0.000E+00   7.629E-06   0.000E+00   7.629E-06   0.000E+00   0.000E+00  -3.052E-05   0.000E+00   0.000E+00   0.000E+00
+     39       0.000E+00  -7.629E-06   0.000E+00  -7.629E-06  -3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
      40       0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00  -7.629E-06   0.000E+00   0.000E+00   0.000E+00  -7.629E-06
      41       0.000E+00   0.000E+00   6.104E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -7.629E-06
      42       0.000E+00   0.000E+00   0.000E+00   0.000E+00   6.104E-05   0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00
-     43       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00  -7.629E-06   0.000E+00  -7.629E-06
-     44       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00
-
+     43       0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -7.629E-06
+     44       0.000E+00   7.629E-06   0.000E+00  -7.629E-06   0.000E+00  -7.629E-06   0.000E+00   7.629E-06   0.000E+00   0.000E+00
+     45       0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
      46       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     47       0.000E+00   0.000E+00   0.000E+00   0.000E+00   6.104E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     48       0.000E+00  -7.629E-06   0.000E+00   0.000E+00  -6.104E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     47       0.000E+00   0.000E+00   0.000E+00   0.000E+00   6.104E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   7.629E-06
+     48       0.000E+00   7.629E-06   0.000E+00   0.000E+00  -6.104E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:DIFPIC    User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:DIFPIC    User:          Date_Time:                        
      Samp                        31                      32                      33                      34                      35
    Line
-     49       0.000E+00  -7.629E-06   0.000E+00  -7.629E-06  -6.104E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   7.629E-06
+     49       0.000E+00   7.629E-06   0.000E+00  -7.629E-06  -6.104E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -7.629E-06
      50       0.000E+00   0.000E+00   0.000E+00  -7.629E-06   0.000E+00   0.000E+00   6.104E-05   0.000E+00   6.104E-05   7.629E-06
 
    COMP     samples are interpreted as COMPLEX  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:DIFPIC    User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:DIFPIC    User:          Date_Time:                        
      Samp                        36                      37                      38                      39                      40
    Line
       1       0.000E+00   0.000E+00   0.000E+00   0.000E+00   1.526E-05   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+      2       0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06
 
-      4       0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   3.815E-06   0.000E+00  -3.815E-06   0.000E+00   0.000E+00
+      4       0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00
 
-      6       1.526E-05   3.815E-06   0.000E+00   0.000E+00   0.000E+00   3.815E-06  -1.526E-05   0.000E+00   0.000E+00   0.000E+00
+      6       1.526E-05   3.815E-06   0.000E+00   3.815E-06   0.000E+00   0.000E+00  -1.526E-05   0.000E+00   0.000E+00   0.000E+00
       7       0.000E+00   0.000E+00   1.526E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
       8       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06   1.526E-05   0.000E+00   0.000E+00   0.000E+00
-      9       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -1.526E-05   0.000E+00   0.000E+00   0.000E+00
+      9       0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00  -3.815E-06  -1.526E-05   0.000E+00   0.000E+00   0.000E+00
      10      -1.526E-05  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     11       0.000E+00   0.000E+00   1.526E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     11       0.000E+00   0.000E+00   1.526E-05   0.000E+00   0.000E+00   3.815E-06   0.000E+00  -3.815E-06   0.000E+00   0.000E+00
      12       0.000E+00   3.815E-06   0.000E+00  -3.815E-06   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
      13       0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   3.815E-06
-     14       0.000E+00   0.000E+00   3.052E-05   0.000E+00   3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     15       0.000E+00   3.815E-06   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     16       0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     17       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   3.052E-05   7.629E-06   3.052E-05   3.815E-06
-     18       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   3.815E-06   0.000E+00   3.815E-06
-     19       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.052E-05   0.000E+00  -3.052E-05  -3.815E-06
+     14       0.000E+00  -3.815E-06   0.000E+00   3.815E-06   3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     15       0.000E+00   3.815E-06   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   7.629E-06
+     16       0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00  -7.629E-06   0.000E+00   3.815E-06   0.000E+00   0.000E+00
+     17       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   3.052E-05   3.815E-06   3.052E-05   3.815E-06
+     18       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   3.815E-06
+     19       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.052E-05   0.000E+00  -3.052E-05   0.000E+00
      20       0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.052E-05   3.815E-06   0.000E+00   0.000E+00  -3.052E-05  -3.815E-06
-     21       0.000E+00   0.000E+00   3.052E-05   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     22       0.000E+00   0.000E+00  -3.052E-05  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06
-     23       3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00  -3.052E-05   0.000E+00
-     24       0.000E+00  -3.815E-06   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00  -3.815E-06
-     25       0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00  -3.815E-06   0.000E+00  -3.815E-06
-     26       3.052E-05   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00   3.052E-05   3.815E-06   3.052E-05   7.629E-06
+     21       0.000E+00   0.000E+00   3.052E-05  -3.815E-06   0.000E+00   3.815E-06   0.000E+00  -3.815E-06   0.000E+00   0.000E+00
+     22       0.000E+00   0.000E+00  -3.052E-05  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     23       3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00  -3.052E-05   0.000E+00
+     24       0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00  -3.815E-06
+     25       0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00  -3.815E-06   0.000E+00  -3.815E-06
+     26       3.052E-05   0.000E+00   0.000E+00   3.815E-06   0.000E+00  -7.629E-06   3.052E-05   3.815E-06   3.052E-05   7.629E-06
      27       0.000E+00   3.815E-06   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00  -7.629E-06   0.000E+00   0.000E+00
-     28       0.000E+00  -3.815E-06   0.000E+00   3.815E-06   0.000E+00   3.815E-06   0.000E+00  -7.629E-06  -3.052E-05   0.000E+00
-     29      -3.052E-05   0.000E+00   0.000E+00   0.000E+00  -3.052E-05   0.000E+00   3.052E-05   0.000E+00   0.000E+00   0.000E+00
-     30       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.052E-05   0.000E+00
-     31       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00  -7.629E-06
-
-     33       0.000E+00   0.000E+00  -3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.052E-05   0.000E+00
-     34      -3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     35       0.000E+00   0.000E+00  -3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -7.629E-06   0.000E+00   0.000E+00
-     36       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     37       0.000E+00   0.000E+00   0.000E+00   7.629E-06   3.052E-05   0.000E+00   3.052E-05   0.000E+00   0.000E+00  -7.629E-06
-     38       3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -7.629E-06   0.000E+00   0.000E+00
-     39       0.000E+00  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -7.629E-06
-     40       0.000E+00   0.000E+00  -6.104E-05   0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00   6.104E-05   7.629E-06
-     41       0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   7.629E-06
-     42       0.000E+00   7.629E-06   0.000E+00  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     43       0.000E+00   0.000E+00   6.104E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -7.629E-06   0.000E+00   0.000E+00
-     44       0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00  -7.629E-06
-     45       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -6.104E-05  -7.629E-06   6.104E-05   0.000E+00
-     46      -6.104E-05  -7.629E-06  -6.104E-05  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   7.629E-06
+     28       0.000E+00  -3.815E-06   0.000E+00   3.815E-06   0.000E+00   7.629E-06   0.000E+00   0.000E+00  -3.052E-05   0.000E+00
+     29      -3.052E-05  -7.629E-06   0.000E+00   0.000E+00  -3.052E-05   0.000E+00   3.052E-05   0.000E+00   0.000E+00   0.000E+00
+     30       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.052E-05  -7.629E-06
+     31       0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00  -7.629E-06
+     32       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     33       0.000E+00   0.000E+00  -3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.052E-05  -7.629E-06
+     34      -3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -7.629E-06   0.000E+00   0.000E+00
+     35       0.000E+00   0.000E+00  -3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     36       0.000E+00  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     37       0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.052E-05  -7.629E-06   3.052E-05   0.000E+00   0.000E+00  -7.629E-06
+     38       3.052E-05   0.000E+00   0.000E+00   7.629E-06   0.000E+00  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     39       0.000E+00  -7.629E-06   0.000E+00  -7.629E-06   0.000E+00   0.000E+00   0.000E+00  -7.629E-06   0.000E+00  -7.629E-06
+     40       0.000E+00   0.000E+00  -6.104E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   6.104E-05   0.000E+00
+     41       0.000E+00  -7.629E-06   0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   7.629E-06
+     42       0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00
+     43       0.000E+00  -7.629E-06   6.104E-05   7.629E-06   0.000E+00   0.000E+00   0.000E+00  -7.629E-06   0.000E+00   0.000E+00
+     44       0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   7.629E-06   0.000E+00   7.629E-06   0.000E+00  -7.629E-06
+     45       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   7.629E-06  -6.104E-05  -7.629E-06   6.104E-05   0.000E+00
+     46      -6.104E-05  -7.629E-06  -6.104E-05  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
      47       0.000E+00   0.000E+00   0.000E+00  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -7.629E-06
-     48       0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -6.104E-05   0.000E+00
-     49       6.104E-05   7.629E-06   0.000E+00  -7.629E-06   0.000E+00   0.000E+00   6.104E-05   7.629E-06   0.000E+00   0.000E+00
+     48       0.000E+00  -7.629E-06   0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00  -7.629E-06
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:DIFPIC    User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:DIFPIC    User:          Date_Time:                        
      Samp                        36                      37                      38                      39                      40
    Line
+     49       6.104E-05   7.629E-06   0.000E+00  -7.629E-06   0.000E+00   0.000E+00   6.104E-05   7.629E-06   0.000E+00   0.000E+00
      50       0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   7.629E-06   0.000E+00  -7.629E-06   0.000E+00   0.000E+00
 
    COMP     samples are interpreted as COMPLEX  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:DIFPIC    User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:DIFPIC    User:          Date_Time:                        
      Samp                        41                      42                      43                      44                      45
    Line
       1       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   1.526E-05   3.815E-06
       2       1.526E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -1.526E-05  -3.815E-06   1.526E-05   0.000E+00
       3       0.000E+00  -3.815E-06  -1.526E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06
-      4       0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-      5       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06
+
+      5       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00  -3.815E-06
       6       0.000E+00   0.000E+00   0.000E+00   0.000E+00  -1.526E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
       7       0.000E+00   3.815E-06  -1.526E-05   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00   1.526E-05   0.000E+00
       8      -1.526E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00  -1.526E-05  -3.815E-06
-      9       0.000E+00   0.000E+00  -1.526E-05   0.000E+00   0.000E+00   3.815E-06   1.526E-05   3.815E-06   0.000E+00   0.000E+00
-     10       0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00  -3.052E-05   0.000E+00  -3.052E-05  -3.815E-06
-     11       0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     12       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   3.815E-06   0.000E+00   0.000E+00
-     13       0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+      9       0.000E+00   0.000E+00  -1.526E-05   0.000E+00   0.000E+00   0.000E+00   1.526E-05   3.815E-06   0.000E+00   0.000E+00
+     10       0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00  -3.815E-06  -3.052E-05  -3.815E-06  -3.052E-05  -3.815E-06
+     11       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00  -3.815E-06   0.000E+00   0.000E+00
+     12       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     13       0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00  -3.815E-06
      14       3.052E-05   3.815E-06   0.000E+00  -3.815E-06   3.052E-05   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
      15       0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     16       3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -7.629E-06   0.000E+00   0.000E+00   3.052E-05   3.815E-06
+     16       3.052E-05   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.052E-05   3.815E-06
      17       0.000E+00   3.815E-06   0.000E+00   0.000E+00   3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06
-     18       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00  -3.815E-06
-     19       0.000E+00   0.000E+00   0.000E+00  -3.815E-06   3.052E-05   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     18       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06
+     19       0.000E+00  -7.629E-06   0.000E+00  -3.815E-06   3.052E-05   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
      20       0.000E+00   3.815E-06   0.000E+00   0.000E+00  -3.052E-05   0.000E+00   0.000E+00   0.000E+00   3.052E-05   3.815E-06
-     21       0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00  -3.815E-06   0.000E+00   0.000E+00  -3.052E-05  -7.629E-06
-     22       0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -7.629E-06
+     21       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00  -3.052E-05  -7.629E-06
+     22       0.000E+00   3.815E-06   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
      23      -3.052E-05   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   7.629E-06  -3.052E-05   0.000E+00
-     24       0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.052E-05   0.000E+00   0.000E+00   0.000E+00
-     25       0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.052E-05   0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00
-     26       0.000E+00   0.000E+00  -3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     24       0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.052E-05   0.000E+00   0.000E+00   7.629E-06
+     25       0.000E+00   0.000E+00   0.000E+00   7.629E-06  -3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     26       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -7.629E-06   0.000E+00   0.000E+00
      27       0.000E+00   0.000E+00   0.000E+00  -7.629E-06   0.000E+00   0.000E+00   0.000E+00  -7.629E-06  -3.052E-05  -7.629E-06
-     28       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   7.629E-06   0.000E+00   0.000E+00
-     29       0.000E+00   7.629E-06   0.000E+00   0.000E+00   3.052E-05   0.000E+00  -3.052E-05   0.000E+00  -3.052E-05   0.000E+00
-     30       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.052E-05   0.000E+00
-     31       0.000E+00   7.629E-06   0.000E+00  -7.629E-06   0.000E+00   0.000E+00   0.000E+00  -7.629E-06   0.000E+00   0.000E+00
-     32       0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00   3.052E-05   0.000E+00   0.000E+00  -7.629E-06
-     33       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.052E-05   0.000E+00   0.000E+00   0.000E+00
-     34       0.000E+00   0.000E+00   3.052E-05   0.000E+00  -3.052E-05   0.000E+00   0.000E+00   7.629E-06   0.000E+00   7.629E-06
-     35       0.000E+00  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     36      -3.052E-05  -7.629E-06   0.000E+00   0.000E+00   0.000E+00  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   7.629E-06
-     37       0.000E+00   7.629E-06   6.104E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     38       0.000E+00  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00   7.629E-06
-     39       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     40       0.000E+00   0.000E+00  -6.104E-05  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00
-     41       0.000E+00   7.629E-06   0.000E+00  -7.629E-06   0.000E+00  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   7.629E-06
+     28       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00  -7.629E-06
+     29       0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.052E-05   0.000E+00  -3.052E-05   0.000E+00  -3.052E-05   0.000E+00
+     30       0.000E+00  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.052E-05   0.000E+00
+     31       0.000E+00   7.629E-06   0.000E+00  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     32       0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00   3.052E-05  -7.629E-06   0.000E+00   0.000E+00
+     33       0.000E+00  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.052E-05   0.000E+00   0.000E+00   0.000E+00
+     34       0.000E+00   0.000E+00   3.052E-05   0.000E+00  -3.052E-05  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   7.629E-06
+     35       0.000E+00  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   7.629E-06
+     36      -3.052E-05  -7.629E-06   0.000E+00   0.000E+00   0.000E+00  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     37       0.000E+00   7.629E-06   6.104E-05   0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00   7.629E-06
+     38       0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   7.629E-06   0.000E+00   7.629E-06   0.000E+00   0.000E+00
+     39       0.000E+00  -7.629E-06   0.000E+00  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   7.629E-06
+     40       0.000E+00   0.000E+00  -6.104E-05  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   7.629E-06
+     41       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   7.629E-06
+     42       0.000E+00  -7.629E-06   0.000E+00  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     43       0.000E+00  -7.629E-06  -6.104E-05   0.000E+00   0.000E+00  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     44       0.000E+00   7.629E-06   0.000E+00   7.629E-06   0.000E+00   0.000E+00   6.104E-05   0.000E+00   0.000E+00  -7.629E-06
+     45       6.104E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00  -7.629E-06
+     46       0.000E+00  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00  -7.629E-06   0.000E+00  -7.629E-06
 
-     43       0.000E+00  -7.629E-06  -6.104E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     44       0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   6.104E-05   7.629E-06   0.000E+00  -7.629E-06
-     45       6.104E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   7.629E-06
-     46       0.000E+00  -7.629E-06   0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00  -7.629E-06
-
-     48       0.000E+00   0.000E+00   0.000E+00   7.629E-06  -6.104E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   7.629E-06
+     48       0.000E+00   0.000E+00   0.000E+00   7.629E-06  -6.104E-05   7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:DIFPIC    User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:DIFPIC    User:          Date_Time:                        
      Samp                        41                      42                      43                      44                      45
    Line
-     49       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   7.629E-06
-     50       6.104E-05   7.629E-06  -6.104E-05   7.629E-06   0.000E+00  -7.629E-06   0.000E+00   0.000E+00  -6.104E-05   0.000E+00
+     49       0.000E+00  -7.629E-06   0.000E+00   0.000E+00   0.000E+00  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   7.629E-06
+     50       6.104E-05   7.629E-06  -6.104E-05  -7.629E-06   0.000E+00   7.629E-06   0.000E+00   7.629E-06  -6.104E-05   0.000E+00
 
    COMP     samples are interpreted as COMPLEX  data
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:DIFPIC    User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:DIFPIC    User:          Date_Time:                        
      Samp                        46                      47                      48                      49                      50
    Line
 
       2       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   1.526E-05   0.000E+00
       3       0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00
       4       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00
-      5      -1.526E-05   0.000E+00   0.000E+00   0.000E+00   1.526E-05   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00
-      6       0.000E+00   0.000E+00   0.000E+00   0.000E+00  -1.526E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-      7       1.526E-05   0.000E+00  -1.526E-05  -3.815E-06   0.000E+00   0.000E+00   1.526E-05   3.815E-06   0.000E+00  -3.815E-06
-      8       0.000E+00   0.000E+00   1.526E-05   0.000E+00  -3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-      9       0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.052E-05   0.000E+00   3.052E-05   0.000E+00
-     10       0.000E+00   0.000E+00  -3.052E-05  -3.815E-06   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00  -3.815E-06
-     11       3.052E-05   3.815E-06   0.000E+00   0.000E+00  -3.052E-05  -3.815E-06  -3.052E-05   0.000E+00   3.052E-05   3.815E-06
-     12       0.000E+00  -3.815E-06   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00
+      5      -1.526E-05   0.000E+00   0.000E+00   0.000E+00   1.526E-05   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   3.815E-06
+      6       0.000E+00   0.000E+00   0.000E+00  -3.815E-06  -1.526E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+      7       1.526E-05   0.000E+00  -1.526E-05  -3.815E-06   0.000E+00  -3.815E-06   1.526E-05   3.815E-06   0.000E+00  -3.815E-06
+      8       0.000E+00   0.000E+00   1.526E-05  -3.815E-06  -3.052E-05   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   0.000E+00
+      9       0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   3.815E-06   3.052E-05   0.000E+00   3.052E-05   0.000E+00
+     10       0.000E+00   0.000E+00  -3.052E-05   3.815E-06   0.000E+00   3.815E-06   0.000E+00  -3.815E-06   0.000E+00  -3.815E-06
+     11       3.052E-05   3.815E-06   0.000E+00  -3.815E-06   0.000E+00  -7.629E-06  -3.052E-05   0.000E+00   3.052E-05   3.815E-06
+     12       0.000E+00  -3.815E-06   0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00
      13       0.000E+00  -3.815E-06   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06
-
-     15       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   3.815E-06   0.000E+00   3.815E-06
-     16       0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   7.629E-06   0.000E+00   0.000E+00
-     17       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00
-     18       0.000E+00   3.815E-06   0.000E+00   0.000E+00  -3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     19       0.000E+00   3.815E-06   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     20       0.000E+00   0.000E+00  -3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     14       0.000E+00   0.000E+00   0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   7.629E-06
+     15       0.000E+00  -3.815E-06   0.000E+00   0.000E+00   0.000E+00  -3.815E-06   0.000E+00   3.815E-06   0.000E+00   3.815E-06
+     16       0.000E+00   3.815E-06   0.000E+00   7.629E-06   0.000E+00   3.815E-06   0.000E+00   7.629E-06   0.000E+00   7.629E-06
+     17       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   3.815E-06   0.000E+00  -7.629E-06
+     18       0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     19       0.000E+00   3.815E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   7.629E-06
+     20       0.000E+00  -7.629E-06  -3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
      21       0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.052E-05   0.000E+00   0.000E+00   0.000E+00  -3.052E-05   0.000E+00
      22       0.000E+00  -7.629E-06   0.000E+00   0.000E+00  -3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     23       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -7.629E-06   0.000E+00   0.000E+00
-     24       0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00
+     23       0.000E+00  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     24       0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
      25       0.000E+00  -7.629E-06   3.052E-05   7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     26       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -7.629E-06   3.052E-05   0.000E+00
-     27       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     28       0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.052E-05   0.000E+00   3.052E-05   0.000E+00   0.000E+00   0.000E+00
+     26       0.000E+00  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00  -7.629E-06   3.052E-05   0.000E+00
+     27       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   7.629E-06   0.000E+00   0.000E+00
+     28       0.000E+00   0.000E+00   0.000E+00   7.629E-06   3.052E-05  -7.629E-06   3.052E-05   0.000E+00   0.000E+00   0.000E+00
      29       0.000E+00   0.000E+00   0.000E+00   0.000E+00  -3.052E-05  -7.629E-06   0.000E+00  -7.629E-06   0.000E+00   0.000E+00
-     30       0.000E+00   7.629E-06   3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     31       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00  -7.629E-06
-     32       0.000E+00   0.000E+00   0.000E+00   7.629E-06   3.052E-05   0.000E+00  -3.052E-05   0.000E+00   0.000E+00  -7.629E-06
-     33       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -7.629E-06   0.000E+00   0.000E+00
-     34      -3.052E-05   0.000E+00   0.000E+00  -7.629E-06   6.104E-05   7.629E-06   0.000E+00  -7.629E-06   0.000E+00   0.000E+00
-     35       0.000E+00   0.000E+00   0.000E+00  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     36       0.000E+00   0.000E+00   0.000E+00  -7.629E-06   0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
-     37       0.000E+00   0.000E+00   0.000E+00  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -7.629E-06
+     30       0.000E+00   7.629E-06   3.052E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -7.629E-06   0.000E+00   7.629E-06
+     31       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -7.629E-06
+     32       0.000E+00   0.000E+00   0.000E+00   0.000E+00   3.052E-05   0.000E+00  -3.052E-05  -7.629E-06   0.000E+00  -7.629E-06
+     33       0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -7.629E-06   0.000E+00   0.000E+00
+     34      -3.052E-05  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   1.526E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     35       0.000E+00   0.000E+00   0.000E+00  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -7.629E-06
+     36       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -7.629E-06   0.000E+00   0.000E+00
+     37       0.000E+00  -7.629E-06   0.000E+00  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -7.629E-06
      38       6.104E-05   7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   7.629E-06
      39       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -7.629E-06
-     40       0.000E+00  -7.629E-06   6.104E-05   0.000E+00   0.000E+00  -7.629E-06   0.000E+00  -7.629E-06   0.000E+00   0.000E+00
-     41       0.000E+00  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -7.629E-06   0.000E+00   0.000E+00
+     40       0.000E+00   0.000E+00   6.104E-05   0.000E+00   0.000E+00  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00
+     41       0.000E+00  -7.629E-06   0.000E+00  -7.629E-06   0.000E+00   0.000E+00   0.000E+00  -7.629E-06   0.000E+00   0.000E+00
      42       0.000E+00  -7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00   0.000E+00
-     43      -6.104E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00  -7.629E-06   0.000E+00   0.000E+00
-     44       0.000E+00  -7.629E-06   0.000E+00  -7.629E-06  -6.104E-05   0.000E+00   0.000E+00   0.000E+00   6.104E-05   7.629E-06
-     45      -6.104E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   6.104E-05   7.629E-06   0.000E+00   0.000E+00
-     46       0.000E+00   0.000E+00   6.104E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   6.104E-05   0.000E+00
-     47       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   6.104E-05   0.000E+00   0.000E+00  -7.629E-06
-     48       6.104E-05   7.629E-06   0.000E+00  -7.629E-06   6.104E-05   7.629E-06   0.000E+00  -7.629E-06   0.000E+00   0.000E+00
+     43      -6.104E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00  -7.629E-06   0.000E+00   1.526E-05
+     44       0.000E+00  -7.629E-06   0.000E+00   0.000E+00  -6.104E-05   0.000E+00   0.000E+00  -7.629E-06   6.104E-05   0.000E+00
+     45      -6.104E-05   7.629E-06   0.000E+00   7.629E-06   0.000E+00   0.000E+00   6.104E-05   7.629E-06   0.000E+00   0.000E+00
+     46       0.000E+00  -7.629E-06   6.104E-05   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   6.104E-05   0.000E+00
+     47       0.000E+00   0.000E+00   0.000E+00  -7.629E-06   0.000E+00   0.000E+00   6.104E-05   0.000E+00   0.000E+00   0.000E+00
+     48       6.104E-05   7.629E-06   0.000E+00  -7.629E-06   6.104E-05   0.000E+00   0.000E+00  -7.629E-06   0.000E+00   0.000E+00
 
 
- Task:GEN       User:wlb       Date_Time:Wed Dec 17 13:32:00 2014
- Task:DIFPIC    User:wlb       Date_Time:Wed Dec 17 13:32:01 2014
+ Task:GEN       User:          Date_Time:                        
+ Task:DIFPIC    User:          Date_Time:                        
      Samp                        46                      47                      48                      49                      50
    Line
-     49       0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   7.629E-06   0.000E+00  -7.629E-06
-     50       0.000E+00   0.000E+00   0.000E+00   0.000E+00  -6.104E-05  -7.629E-06  -6.104E-05   0.000E+00   0.000E+00   0.000E+00
+     49       0.000E+00   7.629E-06   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -7.629E-06   0.000E+00  -7.629E-06
+     50       0.000E+00   0.000E+00   0.000E+00  -7.629E-06  -6.104E-05  -7.629E-06  -6.104E-05   0.000E+00   0.000E+00  -7.629E-06
 let $echo="no"

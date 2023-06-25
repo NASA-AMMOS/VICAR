@@ -2,12 +2,15 @@
    to do quick sorting */
 #define M          7 
 #define NSTACK  1000 
-qksort_(array1,array2,n)
+
+void qksort(int arr1[], int arr2[], int n);
+
+void qksort_(array1,array2,n)
      int array1[],array2[],*n;
 { 
      qksort(array1,array2,*n);
 }
-qksort(arr1,arr2,n)
+void qksort(arr1,arr2,n)
      int n;
      int arr1[],arr2[];
 {

@@ -1,0 +1,188 @@
+process help=*
+PARM INP TYPE=STRING COUNT=1
+PARM OUT TYPE=STRING COUNT=1
+PARM MASK_FIT TYPE=STRING COUNT=0:1
+PARM BAND TYPE=INTEGER COUNT=1 VALID=(0:100) DEFAULT=0
+PARM DEGREE TYPE=INTEGER COUNT=1 VALID=(0:50) DEFAULT=2
+PARM SKIP TYPE=INTEGER COUNT=1 DEFAULT=10
+PARM NOVAL TYPE=REAL COUNT=1 DEFAULT=0.0
+PARM ITER TYPE=INTEGER COUNT=1 DEFAULT=1
+PARM SCALING TYPE=REAL COUNT=1 DEFAULT=1.0
+PARM FULL TYPE=KEYWORD COUNT=1 VALID=("FULL_PROCESS", "SURFACE_ONLY") DEFAULT="FULL_PROCESS"
+PARM FILL_SURFACE TYPE=KEYWORD COUNT=1 VALID=("NO_FILL", "FILL") DEFAULT="NO_FILL"
+PARM OMP_ON TYPE=KEYWORD VALID=(OMP_ON,OMP_OFF) DEFAULT=OMP_ON
+END-PROC
+
+.TITLE
+VICAR program detrend
+
+.HELP
+PURPOSE:
+Fit a polynomial surface to a 2D raster (i.e., an image usually) and remove the
+fitted surface from the image. This is used to "detrend" an image. A typical 
+application is to remove pixel offsets and long wavelength distortion from a
+disparity maps when simple f2 math doesn't do it.
+
+Using FULL param it is possible to only return the fitted surface and not 
+substract it from the image.
+
+Because spurious measurements could bias the fit, an iterative process is 
+available to minimize outliers effects. See more details in the description
+of ITER and SCALING.
+
+The polynomial surface fit uses a function of this form:
+   Z = f(X,Y) =  k0 + k1*X + k2*X^2 + ... +km*Y + kn*XY + ko*X^2Y +...
+with f(X,Y) being the surface elevation value (Z) of the points and (X, Y) 
+the planar coordinates of the points.
+The degree of the polynomial function is defined with DEGREE and represents
+the  maximum degree of X and Y combined:
+DEGREE=0: f(X,Y) = k0    i.e., an offset 
+DEGREE=1: f(X,Y) = k0 + k1*X + k2*Y    i.e., a plane
+DEGREE=2: f(X,Y) = k0 + k1*X + k2*X^2 + k3*Y + k4*X*Y + k5*Y^2   i.e., a 2nd
+          order polynomial
+DEGREE=3: f(X,Y) = k0 + k1*X + k2*X^2 + k3*X^3 + k4*Y + k5*X*Y + k6*X^2*Y
+                   + k7*Y^2 + k8*X*Y^2 + k9*Y^3  i.e., a 3rd order polynomial
+// etc...
+
+
+EXECUTION:
+detrend inp=disp.img out=detrended.img 
+
+To remove a ramp (a plane) from the file:
+detrend inp=disp.img out=detrended.img DEGREE=1 
+
+HISTORY:
+01-17-23  Initial version - F. Ayoub 
+COGNIZANT PROGRAMMER:  F. Ayoub
+
+.LEVEL1
+.VARI INP
+Input image
+
+.VARI OUT
+Output image
+
+.VARI MASK_FIT
+Output fit mask
+
+.VARI BAND
+Band to detrend
+
+.VARI DEGREE
+Polynomial fit degree
+
+.VARI SKIP
+How many pixel to skip 
+between input
+
+.VARI NOVAL
+Pixel value to ignore
+
+.VARI ITER
+Number of surface fit
+iterations
+
+.VARI SCALING
+scaling factor for
+outliers detection
+
+.VARI FULL
+Only compute the
+surface. No correction
+
+.VARI FILL_SURFACE
+Leave or not hole in the
+computed surface
+
+.VARI OMP_ON
+Turns on or off parallel
+processing (default: on)
+
+.LEVEL2
+.VARI INP
+input image. Can be multi-band.
+
+.VARI OUT
+Output image. Name of the output image, that is, the input image for which a 
+polynomial surface has been fitted on and removed.
+
+.VARI MASK_FIT
+Output a mask file that will identify the pixels that satisfy the final (last 
+iteration) fit within SCALING tolerance. Note that due to the iterative process,
+some pixels that might have been discarded during early iterations might satisfy
+the final fit tolerance, depending on where the fit converges to. The output 
+file will reflect which INP pixels satisfy the final fit tolerance, and not 
+which pixels were used to define the last iteration fit.
+
+.VARI BAND
+Band of input image to process. 1-based.
+If set to 0, all bands are processed and the output image will have the same
+number of bands as the input image.
+
+.VARI DEGREE
+Maximum degree number of the polynomial, combining x and y degree. For instance,
+if DEGREE = 2, then the polynomial surface will have this form:
+f(x,y) = k0 + k1*X + k2*X^2 + k3*Y + k4*XY + k5*Y^2
+Default is 2.
+
+.VARI SKIP
+When doing the fit, if all the pixels of the image are taken to define the 
+coefficients of the polynomial surface, this can lead to long processing time
+and possibly crash. This is due to the involvment of large matrix construction
+and inversion. Instead of taking all pixels of the image, the image is 
+subset by taking every other SKIP pixels. Default is 10, that is, only every 
+other 10 pixels in line and sample direction will be used for the fit.
+However, once the coefficients are defined, the correction is applied to all
+pixels.
+
+.VARI NOVAL
+All pixels which have a value equals to NOVAL are not considered. They are not
+part of the surface definition, and their values are left untouched in the 
+output image. Default is 0.0, which is the sort-of-assumed missing value in
+vicar images.
+
+.VARI ITER
+Number of iterations the surface fit is going to be done, for each band.
+Default is 1, which corresponds to only one fit done (no filtering of ouliers
+as explained below).
+Some of the pixels which are selected for defining the surface fit could be
+outliers, which could bias the surface. In order to mitigate the bias, the 
+fitting process can be iterated a number of times, with outliers being removed 
+between iterations. The process is as follow:
+- An initial list-of-pixels is selected based on SKIP.
+- do ITER time:
+-- fit a surface using the list-of-pixels
+-- get the std dev of misfit, i.e., the std deviation of all pixel residual 
+   between the pixel value and the fitted surface value at that pixel
+-- remove from list-of-pixels the ones whose mis-fit is greater than std dev of 
+   misfit scaled by SCALING.
+- end do
+It is important that ITER should not be large, because, once the outliers are 
+removed (in the 1-2 first iterations usually), this approach will start 
+discarding valid pixels. Usually ITER=2 gives reasonable results if an iterative
+process is needed.
+
+.VARI SCALING
+(See ITER for context) Scaling factor to apply to the std deviation of residual. 
+The larger the scaling, the larger the misfit has to be to remove a pixel from
+the list. In pseudo-pseudo-code we have:
+threshold = stdevMisfit * SCALING
+for all pixels, if misfit of pixel > threshold --> remove pixel from list
+
+.VARI FULL
+If set to SURFACE_ONLY, the program will output the computed polynomial surface
+but won't correct the INP. If set to FULL_PROCESS, the program will compute the
+polynomial suface fit and substract it from the input images, only where image
+values are valid (see NOVAL). 
+
+.VARI FILL_SURFACE
+This parameters has effect only when SURFACE_ONLY is activated. By default 
+(NO_FILL), the computed best-fitted surface will keep missing values as such.
+If FILL is set, then the computed best-fitting surface is computed for every
+pixel. In that case.
+
+.VARI OMP_ON
+Turns on or off parallel processing.  The default is on. Note that this program
+uses standard OpenMP (which is built in to the gcc/g++ compilers), so further 
+details can be found in the OpenMP documentation.
+

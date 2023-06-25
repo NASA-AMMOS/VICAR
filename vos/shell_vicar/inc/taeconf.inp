@@ -182,7 +182,7 @@ now be allocated outside the IVP pool--see memtab in tm.c.
 #define	REG_COUNT	10	/* COUNT for $IR and $SR globals	*/
 #define SMALLEST_TAEINT 0x80000000	/* smallest TAEINT		*/
 #define	SUBCMDSIZ	15	/* max number of chars in a subcommand	*/
-#define	STRINGSIZ	132	/* max number of chars in string	*/
+#define	STRINGSIZ	250	/* max number of chars in string	*/
 #define LABELSIZ	50	/* max number chars in statement label	*/
 
 /*  NOTE: Some of the  following SW_ definitions are not used under UNIX.

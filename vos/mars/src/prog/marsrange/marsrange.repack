@@ -1,0 +1,5 @@
+$ vpack marsrange.com -mixed -
+	-s marsrange.cc -
+	-i marsrange.imake -
+	-p marsrange.pdf
+$ Exit

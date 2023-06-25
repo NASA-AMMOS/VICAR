@@ -1,0 +1,7 @@
+$ vpack mer_lbl_routines.com -mixed -
+	-s mer_lbl_observation_request.c mer_lbl_product_request.c -
+	   mer_lbl_coordinate.c mer_lbl_articulation.c -
+	   mer_lbl_derived_geometry.c -
+	-i mer_lbl_routines.imake -
+	-t tst_mer_lbl_routines.c tst_mer_lbl_routines.imake
+$ Exit

@@ -1,6 +1,8 @@
 procedure
 refgbl $echo
 body
+enable-log
+
 write ""
 write "Results will vary depending on what system you are using"
 write ""
@@ -14,4 +16,6 @@ write ""
 let _onfail="continue"
 let $echo="yes"
 tget_seconds
+
+disable-log
 end-proc

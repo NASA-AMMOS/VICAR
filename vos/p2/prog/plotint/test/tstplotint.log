@@ -3,6 +3,7 @@ TEST 1
 
   ibis-gen out=demo.int nc=4 nr=100
 Beginning VICAR task ibis
+IBIS version 2019-07-31
   mf3 demo.int function=("c1=@index"$"c4=1")
 Beginning VICAR task mf3
 mf3 version Wed Oct 07 2008
@@ -14,6 +15,7 @@ Beginning VICAR task mf3
 mf3 version Wed Oct 07 2008
   ibis-list demo.int sr=1 nr=10
 Beginning VICAR task ibis
+IBIS version 2019-07-31
  
 Number of Rows:100  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -34,8 +36,10 @@ Rows: 1:10
        10.00      -54.40     -105.80        1.00
   ibis-gen out=xxA nc=4 nr=100
 Beginning VICAR task ibis
+IBIS version 2019-07-31
   ibis-gen out=xxB nc=4 nr=100
 Beginning VICAR task ibis
+IBIS version 2019-07-31
   mf3 xxA function=("c1=@index"$"c4=1")
 Beginning VICAR task mf3
 mf3 version Wed Oct 07 2008
@@ -53,8 +57,10 @@ Beginning VICAR task mf3
 mf3 version Wed Oct 07 2008
   ibis-cat (xxA,xxB) mult.int
 Beginning VICAR task ibis
+IBIS version 2019-07-31
   ibis-list mult.int sr=1 nr=10
 Beginning VICAR task ibis
+IBIS version 2019-07-31
  
 Number of Rows:200  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -75,6 +81,7 @@ Rows: 1:10
        10.00      -54.40        0.00        1.00
   ibis-list mult.int sr=101 nr=10
 Beginning VICAR task ibis
+IBIS version 2019-07-31
  
 Number of Rows:200  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -155,6 +162,7 @@ TEST 6 -  3 functions - small labels
 
    ibis-gen out=new.int nc=5 nr=100
 Beginning VICAR task ibis
+IBIS version 2019-07-31
    mf3 new.int function=("c1=@index"$"c5=1")
 Beginning VICAR task mf3
 mf3 version Wed Oct 07 2008
@@ -164,6 +172,7 @@ Beginning VICAR task mf3
 mf3 version Wed Oct 07 2008
    ibis-list new.int
 Beginning VICAR task ibis
+IBIS version 2019-07-31
  
 Number of Rows:100  Number of Columns: 5       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE

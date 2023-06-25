@@ -3,5 +3,9 @@ refgbl $echo
 body
 let _onfail="continue"
 let $echo="yes"
+enable-log
+
 tccase
+
+disable-log
 end-proc

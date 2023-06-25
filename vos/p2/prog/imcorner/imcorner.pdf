@@ -1,0 +1,194 @@
+PROCESS    HELP=*
+LOCAL DUMINT  TYPE=INTEGER
+LOCAL DUMREAL TYPE=REAL
+PARM INP      TYPE=(STRING,99) COUNT=(1:2)
+PARM THRESH   TYPE=INT COUNT=1 DEFAULT=0
+PARM INSIDE   TYPE=INT COUNT=1 DEFAULT=0
+parm line1    type=name default="DUMREAL"
+parm samp1    type=name default="DUMREAL"
+parm line2    type=name default="DUMREAL"
+parm samp2    type=name default="DUMREAL"
+parm line3    type=name default="DUMREAL"
+parm samp3    type=name default="DUMREAL"
+parm line4    type=name default="DUMREAL"
+parm samp4    type=name default="DUMREAL"
+parm bound2_1 type=name default="DUMINT"
+parm sldat    type=name default="DUMINT"
+parm ssdat    type=name default="DUMINT"
+parm nldat    type=name default="DUMINT"
+parm nsdat    type=name default="DUMINT"
+PARM CORRFOOT TYPE=KEYWORD COUNT=(0:1) VALID=("corrfoot") DEFAULT=--
+END-PROC
+
+END-PROC
+.TITLE
+VICAR/IBIS Program  imcorner
+.HELP     
+PURPOSE
+
+     IMCORNER finds the corners of data in an image and returns
+     the (line,sample) coordinates as TAE TCL variables.  These
+     can then be used in gengrid2 to generate a grid of points
+     for program PICMTCH4/5.  Data in an image is defined as values 
+     greater than a user-specified threshold.
+     
+     Additionally, if a second image is given, the corners of
+     the intersection of data will be given.  For this option,
+     the images must both have GeoTIFF labels.  The data are
+     aligned by these geographic coordinates instead of by image
+     line and sample.  This works nicely with the GeoTIFF label
+     option in PICMTCH4/5.  There is an output parameter that can
+     tell you if the first input goes outside the data area of
+     the second input.  THIS OPTION PRESENTLY INOPERATIVE!!!!!
+     
+     The program also outputs the bounding box of the first image.
+     The second image does not play a role in this calculation.
+     If the corner points algorithm produced a weird result, then
+     the bounding box data edges are put into the corner point
+     output.
+     
+     The option corrfoot, if "y", calculates a maximal footprint for
+     correlation and puts the coordinates into the bounding box
+     output variables.
+
+.PAGE
+TAE COMMAND LINE FORMAT
+
+     imcorner INP=(A,B) THRESH=N line1=l1 samp1=s1 line2=l2 +
+              samp2=s2 line3=l3 samp3=s3 line4=l4 samp4=s4
+
+     where
+
+     A                   is an image containing data usually 
+                         with "gores", that is, null edges
+     B                   is an image that geographically overlays A
+     N                   is the integer value that defines 
+                         gores in the image A.  Values less
+                         than or equal N is part of a gore.
+     l1                  is a TAE TCL variable to receive the 
+                         real value of the line number of the
+                         upper left data point
+     s1                  is a TAE TCL variable to receive the 
+                         real value of the sample number of the
+                         upper left data point
+     l2,s2               ditto upper right
+     l3,s3               ditto lower left
+     l4,s4               ditto lower right
+.PAGE
+OPERATION
+     IMCORNER calculates the point at the middle of the image.  Then it
+     reads the lines of the image and finds all of the first and last
+     points of data in each line and puts them on a candidate list.  The
+     point that is furthest from the center point becomes corner point
+     number one.  The point on the candidate list that is furthest from
+     point one is corner point number two.  The point that has the highest
+     sum of squares of distance from those points is corner point number
+     three.  The fourth is the point that has the highest sum of areas of
+     triangles with all pairs of the other three points.
+     
+     If a second input is given, the same read operation is performed on
+     it.  Then the four points are converted to a geographic coordinate
+     and then back to (line,sample) in the first image.  A quadrilateral
+     is formed, and the first image process then requires that the
+     corner points also be in this quadrilateral.
+     
+     The program actually skips through the lines of the inputs by
+     the square root of (input number of lines).  Then the four best
+     points are searched more closely by single lines.  This is a 
+     speedup for large images.
+     
+     IMCORNER also calculates the bounding box of the image for output
+     to TAE TCL parameters.
+     
+RESTRICTIONS
+     The mappings must be consistent (e.g. both UTM) but they can vary
+     in offset, scale, and rotation.
+TIMING
+
+     The program reads the square root of the number of lines times 
+     roughly two.  See the algorithm section above.  So it is faster
+     than a simple read of the image.
+     
+WRITTEN BY:                   Al Zobrist         09 SEP 02
+COGNIZANT PROGRAMMER:         Al Zobrist
+
+REVISIONS
+  2003-01-31 Al Zobrist - Line skipping speedup, and quadrilateral algorithm for 2d input.
+  2004-08-11 Al Zobrist - More params for bounding quadrilateral.
+  2004-11-29 Al Zobrist - New algorithm for finding four corner points.
+  2008-01-11 Walt Bunch - Switched to USES_ANSI_C AND LIB_CARTO; misc cleanup  
+  2015-11-05 Walt Bunch - Migrated to MIPL
+  2019-09-05 Walt Bunch - IDS-7922 - Initialized some variables; cleaned up -Wall warnings
+  2021-05-19 Walt Bunch - IDS-8889 - Incorporated M. Smyth's fix from AFIDS version
+
+.PAGE
+.LEVEL1
+.VARIABLE INP
+one or (optionally two) images
+containing data with "gores"
+.VARIABLE THRESH
+Values less or equal to this
+are gores in the primary image
+.VARIABLE INSIDE
+returns points this distance
+inside the corners, useful for
+picmtch4 correlation window
+.variable line1
+TAE TCL variable to receive the 
+real value of the line number
+of the upper left data point
+.variable samp1
+TAE TCL variable to receive the 
+real value of the sample number
+of the upper left data point
+.variable line2
+TAE TCL variable to receive the 
+real value of the line number
+of the upper right data point
+.variable samp2
+TAE TCL variable to receive the 
+real value of the sample num-
+ber of the upper right data point
+.variable line3
+TAE TCL variable to receive the 
+real value of the line number
+of the lower left data point
+.variable samp3
+TAE TCL variable to receive the 
+real value of the sample numb-
+er of the lower left data point
+.variable line4
+TAE TCL variable to receive the 
+real value of the line number
+of the lower right data point
+.variable bound2_1
+TAE TCL variable to receive:
+0 - if input 2 within input 1
+1 - if input 2 exceeds input 1
+.variable samp4
+TAE TCL variable to receive the 
+real value of the sample numb-
+er of the lower right data point
+.variable sldat
+sl of bounding box for data
+.variable ssdat
+ss of bounding box for data
+.variable nldat
+nl of bounding box for data
+.variable nsdat
+ns of bounding box for data
+.variable corrfoot
+put a max square of data for
+correlation in place of the
+bounding box variables
+.LEVEL2
+.variable line1
+These variables are in the same order as the input order for
+routine GENGRID2.
+
+They do not use the & prefix in a TCL proc.
+.variable bound2_1
+The second input is represented by a quadrilateral determined by
+cornerpoints.  This variable is set to one if any of the first
+input data points are outside of the second input quadrilateral.
+.END

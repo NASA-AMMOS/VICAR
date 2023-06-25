@@ -1,0 +1,5 @@
+$ vpack marsmap.com -mixed -
+	-s marsmap.cc -
+	-i marsmap.imake -
+	-p marsmap.pdf
+$ Exit

@@ -1,0 +1,13 @@
+#define SUBROUTINE mars_tiepoints
+
+#define MODULE_LIST mars_load_tiepoints.cc mars_save_tiepoints.cc \
+ mars_print_tiepoint_list.cc mars_edit_tiepoint.cc mars_remove_bad_points.cc \
+ mars_edit_tiepoints.cc mars_save_overlaps.cc mars_load_overlaps.cc
+
+#define MARS_SUBLIB
+
+#define USES_C_PLUS_PLUS
+
+#define LIB_P2SUB
+
+#define LIB_XERCES

@@ -1,0 +1,6 @@
+$ vpack mpl_lbl_routines.com -
+	-s mpl_lbl_command.c mpl_lbl_derived_geometry.c -
+	   mpl_lbl_identification.c mpl_lbl_instrument_state.c -
+	-i mpl_lbl_routines.imake -
+	-t tst_mpl_lbl_routines.c tst_mpl_lbl_routines.imake
+$ Exit

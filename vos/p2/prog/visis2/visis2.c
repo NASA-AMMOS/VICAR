@@ -243,9 +243,7 @@ TBD:
 * 23- 9-1989   N/A                          - Added MINIMUM and MAXIMUM macros
 ******************************************************************************
 */
-
 #include <stdlib.h>
-
 /*
  *=============================================================================
  *	Definitions
@@ -428,7 +426,6 @@ typedef	struct
  *
  *=============================================================================
  */
-
 typedef	struct
 {
   UWORD			year;		/* YEAR 		     */
@@ -478,6 +475,7 @@ static	char	*tlm_mode[2]  = { "RT", "PB"};
 #include <time.h>
 #include <ctype.h>
 #include "vicmain_c"                                    /* Vicar */
+#include "zmabend.h"
 
 /*	ERROR HANDLING MACROS	     */
 #define return_if_error(A)	zvsignal(A,vstat,0);	if(vstat<=0) return
@@ -732,7 +730,15 @@ char bp_type[11];	/* backplane data type */
 char verdat[11];		/* VERSION_DATE */
 double atof();
 
+void verify_input_files();
+
 #define FUNCTION		/* delimit modules */
+
+void FUNCTION write_PDS_line(char buf[],char type,char labelitem[],void *value,int number,int prec);
+void FUNCTION write_PDS_aline(char buf[],char type,char labelitem[],void *value, int number);
+void FUNCTION fill_if_error(char string[], char type[]);
+void FUNCTION write_object(int dir,int nlrecs, int nhrecs, int nrecs);
+void FUNCTION write_PDS_cline( char buf[], char item[], char* value, int num, int slen);
 
 /***************************************************************************/
 void main44()
@@ -767,12 +773,12 @@ FUNCTION byte_nibble(bbuf,nbuf,length)
   int samp;
 
   for( samp=0; samp<(*length)/2; samp++ )
-    nbuf[samp] = bbuf[samp]&&240 + (bbuf[samp+1]&&240)>>4;
+    nbuf[samp] = bbuf[samp]&240 + ((bbuf[samp+1]&240)>>4);
 }
 
 
 /****************************************************************************/
-FUNCTION create_PDSlabel(nrecs,nlabrecs,nhistrecs,inputfiles) 
+void FUNCTION create_PDSlabel(nrecs,nlabrecs,nhistrecs,inputfiles) 
 /*
  * Create PDS label for NIMS cube file.
  */
@@ -2171,7 +2177,7 @@ FUNCTION create_PDSlabel(nrecs,nlabrecs,nhistrecs,inputfiles)
 
 
 /****************************************************************************/
-FUNCTION determine_band_bin_parms()
+void FUNCTION determine_band_bin_parms()
 /*
  * Determine the Band Bin parameters based on instrument mode
  */
@@ -2329,7 +2335,7 @@ FUNCTION determine_month( month, string )
 
 
 /****************************************************************************/
-FUNCTION fill_if_error(string,type)
+void FUNCTION fill_if_error(string,type)
 /*
  * Replace string with " " if status of VICAR zlget is < 1; check for
  * blank strings and substitute ' ' or " ".
@@ -3705,7 +3711,7 @@ FUNCTION process_parms(direction,inputfiles)
 
 
 /****************************************************************************/
-FUNCTION verify_input_files(count)	
+void FUNCTION verify_input_files(count)	
 /*
  * Purpose: read labels of VICAR input files 
  */
@@ -3745,7 +3751,7 @@ FUNCTION verify_input_files(count)
   while( vstat == 0 && x < numtasks )
     if(strncmp(&task[x * TASK_LEN],"VISIS2",5)==0 || strncmp(&task[x++ * TASK_LEN],"HIST2D",6)==0)
       vstat = 1;
-  if( vstat!=1 ) zmabend(" INVALID HISTOGRAM INPUT FILE","");
+  if( vstat!=1 ) zmabend(" INVALID HISTOGRAM INPUT FILE");
 
   zvclose(inunit[object],NULL);	/* End of histogram check    */
 
@@ -3761,7 +3767,7 @@ FUNCTION verify_input_files(count)
         specplots++;
         stat1 = 1;
         if( nb[object] != 1 )
-          zmabend(" INVALID SPECTRAL PLOT INPUT FILE","");
+          zmabend(" INVALID SPECTRAL PLOT INPUT FILE");
         zvclose(inunit[object],NULL);
       }    /* End of SPECPLOT check    */
   }
@@ -3811,7 +3817,7 @@ FUNCTION verify_input_files(count)
           stat2 = 1;
     }
     if(( vstat!=1 && stat1!=1 && stat2!=1 ) || nb[object] > 15 ) 
-      zmabend("INVALID SII CUBE FILE","");
+      zmabend("INVALID SII CUBE FILE");
     zvclose(inunit[object++],NULL);
   }
 }
@@ -4077,7 +4083,7 @@ FUNCTION VICARtoISIS(inputfiles)
 
 
 /****************************************************************************/
-FUNCTION write_object(dir,nlrecs,nhrecs,nrecs) 
+void FUNCTION write_object(dir,nlrecs,nhrecs,nrecs) 
 /*
  * Copies object files to NIMS cube file or appropriate 
  * VICAR files, depending on direction of processing requested.
@@ -4386,7 +4392,7 @@ FUNCTION write_object(dir,nlrecs,nhrecs,nrecs)
 
 
 /*****************************************************************************/
-FUNCTION write_PDS_aline(buf,type,labelitem,value,number)
+void FUNCTION write_PDS_aline(buf,type,labelitem,value,number)
 /*
  * Write PDS label line to a given buffer for all data types.
  * This differs from write_PDS_line in that value points to a
@@ -4468,7 +4474,7 @@ FUNCTION write_PDS_aline(buf,type,labelitem,value,number)
 
 
 /*****************************************************************************/
-FUNCTION write_PDS_cline( buf, item, value, num, slen)
+void FUNCTION write_PDS_cline( buf, item, value, num, slen)
 /*
  * Write PDS label line to a given buffer for character data.
  * Because of the lengths of some filenames, the buffers need
@@ -4516,7 +4522,7 @@ FUNCTION write_PDS_cline( buf, item, value, num, slen)
 
 
 /***************************************************************************/
-FUNCTION write_PDS_line(buf,type,labelitem,value,number,prec)
+void FUNCTION write_PDS_line(buf,type,labelitem,value,number,prec)
 /*
  * Write PDS label line to a given buffer for data types other than
  * character

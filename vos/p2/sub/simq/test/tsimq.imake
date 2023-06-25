@@ -5,6 +5,7 @@
 #define TEST
 
 #define MAIN_LANG_FORTRAN
+#define USES_FORTRAN
 #define USES_ANSI_C
 
 #define LIB_RTL

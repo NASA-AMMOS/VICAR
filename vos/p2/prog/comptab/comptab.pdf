@@ -1,0 +1,99 @@
+process help=*
+PARM INP TYPE=STRING COUNT=1:48
+PARM OUT TYPE=STRING
+PARM SIZE TYPE=INTEGER COUNT=4 DEFAULT=(1,1,0,0)
+PARM SL TYPE=INTEGER DEFAULT=1
+PARM SS TYPE=INTEGER DEFAULT=1
+PARM NL TYPE=INTEGER DEFAULT=0
+PARM NS TYPE=INTEGER DEFAULT=0
+END-PROC
+.TITLE
+comptab - tabulate connected components to an IBIS file
+.HELP
+PURPOSE:
+comptab creates an IBIS tabular file from a connected component image and
+from 0 to 48 registered brightness or difference images.  The connected
+component image is a halfword image, usually created by program CONCOMP.
+The registered images can be byte or half.  The IBIS tabular file that is 
+output has one record for each connected component and the following
+columns:
+
+1.  The component number
+2.  The count of pixels in the component, can be converted to area
+3.  The line number of the first pixel scanned (in l,s order) of the component
+4.  The sample number of the first pixel scanned
+5.  The diameter in pixels of the component
+6.  The average brightness or pixel value of the component in the 1st input image
+7.  The average brightness or pixel value of the neighborhood of the component
+    in the 1st input image
+8.  The average brightness or pixel value of the component in the 2d input image
+9.  The average brightness or pixel value of the neighborhood of the component
+    in the 2d input image
+etc
+
+the last 10 columns are set to 0.0 to allow room for user calculation.
+
+If a SIZE parameter is used, it applies to all of the input images.
+
+EXECUTION:
+
+Example
+
+comptab INP=(A,B,C) OUT=D  A is the connected component image.  B and C are
+                          registered brightness images. D is the output tabular file
+
+OPERATION:
+
+The statistics are read into an array from the input images.  The output
+statistics are calculated and then written to an IBIS file.
+ TIMING: 
+
+all algorithms are linear with the image area.
+
+ ORIGINAL PROGRAMMER:    A. Zobrist          08 nov 2004
+ COGNIZANT PROGRAMMER:   A. Zobrist          08 nov 2004
+ 
+ REVISION HISTORY
+  2008-04-11 AZ  Initial version
+  2008-01-02 WLB Switched to USES_ANSI_C AND LIB_CARTO; misc cleanup
+  2016-01-13 WLB Migrated to MIPL; replaced printfs with zifmessages
+  2022-07-14 B. Crocco afids to opensource
+  
+.LEVEL1
+.VARIABLE INP
+STRING - Input image files; 1st
+is connected component; others
+registered brightness or dif-
+ference images
+.VARIABLE OUT
+STRING - Output IBIS tabulr file
+.VARIABLE SIZE
+INTEGER - Region of input files
+to be concatenated
+.VARIABLE SL
+INTEGER - Starting line
+.VARIABLE SS
+INTEGER - Starting sample
+.VARIABLE NL
+INTEGER - Number of lines
+.VARIABLE NS
+INTEGER - Number of samples
+.LEVEL2
+.VARIABLE INP
+INP specifies the input data sets.  Up to 48 are allowed.
+.VARIABLE SIZE
+The SIZE parameter may be used when only a sub-region of each image is to
+be concatenated; it has the format SIZE=(SL,SS,NL,NS), where the parameters
+are starting line, starting sample, number of lines, and number of samples,
+respectively.  SIZE=(1,1,10,10), for example, will cause comptab to only look
+at the first ten samples of each of the first ten lines in each image, when
+performing the concatenation. The default (1,1,0,0) means use the whole image.
+.VARIABLE SL
+INTEGER - Starting line (see SIZE)
+.VARIABLE SS
+INTEGER - Starting sample (see SIZE)
+.VARIABLE NL
+INTEGER - Number of lines (see SIZE)
+.VARIABLE NS
+INTEGER - Number of samples (see SIZE)
+.END

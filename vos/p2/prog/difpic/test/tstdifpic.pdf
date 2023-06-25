@@ -4,13 +4,13 @@ body
 
 enable-log
 
-local cas_iss3_1 string init="/project/test_work/testdata/cassini/casIss/N1488210398_2.IMG"
-local cas_iss3_2 string init="/project/test_work/testdata/cassini/casIss/N1629509454_1.IMG"
-local cas_iss4 string init="/project/test_work/testdata/cassini/casIss/N1638304759_2.IMG"
-local binfmt string init="/project/test_work/testdata/cassini/fmt/cas_tlmtab.fmt"
-local lpfmt string init="/project/test_work/testdata/cassini/fmt/cas_prefix2.fmt"
-local bhfmtmap string init="/project/test_work/testdata/p2/balm/bhfmt_mapping.txt"
-local lpfmtmap_ string init="/project/test_work/testdata/p2/balm/lpfmt_mapping.txt"
+local cas_iss3_1 string init="data/N1488210398_2.IMG"
+local cas_iss3_2 string init="data/N1629509454_1.IMG"
+local cas_iss4 string init="data/N1638304759_2.IMG"
+local binfmt string init="data/cas_tlmtab.fmt"
+local lpfmt string init="data/cas_prefix2.fmt"
+local bhfmtmap string init="data/bhfmt_mapping.txt"
+local lpfmtmap_ string init="data/lpfmt_mapping.txt"
 local out1 string init=""
 local retval int
 
@@ -185,7 +185,7 @@ write
 write "***************** Compare same labels ****************"
 let $echo="yes"
 difpic inp=(&cas_iss3_1,&cas_iss3_1) pixcmp=nopixcmp lblcmp=lblcmp retval=retval
-disp retval
+write "retval: &retval"
 
 !'retval' should equal '0'
 let $echo="no"
@@ -194,7 +194,7 @@ write
 write "***************** Compare only labels **************"
 let $echo="yes"
 difpic inp=(&cas_iss3_1,&cas_iss3_2) pixcmp=nopixcmp lblcmp=lblcmp retval=retval
-disp retval
+write "retval: &retval"
 
 !'retval' should equal '1'
 let $echo="no"
@@ -203,7 +203,7 @@ write
 write "***************** Compare only labels but don't print any differences **************"
 let $echo="yes"
 difpic inp=(&cas_iss3_1,&cas_iss3_2) pixcmp=nopixcmp lblcmp=lblcmp verbose=silent retval=retval
-disp retval
+write "retval: &retval"
 
 !'retval' should equal '1'
 let $echo="no"
@@ -212,7 +212,7 @@ write
 write "***************** Let's ignore some labels **************"
 let $echo="yes"
 difpic inp=(&cas_iss3_1,&cas_iss3_2) pixcmp=nopixcmp lblcmp=lblcmp lbl_ignore=(IMAGE_MID_TIME,IMAGE_TIME) retval=retval
-disp retval
+write "retval: &retval"
 !'retval' should equal '1'
 
 let $echo="no"
@@ -221,7 +221,7 @@ write
 write "***************** Let's ignore some properties **************"
 let $echo="yes"
 difpic inp=(&cas_iss3_1,&cas_iss3_2) pixcmp=nopixcmp lblcmp=lblcmp prop_ignore=(COMMAND,TELEMETRY) retval=retval
-disp retval
+write "retval: &retval"
 !'retval' should equal '1'
 let $echo="no"
 
@@ -236,7 +236,7 @@ write "************* Compare same binary header *************"
 write "********** while using specified FMT files ***********"
 let $echo="yes"
 difpic inp=(&cas_iss3_1,&cas_iss3_1) pixcmp=nopixcmp bincmp=bincmp bhfmtfiles=(&binfmt,&binfmt) retval=retval
-disp retval
+write "retval: &retval"
 !'retval' should equal '0'
 let $echo="no"
 
@@ -245,7 +245,7 @@ write "************* Compare only binary header *************"
 write "***** while using default BHFMTMAP and BLTYPE ********"
 let $echo="yes"
 difpic inp=(&cas_iss3_1,&cas_iss3_2) pixcmp=nopixcmp bincmp=bincmp retval=retval
-disp retval
+write "retval: &retval"
 !'retval' should equal '2'
 let $echo="no"
 
@@ -256,7 +256,7 @@ write "All fields named 'EXTENDED_ISS_SCIENCE_HEADER.SPARE' will be ignored; you
 write
 let $echo="yes"
 difpic inp=(&cas_iss3_1,&cas_iss3_2) pixcmp=nopixcmp bincmp=bincmp bhfmtmap=&bhfmtmap bhk_ignore=(EXTENDED_ISS_SCIENCE_HEADER.SPARE) retval=retval
-disp retval
+write "retval: &retval"
 !'retval' should equal '2'
 let $echo="no"
 
@@ -264,7 +264,7 @@ write
 write "***** Compare binary headers of different BLTYPE *****"
 let $echo="yes"
 difpic inp=(&cas_iss3_1,&cas_iss4) pixcmp=nopixcmp bincmp=bincmp retval=retval
-disp retval
+write "retval: &retval"
 !'retval' should equal '2'
 let $echo="no"
 
@@ -272,7 +272,7 @@ write
 write "***** Compare binary headers while overriding BLTYPE *****"
 let $echo="yes"
 difpic inp=(&cas_iss3_1,&cas_iss4) pixcmp=nopixcmp bincmp=bincmp BLTYPES=(CAS-ISS3,CAS-ISS3) retval=retval
-disp retval
+write "retval: &retval"
 !'retval' should equal '2'
 
 let $echo="no"
@@ -281,7 +281,7 @@ write
 write "***** Compare binary headers in SILENT mode *****"
 let $echo="yes"
 difpic inp=(&cas_iss3_1,&cas_iss3_2) pixcmp=nopixcmp bincmp=bincmp verbose=silent retval=retval
-disp retval
+write "retval: &retval"
 !'retval' should equal '2'
 let $echo="no"
 
@@ -295,7 +295,7 @@ write
 write "************* Compare same line prefix ***************"
 let $echo="yes"
 difpic inp=(&cas_iss3_1,&cas_iss3_1) pixcmp=nopixcmp lprcmp=lprcmp lpfmtfiles=(&lpfmt,&lpfmt) retval=retval
-disp retval
+write "retval: &retval"
 !'retval' should equal '0'
 let $echo="no"
 
@@ -304,7 +304,7 @@ write "************* Compare only line prefix ***************"
 write "******** while using default LPFMTMAP and BLTYPE *****"
 let $echo="yes"
 difpic inp=(&cas_iss3_1,&cas_iss3_2) pixcmp=nopixcmp lprcmp=lprcmp retval=retval
-disp retval
+write "retval: &retval"
 !'retval' should equal '8'
 let $echo="no"
 
@@ -315,7 +315,7 @@ write "Field 'EXTENDED_PIXEL' will be ignored; you won't see the field listed as
 write
 let $echo="yes"
 difpic inp=(&cas_iss3_1,&cas_iss4) pixcmp=nopixcmp lprcmp=lprcmp lpfmtmap=(&lpfmtmap_) lpk_ignore=(EXTENDED_PIXEL) BLTYPES=(CAS-ISS3,CAS-ISS3) retval=retval
-disp retval
+write "retval: &retval"
 !'retval' should equal '8'
 let $echo="no"
 
@@ -323,7 +323,7 @@ write
 write "****** Compare line prefix of different BLTYPE ******"
 let $echo="yes"
 difpic inp=(&cas_iss3_1,&cas_iss4) pixcmp=nopixcmp lprcmp=lprcmp retval=retval
-disp retval
+write "retval: &retval"
 !'retval' should equal '8'
 let $echo="no"
 
@@ -331,7 +331,7 @@ write
 write "***** Compare line prefix while overriding BLTYPE *****"
 let $echo="yes"
 difpic inp=(&cas_iss3_1,&cas_iss4) pixcmp=nopixcmp lprcmp=lprcmp BLTYPES=(CAS-ISS3,CAS-ISS3) retval=retval
-disp retval
+write "retval: &retval"
 !'retval' should equal '8'
 let $echo="no"
 
@@ -339,7 +339,7 @@ write
 write "******** Compare line prefix in SILENT mode **********"
 let $echo="yes"
 difpic inp=(&cas_iss3_1,&cas_iss3_2) pixcmp=nopixcmp lprcmp=lprcmp verbose=silent retval=retval
-disp retval
+write "retval: &retval"
 !'retval' should equal '8'
 let $echo="no"
 
@@ -347,7 +347,21 @@ write
 write "*************** Compare everything *******************"
 let $echo="yes"
 difpic inp=(&cas_iss3_1,&cas_iss3_2) 'ALL retval=retval
-disp retval
+write "retval: &retval"
+let $echo="no"
+
+write
+write "*************** Checking for missing values ***********"
+let $echo="yes"
+gen a
+label-add a items="name='value_a'" property=myprop
+label-add a items="name_a='value_a'" property=myprop
+gen b
+label-add b items="name='value_b'" property=myprop
+label-add b items="name_b='value_b'" property=myprop
+
+difpic (a b) 'lblcmp
+difpic (b a) 'lblcmp
 
 disable-log
 

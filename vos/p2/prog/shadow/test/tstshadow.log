@@ -1,7 +1,7 @@
-shadow inp=/project/test_work/testdata/mer/1F483288473EFFCMUFP1214L0M1.IMG out=1F483288473EFFCMUFP1214L0M1_adaptive.IMG
+shadow inp=data/1F483288473EFFCMUFP1214L0M1.IMG out=1F483288473EFFCMUFP1214L0M1_adaptive.IMG
 Beginning VICAR task shadow
 SHADOW version 2019-08-06
-Image: /project/test_work/testdata/mer/1F483288473EFFCMUFP1214L0M1.IMG
+Image: data/1F483288473EFFCMUFP1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
 Decomposed illumination image from the input image using gaussian kernel.
@@ -11,10 +11,10 @@ The program enters adaptive gamma brightness correction mode.
 Illumination image contrast enhancement.
 Combine illumination image and reflectance image.
 Write output.
-shadow inp=/project/test_work/testdata/mer/1F490747543EFFCNY9P1214L0M1.IMG out=1F490747543EFFCNY9P1214L0M1_adaptive.IMG
+shadow inp=data/1F490747543EFFCNY9P1214L0M1.IMG out=1F490747543EFFCNY9P1214L0M1_adaptive.IMG
 Beginning VICAR task shadow
 SHADOW version 2019-08-06
-Image: /project/test_work/testdata/mer/1F490747543EFFCNY9P1214L0M1.IMG
+Image: data/1F490747543EFFCNY9P1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
 Decomposed illumination image from the input image using gaussian kernel.
@@ -24,10 +24,10 @@ The program enters adaptive gamma brightness correction mode.
 Illumination image contrast enhancement.
 Combine illumination image and reflectance image.
 Write output.
-shadow inp=/project/test_work/testdata/mer/1F483644096EFFCMX8P1214L0M1.IMG out=1F483644096EFFCMX8P1214L0M1_adaptive.IMG
+shadow inp=data/1F483644096EFFCMX8P1214L0M1.IMG out=1F483644096EFFCMX8P1214L0M1_adaptive.IMG
 Beginning VICAR task shadow
 SHADOW version 2019-08-06
-Image: /project/test_work/testdata/mer/1F483644096EFFCMX8P1214L0M1.IMG
+Image: data/1F483644096EFFCMX8P1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
 Decomposed illumination image from the input image using gaussian kernel.
@@ -37,10 +37,10 @@ The program enters adaptive gamma brightness correction mode.
 Illumination image contrast enhancement.
 Combine illumination image and reflectance image.
 Write output.
-shadow inp=/project/test_work/testdata/mer/1F498644828EFFCONGP1214L0M1.IMG out=1F498644828EFFCONGP1214L0M1_adaptive.IMG
+shadow inp=data/1F498644828EFFCONGP1214L0M1.IMG out=1F498644828EFFCONGP1214L0M1_adaptive.IMG
 Beginning VICAR task shadow
 SHADOW version 2019-08-06
-Image: /project/test_work/testdata/mer/1F498644828EFFCONGP1214L0M1.IMG
+Image: data/1F498644828EFFCONGP1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
 Decomposed illumination image from the input image using gaussian kernel.
@@ -50,10 +50,10 @@ The program enters adaptive gamma brightness correction mode.
 Illumination image contrast enhancement.
 Combine illumination image and reflectance image.
 Write output.
-shadow inp=/project/test_work/testdata/mer/1F484710941EFFCNBHP1214L0M1.IMG out=1F484710941EFFCNBHP1214L0M1_adaptive.IMG
+shadow inp=data/1F484710941EFFCNBHP1214L0M1.IMG out=1F484710941EFFCNBHP1214L0M1_adaptive.IMG
 Beginning VICAR task shadow
 SHADOW version 2019-08-06
-Image: /project/test_work/testdata/mer/1F484710941EFFCNBHP1214L0M1.IMG
+Image: data/1F484710941EFFCNBHP1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
 Decomposed illumination image from the input image using gaussian kernel.
@@ -63,10 +63,10 @@ The program enters adaptive gamma brightness correction mode.
 Illumination image contrast enhancement.
 Combine illumination image and reflectance image.
 Write output.
-shadow inp=/project/test_work/testdata/mer/1F517554350EFFCQG7P1214L0M1.IMG out=1F517554350EFFCQG7P1214L0M1_adaptive.IMG
+shadow inp=data/1F517554350EFFCQG7P1214L0M1.IMG out=1F517554350EFFCQG7P1214L0M1_adaptive.IMG
 Beginning VICAR task shadow
 SHADOW version 2019-08-06
-Image: /project/test_work/testdata/mer/1F517554350EFFCQG7P1214L0M1.IMG
+Image: data/1F517554350EFFCQG7P1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
 Decomposed illumination image from the input image using gaussian kernel.
@@ -76,10 +76,10 @@ The program enters adaptive gamma brightness correction mode.
 Illumination image contrast enhancement.
 Combine illumination image and reflectance image.
 Write output.
-shadow inp=/project/test_work/testdata/mer/1F483288473EFFCMUFP1214L0M1.IMG out=1F483288473EFFCMUFP1214L0M1_global.IMG GAMMA=0.5
+shadow inp=data/1F483288473EFFCMUFP1214L0M1.IMG out=1F483288473EFFCMUFP1214L0M1_global.IMG GAMMA=0.5
 Beginning VICAR task shadow
 SHADOW version 2019-08-06
-Image: /project/test_work/testdata/mer/1F483288473EFFCMUFP1214L0M1.IMG
+Image: data/1F483288473EFFCMUFP1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
 Decomposed illumination image from the input image using gaussian kernel.
@@ -89,10 +89,10 @@ The program enters global gamma brightness correction mode.
 Illumination image contrast enhancement.
 Combine illumination image and reflectance image.
 Write output.
-shadow inp=/project/test_work/testdata/mer/1F490747543EFFCNY9P1214L0M1.IMG out=1F490747543EFFCNY9P1214L0M1_global.IMG GAMMA=0.6
+shadow inp=data/1F490747543EFFCNY9P1214L0M1.IMG out=1F490747543EFFCNY9P1214L0M1_global.IMG GAMMA=0.6
 Beginning VICAR task shadow
 SHADOW version 2019-08-06
-Image: /project/test_work/testdata/mer/1F490747543EFFCNY9P1214L0M1.IMG
+Image: data/1F490747543EFFCNY9P1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
 Decomposed illumination image from the input image using gaussian kernel.
@@ -102,10 +102,10 @@ The program enters global gamma brightness correction mode.
 Illumination image contrast enhancement.
 Combine illumination image and reflectance image.
 Write output.
-shadow inp=/project/test_work/testdata/mer/1F483644096EFFCMX8P1214L0M1.IMG out=1F483644096EFFCMX8P1214L0M1_global.IMG GAMMA=0.7
+shadow inp=data/1F483644096EFFCMX8P1214L0M1.IMG out=1F483644096EFFCMX8P1214L0M1_global.IMG GAMMA=0.7
 Beginning VICAR task shadow
 SHADOW version 2019-08-06
-Image: /project/test_work/testdata/mer/1F483644096EFFCMX8P1214L0M1.IMG
+Image: data/1F483644096EFFCMX8P1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
 Decomposed illumination image from the input image using gaussian kernel.
@@ -115,10 +115,10 @@ The program enters global gamma brightness correction mode.
 Illumination image contrast enhancement.
 Combine illumination image and reflectance image.
 Write output.
-shadow inp=/project/test_work/testdata/mer/1F498644828EFFCONGP1214L0M1.IMG out=1F498644828EFFCONGP1214L0M1_global.IMG GAMMA=0.8
+shadow inp=data/1F498644828EFFCONGP1214L0M1.IMG out=1F498644828EFFCONGP1214L0M1_global.IMG GAMMA=0.8
 Beginning VICAR task shadow
 SHADOW version 2019-08-06
-Image: /project/test_work/testdata/mer/1F498644828EFFCONGP1214L0M1.IMG
+Image: data/1F498644828EFFCONGP1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
 Decomposed illumination image from the input image using gaussian kernel.
@@ -128,10 +128,10 @@ The program enters global gamma brightness correction mode.
 Illumination image contrast enhancement.
 Combine illumination image and reflectance image.
 Write output.
-shadow inp=/project/test_work/testdata/mer/1F484710941EFFCNBHP1214L0M1.IMG out=1F484710941EFFCNBHP1214L0M1_global.IMG GAMMA=0.9
+shadow inp=data/1F484710941EFFCNBHP1214L0M1.IMG out=1F484710941EFFCNBHP1214L0M1_global.IMG GAMMA=0.9
 Beginning VICAR task shadow
 SHADOW version 2019-08-06
-Image: /project/test_work/testdata/mer/1F484710941EFFCNBHP1214L0M1.IMG
+Image: data/1F484710941EFFCNBHP1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
 Decomposed illumination image from the input image using gaussian kernel.
@@ -141,10 +141,10 @@ The program enters global gamma brightness correction mode.
 Illumination image contrast enhancement.
 Combine illumination image and reflectance image.
 Write output.
-shadow inp=/project/test_work/testdata/mer/1F517554350EFFCQG7P1214L0M1.IMG out=1F517554350EFFCQG7P1214L0M1_global.IMG GAMMA=1.0
+shadow inp=data/1F517554350EFFCQG7P1214L0M1.IMG out=1F517554350EFFCQG7P1214L0M1_global.IMG GAMMA=1.0
 Beginning VICAR task shadow
 SHADOW version 2019-08-06
-Image: /project/test_work/testdata/mer/1F517554350EFFCQG7P1214L0M1.IMG
+Image: data/1F517554350EFFCQG7P1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
 Decomposed illumination image from the input image using gaussian kernel.
@@ -154,11 +154,10 @@ The program enters global gamma brightness correction mode.
 Illumination image contrast enhancement.
 Combine illumination image and reflectance image.
 Write output.
-shadow inp=/project/test_work/testdata/mer/1F483288473EFFCMUFP1214L0M1.IMG out=1F483288473EFFCMUFP1214L0M1_adaptive_sk.IMG sigma=0.+
-9 ksize=5
+shadow inp=data/1F483288473EFFCMUFP1214L0M1.IMG out=1F483288473EFFCMUFP1214L0M1_adaptive_sk.IMG sigma=0.9 ksize=5
 Beginning VICAR task shadow
 SHADOW version 2019-08-06
-Image: /project/test_work/testdata/mer/1F483288473EFFCMUFP1214L0M1.IMG
+Image: data/1F483288473EFFCMUFP1214L0M1.IMG
 
 Create gaussian 5 x 5 kernel with stand deviation equals 0.900000.
 Decomposed illumination image from the input image using gaussian kernel.
@@ -168,11 +167,10 @@ The program enters adaptive gamma brightness correction mode.
 Illumination image contrast enhancement.
 Combine illumination image and reflectance image.
 Write output.
-shadow inp=/project/test_work/testdata/mer/1F490747543EFFCNY9P1214L0M1.IMG out=1F490747543EFFCNY9P1214L0M1_adaptive_sk.IMG sigma=0.+
-7 ksize=3
+shadow inp=data/1F490747543EFFCNY9P1214L0M1.IMG out=1F490747543EFFCNY9P1214L0M1_adaptive_sk.IMG sigma=0.7 ksize=3
 Beginning VICAR task shadow
 SHADOW version 2019-08-06
-Image: /project/test_work/testdata/mer/1F490747543EFFCNY9P1214L0M1.IMG
+Image: data/1F490747543EFFCNY9P1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 0.700000.
 Decomposed illumination image from the input image using gaussian kernel.
@@ -182,11 +180,10 @@ The program enters adaptive gamma brightness correction mode.
 Illumination image contrast enhancement.
 Combine illumination image and reflectance image.
 Write output.
-shadow inp=/project/test_work/testdata/mer/1F483644096EFFCMX8P1214L0M1.IMG out=1F483644096EFFCMX8P1214L0M1_adaptive_sk.IMG sigma=1.+
-0 ksize=5
+shadow inp=data/1F483644096EFFCMX8P1214L0M1.IMG out=1F483644096EFFCMX8P1214L0M1_adaptive_sk.IMG sigma=1.0 ksize=5
 Beginning VICAR task shadow
 SHADOW version 2019-08-06
-Image: /project/test_work/testdata/mer/1F483644096EFFCMX8P1214L0M1.IMG
+Image: data/1F483644096EFFCMX8P1214L0M1.IMG
 
 Create gaussian 5 x 5 kernel with stand deviation equals 1.000000.
 Decomposed illumination image from the input image using gaussian kernel.
@@ -196,11 +193,10 @@ The program enters adaptive gamma brightness correction mode.
 Illumination image contrast enhancement.
 Combine illumination image and reflectance image.
 Write output.
-shadow inp=/project/test_work/testdata/mer/1F498644828EFFCONGP1214L0M1.IMG out=1F498644828EFFCONGP1214L0M1_adaptive_sk.IMG sigma=1.+
-1 ksize=3
+shadow inp=data/1F498644828EFFCONGP1214L0M1.IMG out=1F498644828EFFCONGP1214L0M1_adaptive_sk.IMG sigma=1.1 ksize=3
 Beginning VICAR task shadow
 SHADOW version 2019-08-06
-Image: /project/test_work/testdata/mer/1F498644828EFFCONGP1214L0M1.IMG
+Image: data/1F498644828EFFCONGP1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.100000.
 Decomposed illumination image from the input image using gaussian kernel.
@@ -210,11 +206,10 @@ The program enters adaptive gamma brightness correction mode.
 Illumination image contrast enhancement.
 Combine illumination image and reflectance image.
 Write output.
-shadow inp=/project/test_work/testdata/mer/1F484710941EFFCNBHP1214L0M1.IMG out=1F484710941EFFCNBHP1214L0M1_adaptive_sk.IMG sigma=0.+
-8 ksize=7
+shadow inp=data/1F484710941EFFCNBHP1214L0M1.IMG out=1F484710941EFFCNBHP1214L0M1_adaptive_sk.IMG sigma=0.8 ksize=7
 Beginning VICAR task shadow
 SHADOW version 2019-08-06
-Image: /project/test_work/testdata/mer/1F484710941EFFCNBHP1214L0M1.IMG
+Image: data/1F484710941EFFCNBHP1214L0M1.IMG
 
 Create gaussian 7 x 7 kernel with stand deviation equals 0.800000.
 Decomposed illumination image from the input image using gaussian kernel.
@@ -224,11 +219,10 @@ The program enters adaptive gamma brightness correction mode.
 Illumination image contrast enhancement.
 Combine illumination image and reflectance image.
 Write output.
-shadow inp=/project/test_work/testdata/mer/1F517554350EFFCQG7P1214L0M1.IMG out=1F517554350EFFCQG7P1214L0M1_adaptive_sk.IMG sigma=0.+
-9 ksize=5
+shadow inp=data/1F517554350EFFCQG7P1214L0M1.IMG out=1F517554350EFFCQG7P1214L0M1_adaptive_sk.IMG sigma=0.9 ksize=5
 Beginning VICAR task shadow
 SHADOW version 2019-08-06
-Image: /project/test_work/testdata/mer/1F517554350EFFCQG7P1214L0M1.IMG
+Image: data/1F517554350EFFCQG7P1214L0M1.IMG
 
 Create gaussian 5 x 5 kernel with stand deviation equals 0.900000.
 Decomposed illumination image from the input image using gaussian kernel.
@@ -238,11 +232,11 @@ The program enters adaptive gamma brightness correction mode.
 Illumination image contrast enhancement.
 Combine illumination image and reflectance image.
 Write output.
-shadow inp=/project/test_work/testdata/mer/1F483288473EFFCMUFP1214L0M1.IMG out=1F483288473EFFCMUFP1214L0M1_adaptive.IMG out_illum=1+
-F483288473EFFCMUFP1214L0M1.illum
+shadow inp=data/1F483288473EFFCMUFP1214L0M1.IMG out=1F483288473EFFCMUFP1214L0M1_adaptive.IMG out_illum=1F483288473EFFCMUFP1214L0M1.+
+illum
 Beginning VICAR task shadow
 SHADOW version 2019-08-06
-Image: /project/test_work/testdata/mer/1F483288473EFFCMUFP1214L0M1.IMG
+Image: data/1F483288473EFFCMUFP1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
 Decomposed illumination image from the input image using gaussian kernel.
@@ -252,11 +246,11 @@ The program enters adaptive gamma brightness correction mode.
 Illumination image contrast enhancement.
 Combine illumination image and reflectance image.
 Write output.
-shadow inp=/project/test_work/testdata/mer/1F490747543EFFCNY9P1214L0M1.IMG out=1F490747543EFFCNY9P1214L0M1_adaptive.IMG out_illum=1+
-F490747543EFFCNY9P1214L0M1.illum
+shadow inp=data/1F490747543EFFCNY9P1214L0M1.IMG out=1F490747543EFFCNY9P1214L0M1_adaptive.IMG out_illum=1F490747543EFFCNY9P1214L0M1.+
+illum
 Beginning VICAR task shadow
 SHADOW version 2019-08-06
-Image: /project/test_work/testdata/mer/1F490747543EFFCNY9P1214L0M1.IMG
+Image: data/1F490747543EFFCNY9P1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
 Decomposed illumination image from the input image using gaussian kernel.
@@ -266,11 +260,11 @@ The program enters adaptive gamma brightness correction mode.
 Illumination image contrast enhancement.
 Combine illumination image and reflectance image.
 Write output.
-shadow inp=/project/test_work/testdata/mer/1F483644096EFFCMX8P1214L0M1.IMG out=1F483644096EFFCMX8P1214L0M1_adaptive.IMG out_illum=1+
-F483644096EFFCMX8P1214L0M1.illum
+shadow inp=data/1F483644096EFFCMX8P1214L0M1.IMG out=1F483644096EFFCMX8P1214L0M1_adaptive.IMG out_illum=1F483644096EFFCMX8P1214L0M1.+
+illum
 Beginning VICAR task shadow
 SHADOW version 2019-08-06
-Image: /project/test_work/testdata/mer/1F483644096EFFCMX8P1214L0M1.IMG
+Image: data/1F483644096EFFCMX8P1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
 Decomposed illumination image from the input image using gaussian kernel.
@@ -280,11 +274,11 @@ The program enters adaptive gamma brightness correction mode.
 Illumination image contrast enhancement.
 Combine illumination image and reflectance image.
 Write output.
-shadow inp=/project/test_work/testdata/mer/1F498644828EFFCONGP1214L0M1.IMG out=1F498644828EFFCONGP1214L0M1_adaptive.IMG out_illum=1+
-F498644828EFFCONGP1214L0M1.illum
+shadow inp=data/1F498644828EFFCONGP1214L0M1.IMG out=1F498644828EFFCONGP1214L0M1_adaptive.IMG out_illum=1F498644828EFFCONGP1214L0M1.+
+illum
 Beginning VICAR task shadow
 SHADOW version 2019-08-06
-Image: /project/test_work/testdata/mer/1F498644828EFFCONGP1214L0M1.IMG
+Image: data/1F498644828EFFCONGP1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
 Decomposed illumination image from the input image using gaussian kernel.
@@ -294,11 +288,11 @@ The program enters adaptive gamma brightness correction mode.
 Illumination image contrast enhancement.
 Combine illumination image and reflectance image.
 Write output.
-shadow inp=/project/test_work/testdata/mer/1F484710941EFFCNBHP1214L0M1.IMG out=1F484710941EFFCNBHP1214L0M1_adaptive.IMG out_illum=1+
-F484710941EFFCNBHP1214L0M1.illum
+shadow inp=data/1F484710941EFFCNBHP1214L0M1.IMG out=1F484710941EFFCNBHP1214L0M1_adaptive.IMG out_illum=1F484710941EFFCNBHP1214L0M1.+
+illum
 Beginning VICAR task shadow
 SHADOW version 2019-08-06
-Image: /project/test_work/testdata/mer/1F484710941EFFCNBHP1214L0M1.IMG
+Image: data/1F484710941EFFCNBHP1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
 Decomposed illumination image from the input image using gaussian kernel.
@@ -308,11 +302,11 @@ The program enters adaptive gamma brightness correction mode.
 Illumination image contrast enhancement.
 Combine illumination image and reflectance image.
 Write output.
-shadow inp=/project/test_work/testdata/mer/1F517554350EFFCQG7P1214L0M1.IMG out=1F517554350EFFCQG7P1214L0M1_adaptive.IMG out_illum=1+
-F517554350EFFCQG7P1214L0M1.illum
+shadow inp=data/1F517554350EFFCQG7P1214L0M1.IMG out=1F517554350EFFCQG7P1214L0M1_adaptive.IMG out_illum=1F517554350EFFCQG7P1214L0M1.+
+illum
 Beginning VICAR task shadow
 SHADOW version 2019-08-06
-Image: /project/test_work/testdata/mer/1F517554350EFFCQG7P1214L0M1.IMG
+Image: data/1F517554350EFFCQG7P1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
 Decomposed illumination image from the input image using gaussian kernel.
@@ -322,11 +316,11 @@ The program enters adaptive gamma brightness correction mode.
 Illumination image contrast enhancement.
 Combine illumination image and reflectance image.
 Write output.
-shadow inp=/project/test_work/testdata/mer/1F483288473EFFCMUFP1214L0M1.IMG out=1F483288473EFFCMUFP1214L0M1_adaptive.IMG out_reflect+
-=1F483288473EFFCMUFP1214L0M1.refl
+shadow inp=data/1F483288473EFFCMUFP1214L0M1.IMG out=1F483288473EFFCMUFP1214L0M1_adaptive.IMG out_reflect=1F483288473EFFCMUFP1214L0M+
+1.refl
 Beginning VICAR task shadow
 SHADOW version 2019-08-06
-Image: /project/test_work/testdata/mer/1F483288473EFFCMUFP1214L0M1.IMG
+Image: data/1F483288473EFFCMUFP1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
 Decomposed illumination image from the input image using gaussian kernel.
@@ -336,11 +330,11 @@ The program enters adaptive gamma brightness correction mode.
 Illumination image contrast enhancement.
 Combine illumination image and reflectance image.
 Write output.
-shadow inp=/project/test_work/testdata/mer/1F490747543EFFCNY9P1214L0M1.IMG out=1F490747543EFFCNY9P1214L0M1_adaptive.IMG out_reflect+
-=1F490747543EFFCNY9P1214L0M1.refl
+shadow inp=data/1F490747543EFFCNY9P1214L0M1.IMG out=1F490747543EFFCNY9P1214L0M1_adaptive.IMG out_reflect=1F490747543EFFCNY9P1214L0M+
+1.refl
 Beginning VICAR task shadow
 SHADOW version 2019-08-06
-Image: /project/test_work/testdata/mer/1F490747543EFFCNY9P1214L0M1.IMG
+Image: data/1F490747543EFFCNY9P1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
 Decomposed illumination image from the input image using gaussian kernel.
@@ -350,11 +344,11 @@ The program enters adaptive gamma brightness correction mode.
 Illumination image contrast enhancement.
 Combine illumination image and reflectance image.
 Write output.
-shadow inp=/project/test_work/testdata/mer/1F483644096EFFCMX8P1214L0M1.IMG out=1F483644096EFFCMX8P1214L0M1_adaptive.IMG out_reflect+
-=1F483644096EFFCMX8P1214L0M1.refl
+shadow inp=data/1F483644096EFFCMX8P1214L0M1.IMG out=1F483644096EFFCMX8P1214L0M1_adaptive.IMG out_reflect=1F483644096EFFCMX8P1214L0M+
+1.refl
 Beginning VICAR task shadow
 SHADOW version 2019-08-06
-Image: /project/test_work/testdata/mer/1F483644096EFFCMX8P1214L0M1.IMG
+Image: data/1F483644096EFFCMX8P1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
 Decomposed illumination image from the input image using gaussian kernel.
@@ -364,11 +358,11 @@ The program enters adaptive gamma brightness correction mode.
 Illumination image contrast enhancement.
 Combine illumination image and reflectance image.
 Write output.
-shadow inp=/project/test_work/testdata/mer/1F498644828EFFCONGP1214L0M1.IMG out=1F498644828EFFCONGP1214L0M1_adaptive.IMG out_reflect+
-=1F498644828EFFCONGP1214L0M1.refl
+shadow inp=data/1F498644828EFFCONGP1214L0M1.IMG out=1F498644828EFFCONGP1214L0M1_adaptive.IMG out_reflect=1F498644828EFFCONGP1214L0M+
+1.refl
 Beginning VICAR task shadow
 SHADOW version 2019-08-06
-Image: /project/test_work/testdata/mer/1F498644828EFFCONGP1214L0M1.IMG
+Image: data/1F498644828EFFCONGP1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
 Decomposed illumination image from the input image using gaussian kernel.
@@ -378,11 +372,11 @@ The program enters adaptive gamma brightness correction mode.
 Illumination image contrast enhancement.
 Combine illumination image and reflectance image.
 Write output.
-shadow inp=/project/test_work/testdata/mer/1F484710941EFFCNBHP1214L0M1.IMG out=1F484710941EFFCNBHP1214L0M1_adaptive.IMG out_reflect+
-=1F484710941EFFCNBHP1214L0M1.refl
+shadow inp=data/1F484710941EFFCNBHP1214L0M1.IMG out=1F484710941EFFCNBHP1214L0M1_adaptive.IMG out_reflect=1F484710941EFFCNBHP1214L0M+
+1.refl
 Beginning VICAR task shadow
 SHADOW version 2019-08-06
-Image: /project/test_work/testdata/mer/1F484710941EFFCNBHP1214L0M1.IMG
+Image: data/1F484710941EFFCNBHP1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
 Decomposed illumination image from the input image using gaussian kernel.
@@ -392,11 +386,11 @@ The program enters adaptive gamma brightness correction mode.
 Illumination image contrast enhancement.
 Combine illumination image and reflectance image.
 Write output.
-shadow inp=/project/test_work/testdata/mer/1F517554350EFFCQG7P1214L0M1.IMG out=1F517554350EFFCQG7P1214L0M1_adaptive.IMG out_reflect+
-=1F517554350EFFCQG7P1214L0M1.refl
+shadow inp=data/1F517554350EFFCQG7P1214L0M1.IMG out=1F517554350EFFCQG7P1214L0M1_adaptive.IMG out_reflect=1F517554350EFFCQG7P1214L0M+
+1.refl
 Beginning VICAR task shadow
 SHADOW version 2019-08-06
-Image: /project/test_work/testdata/mer/1F517554350EFFCQG7P1214L0M1.IMG
+Image: data/1F517554350EFFCQG7P1214L0M1.IMG
 
 Create gaussian 3 x 3 kernel with stand deviation equals 1.000000.
 Decomposed illumination image from the input image using gaussian kernel.

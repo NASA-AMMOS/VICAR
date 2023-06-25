@@ -1,0 +1,5 @@
+$ vpack merinverter.com -mixed -
+	-s merinverter.cc merinverter.pdf -
+	-i merinverter.imake -
+	-t tst_merinverter.sh
+$ Exit

@@ -1,0 +1,13 @@
+#define SUBROUTINE pig_coldarm
+
+#define MODULE_LIST  PigFileModelColdarm.cc PigColdarm.cc \
+PigRoverStateManagerColdarm.cc PigLabelModelColdarm.cc \
+PigColorModelColdarm.cc
+
+#define MARS_SUBLIB
+
+#define USES_C_PLUS_PLUS
+
+#define LIB_P2SUB
+#define LIB_XERCES
+

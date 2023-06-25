@@ -14,4 +14,4 @@
 #define LIB_TAE
 #define LIB_P2SUB 
 #define LIB_MATH77
-#define LIB_LOCAL
+

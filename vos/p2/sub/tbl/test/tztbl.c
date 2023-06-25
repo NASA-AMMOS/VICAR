@@ -3,7 +3,7 @@
 #include "vicmain_c"
 #include "ftnbridge.h"
 
-main44()
+void main44(void)
 {
      unsigned char buf[10], tab[256];
      char  ms1[100];
@@ -37,5 +37,4 @@ main44()
      zvmessage(ms1," ");
 
      FTN_NAME(ttbl)();
-
 }

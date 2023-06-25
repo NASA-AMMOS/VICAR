@@ -1,32 +1,9 @@
-                Version 5C/16C
-
-      ***********************************************************
-      *                                                         *
-      * VICAR Supervisor version 5C, TAE V5.2                   *
-      *   Debugger is now supported on all platforms            *
-      *   USAGE command now implemented under Unix              *
-      *                                                         *
-      * VRDI and VIDS now support X-windows and Unix            *
-      * New X-windows display program: xvd (for all but VAX/VMS)*
-      *                                                         *
-      * VICAR Run-Time Library version 16C                      *
-      *   '+' form of temp filename now avail. on all platforms *
-      *   ANSI C now fully supported                            *
-      *                                                         *
-      * See B.Deen(RGD059) with problems                        *
-      *                                                         *
-      ***********************************************************
-
-  --- Type NUT for the New User Tutorial ---
-
-  --- Type MENU for a menu of available applications ---
-
 *******************
    TEST 1         *
 *******************
 gen a.img 800 800
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 ltgen a.img ltf.out 'DBUG EXPO=(0.,50.,66.67,100.,133.33,200.,266.67)  +
             AREA=(15,15,10,10) GRES=(3,12,13) NI=3
@@ -54,8 +31,9 @@ WRITING HALFWORD LIGHT TRANSFER FILE WITH
 LTGEN task completed
 let $echo="no"
 Verify from file: zeroed place holders
-list ltf.out
+list ltf.out 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
  ** The specified window is all zero.
 maxmin ltf.out maxival=maxval minival=minval
 Beginning VICAR task maxmin
@@ -69,27 +47,27 @@ Data set  max = 0.000000000000e+00 should be 0.000
 Data set  min = 0.000000000000e+00 should be 0.000
   
 Verify the NUM_AREA, AREAS, NUM_EXP, and EXPOSURES labels
-label-list ltf.out
+label-list ltf.out 'nousrtim
 Beginning VICAR task label
-LABEL version 15-Nov-2010
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File ltf.out ************
                 3 dimensional IMAGE file
                 File organization is BSQ
-                Pixels are in REAL format from a X86-LINUX host
+                Pixels are in REAL format from a X86-64-LIN host
                 1 bands
                 7 lines per band
                 91 samples per line
                 0 lines of binary header
                 0 bytes of binary prefix per line
----- Task: GEN -- User: wlb -- Fri Mar 27 12:01:51 2015 ----
+---- Task: GEN -- User:  --  ----
 IVAL=0.0
 SINC=1.0
 LINC=1.0
 BINC=1.0
 MODULO=0.0
----- Task: LTGEN -- User: wlb -- Fri Mar 27 12:01:51 2015 ----
+---- Task: LTGEN -- User:  --  ----
 NUM_AREAS=10
 AREAS=(15, 15, 10, 10, 127, 126, 12, 13, 127, 392, 12, 13, 127, 658, 12, 13, 
 393, 126, 12, 13, 393, 392, 12, 13, 393, 658, 12, 13, 659, 126, 12, 13, 659, 
@@ -104,9 +82,10 @@ let $echo="no"
 *******************
 gausnois d1.img mean=10.5 sigma=1.023  nl=500 ns=500 form=half seed=82651
 Beginning VICAR task gausnois
+gausnois version 2016-06-08
 hist d1.img 'nohist
 Beginning VICAR task hist
-*** HIST version 17 Dec 2012 ***
+*** HIST version 2017-08-08 ***
 
 
 AVERAGE GRAY LEVEL=9.999316       STANDARD DEVIATION=1.063144       NUMBER ELEMENTS=    250000
@@ -115,11 +94,13 @@ MAX. DN=        14
 
 flot d1.img d2.img 'coun
 Beginning VICAR task flot
+FLOT version May 21 2015
 gausnois a1.img mean=100.5 sigma=3.1623 nl=500 ns=500 form=half seed=987654
 Beginning VICAR task gausnois
+gausnois version 2016-06-08
 hist a1.img 'nohist
 Beginning VICAR task hist
-*** HIST version 17 Dec 2012 ***
+*** HIST version 2017-08-08 ***
 
 
 AVERAGE GRAY LEVEL=99.99788       STANDARD DEVIATION=3.176533       NUMBER ELEMENTS=    250000
@@ -128,11 +109,13 @@ MAX. DN=       112
 
 flot a1.img a2.img 'coun
 Beginning VICAR task flot
+FLOT version May 21 2015
 gausnois b1.img mean=1000.5 sigma=10 nl=500 ns=500 form=half seed=876543
 Beginning VICAR task gausnois
+gausnois version 2016-06-08
 hist b1.img 'nohist
 Beginning VICAR task hist
-*** HIST version 17 Dec 2012 ***
+*** HIST version 2017-08-08 ***
 
 
 AVERAGE GRAY LEVEL=1000.000       STANDARD DEVIATION=10.00253       NUMBER ELEMENTS=    250000
@@ -141,6 +124,7 @@ MAX. DN=      1039
 
 flot b1.img b2.img 'coun
 Beginning VICAR task flot
+FLOT version May 21 2015
 ltgen a1.img ltf1.out 'grid ni=2 exp=(0,10,20)
 Beginning VICAR task ltgen
 LTGEN Version 23-Nov-2012  (64-bit) - rjb
@@ -214,12 +198,12 @@ Data set line 3 min = 2.000000000000e+00 should be 2.000000000000e+00
 **********************
 f2 cas/sum2.1 l1.a func="in1+10"
 Beginning VICAR task f2
-F2 version 26-Jul-11
+F2 version 98-Aug-2015
 F2 using hash table lookup
 FUNCTION EVALUATED 26 TIMES
 label-rep l1.a 'PROP property="CASSINI-ISS" item="EXPOSURE_DURATION=0"
 Beginning VICAR task label
-LABEL version 15-Nov-2010
+LABEL version 2019-09-06
 Keyword EXPOSURE_DURATION replaced
 copy l1.a l1.b
 Beginning VICAR task copy
@@ -229,12 +213,12 @@ Beginning VICAR task copy
  COPY VERSION 12-JUL-1993
 f2 cas/sum2.1 l2.a func="in1+110"
 Beginning VICAR task f2
-F2 version 26-Jul-11
+F2 version 98-Aug-2015
 F2 using hash table lookup
 FUNCTION EVALUATED 26 TIMES
 label-rep l2.a 'PROP property="CASSINI-ISS" item="EXPOSURE_DURATION=10."
 Beginning VICAR task label
-LABEL version 15-Nov-2010
+LABEL version 2019-09-06
 Keyword EXPOSURE_DURATION replaced
 copy l2.a l2.b
 Beginning VICAR task copy
@@ -244,12 +228,12 @@ Beginning VICAR task copy
  COPY VERSION 12-JUL-1993
 f2 cas/sum2.1 l3.a func="in1+210"
 Beginning VICAR task f2
-F2 version 26-Jul-11
+F2 version 98-Aug-2015
 F2 using hash table lookup
 FUNCTION EVALUATED 26 TIMES
 label-rep l3.a 'PROP property="CASSINI-ISS" item="EXPOSURE_DURATION=20."
 Beginning VICAR task label
-LABEL version 15-Nov-2010
+LABEL version 2019-09-06
 Keyword EXPOSURE_DURATION replaced
 copy l3.a l3.b
 Beginning VICAR task copy
@@ -259,12 +243,12 @@ Beginning VICAR task copy
  COPY VERSION 12-JUL-1993
 f2 cas/sum2.1 l4.a func="in1+410"
 Beginning VICAR task f2
-F2 version 26-Jul-11
+F2 version 98-Aug-2015
 F2 using hash table lookup
 FUNCTION EVALUATED 26 TIMES
 label-rep l4.a 'PROP property="CASSINI-ISS" item="EXPOSURE_DURATION=40."
 Beginning VICAR task label
-LABEL version 15-Nov-2010
+LABEL version 2019-09-06
 Keyword EXPOSURE_DURATION replaced
 copy l4.a l4.b
 Beginning VICAR task copy
@@ -273,147 +257,36 @@ copy l4.a l4.c
 Beginning VICAR task copy
  COPY VERSION 12-JUL-1993
 createfile l.list
-refgbl  $syschar
-write "CREATEFILE version 1-3-97"
-CREATEFILE version 1-3-97
-if ($syschar(1) = "VAX_VMS")
-else
-  USH cp /dev/null  l.list
-end-if
-END-PROC
-addtofile l.list "NEXT FILE=0001"
-refgbl  $syschar
-write "ADDTOFILE version 1-3-97"
+let $echo="no"
+CREATEFILE version 2015-11-19
 ADDTOFILE version 1-3-97
-if ($syschar(1) = "VAX_VMS")
-else
-  addtofil INPUT=@INPUT STRING1="NEXT FILE=0001"
 Beginning VICAR task addtofil
-end-if
-END-PROC
-addtofile l.list "l1.a"
-refgbl  $syschar
-write "ADDTOFILE version 1-3-97"
 ADDTOFILE version 1-3-97
-if ($syschar(1) = "VAX_VMS")
-else
-  addtofil INPUT=@INPUT STRING1="l1.a"
 Beginning VICAR task addtofil
-end-if
-END-PROC
-addtofile l.list "l1.b"
-refgbl  $syschar
-write "ADDTOFILE version 1-3-97"
 ADDTOFILE version 1-3-97
-if ($syschar(1) = "VAX_VMS")
-else
-  addtofil INPUT=@INPUT STRING1="l1.b"
 Beginning VICAR task addtofil
-end-if
-END-PROC
-addtofile l.list "l1.c"
-refgbl  $syschar
-write "ADDTOFILE version 1-3-97"
 ADDTOFILE version 1-3-97
-if ($syschar(1) = "VAX_VMS")
-else
-  addtofil INPUT=@INPUT STRING1="l1.c"
 Beginning VICAR task addtofil
-end-if
-END-PROC
-addtofile l.list "l2.a"
-refgbl  $syschar
-write "ADDTOFILE version 1-3-97"
 ADDTOFILE version 1-3-97
-if ($syschar(1) = "VAX_VMS")
-else
-  addtofil INPUT=@INPUT STRING1="l2.a"
 Beginning VICAR task addtofil
-end-if
-END-PROC
-addtofile l.list "l2.b"
-refgbl  $syschar
-write "ADDTOFILE version 1-3-97"
 ADDTOFILE version 1-3-97
-if ($syschar(1) = "VAX_VMS")
-else
-  addtofil INPUT=@INPUT STRING1="l2.b"
 Beginning VICAR task addtofil
-end-if
-END-PROC
-addtofile l.list "l2.c"
-refgbl  $syschar
-write "ADDTOFILE version 1-3-97"
 ADDTOFILE version 1-3-97
-if ($syschar(1) = "VAX_VMS")
-else
-  addtofil INPUT=@INPUT STRING1="l2.c"
 Beginning VICAR task addtofil
-end-if
-END-PROC
-addtofile l.list "l3.a"
-refgbl  $syschar
-write "ADDTOFILE version 1-3-97"
 ADDTOFILE version 1-3-97
-if ($syschar(1) = "VAX_VMS")
-else
-  addtofil INPUT=@INPUT STRING1="l3.a"
 Beginning VICAR task addtofil
-end-if
-END-PROC
-addtofile l.list "l3.b"
-refgbl  $syschar
-write "ADDTOFILE version 1-3-97"
 ADDTOFILE version 1-3-97
-if ($syschar(1) = "VAX_VMS")
-else
-  addtofil INPUT=@INPUT STRING1="l3.b"
 Beginning VICAR task addtofil
-end-if
-END-PROC
-addtofile l.list "l3.c"
-refgbl  $syschar
-write "ADDTOFILE version 1-3-97"
 ADDTOFILE version 1-3-97
-if ($syschar(1) = "VAX_VMS")
-else
-  addtofil INPUT=@INPUT STRING1="l3.c"
 Beginning VICAR task addtofil
-end-if
-END-PROC
-addtofile l.list "l4.a"
-refgbl  $syschar
-write "ADDTOFILE version 1-3-97"
 ADDTOFILE version 1-3-97
-if ($syschar(1) = "VAX_VMS")
-else
-  addtofil INPUT=@INPUT STRING1="l4.a"
 Beginning VICAR task addtofil
-end-if
-END-PROC
-addtofile l.list "l4.b"
-refgbl  $syschar
-write "ADDTOFILE version 1-3-97"
 ADDTOFILE version 1-3-97
-if ($syschar(1) = "VAX_VMS")
-else
-  addtofil INPUT=@INPUT STRING1="l4.b"
 Beginning VICAR task addtofil
-end-if
-END-PROC
-addtofile l.list "l4.c"
-refgbl  $syschar
-write "ADDTOFILE version 1-3-97"
 ADDTOFILE version 1-3-97
-if ($syschar(1) = "VAX_VMS")
-else
-  addtofil INPUT=@INPUT STRING1="l4.c"
 Beginning VICAR task addtofil
-end-if
-END-PROC
-reset l.list
 Beginning VICAR task reset
-typetext l.list
+RESET version 2019-06-14
 Beginning VICAR task typetext
 NEXT FILE =     1
 l1.a
@@ -428,7 +301,6 @@ l3.c
 l4.a
 l4.b
 l4.c
-ltgen l1.a out=casltf.out list=l.list 'GRID
 Beginning VICAR task ltgen
 LTGEN Version 23-Nov-2012  (64-bit) - rjb
 NUMBER OF FILES  =         12
@@ -443,35 +315,30 @@ WRITING HALFWORD LIGHT TRANSFER FILE WITH
  NL (NREC) =           4
  NS        =         901
 LTGEN task completed
-momgen (l1.a,l1.b,l1.c) casltf.out  exp=0
 Beginning VICAR task momgen
 MOMGEN Version 19-MAR-1997
 
 EXPOSURE TIME=    0.000E+00
 INPUT FRAMES=             3
 NUMBER OF AREAS=        100
-momgen (l2.a,l2.b,l2.c) casltf.out  exp=10
 Beginning VICAR task momgen
 MOMGEN Version 19-MAR-1997
 
 EXPOSURE TIME=    10.000000
 INPUT FRAMES=             3
 NUMBER OF AREAS=        100
-momgen (l3.a,l3.b,l3.c) casltf.out  exp=20
 Beginning VICAR task momgen
 MOMGEN Version 19-MAR-1997
 
 EXPOSURE TIME=    20.000000
 INPUT FRAMES=             3
 NUMBER OF AREAS=        100
-momgen (l4.a,l4.b,l4.c) casltf.out  exp=40
 Beginning VICAR task momgen
 MOMGEN Version 19-MAR-1997
 
 EXPOSURE TIME=    40.000000
 INPUT FRAMES=             3
 NUMBER OF AREAS=        100
-let $echo="no"
 Verify from file:  zeroed place holders
 maxmin casltf.out sl=1 nl=1 maxival=maxval minival=minval
 Beginning VICAR task maxmin
@@ -517,12 +384,13 @@ let $echo="no"
 Data set line 4 max = 7.477808000000e+07 should be 7.477808000000e+07
 Data set line 4 min = 3.000000000000e+00 should be 3.000000000000e+00
           ******* Line 4 passes *******
-list casltf.out sl=1 ss=1 nl=4 ns=10
+list casltf.out sl=1 ss=1 nl=4 ns=10 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    REAL     samples are interpreted as  REAL*4  data
- Task:F2        User:wlb       Date_Time:Fri Mar 27 12:01:52 2015
- Task:LTGEN     User:wlb       Date_Time:Fri Mar 27 12:01:52 2015
+ Task:F2        User:          Date_Time:                        
+ Task:LTGEN     User:          Date_Time:                        
      Samp             1           2           3           4           5           6           7           8           9          10
    Line
       1       3.000E+00   1.280E+04   1.280E+04   1.280E+04   4.107E+05   4.107E+05   4.107E+05   4.107E+05   4.107E+05   4.107E+05
@@ -531,15 +399,15 @@ Beginning VICAR task list
       4       3.000E+00   1.728E+05   1.728E+05   1.728E+05   7.465E+07   7.465E+07   7.465E+07   7.465E+07   7.465E+07   7.465E+07
 let $echo="no"
 Verify NUM_AREA, AREAS, NUM_EXP, and EXPOSURES labels.
-label-list casltf.out
+label-list casltf.out 'nousrtim
 Beginning VICAR task label
-LABEL version 15-Nov-2010
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File casltf.out ************
                 3 dimensional IMAGE file
                 File organization is BSQ
-                Pixels are in REAL format from a X86-LINUX host
+                Pixels are in REAL format from a X86-64-LIN host
                 1 bands
                 4 lines per band
                 901 samples per line
@@ -574,9 +442,9 @@ ILLUMINANT='TUNGSTEN'
 LUMINANCE=5.1
 RADIANCE=5.1
 EXPOSURE_DURATION=0
----- Task: F2 -- User: wlb -- Fri Mar 27 12:01:52 2015 ----
+---- Task: F2 -- User:  --  ----
 FUNCTION='in1+10'
----- Task: LTGEN -- User: wlb -- Fri Mar 27 12:01:52 2015 ----
+---- Task: LTGEN -- User:  --  ----
 NUM_AREAS=100
 AREAS=(15, 15, 20, 20, 15, 66, 20, 20, 15, 117, 20, 20, 15, 168, 20, 20, 15, 
 219, 20, 20, 15, 270, 20, 20, 15, 321, 20, 20, 15, 372, 20, 20, 15, 423, 20, 

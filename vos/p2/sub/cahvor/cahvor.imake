@@ -1,0 +1,10 @@
+#define SUBROUTINE cahvor
+
+#define MODULE_LIST cmod.c cmod_cahv.c cmod_cahvor.c cmod_cahvore.c cmod_error_unique.c cmod_interp.c cmod_stdio.c cmod_stdio_cahv.c cmod_stdio_cahvor.c cmod_stdio_cahvore.c cmod_psph.c cmod_stdio_psph.c
+
+#define CLEAN_OTHER_LIST cmod_error_stdio.c
+
+#define P2_SUBLIB
+
+#define USES_ANSI_C
+

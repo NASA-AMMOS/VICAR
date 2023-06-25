@@ -1,0 +1,60 @@
+process help=*
+
+local dumint    integer
+local dumstring string
+local dumreal   real
+
+parm script  type=(string,250) count=(1:100)
+parm intvar  type=name default="dumint"
+parm realvar type=name default="dumreal"
+parm strvar  type=name default="dumstring"
+
+END-PROC
+
+.TITLE
+tcl2tcl - evaluate script in TCL/Tk shell, returning result
+
+.HELP
+PURPOSE:
+tcl2tcl evaluates the passed script in a TCL/Tk shell and returns the
+string result, as well as parsed numeric values, if possible. If
+returned value is not numeric, realval and string val will be set to
+zero.
+
+EXECUTION:
+
+Example:
+
+tcl2tcl script="pwd" strvar=ldir
+            where ldir is a TAE TCL variable of type string
+          
+TIMING: 
+
+Instantaneous.  
+
+ORIGINAL PROGRAMMER:    W Bunch
+COGNIZANT PROGRAMMER:   W Bunch
+ 
+REVISION HISTORY
+Wed Aug  4 2004 WLB    Initial release.
+Sun Jul 17 2005 WLB    Added support for multiple string scripts
+Thu Jan  3 2008 wlb switched to USES_ANSI_C AND LIB_CARTO; misc cleanup  
+ 
+.LEVEL1
+.variable script
+Input TCL/Tk script, up to 99 characters long.
+
+.variable strvar
+TAE TCL variable name, string, set to value returned by script
+evaluation. The result is limited to at most 99 characters.
+
+.variable intvar
+TAE TCL variable name, integer, set to integer parse of strvar, or
+0 if not.
+
+.variable realvar
+TAE TCL variable name, real, set to real parse of strvar, or
+0.0 if not.
+
+.END
+

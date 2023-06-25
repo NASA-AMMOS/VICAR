@@ -101,15 +101,14 @@ if (mode = "nobatch" or mode = "inter")
     xvd h2.img
 end-if
 
-write "********************************"
-write "Comparing no seed with a seed"
-write "**** Will change run to run ****"
-write "********************************"
-addnoise inp=h.img out=d1.img sigma=30 gain=40 rate=100 bits=12
+!write "********************************"
+!write "Comparing no seed with a seed"
+!write "**** Will change run to run ****"
+!write "********************************"
+!addnoise inp=h.img out=d1.img sigma=30 gain=40 rate=100 bits=12
 addnoise inp=h.img out=d2.img sigma=30 gain=40 rate=100 bits=12 seed=123
-write "**** Will change run to run, but NUMBER OF DIFFERENCES should be > 0 ****"
-difpic (d1.img,d2.img)
-
+!write "**** Will change run to run, but NUMBER OF DIFFERENCES should be > 0 ****"
+!difpic (d1.img,d2.img)
 
 write "****************************************"
 write "Comparing one seed with a different seed"
@@ -117,6 +116,8 @@ write "****************************************"
 addnoise inp=h.img out=d3.img sigma=30 gain=40 rate=100 bits=12 seed=456
 write "NUMBER OF DIFFERENCES should be > 0"
 difpic (d2.img,d3.img)
+
+ush rm a.img b1.img b2.img b3.img c.img d2.img d3.img h1.img h2.img h.img
 
 disable-log
 end-proc

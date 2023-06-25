@@ -1,0 +1,58 @@
+procedure
+refgbl $echo
+parm version string def="ibis-2" 
+parm org string def="column"
+local geotranslib type=string
+body
+enable-log
+!let _onfail="continue"
+let $echo="yes"
+
+translog INP=GEOTRANSLIB TRANS=geotranslib
+ush ln -fs &geotranslib/3_param.dat .
+ush ln -fs &geotranslib/7_param.dat .
+ush ln -fs &geotranslib/ellips.dat .
+
+!   TEST GTWARP HANDYPROC
+
+! basic application, note perth is NOT VICAR rotated and has "post" pixels
+! australia is standard VICAR rotation and area pixels
+
+gen xxim1 nl=10 ns=10
+gtgen inp=xxim1 out=xxperth 'tiecnvrt +
+   geotiff=("ModelTiePointTag=(0,0,0,.3,.3,0.0)", +
+          "ModelTiePointTag=(10,0,0,.5,.3,0.0)", +
+          "ModelTiePointTag=(0,10,0,.3,.5,0.0)", +
+          "ProjectionGeoKey=20(CT_MillerCylindrical)", +
+          "GTRasterTypeGeoKey=2(RasterPixelIsPoint)", +
+          "GeogEllipsoidGeoKey=7030(Ellipse_WGS84)")
+gen xxim1 nl=20 ns=20
+gtgen inp=xxim1 out=xxaustralia 'tiecnvrt +
+   geotiff=("ModelTiePointTag=(0,0,0,.2,.7,0.0)", +
+          "ModelTiePointTag=(20,0,0,.7,.7,0.0)", +
+          "ModelTiePointTag=(0,20,0,.2,.2,0.0)", +
+          "ProjectionGeoKey=1(CT_TransverseMercator)", +
+          "GTRasterTypeGeoKey=1(RasterPixelIsArea)", +
+          "GeogEllipsoidGeoKey=7030(Ellipse_WGS84)")
+gtlist xxperth
+gtlist xxaustralia
+
+gtwarp inp=xxperth out=xxnewperth_inp ref=xxaustralia 'coverinp +
+    nah=3 nav=4 gorewid=1
+
+list xxnewperth_inp 'zero 'nousrtim
+gtlist xxnewperth_inp
+
+! same as previous case except 'coverref parameter used
+
+gtwarp inp=xxperth out=xxnewperth_ref ref=xxaustralia 'coverref +
+    nah=3 nav=4 
+
+list xxnewperth_ref 'zero 'nousrtim
+gtlist xxnewperth_ref
+
+ush rm -f 3_param.dat 7_param.dat ellips.dat xxaustralia xxim1 xxnewperth_inp xxnewperth_ref xxperth xxqqgrid1qq xxqqgrid2qq
+
+disable-log
+
+end-proc

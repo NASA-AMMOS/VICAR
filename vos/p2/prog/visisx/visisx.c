@@ -282,6 +282,10 @@ int viclabsize=0;
 
 #define FUNCTION		/* delimit modules */
 
+void FUNCTION process_parms(int *direction,char cubefile[100]);
+void FUNCTION write_object(int dir, int nlrecs, int nhrecs, int nrecs); 
+
+
 /***************************************************************************/
 void main44(void)
 {
@@ -1252,7 +1256,7 @@ int FUNCTION get_integer_value(intitem,buf,labptr)
 }
 
 /****************************************************************************/
-FUNCTION get_label_items()
+void FUNCTION get_label_items()
 /*
  * Get all VICAR label items needed for PDS label and complete all 
  * necessary format conversions.
@@ -2223,7 +2227,7 @@ int FUNCTION keyword_value(unit,pdsitem,type,vicaritem)
 
 
 /****************************************************************************/
-FUNCTION process_parms(direction,cubefile)
+void FUNCTION process_parms(direction,cubefile)
 /*
  * Process all user parameters (except for a few which are used in ToVicar
  * mode only) and determine direction of transformation.
@@ -2492,7 +2496,7 @@ FUNCTION VICARtoISIS(cubefile)
 
 
 /****************************************************************************/
-FUNCTION write_object(dir,nlrecs,nhrecs,nrecs) 
+void FUNCTION write_object(dir,nlrecs,nhrecs,nrecs) 
 /*
  * Copies object files to ISIS cube file or appropriate 
  * VICAR files, depending on direction of processing requested.
@@ -2861,7 +2865,7 @@ FUNCTION write_PDS_aline(buf,type,labelitem,value,number)
 
 
 /*****************************************************************************/
-FUNCTION write_PDS_cline( buf, item, value, num, slen)
+void FUNCTION write_PDS_cline( buf, item, value, num, slen)
 /*
  * Write PDS label line to a given buffer for character data.
  * Because of the lengths of some filenames, the buffers need

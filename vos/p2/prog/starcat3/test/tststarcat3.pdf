@@ -58,8 +58,8 @@ translog INP=AFIDS_TESTDATA TRANS=aftestdata
 
 if (afidsroot = "")
 !MIPL
-    ush ln -s /project/test_work/testdata/carto nt
-    ush ln -s /project/test_work/testdata/gll ft
+    ush ln -s data nt
+    ush ln -s data ft
 else
 !CARTLAB
     if (aftestdata = "")
@@ -150,7 +150,7 @@ starcat3 ft/s233m.vic out=s233m6.cat maxd=32767 list=list
 !
 ! TEST 8 -  list with 2nd image
 !
-starcat3 nt/1994se_1026b.corr out=(1994se_1026b1.cat,1994se_1026b1.out) +
+starcat3 nt/1994se_1026b.corr.dat out=(1994se_1026b1.cat,1994se_1026b1.out) +
     thre=221 back=176 list=list maxd=32767 mini=221 mins=2 minl=2 +
     maxs=100 maxl=100 objects=objs
 let $echo="no"
@@ -164,7 +164,7 @@ let $echo="yes"
 !
 ! TEST 9 - list1 with 2nd image
 !
-starcat3 nt/1994se_1026b.corr out=(1994se_1026b2.cat,1994se_1026b2.out) +
+starcat3 nt/1994se_1026b.corr.dat out=(1994se_1026b2.cat,1994se_1026b2.out) +
 	thre=221 back=176 list=list1 maxd=32767 mini=221 mins=2 minl=2 +
 	maxs=100 maxl=100 objects=objs
 let $echo="no"
@@ -177,7 +177,7 @@ let $echo="yes"
 !
 ! TEST 10 -
 !
-starcat3 nt/1994se_1026b.corr out=(1994se_1026b3.cat,1994se_1026b3.out) +
+starcat3 nt/1994se_1026b.corr.dat out=(1994se_1026b3.cat,1994se_1026b3.out) +
 	thre=221 back=176 list=list maxd=32767 mini=221 mins=2 minl=2 +
 	maxs=100 maxl=100 size=(1,1,150,150)
 
@@ -191,7 +191,7 @@ let $echo="yes"
 !
 ! TEST 11 -
 !
-starcat3 nt/1994se_1026b.corr out=(1994se_1026b4.cat,1994se_1026b4.out) +
+starcat3 nt/1994se_1026b.corr.dat out=(1994se_1026b4.cat,1994se_1026b4.out) +
 	thre=221 back=176 list=list maxd=32767 mini=221 mins=2 minl=2 +
 	maxs=100 maxl=100 size=(1,1,150,700) objects=objs
 
@@ -205,6 +205,11 @@ rm>
 let $echo="no"
 ush rm -f ft
 ush rm -f nt
+ush rm 1994se_1026b1.cat 1994se_1026b1.out 1994se_1026b2.cat
+ush rm 1994se_1026b2.out 1994se_1026b3.cat 1994se_1026b3.out
+ush rm 1994se_1026b4.cat 1994se_1026b4.out s233m1.cat s233m2.byte
+ush rm s233m2.cat s233m3.byte s233m3.cat s233m3.flag s233m4.cat
+ush rm s233m5.cat s233m6.cat s233m.cat
 
 disable-log
 

@@ -1,10 +1,10 @@
-let PATH="/project/test_work/testdata/mipl/vgr/"
+let PATH="data/"
 WRITE "THIS IS A TEST OF MODULE   RESSAR77"
 THIS IS A TEST OF MODULE   RESSAR77
 WRITE "FIRST, REMOVE RESEAU MARKS AND FIDUCIAL MARKS"
 FIRST, REMOVE RESEAU MARKS AND FIDUCIAL MARKS
-ush cp /project/test_work/testdata/mipl/vgr/cresj.fil cresj.fil
-RESLOC (/project/test_work/testdata/mipl/vgr/f2048013.byt,cresj.fil) RESEAU.LOC
+ush cp data/cresj.fil.vic cresj.fil.vic
+RESLOC (data/f2048013.byt,cresj.fil.vic) RESEAU.LOC
 Beginning VICAR task RESLOC
 resloc version April 14, 2013
 Frame=2048013 Camera=5
@@ -15,13 +15,13 @@ Frame=2048013 Camera=5
  Day    =        184
 res was retrieved from RDB
 resloc task completed
-RESSAR77 (/project/test_work/testdata/mipl/vgr/f2048013.byt,RESEAU.LOC) RES.OUT1
+RESSAR77 (data/f2048013.byt,RESEAU.LOC) RES.OUT1
 Beginning VICAR task RESSAR77
-RESSAR77 version 2016-02-24
+RESSAR77 version 2020-02-25
 TOTAL # CORRECTED PIXELS =      14852
 WRITE "PRINT AREA OF ONE MARK BEFORE RESSAR77"
 PRINT AREA OF ONE MARK BEFORE RESSAR77
-LIST /project/test_work/testdata/mipl/vgr/f2048013.byt (40,270,15,15) 'nousrtim
+LIST data/f2048013.byt (40,270,15,15) 'nousrtim
 Beginning VICAR task LIST
 LIST version 2019-09-06
 
@@ -72,7 +72,7 @@ LIST version 2019-09-06
      54      79  75  76  77  75  78  82  82  81  81  80  81  80  79  81
 WRITE "FOR ALL YOU NON-BELIEVERS, WE WILL PRINT ANOTHER MARK"
 FOR ALL YOU NON-BELIEVERS, WE WILL PRINT ANOTHER MARK
-LIST /project/test_work/testdata/mipl/vgr/f2048013.byt (42,111,15,15) 'nousrtim
+LIST data/f2048013.byt (42,111,15,15) 'nousrtim
 Beginning VICAR task LIST
 LIST version 2019-09-06
 
@@ -123,7 +123,7 @@ LIST version 2019-09-06
      56      73  73  72  73  73  72  70  71  72  73  72  74  74  74  71
 WRITE "NOW, A FIDUCIAL MARK BEFORE  (LINE INCREMENT = 5)"
 NOW, A FIDUCIAL MARK BEFORE  (LINE INCREMENT = 5)
-LIST /project/test_work/testdata/mipl/vgr/f2048013.byt (725,5,65,12) LINC=5 'nousrtim
+LIST data/f2048013.byt (725,5,65,12) LINC=5 'nousrtim
 Beginning VICAR task LIST
 LIST version 2019-09-06
 
@@ -170,16 +170,15 @@ LIST version 2019-09-06
     785     151 146 142 138 139 137 131 128 127 121 112 107
 WRITE "SECOND, REMOVE RESEAU MARKS, FIDUCIAL MARKS AND BLEMISHES"
 SECOND, REMOVE RESEAU MARKS, FIDUCIAL MARKS AND BLEMISHES
-RESSAR77 (/project/test_work/testdata/mipl/vgr/f2048013.byt,RESEAU.LOC,/project/test_work/testdata/mipl/vgr/vgr2na.blm) RES.OUT2 RA+
-DI=3.
+RESSAR77 (data/f2048013.byt,RESEAU.LOC,data/vgr2na.blm) RES.OUT2 RADI=3.
 Beginning VICAR task RESSAR77
-RESSAR77 version 2016-02-24
+RESSAR77 version 2020-02-25
 TOTAL # CORRECTED PIXELS =       8748
 WRITE "PRINT AREA INCLUDING ONE RESEAU MARK AND ONE BLEMISH."
 PRINT AREA INCLUDING ONE RESEAU MARK AND ONE BLEMISH.
 WRITE "BEFORE : THE BLEMISH IS AT L=34.5 S=278.5"
 BEFORE : THE BLEMISH IS AT L=34.5 S=278.5
-LIST /project/test_work/testdata/mipl/vgr/f2048013.byt (30,270,20,15) 'nousrtim
+LIST data/f2048013.byt (30,270,20,15) 'nousrtim
 Beginning VICAR task LIST
 LIST version 2019-09-06
 
@@ -240,15 +239,15 @@ LIST version 2019-09-06
      49      80  80  81  80  80  79  81  81  82  80  81  81  80  81  82
 WRITE "THIRD, REMOVE RESEAU MARKS AND ONE EXTRA SPOT."
 THIRD, REMOVE RESEAU MARKS AND ONE EXTRA SPOT.
-RESSAR77 (/project/test_work/testdata/mipl/vgr/f2048013.byt,RESEAU.LOC) RES.OUT3 'KEEPFIDU CENTER=(34.5,278.5,3.)
+RESSAR77 (data/f2048013.byt,RESEAU.LOC) RES.OUT3 'KEEPFIDU CENTER=(34.5,278.5,3.)
 Beginning VICAR task RESSAR77
-RESSAR77 version 2016-02-24
+RESSAR77 version 2020-02-25
 TOTAL # CORRECTED PIXELS =      11807
 WRITE "NOW, PRINT AREA INCLUDING ONE RESEAU MARK AND THE SPOT."
 NOW, PRINT AREA INCLUDING ONE RESEAU MARK AND THE SPOT.
 WRITE "BEFORE :"
 BEFORE :
-LIST /project/test_work/testdata/mipl/vgr/f2048013.byt (30,270,20,15) 'nousrtim
+LIST data/f2048013.byt (30,270,20,15) 'nousrtim
 Beginning VICAR task LIST
 LIST version 2019-09-06
 
@@ -311,16 +310,15 @@ WRITE "---------------------------------------------------- "
 ---------------------------------------------------- 
 WRITE "REPEAT LAST TWO TESTS WITH KEEPRESE TO CHECK THAT THEY STILL WORK. "
 REPEAT LAST TWO TESTS WITH KEEPRESE TO CHECK THAT THEY STILL WORK. 
-RESSAR77 (/project/test_work/testdata/mipl/vgr/f2048013.byt,RESEAU.LOC,/project/test_work/testdata/mipl/vgr/vgr2na.blm) RES.OUT4 RA+
-DI=3. 'KEEPRESE
+RESSAR77 (data/f2048013.byt,RESEAU.LOC,data/vgr2na.blm) RES.OUT4 RADI=3. 'KEEPRESE
 Beginning VICAR task RESSAR77
-RESSAR77 version 2016-02-24
+RESSAR77 version 2020-02-25
 TOTAL # CORRECTED PIXELS =       4978
 WRITE "PRINT AREA INCLUDING ONE RESEAU MARK AND ONE BLEMISH."
 PRINT AREA INCLUDING ONE RESEAU MARK AND ONE BLEMISH.
 WRITE "BEFORE : THE BLEMISH IS AT L=34.5 S=278.5"
 BEFORE : THE BLEMISH IS AT L=34.5 S=278.5
-LIST /project/test_work/testdata/mipl/vgr/f2048013.byt (30,270,20,15) 'nousrtim
+LIST data/f2048013.byt (30,270,20,15) 'nousrtim
 Beginning VICAR task LIST
 LIST version 2019-09-06
 
@@ -381,15 +379,15 @@ LIST version 2019-09-06
      49      80  80  81  80  80  79  81  81  82  80  81  81  80  81  82
 WRITE "REMOVE ONE SPOT."
 REMOVE ONE SPOT.
-RESSAR77 (/project/test_work/testdata/mipl/vgr/f2048013.byt,RESEAU.LOC) RES.OUT5 'KEEPFIDU CENTER=(34.5,278.5,3.) 'KEEPRESE
+RESSAR77 (data/f2048013.byt,RESEAU.LOC) RES.OUT5 'KEEPFIDU CENTER=(34.5,278.5,3.) 'KEEPRESE
 Beginning VICAR task RESSAR77
-RESSAR77 version 2016-02-24
+RESSAR77 version 2020-02-25
 TOTAL # CORRECTED PIXELS =         22
 WRITE "NOW, PRINT AREA INCLUDING ONE RESEAU MARK AND THE SPOT."
 NOW, PRINT AREA INCLUDING ONE RESEAU MARK AND THE SPOT.
 WRITE "BEFORE :"
 BEFORE :
-LIST /project/test_work/testdata/mipl/vgr/f2048013.byt (30,270,20,15) 'nousrtim
+LIST data/f2048013.byt (30,270,20,15) 'nousrtim
 Beginning VICAR task LIST
 LIST version 2019-09-06
 
@@ -448,5 +446,5 @@ LIST version 2019-09-06
      47      85  84  82  82  74  54  47  59  76  82  83  84  83  84  84
      48      83  82  83  81  80  78  77  80  83  83  82  82  82  83  82
      49      80  80  81  80  80  79  81  81  82  80  81  81  80  81  82
-ush rm cresj.fil RES.OUT1 RES.OUT2 RES.OUT3 RES.OUT4 RES.OUT5 RESEAU.LOC
+ush rm cresj.fil.vic RES.OUT1 RES.OUT2 RES.OUT3 RES.OUT4 RES.OUT5 RESEAU.LOC
 disable-log

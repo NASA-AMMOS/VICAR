@@ -1,0 +1,52 @@
+procedure
+refgbl $echo
+refgbl $autousage
+refgbl $syschar
+body
+enable-log
+
+let $autousage = "none"
+let _onfail="continue"
+let $echo="yes"
+
+
+! basic case 
+
+gen xxxim1 nl=4 ns=5 linc=3 sinc=7
+gen xxxim2 nl=4 ns=5 linc=11 sinc=5
+
+difnear (xxxim1,xxxim2) xxxim3 'add128
+
+list xxxim1 'zeroes 'nousrtim
+list xxxim2 'zeroes 'nousrtim
+list xxxim3 'zeroes 'nousrtim
+
+! halfpix case
+
+difnear (xxxim1,xxxim2) xxxim3 'halfpix 'absval
+
+list xxxim1 'zeroes 'nousrtim
+list xxxim2 'zeroes 'nousrtim
+list xxxim3 'zeroes 'nousrtim
+
+! abs val case
+
+difnear (xxxim1,xxxim2) xxxim3 'absval
+
+list xxxim1 'zeroes 'nousrtim
+list xxxim2 'zeroes 'nousrtim
+list xxxim3 'zeroes 'nousrtim
+
+! window=5
+
+difnear (xxxim1,xxxim2) xxxim3 window=5 'absval
+
+list xxxim1 'zeroes 'nousrtim
+list xxxim2 'zeroes 'nousrtim
+list xxxim3 'zeroes 'nousrtim
+
+ush rm -f xxxim1  xxxim2  xxxim3
+
+disable-log
+
+end-proc

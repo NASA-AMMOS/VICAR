@@ -3,23 +3,25 @@ refgbl $echo
 refgbl $autousage
 refgbl $syschar
 body
+enable-log
+
 let _onfail="continue"
 let $autousage="none"
 let $echo="no"
 let $echo="yes"
 !
 if ($syschar(1) = "UNIX")
-  ush cp /project/it/testdata/sitod1/test_data/gll/autosedr.int . 
-  ush cp /project/it/testdata/sitod1/test_data/gll/autoover.int . 
-  ush cp /project/test_work/testdata/gll/smisedr.int .
-  ush cp /project/test_work/testdata/gll/smiover.int .
-  ush cp /project/it/testdata/sitod1/test_data/gll/60.img .
-  ush cp /project/it/testdata/sitod1/test_data/gll/57.img .
-  ush cp /project/it/testdata/sitod1/test_data/gll/48.img .
-  ush cp /project/it/testdata/sitod1/test_data/gll/42.img .
-  ush cp /project/it/testdata/sitod1/test_data/gll/45.img .
-  ush cp /project/test_work/testdata/gll/s0349666200.u .
-  ush cp /project/test_work/testdata/gll/s0349666345.u .
+  ush ln -s data/autosedr.int
+  ush ln -s data/autoover.int
+  ush ln -s data/smisedr.int
+  ush ln -s data/smiover.int
+  ush ln -s data/60.img
+  ush ln -s data/57.img
+  ush ln -s data/48.img
+  ush ln -s data/42.img
+  ush ln -s data/45.img
+  ush ln -s data/s0349666200.u.vic s0349666200.u
+  ush ln -s data/s0349666345.u.vic s0349666345.u
 else
   dcl copy WMS_TEST_WORK:[TESTDATA.SITOD1.TEST_DATA.GLL]autosedr.int * 
   dcl copy WMS_TEST_WORK:[TESTDATA.SITOD1.TEST_DATA.GLL]autoover.int * 
@@ -58,9 +60,11 @@ ibis-list inp=smimatch.int
 if ($syschar(1) = "UNIX")
    ush rm *.img 
    ush rm *.u
+   ush rm *.int
 else
    dcl del *.img;*
    dcl del *.u;*
 end-if
 
+disable-log
 end-proc

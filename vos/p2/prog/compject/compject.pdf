@@ -1,0 +1,82 @@
+process help=*
+PARM INP TYPE=STRING COUNT=2:2
+PARM OUT TYPE=STRING
+PARM FORMAT TYPE=(STRING,5) COUNT=0:1 +
+     VALID=("BYTE","HALF","FULL") DEFAULT="BYTE"
+PARM COLS TYPE=INTEGER COUNT=2
+PARM BACKGRND TYPE=INTEGER COUNT=1 DEFAULT=0
+PARM SIZE TYPE=INTEGER COUNT=4 DEFAULT=(1,1,0,0)
+PARM SL TYPE=INTEGER DEFAULT=1
+PARM SS TYPE=INTEGER DEFAULT=1
+PARM NL TYPE=INTEGER DEFAULT=0
+PARM NS TYPE=INTEGER DEFAULT=0
+END-PROC
+.TITLE
+compject - inject ibis tabular files into an image
+.HELP
+PURPOSE:
+compject injects values from a tabular file into an image of
+index values.  The ibis file has a column of index values and
+a matching column of values (or colors) to replace the index
+values in an output image.  Non-matched values in the input
+image are replaced with a background value that the user 
+specifies with a parameter.
+
+EXECUTION:
+
+Example
+
+compject INP=(A,B) OUT=C  A is the connected component image.
+                          B is a tabular file, C is the output
+                          image with substituted values
+
+OPERATION:
+
+As fast as the images can be read and written. 
+
+all algorithms are linear with the image area.
+
+RESTRICTIONS
+
+The image output type must be big enough to handle the values
+desired to be output (BYTE up to 255, HALF up to 32767, FULL
+up to 2000000000, and negative numbers for HALF and FULL)
+
+.PAGE
+ ORIGINAL PROGRAMMER:    A. Zobrist          09 nov 2004
+ COGNIZANT PROGRAMMER:   A. Zobrist          09 nov 2004
+ 
+ REVISION HISTORY
+  2004-11-09 AZ  Initial version
+  2007-12-29 WLB Switched to USES_ANSI_C AND LIB_CARTO; misc cleanup
+  2015-10-23 WLB Migrated to MIPL
+  2022-07-14 B. Crocco afids to opensource
+  
+.LEVEL1
+.VARIABLE INP
+STRING - Input image file with
+components or index values and
+an IBIS file with index-value
+pairs to replace in the image
+.VARIABLE OUT
+STRING - Output IBIS file
+.VARIABLE FORMAT
+format of output image
+.VARIABLE COLS
+INTEGER - The columns of the
+index and replacement values
+.VARIABLE BACKGRND
+INTEGER - The value to output
+if index value not in IBIS file
+.VARIABLE SIZE
+INTEGER - Region of input files
+to be concatenated
+.VARIABLE SL
+INTEGER - Starting line
+.VARIABLE SS
+INTEGER - Starting sample
+.VARIABLE NL
+INTEGER - Number of lines
+.VARIABLE NS
+INTEGER - Number of samples
+.END

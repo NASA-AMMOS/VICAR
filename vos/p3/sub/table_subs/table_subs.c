@@ -27,6 +27,9 @@ void l_list_table ();
 #define TempStrLen 32
 #endif
 
+//defined in vicar_subs.c
+void l_message();
+
 struct table *l_read_table(tablefile,n_tab,starttag,endtag,readnames,readunits)
      char *tablefile;
      int *n_tab;

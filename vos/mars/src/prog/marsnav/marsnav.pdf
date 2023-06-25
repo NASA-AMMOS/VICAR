@@ -1,0 +1,1488 @@
+process help=*
+PARM INP TYPE=STRING COUNT=(1:200)
+PARM OUT TYPE=STRING COUNT=1 
+PARM IN_TPT TYPE=STRING COUNT=0:1 DEFAULT=--
+PARM OUT_TPT TYPE=STRING COUNT=1 DEFAULT="tptlist.tpt"
+PARM NAVTABLE TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM FORMAT TYPE=STRING COUNT=(0:1) +
+  VALID=("XML","TXT") DEFAULT="XML"
+PARM OUT_SOLUTION_ID TYPE=STRING COUNT=0:1 DEFAULT=--
+PARM SOLUTION_ID TYPE=STRING COUNT=0:1 DEFAULT=--
+PARM INTERACT TYPE=KEYWORD COUNT=(0:1) +
+  VALID=("INTERACT","BATCH") DEFAULT="BATCH"
+PARM REFIMAGE TYPE=INTEGER COUNT=(0:200) VALID=(-5000:5000) DEFAULT=--
+PARM UNTIL TYPE=KEYWORD COUNT=(0:1) +
+  VALID=("UNTIL","NULL") DEFAULT="NULL"
+PARM ADJREF TYPE=INTEGER COUNT=(0:1) DEFAULT=--
+PARM IGNORE TYPE=INTEGER COUNT=(0:200) VALID=(-1000:1000) DEFAULT=--
+PARM IGNORE_INTRA TYPE=KEYWORD COUNT=(0:1) VALID="IGNORE_INTRA" DEFAULT=--
+PARM ERROR TYPE=REAL COUNT=(0:1) VALID=(0.:1000.) DEFAULT=0.1
+PARM RECYCLE TYPE=INTEGER COUNT=1 DEFAULT=10
+PARM MINTIE TYPE=INTEGER COUNT=1 DEFAULT=0
+PARM FTOL TYPE=REAL COUNT=1 DEFAULT=.00001
+PARM DO_POINTING TYPE=KEYWORD COUNT=1 VALID=("DO_POINTING","NO_POINTING") +
+		DEFAULT="DO_POINTING"
+PARM DO_SURFACE TYPE=KEYWORD COUNT=1 VALID=("DO_SURFACE","NO_SURFACE") +
+		DEFAULT="NO_SURFACE"
+PARM DO_LOCATION TYPE=INTEGER COUNT=(0:400) DEFAULT=--
+PARM DO_ORIENTATION TYPE=INTEGER COUNT=(0:400) DEFAULT=--
+PARM REMOVE TYPE=KEYWORD COUNT=1 VALID=("REMOVE","NOREMOVE") DEFAULT="NOREMOVE"
+PARM MAX_RESIDUAL TYPE=REAL COUNT=1 DEFAULT=0.0
+PARM MAX_REMOVE TYPE=INTEGER COUNT=1 DEFAULT=0
+PARM INERTIA TYPE=REAL COUNT=(0:10) DEFAULT=--
+PARM START_KEY TYPE=INTEGER COUNT=1 DEFAULT=0
+PARM TRAD_MODE COUNT=0:1 TYPE=KEYWORD +
+	VALID=("TRADITIONAL","MISS_DISTANCE","BOTH") +
+	DEFAULT="TRADITIONAL"
+PARM MISS_MULT TYPE=REAL COUNT=1 DEFAULT=333.3
+PARM PARALLEL_LIMIT TYPE=REAL COUNT=1 DEFAULT=0.9999
+PARM RANGE_MISS TYPE=KEYWORD COUNT=(0:1) VALID="RANGE_MISS" DEFAULT=--
+
+PARM OMP_ON TYPE=KEYWORD VALID=(OMP_ON,OMP_OFF) DEFAULT=OMP_ON
+PARM PAR_DEGREE TYPE=INT COUNT=1 DEFAULT=0
+
+PARM NORMAL  TYPE=REAL COUNT=(0:3) DEFAULT=--
+PARM GROUND  TYPE=REAL COUNT=(0:3) DEFAULT=--
+PARM SURF_COORD TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM SURF_MESH TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM SURF_CSFILE TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM SURFACE TYPE=KEYWORD COUNT=(0:1) +
+  VALID=("INFINITY","PLANE", "SPHERE1", "SPHERE2", "MESH") DEFAULT=--
+PARM CONFIG_PATH STRING DEFAULT="$MARS_CONFIG_PATH"
+PARM POINT_METHOD TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM MATCH_METHOD TYPE=STRING COUNT=(0:1) VALID=("LOOSE", "TIGHT") +
+	DEFAULT=LOOSE
+PARM MATCH_TOL TYPE=REAL COUNT=1 DEFAULT=.002
+PARM NOSITE TYPE=KEYWORD COUNT=(0:1) VALID=NOSITE DEFAULT=--
+
+PARM RSF TYPE=STRING COUNT=0:100 DEFAULT=--
+PARM DEBUG_RSF TYPE=KEYWORD COUNT=0:1 VALID=DEBUG_RSF DEFAULT=--
+PARM COORD TYPE=KEYWORD VALID=("FIXED", "INSTRUMENT", "SITE", "ROVER", +
+        "LOCAL_LEVEL", "HELI_G_FRAME", "HELI_M_FRAME") DEFAULT="FIXED"
+PARM COORD_INDEX TYPE=INTEGER COUNT=0:10 DEFAULT=--
+PARM FIXED_SITE TYPE=INTEGER COUNT=0:1 DEFAULT=--
+
+!# parm inp(2-200) hints=default
+!# parm in_tpt file=vicar; direction=input
+!# parm out_tpt file=vicar; direction=output
+
+END-PROC
+
+.TITLE
+VICAR program MARSNAV.
+
+.HELP
+PURPOSE:
+To correct the navigation (pointing, e.g. azimuth and elevation) of a set of
+overlapping images.  The corrected navigation will be placed into the output
+file as a table.  The output images can then be mosaicked using marsmos,
+marsmap, or similar programs by providing these programs the navigation table.
+MARSTIE must be run first to gather tiepoints.  The starting navigation may
+optionally be read from an input nav file as well (via the NAVTABLE parameter).
+
+This is a multimission program derived from Mars Pathfinder's mpfnav.
+The functionality of mpfnav was split into two parts.  MARSTIE gathers
+the tiepoints, and MARSNAV uses those tiepoints to generate a pointing
+solution.
+
+MARSNAV supports any mission, instrument, and camera model supported by the
+Planetary Image Geometry (Pig) software suite.
+
+Best results are obtained if the images are all taken from the same camera
+at approximately the same position.
+
+MARSNAV can now adjust surface models and rover position and orientation,
+as well as instrument pointings.  See DO_SURFACE, DO_POINTING, DO_LOCATION,
+and DO_ORIENTATION keywords.
+
+EXECUTION:
+There are two ways to present input images:
+
+marsnav inp=(a.img,b.img,c.img,...) out=navtable.nav in_tpt=images.tpt
+or
+marsnav inp=ascii_listoffiles out=navtable.nav in_tpt=images.tpt
+
+where ascii_listoffiles is a text file created by Sybase or an editor,
+containing the list of filenames to include in the mosaic, one per record.
+Up to 200 input images can be listed.
+
+An input tiepoint list must be provided.
+
+Then use one of the mosaic programs:
+
+marsmos inp=left_listoffiles out=left_mosaic.img navtable=navtable.nav
+marsmos inp=right_listoffiles out=right_mosaic.img navtable=navtable.nav
+
+Note that for stereo cameras such as Mars Pathfinder IMP and Mars 98 SSI,
+the same navigation solution can be used for both eyes.  Since the eyes
+are fixed to one another, stereo images taken at the same time should have
+the same navigation corrections.
+
+Note: there are two tiepoint file formats; "old" is the text-based list,
+while "xml" is an XML-based format.  The format is auto-detected on read.
+Over time "old" should be phased out.  Under some circumstances (such as
+when tiepoints are being removed), marsnav can write an output tiepoint
+file (see OUT_TPT).  This is always in the new XML format.  This can be
+converted back to the old format if necessary using marstie.
+
+USAGE:
+It is important that all images be connected to each other via tiepoints.
+If an image or block of images is not connected, the entire block can "drift"
+as a unit out of alignment.  Single images are adjusted by a "mean shift"
+amount derived from the average of all the other adjustments, in order to
+keep them from drifting too much.
+
+TBD:  The "mean shift" code is not yet implemented!
+TBD:  Improve the check so blocks are detected as well, and do something
+reasonable with them.
+
+The simplex method of finding pointing solutions can often benefit by being
+rerun multiple times, starting from where it left off the last time, as
+opposed to resetting the solution to the initial conditions.  The program
+allows this in both batch and interactive modes.  Experience has shown that
+as many as half a dozen reruns can still show improvement in the solution.
+
+METHOD:
+
+1) The simplex method is used to find that set of pointing parameters
+(often azimuth & elevation but may include other things like X/Y/Z position
+for rovers or joint angles for arm cameras), which give a camera model that
+minimizes the difference between the predicted and the actual correlated
+tiepoints.  Note that there is NO image correlation involved in this step;
+that is used only for tiepoint selection.
+
+TBD:  Need to put error bars in the pointing parameters so we have some idea
+how far to go.
+
+2) If the residual for the worst tiepoint is > the ERROR keyword then the
+tiepoint may be adjusted or deleted in batch mode, and the solution run
+again.  The solution may be restarted from where it left off, or reset to
+the initial conditions.
+
+In Batch mode, if the worst residual is > ERROR, then the solution is
+rerun from where it left off (which usually improves it) a number of times
+equal to the RECYCLE parameter.  If the residual is still too big, the worst
+tiepoint is deleted and the cycle starts over (with RECYCLE more reruns
+before deleting the next worst tiepoint).  This continues until the residual
+falls into line, we exceed MAX_REMOVE iterations, or until we run out of
+tiepoints (but a perfect (albeit nonsensical) match should always be available
+with only 1 tiepoint).  If NOREMOVE is specified, the program terminates
+instead of removing the worst tiepoint (thus performing only set of RECYCLE's).
+
+If MAX_RESIDUAL is set, the above is modified slightly.  At each step, instead
+of deleting the worst tiepoint, any tiepoints whose residual is abve the
+threshold are deleted.
+
+In Interactive mode, if the worst residual is > ERROR, then the worst tiepoint
+is presented to the user for editing using the tp program.  The user then
+has several options:
+
+a) Exit without changing anything.  This will rerun the solution, starting
+from where it left off last time.  It is often useful to do this several times.
+
+b) Modify the tiepoint and Save and Exit (ctrl-X).  This will use the modified
+tiepoint, and rerun the solution from initial conditions.
+
+c) Delete the tiepoint and Save and Exit (ctrl-X).  This will delete that
+tiepoint, and rerun the solution from initial conditions.
+
+d) Select "Special Exit Status" before exiting tp.  This will cause MARSNAV
+to accept the current solution, save the nav file, and exit, even if the
+residual is too big.
+
+See the help for MARSTIE for more on using tp with MARSNAV.
+
+3) Once the residual is <= ERROR, or Special Exit Status is selected, the final
+navigation solution is written to the output file.
+
+TBD:  Need to be able to say "accept this point anyway and give me the next
+worst one" from interactive mode, without exiting the entire MARSNAV session.
+
+An output tiepoint file is always generated, with the results of the batch
+or interactive editing.  Specify its name via the OUT_TPT parameter, which
+defaults to "tptlist.tpt".
+
+Each time a solution is derived, the nav file is written out.  This means
+the nav file may be written dozens or hundreds of times during a run.
+However, this allows the user to break out of the program and still have
+a solution, if it just can't get the residuals low enough to terminate on
+its own.  Or, an intermediate mosaic may be generated (copy the nav file
+since it often changes) while the program is running, to check on progress.
+
+RESIDUALS:
+
+The error function which is being minimized is called the residual.  This is
+the sum of the squares of the differences between the projected tiepoint
+location (first tiepoint projected to surface and back into the second image)
+and the actual tiepoint location in that second image.  This causes the
+function minimization process to attempt to reduce the tiepoint errors, which
+consequently reduce image seams.  Each tiepoint is weighted equally, so more
+tiepoints in a given area will cause marsnav to "work harder" in that area,
+giving it more weight (probably at the expense of other seams elsewhere).
+For this reason, the number of tiepoints per overlapping image pair should
+usually be consistent across the mosaic.
+
+There are two ways in which this residual is modified.
+
+The most important is INERTIA.  This modifies the residual by adding a
+factor that makes the images tend to stay in place.  For each pointing
+parameter, the difference between the original value of the pointing parameter
+and the current value is multiplied by the corresponding INERTIA value, and
+the result is added to the residual.  Each pointing parameter can have a
+different value for INERTIA.  The result of this is that, depending on the
+weight imparted by INERTIA, images will tend to stay where they are, adjusting
+less in response to tiepoints than they otherwise would.  This has the
+beneficial effect of preventing "drift" of the entire solution.  For example,
+for a typical cylindrical projection, you can add some value to all of the
+azuimuths and not affect the residual at all.  The solution could thus "random
+walk" around in azimuth, giving incorrect results.  INERTIA can prevent that
+by introducing an error term whenever the azimuth moves.
+
+Selecting an appropriate value for INERTIA is a dicey proposition.  The unit
+of the residual is a distance in pixel space, squared.  Pointing parameters
+can be any unit, but are typically in degrees.  Thus the units for INERTIA
+itself are typically pixels^2/degree.  It is best selected by trial and error.
+Experience has shown that values in the range of 5 to 20 are appropriate for
+MER pointing parameters (coincidentally enough, both for mast camera angles
+and for MI joint angles).  Note that it is not uncommon to have different
+inertia values for each pointing parameter.  An INERTIA of (5,20,10) might
+be useful for the right side of a stereo mosaic.  The 20 weights elevation
+changes heavily, which tends to reduce vertical disparity.  The weights for
+azimuth and twist are less, allowing them to change more.
+
+Note that INERTIA applies only to image pointing parameters.  Pointing
+parameters relating to surface models or rover localizations do not participate
+in any INERTIA.
+
+The second modification to the residual calculation occurs if the second
+sample number in the input tiepoint file is negative.  In this case, a
+special mode is used.  The sample part of the tiepoint is ignored; only the
+line dimension is used.  This is intended for use with horizon points, when
+clear features cannot be found in the sample direction.  A tiepoint on the
+horizon, with a negative second sample number, will bring the horizon
+into alignment vertically (thus avoiding a stairstep) without messing up the
+horizontal alignment (usually taken care of by tiepoints lower in the image).
+The line-direction error is boosted by 6x to over-emphasize these horizon
+points.  It is unclear if this mode is really helpful or not; it was put in
+on an experimental basis.  Note that the functionality of this mode (except
+for the 6x factor) has been superceded by some of the new tiepoint types,
+specifically 1-dimensional tiepoints.
+
+WARNING:
+
+The parameters NORMAL, GROUND, and SURFACE should be the same as those used
+in the mosaic program and MICA (and, to a lesser extent, MARSTIE) to get
+proper results.  If adjusting the surface model, make sure to copy the
+resulting surface parameters to all downstream programs.  Failure to do so
+will result in incorrect output.
+
+NOTES:
+
+Study the printout. It tells you a lot about what happened.
+
+Most stereo cameras (e.g. MPF IMP, M98 SSI) are *not* designed to have their
+nodal surface at the azimuth axis.  This introduces LOTS of parallax if single
+images contain objects both near and far.  Pick your tiepoints intelligently so
+you don't pick a near object in this pair and a far one in that pair.
+
+It is important to remember that this program does *NOT* generate absolute
+pointing parameters.  It only adjusts pointings relative to other images
+*in the same mosaic* such that the errors within the mosaic are minimized.
+It is not even necessarily the case that the parameters derived for a given
+image in one mosaic will work as parameters to the same image in a different
+mosaic.  They are likely to be close, but lacking any absolute reference,
+each mosaic should be nav'd independently.
+
+One or more images are usually designated as "Reference" images.  These
+images are "fixed" in that their pointing parameters are not allowed to
+change.  This "anchor" can keep the mosaic as a whole from drifting too far
+off of some absolute pointing reference.  Without a reference, the overall
+mosaic is unconstrained and could drift around significantly (but see INERTIA).
+With a reference, there is still no absolute certainty of pointing, but at
+least the results will be close to what the "actual" absolute pointing should
+be.  If the reference image is known to be correctly pointed in absolute
+terms, then the rest of the pointing adjustments made by this program will
+come close to the same absolute accuracy - but even this is not guaranteed.
+
+The Reference image is automatically selected as the "most connected" image,
+unless overridden by REFIMAGE.  REFIMAGE=-1 will turn off all reference
+images.  REFIMAGE is a list, allowing you to specify a number of reference
+images if needed.
+
+In order to accommodate large numbers of reference images, REFIMAGE accepts
+negative numbers to represent a range,  For example, the sequence 5,-8 says
+that 5,6,7,8 are references.  This shorthand is more convenient than the old
+UNTIL parameter.  See the help for REFIMAGE.
+
+A range of reference images allows one to e.g. add on to an existing,
+navigated mosaic without changing the original pointings.  Alternatively,
+individual images can be listed in REFIMAGE, and each one will become a
+reference.
+
+ADJREF allows some of the pointing parameters of references to be changed.
+See the help for ADJREF.
+
+A somewhat related concept is the IGNORE list.  Any tiepoints containing an
+image listed in the IGNORE list will be removed from consideration.  This
+allows you to concentrate on certain images without being influenced by others
+(for example, navigating a foreground mastcam mosaic while ignoring a background
+navcam mosaic).  IGNORE accepts ranges, like REFIMAGE does.
+
+.page
+PARALLEL EXECUTION
+
+This program has been parallelized using Open MP (OMP), which is built in
+to the g++ compiler.
+
+By default the number of threads used equals the number of cores on the machine
+where the program is being run (but see parallel_degree below).  The parallel
+amoeba (pamoeba) algorithm, implemented from a paper by Lee and Wiswall, is
+used to accomplish the parallelism (an earlier attempt parallelized the
+objective function itself, but this method appears superior).
+
+Parallel processing can be disabled via the -OMP_OFF keyword.  The number
+of threads can be controlled by setting the OMP_NUM_THREADS environment
+variable before running the program.  There are numerous other OMP variables
+that can be set; see the OMP documentation.  However, the number of threads
+is the only one that is likely to be useful in most cases.
+
+The parallel amoeba function has an additional parameter, PARALLEL_DEGREE,
+that is used to control how many vertices of the simplex are adjusted at the
+same time.  This defaults to about half the number of independent variables
+being adjusted (or 1 if OMP is off), but can be explicitly set via the
+PAR_DEGREE parameter.
+
+The parallel degree is related to but is NOT the same as the number of threads.
+Parallel degree says how many vertices to look at in a single iteration.  Each
+vertex can be evaluated on its own thread, or the same thread might look at
+several vertices.  The number of threads will not exceed parallel_degree
+(except for a rare corner case and some initialization), so it controls how
+much actual parallelism is allowed.  Note that for parallel_degree == 1, the
+algorithm devolves to be (almost) identical to the serial amoeba.  There are
+two differences: 1) when scores in a simplex are tied, serial takes the
+first while pamoeba takes the last, and 2) at the end, pamoeba copies the
+"best" answer to slot 0 rather than returning an arbitrary answer.
+
+So, parallel_degree of 1 will effectively disable parallel processing, but
+will give results extremely close to the serial algorithm.  A higher degree
+of parallelism changes the algorithm by considering multiple vertices at
+once, which could have impacts on the results.  The impacts should be minor
+and in the noise, however.
+
+In general you do not want the parallel degree to approach the number of
+parameters, as the algorithm gets less efficient according to Lee and Wiswall
+(that has not yet proven with marsnav, however).  The best bet is generally
+to let it default, in which case pamoeba will pick a number around half of
+the number of parameters, that is also a multiple of the number of available
+threads (to avoid thread starvation).
+
+NOTE: Site (position and orientation) adjustment cannot be done in parallel
+mode, due to the implementation complexity involved.
+
+.PAGE
+TIEPOINT TYPES
+
+The "xml" tiepoint file format implements 10 different types of tiepoints.
+Each includes different information, and should be used in different
+situations.  They are numbered according to the "type" field in the XML file,
+and include a snippet of XML as an example of the format.
+
+Note that XYZ and angle values are translated appropriately for the specified
+coordinate systems.
+
+0) Traditional
+
+    <tie type="0" left_key="1" right_key="2">
+      <left line="53.43125" samp="356.2353"/>
+      <projected line="634.3415" samp="43.43512"/>
+      <right line="634.4556" samp="44.43252"/>
+      <flags quality="0.85635" interactive="0"/>
+    </tie>
+
+Traditional tiepoint, used to tie images together.  "left" and "right" are
+the actual tiepoints; "projected" is the left projected into the right just
+for reference (not to be confused with the projection described below, which
+is different).
+
+Method: Left point is projected to the surface model, then back into the right
+image.  The error is the difference between the projection and the Right point.
+
+The parameter TRAD_MODE can be set to use an alternate measure of
+error. With TRAD_MODE=MISS_DISTANCE, the line/sample error described
+above is replaced with the distance in xyz space between the rays to
+the left and right tiepoints, as calculated by xvector. With
+TRAD_MODE=BOTH, the line/sample error and xyz miss distance errors are
+added. With both TRAD_MODE=MISS_DISTANCE and TRAD_MODE=BOTH, the xyz
+miss distance errors are scaled with the real-valued parameter
+MISS_MULT.
+
+1) Fiducial
+
+    <tie type="1" left_key="1">
+      <left line="326.32523" samp="21.43516"/>
+      <xyz x="0.43156" y="1.3455" z="-0.65425"/>
+      <flags quality="0.764626" interactive="1"/>
+    </tie>
+
+This is used to fix an image point to an absolute reference in XYZ space,
+for example a fiducial mark on the spacecraft at a known position.
+
+Method:  XYZ location is projected into the image.  The error is the difference
+between that and the given point.
+
+2) 1-Dimensional
+
+    <tie type="2" left_key="1" right_key="2">
+      <left line="433.53216" samp="212.5326"/>
+      <projected line="752.43556" samp="46.53116"/>
+      <right line="756.34315" samp="45.3144"/>
+      <angle degrees="22.5316"/>
+      <flags quality="0.563226" interactive="1"/>
+    </tie>
+
+This is used for cases like a horizon, where useful features exist for only
+one direction (e.g. the horizon is clearly delineated, but all points along
+the horizon look the same, making traditional tiepoints unusable).
+
+Method:  Project as in a traditional tiepoint, but the error is only the
+component of the difference that is perpendicular to the given angle in image
+space.  Thus, an angle of 0 is good for a horizon; an angle of +10 means a
+horizon tilted at 10 degrees with the right side higher.  Angle is measured
+in degrees CCW from horizontal in the right image's image space.
+
+3) Infinity
+
+    <tie type="3" left_key="1" right_key="2">
+      <left line="12.42156" samp="531.31135"/>
+      <projected line="513.5311" samp="43.4314"/>
+      <right line="511.53151" samp="45.54531"/>
+      <flags quality="0.885316" interactive="1"/>
+    </tie>
+
+Like a traditional tiepoint, but it projects to infinity instead of to a
+surface.  Useful for tying horizon features (distant hills, far crater walls)
+together when range should not be considered.  Needed only if position is
+being solved for (via other tiepoints).
+
+Method:  Like traditional tiepoints, but project to infinity.  Cannot be used
+to determine position (only orientation).
+
+4) Orbital XY
+
+NOT YET IMPLEMENTED
+
+    <tie type="4" left_key="1">
+      <left line="531.1354" samp="76.5432"/>
+      <xy x="550.3551" y="-215.5531"/>
+      <flags quality="0.331356" interactive="1"/>
+    </tie>
+
+Used to localize a rover by tying to features visible in orbital images.
+The Z value of the point is unknown.  This translates to looking at azimuth
+errors only (ignoring elevation errors).  Thus XY position and azimuth (yaw)
+orientation of the rover can be determined, but not pitch/roll or Z.
+
+Method:  Project point to get az/el.  Use that elevation to compute a Z at
+the XY location.  Project that XYZ into the image.  Use only the component
+of error in the azimuth direction (requires determining the orientation of
+the image w.r.t. the coordinate system).
+
+5) Orbital XYZ
+
+    <tie type="5" left_key="1">
+      <left line="531.1354" samp="76.5432"/>
+      <xyz x="550.3551" y="-215.5531" z="-5.431231"/>
+      <flags quality="0.331356" interactive="1"/>
+    </tie>
+
+Like Orbital XY, but includes a Z component derived from an orbital DEM.
+This is really the same as fiducial XYZ tiepoints, except that a site-like
+coordinate system should generally be used, rather than a rover-like one.
+It's really just a different usage of the same thing.
+
+Method:  Same as Fiducial.
+
+6) Azimuth
+
+NOT YET IMPLEMENTED.
+
+    <tie type="6" left_key="1">
+      <left line="124.431" samp="553.1315"/>
+      <angle degrees="54.5312"/>
+      <flags quality="0.5311" interactive="1"/>
+    </tie>
+
+Used when horizon features are at a known azimuth, but elevation may not be
+known.
+
+Method:  Project the point to get az/el, then combine that el with the
+supplied azimuth and project back.  Error is azimuth component only, like
+orbital XY tiepoints.
+
+7) Elevation
+
+NOT YET IMPLEMENTED
+
+    <tie type="7" left_key="1">
+      <left line="55.5311" samp="10.5315"/>
+      <angle degrees="65.5315"/>
+      <flags quality="0.4312" interactive="1"/>
+    </tie>
+
+Used when elevation of features is known (e.g. a distant horizon) but
+azimuth is not.  Note that if both az and el are desired, the same image
+point can be supplied with az and el separately.  (TBD: coordinate transform
+issues with that).
+
+Method:  Like azimuth tiepoint, but swap az/el.
+
+8) Z Surface
+
+    <tie type="8" left_key="1" right_key="2">
+      <left line="53.43125" samp="356.2353"/>
+      <projected line="634.3415" samp="43.43512"/>
+      <right line="634.4556" samp="44.43252"/>
+      <z z="-0.387"/>
+      <flags quality="0.85635" interactive="0"/>
+    </tie>
+
+Like a traditional tiepoint, except that the left point is projected to a
+surface at the given Z value, rather than the main surface model.  This allows
+for example tiepoints to be acquired on a rover/lander deck (at a different Z)
+and on the ground at the same time.  The surface model used is a plane with
+normal (0,0,-1) and ground intercept (0,0,z) expressed in the coordinate frame
+in use.  TBD:  coordinate frame transformation.
+
+9) Dynamic XYZ
+
+    <tie type="9" left_key="1" right_key="2">
+      <left line="53.43125" samp="356.2353"/>
+      <projected line="634.3415" samp="43.43512"/>
+      <right line="634.4556" samp="44.43252"/>
+      <flags quality="0.85635" interactive="0"/>
+    </tie>
+
+This is a tiepoint that looks like a traditional tiepoint but acts like a
+fiducial tiepoint.  The XYZ value corresponding to the Left point is looked
+up, and that is used like a fiducial to match the Right point.  This is
+useful for cases where the surface model does not match the actual ground
+very well, or when very different points of view are used (such as a
+localization problem, in which case any variation from the surface model
+is problematic).
+
+This tiepoint has different requirements than the others.  In order for the
+XYZ value to be found, the list file must specify the corresponding XYZ image.
+Normally standard image files are supplied in the list, but only the label is
+looked at (not the image data).  Thus, replacing that with a similarly-labeled
+XYZ file should not cause a problem for marsnav.  (marstie does need the image
+data, so two separate lists may be necessary here).  Be careful about
+linearization modes: make sure the XYZ is either raw or linearized to match
+the image you used to acquire the tiepoints.
+
+Method: At the beginning of the run, the Left point is used to pull the XYZ
+coordinate from the input file (which must be an XYZ image).  This value is
+converted to the instrument frame (typically Rover) for that image (see next
+paragraph).  During adjustment, this XYZ value is converted back to the frame
+in use (typically Site frame), and then projected into the right image.  The
+error is the difference between the projection and the Right point.
+
+Note the coordinate transforms: this is a subtle point, but it allows these
+tiepoints to be used for rover localizations (do_loc and do_ori) because the
+XYZ point changes in the common (Site) frame as the rover position is moved by
+the localization adjustments.
+
+10) Miss Distance
+
+    <tie type="10" left_key="1" right_key="2">
+      <left line="53.43125" samp="356.2353"/>
+      <projected line="634.3415" samp="43.43512"/>
+      <right line="634.4556" samp="44.43252"/>
+      <flags quality="0.85635" interactive="0"/>
+    </tie>
+
+This tiepoint is an adaptation of Traditional, replacing the
+line/sample pixel space error with the distance in xyz space between
+the rays to the left and right tiepoints, as calculated by xvector (the
+marsxyz algorithm). Alternatively, Traditional tiepoints can be used with
+TRAD_MODE=MISS_DISTANCE to have the same effect. Further, Traditional
+tiepoints with TRAD_MODE=BOTH adds the pixel and xyz errors together.
+
+The xyz errors are scaled with MISS_MULT to control the relative
+strengths of xyz and pixel space errors when both errors are combined,
+for example when mixing Traditional and Miss Distance tiepoints, or
+when using Traditional tiepoints with TRAD_MODE=BOTH.
+
+See also PARALLEL_LIMIT and RANGE_MISS, which modify how miss-distance
+tiepoints behave.
+
+.page
+
+HISTORY:
+1994-04-30 J Lorre - Initial mpfnav
+1998-07	       Split of original MARSNAV into two parts:  MARSTIE and MARSNAV
+1998-09    rgd Multimission conversion
+2013-04-02 rgd Added MAX_RESIDUAL, REFIMAGE ranges, IGNORE
+2014-05-21 wlb Added miss-distance tiepoints
+2014-09-23 rgd Added MAX_REMOVE, squared miss-distance error
+2016-10-05 rgd Added OMP-based parallelization
+2019-10-24 wlb Initialized some variables; cleaned up some -Wall warnings
+2020-04-29 rgd Added mintie parameter
+2020-05-01 wlb Replaced sprintfs
+
+COGNIZANT PROGRAMMER:  Bob Deen
+
+.LEVEL1
+.VARI INP
+Input image(s) or
+file list.
+
+.VARI OUT
+Output navigation
+table.
+
+.VARI IN_TPT
+Input tiepoint file.
+
+.VARI OUT_TPT
+Output tiepoint file.
+
+.VARI NAVTABLE
+Input navigation table.
+
+.VARI FORMAT
+Output format of nav file.
+if format=xml, 
+OUT_SOLUTION_ID is required.
+
+.VARI OUT_SOLUTION_ID
+Solution ID for OUTPUT
+nav file (required if
+XML format).
+
+.VARI SOLUTION_ID
+Solution ID for INPUT
+nav file, if needed.
+
+.VARI INTERACT
+To select tiepoints
+manually.
+
+.VARI REFIMAGE
+Reference image override.
+Can be a list of images.
+refimage=-1 means no reference
+image.
+
+.VARI UNTIL
+All images up to
+REFIMAGE(1) are reference
+images.
+
+.VARI ADJREF
+Allows some reference
+image params to be
+adjusted.
+
+.VARI IGNORE
+List of images to ignore
+in the tiepoint list.
+
+.VARI IGNORE_INTRA
+Causes intra-set overlaps
+(within the non-reference
+set) to be ignored.
+
+.VARI ERROR
+Final permitted
+pixel tiepoint
+residual.
+
+.VARI RECYCLE
+How many times to
+recycle in batch mode.
+
+.VARI MINTIE
+Min # of tiepoints
+per image
+
+.VARI FTOL
+Tolerance value for amoeba
+
+.VARI DO_POINTING
+Whether or not to
+adjust pointing
+
+.VARI DO_SURFACE
+Whether or not to
+adjust surface model
+
+.VARI DO_LOCATION
+Which locations to
+adjust (see level 2)
+
+.VARI DO_ORIENTATION
+Which orientations to
+adjust (see level 2)
+
+.VARI REMOVE
+Whether or not to
+remove bad tiepoints
+in batch mode
+
+.VARI MAX_RESIDUAL
+Threshold above which
+tiepoints will be removed.
+
+.VARI MAX_REMOVE
+Max number of loops for
+removing tiepoints.
+
+.VARI INERTIA
+Inertia factor for
+each pointing param.
+
+.VARI START_KEY
+Starting key number for
+tiepoint file (XML format
+only).
+
+.VARI TRAD_MODE
+Selects traditional or
+miss-distance tiepoints.
+
+.VARI MISS_MULT
+Multiplicative factor for
+miss-distance tiepoints.
+
+.VARI PARALLEL_LIMIT
+Sets limit for rays being
+considered parallel for
+miss-distance tiepoints.
+
+.VARI RANGE_MISS
+Whether or not to scale
+miss-distance tiepoints
+by the range.
+
+.VARI OMP_ON
+Turns on or off parallel
+processing (multiple threads,
+single machine).  Default: on
+
+.VARI PAR_DEGREE
+Overrides the degree of
+parallelism used.  See the
+main help.
+
+.VARI NORMAL
+Surface normal vector.
+
+.VARI GROUND
+Surface ground point.
+
+.VARI SURF_COORD
+Coordinate system used to define
+surface parameters.
+
+.VARI SURFACE
+The type of mars
+surface to use INFINITY, PLANE, 
+SPHERE1, SPHERE2, MESH.
+
+.VARI SURF_MESH 
+Mesh file for surface model
+
+VARI SURF_CSFILE 
+File containing CS for surface
+model
+
+.VARI CONFIG_PATH
+Path used to find
+configuration/calibration
+files.
+
+.VARI POINT_METHOD
+Specifies a mission-
+specific pointing
+method to use
+
+.VARI MATCH_METHOD
+Specifies a method
+for pointing corrections.
+
+.VARI MATCH_TOL
+Tolerance value for
+matching pointing params
+in pointing corrections file.
+
+.VARI NOSITE
+Disables coordinate
+system sites.
+
+.VARI RSF
+Rover State File(s) to use.
+
+.VARI DEBUG_RSF
+Turns on debugging of RSF
+parameter.
+
+.VARI COORD
+Coordinate system to use.
+Ignored by marsnav, except
+for final surface model.
+
+.VARI COORD_INDEX
+Coordinate system index for
+some COORD/mission combos.
+Ignored by marsnav.
+
+.VARI FIXED_SITE
+Which site is FIXED for
+rover missions.
+
+.LEVEL2
+.VARI INP
+There are two options for describing input images. 
+
+Either:
+List the image file names 
+
+Or:
+provide an ascii file with the file names listed, one per record.
+
+Note that normally only the label is used from the input images.  They
+are typically image files for convenience and compatibility with marstie et al.
+However, Dynamic XYZ tiepoints require the corresponding input file to be an
+XYZ image.
+
+.VARI OUT
+Output navigation table, containing the updated pointing and surface model
+information.  It should also contain rover localization if used, but this is
+not yet implemented.
+
+This is either an XML file, or an ASCII table, depending on the value of
+FORMAT.
+
+.VARI IN_TPT
+The input tiepoint file, as generated by MARSTIE (or a previous run of
+MARSNAV).  This file must be specified.  It can be in either the old text
+format, or the new XML format (it detects this automatically).
+
+.VARI OUT_TPT
+The output tiepoint file, which holds changes to the tiepoints made by either
+batch or interactive editing modes of MARSNAV.  This file is always written
+in the new XML tiepoint format.  It can be converted to the old format using
+marstie.
+
+.VARI NAVTABLE
+The optional input navigation table.  If provided, this allows the user to
+provide an initial nav solution, which is then tweaked by the marsnav process.
+This allows a pointing solution created by other means, (such as MICA) or via
+an earlier marsnav run, to be adjusted.  This may be used to better globally
+distribute error or accomodate new tiepoints, among other things.
+
+Note that there is no guarantee the result will bear any resemblance to the
+input nav file.  It is merely a starting point, and marsnav may go off in a
+completely different direction.
+
+.VARI FORMAT
+The output format of navigation file.
+If format=TXT, then the output is an ASCII table with a header,
+then one record per input picture giving:
+Number of Parameters (N), N Original Parameters, N Corrected Parameters
+If images come from different instruments, the number of pointing parameters
+may be different for each one.  The parameters are often 2 (Azimuth, Elevation)
+but that depends on the instrument.  See the Pig documentation.
+
+If format=XML, then the output is a xml file in following format:
+<?xml version="1.0" encoding="UTF-8"?>
+<pointing_correction ...>
+   ...
+  <priority>
+    <entry solution_id=.../> 
+  </priority>
+  <solution ...>
+    <image filter=... frame_id=... image_id=... instrument=...>
+       <original_parameters type=...>
+         <parameter id=... value=.../>
+       </original_parameters>
+    </image>
+    <pointing_parameters type=...>
+       <parameter id=... value=.../>
+    </pointing_parameters>
+    <camera_model type=...>
+       <parameter id=... type=... value=.../>
+       ...
+       <reference_frame name=... index=.../>
+    </camera_model>
+  </solution>
+  ...
+</pointing_correction>
+
+.VARI OUT_SOLUTION_ID
+Solution id for the OUTPUT navigation file in XML format.
+If solution id is missing when FORMAT=XML, then the output
+navigation file can not be created (therefore the parameter is required).
+
+.VARI SOLUTION_ID
+Specifies which solution ID to use for the INPUT nav file (if present).
+
+There are potentially many different definitions for the same coordinate
+system. These are identified via a unique Solution ID.  If this parameter
+is given, only the specified solution's definition is searched for.  Normally
+it is not used.
+
+.VARI INTERACT
+Controls whether tiepoint editing (performed when a residual is > ERROR) is
+performed interactively or automatically.  See the METHOD section of the
+program help.
+
+.VARI REFIMAGE
+Specifies which image (if any) are reference images.
+
+Reference images are assumed to be correctly navigated and will not be
+adjusted (but see ADJREF).
+
+Defaults to the image with the greatest number of connected images once
+tiepoints have been culled to one per pair.
+
+REFIMAGE=-1 means no reference image.
+
+EFIMAGE can be a single image, or a list of images.  Each image in the
+list will be a reference image.  (see also UNTIL).  This allows any arbitrary
+images to be selected as references.  If an image number is negative, it
+means all images from the previous number through (the absolute value of)
+this one will be references.  For example a list:
+
+1,3,-6,8,11,-15
+
+will cause the following images to be reference imgaes:
+
+1,3,4,5,6,8,11,12,13,14,15
+
+Numbering of images starts at 1.
+
+.VARI UNTIL
+Means that all images from 1 to the first value of REFIMAGE inclusive are
+treated as reference images.  The pointing of these will not change.  Any
+additional images listed in REFIMAGE will also be reference images.
+
+The functionality of this parameter has been subsumed by the negative number
+feature of REFIMAGE.  For example, REF=5 -UNTIL is the same as REF=\(1,-5\).
+
+.VARI ADJREF
+If given ADJREF specifies how many parameters to keep constant for reference
+images.  Parameters beyond ADJREF get adjusted even if the image is a reference
+image.  This allows, for example, twist to be adjusted even when the locations
+are fixed (MER 3dof pointing model).
+
+Parameter numbers are 1-based.
+
+.VARI IGNORE
+Specifies a list of images that will be ignored.  Tiepoints containing this
+image will be ignored and excluded from consideration (but see IGNORE_INTRA).
+This has two purposes.  First, for very large tiepoint files, when adjusting
+only a few images (via REFIMAGE), the presence of spurious tiepoints can be a
+significant performance drain.  Second, this allows you to exclude a tiepoint
+that is known to be problematic.  This might occur, for example, when matching
+a foreground mastcam image to a background navcam image - even though the
+foreground to background connections are correct, they may pull the foreground
+solution out of alignment.
+
+Ignored tiepoints still appear in the output tiepoint file (if one is written).
+
+Ignored images should always be reference images (although this is not checked
+nor enforced).  A non-reference (active) image cannot be adjusted if all
+tiepoints containing that image are removed.
+
+Like REFIMAGE, IGNORE accepts negative numbers to indicate ranges.  So a value
+of 4,-7 means 4,5,6,7 are all ignored.  See REFIMAGE for more examples.
+
+.VARI IGNORE_INTRA
+This flag causes all tiepoints between non-reference (active) images to be
+ignored.  Only tiepoints between non-reference and reference images will be
+considered.
+
+The use case for this is as follows:  Say you are insetting images (e.g.
+mastcam on MSL) into a background (e.g. navcam) mosaic that has already been
+tiepointed and nav'd.  You want to coregister the images to the background.
+This flag allows you to use autotie to get a complete set of tiepoints but
+then only use the ones tying the foreground to the background.  This is
+beneficial because the normal autotie modes will create many more overlap
+ties than full-image ties, making the overlap ties overwhelm the full-image
+ties.  Since you want the full-image ties, this flag lets you ignore the
+overlap ties.
+
+.VARI ERROR
+The final pixel tiepoint residual error that is permitted. Points 
+exceeding this residual are candidates for removal in batch mode
+(potentially after recycles), or will be edited if the INTERACT mode
+is used.  Default is 0.1 pixels, which makes sense only with -noremove.
+A value like 7 (the old default) would be better in removal mode.
+
+.VARI RECYCLE
+This parameter is only used in batch mode (not interactive), when a tiepoint's
+residual exceeds ERROR.  RECYCLE specifies the number of times to re-run the
+solution, starting where the previous one ended, before deleting the offending
+point.  Once a point is deleted, the solution is re-started at its initial
+conditions, with a potential for RECYCLE more reruns until the residual is
+acceptable.
+
+.VARI MINTIE
+Specifies the minimum number of tiepoints for an image.  If at the end of
+the run, an image has fewer than MINTIE tiepoints still active, it is reset
+to its initial conditions - the adjustments are ignored.  This is to prevent
+uncontrolled drift when there are no tiepoints.  INERTIA is supposed to fix
+this, but has been shown to be ineffective in some cases.
+
+Caution should be exercised with this, as if there is a systematic motion of
+nearby frames, the frames with too few tiepoints will not participate in this
+systematic motion.
+
+This is not exactly the same as setting the image to be a reference image,
+because the few tiepoints that DO exist do still pull on their partners.  This
+could cause them to get pulled out of position, potentially.  Generally there
+should be enough other tiepoints to mitigate this.
+
+The default is 0, which disables all resetting.  Suggested values are 1
+(reset those with just one tiepoint) or 4 (enough to overconstrain a solution
+so it doesn't rotate and scale uncontrollably, as could happen with 2 or 3).
+
+.VARI FTOL
+Tolerance value for amoeba.  Specifies how accurate the answer should be.
+(more precisely, amoeba terminates when the amount of change in the cost
+function is less than this amount).  Larger numbers can greatly speed up
+runtime.  For marsnav, values of .001 are probably sufficient for most
+cases, but this has not been rigorously tested.  The default is .0001.
+
+Default is pretty arbitrary but seems to work well...
+.VARI DO_POINTING
+This keyword specifies whether or not pointing should be adjusted.  It defaults
+to on.  You may wish to turn off pointing correction if you were only
+interested in a surface model or localization adjustment.  Note that a nav
+file is still written even if NO_POINTING is on; it simply specifies no
+adjustment.
+
+.VARI DO_SURFACE
+This keyword specifies whether or not the surface model should be adjusted.
+It defaults to off (NO_SURFACE).  Allowing the surface model adjust can be
+helpful for unusual situations, such as MER-MI mosaics or the inside of the
+MER-B landing crater.  If you turn on surface model adjustment, you should
+have a good number of very high-quality tiepoints, that are well distributed
+over the image overlaps.
+
+Note that the resulting surface model is not written to a file anywhere; the
+results are simply printed to the stdout log.  This happens at each iteration,
+as well as again at the end of the program.  For convenience, they are
+printed out in a form that can be easily cut-and-pasted into other programs'
+command lines.
+
+The surface model will be printed out at the end of the run in both the frame
+specified by SURF_COORD, and (if different) the one specified in COORD.  This
+allows for example the ROVER frame to be used for adjustment, but the SITE
+frame used for specifying the surface to later programs.
+
+.VARI DO_LOCATION
+Specifies which rover locations are to be adjusted.  This changes the XYZ
+location of the rover only; it does NOT adjust the rover orientation (see
+DO_ORIENTATION).
+
+When marsnav runs, it prints out a list of all sites used by the input files.
+Note that a "site" in this sense is any rover position, NOT just formally a
+Site frame.  This list is indexed by a single number (counting 0 to n).
+DO_LOCATION is a list of these numbers specifying which of the locations to
+adjust.  These are not Site indexes (e.g. as defined by MER); they are
+indexes into the printed-out table.  Note that this means you must normally
+run marsnav once to get this table printed, kill it, and rerun with
+DO_LOCATION specified.
+
+For example, if the following is printed:
+
+List of Sites used by input files:
+  Site 0,'MER_ROVER: (11,55,73,367,167)',count=9. Adj loc=0,ori=0. match loc=-1,ori=-1
+  Site 1,'MER_ROVER: (11,55,111,396,291)',count=7. Adj loc=0,ori=0. match loc=-1,ori=-1
+  Site 2,'MER_ROVER: (11,55,119,403,291)',count=23. Adj loc=0,ori=0. match loc=-1,ori=-1
+  Site 3,'MER_ROVER: (11,59,0,0,0)',count=42. Adj loc=0,ori=0. match loc=-1,ori=-1
+
+it says that 9 images use the "MER_ROVER: (11,55,73,367,167)" position, which
+is called 0 in marsnav.  42 use "MER_ROVER: (11,59,0,0,0)", which is called
+3, and so on.  If you wanted to adjust the last two locations, you would give
+DO_LOCATION=(2,3).  Check to make sure the appropriate "adj loc" values change
+to 1.
+
+Ignore match loc at the moment.  Eventually the plan is to allow sites to
+be glued together such that one value changes both, but this is not yet
+implemented.
+
+*IMPORTANT*  The results of the localization are printed to stdout, as
+with DO_SURFACE.  These results are NOT written into an RMC file.  They
+should be, but implementation time during ops did not allow for this.  So,
+you must create an RMC file by hand, and cut-and-paste the printed values
+into it.  The XYZ and quaternion are conveniently formatted for cut-and-paste
+into an RMC file.
+
+Note:  in some cases you may want to take the resulting XYZ value and use
+it as a Site vector (SVF file) rather than a Rover vector (RVF).  However,
+any simultaneous adjustment of positions within the same site would have to
+be adjusted to account for the site offset.  Position 0 is by definition at
+offset (0,0,0) to the Site, so any adjustment of Position 0 really needs to
+be a Site update.  But that adjustment would not be reflected in the other
+positions within the site so the value would have to be subtracted from the
+other calculated positions in order to maintain consistency.
+
+Note that DO_LOCATION cannot be used with OMP_ON.
+
+.VARI DO_ORIENTATION
+Specifies which rover orientations are to be adjusted.  This changes the
+Euler angles (and thus the quaternion) of the rover only; it does NOT
+adjust the rover location (see DO_LOCATION).
+
+When marsnav runs, it prints out a list of all sites used by the input files.
+Note that a "site" in this sense is any rover position, NOT just formally a
+Site frame.  This list is indexed by a single number (counting 0 to n).
+DO_ORIENTATION is a list of these numbers specifying which of the orientations
+to adjust.  These are not Site indexes (e.g. as defined by MER); they are
+indexes into the printed-out table.  Note that this means you must normally
+run marsnav once to get this table printed, kill it, and rerun with
+DO_ORIENTATION specified.
+
+For example, if the following is printed:
+
+List of Sites used by input files:
+  Site 0,'MER_ROVER: (11,55,73,367,167)',count=9. Adj loc=0,ori=0. match loc=-1,ori=-1
+  Site 1,'MER_ROVER: (11,55,111,396,291)',count=7. Adj loc=0,ori=0. match loc=-1,ori=-1
+  Site 2,'MER_ROVER: (11,55,119,403,291)',count=23. Adj loc=0,ori=0. match loc=-1,ori=-1
+  Site 3,'MER_ROVER: (11,59,0,0,0)',count=42. Adj loc=0,ori=0. match loc=-1,ori=-1
+
+it says that 9 images use the "MER_ROVER: (11,55,73,367,167)" position, which
+is called 0 in marsnav.  42 use "MER_ROVER: (11,59,0,0,0)", which is called
+3, and so on.  If you wanted to adjust the second and fourth orientations,
+you would give DO_ORIENTATIONS=(1,3).  Check to make sure the appropriate
+"adj ori" values change to 1.
+
+Ignore match ori at the moment.  Eventually the plan is to allow sites to
+be glued together such that one value changes both, but this is not yet
+implemented.
+
+*IMPORTANT*  The results of the localization are printed to stdout, as
+with DO_SURFACE.  These results are NOT written into an RMC file.  They
+should be, but implementation time during ops did not allow for this.  So,
+you must create an RMC file by hand, and cut-and-paste the printed values
+into it.  The XYZ and quaternion are conveniently formatted for cut-and-paste
+into an RMC file.
+
+Note that DO_ORIENTATION cannot be used with OMP_ON.
+
+.VARI REMOVE
+If NOREMOVE is specified, the program will not remove the worst tiepoint
+in batch mode.  Instead, when recycles are exhausted, it will simply exit
+with the current solution.  The default is NOREMOVE.
+
+This mode can be helpful when adjusting a surface model, or when all tiepoints
+are known to be good.
+
+.VARI MAX_RESIDUAL
+Specifies a threshold for residuals.  Any tiepoint above this residual will be
+removed during the editing process.
+
+.VARI MAX_REMOVE
+Specifies a maximum number of loops for the remove-tiepoint process.
+When tiepoints are removed, the whole solution is restarted from the
+beginning (so as to not be influenced by the now-gone tiepoints).  If
+MAX_REMOVE is specified, it sets a limit on the number of times this
+restart can happen, independent of whether the other loop termination
+criteria (error or max residual) are reached.
+
+.VARI INERTIA
+The INERTIA parameter modifies the residual used for function minimiziation
+by adding a factor that makes the images tend to stay in place.  For each
+pointing parameter, the difference between the original value of the pointing
+parameter and the current value is multiplied by the corresponding INERTIA
+value, and the result is added to the residual.  Each pointing parameter can
+have a different value for INERTIA.  The result of this is that, depending on
+the weight imparted by INERTIA, images will tend to stay where they are,
+adjusting less in response to tiepoints than they otherwise would.  This has
+the beneficial effect of preventing "drift" of the entire solution.  For
+example, for a typical cylindrical projection, you can add some value to all
+of the azuimuths and not affect the residual at all.  The solution could thus
+"random walk" around in azimuth, giving incorrect results.  INERTIA can prevent
+that by introducing an error term whenever the azimuth moves.
+
+Selecting an appropriate value for INERTIA is a dicey proposition.  The unit
+of the residual is a distance in pixel space, squared.  Pointing parameters
+can be any unit, but are typically in degrees.  Thus the units for INERTIA
+itself are typically pixels^2/degree.  It is best selected by trial and error.
+Experience has shown that values in the range of 5 to 20 are appropriate for
+MER pointing parameters (coincidentally enough, both for mast camera angles
+and for MI joint angles).  Note that it is not uncommon to have different
+inertia values for each pointing parameter.  An INERTIA of (5,20,10) might
+be useful for the right side of a stereo mosaic.  The 20 weights elevation
+changes heavily, which tends to reduce vertical disparity.  The weights for
+azimuth and twist are less, allowing them to change more.
+
+Note that INERTIA applies only to image pointing parameters.  Pointing
+parameters relating to surface models or rover localizations do not participate
+in any INERTIA.
+
+.VARI START_KEY
+Starting key number for the tiepoint file (XML format only).  Tiepoint files
+contain a list of images, each of which is associated with an integer key.
+Setting START_KEY to some value allows tiepoint files to be merged easily,
+without the keys conflicting.  It is acceptable to have the same image in
+different sections of a merged file (with different keys); they are properly
+merged when read in.
+
+.VARI TRAD_MODE
+This keyword determines the type of error values used by amoeba when
+correcting pointing parameters. TRADITIONAL uses line/sample space
+tiepoint differences. MISS_DISTANCE uses the minimum distance between
+the projected rays in XYZ space, scaled by the MISS_MULT parm value.
+BOTH sums the two errors, with the miss distance error scaled by
+multiplying with MISS_MULT. The default is TRADITIONAL.
+
+.VARI MISS_MULT
+This real-valued parameter is used as a scale multiplier for the miss
+distance in miss-distance tiepoints.  The default value is 333.3.  The xyz
+errors are scaled to control the relative strengths of xyz and pixel
+space errors when both errors are combined, for example when mixing
+Traditional and Miss Distance tiepoints, or when using Traditional
+tiepoints with TRAD_MODE=BOTH.
+
+.VARI PARALLEL_LIMIT
+When using miss-distance tiepoints, it is possible to get tiepoints whose
+rays are very close to parallel (e.g. distant tiepoints, near the horizon).
+Miss distance becomes very sensitive to noise when the rays are very close
+to parallel.  This parameter sets a limit on how close to parallel rays can
+be and still be considered; those tiepoints that exceed this threshold are
+ignored.  The value is specified as the dot product of the two vectors, in
+other words the cosine of the angle between them.  The default is 0.9999.
+
+.VARI RANGE_MISS
+Specifies whether or not to scale miss-distance tiepoints by their range.
+Scaling causes nearby points to "count" more, on the theory that they are
+more accurate (because farther points' rays become closer to parallel and
+are thus more susceptible to noise).  In addition, the error of one far-away
+point can swamp a bunch of nearby points if not scaled by range.  This is
+off by default, i.e. errors are not scaled by range.
+
+.VARI OMP_ON
+Turns on or off parallel processing using OMP, which uses multiple cores on
+a single host machine.  The default is on.  The main help describes some
+environment variables that can further control parallel processing.  Note
+that this program uses standard OpenMP (which is built in to the gcc/g++
+compilers), so further details can be found in the OpenMP documentation.
+
+.VARI PAR_DEGREE
+Overrides the degree of parallelism used, which affects how the pamoeba
+algorithm behaves but also affects how many parallel threads are used.
+A value of 1 is (almost) equivalent to the serial amoeba algorithm.  See the
+main help for details.
+
+.VARI NORMAL
+The local surface normal vector in the coordinate system specified by
+SURF_COORD (defaults to surface fixed).
+
+For most pan/tilt cameras, if the lander is not tilted this vector
+would be: normal=(0,0,-1).  ie: x_component=0, y_component=0, z_component=-1.
+This need not be a unit vector.  This vector is used to define the
+surface plane to which image points are projected in order to minimize
+parallax.
+For SPHERE1/2 surface models, normal's first parameter is used to
+denote sphere's radius.  Thus to describe sphere of radius R, user
+would specify normal=(R, 0, 0).
+
+.VARI GROUND
+Any point on the surface, in the coordinate system specified by SURF_COORD
+(defaults to surface fixed).  This defines where the tilted plane is in
+space.  Although any point may be used, normally the point just "under" the
+origin is selected.
+Defaults:
+Mars Pathfinder:  (0.0, 0.0, 0.0)       (lander zero point is on the ground)
+Mars 98 Lander:   (0.0, 0.0, 1.64)      (lander zero point is on top of deck)
+MER           :   (0.0, 0.0, 0.294)
+For MER images taken on top of the lander, the ground is roughly at (0.0, 0.0, 0.7)
+For SPHERE1/2 surface models, GROUND parameter is used to denote sphere's
+center.
+
+.VARI SURF_COORD
+The coordinate system that surface parameters like GROUND and NORMAL are
+defined in.  For valid values refer to COORD parameter description.  The
+interpretation of the values is dependent on the mission.  Defaults to
+surface fixed coordinate system.
+
+Note that no validation is done for input strings because COORD is using
+the same values.  So the user needs to be extra careful in specifying
+SURF_COORD values.  For example COORD=local would be correctly interpreted
+to mean LOCAL_LEVEL because of the validation process.  On the other hand
+specifying SURF_COORD=local would lead to underlying code treating the input
+value as invalid and reverting to default which is FIXED frame.  So the
+values for SURF_COORD should be spelled exactly as found in the list of
+valid values for the COORD parameter.
+
+.VARI SURFACE
+The type of mars surface to use. The surface is used to intercept view rays
+emanating from the cameras in order to model out parallax between the
+stereo cameras. The options are surface=INFINITY which means no surface
+is used, surface=PLANE (the default case). If surface = PLANE then the plane
+is defined by the NORMAL and GROUND parameters.  For the cases when PLANE 
+doesn't match local topography sufficiently well, here are two sphere surface
+models: surface=SPHERE1 and surface=SPHERE2.  SPHERE1 is useful to model
+convex surfaces like hills, it returns closest(first) ray-surface intersection 
+point.  SPHERE2 is useful to model concave surfaces, like crater when the
+camera point is outside looking in, it returns farthest(second) ray-surface 
+intersection point.  For the case when camera is inside the sphere surface, 
+like rover sitting in the crater, there is only a single intersection point
+and SPHERE1 and SPHERE2 behave exactly the same. Last, MESH is a surface
+model defined by a mesh file (.obj) which path is given with SURF_MESH.
+
+.VARI SURF_MESH 
+Mesh OBJ file to use as the surface model. For the mesh to be used,
+SURFACE must be set to MESH. The coordinates of the mesh vertices can be 
+expressed in any CS. However the mesh CS must be supplied via SURF_CSFILE.
+If SURF_CSFILE is not used, then the mesh is assumed to be to the CS that
+results from COORD or SURF_COORD
+
+VARI SURF_CSFILE 
+File name of a vicar file whose CS (contained in the labels) will be read and
+assigned to the SURFACE model. The type of image and its content are of no
+interest, we are just reading the CS. That CS will supersede any other surface 
+CS definition (COORD or SURF_COORD). Its typical use is to supply a CS to a
+given mesh file (expectedly the XYZ from which the mesh is computed from, but
+doesn't have to). But SURF_CSFILE could be use to define a CS in which NORMAL 
+and GROUND for a PLANE surface are expressed in.
+
+.VARI CONFIG_PATH
+A colon-separated list of directories in which to look for configuration
+and calibration files.  Environment variables are allowed in the list
+(and may themselves contain colon-separated lists).  The directories are
+searched in order for each config/cal file when it is loaded.  This allows
+multiple projectes to be supported simultaneously, and allows the user to
+override any given config/cal file.  Note that the directory structure below
+the directories specified in this path must match what the project expects.
+For example, Mars 98 expects flat fields to be in a subdirectory named
+"flat_fields" while Mars Pathfinder expects them to be directly in the
+directory specified by the path (i.e. no intermediate subdirectories).
+
+.VARI POINT_METHOD
+Specifies a mission-specific pointing method to use.  Normally this
+parameter is not used, in which case the "default" pointing methods
+are used.  Some missions may have special, or alternate, pointing
+methods available, which are indicated by this string (for example,
+backlash models, using arm joint angles instead of x/y/z/az/el, etc).
+A substring search is used, so multiple methods (where that makes sense)
+can be specified by separating the keywords with commas.
+
+Note that nav files created using one pointing method will most likely
+not be compatible with a mosaic created using a different pointing method.
+
+The methods available vary per mission, but some methods available at
+the time of this writing are:
+
+BACKLASH : Mars 98 SSI only.  Selects a backlash pointing model,
+which adjusts the telemetered azimuth and elevation values based on
+knowledge of the camera's mechanical backlash and the direction the
+motor was travelling when the image was taken.
+
+.VARI MATCH_METHOD
+Specifies a method for reading the nav file.
+
+Loose method matches with pointing parameters of the image.
+Tight method matches with unique id of the image.
+
+Applies only to an input nav file, if given (not to the output nav file).
+
+.VARI MATCH_TOL
+Tolerance value for matching pointing parameters in the pointing corrections file.
+Used if MATCH_METHOD=LOOSE
+Default value is pretty arbitrary, though seems to work well so far....
+
+.VARI NOSITE
+Disables all label-derived parameters to the Site mechanism which underlies
+coordinate systems.  This forces all sites to be identical, with all rotations
+and offsets set the same.  In the case of MPF or Mars 98, this disables
+the lander quaternion and offset (sets them to identity and 0, respectively).
+This option should not be used with images taken from different vantage
+points (e.g. the spacecraft moved, or mixing a lander and a rover) or
+invalid results will be obtained.  The use of this option invalidates the
+Fixed coordinate frame; any values reported in the Fixed frame will not
+correctly reflect the orientation of the lander/rover.
+
+Obviously, this option should be rarely used; it is intended for when the
+image labels defining the site are invalid or inconsistent.
+
+.VARI RSF
+Rover State File.  This is a list of filenames to load containing
+Rover State information.  These files contain position and orientation
+information for a rover (or other mobile spacecraft) at various sites.
+They are in XML format.  See the "Rover Motion Counter (RMC) Master File SIS"
+for details on these files.
+
+Rover State Files have a priority order.  The files listed first have
+the highest priority.
+
+Environment variables may be used in the list.
+
+For MER, if a directory is specified, then that directory is searched for
+RMC Master files and any found are loaded.  The directory structure and
+filename convention is covered in the RMC SIS.  The directory specified
+is the one containing "master", so if <dir> is the name specified in the
+RSF parameter, the following files will be searched for:
+
+<dir>/master/<mission>_Master.svf
+<dir>/master/<mission>_Site_<n>_Master.rvf
+
+The name of each file loaded is printed to the stdout log for reference.
+
+.VARI DEBUG_RSF
+If enabled, this causes the internal database of RMC locations to be
+printed out to the stdout log.  This is after the RSF files have been
+loaded and the coordinate systems read from the input label(s).
+
+.VARI COORD
+This parameter is ignored by marsnav, except for one place.  It is
+here for compatibility with subroutines used by other programs (see
+e.g. marsmap).
+
+If DO_SURFACE is specified, then the final surface model is printed out
+in the coordinate system specified by COORD as well as SURF_COORD.  This
+allows for example the input surface to be specified in ROVER frame, and
+ROVER frame will be used to adjust it.  But the final surface will be
+printed in both ROVER and SITE frames.  This allows the SITE frame value
+to be used in subsequent steps, which more closely follows normal practice.
+
+.VARI COORD_INDEX
+This parameter is ignored by marsnav (except in one case; see COORD).  It
+is here for compatibility with subroutines used by other programs (see
+e.g. marsmap).
+
+.VARI FIXED_SITE
+Specifies which major Site is the "Fixed" Site for this run.
+
+Historically, MPF and M98 had a single "Surface Fixed" frame which never
+moved, and which all other coordinate system frames were referenced to.
+With the advent of long-range rovers (such as MER and FIDO), that became
+insufficient.  The rover traverses far enough that errors in knowledge of
+coordinate system offset and orientation become unacceptable.
+
+For this reason, a system of major Sites was introduced.  Periodically
+during the mission, a Site frame is declared.  This then becomes the
+reference frame for all activities until the next Site is declared.
+References are kept local, and errors don't propogate across Sites.
+
+However, if images from more than one Site are combined together, the
+Site's must be placed relative to each other.  Therefore a single reference
+frame is still needed to combine different sites.
+
+The FIXED_SITE parameter controls which of the major Site frames is
+the reference ("fixed") site for this program run.  This fixed frame
+can vary in different program runs, but is constant throughout one
+execution.
+
+If not specified, FIXED_SITE defaults to the minimum Site number (i.e.
+lowest numbered, or earliest chronologically) used in all input images.
+Normally this default is sufficient; rarely must FIXED_SITE be specified.
+
+One or more Rover State Files must usually be specified in order to combine
+image from more than one Site.  These describe the relationship between
+sites.  See the RSF parameter.
+

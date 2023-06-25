@@ -10,11 +10,11 @@ let $echo="yes"
 
 enable-log
 
-let PATH="/project/test_work/testdata/mipl/vgr/"
+let PATH="data/"
 WRITE "THIS IS A TEST OF MODULE   RESSAR77"
 WRITE "FIRST, REMOVE RESEAU MARKS AND FIDUCIAL MARKS"
-ush cp &"PATH"cresj.fil cresj.fil
-RESLOC (&"PATH"f2048013.byt,cresj.fil) RESEAU.LOC
+ush cp &"PATH"cresj.fil.vic cresj.fil.vic
+RESLOC (&"PATH"f2048013.byt,cresj.fil.vic) RESEAU.LOC
 RESSAR77 (&"PATH"f2048013.byt,RESEAU.LOC) RES.OUT1
 WRITE "PRINT AREA OF ONE MARK BEFORE RESSAR77"
 LIST &"PATH"f2048013.byt (40,270,15,15) 'nousrtim
@@ -57,7 +57,7 @@ WRITE "BEFORE :"
 LIST &"PATH"f2048013.byt (30,270,20,15) 'nousrtim
 WRITE "AFTER :"
 LIST RES.OUT5 (30,270,20,15) 'nousrtim
-ush rm cresj.fil RES.OUT1 RES.OUT2 RES.OUT3 RES.OUT4 RES.OUT5 RESEAU.LOC
+ush rm cresj.fil.vic RES.OUT1 RES.OUT2 RES.OUT3 RES.OUT4 RES.OUT5 RESEAU.LOC
 
 disable-log
 

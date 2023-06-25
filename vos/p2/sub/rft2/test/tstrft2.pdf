@@ -6,10 +6,14 @@ refgbl $echo
 refgbl $syschar
 parm inp string count=0:1 default=--
 body
+enable-log
+
 let _onfail="continue"
 let $echo="yes"
 
 if ($count(inp)=0) let inp = "a"
 gen out=&inp nl=18 ns=16 format=real
 trft2 inp=&inp
+
+disable-log
 end-proc

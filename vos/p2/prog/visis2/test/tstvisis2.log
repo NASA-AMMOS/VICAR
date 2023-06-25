@@ -1,12 +1,12 @@
 write "This is the test file for Program VISIS2"
 This is the test file for Program VISIS2
-ush cp /project/test_work/testdata/gll/g7jnfeap4101a.3 edr_file
-ush cp /project/test_work/testdata/gll/g7jnfeap4101a.aacs aacs_file
-ush cp /project/test_work/testdata/gll/nims98a_gs4_ref_g1_01.tab CAL_FILE
-ush cp /project/spice/ops/sun-solr/s980326b.bsp spk_file
-ush cp /project/test_work/testdata/gll/nims_ikernel_mab.dat ik_file
-ush cp /project/test_work/testdata/gll/nims_solar.dat sol_file
-ush cp /project/test_work/testdata/gll/boom_obscuration.nim dbm_file
+ush cp data/s980326b.bsp.dat spk_file
+ush cp data/boom_obscuration.nim dbm_file
+ush cp data/g7jnfeap4101a.3.vic edr_file
+ush cp data/g7jnfeap4101a.aacs aacs_file
+ush cp data/nims98a_gs4_ref_g1_01.tab CAL_FILE
+ush cp data/nims_ikernel_mab.dat ik_file
+ush cp data/nims_solar.dat sol_file
 NIMSCMM2 edr=edr_file  +
         cube=G7JNFEAP4101A.CUB 'NOCAL  +
 	aacsfil=aacs_file  +
@@ -20,15 +20,15 @@ NIMSCMM2 edr=edr_file  +
         proj=pov slew_tol=-1.  +
 	outsiz=(9,5)
 Beginning VICAR task NIMSCMM2
-NIMSCMM2 version 2019-06-14
+NIMSCMM2 version 2020-03-19
  ** Body is not a spheroid, planetographic is undefined
- 
+
  No radiance calibration done, raw DN is output
  Output image will be in perspective (POV) projection
  Warning: user Target does not match Target in ObsTab!
  User Target = GANYMEDE,  ObsTab Target = JUPITER
  Gain state = 2
- 
+
  Instrument mode is SHORT MAP
  
  Extracting pointing
@@ -69,7 +69,7 @@ NIMSCMM2 version 2019-06-14
  Min/max phase angles: 95.48, 95.61
 list G7JNFEAP4101A.CUB nb=1 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
  Task:NIMSCMM2  User:          Date_Time:                        
@@ -89,7 +89,7 @@ list version 2017-03-29
       9    -32768-32768-32768-32768-32768
 hist2d G7JNFEAP4101A.CUB tst1.h2d out_nl=256 out_ns=408 'DN
 Beginning VICAR task hist2d
-HIST2D version 2019-06-13
+HIST2D version 2019-07-23
 VISIS2 (tst1.h2d G7JNFEAP4101A.CUB G7JNFEAP4101A.COC) G7JNFEAP4101A.QUB
 Beginning VICAR task VISIS2
 VISIS2 version 2019-08-07
@@ -99,7 +99,7 @@ FILE 2 copied
 FILE 3 copied
 isislab G7JNFEAP4101A.QUB
 Beginning VICAR task isislab
-*** ISISLAB version 2017-08-08 ***
+ISISLAB version 2019-09-05
  
 ********** LABEL OBJECT **********
  
@@ -269,7 +269,7 @@ OBJECT = QUBE
 
  OBSERVATION_NAME = ' '
  PRODUCT_ID = ""
- PRODUCT_CREATION_DATE = 2019-08-07
+ PRODUCT_CREATION_DATE = 2021-08-11
  IMAGE_ID = NULL
 
  INCIDENCE_ANGLE = 89.06
@@ -387,7 +387,7 @@ END
 ROUP = VISIS2
 
   VERSION_DATE = 2019-06-14
-  DATE_TIME = 2019-08-07T11:36:36
+  DATE_TIME = 2021-08-11T16:51:23
   NODE_NAME = "MIPL"
   USER_NAME = "NIMS Team"
   SOFTWARE_DESC = "ISIS cube file with PDS label has been generated as
@@ -451,7 +451,7 @@ FILE 2 created
 FILE 3 created
 list G7JNFEAP4101A.CUB nb=1 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
  Task:VISIS2    User:          Date_Time:                        
@@ -477,4 +477,5 @@ ush rm ik_file
 ush rm dbm_file
 ush rm sol_file
 ush rm CAL_FILE
+ush rm G7JNFEAP4101A.COC G7JNFEAP4101A.CUB G7JNFEAP4101A.QUB tst1.h2d WTFIL
 disable-log

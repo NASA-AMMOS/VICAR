@@ -12,6 +12,8 @@
 procedure help=*
 refgbl $echo
 body
+enable-log
+
 let _onfail="continue"
 let $echo="no"
 write "**************************************"
@@ -44,5 +46,5 @@ tspicesubs +
 	SP_KERNEL=@bsp +
 	CK_KERNEL=@ssi_ck
 
+disable-log
 end-proc
-

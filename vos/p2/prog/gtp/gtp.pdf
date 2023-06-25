@@ -1,0 +1,90 @@
+procedure help=*
+parm inp type=(string,99) count=1
+parm x type=real count=1
+parm y type=real count=1
+parm inv type=(string,5) count=(0:1) def=""
+
+body
+
+
+!  GTP HANDYPROC
+
+
+ibis-gen xxqqgrid1 version="ibis-2" org="column"  nc=5 nr=1 deffmt=DOUB +
+       data=(&x,&y) datacols=(1,2)
+
+if (inv="")   
+   pixmap (xxqqgrid1,&inp) mapcols=(3,4) pixcols=(1,2) 'pixtomap
+   getzval (&inp,xxqqgrid1) cols=(1,2,5) win=2
+else
+   pixmap (xxqqgrid1,&inp) mapcols=(1,2) pixcols=(3,4) 'maptopix
+   getzval (&inp,xxqqgrid1) cols=(3,4,5) win=2
+end-if
+
+ibis-list xxqqgrid1 header="noheader" +
+     csiz=(14,14,16,16,9) cfor="%14.7f%14.7f%16.7f%16.7f%9.2f"
+
+end-proc
+.TITLE
+GTP - Handy conversion of pixel to geographic coordinate or vice versa
+.HELP
+PURPOSE
+     The analyst can use this proc to quickly convert a (line,sample)
+     to geographic coordinate using a GeoTIFF image as a reference.
+     
+     The inverse can be performed by typing the letter i after the 
+     coordinates.
+     
+     The result is given by printing a one line IBIS file with the user
+     input in columns (1,2) and the output in columns (3,4). Column 5
+     contains the z value at the point (bilinear interpolation).
+	   
+CALL
+     GTP INP x y
+  WHERE:
+     INP          is the reference image data set (must have a GeoTIFF label).
+     x            is the line (can be integer or fraction)
+     y            is the sample (ditto)
+     
+     GTP INP x y i
+  WHERE:
+     INP          is the reference image data set (must have a GeoTIFF label).
+     x            is the line (can be integer or fraction)
+     y            is the sample (ditto)
+     i            is the letter "i" as a string input to TAE
+  
+OPERATION
+
+see above.
+
+PERFORMANCE
+
+instantaneous
+.PAGE
+Restrictions
+------------
+
+The reference image must have a GeoTIFF label.
+
+
+.PAGE
+HISTORY
+
+Original Programmer: A. L. Zobrist, 29 Aug, 2000
+Current Cognizant Programmer: B. A. McGuffie
+
+2022-06-27 B. Crocco afids to opensource
+
+.LEVEL1
+.VARI INP
+Reference image file name with
+GeoTIFF label
+.VARI X
+The line or first geog coord
+.VARI Y
+The sample or second geog coord
+.VARI inv
+(blank) - line,samp conversion
+i       - geographic coord
+          conversion
+.END

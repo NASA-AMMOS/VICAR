@@ -108,7 +108,7 @@ parameters.  If the transformation maps a DN value outside this range, then
 ODN is set equal to these limits.  Note that many of the stretch options adjust
 the DN scale so as to map the input DNs over the entire output range.  The
 defaults for DNMIN and DNMAX are 0 and 255 for byte images and -32768 and 32767
-for halfword images.
+for halfword images. The max input image width is 524288 pixels.
 
 .page
 TYPES OF STRETCH FUNCTIONS:
@@ -351,57 +351,61 @@ The two programs were merged and the FUNCTION keyword added by John Reimer.
 Written by:  J. H. Reimer   10/31/85
 Cognizant programmer: Lucas Kamp
 Revision history:
- 5 87  SP   Used NINT function for rounding for compatibility with the previous
-	    version of stretch for negavite DNs.
- 6 87  SP   Added parms parameter in PDF to be compatible with ASTRTCH2.
- 1 88  SP   Added 'INCLUDE and changed EXCLUDE defaults to agree with ASTRTCH2.
-10 88  SP   Extended linear stretch to handle inversion.  This means that
-            linear=(255,0) is the same as 'COMP.
- 5 92  SP  oMade portable for UNIX.
-	   oUsed Niles Ritter changes to replace calls to OUTCON.
-	   oAdapted for new version of KNUTH.
-           oAdded call xvpcnt('INP',ni) to fix FR 46486.
-	   oReplaced variable ITOL with RTOL in Subroutine FCLIP because
-            the code had a bizarre .05 in it and really was not per spec.
-           oFollowed Ron Alley's lead in deleting the RATIO parameter
-            because it had no effect.  (It cancels itself out in the
-            calculation.)
-           oCorrected the DC default for PSTRETCH to be the average of DNMAX
-	    and DNMIN.
-           oFixed error for byte data where DNMAX<255.  Routines INIT and ALTER
-	    were assuming that LUT has 256 entries. I make sure LUT is at least
-            256 halfwords, and I fill it all in.
-	   oFixed default DC for PSTRETCH.  Clarified Help that AMPL=
-            2*(mathematical amplitude) for PSTRETCH.
-	   oAdded GMEAN parameter for FR 48458.  Note that the default
-            GMEAN used to be 127 = (255-0)/2 for BYTE data.  The default
-            is now 127.5 = (255+0)/2.0, which makes STRETCH consistent
-            with VIDS JSTRETCH.
- 9-92  JFM  Data number in STATI set to a REAL*2 value to avoid integer
-	    overflow when dealing with negative DN values. (FR 76821)	
-10-92   SP oChanged name of subroutine MAIN to WORK to avoid name collisions.
-           oAdded EXTERNAL statement to prevent compiler warnings.
- 2-93   SP oAdded Logarithmic stretch ala VIDS.
-           oMove initializers into data statements to comply with Porting Guide.
-	   oMade LINEAR parameters REAL instead of INTEGER ala VIDS.
- 3-95  CRS (CRI) ... MSTP S/W CONVERSION (VICAR PORTING)
-            Revised to use Histogram files in IBIS format    
-10-02  GMY  1) Massive code reorganization.
-            2) Rewrote help file, documenting each stretch option.
-            3) Rewrote test script, testing all stretch options.
-            4) Fixed numerous bugs detected as a result of new test script.
-08-03  NTT  Enabled 3D image capability to stretch and get_histogram.
-08-07  LWK  1. Fixed problem in STABLE where a very steep slope resulted in loss
-            of precision in computing LUT, by doing the calculation in double
-            precision.
-            2. Fixed error in RTRUNC rounding negative numbers.
-            3. Increased size of buffer passed to KNUTH from 100 to 300 words
-            (was causing crash in Linux).
-            4. Removed COMMON/CW/ lines in MANUAL_STRETCH.F which were not being
-            used as COMMONs and were causing compiler warnings due to unequal
-            lengths.
-01-2013 LWK Fixed CHARACTER continuation lines in print_histogram.f for new compiler
-            flag on Solaris.
+1987-05    SP - Used NINT function for rounding for compatibility with the previous
+           version of stretch for negavite DNs.
+1987-06    SP - Added parms parameter in PDF to be compatible with ASTRTCH2.
+1988-01    SP - Added 'INCLUDE and changed EXCLUDE defaults to agree with ASTRTCH2.
+1988-10    SP - Extended linear stretch to handle inversion.  This means that
+           linear=(255,0) is the same as 'COMP.
+1992-05    SP - oMade portable for UNIX.
+	   o Used Niles Ritter changes to replace calls to OUTCON.
+	   o Adapted for new version of KNUTH.
+           o Added call xvpcnt('INP',ni) to fix FR 46486.
+	   o Replaced variable ITOL with RTOL in Subroutine FCLIP because
+           the code had a bizarre .05 in it and really was not per spec.
+           o Followed Ron Alley's lead in deleting the RATIO parameter
+           because it had no effect.  (It cancels itself out in the
+           calculation.)
+           o Corrected the DC default for PSTRETCH to be the average of DNMAX
+	   and DNMIN.
+           o Fixed error for byte data where DNMAX<255.  Routines INIT and ALTER
+	   were assuming that LUT has 256 entries. I make sure LUT is at least
+           256 halfwords, and I fill it all in.
+	   o Fixed default DC for PSTRETCH.  Clarified Help that AMPL=
+           2*(mathematical amplitude) for PSTRETCH.
+	   o Added GMEAN parameter for FR 48458.  Note that the default
+           GMEAN used to be 127 = (255-0)/2 for BYTE data.  The default
+           is now 127.5 = (255+0)/2.0, which makes STRETCH consistent
+           with VIDS JSTRETCH.
+1992-09    JFM - Data number in STATI set to a REAL*2 value to avoid integer
+           overflow when dealing with negative DN values. (FR 76821)
+1992-10    SP - o Changed name of subroutine MAIN to WORK to avoid name collisions.
+           o Added EXTERNAL statement to prevent compiler warnings.
+1993-02    SP - o Added Logarithmic stretch ala VIDS.
+           o Move initializers into data statements to comply with Porting Guide.
+	   o Made LINEAR parameters REAL instead of INTEGER ala VIDS.
+1995-03    CRS (CRI) - MSTP S/W CONVERSION (VICAR PORTING)
+           Revised to use Histogram files in IBIS format
+2002-10    GMY - 1) Massive code reorganization.
+           2) Rewrote help file, documenting each stretch option.
+           3) Rewrote test script, testing all stretch options.
+           4) Fixed numerous bugs detected as a result of new test script.
+2003-08    NTT - Enabled 3D image capability to stretch and get_histogram.
+2007-08    LWK - 1. Fixed problem in STABLE where a very steep slope resulted in loss
+           of precision in computing LUT, by doing the calculation in double
+           precision.
+           2. Fixed error in RTRUNC rounding negative numbers.
+           3. Increased size of buffer passed to KNUTH from 100 to 300 words
+           (was causing crash in Linux).
+           4. Removed COMMON/CW/ lines in MANUAL_STRETCH.F which were not being
+           used as COMMONs and were causing compiler warnings due to unequal
+           lengths.
+2013-01    LWK - Fixed CHARACTER continuation lines in print_histogram.f for new compiler
+           flag on Solaris.
+2021-07-01 WLB - Quadrupled i/o buffer size; added check so buffer is not exceeded; added check
+           for histogram calculation overflow.
+2021-07-14 WLB - Doubled (again) i/o buffer size; forced hist values to 2^31-1 on overflow. Also
+           see p2/sub/hsub changes.
 
 .page
 PROGRAMMER'S NOTES:

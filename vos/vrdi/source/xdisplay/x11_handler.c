@@ -182,6 +182,11 @@ char *event_array[] = { "Null",
 			"LASTEvent" };
 #endif
 
+//defined in x11_color.c
+void set_colormap(Display* dpy, int mode);
+
+void update_display(int ss, int sl, int ns, int nl, int imp);
+
 
 x11_handler()
 {
@@ -1406,7 +1411,7 @@ process_batch()
 }
 
 
-update_display(ss, sl, ns, nl, imp)
+void update_display(ss, sl, ns, nl, imp)
 int ss, sl, ns, nl, imp;
 {
    int impss, impsl, impel, impes, vidss, vidsl, vidnl, vidns, adj_ns, adj_nl;

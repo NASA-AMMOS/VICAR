@@ -64,7 +64,6 @@ c
         Return
 	END
 
-
 
 C     THIS IS IBM SUBROUTINE FARENC   -----NAME CHANGE-----
 C     2 FEB 83   ...CCA...     INITIAL RELEASE
@@ -78,7 +77,7 @@ c
       IMPLICIT REAL*8 (A-Z)
       common/c1/language_flag
       integer*4 language_flag
-      REAL*4 DATA(1)
+      REAL*4 DATA(*)
 
 C
       PI = 3.141592653589793D0

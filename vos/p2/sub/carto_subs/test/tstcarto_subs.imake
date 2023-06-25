@@ -1,0 +1,12 @@
+#define  PROGRAM tstcarto_subs
+
+#define MODULE_LIST tstcarto_subs.c
+
+#define MAIN_LANG_C
+#define USES_ANSI_C
+
+#define R2LIB 
+#define LIB_CARTO
+#define LIB_P2SUB
+#define LIB_TAE
+#define LIB_RTL

@@ -1,0 +1,166 @@
+eval 'exec perl -w -S $0 ${1+"$@"}'
+    if 0;
+print '== merge_mesh $Revision: 1.8 $ ' . `date`;
+
+# Merge SUMMITT single-wedge Inventor meshes into single PFB mesh
+# $Id: merge_mesh,v 1.8 2007/08/21 17:00:55 jack Exp jack $
+
+use File::Basename;
+use File::Copy;
+
+#$usage = "usage: $0 bin_path list_file out_dir
+$usage = "usage: $0 list_file out_dir
+  list_file = file with one selected wedge tar file per line
+  out_dir = output directory containing unified mesh\n";
+
+sub fail
+{
+	print STDERR shift;
+	die "== Failed\n";
+}
+
+# configuration
+#$tmp = "/tmp/mm$$";	 # temp work area
+#$TAR_OPT = "xzf";	# tar options, must correspond to do_wedge $TAR_OPT
+
+# get command line arguments and check
+#$sbin = shift;
+$mlist = shift;
+$tmp = shift or fail $usage;
+$sbin = $ENV{CRUMBS_BIN};
+if ($sbin !~ /^\//) {
+	fail "bin_path $sbin needs to be absolute path\n$usage";
+} elsif (! -x "$sbin/do_wedge") { 
+	fail "Invalid bin_path $sbin\n$usage";
+}
+open(MLIST,$mlist) or fail "Can't open mesh wedge list $mlist\n";
+
+if (!-d $tmp) {
+    print "Output directory doesn't exist, Will create output directory.\n";
+    mkdir $tmp;
+}
+if (!-d $tmp) {
+    fail "Unable to create output directory!\n";
+}
+
+# mesh list directory/basename are used for products
+#($mesh, $meshdir) = fileparse($mlist, '\.[^.]*');
+$mesh_name = fileparse($mlist, '\.[^.]*');
+$mesh = "wedge";
+#print "$mesh.iv";
+#print "\n";
+#$mesh = fileparse($mlist, '\.[^.]*');
+
+# Clean up when done or killed
+sub cleanup {
+#	unlink <$tmp/$mesh/*/*>;
+#	rmdir <$tmp/$mesh/*>;
+#	unlink <$tmp/$mesh/*>;
+#	rmdir $tmp/$mesh;
+}
+
+print "== Merging tiles\n";
+
+# Start temporary inventor output
+mkdir "$tmp/$mesh";
+$SIG{TERM} = $SIG{INT} = 'cleanup';
+open(MMESH, ">$tmp/$mesh/mesh.iv") or fail "Can't create temp mesh $tmp/$mesh/mesh.iv\n";
+print MMESH "#Inventor V2.0 ascii\n";
+
+# Start merged DEM mod file output
+open(MOD, ">$tmp/$mesh_name.mod") or 
+	fail "Can't create DEM mod file $tmp/$mesh_name.mod\n";
+print MOD "I~\n{ composite\n";
+
+# Read wedge list, build merged mesh
+
+while (<MLIST>) {
+	chomp;
+	#($edr, $path) = fileparse($_, '.tar');
+	($edr, $path) = fileparse($_, '.iv');
+        #$sclk = `echo $edr | cut -c1-11`;
+        #$ht = `ls $path | egrep "$sclk" |  egrep \.ht | sort | tail -1 | tr -s '\011' ' ' | tr -s '\012' ' ' | tr -s '\015' ' ' | sed 's/ *//g' `;
+        $ht = "$edr.ht";
+
+	# unpack single-wedge inventor mesh data into temp directory
+	if (! -r "$_") {
+		print "Mesh $_ not found, skipping\n";
+		next;
+	}
+
+	mkdir "$tmp/$mesh";
+	#system "tar $TAR_OPT $_ -C $tmp/$mesh/$edr";
+	system "cp $_ $tmp/$mesh/";
+	
+	# read single-wedge toplevel mesh
+	#if (!open(SMESH, "$tmp/$mesh/$edr.iv")) {
+	unless (-e "$tmp/$mesh/$edr.iv") {
+		print "Mesh not found for $edr, skipping\n";
+		next;
+	}
+	print "Adding $edr ...\n";
+
+	print MMESH "File {name \"./$mesh/$edr.iv\"}\n";
+#	while (<SMESH>) {
+#		next if (/^#/);
+#		if (/^File { name \"(.*)\"/) {
+			#print MMESH "File {name \"$tmp/$mesh/$edr/$1\"}\n";
+			#print MMESH "File {name \"./$edr/$1\"}\n";
+#			print MMESH "File {name \"./$mesh/$1\"}\n";
+#		} else {
+			#print MMESH $_;		# just copy line
+#		}
+#	}
+#	close SMESH;
+
+	# add to height map mod file
+	# extract transform from mesh.ht header
+	#if (!open(DEM, "$path/$edr.ht")) {
+	if (!open(DEM, "$path/$ht")) {
+		print "WARNING, height map not found for $ht\n";
+		next;
+	}
+	read DEM,$_,1000;
+	close DEM;
+	($xoff) = /X_AXIS_MINIMUM=([-\d\.]+)/;
+	($yoff) = /Y_AXIS_MINIMUM=([-\d\.]+)/;
+	($scale) = /MAP_SCALE=([-\d\.]+)/;
+	# height map will be expected in same dir as MOD file 
+	#print MOD " { transform\n  { file ./$edr.ht }\n";
+	#print MOD " { transform\n  { file ./$ht }\n";
+	print MOD " { transform\n  { file ./$mesh/$ht }\n";
+	print MOD "  $xoff $yoff $scale 0 0 $scale }\n";
+
+	# setup link to texture map
+	#symlink("$path/$edr.rgb", "$tmp/$mesh/$edr.rgb");
+	#symlink("$path/$edr.rgb", "$tmp/$mesh/$edr/$edr.rgb");
+	copy("$path/$edr.rgb", "$tmp/$mesh/$edr.rgb");
+        # setup link to height map
+	# symlink("$path/$edr.ht", "$tmp/$mesh/$edr.ht");
+	copy("$path/$ht", "$tmp/$mesh/$ht");
+}
+close MLIST;
+close MMESH;
+
+print MOD "}\n";
+close MOD;
+
+
+#print "== Converting merged mesh to Performer Binary format " . `date`;
+print "== Moving merged mesh to the desired location " . `date`;
+
+chdir "$tmp/$mesh";
+
+# assuming single mesh_server per CPU and output mesh type
+#system "$sbin/make_pfb $sbin";
+
+#system "mv mesh.pfb $meshdir/$mesh.pfb";
+#system "mv mesh.iv $meshdir/$mesh.iv";
+#system "mv mesh.iv $mesh.iv";
+system "mv mesh.iv $tmp/$mesh_name.iv";
+
+chdir "..";
+cleanup();
+
+print "== Done. " . `date`;
+exit 0;

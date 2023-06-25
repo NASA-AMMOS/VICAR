@@ -1,0 +1,5 @@
+$ vpack pig_generic.com -mixed -
+	-s PigGenericImage.cc PigPointGenericCamera_AzEl.cc -
+	   PigPointGenericCamera_7dof.cc PigPointGenericCamera_6dof.cc -
+	-i pig_generic.imake
+$ Exit

@@ -1,0 +1,5 @@
+$ vpack marsprojfid.com -mixed -
+	-s marsprojfid.cc -
+	-i marsprojfid.imake -
+	-p marsprojfid.pdf
+$ Exit

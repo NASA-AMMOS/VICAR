@@ -1,0 +1,42 @@
+                Version 5C/16C
+
+      ***********************************************************
+      *                                                         *
+      *                  Welcome to VICAR                       *
+      *                                                         *
+      *          VICAR Supervisor version 5C, TAE V5.3          *
+      *                 Distribution 29.0                       *
+      *                                                         *
+      *          #    #  #####   ###     ##    #####            *
+      *          #    #    #    #   #   #  #   #    #           *
+      *          #    #    #   #       #    #  #    #           *
+      *          #    #    #   #       ######  #####            *
+      *           #  #     #    #   #  #    #  #   #            *
+      *            ##    #####   ###   #    #  #    #           *
+      *                                                         *
+      *         Video Image Communication and Retrieval         *
+      *        and Image Based Information System (IBIS)        *
+      *            ** AFIDS Package Distribution **             *
+      *                                                         *
+      ***********************************************************
+
+  --- Type NUT for the New User Tutorial ---
+
+  --- Type MENU for a menu of available applications ---
+
+$R2LIB set to /data/afids5/vdev
+Disabling interrupts ...
+
+ibis-gen xxxb nc=5 nr=4 format=(DOUB,DOUB,DOUB,DOUB,DOUB)  +
+  datacol=(1,2) data=(44.825279,35.881943,45.080002,35.87611,  +
+  45.075832,35.84,44.825832,35.845833)
+Beginning VICAR task ibis
+pixmap (xxxb,/export/data4/tll/gui_test/dtedmos/qb1_iraq_dem.hlf)  +
+    mapcol=(1,2) pixcol=(4,5) 'maptopix
+Beginning VICAR task pixmap
+pixmap version Thu Jan  3 2008
+converting columns (1,2) to columns (4,5)
+[VIC2-GENERR] Exception in XVOPEN, processing file: /export/data4/tll/gui_test/dtedmos/qb1_iraq_dem.hlf
+[VIC2-HOSTMSG]  No such file or directory
+ ** ABEND called **
+RETURN

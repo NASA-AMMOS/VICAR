@@ -1,0 +1,579 @@
+process help=*
+PARM INP TYPE=STRING COUNT=1
+PARM OUT TYPE=STRING COUNT=(1:3)
+PARM PARENTS TYPE=STRING COUNT=(1:31)
+PARM FOCUSARRAY TYPE=INTEGER COUNT=(0:31) VALID=(0:20000) DEFAULT=--
+PARM MISSION TYPE=KEYWORD COUNT=(0:1) VALID=("MSL", "M20") DEFAULT="M20"
+PARM CAMERA TYPE=KEYWORD COUNT=(0:1) VALID=("WATSON", "ACI") 
+	DEFAULT="WATSON"
+PARM ORDER TYPE=INTEGER COUNT=1 DEFAULT=2
+PARM CAMOFFSET TYPE=REAL COUNT=1 DEFAULT=0.0269
+
+PARM NAVTABLE TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM ORIGIN TYPE=REAL COUNT=(0:3) DEFAULT=--
+PARM CONFIG_PATH STRING DEFAULT="$MARS_CONFIG_PATH"
+PARM POINT_METHOD TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM NOSITE TYPE=KEYWORD COUNT=(0:1) VALID=NOSITE DEFAULT=--
+PARM MATCH_METHOD TYPE=STRING COUNT=(0:1) VALID=("LOOSE", "TIGHT") +
+        DEFAULT=LOOSE
+PARM MATCH_TOL TYPE=REAL COUNT=1 DEFAULT=.002
+
+PARM DATA_SET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM DATA_SET_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM RELEASE_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCT_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_INST TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_TYPE TYPE=STRING COUNT=(0:1) DEFAULT=--
+
+PARM RSF TYPE=STRING COUNT=0:100 DEFAULT=--
+PARM DEBUG_RSF TYPE=KEYWORD COUNT=0:1 VALID=DEBUG_RSF DEFAULT=--
+PARM COORD TYPE=KEYWORD VALID=("FIXED", "INSTRUMENT", "SITE", "ROVER", +
+        "LOCAL_LEVEL") DEFAULT="FIXED"
+PARM COORD_INDEX TYPE=INTEGER COUNT=0:10 DEFAULT=--
+PARM FIXED_SITE TYPE=INTEGER COUNT=0:1 DEFAULT=--
+PARM SOLUTION_ID TYPE=STRING COUNT=0:1 DEFAULT=--
+PARM WRITE_CM TYPE=KEYWORD VALID="WRITE_CM" COUNT=(0:1) DEFAULT=--
+
+PARM PROJ_ORIGIN TYPE=REAL COUNT=(0,3) DEFAULT=--
+PARM PO_COORD TYPE=STRING COUNT=(0:1) DEFAULT=--
+
+END-PROC
+
+.TITLE
+VICAR program MARSXYZFOCUS.
+
+.HELP
+PURPOSE:
+WATSON, just like MSL MAHLI, computes and returns depth-from-focus products such 
+as the 'EDM' depth map along with the corresponding 'EZS' z-stack image.  The 
+goal of this program is to use these maps to create an actual mesh, for which an
+XYZ image needs to be created first and the run through the usual mesh processes.
+The same process applies to MSL MAHLI, except for how searching is done, and 
+also may apply to the ACI camera.
+
+MARSXYZFOCUS takes a list of EZS/EDM parent images, typically eight, and 
+first extracts their focus values. It then creates a DN to range curve based on
+those values, given working distance values specified in meters. This curve is 
+used to determine a ray which intersects a plane parallel to the instrument's 
+sapphire window. The intersection point is saved as the output XYZ coordinate 
+for each pixel.
+
+EXECUTION:
+marsxyzfocus inp=edm_image out=xyz_image parents=parentimages.list
+ -OR-
+marsxyzfocus inp=edm_image out=xyz_image focusvalues=array
+
+where:
+ - edm_image is the input EDM grayscale image
+ - xyz_image is the output XYZ image
+ - parentimages.list is a list of parent images for a given EZS/EDM pair
+ - array is a comma-separeted set of focus values for each of the parent images. 
+This array is optional, and should be used in case the input images themselves
+are unavailable.
+
+.PAGE
+
+METHOD:
+Given a set of parent images (typically 2-31) and/or their associated focus 
+motor counts, this software first converts these values to range from the front 
+surface of the lens, or the surface of the sapphire window for cameras such as
+WATSON and ACI. In particular, for M20 the WATSON and ACI toolframes' origins 
+are at this surface. The formulas for range conversion were obtained here:  
+     https://link.springer.com/article/10.1007/s11214-021-00812-z
+     https://zenodo.org/record/5555292#.Yi-qjBDMLZ4
+
+More specifically, the coefficients for the WATSON case were obtained
+from data acquired on both Mars and Earth and describe the relation between 
+working distance (dw, originally in CENTIMETERS but converted to meters in the
+program) and stepper motor count (mopen) when the WATSON 
+dust cover is open and elements of the WATSON image are in focus. Those  
+coefficients are:
+
+	a = 1.09106×10^6
+	b = –332.921
+	c = 3.82592×10^(–2)
+	d = –1.96922×10^(–6)
+	e = 3.84562×10^(–11)
+	dw = (a*mopen^(–1) + b + c*mopen + d*mopen^2 + e*mopen^3)^–1
+
+For ACI, the formula is as follows:
+
+	a = 0.005
+	b = 20.34
+	dw = a*mopen - b
+
+As of now these values are hard-coded, but can be parameterized, preferably with 
+something in $MARS_CONFIG_PATH, so it can be adjusted if needed in the future.
+
+NOTE: Just to re-iterate since this is important, the centimeter values are 
+converted to meters within the code, to be consistent with the units used in 
+XYZ maps.
+
+Next, there is a table which describes the relationship between the grayscale
+data value (DN) in the EDM and which image corresponds to the the best focus,
+which is a function of the nmber of parent images. For the i-th parent image out
+of N in total, the DN value is computed per:
+	DN = floor(255-i*255/N)
+
+Now, we fit a curve which allows for the conversion of DN to range, given 
+the DN vector as well as the correpsonding motor counts per parent image. 
+Piecewise linear interpolation is an acceptable first-order solution, but this 
+program performs a more-accurate 2nd-order polynomial fit. The fit is performed
+via a least-squares solve using Eigen.
+
+Finally, converting range (in m) to XYZ involves several steps:
+
+1) Range is relative to the front surface of the sapphire window. This is the 
+origin of the WATSON/ACI tool frame on M20. On MSL, the origin of the frame is 
+where the camera optic axis intersects the plane defined by the top of the 
+contact sensor pokers, which is 19mm (0.019m) in front of the lens cover. 
+Alternatively, an arbitrary offset can be provided via the "PROJ_ORIGIN"
+parameter. Given the projection origin and the 'A' camera orientation vector, 
+also computed previously, we can create a plane that is coincident with the 
+sapphire and is perpendicular to the optical axis. The origin and 'A' vector are
+used in Step 5 below.
+	 
+2) For each pixel, we find the closest input image, using the DN vector, and 
+extract the camera model from that image.  Currently, we have only one camera 
+model across all focuses, but in the future we may get focus-dependent camera 
+models, so we'll pull from the correct image. Also, camera model interpolation 
+between focus values likely won't make a difference, so the closest value should 
+suffice.
+
+3) Use the chosen camera model to project a ray into space for the current pixel.
+
+4) Use the computed range to offset the plane from (1) as defined by the origin
+and 'A' vector along the plane's normal. 
+
+5) Intersect the projected ray with the offset plane, which defines the XYZ 
+coordinate for that pixel and save the XYZ coordinate in an XYZ image.
+
+Finally, the XYZ coordinates for all pixels are saved as an XYZ image, from 
+which a mesh can be created using for example 'marsmesh':
+
+     $MARSLIB/marsmesh inp=xyz.VIC out=mesh.obj in_skin=image.png
+	  - where image.png corresponds to the input EDM depth map, used for texture
+
+ADDITIONAL NOTES:
+
+The code does not current work well with thumbnails provided as parent images.
+Another future improvement could be to handle cases where thumbnails are 
+provided for most of the images but one full frame. That frame can be used to 
+determine the coordinate system and other functions, but the focus values should
+still be picked up from the rest of the thumbs.
+
+.PAGE
+
+COGNIZANT PROGRAMMER: Mauricio Hess-Flores
+
+HISTORY:
+  2022-04-01 M. Hess-Flores - Initial marsxyzfocus 
+
+.LEVEL1
+.VARI INP
+Input EDM image file.
+
+.VARI OUT
+Output XYZ image file.
+
+.VARI PARENTS
+Input parent image list.
+Typically 8 parent images
+for an EZS/EDM pair, but
+can vary from 2-31.
+
+.VARI FOCUSARRAY
+Optional array containing
+focus values for each 
+parent image (comma-
+separated), typically
+8 values but can vary
+from 2-31.
+
+.VARI MISSION
+Choose between MSL
+and M20 (default).
+
+.VARI CAMERA
+Choose betwen ACI
+and WATSON (default)
+in case the mission is
+M20. If it's MSL, the
+camera is always MAHLI.
+
+.VARI ORDER
+Polynomial order for 
+range curve fitting.
+
+.VARI CAMOFFSET
+Distance between the
+camera model and the 
+sapphire window.
+
+.VARI ORIGIN
+3D origin point override
+for ranges.
+
+.VARI CONFIG_PATH
+Path used to find
+configuration/calibration
+files.
+
+.VARI POINT_METHOD
+Specifies a mission-
+specific pointing
+method to use
+
+.VARI NOSITE
+Disables coordinate
+system sites.
+
+.VARI RSF
+Rover State File(s) to use.
+
+.VARI DEBUG_RSF
+Turns on debugging of RSF
+parameter.
+
+.VARI COORD
+Coordinate system to use.
+
+.VARI COORD_INDEX
+Coordinate system index for
+some COORD/mission combos.
+
+.VARI FIXED_SITE
+Which site is FIXED for
+rover missions.
+
+.VARI SOLUTION_ID
+Solution ID to use for
+COORD_INDEX
+
+.VARI DATA_SET_NAME
+Specifies the full name given
+to a data set or a data product.
+
+.VARI DATA_SET_ID
+Specifies a unique alphanumeric
+identifier for a data set or data
+product.
+
+.VARI RELEASE_ID
+Specifies the unique identifier
+associated with the release to the
+public of all or part of a data set.
+The release number is associated with
+the data set, not the mission.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique
+identifier assigned to a data
+product by its producer.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier
+of an entity associated with the
+production a data set.
+
+.VARI PRODUCER_INST
+Specifies the full name of the
+identity of an entity associated
+with the production of a data set.
+
+.VARI TARGET_NAME
+Specifies a target.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target.
+
+.VARI WRITE_CM
+Writes the output camera 
+model to the output depth 
+file.
+
+.VARI PROJ_ORIGIN
+User-provided projection
+origin which overrides the
+center of projection.
+
+.VARI PO_COORD
+Coordinate system used to define
+the PROJ_ORIGIN parameter.
+
+.LEVEL2
+.VARI INP
+The input of MARSXYZFOCUS is an EDM grayscale image file of type REAL (float).
+
+.VARI OUT
+The output of MARSXYZFOCUS is an XYZ image file of type REAL (float).
+
+.VARI PARENTS
+Input file containing the list of EZS/EDM parent image locations.
+
+.VARI FOCUSARRAY
+Optional array containing focus values for each parent image. If the value for
+a camera is unknown, it MUST be set to -1.
+NOTE: if this array is supplied instead of parent images, the camera model MUST 
+be embedded in the label of the depth map, since it's required to run the 
+program. 
+
+.VARI MISSION
+Choose the mission type between MSL and M20 (default). This affects coordinate 
+system parameters and the offset in front of the camera that should be applied.
+NOTE: This should be accounted for in the PIG library, but explicitly in the 
+application code for now. 
+
+.VARI CAMERA
+Choose betwen ACI and WATSON (default) cameras. This affects the focus motor 
+count to range formula applied, in case the mission is M20. For MSL, the only 
+camera is MAHLI, and for now, will be treated exactly like WATSON as far as 
+focus motor counts. NOTE: This should be accounted for in the PIG library, but 
+explicitly in the application code for now. 
+
+.VARI ORDER
+Polynomial order for range curve fitting.
+
+.VARI CAMOFFSET
+Distance between the camera model and the sapphire window. For WATSON and ACI, 
+this corresponds to the distance between the camera model C and the sapphire 
+window, which was measured to be 0.0269m and on MAHLI it’s the distance from C 
+to the tip of the poker. For that camera, the C to sapphire distance is 
+0.04264m. 
+
+.VARI ORIGIN
+Specifies the 3D point to compute the range from.  By default it's set to
+camera location as specified by C-point for CAHV-based instruments.
+
+.VARI COORD
+Specifies the coordinate system to use for the output XYZ points.  The
+available coordinate systems depend on the mission, but currently are:
+
+Mars Pathfinder:
+ * Fixed: Surface Fixed.  X points north, Z points down, origin fixed to ground.
+ * Local Level: Same rotation as Fixed, with origin attached to spacecraft.
+ * Lander: Rotation fixed relative to spacecraft.  Z is down.
+Mars 98 Polar Lander:
+ * Fixed: Surface Fixed.  X points north, Z points up, origin fixed to ground.
+ * Local Level: Same rotation as Fixed, with origin attached to spacecraft.
+ * Lander: Rotation fixed relative to spacecraft.  Z is down.
+ * MVACS: Rotation fixed to S/C, Z is up, origin at base of SSI mast.
+
+.VARI CONFIG_PATH
+A colon-separated list of directories in which to look for configuration
+and calibration files.  Environment variables are allowed in the list
+(and may themselves contain colon-separated lists).  The directories are
+searched in order for each config/cal file when it is loaded.  This allows
+multiple projectes to be supported simultaneously, and allows the user to
+override any given config/cal file.  Note that the directory structure below
+the directories specified in this path must match what the project expects.
+For example, Mars 98 expects flat fields to be in a subdirectory named
+"flat_fields" while Mars Pathfinder expects them to be directly in the
+directory specified by the path (i.e. no intermediate subdirectories).
+
+.VARI POINT_METHOD
+Specifies a mission-specific pointing method to use.  Normally this
+parameter is not used, in which case the "default" pointing methods
+are used.  Some missions may have special, or alternate, pointing
+methods available, which are indicated by this string (for example,
+backlash models, using arm joint angles instead of x/y/z/az/el, etc).
+A substring search is used, so multiple methods (where that makes sense)
+can be specified by separating the keywords with commas.
+
+Note that nav files created using one pointing method will most likely
+not be compatible with a mosaic created using a different pointing method.
+
+The methods available vary per mission, but some methods available at
+the time of this writing are:
+
+BACKLASH : Mars 98 SSI only.  Selects a backlash pointing model,
+which adjusts the telemetered azimuth and elevation values based on
+knowledge of the camera's mechanical backlash and the direction the
+motor was travelling when the image was taken.
+
+.VARI NOSITE
+Disables all label-derived parameters to the Site mechanism which underlies
+coordinate systems.  This forces all sites to be identical, with all rotations
+and offsets set the same.  In the case of MPF or Mars 98, this disables
+the lander quaternion and offset (sets them to identity and 0, respectively).
+This option should not be used with images taken from different vantage
+points (e.g. the spacecraft moved, or mixing a lander and a rover) or
+invalid results will be obtained.  The use of this option invalidates the
+Fixed coordinate frame; any values reported in the Fixed frame will not
+correctly reflect the orientation of the lander/rover.
+
+Obviously, this option should be rarely used; it is intended for when the
+image labels defining the site are invalid or inconsistent.
+
+.VARI RSF
+Rover State File.  This is a list of filenames to load containing
+Rover State information.  These files contain position and orientation
+information for a rover (or other mobile spacecraft) at various sites.
+They are in XML format.  See the "Rover Motion Counter (RMC) Master File SIS"
+for details on these files.
+
+Rover State Files have a priority order.  The files listed first have
+the highest priority.
+
+Environment variables may be used in the list.
+
+For MER, if a directory is specified, then that directory is searched for
+RMC Master files and any found are loaded.  The directory structure and
+filename convention is covered in the RMC SIS.  The directory specified
+is the one containing "master", so if <dir> is the name specified in the
+RSF parameter, the following files will be searched for:
+
+<dir>/master/<mission>_Master.svf
+<dir>/master/<mission>_Site_<n>_Master.rvf
+
+The name of each file loaded is printed to the stdout log for reference.
+
+.VARI DEBUG_RSF
+If enabled, this causes the internal database of RMC locations to be
+printed out to the stdout log.  This is after the RSF files have been
+loaded and the coordinate systems read from the input label(s).
+
+.VARI COORD
+The coordinate system to use for all input parameters and output values,
+and the XYZ points themselves.  The interpretation of the values is dependent
+on the mission.  Some representative missions are listed here:
+
+Fixed - The Fixed frame (default).  This is the ultimate reference frame
+    (see also FIXED_SITE for rover missions).
+Instrument - The "natural" frame for the instrument (of the first input
+    image).  MPF: Lander or Rover; M98: MVACS; MER: Rover.
+Site - A major Site frame.  For rover missions, COORD_INDEX specifies which
+    Site frame to use.  Non-rover missions treat this as Fixed.
+Rover - An instance of the Rover frame.  For rover missions, COORD_INDEX
+    specifies which instance of the rover frame to use.  Non-rover mission
+    use the spacecraft frame (e.g. Lander for M98).
+Local_Level - An instance of a Local Level frame.  This is typically
+    coincident with the Rover frame (in XYZ) but oriented toward North
+    like the Site and Fixed frames.  For MER, this is an instance of a
+    Drive index move.
+
+.VARI COORD_INDEX
+The index specifies which instance of a coordinate system to use.  It is
+currently applicable only to rover-based missions, but could have other
+uses.  The index is equivalent to the Rover Motion Counter (RMC) for MER
+and FIDO.
+
+For MER/FIDO, there are many Site frames.  Each is numbered with a single
+index.  For Site Frames, coord_index specifies which to use.  Likewise,
+there are many Local_Level and Rover frames, corresponding to values of
+the RMC.  The multiple instances of this frame are selected by COORD_INDEX.
+
+Generally COORD_INDEX defaults sensibly so you don't usually need to
+specify it.  It will default to the instance used by the first input.
+
+.VARI FIXED_SITE
+Specifies which major Site is the "Fixed" Site for this run.
+
+Historically, MPF and M98 had a single "Surface Fixed" frame which never
+moved, and which all other coordinate system frames were referenced to.
+With the advent of long-range rovers (such as MER and FIDO), that became
+insufficient.  The rover traverses far enough that errors in knowledge of
+coordinate system offset and orientation become unacceptable.
+
+For this reason, a system of major Sites was introduced.  Periodically
+during the mission, a Site frame is declared.  This then becomes the
+reference frame for all activities until the next Site is declared.
+References are kept local, and errors don't propogate across Sites.
+
+However, if images from more than one Site are combined together, the
+Site's must be placed relative to each other.  Therefore a single reference
+frame is still needed to combine different sites.
+
+The FIXED_SITE parameter controls which of the major Site frames is
+the reference ("fixed") site for this program run.  This fixed frame
+can vary in different program runs, but is constant throughout one
+execution.
+
+If not specified, FIXED_SITE defaults to the minimum Site number (i.e.
+lowest numbered, or earliest chronologically) used in all input images.
+Normally this default is sufficient; rarely must FIXED_SITE be specified.
+
+One or more Rover State Files must usually be specified in order to combine
+image from more than one Site.  These describe the relationship between
+sites.  See the RSF parameter.
+
+.VARI SOLUTION_ID
+Specifies which solution ID to use when specifying the coordinate system.
+
+There are potentially many different definitions for the same coordinate
+system.  These are identified via a unique Solution ID.  If this parameter
+is given, only the specified solution's definition is searched for.  Without
+it, the "best" available solution is chosen.
+
+It is extremely rare that this parameter should be needed.  The default
+will be sufficient in almost every case.
+
+Note that the current MER implementation requires that a value for COORD_INDEX
+also be provided, in order for this parameter to take effect.
+
+.VARI DATA_SET_NAME
+The DATA_SET_NAME typically identifies the instrument that acquired the
+data, the target of that instrument, and the processing level of the data.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_NAME.
+
+.VARI DATA_SET_ID
+The DATA_SET_ID value for a given data set or product is constructed
+according to flight project naming conventions.  In most cases the
+DATA_SET_ID is an abbreviation of the DATA_SET_NAME.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_ID.
+
+.VARI RELEASE_ID
+When a data set is released incrementally, such as every three months during
+a mission, the RELEASE_ID is updated each time part of the data set is released.
+For each mission(or host id if multiple spacecrafts), the first release of a data
+set should have a value of "0001".
+This value is copied to the output label, property IDENTIFICATION,
+keyword RELEASE_ID.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique identifier assigned to a data product by
+its producer. Most commonly, it is the filename minus the extension.
+This value is copied to the output label, property IDENTIFICATION,
+keyword PRODUCT_ID.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier of an entity associated with the
+production of a data set. This value is copied to the output label,
+property IDENTIFICATION, keyword PRODUCER_ID.
+
+.VARI PRODUCER_INST
+Specifies the identity of a university, research center, NASA center or other
+institution associated with the production of a data set.
+This value is copied to the output label, property IDENTIFICATION, keyword
+PRODUCER_INSTITUTION_NAME.
+
+.VARI TARGET_NAME
+Specifies a target.  The target may be a planet, satelite, ring, region, feature,
+asteroid or comet.  This value is copied to the output label, property
+IDENTIFICATION, keyword TARGET_NAME.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target. This value is copied to the output
+label, property IDENTIFICATION, keyword TARGET_NAME.
+
+.VARI WRITE_CM
+If specified, the program will write an updated camera model to the output
+depth file.  
+
+.VARI PROJ_ORIGIN
+XYZ point provided by the user which overrides any previously-computed center of 
+projection. This is an XYZ point from which all azimuth/elevation rays emanate. 
+Note that the coordinate frame used to express this value is usually the 
+projection frame (COORD) but can be modified using PO_COORD.  This allows you 
+to, for example, specify the origin in a constant location relative to the rover 
+(in rover frame, say at the mast rotation point) while making XYZ computations 
+in site or local_level coordinates.
+
+.VARI PO_COORD
+Coordinate frame used to specify PROJ_ORIGIN.  If not given, the frame
+defaults to that given in COORD.  This parameter is ignored unless
+PROJ_ORIGIN is specified.

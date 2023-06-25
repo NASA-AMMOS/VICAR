@@ -91,7 +91,7 @@ C	GLOBAL VARIABLES:
         integer graphicsplane, imageplane
         data imageplane/1/
         
-	call ifmessage(' MANMATCH Version Nov 10 2002')
+	call ifmessage('MANMATCH version 2021-11-22')
 
 C	GET PARAMETERS FROM PDF
 	call xvp ('CORR', corrsize, count)
@@ -766,7 +766,7 @@ C	    Do subpixel interpolation if desired
 			corrpatch(i,j) = bufout(s + winns*(l-1))
 		    enddo
 		enddo
-		call refine (corrpatch, delline, delsamp, i190)
+		call refine (corrpatch, delline, delsamp, *190)
 	    endif
 
 C	    Stuff tiepoint in IBIS file array

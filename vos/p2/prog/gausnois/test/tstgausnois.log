@@ -3,7 +3,7 @@ Beginning VICAR task gausnois
 gausnois version 2016-06-08
 hist noise.img mean=mean sigma=sigma
 Beginning VICAR task hist
-*** HIST version Aug 10 2015 ***
+*** HIST version 2017-08-08 ***
 
 Bin Width =        1.0
           3*       1
@@ -212,7 +212,7 @@ Beginning VICAR task gausnois
 gausnois version 2016-06-08
 hist noise.img mean=mean sigma=sigma
 Beginning VICAR task hist
-*** HIST version Aug 10 2015 ***
+*** HIST version 2017-08-08 ***
 
 Bin Width =        1.0
          29*       3
@@ -275,7 +275,7 @@ Beginning VICAR task gausnois
 gausnois version 2016-06-08
 hist noise.img mean=mean sigma=sigma
 Beginning VICAR task hist
-*** HIST version Aug 10 2015 ***
+*** HIST version 2017-08-08 ***
 
 Bin Width =        0.0
      -0.671        2
@@ -540,7 +540,7 @@ Beginning VICAR task gausnois
 gausnois version 2016-06-08
 difpic inp=(noise.img,noise2.img)
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  NUMBER OF DIFFERENT PIXELS =   0
 let $echo="no"
  Here, I called gaussnois twice with the same seed.  I should get the
@@ -555,28 +555,6 @@ Beginning VICAR task gausnois
 gausnois version 2016-06-08
 difpic inp=(noise.img,noise2.img)
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  NUMBER OF DIFFERENT PIXELS = 285
-let $echo="no"
- Here, I called gaussnois twice with a different seed.  I should get
- very different images out. (expect 285 differences)
-
-
-gausnois  noise.img  nl=10 ns=30  mean=50 sigma=5 format=byte
-Beginning VICAR task gausnois
-gausnois version 2016-06-08
-RANGEN::: Random Seed value of 1465417176 adjusted to 5799384
-gausnois  noise2.img  nl=10 ns=30  mean=50 sigma=5 format=byte
-Beginning VICAR task gausnois
-gausnois version 2016-06-08
-RANGEN::: Random Seed value of 1465417176 adjusted to 5799384
-difpic inp=(noise.img,noise2.img)
-Beginning VICAR task difpic
-DIFPIC version 06Oct11
- NUMBER OF DIFFERENT PIXELS =   0
-let $echo="no"
- In this case, I let the seed parameter default.  It should give me
- 2 very different images.  However, it does NOT with todays faster
- processors. Not enough time elapses on the system clock when
- two succesive calls to gausnois occurs with no intervening processes
- 
+disable-log

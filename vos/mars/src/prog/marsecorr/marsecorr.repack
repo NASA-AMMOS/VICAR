@@ -1,0 +1,5 @@
+$ vpack marsecorr.com -mixed -
+	-s marsecorr.cc meshman.h meshman.cc tiny_obj_loader.h -
+	-i marsecorr.imake -
+	-p marsecorr.pdf
+$ Exit

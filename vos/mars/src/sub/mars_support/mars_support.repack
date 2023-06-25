@@ -1,0 +1,8 @@
+$ vpack mars_support.com -mixed -
+	-s mars_setup.cc mars_get_filelist.cc mars_apply_navtable.cc -
+	   mars_create_pointing_model.cc mars_get_pointing_corrections.cc -
+	   mars_get_azel_minmax.cc mars_get_az_range.cc mars_print_inputs.cc -
+	   mars_read_inputs.cc mars_footprints.cc mars_write_text.cc -
+	   mars_read_rsf.cc mars_setup_coords.cc mars_grow_window.cc -
+	-i mars_support.imake
+$ Exit

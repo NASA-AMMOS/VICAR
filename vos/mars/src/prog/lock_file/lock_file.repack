@@ -1,0 +1,4 @@
+$ vpack lock_file.com -mixed -
+	-s lock_file.sh -
+	-i lock_file.imake
+$ Exit

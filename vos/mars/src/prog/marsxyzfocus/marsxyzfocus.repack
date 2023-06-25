@@ -1,0 +1,5 @@
+$ vpack marsxyzfocus.com -mixed -
+	-s marsxyzfocus.cc -
+	-i marsxyzfocus.imake -
+	-p marsxyzfocus.pdf
+$ Exit

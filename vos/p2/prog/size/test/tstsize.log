@@ -3,11 +3,11 @@
 !!!!!!!!!!!!!!!!!!!!
 gen a 3 3 ival=2 sinc=3 linc=3
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 list a 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:GEN       User:          Date_Time:                        
@@ -25,7 +25,7 @@ Beginning VICAR task size
  SIZE task completed
 list b 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:GEN       User:          Date_Time:                        
@@ -50,7 +50,7 @@ Beginning VICAR task size
  SIZE task completed
 difpic (b,c)
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  NUMBER OF DIFFERENT PIXELS =   0
 size a c lzoom=3 szoom=3
 Beginning VICAR task size
@@ -61,7 +61,7 @@ Beginning VICAR task size
  SIZE task completed
 difpic (b,c)
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  NUMBER OF DIFFERENT PIXELS =   0
 size b c nl=3 ns=3
 Beginning VICAR task size
@@ -72,7 +72,7 @@ Beginning VICAR task size
  SIZE task completed
 list c 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:GEN       User:          Date_Time:                        
@@ -91,7 +91,7 @@ Beginning VICAR task size
  SIZE task completed
 difpic (c,d)
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  NUMBER OF DIFFERENT PIXELS =   0
 size b d lzoom=-3 szoom=-3
 Beginning VICAR task size
@@ -102,7 +102,7 @@ Beginning VICAR task size
  SIZE task completed
 difpic (c,d)
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  NUMBER OF DIFFERENT PIXELS =   0
 size b c zoom=-3
 Beginning VICAR task size
@@ -113,7 +113,7 @@ Beginning VICAR task size
  SIZE task completed
 list b 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:GEN       User:          Date_Time:                        
@@ -138,7 +138,7 @@ Beginning VICAR task size
  SIZE task completed
 list b 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:GEN       User:          Date_Time:                        
@@ -163,7 +163,7 @@ Beginning VICAR task size
  SIZE task completed
 list b 'zeroes 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:GEN       User:          Date_Time:                        
@@ -190,7 +190,7 @@ Beginning VICAR task size
  SIZE task completed
 list b 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:GEN       User:          Date_Time:                        
@@ -215,7 +215,7 @@ Beginning VICAR task size
  SIZE task completed
 list b 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:GEN       User:          Date_Time:                        
@@ -234,7 +234,7 @@ Beginning VICAR task size
  SIZE task completed
 list c 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:GEN       User:          Date_Time:                        
@@ -251,7 +251,7 @@ Beginning VICAR task size
  SIZE task completed
 list b 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:GEN       User:          Date_Time:                        
@@ -276,7 +276,7 @@ Beginning VICAR task size
  SIZE task completed
 list c 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:GEN       User:          Date_Time:                        
@@ -295,7 +295,7 @@ Beginning VICAR task size
  SIZE task completed
 list b 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:GEN       User:          Date_Time:                        
@@ -320,7 +320,7 @@ Beginning VICAR task size
  SIZE task completed
 difpic (a,c)
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  NUMBER OF DIFFERENT PIXELS =   0
 size a b lzoom=1 szoom=3
 Beginning VICAR task size
@@ -331,7 +331,7 @@ Beginning VICAR task size
  SIZE task completed
 list b 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:GEN       User:          Date_Time:                        
@@ -350,7 +350,7 @@ Beginning VICAR task size
  SIZE task completed
 difpic (a,c)
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  NUMBER OF DIFFERENT PIXELS =   0
 size b c lzoom=3 szoom=-3
 Beginning VICAR task size
@@ -361,7 +361,7 @@ Beginning VICAR task size
  SIZE task completed
 list c 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:GEN       User:          Date_Time:                        
@@ -386,7 +386,7 @@ Beginning VICAR task size
  SIZE task completed
 difpic (b,d)
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  NUMBER OF DIFFERENT PIXELS =   0
 size a b zoom=3 'half scale=100
 Beginning VICAR task size
@@ -397,7 +397,7 @@ Beginning VICAR task size
  SIZE task completed
 list b 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
  Task:GEN       User:          Date_Time:                        
@@ -422,7 +422,7 @@ Beginning VICAR task size
  SIZE task completed
 list c 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    FULL     samples are interpreted as FULLWORD data
  Task:GEN       User:          Date_Time:                        
@@ -441,7 +441,7 @@ Beginning VICAR task size
  SIZE task completed
 list d 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    REAL     samples are interpreted as  REAL*4  data
  Task:GEN       User:          Date_Time:                        
@@ -460,7 +460,7 @@ Beginning VICAR task size
  SIZE task completed
 list dd 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    DOUB     samples are interpreted as  REAL*8  data
  Task:GEN       User:          Date_Time:                        
@@ -479,7 +479,7 @@ Beginning VICAR task size
  SIZE task completed
 list e 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:GEN       User:          Date_Time:                        
@@ -504,7 +504,7 @@ Beginning VICAR task size
  SIZE task completed
 list e 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:GEN       User:          Date_Time:                        
@@ -529,7 +529,7 @@ Beginning VICAR task size
  SIZE task completed
 list e 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
  Task:GEN       User:          Date_Time:                        
@@ -554,7 +554,7 @@ Beginning VICAR task size
  SIZE task completed
 list e 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:GEN       User:          Date_Time:                        
@@ -566,7 +566,7 @@ list version 2017-03-29
       3       8  11  14
 gen     out=d nl=3375 ns=3648 ival=-32768 linc=10 sinc=10 'half
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 hist    d
 Beginning VICAR task hist
@@ -1389,7 +1389,7 @@ MAX. DN=     32589
 
 gen a 3 3 3 ival=2 sinc=3 linc=3
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 size a b nb=2 zoom=2
 Beginning VICAR task size
@@ -1400,7 +1400,7 @@ Beginning VICAR task size
  SIZE task completed
 list b 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:GEN       User:          Date_Time:                        
@@ -1440,7 +1440,7 @@ Beginning VICAR task size
  SIZE task completed
 list b nb=1 sb=3 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:GEN       User:          Date_Time:                        
@@ -1458,7 +1458,7 @@ list version 2017-03-29
       6      10  12  13  15  16  18
 gen a1 2 50000
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 size a1 b1 zoom=2
 Beginning VICAR task size
@@ -1469,7 +1469,7 @@ Beginning VICAR task size
  SIZE task completed
 list a1 ss=49991 ns=10 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:GEN       User:          Date_Time:                        
@@ -1479,7 +1479,7 @@ list version 2017-03-29
       2      71  72  73  74  75  76  77  78  79  80
 list b1 ss=99991 ns=10 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:GEN       User:          Date_Time:                        
@@ -1496,7 +1496,7 @@ let $echo="no"
 !!!!!!!!!!!!!!!!!!!!!!!!!
 gen a 3 3 ival=2 sinc=3 linc=3
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 size a b zoom=3 'noin
 Beginning VICAR task size
@@ -1507,7 +1507,7 @@ Beginning VICAR task size
  SIZE task completed
 list b 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:GEN       User:          Date_Time:                        
@@ -1532,7 +1532,7 @@ Beginning VICAR task size
  SIZE task completed
 difpic (a,c)
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  NUMBER OF DIFFERENT PIXELS =   0
 size a c zoom=2.5 'noin
 Beginning VICAR task size
@@ -1543,7 +1543,7 @@ Beginning VICAR task size
  SIZE task completed
 list c 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:GEN       User:          Date_Time:                        
@@ -1566,7 +1566,7 @@ Beginning VICAR task size
  SIZE task completed
 list c 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:GEN       User:          Date_Time:                        
@@ -1586,7 +1586,7 @@ Beginning VICAR task size
  SIZE task completed
 list b 'zeroes 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:GEN       User:          Date_Time:                        
@@ -1613,7 +1613,7 @@ Beginning VICAR task size
  SIZE task completed
 list b 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:GEN       User:          Date_Time:                        
@@ -1645,7 +1645,7 @@ Beginning VICAR task size
  SIZE task completed
 list c 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:GEN       User:          Date_Time:                        
@@ -1670,7 +1670,7 @@ Beginning VICAR task size
  SIZE task completed
 difpic (b,d)
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  NUMBER OF DIFFERENT PIXELS =   0
 size a b zoom=3 'half scale=100 'noin
 Beginning VICAR task size
@@ -1681,7 +1681,7 @@ Beginning VICAR task size
  SIZE task completed
 list b 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
  Task:GEN       User:          Date_Time:                        
@@ -1706,7 +1706,7 @@ Beginning VICAR task size
  SIZE task completed
 list c 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    FULL     samples are interpreted as FULLWORD data
  Task:GEN       User:          Date_Time:                        
@@ -1725,7 +1725,7 @@ Beginning VICAR task size
  SIZE task completed
 list d 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    REAL     samples are interpreted as  REAL*4  data
  Task:GEN       User:          Date_Time:                        
@@ -1744,7 +1744,7 @@ Beginning VICAR task size
  SIZE task completed
 list dd 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    DOUB     samples are interpreted as  REAL*8  data
  Task:GEN       User:          Date_Time:                        
@@ -1763,7 +1763,7 @@ Beginning VICAR task size
  SIZE task completed
 list e 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:GEN       User:          Date_Time:                        
@@ -1788,7 +1788,7 @@ Beginning VICAR task size
  SIZE task completed
 list e 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:GEN       User:          Date_Time:                        
@@ -1813,7 +1813,7 @@ Beginning VICAR task size
  SIZE task completed
 list e 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
  Task:GEN       User:          Date_Time:                        
@@ -1838,7 +1838,7 @@ Beginning VICAR task size
  SIZE task completed
 list e 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:GEN       User:          Date_Time:                        
@@ -1850,7 +1850,7 @@ list version 2017-03-29
       3       8  11  14
 gen     out=g nl=3375 ns=3648 ival=-32768 linc=10 sinc=10 'half
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 hist    g
 Beginning VICAR task hist
@@ -2675,7 +2675,7 @@ MAX. DN=     32762
 
 gen a 3 3 3 ival=2 sinc=3 linc=3
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 size a b nb=2 zoom=2 'noin
 Beginning VICAR task size
@@ -2686,7 +2686,7 @@ Beginning VICAR task size
  SIZE task completed
 list b 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:GEN       User:          Date_Time:                        
@@ -2726,7 +2726,7 @@ Beginning VICAR task size
  SIZE task completed
 list b nb=1 sb=3 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:GEN       User:          Date_Time:                        
@@ -2744,7 +2744,7 @@ list version 2017-03-29
       6      10  10  13  13  16  16
 gen a 2 50000
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 size a b zoom=2 'noin
 Beginning VICAR task size
@@ -2755,7 +2755,7 @@ Beginning VICAR task size
  SIZE task completed
 list b ss=99991 ns=10 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:GEN       User:          Date_Time:                        
@@ -2772,11 +2772,11 @@ let $echo="no"
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 gen x 10 10
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 list x 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:GEN       User:          Date_Time:                        
@@ -2794,12 +2794,12 @@ list version 2017-03-29
      10       9  10  11  12  13  14  15  16  17  18
 stretch x y func="in1+18"
 Beginning VICAR task stretch
-STRETCH version 11 Jan 2013
+STRETCH version 2021-07-14
 *** USER SPECIFIED FUNCTION MODE ***
 Function Stretch: FUNCTION = in1+18
 list y 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:GEN       User:          Date_Time:                        
@@ -2820,7 +2820,7 @@ concat (x,y) z ns=20 'nost
 Beginning VICAR task concat
 list z sl=1 ss=1 nl=10 ns=10 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:GEN       User:          Date_Time:                        
@@ -2857,11 +2857,11 @@ Beginning VICAR task size
  SIZE task completed
 list w sl=1 ss=1 nl=10 ns=10 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
  ** The specified window is all zero.
 list xx sl=1 ss=1 nl=10 ns=10 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
  ** The specified window is all zero.
 let $echo="no"
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -2869,7 +2869,7 @@ let $echo="no"
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 label-list vt/m.dat  'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File vt/m.dat ************
@@ -2947,7 +2947,7 @@ MAP history label updated
  SIZE task completed
 label-list a 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File a ************
@@ -3077,7 +3077,7 @@ MAP history label updated
  SIZE task completed
 label-list a 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File a ************
@@ -3207,7 +3207,7 @@ MAP history label updated
  SIZE task completed
 label-list a 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File a ************
@@ -3301,7 +3301,7 @@ MAP history label updated
  SIZE task completed
 label-list a 'nousrtim
 Beginning VICAR task label
-LABEL version 2017-03-30
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File a ************

@@ -1,0 +1,5 @@
+$ vpack marscoordtrans.com -mixed -
+	-s marscoordtrans.cc -
+	-i marscoordtrans.imake -
+	-p marscoordtrans.pdf
+$ Exit

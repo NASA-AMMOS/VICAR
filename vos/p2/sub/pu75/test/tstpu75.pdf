@@ -2,6 +2,8 @@ procedure
 refgbl $echo
 refgbl $autousage
 body
+enable-log
+
 let $autousage="none"
 let _onfail="continue"
 !
@@ -15,19 +17,10 @@ Write " This UNIX restriction on the data will be changed eventually. "
 Write " "
 refgbl $syschar
 local resl_fil
-!
-!  First,  VMS
-!
-if ($syschar(1) = "VAX_VMS")
-   let resl_fil = "MIPLDISK:[MIPL.VGR]resl.fil"
-!
-!  Now,    UNIX
-!
-else
-   let resl_fil = "resl.fil"
-end-if
-
+! From /project/test_work/testdata/mipl/vgr/resl.fil
+let resl_fil = "resl.vic"
 
 tpu75 @resl_fil
 
+disable-log
 end-proc

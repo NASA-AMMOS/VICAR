@@ -1,0 +1,15 @@
+$ vpack pig.com -mixed -
+	-s PigModelBase.cc PigCameraModel.cc PigCAHV.cc PigCAHVOR.cc -
+	   PigCAHVORE.cc PigPSPH.cc PigPointingModel.cc -
+	   PigPointPanTiltCamera.cc PigPointBodyFixedCamera.cc -
+	   PigPointTwoPivotCamera.cc PigSurfaceModel.cc PigSurfacePlane.cc -
+	   PigSurfaceSphere.cc PigSurfaceSphere2.cc PigFileModel.cc -
+	   PigLabelModel.cc PigUtilities.cc PigCoordSystem.cc PigMission.cc -
+	   PigCSReference.cc PigCSDefinition.cc PigSite.cc PigSiteRover.cc -
+	   PigBrtCorrModel.cc PigBrtCorrLinear.cc PigPointCamera6dof.cc -
+	   PigPointCamera7dof.cc PigBrtCorrHsiLin.cc PigColorModel.cc -
+	   PigColorConverter.cc PigColorConverterMatrix.cc -
+	   PigColorConverterXYZtosRGB.cc PigColorConverterXYZtoxyY.cc -
+           PigColorConverterRADtoiRGB.cc -
+	-i pig.imake
+$ Exit

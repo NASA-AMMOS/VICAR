@@ -1,0 +1,680 @@
+gen x 10 10 ival=100 linc=2 sinc=2
+Beginning VICAR task gen
+GEN Version 6
+GEN task completed
+list x 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+     Samp     1       3       5       7       9
+   Line
+      1     100 102 104 106 108 110 112 114 116 118
+      2     102 104 106 108 110 112 114 116 118 120
+      3     104 106 108 110 112 114 116 118 120 122
+      4     106 108 110 112 114 116 118 120 122 124
+      5     108 110 112 114 116 118 120 122 124 126
+      6     110 112 114 116 118 120 122 124 126 128
+      7     112 114 116 118 120 122 124 126 128 130
+      8     114 116 118 120 122 124 126 128 130 132
+      9     116 118 120 122 124 126 128 130 132 134
+     10     118 120 122 124 126 128 130 132 134 136
+detstat x x1 mode=1
+Beginning VICAR task detstat
+detstat version 2017-08-03
+list x1 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:DETSTAT   User:          Date_Time:                        
+     Samp             1           2           3           4           5           6           7           8           9          10
+   Line
+      1       6.817E+01   5.692E+01   4.525E+01   4.608E+01   4.692E+01   4.775E+01   4.858E+01   4.942E+01   6.400E+01   7.933E+01
+      2       5.692E+01   4.100E+01   2.458E+01   2.500E+01   2.542E+01   2.583E+01   2.625E+01   2.667E+01   4.592E+01   6.617E+01
+      3       4.525E+01   2.458E+01   3.333E+00   3.333E+00   3.333E+00   3.333E+00   3.333E+00   3.333E+00   2.750E+01   5.275E+01
+      4       4.608E+01   2.500E+01   3.333E+00   3.333E+00   3.333E+00   3.333E+00   3.333E+00   3.333E+00   2.792E+01   5.358E+01
+      5       4.692E+01   2.542E+01   3.333E+00   3.333E+00   3.333E+00   3.333E+00   3.333E+00   3.333E+00   2.833E+01   5.442E+01
+      6       4.775E+01   2.583E+01   3.333E+00   3.333E+00   3.333E+00   3.333E+00   3.333E+00   3.333E+00   2.875E+01   5.525E+01
+      7       4.858E+01   2.625E+01   3.333E+00   3.333E+00   3.333E+00   3.333E+00   3.333E+00   3.333E+00   2.917E+01   5.608E+01
+      8       4.942E+01   2.667E+01   3.333E+00   3.333E+00   3.333E+00   3.333E+00   3.333E+00   3.333E+00   2.958E+01   5.692E+01
+      9       6.400E+01   4.592E+01   2.750E+01   2.792E+01   2.833E+01   2.875E+01   2.917E+01   2.958E+01   5.150E+01   7.425E+01
+     10       7.933E+01   6.617E+01   5.275E+01   5.358E+01   5.442E+01   5.525E+01   5.608E+01   5.692E+01   7.425E+01   9.217E+01
+detstat x x2 mode=2
+Beginning VICAR task detstat
+detstat version 2017-08-03
+list x2 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:DETSTAT   User:          Date_Time:                        
+     Samp             1           2           3           4           5           6           7           8           9          10
+   Line
+      1      -1.184E-15   0.000E+00   1.776E-15  -1.776E-15   0.000E+00  -5.921E-16   5.921E-16   0.000E+00  -2.665E-15  -1.776E-15
+      2       0.000E+00   1.243E-14   0.000E+00   1.362E-14  -1.362E-14   0.000E+00   1.362E-14  -1.362E-14   0.000E+00   0.000E+00
+      3       2.961E-15   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -4.737E-15  -4.737E-15
+      4      -2.961E-15   4.737E-15   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   4.737E-15
+      5       0.000E+00  -4.737E-15   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   4.737E-15   0.000E+00
+      6      -5.329E-15   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -4.737E-15  -4.737E-15
+      7       5.329E-15   4.737E-15   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   4.737E-15
+      8       0.000E+00  -4.737E-15   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   4.737E-15   0.000E+00
+      9       7.698E-15   0.000E+00  -1.303E-14   0.000E+00   1.303E-14  -1.303E-14   0.000E+00   1.303E-14  -1.303E-14   7.698E-15
+     10      -2.961E-15   0.000E+00  -3.553E-15   3.553E-15   0.000E+00   3.553E-15  -3.553E-15   0.000E+00   7.698E-15  -1.776E-15
+detstat x x3 mode=3
+Beginning VICAR task detstat
+detstat version 2017-08-03
+list x3 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:DETSTAT   User:          Date_Time:                        
+     Samp             1           2           3           4           5           6           7           8           9          10
+   Line
+      1       2.428E+03   2.755E+03   2.745E+03   2.849E+03   2.955E+03   3.063E+03   3.173E+03   3.285E+03   3.408E+03   3.096E+03
+      2       2.755E+03   2.647E+03   1.901E+03   1.972E+03   2.045E+03   2.119E+03   2.194E+03   2.271E+03   3.270E+03   3.514E+03
+      3       2.745E+03   1.901E+03   1.667E+01   1.667E+01   1.667E+01   1.667E+01   1.667E+01   1.667E+01   2.344E+03   3.498E+03
+      4       2.849E+03   1.972E+03   1.667E+01   1.667E+01   1.667E+01   1.667E+01   1.667E+01   1.667E+01   2.423E+03   3.616E+03
+      5       2.955E+03   2.045E+03   1.667E+01   1.667E+01   1.667E+01   1.667E+01   1.667E+01   1.667E+01   2.504E+03   3.735E+03
+      6       3.063E+03   2.119E+03   1.667E+01   1.667E+01   1.667E+01   1.667E+01   1.667E+01   1.667E+01   2.586E+03   3.856E+03
+      7       3.173E+03   2.194E+03   1.667E+01   1.667E+01   1.667E+01   1.667E+01   1.667E+01   1.667E+01   2.669E+03   3.980E+03
+      8       3.285E+03   2.271E+03   1.667E+01   1.667E+01   1.667E+01   1.667E+01   1.667E+01   1.667E+01   2.753E+03   4.105E+03
+      9       3.408E+03   3.270E+03   2.344E+03   2.423E+03   2.504E+03   2.586E+03   2.669E+03   2.753E+03   3.959E+03   4.246E+03
+     10       3.096E+03   3.514E+03   3.498E+03   3.616E+03   3.735E+03   3.856E+03   3.980E+03   4.105E+03   4.246E+03   3.844E+03
+detstat x x4 mode=4
+Beginning VICAR task detstat
+detstat version 2017-08-03
+list x4 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:DETSTAT   User:          Date_Time:                        
+     Samp             1           2           3           4           5           6           7           8           9          10
+   Line
+      1      -6.517E+01  -5.375E+01  -4.208E+01  -4.292E+01  -4.375E+01  -4.458E+01  -4.542E+01  -4.625E+01  -6.233E+01  -7.867E+01
+      2      -5.375E+01  -3.767E+01  -2.125E+01  -2.167E+01  -2.208E+01  -2.250E+01  -2.292E+01  -2.333E+01  -4.425E+01  -6.550E+01
+      3      -4.208E+01  -2.125E+01   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -2.583E+01  -5.208E+01
+      4      -4.292E+01  -2.167E+01   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -2.625E+01  -5.292E+01
+      5      -4.375E+01  -2.208E+01   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -2.667E+01  -5.375E+01
+      6      -4.458E+01  -2.250E+01   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -2.708E+01  -5.458E+01
+      7      -4.542E+01  -2.292E+01   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -2.750E+01  -5.542E+01
+      8      -4.625E+01  -2.333E+01   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -2.792E+01  -5.625E+01
+      9      -6.233E+01  -4.425E+01  -2.583E+01  -2.625E+01  -2.667E+01  -2.708E+01  -2.750E+01  -2.792E+01  -5.083E+01  -7.408E+01
+     10      -7.867E+01  -6.550E+01  -5.208E+01  -5.292E+01  -5.375E+01  -5.458E+01  -5.542E+01  -5.625E+01  -7.408E+01  -9.217E+01
+size x  xz zoom=10 'noin
+Beginning VICAR task size
+*** SIZE version 2017-11-21 ***
+      INPUT AREA=(    1,    1,   10,   10)
+     OUTPUT SIZE=    100 X    100
+ PICTURE SIZE SCALED BY     10*NL,     10*NS
+ SIZE task completed
+size x1 x1z zoom=10 'noin
+Beginning VICAR task size
+*** SIZE version 2017-11-21 ***
+      INPUT AREA=(    1,    1,   10,   10)
+     OUTPUT SIZE=    100 X    100
+ PICTURE SIZE SCALED BY     10*NL,     10*NS
+ SIZE task completed
+size x2 x2z zoom=10 'noin
+Beginning VICAR task size
+*** SIZE version 2017-11-21 ***
+      INPUT AREA=(    1,    1,   10,   10)
+     OUTPUT SIZE=    100 X    100
+ PICTURE SIZE SCALED BY     10*NL,     10*NS
+ SIZE task completed
+size x3 x3z zoom=10 'noin
+Beginning VICAR task size
+*** SIZE version 2017-11-21 ***
+      INPUT AREA=(    1,    1,   10,   10)
+     OUTPUT SIZE=    100 X    100
+ PICTURE SIZE SCALED BY     10*NL,     10*NS
+ SIZE task completed
+size x4 x4z zoom=10 'noin
+Beginning VICAR task size
+*** SIZE version 2017-11-21 ***
+      INPUT AREA=(    1,    1,   10,   10)
+     OUTPUT SIZE=    100 X    100
+ PICTURE SIZE SCALED BY     10*NL,     10*NS
+ SIZE task completed
+let $echo="no"
+gausnois gaus4 nl=10 ns=10 mean=100 sigma=6  seed=56
+Beginning VICAR task gausnois
+gausnois version 2016-06-08
+list gaus4 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GAUSNOIS  User:          Date_Time:                        
+     Samp     1       3       5       7       9
+   Line
+      1     108  99  98 112  90 111  97 103  98 109
+      2     108 103  99 102  96  92 106  93  96  94
+      3     107  95 102  97  98 101  93 106 104 115
+      4     103 106  99  96 100 104 102  83 103  97
+      5      95 103 103 111  90  97  97 117 107  99
+      6      96 104 107 103  89  98 104 102  98  97
+      7     107 111 102 104 102 101 106  96  95  91
+      8      94 100 104  96 101  94 111  99  92  95
+      9     104  89  91 109 104 109  93 103 102  99
+     10      97 103  98  97  98 105  84 111 107  96
+f2 (x,gaus4) g  func=("(in1+in2)/2")
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 using hash table lookup
+FUNCTION EVALUATED 90 TIMES
+list g 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2        User:          Date_Time:                        
+     Samp     1       3       5       7       9
+   Line
+      1     104 101 101 109  99 111 105 109 107 114
+      2     105 104 103 105 103 102 110 105 107 107
+      3     106 101 105 104 105 108 105 112 112 119
+      4     105 107 105 104 107 110 110 102 113 111
+      5     102 107 108 113 103 108 109 120 116 113
+      6     103 108 111 110 104 109 113 113 112 113
+      7     110 113 109 111 111 112 115 111 112 111
+      8     104 108 111 108 112 109 119 114 111 114
+      9     110 104 106 116 114 118 111 117 117 117
+     10     108 112 110 111 112 117 107 122 121 116
+detstat g g1 mode=1
+Beginning VICAR task detstat
+detstat version 2017-08-03
+list g1 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:DETSTAT   User:          Date_Time:                        
+     Samp             1           2           3           4           5           6           7           8           9          10
+   Line
+      1       6.992E+01   5.621E+01   4.392E+01   4.867E+01   4.500E+01   4.938E+01   4.571E+01   4.750E+01   5.962E+01   7.783E+01
+      2       5.767E+01   4.004E+01   2.325E+01   2.396E+01   2.417E+01   2.504E+01   2.600E+01   2.567E+01   4.254E+01   5.996E+01
+      3       4.558E+01   2.433E+01   2.208E+00   2.958E+00   2.875E+00   3.667E+00   4.375E+00   4.208E+00   2.667E+01   5.458E+01
+      4       4.496E+01   2.454E+01   2.125E+00   2.917E+00   2.958E+00   4.083E+00   3.917E+00   8.708E+00   2.646E+01   4.858E+01
+      5       4.550E+01   2.471E+01   3.167E+00   5.500E+00   5.583E+00   3.708E+00   3.625E+00   8.792E+00   2.800E+01   4.862E+01
+      6       4.575E+01   2.462E+01   3.792E+00   2.500E+00   5.958E+00   3.583E+00   3.667E+00   2.708E+00   2.542E+01   4.846E+01
+      7       4.775E+01   2.746E+01   3.208E+00   3.083E+00   2.958E+00   3.333E+00   4.125E+00   3.208E+00   2.550E+01   4.817E+01
+      8       4.621E+01   2.471E+01   2.708E+00   3.583E+00   2.917E+00   4.458E+00   6.333E+00   3.208E+00   2.621E+01   4.921E+01
+      9       6.071E+01   4.262E+01   2.575E+01   2.842E+01   2.671E+01   2.888E+01   2.621E+01   2.742E+01   4.633E+01   6.500E+01
+     10       7.288E+01   6.250E+01   4.750E+01   4.812E+01   4.862E+01   5.142E+01   4.942E+01   5.500E+01   6.838E+01   7.829E+01
+detstat g g2 mode=2
+Beginning VICAR task detstat
+detstat version 2017-08-03
+list g2 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:DETSTAT   User:          Date_Time:                        
+     Samp             1           2           3           4           5           6           7           8           9          10
+   Line
+      1       1.184E-15  -4.145E-15  -1.776E-15   0.000E+00   0.000E+00  -1.776E-15   1.776E-15   0.000E+00   5.329E-15  -1.776E-15
+      2      -4.145E-15   1.303E-14   0.000E+00   0.000E+00  -1.303E-14  -1.303E-14  -1.303E-14  -1.303E-14   0.000E+00  -4.145E-15
+      3       0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   4.737E-15  -4.737E-15   4.737E-15   0.000E+00   0.000E+00
+      4      -2.961E-15   4.737E-15  -4.737E-15   0.000E+00   4.737E-15  -4.737E-15  -4.737E-15   4.737E-15   0.000E+00  -4.737E-15
+      5       2.961E-15  -4.737E-15   4.737E-15   0.000E+00   4.737E-15   4.737E-15   0.000E+00   4.737E-15   4.737E-15   4.737E-15
+      6      -2.961E-15   0.000E+00   0.000E+00  -4.737E-15   0.000E+00   4.737E-15  -4.737E-15   4.737E-15  -4.737E-15  -4.737E-15
+      7       2.961E-15  -4.737E-15   0.000E+00  -4.737E-15  -4.737E-15   0.000E+00  -4.737E-15   4.737E-15   0.000E+00  -4.737E-15
+      8      -2.961E-15   4.737E-15   0.000E+00   0.000E+00  -4.737E-15  -4.737E-15   4.737E-15  -4.737E-15   0.000E+00   4.737E-15
+      9       5.329E-15   0.000E+00   0.000E+00   1.303E-14  -1.303E-14  -1.303E-14   1.303E-14   1.303E-14   1.303E-14   0.000E+00
+     10       4.145E-15   2.961E-15   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00   0.000E+00  -5.329E-15   0.000E+00
+detstat g g3 mode=3
+Beginning VICAR task detstat
+detstat version 2017-08-03
+list g3 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:DETSTAT   User:          Date_Time:                        
+     Samp             1           2           3           4           5           6           7           8           9          10
+   Line
+      1       2.370E+03   2.701E+03   2.625E+03   2.620E+03   2.706E+03   2.726E+03   2.780E+03   2.891E+03   2.987E+03   2.683E+03
+      2       2.678E+03   2.554E+03   1.796E+03   1.816E+03   1.850E+03   1.879E+03   1.898E+03   1.978E+03   2.816E+03   3.018E+03
+      3       2.639E+03   1.830E+03   8.651E+00   1.182E+01   1.178E+01   1.958E+01   2.171E+01   2.062E+01   2.021E+03   2.984E+03
+      4       2.702E+03   1.851E+03   8.082E+00   9.021E+00   1.062E+01   1.889E+01   2.072E+01   1.687E+01   2.048E+03   3.047E+03
+      5       2.788E+03   1.902E+03   1.164E+01   9.333E+00   9.743E+00   1.808E+01   1.778E+01   1.141E+01   2.077E+03   3.094E+03
+      6       2.825E+03   1.926E+03   1.057E+01   7.639E+00   1.128E+01   1.922E+01   1.833E+01   1.271E+01   2.103E+03   3.076E+03
+      7       2.811E+03   1.946E+03   1.432E+01   1.297E+01   1.475E+01   1.758E+01   1.729E+01   1.066E+01   2.150E+03   3.179E+03
+      8       2.881E+03   1.975E+03   1.073E+01   1.169E+01   1.308E+01   1.575E+01   1.641E+01   1.437E+01   2.172E+03   3.210E+03
+      9       2.934E+03   2.830E+03   2.010E+03   2.039E+03   2.073E+03   2.121E+03   2.166E+03   2.172E+03   3.085E+03   3.295E+03
+     10       2.601E+03   2.940E+03   2.933E+03   3.015E+03   3.062E+03   3.146E+03   3.239E+03   3.215E+03   3.291E+03   3.026E+03
+detstat g g4 mode=4
+Beginning VICAR task detstat
+detstat version 2017-08-03
+list g4 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:DETSTAT   User:          Date_Time:                        
+     Samp             1           2           3           4           5           6           7           8           9          10
+   Line
+      1      -6.958E+01  -5.321E+01  -4.042E+01  -4.850E+01  -3.750E+01  -4.929E+01  -4.271E+01  -4.550E+01  -5.679E+01  -7.742E+01
+      2      -5.742E+01  -3.879E+01  -2.050E+01  -2.212E+01  -1.933E+01  -1.771E+01  -2.533E+01  -1.858E+01  -3.862E+01  -5.654E+01
+      3      -4.525E+01  -1.775E+01  -3.750E-01   1.375E+00   1.125E+00  -9.167E-01   3.042E+00  -2.292E+00  -2.475E+01  -5.450E+01
+      4      -4.354E+01  -2.329E+01   5.417E-01   2.250E+00  -4.167E-02  -2.333E+00  -1.333E+00   8.708E+00  -2.512E+01  -4.583E+01
+      5      -3.958E+01  -2.221E+01  -1.167E+00  -5.500E+00   5.583E+00   1.208E+00   1.125E+00  -8.792E+00  -2.742E+01  -4.729E+01
+      6      -4.017E+01  -2.262E+01  -3.375E+00  -1.333E+00   5.875E+00   1.333E+00  -2.083E+00  -1.042E+00  -2.283E+01  -4.746E+01
+      7      -4.733E+01  -2.721E+01  -3.750E-01  -1.333E+00  -2.083E-01   0.000E+00  -2.708E+00   2.458E+00  -2.175E+01  -4.433E+01
+      8      -4.054E+01  -2.154E+01  -1.625E+00   2.750E+00  -5.833E-01   3.792E+00  -5.917E+00   4.167E-02  -2.038E+01  -4.704E+01
+      9      -6.021E+01  -3.538E+01  -1.875E+01  -2.817E+01  -2.546E+01  -2.846E+01  -2.054E+01  -2.642E+01  -4.542E+01  -6.425E+01
+     10      -7.196E+01  -6.217E+01  -4.600E+01  -4.612E+01  -4.662E+01  -5.075E+01  -3.975E+01  -5.500E+01  -6.829E+01  -7.712E+01
+size g  gz zoom=10 'noin
+Beginning VICAR task size
+*** SIZE version 2017-11-21 ***
+      INPUT AREA=(    1,    1,   10,   10)
+     OUTPUT SIZE=    100 X    100
+ PICTURE SIZE SCALED BY     10*NL,     10*NS
+ SIZE task completed
+size g1 g1z zoom=10 'noin
+Beginning VICAR task size
+*** SIZE version 2017-11-21 ***
+      INPUT AREA=(    1,    1,   10,   10)
+     OUTPUT SIZE=    100 X    100
+ PICTURE SIZE SCALED BY     10*NL,     10*NS
+ SIZE task completed
+size g2 g2z zoom=10 'noin
+Beginning VICAR task size
+*** SIZE version 2017-11-21 ***
+      INPUT AREA=(    1,    1,   10,   10)
+     OUTPUT SIZE=    100 X    100
+ PICTURE SIZE SCALED BY     10*NL,     10*NS
+ SIZE task completed
+size g3 g3z zoom=10 'noin
+Beginning VICAR task size
+*** SIZE version 2017-11-21 ***
+      INPUT AREA=(    1,    1,   10,   10)
+     OUTPUT SIZE=    100 X    100
+ PICTURE SIZE SCALED BY     10*NL,     10*NS
+ SIZE task completed
+size g4 g4z zoom=10 'noin
+Beginning VICAR task size
+*** SIZE version 2017-11-21 ***
+      INPUT AREA=(    1,    1,   10,   10)
+     OUTPUT SIZE=    100 X    100
+ PICTURE SIZE SCALED BY     10*NL,     10*NS
+ SIZE task completed
+let $echo="no"
+maxmin g4 minival=minval maxival=maxval
+Beginning VICAR task maxmin
+*** maxmin - 06-Jul-2012
+
+Min. value:-7.741666E+01   at  (     1,    10)
+Max. value: 8.708333E+00   at  (     4,     8)
+
+let $echo="no"
+g4   iminval = -77  imaxval = 8
+cform g4 f4 irange=(-77,8)      orange=(+
+-77,8) oform=full
+Beginning VICAR task cform
+CFORM VERSION 06-JUN-1998
+OUT = IN *     1.000+     0.000
+INPUT FORMAT = REAL
+OUTPUT FORMAT = FULL
+CONVERSION COMPLETE
+list f4 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   FULL     samples are interpreted as FULLWORD data
+ Task:GEN       User:          Date_Time:                        
+ Task:CFORM     User:          Date_Time:                        
+     Samp            1          2          3          4          5          6          7          8          9         10
+   Line
+      1            -70        -53        -40        -49        -38        -49        -43        -46        -57        -77
+      2            -57        -39        -21        -22        -19        -18        -25        -19        -39        -57
+      3            -45        -18          0          1          1         -1          3         -2        -25        -55
+      4            -44        -23          1          2          0         -2         -1          9        -25        -46
+      5            -40        -22         -1         -6          6          1          1         -9        -27        -47
+      6            -40        -23         -3         -1          6          1         -2         -1        -23        -47
+      7            -47        -27          0         -1          0          0         -3          2        -22        -44
+      8            -41        -22         -2          3         -1          4         -6          0        -20        -47
+      9            -60        -35        -19        -28        -25        -28        -21        -26        -45        -64
+     10            -72        -62        -46        -46        -47        -51        -40        -55        -68        -77
+cform x yy  +
+    irange=(0,255) orange=(0,5000) oform=real
+Beginning VICAR task cform
+CFORM VERSION 06-JUN-1998
+OUT = IN *    19.608+     0.000
+INPUT FORMAT = BYTE
+OUTPUT FORMAT = REAL
+CONVERSION COMPLETE
+f2 yy y func=("in1/10")
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 100 TIMES
+list y 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2        User:          Date_Time:                        
+     Samp             1           2           3           4           5           6           7           8           9          10
+   Line
+      1       1.961E+02   2.000E+02   2.039E+02   2.078E+02   2.118E+02   2.157E+02   2.196E+02   2.235E+02   2.275E+02   2.314E+02
+      2       2.000E+02   2.039E+02   2.078E+02   2.118E+02   2.157E+02   2.196E+02   2.235E+02   2.275E+02   2.314E+02   2.353E+02
+      3       2.039E+02   2.078E+02   2.118E+02   2.157E+02   2.196E+02   2.235E+02   2.275E+02   2.314E+02   2.353E+02   2.392E+02
+      4       2.078E+02   2.118E+02   2.157E+02   2.196E+02   2.235E+02   2.275E+02   2.314E+02   2.353E+02   2.392E+02   2.431E+02
+      5       2.118E+02   2.157E+02   2.196E+02   2.235E+02   2.275E+02   2.314E+02   2.353E+02   2.392E+02   2.431E+02   2.471E+02
+      6       2.157E+02   2.196E+02   2.235E+02   2.275E+02   2.314E+02   2.353E+02   2.392E+02   2.431E+02   2.471E+02   2.510E+02
+      7       2.196E+02   2.235E+02   2.275E+02   2.314E+02   2.353E+02   2.392E+02   2.431E+02   2.471E+02   2.510E+02   2.549E+02
+      8       2.235E+02   2.275E+02   2.314E+02   2.353E+02   2.392E+02   2.431E+02   2.471E+02   2.510E+02   2.549E+02   2.588E+02
+      9       2.275E+02   2.314E+02   2.353E+02   2.392E+02   2.431E+02   2.471E+02   2.510E+02   2.549E+02   2.588E+02   2.627E+02
+     10       2.314E+02   2.353E+02   2.392E+02   2.431E+02   2.471E+02   2.510E+02   2.549E+02   2.588E+02   2.627E+02   2.667E+02
+detstat y y1 mode=1 win=3
+Beginning VICAR task detstat
+detstat version 2017-08-03
+list y1 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:DETSTAT   User:          Date_Time:                        
+     Samp             1           2           3           4           5           6           7           8           9          10
+   Line
+      1       1.245E+02   7.745E+01   7.892E+01   8.039E+01   8.186E+01   8.333E+01   8.480E+01   8.627E+01   8.775E+01   1.456E+02
+      2       7.745E+01   3.922E+00   3.922E+00   3.922E+00   3.922E+00   3.922E+00   3.922E+00   3.922E+00   3.922E+00   9.069E+01
+      3       7.892E+01   3.922E+00   3.922E+00   3.922E+00   3.922E+00   3.922E+00   3.922E+00   3.922E+00   3.922E+00   9.216E+01
+      4       8.039E+01   3.922E+00   3.922E+00   3.922E+00   3.922E+00   3.922E+00   3.922E+00   3.922E+00   3.922E+00   9.363E+01
+      5       8.186E+01   3.922E+00   3.922E+00   3.922E+00   3.922E+00   3.922E+00   3.922E+00   3.922E+00   3.922E+00   9.510E+01
+      6       8.333E+01   3.922E+00   3.922E+00   3.922E+00   3.922E+00   3.922E+00   3.922E+00   3.922E+00   3.922E+00   9.657E+01
+      7       8.480E+01   3.922E+00   3.922E+00   3.922E+00   3.922E+00   3.922E+00   3.922E+00   3.922E+00   3.922E+00   9.804E+01
+      8       8.627E+01   3.922E+00   3.922E+00   3.922E+00   3.922E+00   3.922E+00   3.922E+00   3.922E+00   3.922E+00   9.951E+01
+      9       8.775E+01   3.922E+00   3.922E+00   3.922E+00   3.922E+00   3.922E+00   3.922E+00   3.922E+00   3.922E+00   1.010E+02
+     10       1.456E+02   9.069E+01   9.216E+01   9.363E+01   9.510E+01   9.657E+01   9.804E+01   9.951E+01   1.010E+02   1.686E+02
+detstat y y2 mode=2 win=3
+Beginning VICAR task detstat
+detstat version 2017-08-03
+list y2 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+ ** The specified window is all zero.
+detstat y y3 mode=3 win=3
+Beginning VICAR task detstat
+detstat version 2017-08-03
+list y3 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:DETSTAT   User:          Date_Time:                        
+     Samp             1           2           3           4           5           6           7           8           9          10
+   Line
+      1       9.499E+03   9.607E+03   9.982E+03   1.037E+04   1.076E+04   1.115E+04   1.156E+04   1.197E+04   1.239E+04   1.255E+04
+      2       9.607E+03   2.307E+01   2.307E+01   2.307E+01   2.307E+01   2.307E+01   2.307E+01   2.307E+01   2.307E+01   1.273E+04
+      3       9.982E+03   2.307E+01   2.307E+01   2.307E+01   2.307E+01   2.307E+01   2.307E+01   2.307E+01   2.307E+01   1.316E+04
+      4       1.037E+04   2.307E+01   2.307E+01   2.307E+01   2.307E+01   2.307E+01   2.307E+01   2.307E+01   2.307E+01   1.360E+04
+      5       1.076E+04   2.307E+01   2.307E+01   2.307E+01   2.307E+01   2.307E+01   2.307E+01   2.307E+01   2.307E+01   1.404E+04
+      6       1.115E+04   2.307E+01   2.307E+01   2.307E+01   2.307E+01   2.307E+01   2.307E+01   2.307E+01   2.307E+01   1.450E+04
+      7       1.156E+04   2.307E+01   2.307E+01   2.307E+01   2.307E+01   2.307E+01   2.307E+01   2.307E+01   2.307E+01   1.496E+04
+      8       1.197E+04   2.307E+01   2.307E+01   2.307E+01   2.307E+01   2.307E+01   2.307E+01   2.307E+01   2.307E+01   1.543E+04
+      9       1.239E+04   2.307E+01   2.307E+01   2.307E+01   2.307E+01   2.307E+01   2.307E+01   2.307E+01   2.307E+01   1.590E+04
+     10       1.255E+04   1.273E+04   1.316E+04   1.360E+04   1.404E+04   1.450E+04   1.496E+04   1.543E+04   1.590E+04   1.602E+04
+detstat y y4 mode=4 win=3
+Beginning VICAR task detstat
+detstat version 2017-08-03
+list y4 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:DETSTAT   User:          Date_Time:                        
+     Samp             1           2           3           4           5           6           7           8           9          10
+   Line
+      1      -1.206E+02  -7.353E+01  -7.500E+01  -7.647E+01  -7.794E+01  -7.941E+01  -8.088E+01  -8.235E+01  -8.382E+01  -1.446E+02
+      2      -7.353E+01  -1.907E-06  -3.815E-06   9.537E-06  -7.629E-06   7.629E-06  -7.629E-06   7.629E-06  -7.629E-06  -8.971E+01
+      3      -7.500E+01  -3.815E-06   9.537E-06  -7.629E-06   7.629E-06  -7.629E-06   7.629E-06  -7.629E-06   7.629E-06  -9.118E+01
+      4      -7.647E+01   9.537E-06  -7.629E-06   7.629E-06  -7.629E-06   7.629E-06  -7.629E-06   7.629E-06  -7.629E-06  -9.265E+01
+      5      -7.794E+01  -7.629E-06   7.629E-06  -7.629E-06   7.629E-06  -7.629E-06   7.629E-06  -7.629E-06   7.629E-06  -9.412E+01
+      6      -7.941E+01   7.629E-06  -7.629E-06   7.629E-06  -7.629E-06   7.629E-06  -7.629E-06   7.629E-06  -1.144E-05  -9.559E+01
+      7      -8.088E+01  -7.629E-06   7.629E-06  -7.629E-06   7.629E-06  -7.629E-06   7.629E-06  -1.144E-05   1.907E-06  -9.706E+01
+      8      -8.235E+01   7.629E-06  -7.629E-06   7.629E-06  -7.629E-06   7.629E-06  -1.144E-05   1.907E-06   1.526E-05  -9.853E+01
+      9      -8.382E+01  -7.629E-06   7.629E-06  -7.629E-06   7.629E-06  -1.144E-05   1.907E-06   1.526E-05  -1.717E-05  -1.000E+02
+     10      -1.446E+02  -8.971E+01  -9.118E+01  -9.265E+01  -9.412E+01  -9.559E+01  -9.706E+01  -9.853E+01  -1.000E+02  -1.686E+02
+size y  yz zoom=10 'noin
+Beginning VICAR task size
+*** SIZE version 2017-11-21 ***
+      INPUT AREA=(    1,    1,   10,   10)
+     OUTPUT SIZE=    100 X    100
+ PICTURE SIZE SCALED BY     10*NL,     10*NS
+ SIZE task completed
+size y1 y1z zoom=10 'noin
+Beginning VICAR task size
+*** SIZE version 2017-11-21 ***
+      INPUT AREA=(    1,    1,   10,   10)
+     OUTPUT SIZE=    100 X    100
+ PICTURE SIZE SCALED BY     10*NL,     10*NS
+ SIZE task completed
+size y2 y2z zoom=10 'noin
+Beginning VICAR task size
+*** SIZE version 2017-11-21 ***
+      INPUT AREA=(    1,    1,   10,   10)
+     OUTPUT SIZE=    100 X    100
+ PICTURE SIZE SCALED BY     10*NL,     10*NS
+ SIZE task completed
+size y3 y3z zoom=10 'noin
+Beginning VICAR task size
+*** SIZE version 2017-11-21 ***
+      INPUT AREA=(    1,    1,   10,   10)
+     OUTPUT SIZE=    100 X    100
+ PICTURE SIZE SCALED BY     10*NL,     10*NS
+ SIZE task completed
+size y4 y4z zoom=10 'noin
+Beginning VICAR task size
+*** SIZE version 2017-11-21 ***
+      INPUT AREA=(    1,    1,   10,   10)
+     OUTPUT SIZE=    100 X    100
+ PICTURE SIZE SCALED BY     10*NL,     10*NS
+ SIZE task completed
+let $echo="no"
+spot out=do nl=100 ns=100 shape=dome sigmax=20 sigmay=20 dnmax=224
+Beginning VICAR task spot
+SPOT version 04-Nov-2010
+****DOME PATTERN GENERATED
+list do sl=50 ss=28 nl=1 ns=44 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:SPOT      User:          Date_Time:                        
+     Samp    28      30      32      34      36      38      40      42      44      46      48      50      52      54      56
+   Line
+     50       0   0   0  69  97 117 134 148 159 170 179 187 193 200 205 209 213 216 219 221 222 223 224 223 222 221 219 216 213 209
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:SPOT      User:          Date_Time:                        
+     Samp    58      60      62      64      66      68      70
+   Line
+     50     205 200 193 187 179 170 159 148 134 117  97  69   0   0
+detstat do d1 mode=1 win=5
+Beginning VICAR task detstat
+detstat version 2017-08-03
+list d1 sl=50 ss=28 nl=1 ns=44 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:SPOT      User:          Date_Time:                        
+ Task:DETSTAT   User:          Date_Time:                        
+     Samp            28          29          30          31          32          33          34          35          36          37
+   Line
+     50       0.000E+00   1.412E+01   3.408E+01   4.442E+01   3.800E+01   2.433E+01   1.971E+01   1.658E+01   1.404E+01   1.238E+01
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:SPOT      User:          Date_Time:                        
+ Task:DETSTAT   User:          Date_Time:                        
+     Samp            38          39          40          41          42          43          44          45          46          47
+   Line
+     50       1.088E+01   9.583E+00   8.292E+00   7.417E+00   6.375E+00   5.333E+00   4.542E+00   3.833E+00   3.000E+00   2.167E+00
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:SPOT      User:          Date_Time:                        
+ Task:DETSTAT   User:          Date_Time:                        
+     Samp            48          49          50          51          52          53          54          55          56          57
+   Line
+     50       1.375E+00   1.083E+00   1.833E+00   1.083E+00   1.375E+00   2.167E+00   3.000E+00   3.833E+00   4.542E+00   5.333E+00
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:SPOT      User:          Date_Time:                        
+ Task:DETSTAT   User:          Date_Time:                        
+     Samp            58          59          60          61          62          63          64          65          66          67
+   Line
+     50       6.375E+00   7.417E+00   8.292E+00   9.583E+00   1.088E+01   1.238E+01   1.404E+01   1.658E+01   1.971E+01   2.433E+01
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:SPOT      User:          Date_Time:                        
+ Task:DETSTAT   User:          Date_Time:                        
+     Samp            68          69          70          71
+   Line
+     50       3.800E+01   4.442E+01   3.408E+01   1.412E+01
+detstat do d2 mode=2 win=5
+Beginning VICAR task detstat
+detstat version 2017-08-03
+list d2 sl=50 ss=28 nl=1 ns=44 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:SPOT      User:          Date_Time:                        
+ Task:DETSTAT   User:          Date_Time:                        
+     Samp            28          29          30          31          32          33          34          35          36          37
+   Line
+     50       0.000E+00   0.000E+00  -2.961E-15   2.961E-15  -4.737E-15  -4.737E-15   0.000E+00   0.000E+00   0.000E+00  -9.474E-15
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:SPOT      User:          Date_Time:                        
+ Task:DETSTAT   User:          Date_Time:                        
+     Samp            38          39          40          41          42          43          44          45          46          47
+   Line
+     50       0.000E+00   9.474E-15   9.474E-15   9.474E-15   9.474E-15   9.474E-15   0.000E+00   9.474E-15   0.000E+00   0.000E+00
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:SPOT      User:          Date_Time:                        
+ Task:DETSTAT   User:          Date_Time:                        
+     Samp            48          49          50          51          52          53          54          55          56          57
+   Line
+     50      -9.474E-15   0.000E+00   9.474E-15   0.000E+00  -9.474E-15   0.000E+00   0.000E+00   9.474E-15   0.000E+00   9.474E-15
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:SPOT      User:          Date_Time:                        
+ Task:DETSTAT   User:          Date_Time:                        
+     Samp            58          59          60          61          62          63          64          65          66          67
+   Line
+     50       9.474E-15   9.474E-15   9.474E-15   9.474E-15   0.000E+00  -9.474E-15   0.000E+00   0.000E+00   0.000E+00  -4.737E-15
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:SPOT      User:          Date_Time:                        
+ Task:DETSTAT   User:          Date_Time:                        
+     Samp            68          69          70          71
+   Line
+     50      -4.737E-15   2.961E-15  -2.961E-15   0.000E+00
+detstat do d3 mode=3 win=5
+Beginning VICAR task detstat
+detstat version 2017-08-03
+list d3 sl=50 ss=28 nl=1 ns=44 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:SPOT      User:          Date_Time:                        
+ Task:DETSTAT   User:          Date_Time:                        
+     Samp            28          29          30          31          32          33          34          35          36          37
+   Line
+     50       0.000E+00   7.586E+02   1.709E+03   2.414E+03   2.255E+03   8.076E+02   5.141E+02   3.610E+02   2.637E+02   1.982E+02
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:SPOT      User:          Date_Time:                        
+ Task:DETSTAT   User:          Date_Time:                        
+     Samp            38          39          40          41          42          43          44          45          46          47
+   Line
+     50       1.517E+02   1.176E+02   9.108E+01   6.883E+01   5.229E+01   3.741E+01   2.711E+01   1.922E+01   1.160E+01   6.604E+00
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:SPOT      User:          Date_Time:                        
+ Task:DETSTAT   User:          Date_Time:                        
+     Samp            48          49          50          51          52          53          54          55          56          57
+   Line
+     50       2.748E+00   1.000E+00   4.722E-01   1.000E+00   2.748E+00   6.604E+00   1.160E+01   1.922E+01   2.711E+01   3.741E+01
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:SPOT      User:          Date_Time:                        
+ Task:DETSTAT   User:          Date_Time:                        
+     Samp            58          59          60          61          62          63          64          65          66          67
+   Line
+     50       5.229E+01   6.883E+01   9.108E+01   1.176E+02   1.517E+02   1.982E+02   2.637E+02   3.610E+02   5.141E+02   8.076E+02
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:SPOT      User:          Date_Time:                        
+ Task:DETSTAT   User:          Date_Time:                        
+     Samp            68          69          70          71
+   Line
+     50       2.255E+03   2.414E+03   1.709E+03   7.586E+02
+detstat do d4 mode=4 win=5
+Beginning VICAR task detstat
+detstat version 2017-08-03
+list d4 sl=50 ss=28 nl=1 ns=44 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:SPOT      User:          Date_Time:                        
+ Task:DETSTAT   User:          Date_Time:                        
+     Samp            28          29          30          31          32          33          34          35          36          37
+   Line
+     50       0.000E+00   1.412E+01   3.408E+01  -1.358E+01  -1.508E+01  -5.333E+00  -4.125E+00  -3.500E+00  -2.125E+00  -2.542E+00
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:SPOT      User:          Date_Time:                        
+ Task:DETSTAT   User:          Date_Time:                        
+     Samp            38          39          40          41          42          43          44          45          46          47
+   Line
+     50      -2.375E+00  -2.333E+00  -1.208E+00  -2.083E+00  -1.708E+00  -1.083E+00  -1.125E+00  -8.333E-01  -1.250E+00  -1.250E+00
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:SPOT      User:          Date_Time:                        
+ Task:DETSTAT   User:          Date_Time:                        
+     Samp            48          49          50          51          52          53          54          55          56          57
+   Line
+     50      -7.917E-01  -1.000E+00  -1.833E+00  -1.000E+00  -7.917E-01  -1.250E+00  -1.250E+00  -8.333E-01  -1.125E+00  -1.083E+00
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:SPOT      User:          Date_Time:                        
+ Task:DETSTAT   User:          Date_Time:                        
+     Samp            58          59          60          61          62          63          64          65          66          67
+   Line
+     50      -1.708E+00  -2.083E+00  -1.208E+00  -2.333E+00  -2.375E+00  -2.542E+00  -2.125E+00  -3.500E+00  -4.125E+00  -5.333E+00
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:SPOT      User:          Date_Time:                        
+ Task:DETSTAT   User:          Date_Time:                        
+     Samp            68          69          70          71
+   Line
+     50      -1.508E+01  -1.358E+01   3.408E+01   1.412E+01
+let $echo="yes"
+if (mode = "nobatch" or mode = "inter")
+end-if
+let $echo="yes"
+disable-log

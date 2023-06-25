@@ -1,0 +1,71 @@
+ibis-gen xxxa nr=4 nc=4 format=("REAL","DOUB","HALF","FULL")  +
+   datacol=(1,2,3,4)  +
+   data=(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16)
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ibis2asc xxxa xxxb cols=(3,4,1,2) sr=2 nr=2
+Beginning VICAR task ibis2asc
+IBIS2ASC version 2019-09-05
+typetext xxxb
+Beginning VICAR task typetext
+     7           8  5.00000000e+00  6.000000000000e+00 
+    11          12  9.00000000e+00  1.000000000000e+01 
+ibis2asc xxxa xxxb cols=(1,2,3,4) sr=0 sep=","
+Beginning VICAR task ibis2asc
+IBIS2ASC version 2019-09-05
+typetext xxxb
+Beginning VICAR task typetext
+ 1.00000000e+00, 2.000000000000e+00,     3,          4,
+ 5.00000000e+00, 6.000000000000e+00,     7,          8,
+ 9.00000000e+00, 1.000000000000e+01,    11,         12,
+ 1.30000000e+01, 1.400000000000e+01,    15,         16,
+ibis-gen xxxa nr=2 nc=3 format=("A10","A12","DOUB")  +
+  data=(0.00001,0.00002) datacols=(3) strcols=(1,2)  +
+  string=("aaaaabbbbb","ccccccdddddd","eeeeefffff","gggggghhhhhh")
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+mf3 xxxa f="c3=@index*0.00001"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+ibis2asc xxxa xxxb cols=(3,2,1)
+Beginning VICAR task ibis2asc
+IBIS2ASC version 2019-09-05
+typetext xxxb
+Beginning VICAR task typetext
+ 1.000000000000e-05 ccccccdddddd aaaaabbbbb 
+ 2.000000000000e-05 gggggghhhhhh eeeeefffff 
+ibis2asc xxxa xxxb cols=(3,2,1) 'quote
+Beginning VICAR task ibis2asc
+IBIS2ASC version 2019-09-05
+typetext xxxb
+Beginning VICAR task typetext
+ 1.000000000000e-05 "ccccccdddddd" "aaaaabbbbb" 
+ 2.000000000000e-05 "gggggghhhhhh" "eeeeefffff" 
+ibis-gen xxxa nr=4 nc=4 format=("REAL","DOUB","HALF","FULL")  +
+   datacol=(1,2,3,4)  +
+   data=(-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10,11,12)
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+let $echo="no"
+penupval=6 case
+ibis2asc xxxa xxxb cols=(1,2,3,4) penupval=6
+Beginning VICAR task ibis2asc
+IBIS2ASC version 2019-09-05
+typetext xxxb
+Beginning VICAR task typetext
+-3.00000000e+00 -2.000000000000e+00     -1           0 
+ 1.00000000e+00  2.000000000000e+00      3           4 
+ 5.00000000e+00                          7           8 
+ 9.00000000e+00  1.000000000000e+01     11          12 
+let $echo="no"
+penupval=0 case
+ibis2asc xxxa xxxb cols=(1,2,3,4) penupval=0
+Beginning VICAR task ibis2asc
+IBIS2ASC version 2019-09-05
+typetext xxxb
+Beginning VICAR task typetext
+-3.00000000e+00 -2.000000000000e+00     -1             
+ 1.00000000e+00  2.000000000000e+00      3           4 
+ 5.00000000e+00  6.000000000000e+00      7           8 
+ 9.00000000e+00  1.000000000000e+01     11          12 
+disable-log

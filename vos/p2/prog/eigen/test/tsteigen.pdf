@@ -12,7 +12,7 @@ body
   let $echo="yes"
 WRITE " this is a test for procedure eigen"
 WRITE " the input byte data (uvb,viob,blub) and halfword data (uvh,vioh,bluh)" 
-WRITE " are copied from /project/it/testdata/mipl/vgr for unix platforms, then"
+WRITE " are copied from /project/test_work/testdata/mipl/vgr for unix platforms, then"
 WRITE " ftp the data to ALPHA using binary option for vms testing"
 WRITE " test byte input"
 WRITE " test parm inc"

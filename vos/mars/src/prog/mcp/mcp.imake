@@ -1,0 +1,5 @@
+#define PROCEDURE MCP
+#define MODULE_LIST  MCP.bash
+#define USES_BASH
+
+#define MARSLIB

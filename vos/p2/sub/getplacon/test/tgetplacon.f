@@ -180,7 +180,8 @@ C        if(ind.ne.1) call prnt(4,1,ind,'PUTSPICE: fatal indicator.')
 C        if(ind.eq.1) call prnt(4,1,ind,'PUTSPICE: successful run.')
 C      endif
 100   if (mode.gt.0) then
-      	call spcfexit(info)
+C       This may have been dropped from the spice lib
+C      	call spcfexit(info)
       endif
       return
       end

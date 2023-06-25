@@ -1,36 +1,13 @@
-                Version 5C/16C
-
-      ***********************************************************
-      *                                                         *
-      * VICAR Supervisor version 5C, TAE V5.2                   *
-      *   Debugger is now supported on all platforms            *
-      *   USAGE command now implemented under Unix              *
-      *                                                         *
-      * VRDI and VIDS now support X-windows and Unix            *
-      * New X-windows display program: xvd (for all but VAX/VMS)*
-      *                                                         *
-      * VICAR Run-Time Library version 16C                      *
-      *   '+' form of temp filename now avail. on all platforms *
-      *   ANSI C now fully supported                            *
-      *                                                         *
-      * See B.Deen(RGD059) with problems                        *
-      *                                                         *
-      ***********************************************************
-
-  --- Type NUT for the New User Tutorial ---
-
-  --- Type MENU for a menu of available applications ---
-
 ibis-gen out=table1.dat nc=7 nr=30
 Beginning VICAR task ibis
+IBIS version 2019-07-31
 mf3 inp=table1.dat func=("c1=@aint(@index/31)+1"$"c2=100*@index"$  +
     "c3=100*@index"$"c4=c2+101"$"c5=c3-200"$"c6=@aint(@index)"$"c7=0")
 Beginning VICAR task mf3
 mf3 version Wed Oct 07 2008
-function string = c1=@aint(@index/31)+1$c2=100*@index$c3=100*@index$c4=c2+101$c5=c3-200$c6=@aint(@index)$c7=0
-30 records in
 ibis-list inp=table1.dat screen=132 nc=10 cols=(1,2,3,4,5,6,7)
 Beginning VICAR task ibis
+IBIS version 2019-07-31
  
 Number of Rows:30  Number of Columns: 7       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -88,14 +65,14 @@ if (mode = "nobatch" or mode = "inter")
 end-if
 ibis-gen out=table2.dat nc=7 nr=30
 Beginning VICAR task ibis
+IBIS version 2019-07-31
 mf3 inp=table2.dat func=("c1=@aint(@index/16)+1"$"c2=100*@index"$  +
     "c3=100*@index"$"c4=c2+0.1"$"c5=c3-0.2"$"c6=@aint(@index)"$"c7=0")
 Beginning VICAR task mf3
 mf3 version Wed Oct 07 2008
-function string = c1=@aint(@index/16)+1$c2=100*@index$c3=100*@index$c4=c2+0.1$c5=c3-0.2$c6=@aint(@index)$c7=0
-30 records in
 ibis-list inp=table2.dat screen=132 nc=7 cols=(1,2,3,4,5,6,7)
 Beginning VICAR task ibis
+IBIS version 2019-07-31
  
 Number of Rows:30  Number of Columns: 7       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE

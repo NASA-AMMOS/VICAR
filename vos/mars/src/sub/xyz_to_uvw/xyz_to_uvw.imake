@@ -1,0 +1,10 @@
+#define SUBROUTINE xyz_to_uvw
+
+#define MODULE_LIST xyz_to_uvw.cc
+
+#define MARS_SUBLIB
+
+#define USES_C_PLUS_PLUS
+
+#define LIB_P2SUB
+

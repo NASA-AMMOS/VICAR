@@ -1,0 +1,581 @@
+process help=*
+ !
+parm inp type=(string,99) count=(1:2)
+parm out type=(string,99) 
+PARM SIZE    TYPE=INTEGER COUNT=0:4 DEFAULT=(1,1,0,0) valid=(0:999999)
+PARM SL      TYPE=INTEGER COUNT=0:1 DEFAULT=1 valid=(0:999999)
+PARM SS      TYPE=INTEGER COUNT=0:1 DEFAULT=1 valid=(0:999999)
+PARM NL      TYPE=INTEGER COUNT=0:1 DEFAULT=0 valid=(0:999999)
+PARM NS      TYPE=INTEGER COUNT=0:1 DEFAULT=0 valid=(0:999999)
+parm itie  type=real count=0:4 default=(0.,0.,0.,0.)
+parm otie  type=real count=0:4 default=(0.,0.,0.,0.)
+PARM AZOOM  TYPE=REAL COUNT=0:1 DEFAULT=0.0
+PARM PZOOM  TYPE=REAL COUNT=0:1 DEFAULT=0.0
+parm typref type=keyword count=(0:1) valid=(COVERREF,COVERINP) +
+     default=COVERREF
+parm interp type=keyword count=(0:1) valid=(NOIN,BILIN) +
+     default=BILIN
+parm IGNOREGT type=keyword count=(0:1) valid=IGNOREGT default=--
+ !
+ END-PROC
+!
+! HELP TEXT FOR GTSIZE
+.TITLE
+GTSIZE - Resize an image, allows use of GeoTIFF reference.
+.HELP
+PURPOSE
+    This program resizes a VICAR labelled image.
+The input is windowed for the area to be copied
+to the output.  In order to magnify or demagnify
+the image, the output size may be increased or
+decreased in either dimension. For accuracy,
+the input/output windows are specified in real
+numbers instead of the integer window as used by
+VICAR program SIZE.  The mapping is specified by
+a pair of tiepoints at the corners of the windows
+of transformation using the parameters ITIE and
+OTIE.  The SIZE=(SL,SS,NL,NS) parameters are
+devoted only to scoping the output in the raster
+space defined by the mapping (except for the 
+simple default case where there is no ITIE/OTIE).
+
+All referencing in the parameters are in the VICAR
+pixel coordinate referencing system.  (1.0,1.0) is 
+the center of the first stored pixel, and (0.5,0.5)
+is the outer corner of that pixel.
+
+The value of an output pixel comes from a point that
+is usually between four input pixels.  The user has
+a choice of bilinear interpolation or nearest neighbor
+for the value of the output pixel.  The default is
+bilinear.
+
+If the input has a GeoTIFF label, the output will 
+have a calculated GeoTIFF label that correctly maps
+the image pixel coordinate system to the cartographic
+coordinate system.
+
+USE OF A GeoTIFF REFERENCE LABEL (OPTIONAL SECOND INPUT)
+
+The second image input allows the user to specify
+a reference image (with a GeoTIFF label) that will
+completely override the SIZE=(SL,SS,NL,NS) and
+ITIE/OTIE parameters.  GTSIZE will calculate these
+parameters according to the typref parameter described
+below.  If (typical of 'COVERREF) part of the output
+image is not geographically covered by the input, then
+that part is zero filled.  If part of the input does
+not map into the reference image, it is lost.  The
+projections of the two images must be identical,
+but the scale does not have to be.  If the images
+have a different mapping, the GTWARP routine should
+be used instead of GTSIZE.
+
+A handy technique in building a library of overlaid
+images in a geographic area is to create a base image
+to use for IMCOPY, IMSIZE, and GTWARP PROCEDURES to
+reference for exactly matching overlays.
+
+When using the GeoTIFF option, the user does not have
+to know or be concerned with the VICAR pixel coordinate
+system, or, for that matter, the GeoTIFF pixel coordinate
+system.  The "area" vs "post" or "point" pixel types in
+GeoTIFF are also handled in transparent fashion to the
+user.
+
+The value of an output pixel comes from a point that
+is usually between four input pixels.  The user has
+a choice of bilinear interpolation or nearest neighbor
+for the value of the output pixel.  The default is
+bilinear.
+
+THE TYPREF PARAMETER
+
+This parameter is only activated when the second input
+(a GeoTIFF reference) is used.  It selects from the two
+most desired analyst cases.
+
+The two cases for this keyword are: COVERREF and COVERINP.
+
+COVERREF means that the output will adjust to cover the
+GeoTIFF reference image (the second input).  Both inputs
+must have GeoTIFF labels and the geographic mappings must
+agree.  The scales and offsets can differ.  The GeoTIFF 
+mappings will be used to calculate all details of the
+resize operation.  This option can be used to make a stack
+of geographically identical images, all with the same (nl,ns).
+
+The other option (COVERINP) uses the reference image to
+determine the mapping but ignores the reference image
+frame.  It instead looks at the input image frame and
+converts the entire input image.  Two things can still be
+changed by this option:
+
+    1.  The pixel "size", actually, the ratio of mapping
+	coordinates per pixel.  These ratios can be deter-
+	mined by dividing the corner point coordinate
+	difference by the number of pixels in the image.
+	Horizontal and vertical are treated separately.
+    2.  The pixel "shift".  Even if the pixel size for
+	the two images agree, they may not mosaic together
+	accurately because the pixel centers do not align.
+
+Use of the typref parameter guarantees that both of these
+problems will be corrected.  You can check this by looking
+at the shifts written for each frame in FEATHER.  They should
+all have a fraction of .000000 shown on their offsets.
+
+Another example of this option ... the user can set up
+an area or worldwide mapping by creating a GeoTIFF image
+of a small subarea.  Other images can be put into a matching
+raster grid by using the small area as a reference image.
+The main effect will be to give the same scale and fractional
+pixel offset so that tiles and mosaics will butt together
+perfectly.
+
+ZOOM KEYWORDS
+
+There are two types of zoom.
+
+1.  AZOOM (area zoom) which fixes the corners of the corner 
+    pixels and zooms the interval between them the AZOOM value
+    which can be any floating point number greater than 0.0.
+    Note that an n x n image has distance n between the
+    corners of the corner pixels and it is this distance that
+    is zoomed.  So the total size of the image from corner (of 
+    corner pixel) to corner is approximately AZOOM*n.  Fractional
+    pixels may be discarded since the output image must be in
+    whole pixels.  The scale change will be exactly AZOOM always.
+
+2.  PZOOM (point zoom) which fixes the centers of the corner 
+    pixels and zooms the interval between them the PZOOM value
+    which can be any floating point number greater than 0.0.
+    Note that an n x n image has distance (n-1) between the
+    centers of the corner pixels and it is this distance that
+    is zoomed.  So the total size of the image from corner (of 
+    corner pixel) to corner is PZOOM*(n-1)+1 or the closest
+    value to that if fractional pixels are involved.  The scale
+    change will be exactly PZOOM always. Using PZOOM=2.0 for a
+    DTED image would cause the 601 x 1201 size to become
+    1201 x 2401.
+
+In either case, a zoom of 2.0 approximately doubles the image
+size in pixels and a zoom of 0.5 halves the image size in pixels.
+Both zooms preserve GeoTIFF label mappings.  The pixel scale is
+always changed by an exact amount given by the zoom parameter,
+to 15 decimal places.
+
+CALL
+     gtsize INPUT OUTPUT SIZE ITIE OTIE '(QUALIFIERS)
+  WHERE:
+     INPUT          is the input data set.
+     OUTPUT         is the output data set.
+     SIZE           is a standard VICAR size field.
+     ITIE           is a (x1,y1,x2,y2) pair of points x2>x1 and
+                    y2>y1 specifying a window in the input
+     OTIE           is a (x1,y1,x2,y2) pair of points x2>x1 and
+                    y2>y1 specifying a window in the output that
+                    will map its corners exactly from the input window.
+     QUALIFIERS     consist of any of the following keywords:
+          NOIN          no interpolation is to be done.
+          BILIN         bilinear interpolation is performed (default).
+          
+or
+     
+     gtsize (INPUT,GEOREF) OUTPUT '(QUALIFIERS)
+  WHERE:
+     INPUT          is the input data set.
+     GEOREF         is a GeoTIFF reference data set (optional).
+     OUTPUT         is the output data set.
+     QUALIFIERS     consist of any of the following keywords:
+          NOIN          no interpolation is to be done.
+          BILIN         bilinear interpolation is performed (default).
+          COVERREF      output matches the reference image (default).
+          COVERINP      output covers the input area.
+     
+
+The input image may either be byte or halfword data.  The data format is taken
+from the VICAR label of the input file.  The output image has the same data 
+format (byte or halfword) as the input image.  
+
+
+OPERATION
+
+The program operates differently on a number of fundamental cases.  The
+basic cases are listed here, but the ingenious user will probably find
+others.
+
+CASE 1  NO GEOTIFF, DEFAULT OF ITIE,OTIE (SAME RESULT AS VICAR SIZE)
+
+   gen im1 nl=5 ns=5 ival=3 linc=10 sinc=10
+
+   gtsize im1 im2 nl=10 ns=15 
+
+Case 1 will calculate an itie,otie to match the magnification/demag-
+nification inherent in the input and output image sizes.  The itie,
+otie will be the same as that in case 2 below.  The image will be
+zoomed 2X in the line direction and 3X in the sample direction.
+
+**************************************************************************
+
+CASE 2  NO GEOTIFF, NL,NS AND ITIE,OTIE (SAME RESULT AS VICAR SIZE)
+
+   gen im1 nl=5 ns=5 ival=3 linc=10 sinc=10
+
+   gtsize im1 im2 nl=10 ns=15 itie=(.5,.5,5.5,5.5) +
+       otie=(.5,.5,10.5,15.5)
+
+The itie,otie set up a reference grid in the output and then the nl,ns
+window into that grid.  In this case, the nl,ns window is exactly
+coincidental with the itie,otie window.
+
+**************************************************************************
+
+CASE 3  NO GEOTIFF, DEFAULT OF NL,NS (SAME RESULT AS VICAR SIZE)
+
+   gen im1 nl=5 ns=5 ival=3 linc=10 sinc=10
+
+   gtsize im1 im2 itie=(.5,.5,5.5,5.5) otie=(.5,.5,10.5,15.5)
+
+The itie,otie set up a reference grid in the output and also define
+a rectangle in the output.  Since the nl,ns are defaulted, they are set
+to just contain that window.
+
+**************************************************************************
+
+CASE 4  NO GEOTIFF, USE OF NON-CORNER TIEPOINTS (ILLUSTRATIVE CASE ONLY)
+
+   gen im1 nl=5 ns=5 ival=3 linc=10 sinc=10
+
+   gtsize im1 im2 nl=10 ns=15 itie=(.75,.6666667,5.5,5.5) +
+       otie=(1.,1.,10.5,15.5)
+
+Case 4 has the same effect as cases 1-3, but show that the itie,otie
+can be independent from the nl,ns.  This case also shows that the (1,1)
+center point in the output does not come from the (1,1) center point of
+the input in an "area pixel" type of size operation but is moved over
+to get the corners of the pixels to match.  The analyst would not usually
+go to this effort to calculate, so this is an illustrative case only).
+
+**************************************************************************
+
+CASE 5  NO GEOTIFF, USE OF PIXEL CENTERS IN ITIE,OTIE (DIFFERENT THAN SIZE)
+ 
+   gen im1 nl=5 ns=5 ival=3 linc=10 sinc=10
+
+   gtsize im1 im2 nl=10 ns=15 itie=(1.0,1.0,5.0,5.0) +
+       otie=(1.,1.,10.0,15.0)
+
+Case 5 would be useful if the user wanted the centers of the corners to
+map.  Suppose that an elevation image 601 x 601 with the elevations
+attributed to the centers of the pixels and the geographic coordinates
+at the centers of the pixels is to be refined to 1201 x 1201 (without
+GeoTIFF).  Then itie=(1.0,1.0,601.0,601.0) otie=(1.,1.,1201.0,201.0)
+would be used.
+
+**************************************************************************
+
+CASE 6  NO GEOTIFF, USE OF SL,SS (DIFFERENT THAN SIZE)
+ 
+   gen im1 nl=5 ns=5 ival=3 linc=10 sinc=10
+
+   gtsize im1 im2 sl=4 ss=5 nl=6 ns=10 itie=(.5,.5,5.5,5.5) +
+       otie=(.5,.5,10.5,15.5)
+
+Case 6 shows the use of sl,ss and can be applied to any of the cases
+above (here we use case 2).  Basically, the sl,ss allows subwindowing
+into the grid defined by the itie,otie.  As usual in VICAR, increasing
+a sl,ss moves the upper corner unless nl,ns is reduced.  Use of sl,ss
+is tricky and not generally recommended.  See the next example for
+alternate ways of moving things around in the otput space.
+
+**************************************************************************
+
+CASE 7  NO GEOTIFF, USE OF ITIE TO INSERT (DIFFERENT THAN SIZE)
+ 
+   gen im1 nl=5 ns=5 ival=3 linc=10 sinc=10
+
+   gtsize im1 im2 nl=10 ns=15 itie=(.5,.5,5.5,5.5) +
+       otie=(4.5,5.5,9.5,10.5)
+
+Case 7 shows how itie,otie can insert an image into the middle of a
+zero filled image.  
+
+**************************************************************************
+
+CASE 8  GEOTIFF, USE OF COVERREF
+   
+   gtsize (australia,canberra) im2 'coverref
+
+Case 8 will map a subset of australia to exactly match canberra.  This is
+useful for preparing a "stack" of cartographically identical images.
+
+**************************************************************************
+
+CASE 9  GEOTIFF, USE OF COVERINP
+   
+   gtsize (canberra,australia) im2 'coverinp
+
+Case 9 will map all of the image canberra to be consistent with the
+much larger image australia.  This is useful for preparing mosaic
+pieces or tiles in a data base.  Note that australia could actually
+be los_angeles, and canberra would still be mapped consistently.
+This means that the pixel scale and offset would be such so that
+a world mosaic could be performed without running into offset problems
+or that tiles of the world can be prepared without running into problems
+of butting tiles.
+
+**************************************************************************
+
+CASE 10  GEOTIFF, USE OF AZOOM
+   
+   gtsize canberra canberra_large AZOOM=2.25
+
+If canberra is 1000 x 1000 then the result is an image 2250 x 2250.
+The corners of the corner pixels will match exactly in the two images.
+
+**************************************************************************
+
+CASE 11  GEOTIFF, USE OF PZOOM
+   
+   gtsize canberradted canberradted_large PZOOM=2.25
+
+If canberra is 1001 x 1001 then the result is an image 2251 x 2251.
+Point type images usually have an extra pixel beyond a round number
+such as 1001 (for example DMA DTED can be 601 x 1201).  The
+centers of the corner pixels will match exactly in the two images.
+
+PERFORMANCE
+
+Will get back on this.  Expect same speed as SIZE.
+
+
+.PAGE
+Restrictions
+------------
+
+Many illegal combinations of parameters are detected and an abort with error
+message is produced.  All of these are self-explanatory situations.  To list
+some:
+
+1.  no GeoTIFF label in the second input
+2.  no GeoTIFF label in the first input when a second input given
+3.  incompatible mappings in the two GeoTIFF labels
+4.  input not byte or halfword
+5.  ITIE doesn't have four values
+6.  OTIE doesn't have four values
+7.  use of ITIE/OTIE with second (GeoTIFF) input
+8.  ITIE without OTIE or vice-versa
+9.  tiepoint rectangle must subtend positive area
+10. use of SIZE with second (GeoTIFF) input
+11. use of SL,SS without ITIE,OTIE
+  
+.PAGE
+Original Programmer: A. L. Zobrist, 18 Oct. 1999
+Current Cognizant Programmer: B. A. McGuffie
+Revisions:
+  2008-01-11 WLB - Switched to USES_ANSI_C AND LIB_CARTO; misc cleanup
+  2015-10-23 WLB - Migrated to MIPL
+  2019-09-05 WLB - IDS-7922 - Initialized some variables; cleaned up -Wall warnings
+  2022-07-14 B. Crocco afids to opensource
+  
+.level1
+.var inp
+input file, optional second
+file is GeoTIFF reference
+.var out
+output file
+.VARI SIZE
+Standard VICAR Size Field
+.VARI SL
+Starting line for output
+.VARI SS
+Starting sample for output
+.VARI NL
+Number of lines for output
+.VARI NS
+Number of samples for output
+.vari itie
+Two control points (x1,y1,x2,y2)
+in the input that subtend a pos-
+itive rectangle, real numbers OK
+.vari otie
+Two control points (p1,q1,p2,q2)
+in output that subtend a pos-
+itive rectangle, real numbers OK
+.vari AZOOM
+Area type zoom factor
+.vari PZOOM
+Point type zoom factor
+.var typref
+applicable if GeoTIFF reference
+file is given
+'COVERREF - produce exact image
+      overlay of reference image
+'COVERINP - use ref mapping only
+      and transform all of input
+.var interp
+'BILIN - bilinear interpolation
+'NOIN - nearest neighbor
+.val IGNOREGT
+'ignoregt to ignore GeoTIFF label
+(needed if it has no mapping)
+.level2
+.vari inp
+If two inputs are used then both must have GeoTIFF labels and
+the mappings must be compatible for the size operation (only the
+scale and offset can differ).
+
+If a single input is used, then the GeoTIFF label is optional.
+.vari out
+If the first input has a GeoTIFF label then a GeoTIFF label
+will be computed for the output taking into account the
+mapping, scale change, offset change, and (SL,SS) windowing.
+.VARI SIZE
+In the simplest case of all, the size parameter is (1,1,NL,NS)
+and no itie,otie is used.  The program magnifies/demagnifies
+the image to fit the output (NL,NS).  The effect is as
+if the itie,otie was set to the outer corners of the outer
+corner pixels.  The result will be the same as VICAR program
+SIZE.
+
+If a second input (GeoTIFF reference) is given, the size
+parameter is not used and an error occurs if it is given.
+
+In all other cases, the size parameter is a window on the
+output grid determined by ITIE,OTIE.  If size is defaulted,
+then ITIE,OTIE must be given and the size parameter will be
+set to the smallest size to contain the "window" used by the
+tiepoints.
+.VARI SL
+See second level help for SIZE parameter (type h size)
+.VARI SS
+See second level help for SIZE parameter (type h size)
+.VARI NL
+See second level help for SIZE parameter (type h size)
+.VARI NS
+See second level help for SIZE parameter (type h size)
+.vari itie
+For example, a standard case of a 5 x 5 image to a 10 x 15
+image treating the pixels as "areas" of data would use
+
+    itie=(0.5, 0.5,  5.5,  5.5)
+    otie=(0.5, 0.5, 10.5, 15.5)
+    
+to treat the pixels as center points and map the same
+image sizes as above would use
+    
+    itie=(1.0, 1.0,  5.0,  5.0)
+    otie=(1.0, 1.0, 10.0, 15.0)
+    
+.var otie
+See second level help for ITIE parameter (type h itie)
+.vari AZOOM
+There are two types of zoom.
+
+1.  AZOOM (area zoom) which fixes the corners of the corner 
+    pixels and zooms the interval between them the AZOOM value
+    which can be any floating point number greater than 0.0.
+    Note that an n x n image has distance n between the
+    corners of the corner pixels and it is this distance that
+    is zoomed.  So the total size of the image from corner (of 
+    corner pixel) to corner is approximately AZOOM*n.  Fractional
+    pixels may be discarded since the output image must be in
+    whole pixels.  The scale change will be exactly AZOOM always.
+
+2.  PZOOM (point zoom) which fixes the centers of the corner 
+    pixels and zooms the interval between them the PZOOM value
+    which can be any floating point number greater than 0.0.
+    Note that an n x n image has distance (n-1) between the
+    centers of the corner pixels and it is this distance that
+    is zoomed.  So the total size of the image from corner (of 
+    corner pixel) to corner is PZOOM*(n-1)+1 or the closest
+    value to that if fractional pixels are involved.  The scale
+    change will be exactly PZOOM always. Using PZOOM=2.0 for a
+    DTED image would cause the 601 x 1201 size to become
+    1201 x 2401.
+
+In either case, a zoom of 2.0 approximately doubles the image
+size in pixels and a zoom of 0.5 halves the image size in pixels.
+Both zooms preserve GeoTIFF label mappings.  The pixel scale is
+always changed by an exact amount given by the zoom parameter,
+to 15 decimal places.
+
+A negative value of zoom is interpreted as -1/zoom, for example,
+pzoom=-4 is the same as pzoom=0.25.
+.vari PZOOM
+There are two types of zoom.
+
+1.  AZOOM (area zoom) which fixes the corners of the corner 
+    pixels and zooms the interval between them the AZOOM value
+    which can be any floating point number greater than 0.0.
+    Note that an n x n image has distance n between the
+    corners of the corner pixels and it is this distance that
+    is zoomed.  So the total size of the image from corner (of 
+    corner pixel) to corner is approximately AZOOM*n.  Fractional
+    pixels may be discarded since the output image must be in
+    whole pixels.  The scale change will be exactly AZOOM always.
+
+2.  PZOOM (point zoom) which fixes the centers of the corner 
+    pixels and zooms the interval between them the PZOOM value
+    which can be any floating point number greater than 0.0.
+    Note that an n x n image has distance (n-1) between the
+    centers of the corner pixels and it is this distance that
+    is zoomed.  So the total size of the image from corner (of 
+    corner pixel) to corner is PZOOM*(n-1)+1 or the closest
+    value to that if fractional pixels are involved.  The scale
+    change will be exactly PZOOM always. Using PZOOM=2.0 for a
+    DTED image would cause the 601 x 1201 size to become
+    1201 x 2401.
+
+In either case, a zoom of 2.0 approximately doubles the image
+size in pixels and a zoom of 0.5 halves the image size in pixels.
+Both zooms preserve GeoTIFF label mappings.  The pixel scale is
+always changed by an exact amount given by the zoom parameter,
+to 15 decimal places.
+
+A negative value of zoom is interpreted as -1/zoom, for example,
+pzoom=-4 is the same as pzoom=0.25.
+.var typref
+The two cases for this keyword are: COVERREF and COVERINP.
+
+NORMAL CASE IS AS FOLLOWS ('COVERREF), ALSO THE DEFAULT
+
+COVERREF means that the output will adjust to cover the
+GeoTIFF reference image (the second input).  Both inputs
+must have GeoTIFF labels and the geographic mappings must
+agree.  The scales and offsets can differ.  The GeoTIFF 
+mappings will be used to calculate all details of the
+resize operation.  This option can be used to make a stack
+of geographically identical images, all with the same (nl,ns).
+
+THE SECOND OPTION ('COVERINP) USEFUL FOR MOSAICKING AND DB
+
+The other option (COVERINP) uses the reference image to
+determine the mapping but ignores the reference image
+frame.  It instead looks at the input image frame and
+converts the entire input image.  Two things can still be
+changed by this option:
+
+    1.  The pixel "size", actually, the ratio of mapping
+	coordinates per pixel.  These ratios can be deter-
+	mined by dividing the corner point coordinate
+	difference by the number of pixels in the image.
+	Horizontal and vertical are treated separately.
+    2.  The pixel "shift".  Even if the pixel size for
+	the two images agree, they may not mosaic together
+	accurately because the pixel centers do not align.
+
+Use of the typref parameter guarantees that both of these
+problems will be corrected.  You can check this by looking
+at the shifts written for each frame in FEATHER.  They should
+all have a fraction of .000000 shown on their offsets.
+
+Another example of this option ... the user can set up
+an area or worldwide mapping by creating a GeoTIFF image
+of a small subarea.  Other images can be put into a matching
+raster grid by using the small area as a reference image.
+The main effect will be to give the same scale and fractional
+pixel offset so that tiles and mosaics will butt together
+perfectly.
+.END

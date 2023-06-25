@@ -12,10 +12,10 @@ Beginning VICAR task mss
 * ACTUAL OUTPUT RECORD LENGTH    300SAMPLES **
 srchedge inp=C out="tstsrchedge.img" angle=angle
 Beginning VICAR task srchedge
-SRCHEDGE version 2019-06-14
+SRCHEDGE version 2021-11-12
 list tstsrchedge.img sl=1 ss=146 nl=10 ns=10 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
  Task:GEN       User:          Date_Time:                        
@@ -32,10 +32,8 @@ list version 2017-03-29
       8        50    50    50    50    50   150   150   150   150   150
       9        50    50    50    50    50   150   150   150   150   150
      10        50    50    50    50    50   150   150   150   150   150
-display angle
-
-angle=270.0
-
+write "angle: 2.700000000000e+02"
+angle: 2.700000000000e+02
 gen out=A nl=300 ns=300 format=half linc=0 sinc=0 ival=50
 Beginning VICAR task gen
 GEN Version 2019-05-28
@@ -47,10 +45,10 @@ F2 calculating every pixel
 FUNCTION EVALUATED 90000 TIMES
 srchedge inp=B out="tstsrchedge.img" angle=angle
 Beginning VICAR task srchedge
-SRCHEDGE version 2019-06-14
+SRCHEDGE version 2021-11-12
 list tstsrchedge.img sl=1 ss=1 nl=10 ns=10 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
  Task:GEN       User:          Date_Time:                        
@@ -67,8 +65,6 @@ list version 2017-03-29
       8        50    50    50    50    50    50    50   150   150   150
       9        50    50    50    50    50    50    50    50   150   150
      10        50    50    50    50    50    50    50    50    50   150
-display angle
-
-angle=224.989259055
-
+write "angle: 2.249892590554e+02"
+angle: 2.249892590554e+02
 disable-log

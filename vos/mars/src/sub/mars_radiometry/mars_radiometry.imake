@@ -1,0 +1,16 @@
+#define SUBROUTINE mars_radiometry
+
+#define MODULE_LIST RadiometryModel.cc RadiometryMpfImp.cc \
+ RadiometryM98SSI.cc RadiometryM98RAC.cc RadiometryFIDO.cc \
+ RadiometryMER.cc RadiometryPHX.cc RadiometryCalImage.cc \
+ RadiometryMSL.cc RadiometryNSYT.cc RadiometryM20.cc \
+ RadiometryColdarm.cc RadiometryPsyche.cc
+
+
+#define MARS_SUBLIB
+
+#define USES_C_PLUS_PLUS
+
+#define LIB_P2SUB
+#define LIB_XERCES
+

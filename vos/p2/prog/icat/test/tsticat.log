@@ -1,0 +1,204 @@
+ibis-gen xx1 nc=4 nr=5 index=2 datacol=1  +
+     data=(1,1,2,3,4) 'ibis-2 format=(FULL,FULL,A12,A12)  +
+     strcol=(3,4)  +
+     string=(aaaaaa1,bbbbbb1,aaaaaa2,bbbbbb2,aaaaaa3,  +
+      bbbbbb3,aaaaaa4,bbbbbb4,aaaaaa5,bbbbbb5)
+Beginning VICAR task ibis
+ibis-gen xx2 nc=4 nr=4 index=2 datacol=1  +
+     data=(1,3,4,4) 'ibis-2 format=(FULL,FULL,A12,A12)  +
+     strcol=(3,4)  +
+     string=(aaaaaa1,yyyyyy1,aaaaaa4,yyyyyy2,aaaaaa5,  +
+       yyyyyy3,aaaaaa5,yyyyyy4)
+Beginning VICAR task ibis
+icat (xx1,xx2) xx3 'v
+Beginning VICAR task icat
+icat version 2015-11-05
+5 and 4 records in, 9 records out
+ibis-list xx1 'format
+Beginning VICAR task ibis
+ 
+Number of Rows:5  Number of Columns: 4       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:5
++-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4
+        FULL        FULL         A12         A12
++-----------+-----------+-----------+-----------
+           1           1     aaaaaa1     bbbbbb1
+           1           2     aaaaaa2     bbbbbb2
+           2           3     aaaaaa3     bbbbbb3
+           3           4     aaaaaa4     bbbbbb4
+           4           5     aaaaaa5     bbbbbb5
+ibis-list xx2 'format
+Beginning VICAR task ibis
+ 
+Number of Rows:4  Number of Columns: 4       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:4
++-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4
+        FULL        FULL         A12         A12
++-----------+-----------+-----------+-----------
+           1           1     aaaaaa1     yyyyyy1
+           3           2     aaaaaa4     yyyyyy2
+           4           3     aaaaaa5     yyyyyy3
+           4           4     aaaaaa5     yyyyyy4
+ibis-list xx3 'format
+Beginning VICAR task ibis
+ 
+Number of Rows:9  Number of Columns: 4       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:9
++-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4
+        FULL        FULL         A12         A12
++-----------+-----------+-----------+-----------
+           1           1     aaaaaa1     bbbbbb1
+           1           2     aaaaaa2     bbbbbb2
+           2           3     aaaaaa3     bbbbbb3
+           3           4     aaaaaa4     bbbbbb4
+           4           5     aaaaaa5     bbbbbb5
+           1           1     aaaaaa1     yyyyyy1
+           3           2     aaaaaa4     yyyyyy2
+           4           3     aaaaaa5     yyyyyy3
+           4           4     aaaaaa5     yyyyyy4
+icat (xx1,xx2) xx3 'h
+Beginning VICAR task icat
+icat version 2015-11-05
+5 and 4 records in, 5 records out
+ibis-list xx3 'format
+Beginning VICAR task ibis
+ 
+Number of Rows:5  Number of Columns: 8       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:5
++-----------+-----------+-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4         C:5         C:6
+        FULL        FULL         A12         A12        FULL        FULL
++-----------+-----------+-----------+-----------+-----------+-----------
+           1           1     aaaaaa1     bbbbbb1           1           1
+           1           2     aaaaaa2     bbbbbb2           3           2
+           2           3     aaaaaa3     bbbbbb3           4           3
+           3           4     aaaaaa4     bbbbbb4           4           4
+           4           5     aaaaaa5     bbbbbb5           0           0
+ 
+Rows: 1:5
++-----------+-----------
+         C:7         C:8
+         A12         A12
++-----------+-----------
+     aaaaaa1     yyyyyy1
+     aaaaaa4     yyyyyy2
+     aaaaaa5     yyyyyy3
+     aaaaaa5     yyyyyy4
+                        
+ibis-gen xx1 nc=4 nr=5 index=2 datacol=1  +
+     data=(1,1,2,3,4) 'ibis-2 format=(FULL,FULL,A12,A12)  +
+     strcol=(3,4)  +
+     string=(aaaaaa1,bbbbbb1,aaaaaa2,bbbbbb2,aaaaaa3,  +
+      bbbbbb3,aaaaaa4,bbbbbb4,aaaaaa5,bbbbbb5)
+Beginning VICAR task ibis
+ibis-gen xx2 nc=4 nr=4 index=4 datacol=3  +
+     data=(1,3,4,4) 'ibis-2 format=(A12,A12,FULL,FULL)  +
+     strcol=(1,2)  +
+     string=(aaaaaa1,yyyyyy1,aaaaaa4,yyyyyy2,aaaaaa5,  +
+       yyyyyy3,aaaaaa5,yyyyyy4)
+Beginning VICAR task ibis
+icat (xx1,xx2) xx3 'h
+Beginning VICAR task icat
+icat version 2015-11-05
+5 and 4 records in, 5 records out
+ibis-list xx1 'format
+Beginning VICAR task ibis
+ 
+Number of Rows:5  Number of Columns: 4       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:5
++-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4
+        FULL        FULL         A12         A12
++-----------+-----------+-----------+-----------
+           1           1     aaaaaa1     bbbbbb1
+           1           2     aaaaaa2     bbbbbb2
+           2           3     aaaaaa3     bbbbbb3
+           3           4     aaaaaa4     bbbbbb4
+           4           5     aaaaaa5     bbbbbb5
+ibis-list xx2 'format
+Beginning VICAR task ibis
+ 
+Number of Rows:4  Number of Columns: 4       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:4
++-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4
+         A12         A12        FULL        FULL
++-----------+-----------+-----------+-----------
+     aaaaaa1     yyyyyy1           1           1
+     aaaaaa4     yyyyyy2           3           2
+     aaaaaa5     yyyyyy3           4           3
+     aaaaaa5     yyyyyy4           4           4
+ibis-list xx3 'format
+Beginning VICAR task ibis
+ 
+Number of Rows:5  Number of Columns: 8       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:5
++-----------+-----------+-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4         C:5         C:6
+        FULL        FULL         A12         A12         A12         A12
++-----------+-----------+-----------+-----------+-----------+-----------
+           1           1     aaaaaa1     bbbbbb1     aaaaaa1     yyyyyy1
+           1           2     aaaaaa2     bbbbbb2     aaaaaa4     yyyyyy2
+           2           3     aaaaaa3     bbbbbb3     aaaaaa5     yyyyyy3
+           3           4     aaaaaa4     bbbbbb4     aaaaaa5     yyyyyy4
+           4           5     aaaaaa5     bbbbbb5                        
+ 
+Rows: 1:5
++-----------+-----------
+         C:7         C:8
+        FULL        FULL
++-----------+-----------
+           1           1
+           3           2
+           4           3
+           4           4
+           0           0
+icat (xx2,xx1) xx3 'h
+Beginning VICAR task icat
+icat version 2015-11-05
+4 and 5 records in, 5 records out
+ibis-list xx3 'format
+Beginning VICAR task ibis
+ 
+Number of Rows:5  Number of Columns: 8       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:5
++-----------+-----------+-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4         C:5         C:6
+         A12         A12        FULL        FULL        FULL        FULL
++-----------+-----------+-----------+-----------+-----------+-----------
+     aaaaaa1     yyyyyy1           1           1           1           1
+     aaaaaa4     yyyyyy2           3           2           1           2
+     aaaaaa5     yyyyyy3           4           3           2           3
+     aaaaaa5     yyyyyy4           4           4           3           4
+                                   0           0           4           5
+ 
+Rows: 1:5
++-----------+-----------
+         C:7         C:8
+         A12         A12
++-----------+-----------
+     aaaaaa1     bbbbbb1
+     aaaaaa2     bbbbbb2
+     aaaaaa3     bbbbbb3
+     aaaaaa4     bbbbbb4
+     aaaaaa5     bbbbbb5
+disable-log

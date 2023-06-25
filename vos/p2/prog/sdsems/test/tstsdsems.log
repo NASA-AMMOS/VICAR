@@ -32,13 +32,13 @@ write "comparing with expected 32-bit output"
 comparing with expected 32-bit output
 difpic (ct/sdsems_test_out_32bit.hlf, out.hlf)
 Beginning VICAR task difpic
-DIFPIC version 2020-04-24
+DIFPIC version 2021-03-09
  NUMBER OF DIFFERENCES = 534
 write "comparing with expected 64-bit output"
 comparing with expected 64-bit output
 difpic (ct/sdsems_test_out.hlf, out.hlf)
 Beginning VICAR task difpic
-DIFPIC version 2020-04-24
+DIFPIC version 2021-03-09
  NUMBER OF DIFFERENCES =   0
 ush rm out.hlf ct
 disable-log

@@ -1,0 +1,67 @@
+ibis-gen xxa version=ibis-2 org=column  datacol=(1,2,3,4)  +
+    nc=4 nr=444  deffmt=DOUB
+Beginning VICAR task ibis
+mf xxa func=("c1=sqrt(index*17+3743)","c2=sqrt(index*7+4431)")
+Beginning VICAR task mf
+mf version 05-May-2011
+mf xxa func=("c1=mod(c1,0.0001)*10000000","c2=mod(c2,0.0001)*10000000")
+Beginning VICAR task mf
+mf version 05-May-2011
+mf xxa func=("c3=c1*1.1","c4=c2*1.0-1.0")
+Beginning VICAR task mf
+mf version 05-May-2011
+tieconv INP=xxa COLS=(1,2,3,4)  OUT=xxb  +
+      NAH=2,NAV=2,MINL=1.,MINS=1.,MAXL=1000.,MAXS=1000.  +
+    'GEOMV
+Beginning VICAR task tieconv
+tieconv version Tue Mar 01 2011
+tieconv INP=xxa COLS=(1,2,3,4)  OUT=xxc  +
+      NAH=2,NAV=2,MINL=1.,MINS=1.,MAXL=1000.,MAXS=1000.  +
+    'GEOMV
+Beginning VICAR task tieconv
+tieconv version Tue Mar 01 2011
+ibis-list xxb 'format csiz=(16,16,16,16) cfor="%16.9f %16.9f %16.9f %16.9f"
+Beginning VICAR task ibis
+ 
+Number of Rows:9  Number of Columns: 4       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:9
++----------------+----------------+----------------+---------------
+              C:1              C:2              C:3             C:4
+             DOUB             DOUB             DOUB            DOUB
++----------------+----------------+----------------+---------------
+     1.000000000      1.000000000      1.099999196      0.000000000
+     1.000000000    500.500000000      1.100000113    499.500000000
+     1.000000000   1000.000000000      1.099997874    999.000000000
+   500.500000000      1.000000000    550.550013197      0.000000000
+   500.500000000    500.500000000    550.549998541    499.500000000
+   500.500000000   1000.000000000    550.550006791    999.000000000
+  1000.000000000      1.000000000   1099.999982081      0.000000000
+  1000.000000000    500.500000000   1100.000024523    499.500000000
+  1000.000000000   1000.000000000   1100.000007495    999.000000000
+gridcomp INP=(xxb,xxc) OUT=xxd
+Beginning VICAR task gridcomp
+gridcomp version 2015-10-23
+First input grid grid OK: nah = 2 nav = 2
+ibis-list xxd 'format csiz=(16,16,16,16) cfor="%16.9f %16.9f %16.9f %16.9f"
+Beginning VICAR task ibis
+ 
+Number of Rows:9  Number of Columns: 4       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:9
++----------------+----------------+----------------+---------------
+              C:1              C:2              C:3             C:4
+             DOUB             DOUB             DOUB            DOUB
++----------------+----------------+----------------+---------------
+     1.000000000      1.000000000      1.209998312     -1.000000000
+     1.000000000    500.500000000      1.210000235    498.500000000
+     1.000000000   1000.000000000      1.209995543    998.000000000
+   500.500000000      1.000000000    605.605024613     -1.000000000
+   500.500000000    500.500000000    605.604999558    498.500000000
+   500.500000000   1000.000000000    605.605014320    998.000000000
+  1000.000000000      1.000000000   1209.999956033     -1.000000000
+  1000.000000000    500.500000000   1210.000056592    498.500000000
+  1000.000000000   1000.000000000   1210.000015924    998.000000000
+disable-log

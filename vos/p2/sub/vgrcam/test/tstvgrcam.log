@@ -1,0 +1,21 @@
+tvgrcam
+Beginning VICAR task tvgrcam
+*******FORTRAN-CALLABLE RFT2CH******
+ SN 4 VALUES
+            2.008E+02  5.000E+02  5.000E+02  8.482E+01
+ SN 5 VALUES
+            1.503E+03  5.000E+02  5.000E+02  8.482E+01
+ SN 6 VALUES
+            2.005E+02  5.000E+02  5.000E+02  8.482E+01
+ SN 7 VALUES
+            1.500E+03  5.000E+02  5.000E+02  8.482E+01
+**********C-CALLABLE RFT2CH*******
+ SN 4 VALUES
+            2.008E+02  5.000E+02  5.000E+02  8.482E+01
+ SN 5 VALUES
+            1.503E+03  5.000E+02  5.000E+02  8.482E+01
+ SN 6 VALUES
+            2.005E+02  5.000E+02  5.000E+02  8.482E+01
+ SN 7 VALUES
+            1.500E+03  5.000E+02  5.000E+02  8.482E+01
+disable-log

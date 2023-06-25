@@ -1,0 +1,16 @@
+#define PROGRAM marserror
+
+#define MODULE_LIST marserror.cc
+
+#define MAIN_LANG_C_PLUS_PLUS
+#define MARSLIB
+
+#define USES_C_PLUS_PLUS
+
+#define LIB_TAE_NOSHR
+#define LIB_RTL_NOSHR
+#define LIB_P2SUB
+#define LIB_MARSSUB
+#define LIB_FORTRAN
+#define LIB_XERCES
+

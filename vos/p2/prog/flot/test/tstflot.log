@@ -1,39 +1,17 @@
-                Version 5C/16C
-
-      ***********************************************************
-      *                                                         *
-      * VICAR Supervisor version 5C, TAE V5.2                   *
-      *   Debugger is now supported on all platforms            *
-      *   USAGE command now implemented under Unix              *
-      *                                                         *
-      * VRDI and VIDS now support X-windows and Unix            *
-      * New X-windows display program: xvd (for all but VAX/VMS)*
-      *                                                         *
-      * VICAR Run-Time Library version 16C                      *
-      *   '+' form of temp filename now avail. on all platforms *
-      *   ANSI C now fully supported                            *
-      *                                                         *
-      * See B.Deen(RGD059) with problems                        *
-      *                                                         *
-      ***********************************************************
-
-  --- Type NUT for the New User Tutorial ---
-
-  --- Type MENU for a menu of available applications ---
-
 gen FLOTA NL=10 NS=12
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 flot INP=FLOTA OUT=FLOTAO
 Beginning VICAR task flot
 FLOT version May 21 2015
-list FLOTAO
+list FLOTAO 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Thu May 21 14:58:14 2015
- Task:FLOT      User:wlb       Date_Time:Thu May 21 14:58:14 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:FLOT      User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       9   8   7   6   5   4   3   2   1   0
@@ -51,12 +29,13 @@ Beginning VICAR task list
 flot INP=FLOTA OUT=FLOTAO2 SIZE=(2,3,8,7) 'HORIZ
 Beginning VICAR task flot
 FLOT version May 21 2015
-list FLOTAO2
+list FLOTAO2 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Thu May 21 14:58:14 2015
- Task:FLOT      User:wlb       Date_Time:Thu May 21 14:58:14 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:FLOT      User:          Date_Time:                        
      Samp     1       3       5       7
    Line
       1       9   8   7   6   5   4   3
@@ -70,12 +49,13 @@ Beginning VICAR task list
 flot FLOTA FLOTAO3 'COUNTER
 Beginning VICAR task flot
 FLOT version May 21 2015
-list FLOTAO3
+list FLOTAO3 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Thu May 21 14:58:14 2015
- Task:FLOT      User:wlb       Date_Time:Thu May 21 14:58:14 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:FLOT      User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1      11  12  13  14  15  16  17  18  19  20
@@ -93,12 +73,13 @@ Beginning VICAR task list
 flot FLOTA FLOTAO4 'VERT
 Beginning VICAR task flot
 FLOT version May 21 2015
-list FLOTAO4
+list FLOTAO4 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Thu May 21 14:58:14 2015
- Task:FLOT      User:wlb       Date_Time:Thu May 21 14:58:14 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:FLOT      User:          Date_Time:                        
      Samp     1       3       5       7       9      11
    Line
       1       9  10  11  12  13  14  15  16  17  18  19  20
@@ -114,12 +95,13 @@ Beginning VICAR task list
 flot FLOTA FLOTAO5 'ROT180
 Beginning VICAR task flot
 FLOT version May 21 2015
-list FLOTAO5
+list FLOTAO5 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Thu May 21 14:58:14 2015
- Task:FLOT      User:wlb       Date_Time:Thu May 21 14:58:14 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:FLOT      User:          Date_Time:                        
      Samp     1       3       5       7       9      11
    Line
       1      20  19  18  17  16  15  14  13  12  11  10   9
@@ -134,17 +116,18 @@ Beginning VICAR task list
      10      11  10   9   8   7   6   5   4   3   2   1   0
 gen FLOTB NL=10 NS=12 'HALF
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 flot INP=FLOTB OUT=FLOTBO
 Beginning VICAR task flot
 FLOT version May 21 2015
-list FLOTBO
+list FLOTBO  'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
- Task:GEN       User:wlb       Date_Time:Thu May 21 14:58:14 2015
- Task:FLOT      User:wlb       Date_Time:Thu May 21 14:58:14 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:FLOT      User:          Date_Time:                        
      Samp       1     2     3     4     5     6     7     8     9    10
    Line
       1         9     8     7     6     5     4     3     2     1     0
@@ -162,12 +145,13 @@ Beginning VICAR task list
 flot INP=FLOTB OUT=FLOTBO2 SIZE=(2,3,8,7) 'VERT
 Beginning VICAR task flot
 FLOT version May 21 2015
-list FLOTBO2
+list FLOTBO2 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
- Task:GEN       User:wlb       Date_Time:Thu May 21 14:58:14 2015
- Task:FLOT      User:wlb       Date_Time:Thu May 21 14:58:14 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:FLOT      User:          Date_Time:                        
      Samp       1     2     3     4     5     6     7
    Line
       1        10    11    12    13    14    15    16
@@ -181,12 +165,13 @@ Beginning VICAR task list
 flot FLOTB FLOTBO3 'CLOCK
 Beginning VICAR task flot
 FLOT version May 21 2015
-list FLOTBO3
+list FLOTBO3 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
- Task:GEN       User:wlb       Date_Time:Thu May 21 14:58:14 2015
- Task:FLOT      User:wlb       Date_Time:Thu May 21 14:58:14 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:FLOT      User:          Date_Time:                        
      Samp       1     2     3     4     5     6     7     8     9    10
    Line
       1         9     8     7     6     5     4     3     2     1     0
@@ -204,12 +189,13 @@ Beginning VICAR task list
 flot FLOTB FLOTBO4 'TRANS
 Beginning VICAR task flot
 FLOT version May 21 2015
-list FLOTBO4
+list FLOTBO4 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
- Task:GEN       User:wlb       Date_Time:Thu May 21 14:58:14 2015
- Task:FLOT      User:wlb       Date_Time:Thu May 21 14:58:14 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:FLOT      User:          Date_Time:                        
      Samp       1     2     3     4     5     6     7     8     9    10
    Line
       1         0     1     2     3     4     5     6     7     8     9
@@ -226,17 +212,18 @@ Beginning VICAR task list
      12        11    12    13    14    15    16    17    18    19    20
 gen FLOTC NL=10 NS=12 'FULL
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 flot INP=FLOTC OUT=FLOTCO
 Beginning VICAR task flot
 FLOT version May 21 2015
-list FLOTCO
+list FLOTCO  'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    FULL     samples are interpreted as FULLWORD data
- Task:GEN       User:wlb       Date_Time:Thu May 21 14:58:14 2015
- Task:FLOT      User:wlb       Date_Time:Thu May 21 14:58:14 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:FLOT      User:          Date_Time:                        
      Samp            1          2          3          4          5          6          7          8          9         10
    Line
       1              9          8          7          6          5          4          3          2          1          0
@@ -254,12 +241,13 @@ Beginning VICAR task list
 flot INP=FLOTC OUT=FLOTCO2 SIZE=(2,3,8,7) 'CLOCK
 Beginning VICAR task flot
 FLOT version May 21 2015
-list FLOTCO2
+list FLOTCO2 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    FULL     samples are interpreted as FULLWORD data
- Task:GEN       User:wlb       Date_Time:Thu May 21 14:58:14 2015
- Task:FLOT      User:wlb       Date_Time:Thu May 21 14:58:14 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:FLOT      User:          Date_Time:                        
      Samp            1          2          3          4          5          6          7          8
    Line
       1             10          9          8          7          6          5          4          3
@@ -272,12 +260,13 @@ Beginning VICAR task list
 flot FLOTC FLOTCO3 'COUNTER
 Beginning VICAR task flot
 FLOT version May 21 2015
-list FLOTCO3
+list FLOTCO3 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    FULL     samples are interpreted as FULLWORD data
- Task:GEN       User:wlb       Date_Time:Thu May 21 14:58:14 2015
- Task:FLOT      User:wlb       Date_Time:Thu May 21 14:58:14 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:FLOT      User:          Date_Time:                        
      Samp            1          2          3          4          5          6          7          8          9         10
    Line
       1             11         12         13         14         15         16         17         18         19         20
@@ -295,12 +284,13 @@ Beginning VICAR task list
 flot FLOTC FLOTCO4 'VERT
 Beginning VICAR task flot
 FLOT version May 21 2015
-list FLOTCO4
+list FLOTCO4 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    FULL     samples are interpreted as FULLWORD data
- Task:GEN       User:wlb       Date_Time:Thu May 21 14:58:14 2015
- Task:FLOT      User:wlb       Date_Time:Thu May 21 14:58:14 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:FLOT      User:          Date_Time:                        
      Samp            1          2          3          4          5          6          7          8          9         10
    Line
       1              9         10         11         12         13         14         15         16         17         18
@@ -315,8 +305,8 @@ Beginning VICAR task list
      10              0          1          2          3          4          5          6          7          8          9
 
    FULL     samples are interpreted as FULLWORD data
- Task:GEN       User:wlb       Date_Time:Thu May 21 14:58:14 2015
- Task:FLOT      User:wlb       Date_Time:Thu May 21 14:58:14 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:FLOT      User:          Date_Time:                        
      Samp           11         12
    Line
       1             19         20
@@ -331,17 +321,18 @@ Beginning VICAR task list
      10             10         11
 gen FLOTD NL=10 NS=12 'REAL4
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 flot INP=FLOTD OUT=FLOTDO
 Beginning VICAR task flot
 FLOT version May 21 2015
-list FLOTDO
+list FLOTDO  'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    REAL     samples are interpreted as  REAL*4  data
- Task:GEN       User:wlb       Date_Time:Thu May 21 14:58:14 2015
- Task:FLOT      User:wlb       Date_Time:Thu May 21 14:58:14 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:FLOT      User:          Date_Time:                        
      Samp             1           2           3           4           5           6           7           8           9          10
    Line
       1       9.000E+00   8.000E+00   7.000E+00   6.000E+00   5.000E+00   4.000E+00   3.000E+00   2.000E+00   1.000E+00   0.000E+00
@@ -359,12 +350,13 @@ Beginning VICAR task list
 flot INP=FLOTD OUT=FLOTDO2 SIZE=(2,3,8,7) 'HORIZ
 Beginning VICAR task flot
 FLOT version May 21 2015
-list FLOTDO2
+list FLOTDO2 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    REAL     samples are interpreted as  REAL*4  data
- Task:GEN       User:wlb       Date_Time:Thu May 21 14:58:14 2015
- Task:FLOT      User:wlb       Date_Time:Thu May 21 14:58:15 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:FLOT      User:          Date_Time:                        
      Samp             1           2           3           4           5           6           7
    Line
       1       9.000E+00   8.000E+00   7.000E+00   6.000E+00   5.000E+00   4.000E+00   3.000E+00
@@ -378,12 +370,13 @@ Beginning VICAR task list
 flot FLOTD FLOTDO3 'COUNTER
 Beginning VICAR task flot
 FLOT version May 21 2015
-list FLOTDO3
+list FLOTDO3 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    REAL     samples are interpreted as  REAL*4  data
- Task:GEN       User:wlb       Date_Time:Thu May 21 14:58:14 2015
- Task:FLOT      User:wlb       Date_Time:Thu May 21 14:58:15 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:FLOT      User:          Date_Time:                        
      Samp             1           2           3           4           5           6           7           8           9          10
    Line
       1       1.100E+01   1.200E+01   1.300E+01   1.400E+01   1.500E+01   1.600E+01   1.700E+01   1.800E+01   1.900E+01   2.000E+01
@@ -401,12 +394,13 @@ Beginning VICAR task list
 flot FLOTD FLOTDO4 'TRANS
 Beginning VICAR task flot
 FLOT version May 21 2015
-list FLOTDO4
+list FLOTDO4 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    REAL     samples are interpreted as  REAL*4  data
- Task:GEN       User:wlb       Date_Time:Thu May 21 14:58:14 2015
- Task:FLOT      User:wlb       Date_Time:Thu May 21 14:58:15 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:FLOT      User:          Date_Time:                        
      Samp             1           2           3           4           5           6           7           8           9          10
    Line
       1       0.000E+00   1.000E+00   2.000E+00   3.000E+00   4.000E+00   5.000E+00   6.000E+00   7.000E+00   8.000E+00   9.000E+00
@@ -423,27 +417,28 @@ Beginning VICAR task list
      12       1.100E+01   1.200E+01   1.300E+01   1.400E+01   1.500E+01   1.600E+01   1.700E+01   1.800E+01   1.900E+01   2.000E+01
 gen FLOTRED NL=10 NS=12 IVAL=1
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen FLOTGRN NL=10 NS=12 IVAL=101
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen FLOTBLU NL=10 NS=12 IVAL=201
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 viccub (FLOTRED,FLOTGRN,FLOTBLU) FLOTCOLOR
 Beginning VICAR task viccub
 flot FLOTCOLOR FLOTCOLORROT
 Beginning VICAR task flot
 FLOT version May 21 2015
-list FLOTCOLORROT
+list FLOTCOLORROT 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Thu May 21 14:58:15 2015
- Task:FLOT      User:wlb       Date_Time:Thu May 21 14:58:15 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:FLOT      User:          Date_Time:                        
  ***********
  Band =     1
  ***********
@@ -463,8 +458,8 @@ Beginning VICAR task list
      12      21  20  19  18  17  16  15  14  13  12
 
 
- Task:GEN       User:wlb       Date_Time:Thu May 21 14:58:15 2015
- Task:FLOT      User:wlb       Date_Time:Thu May 21 14:58:15 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:FLOT      User:          Date_Time:                        
  ***********
  Band =     2
  ***********
@@ -484,8 +479,8 @@ Beginning VICAR task list
      12     121 120 119 118 117 116 115 114 113 112
 
 
- Task:GEN       User:wlb       Date_Time:Thu May 21 14:58:15 2015
- Task:FLOT      User:wlb       Date_Time:Thu May 21 14:58:15 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:FLOT      User:          Date_Time:                        
  ***********
  Band =     3
  ***********
@@ -506,12 +501,13 @@ Beginning VICAR task list
 flot FLOTCOLOR FLOTCOLORROT BAND=2
 Beginning VICAR task flot
 FLOT version May 21 2015
-list FLOTCOLORROT
+list FLOTCOLORROT 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Thu May 21 14:58:15 2015
- Task:FLOT      User:wlb       Date_Time:Thu May 21 14:58:15 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:FLOT      User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1     110 109 108 107 106 105 104 103 102 101
@@ -527,4 +523,4 @@ Beginning VICAR task list
      11     120 119 118 117 116 115 114 113 112 111
      12     121 120 119 118 117 116 115 114 113 112
 ush rm FLOTA* FLOTB* FLOTC* FLOTD* FLOTG* FLOTR*
-END-PROC
+disable-log

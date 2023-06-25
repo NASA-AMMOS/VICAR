@@ -1,0 +1,79 @@
+tzbits help
+Beginning VICAR task tzbits
+Optional parameters are:
+HWORD   half word input(hex)    default: 0x05AF
+FWORD   full word input(hex)    default: 0x0055AAFF
+LOBIT   low(starting) bit(dec)  default: 0
+Or type tzbits help to get this message
+
+HIBIT  high(ending) bit(dec)   default: 63
+
+tzbits aaaa aaaaaaaa
+Beginning VICAR task tzbits
+Running user selected lbit and hbit.(Defaults to whole word)
+	 aaaaaaaa
+
+*****Half word tests*****
+1010101010101010
+*****Full word tests*****
+0000000000000000000000000000000010101010101010101010101010101010
+Calling FORTRAN version....
+
+
+ **HALF DATA** HARDWIRED TO 0xAAAA
+0000000000000000
+
+ **FULL DATA** HARDWIRED TO 0xAAAAAAAA
+00000000000000000000000000000000
+tzbits
+Beginning VICAR task tzbits
+Running user selected lbit and hbit.(Defaults to whole word)
+	 55aaff
+
+*****Half word tests*****
+0000010110101111
+*****Full word tests*****
+0000000000000000000000000000000000000000010101011010101011111111
+Calling FORTRAN version....
+
+
+ **HALF DATA** HARDWIRED TO 0xAAAA
+0000000000000000
+
+ **FULL DATA** HARDWIRED TO 0xAAAAAAAA
+00000000000000000000000000000000
+tzbits lobit=0 hibit=15
+Beginning VICAR task tzbits
+Running user selected lbit and hbit.(Defaults to whole word)
+	 aaff
+
+*****Half word tests*****
+0000010110101111
+*****Full word tests*****
+0000000000000000000000000000000000000000010101011010101011111111
+Calling FORTRAN version....
+
+
+ **HALF DATA** HARDWIRED TO 0xAAAA
+0000000000000000
+
+ **FULL DATA** HARDWIRED TO 0xAAAAAAAA
+00000000000000000000000000000000
+tzbits lobit=3 hibit=23
+Beginning VICAR task tzbits
+Running user selected lbit and hbit.(Defaults to whole word)
+	 ab55f
+
+*****Half word tests*****
+0000010110101111
+*****Full word tests*****
+0000000000000000000000000000000000000000010101011010101011111111
+Calling FORTRAN version....
+
+
+ **HALF DATA** HARDWIRED TO 0xAAAA
+0000000000000000
+
+ **FULL DATA** HARDWIRED TO 0xAAAAAAAA
+00000000000000000000000000000000
+let $echo="no"

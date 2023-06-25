@@ -7,6 +7,8 @@ refgbl $echo
 refgbl $syschar
 local  diskdir string
 body
+enable-log
+
 let $echo="no"
 
 let _onfail="goto rm"
@@ -30,5 +32,9 @@ typeit     add1.dat1
 rm>
 delcmd typeit
 let $echo="no"
-end-proc
 
+disable-log
+
+ush rm add1.dat1
+
+end-proc

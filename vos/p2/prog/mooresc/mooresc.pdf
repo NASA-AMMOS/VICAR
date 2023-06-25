@@ -94,7 +94,8 @@ WRITTEN BY:                   Al Zobrist         31 SEP 10
 
 REVISIONS:
   2017-06-06 WLB - Migrated to MIPL.
-  2019-09-06 WLB - IDS-7922 - Initialized a variable; cleaned up -Wall warnings.
+  2019-09-06 WLB - Initialized a variable; cleaned up -Wall warnings.
+  2021-11-12 WLB - Initialized another variable.
 
 .PAGE
 .LEVEL1

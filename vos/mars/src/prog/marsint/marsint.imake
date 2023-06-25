@@ -1,0 +1,22 @@
+#define PROGRAM marsint
+
+#define MODULE_LIST marsint.cc
+ 
+#define MAIN_LANG_C_PLUS_PLUS
+#define MARSLIB
+ 
+#define USES_C_PLUS_PLUS
+ 
+#define LIB_TAE_NOSHR
+#define LIB_RTL_NOSHR
+#define LIB_P2SUB
+#define LIB_MARSSUB
+#define LIB_FORTRAN
+#define LIB_XERCES
+
+/* This can be enabled for a parallel version, or disabled to build w/o MPI. */
+/* The parallel version can still be used on one processor as before.	*/
+
+#define LIB_MPI 
+
+

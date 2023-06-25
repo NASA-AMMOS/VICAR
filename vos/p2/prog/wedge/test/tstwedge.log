@@ -1,11 +1,12 @@
 wedge wedge.out nl=50 ns=50 stangle=5. arc=5.0
 Beginning VICAR task wedge
 WEDGE version 2016-06-09
-list wedge.out size=(1,25,10,10)
+list wedge.out size=(1,25,10,10) 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:WEDGE     User:wlb       Date_Time:Thu Jun  9 12:42:48 2016
+ Task:WEDGE     User:          Date_Time:                        
      Samp    25      27      29      31      33
    Line
       1       0   0 255 255 255   0   0   0   0   0
@@ -21,11 +22,12 @@ Beginning VICAR task list
 wedge wedge2.out nl=256 ns=256 stangle=5. arc=5.0
 Beginning VICAR task wedge
 WEDGE version 2016-06-09
-list wedge2.out size=(1,137,10,15)
+list wedge2.out size=(1,137,10,15) 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:WEDGE     User:wlb       Date_Time:Thu Jun  9 12:42:48 2016
+ Task:WEDGE     User:          Date_Time:                        
      Samp   137     139     141     143     145     147     149     151
    Line
       1       0   0 255 255 255 255 255 255 255 255 255 255 255 255   0
@@ -41,11 +43,12 @@ Beginning VICAR task list
 wedge wedge3.out nl=256 ns=256 stangle=-5. arc=5.0
 Beginning VICAR task wedge
 WEDGE version 2016-06-09
-list wedge3.out size=(1,116,10,15)
+list wedge3.out size=(1,116,10,15) 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:WEDGE     User:wlb       Date_Time:Thu Jun  9 12:42:48 2016
+ Task:WEDGE     User:          Date_Time:                        
      Samp   116     118     120     122     124     126     128     130
    Line
       1       0   0 255 255 255 255 255 255 255 255 255 255 255   0   0
@@ -61,11 +64,12 @@ Beginning VICAR task list
 wedge wedge4.out nl=256 ns=256 stangle=-5. arc=-5.0
 Beginning VICAR task wedge
 WEDGE version 2016-06-09
-list wedge4.out size=(1,105,10,15)
+list wedge4.out size=(1,105,10,15) 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:WEDGE     User:wlb       Date_Time:Thu Jun  9 12:42:48 2016
+ Task:WEDGE     User:          Date_Time:                        
      Samp   105     107     109     111     113     115     117     119
    Line
       1       0   0 255 255 255 255 255 255 255 255 255 255 255 255   0
@@ -81,11 +85,12 @@ Beginning VICAR task list
 wedge wedge5.out nl=256 ns=256 stangle=-5. arc=-5.0 x0=10 y0=200
 Beginning VICAR task wedge
 WEDGE version 2016-06-09
-list wedge5.out size=(1,164,10,20)
+list wedge5.out size=(1,164,10,20) 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:WEDGE     User:wlb       Date_Time:Thu Jun  9 12:42:48 2016
+ Task:WEDGE     User:          Date_Time:                        
      Samp   164     166     168     170     172     174     176     178     180     182
    Line
       1       0   0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255
@@ -101,11 +106,12 @@ Beginning VICAR task list
 wedge wedge6.out nl=256 ns=256 stangle=45. arc=20.0 x0=10 y0=200
 Beginning VICAR task wedge
 WEDGE version 2016-06-09
-list wedge6.out size=(143,245,10,11) 'zer
+list wedge6.out size=(143,245,10,11) 'zer 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:WEDGE     User:wlb       Date_Time:Thu Jun  9 12:42:48 2016
+ Task:WEDGE     User:          Date_Time:                        
      Samp   245     247     249     251     253     255
    Line
     143       0   0   0   0   0   0   0   0   0   0   0
@@ -121,11 +127,12 @@ Beginning VICAR task list
 wedge wedge7.out nl=256 ns=256 stangle=85. arc=5.0
 Beginning VICAR task wedge
 WEDGE version 2016-06-09
-list wedge7.out size=(115,240,10,15) 'zer
+list wedge7.out size=(115,240,10,15) 'zer 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:WEDGE     User:wlb       Date_Time:Thu Jun  9 12:42:48 2016
+ Task:WEDGE     User:          Date_Time:                        
      Samp   240     242     244     246     248     250     252     254
    Line
     115       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
@@ -141,11 +148,12 @@ Beginning VICAR task list
 wedge wedge8.out nl=256 ns=256 stangle=85. arc=10.0
 Beginning VICAR task wedge
 WEDGE version 2016-06-09
-list wedge8.out size=(123,133,11,20)  'zer
+list wedge8.out size=(123,133,11,20)  'zer 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:WEDGE     User:wlb       Date_Time:Thu Jun  9 12:42:48 2016
+ Task:WEDGE     User:          Date_Time:                        
      Samp   133     135     137     139     141     143     145     147     149     151
    Line
     123       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
@@ -162,11 +170,12 @@ Beginning VICAR task list
 wedge wedge9.out nl=256 ns=256 stangle=85. arc=40.0
 Beginning VICAR task wedge
 WEDGE version 2016-06-09
-list wedge9.out size=(125,125,12,15) 'zer
+list wedge9.out size=(125,125,12,15) 'zer 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:WEDGE     User:wlb       Date_Time:Thu Jun  9 12:42:48 2016
+ Task:WEDGE     User:          Date_Time:                        
      Samp   125     127     129     131     133     135     137     139
    Line
     125       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
@@ -184,11 +193,12 @@ Beginning VICAR task list
 wedge wedge10.out nl=256 ns=256 stangle=85. arc=40.0 x0=10 y0=10
 Beginning VICAR task wedge
 WEDGE version 2016-06-09
-list wedge10.out size=(7,8,10,20) 'zer
+list wedge10.out size=(7,8,10,20) 'zer 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:WEDGE     User:wlb       Date_Time:Thu Jun  9 12:42:48 2016
+ Task:WEDGE     User:          Date_Time:                        
      Samp     8      10      12      14      16      18      20      22      24      26
    Line
       7       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
@@ -204,11 +214,12 @@ Beginning VICAR task list
 wedge wedge11.out nl=256 ns=256 stangle=85. arc=95.0
 Beginning VICAR task wedge
 WEDGE version 2016-06-09
-list wedge11.out size=(125,126,10,15) 'zer
+list wedge11.out size=(125,126,10,15) 'zer 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:WEDGE     User:wlb       Date_Time:Thu Jun  9 12:42:48 2016
+ Task:WEDGE     User:          Date_Time:                        
      Samp   126     128     130     132     134     136     138     140
    Line
     125       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
@@ -224,11 +235,12 @@ Beginning VICAR task list
 wedge wedge12.out nl=256 ns=256 stangle=85. arc=110.
 Beginning VICAR task wedge
 WEDGE version 2016-06-09
-list wedge12.out size=(125,126,10,15) 'zer
+list wedge12.out size=(125,126,10,15) 'zer 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:WEDGE     User:wlb       Date_Time:Thu Jun  9 12:42:48 2016
+ Task:WEDGE     User:          Date_Time:                        
      Samp   126     128     130     132     134     136     138     140
    Line
     125       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
@@ -244,11 +256,12 @@ Beginning VICAR task list
 wedge wedge13.out nl=256 ns=256 stangle=85. arc=110.0 x0=10 y0=10
 Beginning VICAR task wedge
 WEDGE version 2016-06-09
-list wedge13.out size=(7,8,10,15) 'zer
+list wedge13.out size=(7,8,10,15) 'zer 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:WEDGE     User:wlb       Date_Time:Thu Jun  9 12:42:48 2016
+ Task:WEDGE     User:          Date_Time:                        
      Samp     8      10      12      14      16      18      20      22
    Line
       7       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
@@ -264,11 +277,12 @@ Beginning VICAR task list
 wedge wedge14.out nl=256 ns=256 stangle=85. arc=110.0 x0=10 y0=200
 Beginning VICAR task wedge
 WEDGE version 2016-06-09
-list wedge14.out size=(198,196,10,15) 'zer
+list wedge14.out size=(198,196,10,15) 'zer 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:WEDGE     User:wlb       Date_Time:Thu Jun  9 12:42:48 2016
+ Task:WEDGE     User:          Date_Time:                        
      Samp   196     198     200     202     204     206     208     210
    Line
     198       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
@@ -284,11 +298,12 @@ Beginning VICAR task list
 wedge wedge15.out nl=256 ns=256 stangle=105. arc=20.
 Beginning VICAR task wedge
 WEDGE version 2016-06-09
-list wedge15.out size=(126,126,10,15) 'zer
+list wedge15.out size=(126,126,10,15) 'zer 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:WEDGE     User:wlb       Date_Time:Thu Jun  9 12:42:49 2016
+ Task:WEDGE     User:          Date_Time:                        
      Samp   126     128     130     132     134     136     138     140
    Line
     126       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
@@ -304,11 +319,12 @@ Beginning VICAR task list
 wedge wedge16.out nl=256 ns=256 stangle=105. arc=20.0 x0=10 y0=10
 Beginning VICAR task wedge
 WEDGE version 2016-06-09
-list wedge16.out size=(7,8,10,15) 'zer
+list wedge16.out size=(7,8,10,15) 'zer 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:WEDGE     User:wlb       Date_Time:Thu Jun  9 12:42:49 2016
+ Task:WEDGE     User:          Date_Time:                        
      Samp     8      10      12      14      16      18      20      22
    Line
       7       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
@@ -324,11 +340,12 @@ Beginning VICAR task list
 wedge wedge17.out nl=256 ns=256 stangle=105. arc=20.0 X0=10 y0=40
 Beginning VICAR task wedge
 WEDGE version 2016-06-09
-list wedge17.out size=(43,58,10,15) 'zer
+list wedge17.out size=(43,58,10,15) 'zer 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:WEDGE     User:wlb       Date_Time:Thu Jun  9 12:42:49 2016
+ Task:WEDGE     User:          Date_Time:                        
      Samp    58      60      62      64      66      68      70      72
    Line
      43       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
@@ -344,11 +361,12 @@ Beginning VICAR task list
 wedge wedge18.out nl=256 ns=256 stangle=105. arc=80.
 Beginning VICAR task wedge
 WEDGE version 2016-06-09
-list wedge18.out size=(126,126,10,15) 'zer
+list wedge18.out size=(126,126,10,15) 'zer 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:WEDGE     User:wlb       Date_Time:Thu Jun  9 12:42:49 2016
+ Task:WEDGE     User:          Date_Time:                        
      Samp   126     128     130     132     134     136     138     140
    Line
     126       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
@@ -364,11 +382,12 @@ Beginning VICAR task list
 wedge wedge19.out nl=256 ns=256 stangle=105. arc=120.
 Beginning VICAR task wedge
 WEDGE version 2016-06-09
-list wedge19.out size=(126,122,10,15) 'zer
+list wedge19.out size=(126,122,10,15) 'zer 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:WEDGE     User:wlb       Date_Time:Thu Jun  9 12:42:49 2016
+ Task:WEDGE     User:          Date_Time:                        
      Samp   122     124     126     128     130     132     134     136
    Line
     126       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
@@ -384,11 +403,12 @@ Beginning VICAR task list
 wedge wedge20.out nl=256 ns=256 stangle=105. arc=120. X0=10 y0=40
 Beginning VICAR task wedge
 WEDGE version 2016-06-09
-list wedge20.out size=(38,35,10,15) 'zer
+list wedge20.out size=(38,35,10,15) 'zer 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:WEDGE     User:wlb       Date_Time:Thu Jun  9 12:42:49 2016
+ Task:WEDGE     User:          Date_Time:                        
      Samp    35      37      39      41      43      45      47      49
    Line
      38       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
@@ -404,11 +424,12 @@ Beginning VICAR task list
 wedge wedge21.out nl=256 ns=256 stangle=125. arc=150.
 Beginning VICAR task wedge
 WEDGE version 2016-06-09
-list wedge21.out size=(125,118,10,15) 'zer
+list wedge21.out size=(125,118,10,15) 'zer 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:WEDGE     User:wlb       Date_Time:Thu Jun  9 12:42:49 2016
+ Task:WEDGE     User:          Date_Time:                        
      Samp   118     120     122     124     126     128     130     132
    Line
     125       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
@@ -424,11 +445,12 @@ Beginning VICAR task list
 wedge wedge22.out nl=256 ns=256 stangle=125. arc=160. x0=10 y0=200
 Beginning VICAR task wedge
 WEDGE version 2016-06-09
-list wedge22.out size=(196,194,10,15) 'zer
+list wedge22.out size=(196,194,10,15) 'zer 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:WEDGE     User:wlb       Date_Time:Thu Jun  9 12:42:49 2016
+ Task:WEDGE     User:          Date_Time:                        
      Samp   194     196     198     200     202     204     206     208
    Line
     196       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
@@ -444,11 +466,12 @@ Beginning VICAR task list
 wedge wedge23.out nl=256 ns=256 stangle=125. arc=160. X0=10 y0=40
 Beginning VICAR task wedge
 WEDGE version 2016-06-09
-list wedge23.out size=(36,34,10,15) 'zer
+list wedge23.out size=(36,34,10,15) 'zer 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:WEDGE     User:wlb       Date_Time:Thu Jun  9 12:42:49 2016
+ Task:WEDGE     User:          Date_Time:                        
      Samp    34      36      38      40      42      44      46      48
    Line
      36       0   0   0   0   0   0   0   0   0   0   0   0   0   0   0

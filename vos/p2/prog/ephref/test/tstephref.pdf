@@ -1,0 +1,16 @@
+procedure
+refgbl $echo
+refgbl $autousage
+refgbl $syschar
+body
+let $autousage = "none"
+let _onfail="continue"
+let $echo="yes"
+
+! TEST SCRIPT FOR astroref
+
+!see devastroref.pdf
+
+devastroref
+
+end-proc

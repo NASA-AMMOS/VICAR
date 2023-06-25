@@ -14,15 +14,18 @@ gen out=B nl=300 ns=150 format=half linc=0 sinc=0 ival=150
 mss inp=(A,B)  out=C
 srchedge inp=C out="tstsrchedge.img" angle=angle
 list tstsrchedge.img sl=1 ss=146 nl=10 ns=10 'nousrtim
-display angle
+write "angle: &angle"
 
 gen out=A nl=300 ns=300 format=half linc=0 sinc=0 ival=50
 f2 inp=A out=B function="(in1 + (100 * (line <= samp)))"
 srchedge inp=B out="tstsrchedge.img" angle=angle
 list tstsrchedge.img sl=1 ss=1 nl=10 ns=10 'nousrtim
-display angle
+write "angle: &angle"
 
 disable-log
+
+ush rm A B C tstsrchedge.img
+
 end-proc
 
 .help

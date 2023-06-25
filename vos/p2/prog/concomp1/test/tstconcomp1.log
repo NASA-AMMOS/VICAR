@@ -1,17 +1,17 @@
 gen CONA NL=100 NS=10 IVAL=0 LINC=0 SINC=0
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 qsar INP=CONA OUT=CONA1 AREA=(2 4 8 3 90)
 Beginning VICAR task qsar
 QSAR version 14 Feb 2010 (64-bit) - RJB
-list CONA1
+list CONA1 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Wed May 31 14:46:20 2017
- Task:QSAR      User:wlb       Date_Time:Wed May 31 14:46:20 2017
+ Task:GEN       User:          Date_Time:                        
+ Task:QSAR      User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
 
@@ -26,13 +26,13 @@ list version 2017-03-29
 concomp1 INP=CONA1 OUT=(CONAO,CONAM) THRESH=4
 Beginning VICAR task concomp1
 CONCOMP1 version 2017-05-31
-list CONAO
+list CONAO 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Wed May 31 14:46:20 2017
- Task:CONCOMP1  User:wlb       Date_Time:Wed May 31 14:46:20 2017
+ Task:GEN       User:          Date_Time:                        
+ Task:CONCOMP1  User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       0   0   0   0 255   0   0   0   0   0
@@ -44,13 +44,13 @@ list version 2017-03-29
       7       0   0   0  90  90  90   0   0   0   0
       8       0   0   0  90  90  90   0   0   0   0
       9       0   0   0 255  90 255   0   0   0   0
-list CONAM
+list CONAM 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Wed May 31 14:46:20 2017
- Task:CONCOMP1  User:wlb       Date_Time:Wed May 31 14:46:20 2017
+ Task:GEN       User:          Date_Time:                        
+ Task:CONCOMP1  User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1     255 255 255 255   0 255 255 255 255 255
@@ -103,8 +103,8 @@ list version 2017-03-29
      48     255 255 255 255 255 255 255 255 255 255
 
 
- Task:GEN       User:wlb       Date_Time:Wed May 31 14:46:20 2017
- Task:CONCOMP1  User:wlb       Date_Time:Wed May 31 14:46:20 2017
+ Task:GEN       User:          Date_Time:                        
+ Task:CONCOMP1  User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
      49     255 255 255 255 255 255 255 255 255 255
@@ -157,8 +157,8 @@ list version 2017-03-29
      96     255 255 255 255 255 255 255 255 255 255
 
 
- Task:GEN       User:wlb       Date_Time:Wed May 31 14:46:20 2017
- Task:CONCOMP1  User:wlb       Date_Time:Wed May 31 14:46:20 2017
+ Task:GEN       User:          Date_Time:                        
+ Task:CONCOMP1  User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
      97     255 255 255 255 255 255 255 255 255 255
@@ -168,25 +168,25 @@ list version 2017-03-29
 concomp1 INP=CONA1 OUT=CONAO2 SIZE=(66,3,10,6) THRESH=4 'MODE
 Beginning VICAR task concomp1
 CONCOMP1 version 2017-05-31
-list CONAO2
+list CONAO2 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
  ** The specified window is all zero.
 gen CONB NL=10 NS=10 SINC=0
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 qsar CONB CONB1 AREA=( 3,4,1,5,200  5,2,1,1,99   6,5,2,3,100      +
                        1,1,1,1,1    9,10,1,1,100 10,9,1,1,100      )
 Beginning VICAR task qsar
 QSAR version 14 Feb 2010 (64-bit) - RJB
-list CONB1 'ZEROES
+list CONB1 'ZEROES 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Wed May 31 14:46:20 2017
- Task:QSAR      User:wlb       Date_Time:Wed May 31 14:46:20 2017
+ Task:GEN       User:          Date_Time:                        
+ Task:QSAR      User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       1   0   0   0   0   0   0   0   0   0
@@ -202,13 +202,13 @@ list version 2017-03-29
 concomp1 INP=CONB1 OUT=CONB2
 Beginning VICAR task concomp1
 CONCOMP1 version 2017-05-31
-list CONB2 'ZEROES
+list CONB2 'ZEROES 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Wed May 31 14:46:20 2017
- Task:CONCOMP1  User:wlb       Date_Time:Wed May 31 14:46:21 2017
+ Task:GEN       User:          Date_Time:                        
+ Task:CONCOMP1  User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       1   0   0   0   0   0   0   0   0   0
@@ -224,13 +224,13 @@ list version 2017-03-29
 concomp1 INP=CONB1 OUT=CONB3 THRESH=1 REPLACE=99
 Beginning VICAR task concomp1
 CONCOMP1 version 2017-05-31
-list CONB3 'ZEROES
+list CONB3 'ZEROES 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Wed May 31 14:46:20 2017
- Task:CONCOMP1  User:wlb       Date_Time:Wed May 31 14:46:21 2017
+ Task:GEN       User:          Date_Time:                        
+ Task:CONCOMP1  User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       1   0   0   0   0   0   0   0   0   0
@@ -246,13 +246,13 @@ list version 2017-03-29
 concomp1 INP=CONB1 OUT=CONB4 THRESH=2 REPLACE=99
 Beginning VICAR task concomp1
 CONCOMP1 version 2017-05-31
-list CONB4 'ZEROES
+list CONB4 'ZEROES 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Wed May 31 14:46:20 2017
- Task:CONCOMP1  User:wlb       Date_Time:Wed May 31 14:46:21 2017
+ Task:GEN       User:          Date_Time:                        
+ Task:CONCOMP1  User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       1  99   0   0   0   0   0   0   0   0
@@ -268,13 +268,13 @@ list version 2017-03-29
 concomp1 INP=CONB1 OUT=CONB5 THRESH=3 REPLACE=99
 Beginning VICAR task concomp1
 CONCOMP1 version 2017-05-31
-list CONB5 'ZEROES
+list CONB5 'ZEROES 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Wed May 31 14:46:20 2017
- Task:CONCOMP1  User:wlb       Date_Time:Wed May 31 14:46:21 2017
+ Task:GEN       User:          Date_Time:                        
+ Task:CONCOMP1  User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       1  99  99  99  99  99  99  99  99  99
@@ -290,13 +290,13 @@ list version 2017-03-29
 concomp1 INP=CONB1 OUT=CONBR THRESH=2 'MODE
 Beginning VICAR task concomp1
 CONCOMP1 version 2017-05-31
-list CONBR 'ZEROES
+list CONBR 'ZEROES 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Wed May 31 14:46:20 2017
- Task:CONCOMP1  User:wlb       Date_Time:Wed May 31 14:46:21 2017
+ Task:GEN       User:          Date_Time:                        
+ Task:CONCOMP1  User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       1   1   0   0   0   0   0   0   0   0
@@ -312,13 +312,13 @@ list version 2017-03-29
 concomp1 INP=CONB1 OUT=CONBV THRESH=2 'MODE RANGE=(1,7)
 Beginning VICAR task concomp1
 CONCOMP1 version 2017-05-31
-list CONBV 'ZEROES
+list CONBV 'ZEROES 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Wed May 31 14:46:20 2017
- Task:CONCOMP1  User:wlb       Date_Time:Wed May 31 14:46:21 2017
+ Task:GEN       User:          Date_Time:                        
+ Task:CONCOMP1  User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       1   1   0   0   0   0   0   0   0   0
@@ -333,7 +333,7 @@ list version 2017-03-29
      10       9   9   9   9   9   9   9   9 109   9
 gen CONE NL=30 NS=10 SINC=0.3 LINC=.3
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 qsar CONE CONE1 AREA=( 3,4,1,5,200  5,2,1,1,99   6,5,2,3,100      +
                        13,4,1,5,-2  15,2,1,1,-1  16,5,2,3,1       +
@@ -341,13 +341,13 @@ qsar CONE CONE1 AREA=( 3,4,1,5,200  5,2,1,1,99   6,5,2,3,100      +
                        1,1,1,1,1    9,10,1,1,100 10,9,1,1,100      )
 Beginning VICAR task qsar
 QSAR version 14 Feb 2010 (64-bit) - RJB
-list CONE1 'ZEROES
+list CONE1 'ZEROES 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Wed May 31 14:46:21 2017
- Task:QSAR      User:wlb       Date_Time:Wed May 31 14:46:21 2017
+ Task:GEN       User:          Date_Time:                        
+ Task:QSAR      User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       1   0   0   0   1   1   1   2   2   2
@@ -383,13 +383,13 @@ list version 2017-03-29
 concomp1 INP=CONE1 OUT=CONE2
 Beginning VICAR task concomp1
 CONCOMP1 version 2017-05-31
-list CONE2 'ZEROES
+list CONE2 'ZEROES 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Wed May 31 14:46:21 2017
- Task:CONCOMP1  User:wlb       Date_Time:Wed May 31 14:46:21 2017
+ Task:GEN       User:          Date_Time:                        
+ Task:CONCOMP1  User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1     255   0   0   0   1   1   1   2   2   2

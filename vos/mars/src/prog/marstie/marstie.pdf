@@ -1,0 +1,851 @@
+process help=*
+PARM INP TYPE=STRING COUNT=(1:200)
+PARM OUT_TPT TYPE=STRING COUNT=1 
+PARM IN_TPT TYPE=STRING COUNT=0:1 DEFAULT=--
+PARM BAND    TYPE=INTEGER COUNT=(0:1) DEFAULT=1
+PARM TEMPLATE TYPE=INTEGER COUNT=(0:1) DEFAULT=25
+PARM SEARCH TYPE=INTEGER COUNT=(0:1) DEFAULT=49
+PARM QUALITY TYPE=REAL COUNT=(0:1) DEFAULT=.4
+PARM INTERACT TYPE=KEYWORD COUNT=(0:1) +
+  VALID=("INTERACT","BATCH") DEFAULT="INTERACT"
+PARM MAXSHIFT TYPE=REAL DEFAULT=100.0
+PARM CULL TYPE=INTEGER COUNT=1 VALID=0:10 DEFAULT=1
+PARM BORDER TYPE=INTEGER COUNT=(0:1) VALID=0:20 DEFAULT=9
+PARM BUSY TYPE=REAL COUNT=(0:1) VALID=0.:1000. DEFAULT=1.
+PARM SIGMA TYPE=REAL COUNT=(0:1) VALID=0.:100. DEFAULT=4.0
+PARM EDIT_TYPE TYPE=KEYWORD COUNT=1 VALID=("SINGLE_EDIT", "MULTI_EDIT") +
+	DEFAULT="MULTI_EDIT"
+PARM PAIRS TYPE=KEYWORD COUNT=1 VALID=("TIE_PAIRS", "ALL_PAIRS", "NEW_PAIRS", +
+	"ADD_PAIRS") DEFAULT="TIE_PAIRS"
+PARM SEP_ANGLE TYPE=REAL COUNT=1 DEFAULT=53
+PARM START_KEY TYPE=INTEGER COUNT=1 DEFAULT=0
+PARM FORMAT TYPE=KEYWORD COUNT=1 VALID=("OLD","XML") DEFAULT="XML"
+
+PARM NORMAL  TYPE=REAL COUNT=(0:3) DEFAULT=(0.,0.,-1.)
+PARM GROUND  TYPE=REAL COUNT=(0:3) DEFAULT=--
+PARM SURF_COORD TYPE=STRING COUNT=(0:1) DEFAULT="FIXED"
+PARM SURF_MESH TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM SURF_CSFILE TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM SURFACE TYPE=KEYWORD COUNT=(0:1) +
+  VALID=("INFINITY","PLANE", "SPHERE1", "SPHERE2", "MESH") +
+  DEFAULT=PLANE
+PARM CONFIG_PATH STRING DEFAULT="$MARS_CONFIG_PATH"
+PARM POINT_METHOD TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM NOSITE TYPE=KEYWORD COUNT=(0:1) VALID=NOSITE DEFAULT=--
+
+PARM RSF TYPE=STRING COUNT=0:100 DEFAULT=--
+PARM DEBUG_RSF TYPE=KEYWORD COUNT=0:1 VALID=DEBUG_RSF DEFAULT=--
+PARM COORD TYPE=KEYWORD VALID=("FIXED", "INSTRUMENT", "SITE", "ROVER", +
+        "LOCAL_LEVEL") DEFAULT="FIXED"
+PARM COORD_INDEX TYPE=INTEGER COUNT=0:10 DEFAULT=--
+PARM FIXED_SITE TYPE=INTEGER COUNT=0:1 DEFAULT=--
+
+!# parm inp(2-200) hints=default
+!# parm out_tpt file=vicar; direction=output
+!# parm in_tpt file=vicar; direction=input
+
+END-PROC
+
+.TITLE
+VICAR program MARSTIE.
+
+.HELP
+PURPOSE:
+To gather tiepoints for a set of overlapping images, either manually or
+automatically.  The resulting tiepoints are output in OUT_TPT for use by
+other programs such as MARSNAV.
+
+This is a multimission program derived from Mars Pathfinder's mpfnav.
+The functionality of mpfnav was split into two parts.  MARSTIE gathers
+the tiepoints, and MARSNAV uses those tiepoints to generate a pointing
+solution.
+
+MARSTIE supports any mission, instrument, and camera model supported by the
+Planetary Image Geometry (Pig) software suite.
+
+EXECUTION:
+There are two ways to present input images:
+
+marstie inp=(a.img,b.img,c.img,...) out_tpt=tiepoints.tpt
+or
+marstie inp=ascii_listoffiles out_tpt=tiepoints.tpt
+
+where ascii_listoffiles is a text file created by Sybase or an editor,
+containing the list of filenames to include in the mosaic, one per record.
+Up to 200 input images can be listed.
+
+Additionally, an input tiepoint list may be provided:
+
+marstie inp=files.lis in_tpt=tiepoint1.tpt out=tiepoint2.tpt
+
+where: tiepoint1.tpt is a previously generated tiepoints list.
+
+Then use MARSNAV to generate navigation solutions, and then one of the
+mosaic programs:
+
+marsnav inp=files.lis out=mosaic.nav in_tpt=tiepoints.tpt
+marsmos inp=files.lis out=mosaic.img navtable=mosaic.nav
+
+Note: there are two tiepoint file formats; "old" is the text-based list,
+while "xml" is an XML-based format.  The FORMAT parameter controls which
+one to use.  Over time "old" should be phased out and eventually the FORMAT
+parameter will disappear.
+
+The output file must not exist already, or the program will terminate.
+This prevents accidental overwrites of a good tiepoint file.  Also, in
+interactive mode, the tiepoint file will be saved after each invocation
+of tp.
+
+USAGE:
+The program requires that enough overlap exists for at least one tiepoint
+to be determined for each overlap pair (but see the the PAIRS parameter).
+To operate in batch it is useful to set template and search small and
+quality small in order to assure tiepoints (even if they are bad) for later
+interactive editing.
+ 
+It is important that all images be connected to each other via tiepoints.
+If an image or block of images is not connected, the entire block can "drift"
+as a unit out of alignment during the nav process.  The program will report
+single unconnected images, but not blocks of them.
+
+The program depends on having some initial pointing parameters in the
+images, so that overlaps can be detected and tiepoints found... even though
+the purpose of the program is to gather tiepoints to *correct* the pointing!
+So the initial pointings (usually predicts) must be at least somewhat close
+for the program to work.
+
+METHOD:
+
+1) Candidate points are selected around the picture border every nsw pixels.
+
+2) the camera model is used to project candidate tiepoint locations near the
+borders of each image into all of the other images.
+
+3) The 10 points with the best pixel activity are selected 
+from each overlap pair.
+
+4) The image rotation is determined and the templates rotated before
+correlation to match the search area.
+
+5) the tiepoints are refined by correlating image areas using the Gruen
+correlator, with linear correlation.
+
+5.1) In batch, tiepoints with quality < the QUALITY keyword are rejected.
+
+5.2) Tiepoints with excessive shifts > MAXSHIFT are rejected.
+
+5.3) Tiepoints with shifts exceeding SIGMA*standard_deviation_shifts
+for each pair are rejected one at a time until only 4 remain.
+
+6) the best tiepoints (by correlation value) are selected for each image pair.
+The number selected is controlled by the CULL parameter.  Any additional
+tiepoints are rejected.
+
+7) If the INTERACT keyword is specified then the tiepoints will be presented
+for editing.
+
+7.1) In SINGLE_EDIT mode (the default), each tiepoint whose correlation
+quality is less than QUALITY is displayed using the "tp" program along with
+its images. The user can change this point if desired.  Points are selected
+using the left mouse button. This makes them green (the first point is
+automatically selected for you).  Then you can adjust them using the middle
+button.  See the help for tp or the section below.
+
+7.2) In MULTI_EDIT mode, each pair with tiepoints is brought up in tp, with
+ALL tiepoints for that pair displayed.  This allows you to edit the entire
+set of tiepoints associated with each pair at once.  You have to be more
+tp-savvy to do this (using it in multi-point mode) but it can be very helpful
+when dealing with lots of tiepoints per image pair.
+
+MARSTIE performs no correlation on interactively selected points, presuming
+the user knows what s/he is doing, so be accurate!  However, tp has its own
+correlator.  Select Edit/Auto Sync Points or ctrl-A to turn on the
+auto-correlator.  As you adjust the point in one image, it will be
+interactively correlated and moved in the other image.
+
+Selecing File/Special Exit Status before exiting tp will cause MARSTIE to
+save the existing points and exit (thus you can resume the interactive
+session later).
+
+Deleting a tiepoint in tp will cause the tiepoint to disappear in MARSTIE
+as well.  If this is the only tiepoint in an image pair, this will cause the
+pair to be disconnected, which could be bad news for MARSNAV.
+
+TBD:  Some knowledge of the camera models would be useful in tp, for initial
+guesses of tiepoint locations.  Might be difficult to implement.
+
+TBD:  Auto Sync Points should be turned on by default.
+
+WARNING: The parameters NORMAL, GROUND, SURF_COORD and SURFACE should be the same as
+those used in MARSNAV and the mosaic program to get proper results (although
+this is less critical with MARSTIE than with the other programs, because
+once you have a tiepoint, the model doesn't matter - the surface is used
+only to determine initial points before correlation).
+
+Most stereo cameras (e.g. MPF IMP, M98 SSI) are *not* designed to have their
+nodal surface at the azimuth axis.  This introduces LOTS of parallax if single
+images contain objects both near and far that do not lie on the surface model.
+Pick your points intelligently so you don't pick a near object in this pair
+and a far one in that pair, and keep them as close as you can to the surface.
+
+In interactive mode the tiepoints you'll see are already correlated. If there
+is insufficient overlap the points will never correlate and will not appear.
+You can correct this by reducing the TEMPLATE & SEARCH keywords to force
+tiepoints to appear even if they are incorrect, thus giving you the ability to
+set them interactively.  You can also use the ALL_PAIRS mode in conjunction
+with MULTI_EDIT and INTERACTIVE to bring up all possible pairs without
+regard to whether tiepoints were found or even if there's any overlap.
+
+Note:  Only tiepoints with correlations less than QUALITY are presented for
+interactive editing.  To force interactive editing of all points, set
+QUALITY=1.0.  QUALITY is ignored in MULTI_EDIT mode.
+
+.PAGE
+
+USING TP:
+
+This is not a complete help for tp; just some pointers for use with marstie
+(and marsnav).
+
+tp makes heavy use of the *middle* button.  That is how you adjust tiepoints
+and the stretch.  The left button is for selecting menus and buttons, and
+adjusting the scrollbars.  It is also used for selecting one of multiple
+tiepoints in MULTI mode.  The right button is rarely used.
+
+For SINGLE_EDIT mode, when tp comes up, the tiepoint is already selected
+for you (it is green).  Use the middle button to adjust it on either side.
+DO NOT use the left button!!  Doing so could define another tiepoint or
+deselect the current one, which could be bad.  At that point you may need
+to consult the general tp help.  If the point turns red, try double-clicking
+the left button very carefully over the point.  You want to end up with only
+ONE tiepoint (or zero if you delete it) when done.
+
+For SINGLE_EDIT mode, if you mess up and want to start over, simply put more
+than one point in, and marstie or marsnav will re-run with the original point.
+To do this, middle-click in each image to get a pair of green points.  Select
+Edit/Save Point (or the first of the "hidden" buttons, see below).  The point
+should turn red.  Do this several times until you have several red points,
+then save and exit.  tp will be run again with the original point (only).
+
+For MULTI_EDIT mode, the above does not apply.  All tiepoints are brought
+into tp.  The current point is in green; the others are in red.  If you
+click with the middle button, the green tiepoint will be moved.  If there
+is no green tiepoint, clicking the middle button adds a new one.  Make sure
+to do Edit/Save Point (or the first of the "hidden" buttons") to save the
+new point.  Save Point is not required for existing points.  The left
+button can be used to select which point is green... DOUBLE-click on the
+point to select it in both images.  The up and down arrows on the upper left
+can also be used to select different tiepoints.
+
+For MULTI_EDIT mode, the best policy is to make sure all tiepoints are red
+before saving.  A new tiepoint that has not been saved (it's still green)
+will be discarded when you exit... yet existing tiepoints that are green
+are not discarded (don't ask, I'm sure there was a reason).  You're safe if
+everything is in red.
+
+Turning on the tp correlator (ctrl-A, or Edit/Auto Sync Points) is usually
+helpful in either mode.  You can adjust the point on either side and the
+opposite one will move in sync.  Note that it can bounce around a bit.  It
+is often necessary to select the point you want on both images several times
+until the correlator "locks in" to the right spot.  Sometimes you may have
+to turn it off (ctrl-A again) to get the point you want.  Try turning it
+back on again and tweaking one of the points, sometimes that makes it lock
+in.  One might ask why bother; but when the correlator works, it gives you
+subpixel accuracy that is difficult to obtain purely interactively.
+
+In MULTI_EDIT mode, once you get two or more tiepoints, it will use an affine
+transform to help you place additional ones.  If this works, it's a big help.
+However, if there is a lot of parallax this might not work... in which case,
+turn off "autofind" mode.
+
+Use the middle button to adjust the stretch ("Contrast") at the bottom.
+While the left button works, the middle one allows you to drag the limit
+sliders.
+
+The zoom display will automatically re-center around the point if you move
+it.  Sometimes it's worth adjusting the point in the main display just because
+you get "lost" in the zoom display.
+
+If you do a mixed-mode panorama (say, MER navcam and pancam), the automatic
+modes don't work as well (especially in marstie), so you almost have to use
+interactive mode (it gets close, but not right on).  In this case it is
+helpful to differentially zoom the images in tp.  For example, zooming the
+navcam twice as big as the pancam makes the image scale approximately the
+same, which should help in (manually) finding tiepoints.  That's one click
+on zoom + in the top display and two clicks in the bottom display.
+
+Ctrl-X is a shortcut for save-and-exit.  You should find yourself using
+ctrl-X and ctrl-A a *lot*; it is much easier than finding them in the menus.
+There is no shortcut for "special exit status"; use the menu.  As a reminder,
+setting that before exiting causes marstie to save its results and quit.
+Useful if you get tired, or decide you don't need to look at the rest.
+
+Note that marstie prints out "n of m" before each marstie call so you know
+how many more to expect.  However, that does NOT take into account the
+quality setting, so the actual remaining tp sessions is likely to be fewer
+(unless quality=1.0 is used).  It also prints out the image pair for reference,
+and the correlation quality value (useful to fine-tune just what the quality
+threshold should be).  In MULTI mode, it prints out the image pair #'s being
+edited instead.  These will be in order, so you have some idea how far to
+go.
+
+Note that the tiepoint does not have to be anywhere near the initial tiepoint.
+You can move it anywhere there is overlap.  Of course, it's more useful if
+you stay away from where the other tiepoints in this image pair are, if there
+are more than one.  Unfortunately marstie does not help you to do this in
+SINGLE_EDIT mode; you must either remember where you put previous tiepoints,
+or not worry about it.  This is one of the primary reasons for MULTI_EDIT mode.
+Keep in mind that the best results are obtained when tiepoints are gathered
+in the area you most want to have matched.  So for example if the foreground
+is important, pick points in that area instead of on the rover or on the
+horizon.  If you want a good horizon, pick points there instead of the
+foreground.  You should avoid picking points on the rover itself, unless
+the rover is what you want to match (in which case you might want to adjust
+the GROUND parameter to match the rover deck).
+
+If you can't find any useful tiepoints at all (say the overlap contains
+nothing but sky), you can delete the tiepoint using Edit/Delete Point (or
+ctrl-D), then save and exit (ctrl-X).
+
+There are 5 buttons at the top of the tp window, between the arrows after
+"No qualifier defined" and the "Autofind" menu.  There is a bug that prevents
+the button imagery from being displayed.  For reference, the buttons are
+(in order left to right):
+
+SavePoint  DeletePoint  ListPoints  ShiftLeft  ShiftRight
+
+Of these, only the first three will be useful in marstie/marsnav.  DeletePoint
+is the most useful, while ListPoints will show the actual coordinate of the
+point.  SavePoint can be used to define a bunch of bogus points to force a
+restart of tp, as described earlier, and is critical when adding new points
+in MULTI mode.
+
+Keep in mind that tp has a *lot* of capabilities that are not being used
+by marstie (or marsnav).  Explore if you want, but the above controls are
+the only ones that you should need.
+
+.PAGE
+
+TBD:
+
+ This is what should happen eventually:
+ read tpts
+ for each image pair
+     auto-gen tiepoints if not enough currently exist
+     if interactive and quality isn't good enough
+ 	present tpts to user... one at a time or many at once?
+ 	if special exit status
+ 	    break loop
+
+.PAGE
+
+COGNIZANT PROGRAMMER:  Bob Deen
+
+HISTORY:
+  1994-04-30 J Lorre - Initial mpfnav
+  1998-09    B. Deen - Multimission conversion
+  1999-07    Split of original MARSNAV into two parts:  MARSTIE and MARSNAV
+  2019-12-10 W. Bunch - IDS-7926 - Initialized some variables; cleaned up some -Wall warnings; added unit test.
+
+.LEVEL1
+.VARI INP
+Input image(s) or
+file list.
+
+.VARI OUT_TPT
+Output tiepoint file.
+
+.VARI IN_TPT
+Input tiepoint file.
+
+.VARI BAND
+The vicar image 
+band number. 
+Defaults to 1
+
+.VARI BORDER
+Pixels to avoid
+on picture border.
+Border added to
+template area for
+rotation.
+
+.VARI TEMPLATE
+correlation size.
+
+.VARI SEARCH
+correlation search
+area.
+
+.VARI QUALITY
+Minimum acceptable
+correlation quality.
+
+.VARI INTERACT
+To select tiepoints
+manually.
+
+.VARI CULL
+To keep only the
+CULL best quality
+tiepoints per pair
+
+.VARI SIGMA
+Keep tiepoints within
+SIGMA standard deviations
+of the mean shift
+for each pair.
+
+.VARI BUSY
+Business threshold 
+which points must 
+exceed.
+
+.VARI MAXSHIFT
+Max line/sample shift
+allowed for a tiepoint.
+Default: 100.0
+
+.VARI EDIT_TYPE
+SINGLE_EDIT or
+MULTI_EDIT mode
+
+.VARI PAIRS
+TIE_PAIRS or
+ALL_PAIRS or
+NEW_PAIRS or
+ADD_PAIRS
+
+.VARI SEP_ANGLE
+Maximum separation angle
+for an image pair.
+
+.VARI START_KEY
+Starting key number for
+tiepoint file (XML format
+only).
+
+.VARI FORMAT
+OLD or XML tiepoint
+file format.
+
+.VARI NORMAL
+Surface normal vector.
+
+.VARI GROUND
+Surface ground point.
+
+.VARI SURF_COORD
+Coordinate system used to define
+surface parameters.
+
+.VARI SURFACE
+The type of mars
+surface to use INFINITY, PLANE, 
+SPHERE1, SPHERE2, MESH.
+
+.VARI SURF_MESH 
+Mesh file for surface model
+
+VARI SURF_CSFILE 
+File containing CS for surface
+model
+
+.VARI CONFIG_PATH
+Path used to find
+configuration/calibration
+files.
+
+.VARI POINT_METHOD
+Specifies a mission-
+specific pointing
+method to use
+
+.VARI NOSITE
+Disables coordinate
+system sites.
+
+.VARI RSF
+Rover State File(s) to use.
+
+.VARI DEBUG_RSF
+Turns on debugging of RSF
+parameter.
+
+.VARI COORD
+Coordinate system to use.
+Ignored by marstie.
+
+.VARI COORD_INDEX
+Coordinate system index for
+some COORD/mission combos.
+Ignored by marstie.
+
+.VARI FIXED_SITE
+Which site is FIXED for
+rover missions.
+
+.LEVEL2
+.VARI INP
+There are two options for describing input images. 
+
+Either:
+List the image file names 
+
+Or:
+provide an ascii file with the file names listed, one per record.
+
+.VARI OUT_TPT
+Output tiepoint table.  Can be in the old text format, or in XML (the
+default).
+
+The program checks to make sure this file does not exist before running.
+This should prevent (all too common) accidental overwrites.
+
+The old format consists of an ASCII table with a header, a record indicating
+the number of tiepoints, then a series of records, one per tiepoint.  Values
+in the record are:
+laft_image, right_image, left_sample, left_line, right_sample, right_line,
+corrected_sample, corrected_line, quality, interactive_flag
+
+The new XML format contains similar information in a reasonably self-descriptive
+XML format.
+
+.VARI IN_TPT
+The input tiepoint file.  If not specified, tiepoints are automatically
+generated around the edges of the images.
+
+Note:  currently, if IN_TPT is given but -interactive is not, then the
+program will do nothing except write the output.  This can be used to
+convert tiepoint file formats.  If you wish to auto-gen more tiepoints
+for pairs that don't have any, you can add to a tiepoint file (or merge
+them) using -ADD_PAIR.
+
+.VARI BAND
+The vicar image band number. Defaults to 1
+
+.VARI BORDER
+The width of a border all around the image to avoid in selecting
+pixels for correlation.
+Also is the width added to the template area all around to permit
+rotation of the template.
+ Defaults to 9.
+ 
+.VARI BUSY
+The business threshold.
+Any correlation area must have a business above BUSY to be correlated.
+Business=mean pixel difference in sample + mean pixel difference in line.
+Defaults to 1.0
+
+.VARI TEMPLATE
+Correlation size. Must be an odd number. Defaults to 25 square.
+
+.VARI SEARCH
+Correlation search area. Must be an odd number. Defaults to 49 square.
+SEARCH >> TEMPLATE. If search is only a bit larger than template then
+many correlations will abort because they will be prohibited from
+searching in promising directions. 
+
+.VARI QUALITY
+Minimum acceptable correlation quality. 
+In batch, correlations with qualities below QUALITY will be rejected. 
+Interactively, correlations with qualities below QUALITY will be displayed
+for interactive editing.  Setting QUALITY to 1.0 will force all tiepoints
+to be displayed (this is not recommended for batch mode!).
+Qualities range from 0 (poor) to 1 (excellent).
+Defaults to 0.6  
+
+When an input tiepoint file is given (using IN_TPT), and -interactive is
+on, then normally only tiepoints which have not already been interactively
+viewed will be available for editing.  This is because a tiepoint's quality
+is set to 1.0 after it has been interactively edited (presumably the user
+got it spot-on).  If you wish to review old tiepoints again, however, simply
+specify a QUALITY greater than 1.  This will force *all* tiepoints in the
+file to be interactively edited again.
+
+TBD:  Use the interactive flag in the file, rather than setting quality to 1.0.
+
+.VARI INTERACT
+To select tiepoints manually.
+MARSTIE will select and correlate tiepoints automatically and will display the
+successful tiepoints on the images. The user can then edit the bad ones 
+or add new ones.  Interactive points are not correlated by MARSTIE to refine
+them, but the "tp" program has a built-in correlator if desired.
+
+.VARI CULL
+To keep only the CULL best quality tiepoints per image pair.
+Defaults to 1
+
+.VARI SIGMA
+Keep tiepoints within SIGMA standard deviations of the mean shift
+for each pair.
+
+.VARI MAXSHIFT
+When tiepoints are automatically generated, they may be rejected due to
+excessive shift in the line and/or sample values.  This prevents the
+correlator from introducing extremely bad tiepoints.  Sometimes, however,
+the pointing may be so bad that excessive shifts are needed to bring the
+mosaic into line.  Raising this parameter will allow such large shifts.
+Or, if the pointing is already good, and the correlator gives bad results,
+this parameter may be reduced to eliminate some of the bad points.
+
+Default: 100.0 pixels
+
+.VARI EDIT_TYPE
+SINGLE_EDIT mode is the traditional default.  It brings up one tiepoint at
+a time in tp, based on the correlation quality.
+
+MULTI_EDIT mode is a new mode.  It brings up ALL tiepoints for each overlap,
+allowing you to see them all in tp at once.  See the main help for details.
+
+Note that the edit type is ignored unless -INTERACT is on.  Also, QUALITY
+is ignored with -MULTI_EDIT on.
+
+MULTI_EDIT is required for ALL_PAIRS, NEW_PAIRS or ADD_PAIRS to take effect.
+
+.VARI PAIRS
+This parameter is only effective if -INTERACT and -MULTI_EDIT are on.
+
+With the default, -TIE_PAIRS, only image pairs that have one or more
+tiepoints will be presented in tp.  This is best for large mosaics, as the
+combinatorial explosion issue would make ALL_PAIRS extremely painful.
+
+With -NEW_PAIRS, it is like the above, but the only pairs that are brought
+up are those that contain a tiepoint with the interactive flag false.  The
+interactive flag is the last value in the tiepoint file.  This allows you to
+pick up where you left off in -MULTI_EDIT mode.  Set special exit status,
+save the tiepoint pair, and the program exits.  When you run marstie again,
+set -new_pairs, and the pairs you've already edited will not be presented
+again.
+
+This is also useful to change just a few pairs.  By editing the tiepoint file
+and changing the interactive flag, only those pairs will be edited.
+
+With -ALL_PAIRS, every possible image pair is brought up in tp, whether or
+not a tiepoint is found.  This is useful for small mosaics (such as MER MI),
+if the automatic tiepoint finder doesn't find anything.  It's also useful for
+mixed-instrument mosaics, for which tiepoints are rarely automatically found.
+
+With -ADD_PAIRS, an input tiepoint file must be given.  First, the automatic
+procedure for determining which pairs have overlaps is performed (as with
+-TIE_PAIRS or -NEW_PAIRS when no input tiepoint file is given).  Then, the
+input tiepoint file is examined.  If any tiepoints exist for a given pair
+in the input tiepoint file, then the automatic tiepoints for that image pair
+are deleted.  The auto tiepoints are then merged with the input tiepoints, and
+it proceeds as in -NEW_PAIRS.
+
+The -ADD_PAIRS mode is good for merging tiepoint sets done at different times.
+If a section of a larger mosaic has already been tiepointed, -ADD_PAIRS can
+be used to accept all those points, and add whatever is missing from the new
+images.  You can also merge two sets done independently into one input tiepoint
+file, then -ADD_PAIRS will find and present the tiepoints between the sets.
+
+Note that if all tiepoints of a pair were deleted originally, that pair will
+come up again if the auto tiepoint finder thinks there is an overlap.
+
+.VARI SEP_ANGLE
+Maximum separation angle for image pairs.  If the camera orientations are
+separated by more than this angle, the pair is skipped.  This provides a
+quick efficiency boost by rejecting spurious pairs.
+
+Typical values:  sep_angle=53 for MER navcam
+                 sep_angle=36 for MER pancam
+
+TBD: This should be calculated from the camera FOV in the future.
+
+.VARI START_KEY
+Starting key number for the tiepoint file (XML format only).  Tiepoint files
+contain a list of images, each of which is associated with an integer key.
+Setting START_KEY to some value allows tiepoint files to be merged easily,
+without the keys conflicting.  It is acceptable to have the same image in
+different sections of a merged file (with different keys); they are properly
+merged when read in.
+
+.VARI FORMAT
+There are two tiepoint file formats: "old" is the simple text-based list,
+as used for most of MER, while "xml" is an XML-based format that supports
+additional tiepoint types.  The FORMAT parameter controls which one to use.
+Over time the use of "old" should be phased out and eventually the FORMAT
+parameter will disappear.
+
+.VARI NORMAL
+The local mars surface normal vector coordinate system specified by SURF_COORD 
+parameter (defaults to surface fixed).
+For most pan/tilt cameras, if the lander is not tilted this vector
+would be: normal=(0,0,-1).  ie: x_component=0, y_component=0, z_component=-1.
+This need not be a unit vector.  This vector is used to define the
+surface plane to which image points are projected in order to minimize
+parallax.
+For SPHERE1/2 surface models, normal's first parameter is used to
+denote sphere's radius.  Thus to describe sphere of radius R, user
+would specify normal=(R, 0, 0).
+
+.VARI GROUND
+Any point on the surface, in coordinate system specified by SURF_COORD parameter
+(defaults to surface fixed).  This defines where the tilted plane is in space.  
+Although any point may be used, normally the point just "under" the origin is selected.
+Defaults:
+Mars Pathfinder:  (0.0, 0.0, 0.0)       (lander zero point is on the ground)
+Mars 98 Lander:   (0.0, 0.0, 1.64)      (lander zero point is on top of deck)
+MER           :   (0.0, 0.0, 0.294)
+For MER images taken on top of the lander, the ground is roughly at (0.0, 0.0, 0.7)
+For SPHERE1/2 surface models, GROUND parameter is used to denote sphere's
+center.  
+    
+.VARI SURF_COORD
+The coordinate system that surface parameters like GROUND and NORMAL are defined in.
+For valid values refer to COORD parameter description.  The interpretation of the 
+values is dependent on the mission. Defaults to surface fixed coordinate system.
+Note that no validation is done for input strings because COORD is using the same
+values.  So user needs to be extra careful in specifying SURF_COORD value.  For 
+example COORD=local would be correctly interpreted to mean LOCAL_LEVEL because of
+validation process.  On the other hand specifying SURF_COORD=local would lead
+to underlying code treating the input value as invalid and reverting to default
+which is FIXED frame.  So the values for SURF_COORD should be spelled exactly as
+found in the list of valid values for COORD parameter.
+
+.VARI SURFACE
+The type of mars surface to use. The surface is used to intercept view rays
+emanating from the cameras in order to model out parallax between the
+stereo cameras. The options are surface=INFINITY which means no surface
+is used, surface=PLANE (the default case). If surface = PLANE then the plane
+is defined by the NORMAL and GROUND parameters.  For the cases when PLANE 
+doesn't match local topography sufficiently well, here are two sphere surface
+models: surface=SPHERE1 and surface=SPHERE2.  SPHERE1 is useful to model
+convex surfaces like hills, it returns closest(first) ray-surface intersection 
+point.  SPHERE2 is useful to model concave surfaces, like crater when the
+camera point is outside looking in, it returns farthest(second) ray-surface 
+intersection point.  For the case when camera is inside the sphere surface, 
+like rover sitting in the crater, there is only a single intersection point
+and SPHERE1 and SPHERE2 behave exactly the same. Last, MESH is a surface
+model defined by a mesh file (.obj) which path is given with SURF_MESH.
+
+.VARI SURF_MESH 
+Mesh OBJ file to use as the surface model. For the mesh to be used,
+SURFACE must be set to MESH. The coordinates of the mesh vertices can be 
+expressed in any CS. However the mesh CS must be supplied via SURF_CSFILE.
+If SURF_CSFILE is not used, then the mesh is assumed to be to the CS that
+results from COORD or SURF_COORD
+
+VARI SURF_CSFILE 
+File name of a vicar file whose CS (contained in the labels) will be read and
+assigned to the SURFACE model. The type of image and its content are of no
+interest, we are just reading the CS. That CS will supersede any other surface 
+CS definition (COORD or SURF_COORD). Its typical use is to supply a CS to a
+given mesh file (expectedly the XYZ from which the mesh is computed from, but
+doesn't have to). But SURF_CSFILE could be use to define a CS in which NORMAL 
+and GROUND for a PLANE surface are expressed in.
+
+.VARI CONFIG_PATH
+A colon-separated list of directories in which to look for configuration
+and calibration files.  Environment variables are allowed in the list
+(and may themselves contain colon-separated lists).  The directories are
+searched in order for each config/cal file when it is loaded.  This allows
+multiple projectes to be supported simultaneously, and allows the user to
+override any given config/cal file.  Note that the directory structure below
+the directories specified in this path must match what the project expects.
+For example, Mars 98 expects flat fields to be in a subdirectory named
+"flat_fields" while Mars Pathfinder expects them to be directly in the
+directory specified by the path (i.e. no intermediate subdirectories).
+
+.VARI POINT_METHOD
+Specifies a mission-specific pointing method to use.  Normally this
+parameter is not used, in which case the "default" pointing methods
+are used.  Some missions may have special, or alternate, pointing
+methods available, which are indicated by this string (for example,
+backlash models, using arm joint angles instead of x/y/z/az/el, etc).
+A substring search is used, so multiple methods (where that makes sense)
+can be specified by separating the keywords with commas.
+
+Note that nav files created using one pointing method will most likely
+not be compatible with a mosaic created using a different pointing method.
+
+The methods available vary per mission, but some methods available at
+the time of this writing are:
+
+BACKLASH : Mars 98 SSI only.  Selects a backlash pointing model,
+which adjusts the telemetered azimuth and elevation values based on
+knowledge of the camera's mechanical backlash and the direction the
+motor was travelling when the image was taken.
+
+.VARI NOSITE
+Disables all label-derived parameters to the Site mechanism which underlies
+coordinate systems.  This forces all sites to be identical, with all rotations
+and offsets set the same.  In the case of MPF or Mars 98, this disables
+the lander quaternion and offset (sets them to identity and 0, respectively).
+This option should not be used with images taken from different vantage
+points (e.g. the spacecraft moved, or mixing a lander and a rover) or
+invalid results will be obtained.  The use of this option invalidates the
+Fixed coordinate frame; any values reported in the Fixed frame will not
+correctly reflect the orientation of the lander/rover.
+
+Obviously, this option should be rarely used; it is intended for when the
+image labels defining the site are invalid or inconsistent.
+
+.VARI RSF
+Rover State File.  This is a list of filenames to load containing
+Rover State information.  These files contain position and orientation
+information for a rover (or other mobile spacecraft) at various sites.
+They are in XML format.  See the "Rover Motion Counter (RMC) Master File SIS"
+for details on these files.
+
+Rover State Files have a priority order.  The files listed first have
+the highest priority.
+
+Environment variables may be used in the list.
+
+For MER, if a directory is specified, then that directory is searched for
+RMC Master files and any found are loaded.  The directory structure and
+filename convention is covered in the RMC SIS.  The directory specified
+is the one containing "master", so if <dir> is the name specified in the
+RSF parameter, the following files will be searched for:
+
+<dir>/master/<mission>_Master.svf
+<dir>/master/<mission>_Site_<n>_Master.rvf
+
+The name of each file loaded is printed to the stdout log for reference.
+
+.VARI DEBUG_RSF
+If enabled, this causes the internal database of RMC locations to be
+printed out to the stdout log.  This is after the RSF files have been
+loaded and the coordinate systems read from the input label(s).
+
+.VARI COORD
+This parameter is ignored by marstie.  It is here for compatibility
+with subroutines used by other programs (see e.g. marsmap).
+
+.VARI COORD_INDEX
+This parameter is ignored by marstie.  It is here for compatibility
+with subroutines used by other programs (see e.g. marsmap).
+
+.VARI FIXED_SITE
+Specifies which major Site is the "Fixed" Site for this run.
+
+Historically, MPF and M98 had a single "Surface Fixed" frame which never
+moved, and which all other coordinate system frames were referenced to.
+With the advent of long-range rovers (such as MER and FIDO), that became
+insufficient.  The rover traverses far enough that errors in knowledge of
+coordinate system offset and orientation become unacceptable.
+
+For this reason, a system of major Sites was introduced.  Periodically
+during the mission, a Site frame is declared.  This then becomes the
+reference frame for all activities until the next Site is declared.
+References are kept local, and errors don't propogate across Sites.
+
+However, if images from more than one Site are combined together, the
+Site's must be placed relative to each other.  Therefore a single reference
+frame is still needed to combine different sites.
+
+The FIXED_SITE parameter controls which of the major Site frames is
+the reference ("fixed") site for this program run.  This fixed frame
+can vary in different program runs, but is constant throughout one
+execution.
+
+If not specified, FIXED_SITE defaults to the minimum Site number (i.e.
+lowest numbered, or earliest chronologically) used in all input images.
+Normally this default is sufficient; rarely must FIXED_SITE be specified.
+
+One or more Rover State Files must usually be specified in order to combine
+image from more than one Site.  These describe the relationship between
+sites.  See the RSF parameter.
+

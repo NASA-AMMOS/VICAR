@@ -1,0 +1,5 @@
+$ vpack marsxyzmerge.com -mixed -
+	-s marsxyzmerge.cc octreeNode.h octreeNode.cc -
+	-i marsxyzmerge.imake -
+	-p marsxyzmerge.pdf
+$ Exit

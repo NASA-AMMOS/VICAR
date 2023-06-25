@@ -1,0 +1,13 @@
+#define SUBROUTINE marsi_instruments
+
+#define MODULE_LIST marsi_instruments.cc marsi_hp3_instrument.cc marsi_seis_instrument.cc marsi_wts_instrument.cc marsi_heli_instrument.cc
+
+#define MARS_SUBLIB
+
+#define USES_C_PLUS_PLUS
+#define STD_CPP_11
+
+#define LIB_P2SUB
+#define LIB_XERCES
+
+

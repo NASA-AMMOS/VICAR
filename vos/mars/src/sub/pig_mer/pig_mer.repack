@@ -1,0 +1,6 @@
+$ vpack pig_mer.com -mixed -
+	-s PigMER.cc PigFileModelMER.cc PigPointMERpmaCamera.cc -
+	   PigPointMERpmaCamera3dof.cc PigPointMERiddCamera.cc PigSiteMER.cc -
+	   PigRoverStateManagerMER.cc PigLabelModelMER.cc -
+	-i pig_mer.imake
+$ Exit

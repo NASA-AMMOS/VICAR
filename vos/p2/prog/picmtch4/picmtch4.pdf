@@ -1,0 +1,541 @@
+PROCESS       HELP=*
+PARM INP      TYPE=(STRING,99) COUNT=3
+PARM OUT      TYPE=(STRING,99) COUNT=(0:1) DEFAULT=--
+PARM GEOCORD1 TYPE=KEYWORD COUNT=(0:1) VALID=(GEOCORD1) DEFAULT=--
+PARM GEOCORD2 TYPE=KEYWORD COUNT=(0:1) VALID=(GEOCORD2) DEFAULT=--
+PARM FFTSIZE  TYPE=INTEGER DEFAULT=32  VALID=32:1024
+PARM FFTHALF  TYPE=INTEGER DEFAULT=0  VALID=0:2
+PARM GCPF     TYPE=KEYWORD COUNT=(0:1) VALID=(GCPF) DEFAULT=--
+PARM ITIE     TYPE=REAL    COUNT=(0:6) DEFAULT=--
+PARM OTIE     TYPE=REAL    COUNT=(0:6) DEFAULT=--
+PARM MAGNIFY  TYPE=REAL    COUNT=(1:2)  DEFAULT=(1.0,1.0)
+PARM MAGSHRK  TYPE=(STRING,2) COUNT=1 VALID=("y","n") DEFAULT="n"
+PARM MAGMIN   TYPE=REAL    COUNT=(1:2)  DEFAULT=(1.0,1.0)
+PARM SEARCH   TYPE=INTEGER DEFAULT=128  VALID=32:8192
+PARM MINSRCH  TYPE=INTEGER DEFAULT=32   VALID=32:8192
+PARM ZWIND    TYPE=INTEGER DEFAULT=7    VALID=3:29
+PARM ZREJECT  TYPE=INTEGER COUNT=1 DEFAULT=5
+PARM ZEROLIM  TYPE=REAL    COUNT=1 DEFAULT=5.0 VALID=0.0:100.0
+PARM ZEROLIM2 TYPE=REAL    COUNT=1 DEFAULT=-1.0 VALID=-1.0:100.0
+PARM ZEROTHR  TYPE=INT     COUNT=1 DEFAULT=0 VALID=0:1000
+PARM RETRY    TYPE=REAL    COUNT=3 DEFAULT=(0,0,0)
+PARM REDO     TYPE=INTEGER DEFAULT=12  VALID=0:999
+PARM NOPRINT  TYPE=KEYWORD COUNT=1 VALID=(PRINT,NOPRINT)  DEFAULT=PRINT
+PARM NOSUBPIX TYPE=KEYWORD COUNT=(0:1) VALID=(NOSUBPIX) DEFAULT=--
+PARM NOHPF    TYPE=KEYWORD COUNT=(0:1) VALID=(NOHPF)    DEFAULT=--
+PARM FITMIN   TYPE=REAL    COUNT=1 DEFAULT=0.19
+PARM THR_RES  TYPE=REAL    COUNT=1 DEFAULT=10.0
+PARM AUTOFIT  TYPE=INTEGER DEFAULT=0   VALID=0:500
+PARM PRED     TYPE=KEYWORD COUNT=1 VALID=(LINEAR,QUAD) DEFAULT=LINEAR
+PARM ELVCOR   TYPE=KEYWORD COUNT=(0:1) VALID=(ELVCOR)    DEFAULT=--
+PARM ANGOFF   TYPE=REAL    COUNT=1 DEFAULT=0.0
+END-PROC
+.TITLE
+VICAR/IBIS Program "picmtch4"
+.HELP
+PURPOSE
+
+     "picmtch4"  is a batch oriented image correlation routine 
+     which incorporates the following features.
+
+     1. Correlation  of  image  to image.
+
+     2. Sampling  of one image to match the geometry of  the 
+        other  image (e.g.  one image could be at  different 
+        scale or rotation).
+
+     3. Regular or phase correlation in the FFT domain.
+.PAGE
+     4. Specification of a magnification factor to correlate 
+        a larger area without increasing computation.
+
+     5. Use  of  a geometric model to estimate the  matching 
+        locations  and  feedback of matches  to  refine  the 
+        geometric model.
+
+     6. Matching of images along a polygonal contour.
+
+     7. Use  of  standard  data formats for  all  input  and 
+        output data sets.
+
+     8. Apodization is used for elimination of false peaks due
+        to strong edge effects and for enhancement of subpixel
+        matching.
+.PAGE
+
+     TAE COMMAND LINE FORMAT
+
+     picmtch4 INP=(A,B,C) OUT=D      PARAMS
+
+     where
+
+     A                   is the first image to be correlated.
+
+     B                   is   the   second   image   to   be 
+                         correlated.
+
+     C                   is  an ibis file containing the points
+                         to match in columns (1,2) and 9 more
+                         empty columns.
+
+     D                   is an output image containing visuals
+                         of the matching areas.  
+
+
+OPERATION
+
+     First,  "picmtch4" sets up a geometric model relating the 
+     two images using the ITIE-OTIE parameters.   The points 
+     originally  given  are supplemented  by  matches  in the
+     second image.   The  geometric  model is used to estimate  a 
+     search  location  and to specify a  resampling  of  the 
+     first  image to match the raster gridding of the second 
+     image.   The model is a linear least squares fit to the 
+     control  points.   For normal image to image  matching, 
+     only  ITIE-OTIE  points  are  needed.   Their  accuracy 
+     should be sufficient to yield a match within the search 
+     area  specified  by parameters SEARCH and  MINSRCH  taking 
+     into account nonlinearities in the data.
+     
+     If no ITIE-OTIE points are given, the program  will try
+     to find GeoTIFF labels,  and will use them  to generate
+     a  set of  ITIE-OTIE points  using the  labels and  the
+     corners of the first image.
+     
+     For each point from the IBIS file taken in the first data
+     set, the iteration over the correlation  point  set now 
+     proceeds.   At the predicted point in the second input, 
+     a FFTSIZxFFTSIZ sub-image is extracted. If the point is  a 
+     fractional pixel location,  the center of extraction is 
+     moved   to   align   with  pixel   spacing   to   avoid 
+     interpolation.   In fact, interpolation will occur only 
+     if  the keyword MAGNIFY is used with a nonintegral  value.  
+     The  geometric  model  is used to  calculate  a  search 
+     location in the first input.   If this is a  fractional 
+     pixel  location,  then  it is also aligned  with  pixel 
+     spacing  to minimize interpolation near the center.   A 
+     sub-image is extracted of size WxW where W is somewhere 
+     between  the values given by the parameters SEARCH  and 
+     MINSRCH.  This  sub-image  is  extracted  by   bilinear 
+     interpolation at a rotation and pixel size to match the 
+     second  input  geometry as specified by  the  geometric 
+     model discussed earlier.
+
+     The FFTSIZxFFTSIZ pieces of the two inputs
+     are each subjected to a complex valued DFT via the  FFT 
+     algorithm.  One of the DFT arrays has its low frequency 
+     terms  set  to  zero by zeroing the first row  and  the 
+     first  column unless the parameter NOHPF is  specified.  
+     Then  the DFT's are multiplied element by element  (one 
+     DFT is  conjugated).  An  inverse  FFT  is  applied  to
+     this  result and  the  peak  and  its  eight  neighbors 
+     are saved.     The  subwindow is moved over  the search  
+     area  with  an increment of at most  12  pixels.   When  
+     the  entire search area is covered, the largest peak is 
+     taken to be the correlation point. A final FFT correla-
+     tion is performed at the correlation peak to get a refined 
+     correlation.   Unless NOSUBPIX is specified a subpixel 
+     match is  obtained by  fitting a quadratic  to the peak  
+     and  its  eight neighbors. The match point is transformed 
+     back to  the original image location  via  the  inverse  
+     of   the geometric  model  and  incorporating  alignment  
+     shifts performed in both images.  
+
+     The results are written to the IBIS interface (tabular)
+     file with one row for each tiepoint.  The following 
+     column format is used:
+
+     Column       Description			   Format
+
+        1     First input line or East             real*4
+        2     First input sample or North          real*4
+        3     First input line                     real*4
+        4     First input sample                   real*4
+        5     First input z-value                  real*4
+        6     Second input line                    real*4
+        7     Second input sample                  real*4
+	8     Second input z-value                 real*4
+        9     Correlation value                    real*4
+       10     line-residual                        real*4
+       11     sample-residual                      real*4
+       optional (must use ELVCOR keyword)
+       12     line-elevation offset                real*4
+       13     sample-elevation offset              real*4
+
+    Information about each matching point is printed out unless 
+    the NOPRINT keyword is specified.   The printed information
+    is as follows:
+
+        1   SEQ			Sequence number
+	2   SECOND LOCATION	Tiepoint location in second image
+	3   ESTIMATED LOCATION	Estimated location in first image
+	4   FIRST LOCATION	Matching location in first image
+				    (from correlation search)
+	5   CORREL		Correlation value (between 0 and 1)
+	6   WIN			Current search window size
+	7   RESID		Residual distance (between estimated 
+				    location and correlation location)
+	8   FN			Failure number
+
+     If correlation  fails,  nulls are written into the ibis 
+     file  and  a failure number is given  in  the  printout 
+     under the column heading FN.  The failure numbers are:
+
+              1             point on edge of second image 
+				(more than zerolim percent of chip off image)
+              2             failure of RETRY option to exceed threshold
+              4             correlation peak unreliable
+              5             subpixel correlation failure
+
+
+     Points  completely outside of either image are ???.
+
+
+
+
+PRECISION
+
+Due to the iterative nature of the subroutine llsq, the programs results will
+vary from machine to machine.  When prnt in llsq's test program was temporarily
+changed to a write statement, it was observed that the resulting output varied
+from machine to machine.  The following table will provide some idea of the
+differential between machines.
+
+                PORTED VMS  ALPHA &     SUN        SGI        SOLARIS
+                            UNPORT VAX
+FINAL FIT: LINE -81.20914   -81.20914   -81.20908  -81.20908  -81.20908
+FINAL FIT: SAMP  15.19182    15.19181    15.19191   15.19190   15.19191
+
+
+
+RESTRICTIONS
+
+     The ground control chip file option (use of IBIS graphics-2 
+     files)  is not currently supported.
+
+
+REFERENCES
+
+     C.  D.  Kuglin and D.  C. Hines, "The phase correlation 
+     image alignment method," Proc.  IEEE 1975 International 
+     Conference on Cybernetics and Society, September, 1975, 
+     pp. 163-165.
+
+
+Original Programmer:  A. L. Zobrist    12 October 1981
+
+REVISIONS:
+  1981-10-12 ALZ - Original version.
+  1995-05    CRI - Made portable for UNIX
+  2000-09-09 ALZ - Rewritten in C including the FFT subroutines.
+  2002-08-27 ALZ - lsq routine uses normalization for keystone, quad, cubic, but
+             not in the fit yet.
+  2002-11-03 ALZ - quad added to fit, redo param added.
+  2007-12-29 WLB - Switched to USES_ANSI_C AND LIB_CARTO; misc cleanup.
+  2016-03-07 WLB - Migrated to MIPL.
+  2017-08-11 WLB - Removed DEBUG from imake.
+  2019-09-06 WLB - IDS-7922 - Initialized some variables; cleaned up -Wall warnings.
+  2022-07-14 B. Crocco afids to opensource
+  
+.LEVEL1
+.VARIABLE INP
+Input images(2) and ibis file,
+all required
+.VARIABLE OUT
+Out file (image of matches)
+.VARIABLE GEOCORD1
+when present, the first image
+coordinates and ITIE are in
+GeoTIFF coordinates, otherwise
+they are (line,sample)
+.VARIABLE GEOCORD2
+when present, the second image
+OTIE are in GeoTIFF coord,
+else they are (line,sample)
+.VARIABLE FFTSIZE
+fft array size, best values 
+power of 2; at least 32
+.VARIABLE FFTHALF
+will do retries at half size if
+ZEROLIM exceeded (near edge)
+.VARIABLE GCPF
+not implemented yet
+.VARIABLE ITIE
+Control points in first image
+.VARIABLE OTIE
+Control points in second image
+.VARIABLE MAGNIFY
+Magnification of sampling
+.VARIABLE MAGSHRK
+Shrink MAGNIFY value to MAGMIN
+when good fit is obtained
+.VARIABLE MAGMIN
+The smallest value of MAGNIFY
+when MAGSHRK is specified
+.VARIABLE SEARCH
+Search area size (s X s)
+.VARIABLE MINSRCH
+Minimum of the search area
+.VARIABLE ZWIND
+Window for brightness calc
+.VARIABLE ZREJECT
+Rejection threshold for Z value
+.VARIABLE ZEROLIM
+Do not allow correlation if 
+either image area exceeds this
+percentage of zeros (see help 2)
+.VARIABLE ZEROLIM2
+Allows separate ZEROLIM to be
+set for second image; default
+(-1) sets it to same as first
+.VARIABLE ZEROTHR
+Allows default 0. to be set to a
+higher number for water, etc
+.VARIABLE RETRY
+Parameters for retrying of corr
+.VARIABLE REDO
+At the end of processing, this 
+number of points will be redone
+.VARIABLE NOPRINT  
+To suppress messages
+.VARIABLE NOSUBPIX 
+For no subpixel determination
+of matching point
+.VARIABLE NOHPF    
+To turn off high pass filter
+in correlations
+.VARIABLE FITMIN    
+Prevents weak correlations from
+entering into the model fit of
+image 1 to image 2
+.VARIABLE THR_RES   
+Prevents offset correlations
+(further than this value from
+the predicted location) from
+entering into the model fit of
+image 1 to image 2
+.VARIABLE AUTOFIT    
+Sets the FITMIN threshold auto-
+matically using the first n
+correlations (see help 2)
+.VARIABLE PRED    
+type of function used to
+predict matching location
+.VARIABLE ELVCOR  
+columns 11 and 12 will be
+used to adjust predictor
+.VARIABLE ANGOFF  
+tilts initial match predictor
+by this angle in degrees (see
+help 2)
+.LEVEL2
+.VARIABLE INP
+     INP=(A,B,C),
+     where:
+
+     A                   is the first image to be correlated.
+
+     B                   is   the   second   image   to   be 
+                         correlated   [or  a  ground  control 
+                         point file in graphics-2 format --
+                         NOT CURRENTLY SUPPORTED].
+
+     C                   is  an IBIS file containing the image
+                         1 matching points in pixel (L,S) in
+                         the first two columns.  These points
+                         can also be geographic if the first
+                         image has a GeoTIFF label and the label
+                         coordinate system is used (column 1
+                         will be the East and column 2 will 
+                         be the North).  The file must also
+                         have 11 columns or more, and the 
+                         other 9 columns are filled (see main
+                         help).  The first two columns may
+                         change slightly (see algoritm discussion).
+.VARIABLE OUT
+     OUT=D
+     D                   Is an image of the matching areas as
+                         "chips".  NOT CURRENTLY SUPPORTED.
+.VARIABLE ITIE
+     ITIE=(X1,Y1,...,X3,Y3)   This  specifies three
+                              control  points in  the  first
+                              input    image   to    control 
+                              matching search and resampling 
+                              geometry.   Can be  omitted if 
+                              both images have GeoTIFF labels
+                              and  the  GeoTIFF  mapping  is
+                              desired for a matching model.
+.VARIABLE OTIE
+     OTIE=(P1,Q1,...,P3,Q3)   This specifies the  correspon
+                              ding  control  points  in  the 
+                              second  image.   If the second 
+                              input  is  a  ground   control 
+                              point  file then these  values 
+                              are  latitude longitude pairs.  
+                              The number of values given  to 
+                              OTIE  must be the same as  the 
+                              number to ITIE. Can be  omitted if 
+                              both images have GeoTIFF labels
+                              and  the  GeoTIFF  mapping  is
+                              desired for a matching model.
+.VARIABLE MAGNIFY
+     MAGNIFY=(RL,RS)          This  specifies that  sampling 
+                              from  both images is magnified 
+                              by  RL in  the  line direction
+                              and RS  in  the samp direction
+                              (default 1.0,1.0).    The grid 
+                              is  always FFTSIZE^2  so  this 
+                              increases the correlation area 
+                              without increasing computation.
+			      The magnification can be speci-
+			      fied  separately  for line and 
+			      sample directions.  If you use
+			      these, you must specify both.
+.VARIABLE MAGSHRK
+     MAGSHRK="y"              This specifies that the MAGNIFY
+                              parameter will shrink by .9 for
+                              every good fitting point.  Also
+                              only applies after fit to points
+                              is  obtained.   When MAGMIN  is
+                              reached, then the  shrink is no
+                              longer applied.
+.VARIABLE MAGMIN
+     MAGMIN=(RL,RS)           This specifies the minimum vals
+                              for  MAGNIFY  when  MAGSHRK  is
+                              used.  When MAGMIN is  reached,
+                              then  the  shrink is  no longer
+                              applied.
+.VARIABLE SEARCH
+     SEARCH=S                 This specifies that the search 
+                              area  in  the first  input  is 
+                              initially  an SxS  square  re-
+                              gion.   Allow  for uncertainty 
+                              and  nonlinearity in the esti-
+                              mation of matching location by 
+                              ITIE,  OTIE and add 12 more to 
+                              S for ineffectiveness of  cor-
+                              relation near the window edge.  
+                              S  must be less than or  equal 
+                              to   128  which  is  also  the 
+                              default.
+.VARIABLE MINSRCH
+     MINSRCH=T                This   specifies   that    the 
+                              initial   search   S  can   be 
+                              reduced    upon     successful 
+                              matching to a minimum value of 
+                              T.    Note   that   successful 
+                              matches  refine  the image  to 
+                              image geometric model allowing 
+                              a  reduction in search with  a 
+                              consequent     savings      of 
+                              computation.     The   default 
+                              value  is 50 and miminum value 
+                              is 32.
+
+.VARIABLE ZWIND
+     ZWIND=W                  The program calculates and outputs
+			      the  average brightness values 
+			      at  the matching coordinates.  
+			      The average is calculated using
+			      a W by W window.  Default is 7.
+.VARIABLE ZREJECT
+     ZREJECT=Z            The average brightness is rejected 
+			      by setting the output Z value to
+			      -999 if if falls below this value
+			      The default is 5.
+
+.VARIABLE RETRY
+     RETRY=(N,T,R)            This  instructs the program to 
+                              attempt  more  tries  near   a 
+                              location    if    a    certain 
+                              correlation  threshold is  not 
+                              achieved.   N is the number of 
+                              tries  (1 to 5), with the first
+			      try being the at the original point.
+			      T is  the correlation threshold 
+			      required to stop the retry at each  
+			      point.  A failure number is 
+ 			      printed every time the threshold 
+			      test fails.  If all retries for 
+			      a point fail then nothing is 
+			      written to the output files.
+                              The  retry pattern is to  move 
+                              to  the corners of a square 
+			      i.e. to move to (+/-R, +/-R) from
+			      the original point.
+
+.VARIABLE NOPRINT
+        'NOPRINT	      This specifies that the normal 
+			      printout is to be suppressed.  
+			      Error messages will still be
+			      printed. 
+
+.VARIABLE NOHPF
+       'NOHPF                 This   specifies   that    the 
+                              default  high  pass filter  in 
+                              the correlation is to be  shut 
+                              off.   The  high  pass  filter 
+                              consists  of zeroing the  low-
+                              order  row  and column of  the 
+                              DFT matrices.
+
+.VARIABLE NOSUBPIX
+         'NOSUBPIX            This  specifies that  subpixel 
+                              correlation   is  not  to   be 
+                              calculated (see operation)
+
+.VARIABLE REDO
+The correlation that results from a bad estimation of position will
+usually be not as good as one resulting from a good estimate.  This
+parameter will recalculate the user-selected number of points over
+again at the end of processing.  Usually, the predictor has optimized
+by the end of processing, so the results will be better.
+.VARIABLE PRED
+"LINEAR" will use a 2-D linear fit to predict where a point in the 
+first image will match in the second image.  "QUAD" will use a 2-D
+quadratic fit, but only when enough points are available to solve
+for the coefficients of the quadratic.  Three points are needed 
+to solve for linear coefficients, and six are needed for quadratic.
+If the images have a keystone offset, use quadratic.
+.VARIABLE AUTOFIT    
+The value of this parameter (n) tells the routine to use the first n
+correlations to set the threshold.  It will be the value for which
+1/2 of n are above threshold and 1/2 n are below.  No values are 
+allowed into the fit until these n points determine the threshold.
+Then the convergence is held for the next set of n points while the
+fit is being refined.  This whole procedure is to prevent a misleading
+fit on the first point from sending the whole fitting process in the
+wrong direction.
+
+The user provided fitmin will be ignored, it is set by the process 
+just outlined.
+.VARIABLE FFTHALF
+0 = default, no retries when zerolim exceeded
+1 = one retry at half size
+2 = one retry at half size, another retry at quarter size
+
+This allows correlating closer to the image edge.  The correlation
+threshold is toughened so that the correlation must be at the 
+automatic threshold instead of within .5 of it.
+.VARIABLE ZEROLIM
+Setting this to a value limits the number of zeros in either image
+chip to that percentage of zeros.  For the first image, exceeding
+this percentage will cause a message "point outside first image"
+and the point will not be used (column 9 will have -9999).  For
+the second image, which may be searched, the individual chips
+are rejected with no comment.  If the second image is 50% zeros
+a message "point outside second image" is given.  Parts of a chip
+cut off by an image edge are treated as zeros.
+
+The parameter ZEROLIM2 allows the second image value to
+be set independantly.  If it is not used, then the default
+value of -1 causes the ZEROLIM for the second image to be the
+same as the first image.
+.VARIABLE ELVCOR
+See routine piclsqm2 for use of these parameters
+.VARIABLE ANGOFF  
+tilts initial match predictor by this angle in degrees.  Gives
+better correlation if the tilt is accurate.  After the solved fit
+for a match predictor, this angle will no longer be used or have 
+any effect on results.
+.END

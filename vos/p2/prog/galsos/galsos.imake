@@ -22,5 +22,6 @@
 #define LIB_SPICE
 #define LIB_FORTRAN
 #define LIB_MATH77
+#define LIB_NETWORK
 /*#define DEBUG */	/* comment out on delivery */
 /************************* End of Imake file ***************************/

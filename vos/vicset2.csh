@@ -53,7 +53,14 @@ if ($?V2INC != 0) then
     else
       set cover = ""
     endif
-    alias vimake 'imake '$force' '$cover' -I$V2INC -I$V2UTIL -T$V2UTIL/imake_unix.tmpl -f \!*.imake -s \!*.make'
+# FORCE_FPIC is used to compile p1, p2 libraries -fPIC
+    if ($?FORCE_FPIC != 0) then
+      set fpic = -DFORCE_FPIC
+      echo "COMPILE -fPIC ENABLED"
+    else
+      set fpic = ""
+    endif
+    alias vimake 'imake '$force' '$cover' '$fpic' -I$V2INC -I$V2UTIL -T$V2UTIL/imake_unix.tmpl -f \!*.imake -s \!*.make'
     endif
 else
   unalias vimake

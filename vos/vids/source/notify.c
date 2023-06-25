@@ -22,7 +22,7 @@ MessageType howMuch = Inform;
  * NOTE:  You cannot send a type double to this routine, as it is bigger
  * than a pointer.  Use sprintf then call this routine with the message.
  */
-NotifyUser(type,key,message,p1,p2,p3,p4,p5,p6,p7,p8)
+void NotifyUser(type,key,message,p1,p2,p3,p4,p5,p6,p7,p8)
   MessageType type;		/* What type of message is this?	*/
   char	*key,*message;		/* msg to print with (maybe empty) key	*/
   int	p1,p2,p3,p4,p5,p6,p7,p8;
@@ -43,7 +43,7 @@ NotifyUser(type,key,message,p1,p2,p3,p4,p5,p6,p7,p8)
 /************************************************************************/
 /* SetMessage sets the amount of each message to print. 
  */
-SetMessage(type)
+void SetMessage(type)
   MessageType type;
 {
   howMuch = type;

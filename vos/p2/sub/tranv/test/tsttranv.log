@@ -1,0 +1,101 @@
+ttranv
+Beginning VICAR task ttranv
+POLAR ORTH
+FROM L,S
+            5.000E+02  5.704E+01
+TO LT,LN
+            5.704E+01  0.000E+00
+AND BACK TO L,S
+            5.000E+02  5.704E+01
+OBLIQ ORTH
+FROM L,S
+            5.000E+02 -1.559E+01
+TO LT,LN
+           -1.559E+01  0.000E+00
+AND BACK TO L,S
+            5.000E+02 -1.559E+01
+POLAR STER
+FROM L,S
+            5.000E+02  6.042E+01
+TO LT,LN
+            6.042E+01  0.000E+00
+AND BACK TO L,S
+            5.000E+02  6.042E+01
+OBLIQ STER
+FROM L,S
+            5.000E+02 -1.449E+01
+TO LT,LN
+           -1.449E+01  0.000E+00
+AND BACK TO L,S
+            5.000E+02 -1.449E+01
+LAMBERT
+FROM L,S
+            5.000E+02  6.711E+01
+TO LT,LN
+            6.711E+01  0.000E+00
+AND BACK TO L,S
+            5.000E+02  6.711E+01
+MERCATOR
+FROM L,S
+            5.000E+02 -2.115E+01
+TO LT,LN
+           -2.115E+01 -1.084E-19
+AND BACK TO L,S
+            5.000E+02 -2.115E+01
+Mercator (90,0) gives L,S=
+           -9.354E+03  9.000E+01
+NORMAL CYL
+FROM L,S
+            5.000E+02 -2.252E+01
+TO LT,LN
+           -2.252E+01  1.084E-19
+AND BACK TO L,S
+            5.000E+02 -2.252E+01
+SIMPLE CYL
+FROM L,S
+            5.000E+02 -2.192E+01
+TO LT,LN
+           -2.192E+01 -2.000E+00
+AND BACK TO L,S
+            5.000E+02 -2.192E+01
+OBLIQUE SIMPLE CYL
+FROM L,S
+            5.000E+02  5.939E+01
+TO LT,LN
+            5.939E+01  0.000E+00
+AND BACK TO L,S
+            5.000E+02  5.939E+01
+SINUSOIDAL
+FROM L,S
+            5.000E+02 -2.198E+01
+TO LT,LN
+           -2.198E+01  0.000E+00
+AND BACK TO L,S
+            5.000E+02 -2.198E+01
+OBLIQUE SINUSOIDAL
+FROM L,S
+            5.000E+02  2.426E+01
+TO LT,LN
+            2.426E+01  0.000E+00
+AND BACK TO L,S
+            5.000E+02  2.426E+01
+MOLLWEIDE
+FROM L,S
+            5.000E+02 -1.994E+01
+TO LT,LN
+           -1.994E+01  0.000E+00
+AND BACK TO L,S
+            5.000E+02 -1.994E+01
+TRANS MERC
+FROM L,S
+            5.000E+02 -2.034E+01
+TO LT,LN
+           -2.034E+01  0.000E+00
+AND BACK TO L,S
+            5.000E+02 -2.034E+01
+Repeat a test case in C to test C interface: ztranv
+TRANS MERC
+FROM L,S  500.000000   500.000000
+TO LT,LN  -20.335491   127.098854
+AND BACK TO L,S  500.000000   499.999969
+disable-log

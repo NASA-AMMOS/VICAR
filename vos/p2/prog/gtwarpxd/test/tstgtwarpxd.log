@@ -1,0 +1,263 @@
+gen xxim1 nl=10 ns=10
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+gtgen inp=xxim1 out=xxperth 'tiecnvrt  +
+   geotiff=("ModelTiePointTag=(0,0,0,.3,.3,0.0)",  +
+          "ModelTiePointTag=(10,0,0,.5,.3,0.0)",  +
+          "ModelTiePointTag=(0,10,0,.3,.5,0.0)",  +
+          "ProjectionGeoKey=20(CT_MillerCylindrical)",  +
+          "GTRasterTypeGeoKey=2(RasterPixelIsPoint)",  +
+          "GeogEllipsoidGeoKey=7030(Ellipse_WGS84)")
+Beginning VICAR task gtgen
+GTGEN version 2019-09-05
+gen xxim1 nl=20 ns=20
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+gtgen inp=xxim1 out=xxaustralia 'tiecnvrt  +
+   geotiff=("ModelTiePointTag=(0,0,0,.2,.7,0.0)",  +
+          "ModelTiePointTag=(20,0,0,.7,.7,0.0)",  +
+          "ModelTiePointTag=(0,20,0,.2,.2,0.0)",  +
+          "ProjectionGeoKey=1(CT_TransverseMercator)",  +
+          "GTRasterTypeGeoKey=1(RasterPixelIsArea)",  +
+          "GeogEllipsoidGeoKey=7030(Ellipse_WGS84)")
+Beginning VICAR task gtgen
+GTGEN version 2019-09-05
+gtlist xxperth
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(0,0,0,.3,.3,0.0)
+MODELPIXELSCALETAG=(0.02,-0.02,0.0)
+PROJECTIONGEOKEY=20(CT_MillerCylindrical)
+GTRASTERTYPEGEOKEY=2(RasterPixelIsPoint)
+GEOGELLIPSOIDGEOKEY=7030(Ellipse_WGS84)
+
+The image raster is a 'point' or 'post' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.0      0.0  0.300000000000  0.300000000000
+       1.0     10.0          9.0      0.0  0.480000000000  0.300000000000
+      10.0      1.0          0.0      9.0  0.300000000000  0.480000000000
+      10.0     10.0          9.0      9.0  0.480000000000  0.480000000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5         -0.5     -0.5  0.290000000000  0.290000000000
+       0.5     10.5          9.5     -0.5  0.490000000000  0.290000000000
+      10.5      0.5         -0.5      9.5  0.290000000000  0.490000000000
+      10.5     10.5          9.5      9.5  0.490000000000  0.490000000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 5
+789
+456
+123
+The scale units of the image are (ignoring sign):
+1 sample = 0.0200000000000 map units east
+1 line   = 0.0200000000000 map units north
+The scale fraction is 1 /      0.8
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+gtlist xxaustralia
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(0,0,0,.2,.7,0.0)
+MODELPIXELSCALETAG=(0.025,0.025,0.0)
+PROJECTIONGEOKEY=1(CT_TransverseMercator)
+GTRASTERTYPEGEOKEY=1(RasterPixelIsArea)
+GEOGELLIPSOIDGEOKEY=7030(Ellipse_WGS84)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  0.212500000000  0.687500000000
+       1.0     20.0         19.5      0.5  0.687500000000  0.687500000000
+      20.0      1.0          0.5     19.5  0.212500000000  0.212500000000
+      20.0     20.0         19.5     19.5  0.687500000000  0.212500000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  0.200000000000  0.700000000000
+       0.5     20.5         20.0      0.0  0.700000000000  0.700000000000
+      20.5      0.5          0.0     20.0  0.200000000000  0.200000000000
+      20.5     20.5         20.0     20.0  0.700000000000  0.200000000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 1
+123
+456
+789
+The scale units of the image are (ignoring sign):
+1 sample = 0.0250000000000 map units east
+1 line   = 0.0250000000000 map units north
+The scale fraction is 1 /      2.0
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+ibis-gen xxdist version=ibis-2 org=column nc=4 nr=3 deffmt=DOUB
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+acopin (gtwarpxd.dat,xxdist) cols=(1,2,3,4) lead_rm=1
+Beginning VICAR task acopin
+acopin Fri Dec  5 2014 - wlb
+Number of input cols = 4
+Output length is 3 records
+
+
+gtwarp inp=xxperth out=xxnewperth1 ref=xxaustralia 'coverinp  +
+    nah=3 nav=4 gorewid=1
+let version="ibis-2"
+let org="column"
+let $echo="yes"
+write "gtwarp version 08-jun-10"
+gtwarp version 08-jun-10
+let xxqqgrid1 = "xxqqgrid1qq"
+let xxqqgrid2 = "xxqqgrid2qq"
+lab2tcl xxperth v1=tnl v2=tns keyword=(nl,ns) 'system
+Beginning VICAR task lab2tcl
+LAB2TCL - 09 Dec 2012 - rjb - (64-bit)
+let inpsize = tnl*tns
+if ("coverinp"="coverinp")
+   lab2tcl xxperth v1=tnl v2=tns keyword=(nl,ns) 'system
+Beginning VICAR task lab2tcl
+LAB2TCL - 09 Dec 2012 - rjb - (64-bit)
+   ibis-gen xxqqgrid1qq version=ibis-2 org=column  nc=12 nr=961 deffmt=DOUB
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+   mf3 xxqqgrid1qq func=("c1=(@int((@index-1)/31)/30)*10+0.5$",   +
+           "c2=(@mod(@index+30,31)/30)*10+0.5")
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+   pixmap (xxqqgrid1qq,xxperth) mapcols=(3,4) pixcols=(1,2) 'pixtomap
+Beginning VICAR task pixmap
+pixmap version Thu Jan  3 2008
+   gtproj (xxqqgrid1qq,xxperth,xxaustralia) incol=(3,4) outcol=(5,6)
+Beginning VICAR task gtproj
+GTPROJ version 2019-09-05
+Input GeoTIFF label:
+MODELTIEPOINTTAG=(0,0,0,.3,.3,0.0)
+MODELPIXELSCALETAG=(0.02,-0.02,0.0)
+PROJECTIONGEOKEY=20(CT_MillerCylindrical)
+GTRASTERTYPEGEOKEY=2(RasterPixelIsPoint)
+GEOGELLIPSOIDGEOKEY=7030(Ellipse_WGS84)
+
+Output GeoTIFF label:
+MODELTIEPOINTTAG=(0,0,0,.2,.7,0.0)
+MODELPIXELSCALETAG=(0.025,0.025,0.0)
+PROJECTIONGEOKEY=1(CT_TransverseMercator)
+GTRASTERTYPEGEOKEY=1(RasterPixelIsArea)
+GEOGELLIPSOIDGEOKEY=7030(Ellipse_WGS84)
+
+inverse applied
+eposc arg  1: inv
+eposc arg  2: +proj=mill
+eposc arg  3: +ellps=WGS84
+forward applied
+eposc arg  1: fwd
+eposc arg  2: +proj=tmerc
+eposc arg  3: +ellps=WGS84
+datum shift not applied
+   pixmap (xxqqgrid1qq,xxaustralia) mapcols=(5,6) pixcols=(7,8) 'maptopix
+Beginning VICAR task pixmap
+pixmap version Thu Jan  3 2008
+   mf3 xxqqgrid1qq func=("c9=c7$@vmin(c9)$c10=c7$@vmax(c10)$", +
+             "c11=c8$@vmin(c11)$c12=c8$@vmax(c12)")
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+   ibis2tcl xxqqgrid1qq v1=rminl v2=rmaxl v3=rmins v4=rmaxs vartype=(-1,-1,-1,-1) +
+     ibisloc=(1,9,1,10,1,11,1,12)
+Beginning VICAR task ibis2tcl
+IBIS2TCL version 2-FEB-00
+   let rminl=rminl+0.5
+   let rmaxl=rmaxl+0.5
+   let rmins=rmins+0.5
+   let rmaxs=rmaxs+0.5
+   let minl=$fix(rminl)-gorewid-2
+   let maxl=$fix(rmaxl)+gorewid+2
+   let mins=$fix(rmins)-gorewid-2
+   let maxs=$fix(rmaxs)+gorewid+2
+   write "input covers (6,1,20,15) in reference pixel space"
+input covers (6,1,20,15) in reference pixel space
+   let sl=minl
+   let ss=mins
+   let nl=maxl-minl+1
+   let ns=maxs-mins+1
+else
+end-if
+write "geomv parameter (sl,ss,nl,ns) = (6,1,15,15)"
+geomv parameter (sl,ss,nl,ns) = (6,1,15,15)
+let nahp1=nah+1
+let navp1=nav+1
+let nahxnav=nahp1*navp1
+ibis-gen xxqqgrid2qq version=ibis-2 org=column  nc=8 nr=20 deffmt=DOUB
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+mf3 xxqqgrid2qq func=("c1=(@int((@index-1)/4)/4)*15+(6-0.5)$",            +
+  "c2=(@mod(@index+3,4)/3)*15+(1-0.5)")
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+pixmap (xxqqgrid2qq,xxaustralia) mapcols=(3,4) pixcols=(1,2) 'pixtomap
+Beginning VICAR task pixmap
+pixmap version Thu Jan  3 2008
+gtproj (xxqqgrid2qq,xxaustralia,xxperth) incol=(3,4) outcol=(5,6)
+Beginning VICAR task gtproj
+GTPROJ version 2019-09-05
+Input GeoTIFF label:
+MODELTIEPOINTTAG=(0,0,0,.2,.7,0.0)
+MODELPIXELSCALETAG=(0.025,0.025,0.0)
+PROJECTIONGEOKEY=1(CT_TransverseMercator)
+GTRASTERTYPEGEOKEY=1(RasterPixelIsArea)
+GEOGELLIPSOIDGEOKEY=7030(Ellipse_WGS84)
+
+Output GeoTIFF label:
+MODELTIEPOINTTAG=(0,0,0,.3,.3,0.0)
+MODELPIXELSCALETAG=(0.02,-0.02,0.0)
+PROJECTIONGEOKEY=20(CT_MillerCylindrical)
+GTRASTERTYPEGEOKEY=2(RasterPixelIsPoint)
+GEOGELLIPSOIDGEOKEY=7030(Ellipse_WGS84)
+
+inverse applied
+eposc arg  1: inv
+eposc arg  2: +proj=tmerc
+eposc arg  3: +ellps=WGS84
+forward applied
+eposc arg  1: fwd
+eposc arg  2: +proj=mill
+eposc arg  3: +ellps=WGS84
+datum shift not applied
+pixmap (xxqqgrid2qq,xxperth) mapcols=(5,6) pixcols=(7,8) 'maptopix
+Beginning VICAR task pixmap
+pixmap version Thu Jan  3 2008
+geomv INP=(xxperth,xxqqgrid2qq,xxaustralia) OUT=xxnewperth1 size=(+
+6,1,15,15)         cols=(1,2,7,8) interp="bilin" znoin="" vmemsize=300000000
+Beginning VICAR task geomv
+GEOMV version 2019-09-04
+end-proc
+gtwarpxd inp=xxperth out=xxnewperth2 ref=xxaustralia 'coverinp  +
+    nah=3 nav=4 gorewid=1 distort=(xxdist,,,,) dcols=(1,2,3,4)  +
+    gridout=xxxperthgrid
+let version="ibis-2"
+let org="column"
+let $echo="yes"
+let xxg1 = "xx" // "qq" // "g1"
+let xxg2 = "xx" // "qq" // "g2"
+let xxg7 = "xx" // "qq" // "g7.par"
+lab2tcl xxperth v1=tnl v2=tns keyword=(nl,ns) 'system
+Beginning VICAR task lab2tcl
+LAB2TCL - 09 Dec 2012 - rjb - (64-bit)
+let inpsize = tnl*tns
+let dcol1 = dcols(1)
+if (dcol1=0) goto gridinloc
+write "GTWARPXD version 2016-AUG-20"
+GTWARPXD version 2016-AUG-20
+if ("coverinp"="coverinp")
+   ibis-gen xxqqg1 version=ibis-2 org=column  nc=12 nr=961 deffmt=DOUB
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+   mf3 xxqqg1 func=("c1=(@int((@index-1)/31)/30)*10+0.5$",   +
+           "c2=(@mod(@index+30,31)/30)*10+0.5")
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+   gtproj2 (xxqqg1,xxperth,xxaustralia) incol=(1,2) outcol=(7,8) 'image
+[TAE-NOPROC] Unable to locate proc 'gtproj2'.;
+ proc 'gtwarpxd', line 105
+RETURN
+RETURN

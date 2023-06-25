@@ -1,0 +1,93 @@
+PROCESS       HELP=*
+PARM INP      TYPE=(STRING,99) COUNT=2
+PARM RPCCOL   TYPE=INT COUNT=1 DEFAULT=0
+PARM COLS     TYPE=INT COUNT=5 DEFAULT=(1,2,3,4,5)
+PARM SCALE    TYPE=KEYWORD COUNT=(0:1) VALID=SCALE DEFAULT=--
+PARM UNSCALE  TYPE=KEYWORD COUNT=(0:1) VALID=UNSCALE DEFAULT=--
+END-PROC
+.TITLE
+VICAR Program rpcscale - scale/unscale a grid using RPC scale
+.HELP
+PURPOSE
+
+     RPCFWD applies an RPC scale stored in an image label or in
+     an IBIS file column to a (lon,lat,elev,line,samp) grid
+     stored in an ibis file.
+     
+     The reverse operation of unscaling can be acomplished with
+     the change of a keyword ('unscale instead of 'scale).  The
+     default is to scale if no keyword is given.
+
+.PAGE
+TAE COMMAND LINE FORMAT
+
+     rpcscale INP=(A,B) COLS=(C1,C2,C3,C4,C5) 'DIRECTION
+     
+     where
+
+     A		 is a VICAR image with a GeoTIFF label with RPC or a
+                      standalone ascii GeoTIFF label with RPC
+     B           is a IBIS file with an RPC grid (5 columns)
+     COLS        are the IBIS file columns (integers) contain-
+                 ing the (lon,lat,elev,line,sample) 
+     DIRECTION   is one of the keywords "SCALE" or "UNSCALE"
+     
+or
+
+     rpcscale INP=(A,B) COLS=(C1,C2,C3,C4,C5) RPCCOL=C6 'DIRECTION
+     
+     where
+
+     A		 is an IBIS file with a column containing RPC scale
+     B           is a IBIS file with an RPC grid (5 columns)
+     COLS        are the IBIS file columns (integers) contain-
+                 ing the (lon,lat,elev,line,sample) 
+     RPCCOL      is the IBIS file column (integer) containing the
+                 RPC scale and offset in file A
+     DIRECTION   is one of the keywords "SCALE" or "UNSCALE"
+     
+.PAGE
+OPERATION
+   The RPC's are read from the first file.  The (lon,lat,elv,line,samp)
+   columns of the ibis file are read, then altered according to the 
+   scale-offsets and also taking the direction into account.
+   
+.PAGE
+
+TIMING
+
+     Should be able to map millions if IBIS records in less than
+     a minute on a sparc2.
+     
+RESTRICTIONS
+
+   The maximum number of coordinate points is limited by IBIS table
+   size (currently about 10 million?).  Internal to the program,
+   dynamic memory allocation is used.
+
+
+.PAGE
+WRITTEN BY:            A. L. Zobrist, 04 April 2005
+
+COGNIZANT PROGRAMMER:  A. L. Zobrist
+
+REVISIONS: 
+Thu Jan  3 2008 wlb switched to USES_ANSI_C AND LIB_CARTO; misc cleanup  
+2022-08-04 B. Crocco opensourced from afids (untested)
+
+.LEVEL1
+.VARIABLE INP
+1. Image or IBIS file contain-
+   ing RPC's
+2. IBIS file with 5 column grid
+.VARIABLE RPCCOL
+Column in 1st file containing
+RPC scale (only if IBIS file)
+.VARIABLE COLS
+Map columns in 2d file for
+(lon,lat,elev,line,sample)
+.VARIABLE SCALE
+scales the 2d file
+.VARIABLE UNSCALE
+unscales the 2d file
+.END

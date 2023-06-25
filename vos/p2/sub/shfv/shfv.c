@@ -31,10 +31,13 @@
 #define HALF   2
 #define FULL   4
 
+void zshfv(int dcode, int n, int shift, int *buf, int inc);
+
 /************************************************************************/
 /* Fortran-Callable Version                                             */
 /************************************************************************/
 
+void zshfv();
 void FTN_NAME2(shfv, SHFV) (dcode, n, shift, buf, inc)
    int *dcode,*n,*shift,*buf,*inc;
 {
@@ -45,7 +48,7 @@ void FTN_NAME2(shfv, SHFV) (dcode, n, shift, buf, inc)
 /* C-Callable Version                                                   */
 /************************************************************************/
 
-zshfv(dcode, n, shift, buf, inc)
+void zshfv(dcode, n, shift, buf, inc)
    int dcode,n,shift,*buf, inc;
 {
 

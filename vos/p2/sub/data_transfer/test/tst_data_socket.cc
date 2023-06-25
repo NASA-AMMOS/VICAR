@@ -2,15 +2,18 @@
 //      U. S. Government sponsorship under NASA contract is acknowledged
 
 #include <stdio.h>
-#include <fstream.h>
+#include <fstream>
+#include <iostream>
 #include <string.h>
 #include <stdlib.h>     // Cause of main()
-#include <iomanip.h>    // Cause of main()
+#include <iomanip>    // Cause of main()
 #include <unistd.h>	// Cause of main()
 #include <errno.h>
 
 #include "SocketBase.h"
 #include "return_status.h"
+
+using namespace std;
 
 int	PortMaker(
   SocketBase	&OutPort,

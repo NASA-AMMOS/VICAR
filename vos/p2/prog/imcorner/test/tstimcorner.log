@@ -1,0 +1,213 @@
+gen xxxim0 nl=10 ns=10
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+f2 inp=xxxim0 out=xxxim1  +
+    func="(abs(line-5.5)<3)*(abs(samp-5.5)<3)"
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 100 TIMES
+list xxxim1 'zer 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2        User:          Date_Time:                        
+     Samp     1       3       5       7       9
+   Line
+      1       0   0   0   0   0   0   0   0   0   0
+      2       0   0   0   0   0   0   0   0   0   0
+      3       0   0   1   1   1   1   1   1   0   0
+      4       0   0   1   1   1   1   1   1   0   0
+      5       0   0   1   1   1   1   1   1   0   0
+      6       0   0   1   1   1   1   1   1   0   0
+      7       0   0   1   1   1   1   1   1   0   0
+      8       0   0   1   1   1   1   1   1   0   0
+      9       0   0   0   0   0   0   0   0   0   0
+     10       0   0   0   0   0   0   0   0   0   0
+imcorner xxxim1 line1=l1 samp1=s1 line2=l2 samp2=s2  +
+                line3=l3 samp3=s3 line4=l4 samp4=s4 inside=1  +
+                sldat=sl ssdat=ss nldat=nl nsdat=ns
+Beginning VICAR task imcorner
+IMCORNER version 2021-05-19
+write "c1 4.000000000000e+00 4.000000000000e+00"
+c1 4.000000000000e+00 4.000000000000e+00
+write "c2 4.000000000000e+00 7.000000000000e+00"
+c2 4.000000000000e+00 7.000000000000e+00
+write "c3 7.000000000000e+00 4.000000000000e+00"
+c3 7.000000000000e+00 4.000000000000e+00
+write "c4 7.000000000000e+00 7.000000000000e+00"
+c4 7.000000000000e+00 7.000000000000e+00
+write "sl,ss 4 4"
+sl,ss 4 4
+write "nl,ns 4 4"
+nl,ns 4 4
+gen xxxim0 nl=10 ns=10
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+f2 inp=xxxim0 out=xxxim1  +
+    func="(abs(line-5.5)<3)*(abs(samp-5.5)<3)"
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 100 TIMES
+list xxxim1 'zer 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2        User:          Date_Time:                        
+     Samp     1       3       5       7       9
+   Line
+      1       0   0   0   0   0   0   0   0   0   0
+      2       0   0   0   0   0   0   0   0   0   0
+      3       0   0   1   1   1   1   1   1   0   0
+      4       0   0   1   1   1   1   1   1   0   0
+      5       0   0   1   1   1   1   1   1   0   0
+      6       0   0   1   1   1   1   1   1   0   0
+      7       0   0   1   1   1   1   1   1   0   0
+      8       0   0   1   1   1   1   1   1   0   0
+      9       0   0   0   0   0   0   0   0   0   0
+     10       0   0   0   0   0   0   0   0   0   0
+imcorner xxxim1 line1=l1 samp1=s1 line2=l2 samp2=s2  +
+                line3=l3 samp3=s3 line4=l4 samp4=s4
+Beginning VICAR task imcorner
+IMCORNER version 2021-05-19
+write "l1,s1 3.000000000000e+00 3.000000000000e+00"
+l1,s1 3.000000000000e+00 3.000000000000e+00
+write "l2,s2 3.000000000000e+00 8.000000000000e+00"
+l2,s2 3.000000000000e+00 8.000000000000e+00
+write "l3,s3 8.000000000000e+00 3.000000000000e+00"
+l3,s3 8.000000000000e+00 3.000000000000e+00
+write "l4,s4 8.000000000000e+00 8.000000000000e+00"
+l4,s4 8.000000000000e+00 8.000000000000e+00
+gen xxxim0 nl=10 ns=10
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+f2 inp=xxxim0 out=xxxim1  +
+    func="(abs(line-5.5)<3)*(abs(samp-5.5)<3)"
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 100 TIMES
+gtgen inp=xxxim1 'tiecnvrt  +
+   geotiff=("ModelTiePointTag=(0,0,0,.3,.3,0.0)",  +
+          "ModelTiePointTag=(10,0,0,.5,.3,0.0)",  +
+          "ModelTiePointTag=(0,10,0,.3,.5,0.0)",  +
+          "ProjectionGeoKey=20(CT_MillerCylindrical)",  +
+          "GTRasterTypeGeoKey=2(RasterPixelIsPoint)",  +
+          "GeogEllipsoidGeoKey=7030(Ellipse_WGS84)")
+Beginning VICAR task gtgen
+GTGEN version 2019-09-05
+gtcopy xxxim1 xxxim2 size=(2,2,10,10)
+Beginning VICAR task gtcopy
+gtcopy version 2017-08-03
+f2 inp=xxxim2 out=xxxim3  +
+    func="(abs(line-5.5)<3)*(abs(samp-5.5)<3)"
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 100 TIMES
+list xxxim1 'zer 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2        User:          Date_Time:                        
+     Samp     1       3       5       7       9
+   Line
+      1       0   0   0   0   0   0   0   0   0   0
+      2       0   0   0   0   0   0   0   0   0   0
+      3       0   0   1   1   1   1   1   1   0   0
+      4       0   0   1   1   1   1   1   1   0   0
+      5       0   0   1   1   1   1   1   1   0   0
+      6       0   0   1   1   1   1   1   1   0   0
+      7       0   0   1   1   1   1   1   1   0   0
+      8       0   0   1   1   1   1   1   1   0   0
+      9       0   0   0   0   0   0   0   0   0   0
+     10       0   0   0   0   0   0   0   0   0   0
+list xxxim3 'zer 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2        User:          Date_Time:                        
+     Samp     1       3       5       7       9
+   Line
+      1       0   0   0   0   0   0   0   0   0   0
+      2       0   0   0   0   0   0   0   0   0   0
+      3       0   0   1   1   1   1   1   1   0   0
+      4       0   0   1   1   1   1   1   1   0   0
+      5       0   0   1   1   1   1   1   1   0   0
+      6       0   0   1   1   1   1   1   1   0   0
+      7       0   0   1   1   1   1   1   1   0   0
+      8       0   0   1   1   1   1   1   1   0   0
+      9       0   0   0   0   0   0   0   0   0   0
+     10       0   0   0   0   0   0   0   0   0   0
+imcorner (xxxim1,xxxim3) line1=l1 samp1=s1 line2=l2 samp2=s2  +
+                line3=l3 samp3=s3 line4=l4 samp4=s4
+Beginning VICAR task imcorner
+IMCORNER version 2021-05-19
+write "c1 5.000000000000e+00 5.000000000000e+00"
+c1 5.000000000000e+00 5.000000000000e+00
+write "c2 5.000000000000e+00 8.000000000000e+00"
+c2 5.000000000000e+00 8.000000000000e+00
+write "c3 8.000000000000e+00 5.000000000000e+00"
+c3 8.000000000000e+00 5.000000000000e+00
+write "c4 8.000000000000e+00 8.000000000000e+00"
+c4 8.000000000000e+00 8.000000000000e+00
+gen xxxim0 nl=10 ns=10
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+f2 inp=xxxim0 out=xxxim1  +
+    func="(abs(line-5.5)<3)*(abs(samp-5.5)<3)*((samp<7)+(line>4))"
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 100 TIMES
+list xxxim1 'zer 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2        User:          Date_Time:                        
+     Samp     1       3       5       7       9
+   Line
+      1       0   0   0   0   0   0   0   0   0   0
+      2       0   0   0   0   0   0   0   0   0   0
+      3       0   0   1   1   1   1   0   0   0   0
+      4       0   0   1   1   1   1   0   0   0   0
+      5       0   0   2   2   2   2   1   1   0   0
+      6       0   0   2   2   2   2   1   1   0   0
+      7       0   0   2   2   2   2   1   1   0   0
+      8       0   0   2   2   2   2   1   1   0   0
+      9       0   0   0   0   0   0   0   0   0   0
+     10       0   0   0   0   0   0   0   0   0   0
+imcorner xxxim1 line1=l1 samp1=s1 line2=l2 samp2=s2  +
+                line3=l3 samp3=s3 line4=l4 samp4=s4 inside=0  +
+                sldat=sl ssdat=ss nldat=nl nsdat=ns 'corrfoot
+Beginning VICAR task imcorner
+IMCORNER version 2021-05-19
+write "c1 5.000000000000e+00 4.000000000000e+00"
+c1 5.000000000000e+00 4.000000000000e+00
+write "c2 5.000000000000e+00 7.000000000000e+00"
+c2 5.000000000000e+00 7.000000000000e+00
+write "c3 8.000000000000e+00 4.000000000000e+00"
+c3 8.000000000000e+00 4.000000000000e+00
+write "c4 8.000000000000e+00 7.000000000000e+00"
+c4 8.000000000000e+00 7.000000000000e+00
+write "sl,ss 5 4"
+sl,ss 5 4
+write "nl,ns 4 4"
+nl,ns 4 4
+ush rm xx*
+disable-log

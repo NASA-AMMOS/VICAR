@@ -1,0 +1,337 @@
+process
+PARM INP     TYPE=STRING   COUNT=1
+PARM OUT     TYPE=STRING   COUNT=(2:5)   
+PARM SIZE    TYPE=INTEGER  COUNT=(0,4) DEFAULT=--
+PARM SL      TYPE=INTEGER  COUNT=(0,1) DEFAULT=--
+PARM SS      TYPE=INTEGER  COUNT=(0,1) DEFAULT=--
+PARM NL      TYPE=INTEGER  COUNT=(0,1) DEFAULT=--
+PARM NS      TYPE=INTEGER  COUNT=(0,1) DEFAULT=--
+PARM FIRST   TYPE=KEYWORD  COUNT=(0:1) DEFAULT=--       VALID=FIRST
+PARM SECOND  TYPE=KEYWORD  COUNT=(0:1) DEFAULT=--       VALID=SECOND
+PARM ZINGER  TYPE=KEYWORD  COUNT=(0:1) DEFAULT=--       VALID=ZINGER
+PARM UNWIND  TYPE=KEYWORD  COUNT=(0:1) DEFAULT=--	VALID=UNWIND
+PARM GR1     TYPE=KEYWORD  COUNT=(0:1) DEFAULT=--	VALID=GR1
+PARM MAXPOLY TYPE=INTEGER  COUNT=(0:1) DEFAULT=--
+PARM MAXVERT TYPE=INTEGER  COUNT=(0:1) DEFAULT=--    
+PARM LARGEST TYPE=REAL     COUNT=(0:1) DEFAULT=0.6  VALID=(0.1:1.0)
+end-proc
+
+.TITLE
+VICAR Program RASTOVEC (Raster-to-Vector conversion)
+.HELP
+PURPOSE:
+
+RASTOVEC takes an image composed of regions (polygons) and produces
+a vector representation of the region (polygon) boundaries.  In the input
+image, each region is a connected set of pixels all having the same DN.  
+The input to RASTOVEC is typically a classification map such as map produced
+by VICAR program FASTCLAS.  The output of RASTOVEC consists of several files.
+One output file contains a list of coordinates of polygon vertices for each
+polygon (region) in the image.  Another output file, the georeference image,
+is the equivalent of an IBIS PAINT image with a corresponding IBIS entry file.
+Other output files contain centroid, area, and other information about the
+polygons or the polygon boundaries.
+
+BIBLIOGRAPHY:
+ 1.   Logan, T. L., Woodcock, C. E., 1982. "User Alternatives in 
+      Post-Processing for Raster-to-Vector Conversion"
+ 2.   Nichols, D.E., 1981. "Conversion of Raster Coded Images to Polygonal
+      Data Structures", Proceedings of the 7th Annual William T. Pecora
+      Memorial Symposium, Oct. 18-21, Sioux Falls, SD.
+
+.PAGE
+PROGRAM EXECUTION:
+
+  RASTOVEC INP OUT=(LABELEDF,POLYDESF,SERLFILE,VERTICES,POLYINFO) ....
+where
+  INP is the input image (byte, half, or full).
+  LABELEDF is the georeferenced (or labeled) image file.
+  POLYDESF is the polygon description IBIS interface file.
+  SERLFILE is an intermediate file containing data for each polygon line segment.
+  VERTICES is the polygon vertices IBIS graphics file.
+  POLYINFO is the polygon information IBIS interface file.
+
+The input image is, by nature, a raster representation of the polygon regions.
+
+There are normally five output files, though some of these may be considered as
+intermediate files.  If the FIRST parameter is specified, only the first step
+of the program is performed and only the first two output files are produced:
+
+	RASTOVEC INP (LABELDF,POLYDESF) 'FIRST
+
+If the SECOND parameter is specified, only the first two steps of the program
+are performed and only the first three output files are produced:
+
+	RASTOVEC INP (LABELDF,POLYDESF,SERLFILE) 'SECOND
+
+The first output file is the georeference (or labeled) image file.
+The georeference image file is the same as the input image except that the DNs
+for the polygons are reassigned so that each polygon has a unique DN.
+The DNs are assigned by numbering the polygons consecutively (starting with 1)
+in the order in which the program encounters them as it scans through the image
+line by line.  The number assigned to each polygon
+serves as an index by which polygon information is ordered in the second
+(polygon description) output file, the fifth (polygon vertices) output file,
+and the sixth (polygon information) output file.  The georeference image file
+is stored in fullword integer format.
+
+The second output file is the polygon description IBIS interface file. For each
+polygon in the georeference image, this file contains two values.  The first is
+the polygon (or class) DN from the input image.  The second is the number of
+pixels in the polygon.  These pairs of values are listed one pair per file row
+in the order in which the polygons are numbered. 
+
+The third output file is the SERL segment IBIS graphics file. The SERL file is
+an intermediate file containing ten values for each line segment point of a
+polygon boundary. 
+
+The fourth output file is the polygon vertices IBIS graphics file. This file
+gives the vector representation of the polygon boundaries.  For each polygon
+the coordinates of the vertices are listed in sequence following the polygon
+boundary clockwise starting with the upper left vertex of the polygon.  The
+first vertex of each list is also repeated at the end of the list and is then
+followed by the coordinates (0.0, 0.0).  For each vertex, the Y (line)
+coordinate is given first and the X (sample) coordinate is given second.  (Y
+first, then X.)  The coordinates assume an origin (0,0) in the lower left (not
+upper left) corner of the image. For example, in an image ten lines by five
+samples, the coordinates for the upper boundary of the whole image would be
+(10.01, 0.01) (upper left), and (10.01, 5.01) (upper right).  ( 0.01 is added
+to all vertex coordinates so that the lower left corner is (0.01, 0.01) instead
+of (0,0).) For polygons with islands, (polygons that completely surround other
+polygons), the polygon boundary contains more than one connected section.  If
+the ZINGER parameter is specified, the vertices of all sections of the boundary
+are listed consecutively, implying the existence of a connecting line (zinger)
+between the sections of the boundary.  If the ZINGER option is not specified,
+the sections of the boundary are listed separately, each ending with a (0,0)
+terminator. 
+
+The fifth output file is the polygon information IBIS interface file. For each
+polygon in the georeference image, this file contains a row of ten real values.
+The ten values are: 
+  1     number of islands in the polygon
+  2     number of vertices
+  3     polygon DN (class number)
+  4     minimum X coordinate in polygon
+  5     maximum X coordinate in polygon
+  6     minimum Y coordinate in polygon
+  7     maximum Y coordinate in polygon
+  8     X coordinate of 'centroid' of polygon
+  9     Y coordinate of 'centroid' of polygon
+ 10     area (number of pixels) for the polygon
+
+These groups of ten values are listed in the order in which the polygons are
+numbered. 
+
+Caution:  The 'centroid' coordinates are not necessarily the coordinates
+of the centroid of the polygon but are the coordinates of a point in the 
+polygon.
+
+.PAGE
+OPERATION:
+
+     RASTOVEC INP OUT=(LABELEDF,POLYDESF,SERLFILE,VERTICES,POLYINFO)
+
+The basic algorithm was developed by David A. Nichols (1981) and consists of
+three separate tasks.
+
+     Step 1                     Step 2            Step 3
+ INP -------> LABELEDF,POLYDESF -------> SERLFILE -------> VERTICES,POLYINFO
+
+The first task involves identifying all raster polygons in the image.  A raster
+polygon is defined as any number of horizontally or vertically contiguous pixels
+having the same DN (label).  The pixels in each raster polygon are assigned a
+new DN (label) which is unique to each polygon, and the image is output with
+an accompanying directory (POLYDESF) for relating class DNs (labels) to the
+new unique label system.
+
+The second task involves creating the line segments which define the polygon
+boundaries.  Each line segment is encoded by recording its starting and ending
+line-sample coordinates and the labels of the polygons to the right and left
+of the segment (Start,End,Right,Left or SERLFILE).
+
+The third task traverses the SERLFILE and connects appropriate adjacent
+line segments.  This gives a list of polygon vertices for each polygon.  The
+(x,y) graphics coordinates of each vertex is stored in the VERTICES file.
+
+The Nichols algorithm codes polygons in a clockwise manner with islands
+coded twice: first in a counterclockwise manner stored at the end of the host
+polygon's vertex coordinates, and then again as a regular polygon.  Lollipops
+(pseudo islands connected by one vertex to the host polygon) are treated as
+regular polygons.  
+
+A simple raster polygon with parts connected to each other diagonally
+(as opposed to horizontally or vertically) will be broken into two or more
+polygons after vector conversion.  Diagonal connections are not supported
+by the program.  
+
+The centroid algorithm appears to reliably place centroids within polygons
+although a centroid may be placed very close to the borders of an odd-shaped
+polygon.  If the vector coordinates are later PAINTed (with VICAR program
+PAINT using the PBORDER option) into raster format, centroids near the border
+may become attached to the neighboring polygon due to the random assignment
+of border pixels by the PAINT program.  
+
+If the vector file is to be plotted, the ZINGER option should not be used as
+it will maintain all polygon island connections and will result in many
+criss-crossing lines (zingers).  If the ZINGER option is not used, area
+calculations will be wrong for polygons with islands.
+
+.PAGE
+If the ZINGER option is used, islands will retain their connection to the last
+polygon.  For the figure below, vertex coordinates will be coded in the order:
+A',...,A',B',...,B',A',D',...D',A'.
+
+    A'_______________
+    |'.              |
+    |\ '.            |                   
+    | \  '. D'__     |                      
+    |  \   <____>    |                            
+    |   \B'________  |
+    |   |         |  |
+    |   |  C'__   |  |
+    |   | <____>  |  |
+    |   |_________|  |                        
+    |________________|
+
+
+.PAGE
+EXAMPLE:
+
+
+.PAGE
+MEMORY AND DISK REQUIREMENTS:
+
+RASTOVEC requires that large amounts of virtual memory be available.  This
+implies that large amounts of scratch disk space be present.  In addition,
+sufficient physical memory must be available to avoid excessive page swapping.
+
+As a test case, the program was run on a large (3601 x 3601) and extremely
+complex image (worst case scenario).  Execution time (wall clock) was 32:50
+(or 1970 seconds).  The program required 200 megabytes of virtual memory
+
+  Assuming execution time is proportional to image size, the
+program requires
+152 seconds per million pixels.
+
+
+with the number of polygons, the number of polygon vertices, and the image size.
+
+MAXPOLY=    1296720
+MAXVERT=    4322400
+MAXSIZE=    4322400
+Step 1: REGION LABELING
+Total bytes of memory requested=   20776328
+ Line=  100
+ Line=  200
+ Line=  300
+
+Begin second pass of region labeling
+ Line=  100
+ Line=  200
+ Line=  300
+
+Writing polygon description file
+ Number of polygon regions=     933180
+Step 2:  COMPUTE SEGMENTS
+Total bytes of memory requested=   17318424
+ Line=  100
+ Line=  200
+ Line=  300
+WSERL increased MAXSEG
+ Number of segments=    4769883
+ Number of vertices=    4047872
+ Number of high order vertices=     982977
+
+Step 3: POLYGON CYCLING
+Total bytes of memory requested=  209144368
+ Begin loop thru   933180 plygon regions...
+ Polygon region=     10000
+ Polygon region=     20000
+ Polygon region=     30000
+OPVR increased MAXVERT
+MAX_IVCNT=     579346
+
+
+.page
+PROGRAM HISTORY:
+
+WRITTEN BY:           Steve Pohorsky	2 Apr 1984
+COGNIZANT PROGRAMMER: Gary Yagi		11 Nov 03
+REVISION:
+  1984-03    SP - CONVERTED FROM IBM VICAR VERSION: CHANGED TO USE VICAR 2
+             (XVREAD...) ROUTINES. MISCELLANEOUS CLEANUP.
+  1984-03    SP - CHANGED TO SUPPORT SLINE AND SSAMP NOT = 1.
+  1984-03    SP - CHANGED DEFAULT FOR LENGTH TO 6000.
+  1987-10    MKT - Changed dimension of YCROS1 and YCROS2 in MOVCEN from 300 to
+             2 and added IF statement so that the array is written to only
+             when J<1,2> is equal to 1 or 2 (before this change, 300 wasn't
+             large enough to capture all values created).
+             modified to have IBIS-format output by M.K. Tschudi
+  2003-11    GMY - Massive code revision and reorganization.  Removed virtual buffers
+             from steps 1 and 2.  Removed virtual buffers 11 to 15 from step 3.
+  2003-12-11 GMY - Modified program to output IBIS2 files directly, eliminating
+             conversion steps.  Removed all remaining virtual buffers.
+  2008-08    AXC Ported to Solaris. 
+  2015-12-16 WLB - Migrated to MIPL.
+  2017-08-11 WLB - Removed DEBUG from imake.
+
+.LEVEL1
+.VARIABLE INP
+Input image file name
+.VARIABLE OUT
+Output file names in the order:
+ georeference (labeled) image,
+ polygon description file,
+ SERL (segment) file,
+ polygon vertices file, 
+ polygon information file.
+.VARIABLE SIZE
+Standard Vicar size field:
+  (SL,SS,NL,NS)
+You can enter SL,SS,NL,
+and NS together as SIZE, OR
+enter the SL,SS,NL, and NS
+parameters separately.
+By default, the entire input
+image is used if these
+parameters are not entered.
+.VARIABLE SL
+Starting line number
+.VARIABLE SS
+Starting sample number
+.VARIABLE NL
+Number of lines
+.VARIABLE NS
+Number of samples
+.VARIABLE FIRST
+Enter FIRST=FIRST (or
+abbreviate) to perform only the
+first step of the program.
+.VARIABLE SECOND
+Enter SECOND=SECOND (or
+abbreviate) to perform only the
+first two steps of the program.
+.VARIABLE ZINGER
+Enter ZINGER=ZINGER (or
+abbreviate) to have connected
+the disjoint sections of the 
+boundary of a polygon with
+islands.
+.LEVEL2
+.VARIABLE OUT
+All five file names must be specified unless FIRST or SECOND is specified.
+If FIRST is specified, only the first two output file names are entered.
+If SECOND is specified, only the first three output file names are entered.
+.VARIABLE FIRST
+The default is to perform all three program steps: polygon labeling, segment
+creation, and polygon cycling.  In TAE command mode the user should
+enter 'FIRST as a stand-alone keyword.
+.VARIABLE SECOND
+The default is to perform all three program steps: polygon labeling, segment
+creation, and polygon cycling.  In TAE command mode the user should
+enter 'SECOND as a stand-alone keyword.
+.VARIABLE ZINGER
+The default is to not connect the disjoint sections of the boundary of a 
+polygon with islands.  In TAE command mode the user should enter 'ZINGER
+as a stand-alone keyword.
+.END

@@ -1,8 +1,10 @@
 procedure
 refgbl $echo
 body
+enable-log
 let _onfail="continue"
 let $echo="yes"
 !  
 txyztorgb
+disable-log
 end-proc

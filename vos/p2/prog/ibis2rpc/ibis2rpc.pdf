@@ -1,0 +1,64 @@
+process help=*
+parm inp type=(string,99) count=1
+parm out type=(string,99) count=1
+parm ccol type=int default=1
+parm scol type=int default=2
+end-proc
+
+end-proc
+.TITLE
+ibis2rpc - Place IBIS file version of RPC's back into image label
+.HELP
+PURPOSE
+     The IBIS file version of RPC's can be put into a tiny 1 x 1 image with
+     this routine.  They will be in the GeoTIFF property label.  Then, they
+     can be merged into a real RPC/GeoTIFF image with the routine GTGENUP.
+	   
+CALL
+     ibis2rpc INP OUT CCOL=C1 SCOL=C2
+  WHERE:
+     INP          is the 80 record ibis file with RPC's
+     OUT          is a VICAR GeoTIFF image (1 pixel) with RPC's in the label
+     CCOL         is the column in the INP file with the RPC coefficients
+     SCOL         is the column in the INP file with the RPC scales and offsets, etc
+     
+OPERATION
+
+A one pixel image is generated.  The label items are read from the IBIS file and put
+into the label of the generated image.
+
+PERFORMANCE
+
+Less than 10 seconds.
+.PAGE
+Restrictions
+------------
+
+
+
+
+.PAGE
+Original Programmer: A. L. Zobrist, 04 Nov, 2005
+Current Cognizant Programmer: A. L. Zobrist
+Revisions:
+  2008-01-11 WLB Switched to USES_ANSI_C AND LIB_CARTO; misc cleanup
+  2015-11-01 WLB Migrated to MIPL
+  2019-07-31 WLB IDS-7923 - Replaced sprintf calls with snprintf. Misc. -Wall cleanup.
+  2022-07-14 B. Crocco afids to opensource
+  
+.LEVEL1
+.VARI INP
+An IBIS file with RPC's in one
+80 record column and other
+data in a 2d column (see rpc2ibis)
+.VARI OUT
+A generated VICAR image with the
+RPC's added to a GeoTIFF propery
+label
+.VARI CCOL
+The column with the RPC
+coefficients
+.VARI SCOL
+The column with the RPC
+ scale/offsets
+.END

@@ -1,39 +1,17 @@
-                Version 5C/16C
-
-      ***********************************************************
-      *                                                         *
-      * VICAR Supervisor version 5C, TAE V5.2                   *
-      *   Debugger is now supported on all platforms            *
-      *   USAGE command now implemented under Unix              *
-      *                                                         *
-      * VRDI and VIDS now support X-windows and Unix            *
-      * New X-windows display program: xvd (for all but VAX/VMS)*
-      *                                                         *
-      * VICAR Run-Time Library version 16C                      *
-      *   '+' form of temp filename now avail. on all platforms *
-      *   ANSI C now fully supported                            *
-      *                                                         *
-      * See B.Deen(RGD059) with problems                        *
-      *                                                         *
-      ***********************************************************
-
-  --- Type NUT for the New User Tutorial ---
-
-  --- Type MENU for a menu of available applications ---
-
 gen qsara NL=10 NS=10 IVAL=0 LINC=0 SINC=0
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 qsar INP=qsara OUT=qsarao AREA=( 2 4 8 3 111 )
 Beginning VICAR task qsar
 QSAR version 14 Feb 2010 (64-bit) - RJB
-list qsarao 'ZEROES
+list qsarao 'ZEROES 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Thu May  7 11:42:38 2015
- Task:QSAR      User:wlb       Date_Time:Thu May  7 11:42:38 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:QSAR      User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       0   0   0   0   0   0   0   0   0   0
@@ -48,13 +26,14 @@ Beginning VICAR task list
      10       0   0   0   0   0   0   0   0   0   0
 gen qsarb NL=10 NS=10
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
-list qsarb
+list qsarb 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Thu May  7 11:42:38 2015
+ Task:GEN       User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       0   1   2   3   4   5   6   7   8   9
@@ -70,12 +49,13 @@ Beginning VICAR task list
 qsar INP=qsarb OUT=qsarbo SIZE=(2,3,8,7) AREA=(4,6,3,1,100)
 Beginning VICAR task qsar
 QSAR version 14 Feb 2010 (64-bit) - RJB
-list qsarbo
+list qsarbo 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Thu May  7 11:42:38 2015
- Task:QSAR      User:wlb       Date_Time:Thu May  7 11:42:38 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:QSAR      User:          Date_Time:                        
      Samp     1       3       5       7
    Line
       1       3   4   5   6   7   8   9
@@ -89,12 +69,13 @@ Beginning VICAR task list
 qsar qsarb qsarb1
 Beginning VICAR task qsar
 QSAR version 14 Feb 2010 (64-bit) - RJB
-list qsarb1
+list qsarb1 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Thu May  7 11:42:38 2015
- Task:QSAR      User:wlb       Date_Time:Thu May  7 11:42:38 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:QSAR      User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       0   1   2   3   4   5   6   7   8   9
@@ -110,12 +91,13 @@ Beginning VICAR task list
 qsar qsarb qsarb2 AREA=( 2 2 5 5 -3,   5 5 5 5 240 )
 Beginning VICAR task qsar
 QSAR version 14 Feb 2010 (64-bit) - RJB
-list qsarb2
+list qsarb2      'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Thu May  7 11:42:38 2015
- Task:QSAR      User:wlb       Date_Time:Thu May  7 11:42:38 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:QSAR      User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       0   1   2   3   4   5   6   7   8   9
@@ -130,17 +112,18 @@ Beginning VICAR task list
      10       9  10  11  12  13  14  15  16  17  18
 gen qsard NL=10 NS=10 IVAL=0 LINC=0 SINC=0 'HALF
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 qsar INP=qsard OUT=qsardo AREA=( 2 4 8 3 111 )
 Beginning VICAR task qsar
 QSAR version 14 Feb 2010 (64-bit) - RJB
-list qsardo 'ZEROES
+list qsardo 'ZEROES 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
- Task:GEN       User:wlb       Date_Time:Thu May  7 11:42:38 2015
- Task:QSAR      User:wlb       Date_Time:Thu May  7 11:42:38 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:QSAR      User:          Date_Time:                        
      Samp       1     2     3     4     5     6     7     8     9    10
    Line
       1         0     0     0     0     0     0     0     0     0     0
@@ -155,13 +138,14 @@ Beginning VICAR task list
      10         0     0     0     0     0     0     0     0     0     0
 gen qsare NL=10 NS=10 'HALF
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
-list qsare
+list qsare 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
- Task:GEN       User:wlb       Date_Time:Thu May  7 11:42:38 2015
+ Task:GEN       User:          Date_Time:                        
      Samp       1     2     3     4     5     6     7     8     9    10
    Line
       1         0     1     2     3     4     5     6     7     8     9
@@ -177,12 +161,13 @@ Beginning VICAR task list
 qsar INP=qsare OUT=qsareo SIZE=(2,3,8,7) AREA=(4,6,3,1,100)
 Beginning VICAR task qsar
 QSAR version 14 Feb 2010 (64-bit) - RJB
-list qsareo
+list qsareo 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
- Task:GEN       User:wlb       Date_Time:Thu May  7 11:42:38 2015
- Task:QSAR      User:wlb       Date_Time:Thu May  7 11:42:38 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:QSAR      User:          Date_Time:                        
      Samp       1     2     3     4     5     6     7
    Line
       1         3     4     5     6     7     8     9
@@ -196,12 +181,13 @@ Beginning VICAR task list
 qsar qsare qsare1
 Beginning VICAR task qsar
 QSAR version 14 Feb 2010 (64-bit) - RJB
-list qsare1
+list qsare1 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
- Task:GEN       User:wlb       Date_Time:Thu May  7 11:42:38 2015
- Task:QSAR      User:wlb       Date_Time:Thu May  7 11:42:38 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:QSAR      User:          Date_Time:                        
      Samp       1     2     3     4     5     6     7     8     9    10
    Line
       1         0     1     2     3     4     5     6     7     8     9
@@ -217,12 +203,13 @@ Beginning VICAR task list
 qsar qsare qsare2 AREA=( 2 2 5 5 -32771,   5 5 5 5 32760 )
 Beginning VICAR task qsar
 QSAR version 14 Feb 2010 (64-bit) - RJB
-list qsare2
+list qsare2      'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
- Task:GEN       User:wlb       Date_Time:Thu May  7 11:42:38 2015
- Task:QSAR      User:wlb       Date_Time:Thu May  7 11:42:39 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:QSAR      User:          Date_Time:                        
      Samp       1     2     3     4     5     6     7     8     9    10
    Line
       1         0     1     2     3     4     5     6     7     8     9
@@ -237,13 +224,14 @@ Beginning VICAR task list
      10         9    10    11    12    13    14    15    16    17    18
 gen qsar3d 10 10 3 'HALF
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
-list qsar3d
+list qsar3d 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
- Task:GEN       User:wlb       Date_Time:Thu May  7 11:42:39 2015
+ Task:GEN       User:          Date_Time:                        
  ***********
  Band =     1
  ***********
@@ -261,7 +249,7 @@ Beginning VICAR task list
      10         9    10    11    12    13    14    15    16    17    18
 
 
- Task:GEN       User:wlb       Date_Time:Thu May  7 11:42:39 2015
+ Task:GEN       User:          Date_Time:                        
  ***********
  Band =     2
  ***********
@@ -279,7 +267,7 @@ Beginning VICAR task list
      10        10    11    12    13    14    15    16    17    18    19
 
 
- Task:GEN       User:wlb       Date_Time:Thu May  7 11:42:39 2015
+ Task:GEN       User:          Date_Time:                        
  ***********
  Band =     3
  ***********
@@ -298,12 +286,13 @@ Beginning VICAR task list
 qsar INP=qsar3d OUT=qsar3do SIZE=(2,3,8,7) AREA=(4,6,3,1,100)
 Beginning VICAR task qsar
 QSAR version 14 Feb 2010 (64-bit) - RJB
-list qsar3do
+list qsar3do 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
- Task:GEN       User:wlb       Date_Time:Thu May  7 11:42:39 2015
- Task:QSAR      User:wlb       Date_Time:Thu May  7 11:42:39 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:QSAR      User:          Date_Time:                        
  ***********
  Band =     1
  ***********
@@ -319,8 +308,8 @@ Beginning VICAR task list
       8        10    11    12    13    14    15    16
 
 
- Task:GEN       User:wlb       Date_Time:Thu May  7 11:42:39 2015
- Task:QSAR      User:wlb       Date_Time:Thu May  7 11:42:39 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:QSAR      User:          Date_Time:                        
  ***********
  Band =     2
  ***********
@@ -336,8 +325,8 @@ Beginning VICAR task list
       8        11    12    13    14    15    16    17
 
 
- Task:GEN       User:wlb       Date_Time:Thu May  7 11:42:39 2015
- Task:QSAR      User:wlb       Date_Time:Thu May  7 11:42:39 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:QSAR      User:          Date_Time:                        
  ***********
  Band =     3
  ***********

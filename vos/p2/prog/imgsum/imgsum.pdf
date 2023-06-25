@@ -1,0 +1,97 @@
+PROCESS help=*
+  PARM INP  TYPE=STRING COUNT=1 
+  PARM OUT  TYPE=STRING COUNT=(0:1) DEFAULT=--
+  PARM SIZE TYPE=INTEGER COUNT=4 DEFAULT=(1,1,0,0)
+  PARM SL   TYPE=INTEGER DEFAULT=1
+  PARM SS   TYPE=INTEGER DEFAULT=1
+  PARM NL   TYPE=INTEGER DEFAULT=0
+  PARM NS   TYPE=INTEGER DEFAULT=0
+local   dummy   type=integer    count=1
+parm    numpix  type=name       default=dummy
+parm    numpos  type=name       default=dummy
+parm    numneg  type=name       default=dummy
+parm    numzero type=name       default=dummy
+
+local   realdum  type=real      count=1
+parm    sum      type=name       default=realdum
+parm    sumpos   type=name       default=realdum
+parm    sumneg   type=name       default=realdum
+
+end-proc
+.title
+vicar program imgsum
+.help
+PURPOSE
+    A vicar application program to provide the sum of a DN's
+in an image.
+
+OPERATION
+
+This program takes an input data set and provides the sum of all DN values  
+in an image. It works on BYTE, HALF, FULL or REAL images. It also
+separately provides the number of pixels, the number of zero values,
+the number of postive values and the number of negative values.
+Other outputs separately give the sum of all positive values and the
+sum of all negative values.
+
+    The SIZE parameter allows you to select a rectangular window in
+the image. Otherwise, the entire image is scanned.
+
+    The output goes to TCL variables: NUMPIX, NUMPOS, NUMNEG, NUMZERO
+and SUM, SUMPOS AND SUMNEG.
+
+
+RESTRICTIONS
+
+    1) This program does not work on DOUB images.
+    2) This program does not work on multiband images
+    3) The image is limited to 20000 lines by 20000 sample images
+
+PROGRAM HISTORY:
+
+Written by: Ray Bambery, 05 August 2011
+Cognizant programmer: Ray Bambery
+Revision history:
+
+  2011-08-05 - R. J. Bambery - initial release
+  2012-06-02 - R. J. Bambery - Removed <tab> in front of continuation
+                               lines to make backward compatible with
+                               32-bit Linux gfortran 4.2.1, otherwise
+                               compatible 64-bit Linux gfortran 4.6.3 
+  2012-06-05 - R. J. Bambery - remove unused variable
+  2015-11-05 - W. L. Bunch - Migrated to mipl
+  2022-07-26 - B. Crocco afids to opensource
+
+.LEVEL1
+.VARI INP
+Input image.
+.VARI SIZE
+Size of the window to be examined
+.VAR   NUMPIX
+Number of pixels in window selected
+.vari  NUMZERO
+Number of zero values in the 
+window selected         
+.vari  NUMPOS
+Number of positive values in the
+window selected.         
+.vari  NUMNEG
+Number of negative values in the
+window selected.
+
+.vari  SUM    
+Sum all values (positive and negative)
+in the window selected
+window selected
+.vari  SUMPOS
+Sum of all positive values in the
+window selected.
+.vari  SUMNEG
+Sum of all negative values in the
+window selected.
+
+.END
+
+
+
+

@@ -1,10 +1,12 @@
 Procedure
 Refgbl $Echo
 Body
+enable-log
 Let _onfail="continue"
 Let $echo="yes"
 TTRIAG
 !THIS IS A TEST OF SUBROUTINE TRIAG.
 !TRIAG PACKS TWO RESEAU DATA SETS INTO GEOMA FORMAT.
 TTRIAG
+disable-log
 End-proc

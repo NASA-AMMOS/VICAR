@@ -1,0 +1,114 @@
+let  $autousage="none"
+let geo = "f1636832.geo.vic"
+let raw = "f1636832.raw.vic"
+write "Test of module SEARCV_DISTOR"
+Test of module SEARCV_DISTOR
+write " this image should be Object Space:"
+ this image should be Object Space:
+tsearc_distor @geo
+Beginning VICAR task tsearc_distor
+ input image is Object Space
+label-list @geo
+Beginning VICAR task label
+LABEL version 2019-09-06
+************************************************************
+ 
+        ************  File f1636832.geo.vic ************
+                2 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in WORD format from a VAX-VMS host
+                1000 lines
+                1000 samples per line
+                0 lines of binary header
+                0 bytes of binary prefix per line
+---- Task: CONV12 -- User: DFS -- Thu May  3 11:15:53 1984 ----
+LAB01=
+'77                  1000    200010002000 I 2                          SC'
+LAB02=
+'VGR-1   FDS 16368.32   PICNO 0548J1-001   SCET 79.063 19:23:00         C'
+LAB03=
+'NA CAMERA  EXP 00360.0 MSEC  FILT 0(CLEAR )  LO GAIN  SCAN RATE  1:1   C'
+LAB04=
+'ERT 79.063 20:00:36   1/ 1 FULL    RES   VIDICON TEMP  -81.00 DEG C    C'
+LAB05=
+'IN/107971/07 OUT/******/**                 DSS #**   BIT SNR   34.133  C'
+LAB06=
+' 01865 A/9F000BC0 B/7082 C/C201 D/007F0000 ETLM/CC2BA1CA736ADEB02512F AC'
+LAB07=
+'NA OPCAL 00(*****.* MSEC) PIXAVG 192/0 OPERATIONAL MODE 4(BOTALT)     AC'
+LAB08=
+'CAM ECAL CYCLE BEAM  RESET OPEN  CLOSE FLOOD AEXPM  FIL G1 SHUT MODE  AC'
+LAB09=
+'NA   NO   READ  YES   NO    NO    NO    NO    NO    1 P  * NORMAL     AC'
+LAB10=
+'WA   NO   PREP  YES   YES   YES   YES   YES   NO    4 P  3 NORMAL     AC'
+LAB11=
+'ADESPIKE                                                             1HC'
+LAB12=
+'ADJACENT LINE PIXELS CHANGED    184. SAME LINE PIXELS CHANGED   124  1HC'
+LAB13=
+'RESSAR77 - FICOR77  MINSAT= 3765 NUMSAT=  7674                       1HC'
+LAB14=
+'TO CONVERT TO NANOWATTS/CM**2/STER/NM MULTIPLY DN VALUE BY    0.20224  C'
+LAB15=
+'TO CONVERT TO (I/F)*10000., MULTIPLY DN VALUE BY              1.00000  C'
+LAB16=
+'INSERT            09 11 82 19:09:07          JAM                      GC'
+LAB17=
+'GEOMA             09 13 83 16:49:05          JAM                      GC'
+LAB18=
+'HALF                                                                  PC'
+LAB19=
+'GEOMA                                                                 HC'
+LAB20=
+'INSERT            09 13 83 17:13:48          JAM                      GC'
+LAB21=
+'PGM=SWAPPER                                                           HL'
+NLABS=21
+ 
+************************************************************
+write " this image should be Image Space:"
+ this image should be Image Space:
+tsearc_distor @raw
+Beginning VICAR task tsearc_distor
+ input image is Image Space
+label-list @raw
+Beginning VICAR task label
+LABEL version 2019-09-06
+************************************************************
+ 
+        ************  File f1636832.raw.vic ************
+                2 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in BYTE format from a VAX-VMS host
+                800 lines
+                800 samples per line
+                0 lines of binary header
+                0 bytes of binary prefix per line
+---- Task: CONV12 -- User: DFS -- Thu May  3 11:31:13 1984 ----
+LAB01=
+'77                   800     800 800 800 L 1                          SC'
+LAB02=
+'VGR-1   FDS 16368.32   PICNO 0548J1-001   SCET 79.063 19:23:00         C'
+LAB03=
+'NA CAMERA  EXP 00360.0 MSEC  FILT 0(CLEAR )  LO GAIN  SCAN RATE  1:1   C'
+LAB04=
+'ERT 79.063 20:00:36   1/ 1 FULL    RES   VIDICON TEMP  -81.00 DEG C    C'
+LAB05=
+'IN/107971/07 OUT/JS4459/02                 DSS #**   BIT SNR   34.133  C'
+LAB06=
+' 01865 A/9F000BC0 B/7082 C/C201 D/007F0000 ETLM/CC2BA1CA736ADEB02512F AC'
+LAB07=
+'NA OPCAL 00(*****.* MSEC) PIXAVG 192/0 OPERATIONAL MODE 4(BOTALT)     AC'
+LAB08=
+'CAM ECAL CYCLE BEAM  RESET OPEN  CLOSE FLOOD AEXPM  FIL G1 SHUT MODE  AC'
+LAB09=
+'NA   NO   READ  YES   NO    NO    NO    NO    NO    1 P  * NORMAL     AC'
+LAB10=
+'WA   NO   PREP  YES   YES   YES   YES   YES   NO    4 P  3 NORMAL     AC'
+LAB11=
+'INSERT            05 06 83 13:12:50          JAM                      GL'
+NLABS=11
+ 
+************************************************************
+disable-log

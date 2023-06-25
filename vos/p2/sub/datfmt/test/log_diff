@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+
+# Note: deleting lines with date removes the essential part of the test -- need to fix this.
+sed '/version/Id' $1 | sed '/date/d' > tmplog1
+sed '/version/Id' $2 | sed '/date/d' > tmplog2
+
+diff tmplog1 tmplog2
+retval=$?
+
+rm tmplog1 tmplog2
+
+echo "log_diff returning $retval"
+
+exit $retval

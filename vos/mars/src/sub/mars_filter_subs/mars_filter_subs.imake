@@ -1,0 +1,11 @@
+#define SUBROUTINE mars_filter_subs
+
+#define MODULE_LIST FilterShapes.cc FilterShapesParsers.cc
+
+#define MARS_SUBLIB
+
+#define USES_C_PLUS_PLUS
+
+#define LIB_XERCES
+#define LIB_P2SUB
+

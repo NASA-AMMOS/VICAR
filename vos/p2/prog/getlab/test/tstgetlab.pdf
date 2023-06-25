@@ -33,43 +33,43 @@ label-list a.img 'nousrtim
 getlab inp=a.img lab_item=TEST1 itm_name=T1 itm_type=STRING +
    lab_type=HISTORY mode=LATEST
 write "'T1' should equal 'LAST TEST STRING'"
-disp T1
+write "T1: &T1"
  
 !test LAB_ITEM=TEST2 ITM_TYPE=INT MODE=LATEST
 getlab inp=a.img lab_item=TEST2 itm_name=T2 itm_type=INT +
    lab_type=HISTORY mode=LATEST
 write "'T2' should equal '123'"
-disp T2
+write "T2: &T2"
 
 !test LAB_ITEM=TEST3 ITM_TYPE=REAL MODE=LATEST
 getlab inp=a.img lab_item=TEST3 itm_name=T3 itm_type=REAL +
    lab_type=HISTORY mode=LATEST
 write "'T3' should equal '4.56'"
-disp T3
+write "T3: &T3"
  
 !test LAB_ITEM=FORMAT ITM_TYPE=STRING MODE=SYSTEM
 getlab inp=a.img lab_item=FORMAT itm_name=T1 itm_type=STRING +
    lab_type=SYSTEM mode=LATEST
 write "'T1' should equal 'BYTE'"
-disp T1
+write "T1: &T1"
  
 !test LAB_ITEM=NL ITM_TYPE=INT MODE=SYSTEM
 getlab inp=a.img lab_item=NL itm_name=T2 itm_type=INT +
    lab_type=SYSTEM mode=LATEST
 write "'T2' should equal '10'"
-disp T2
+write "T2: &T2"
  
 !test LAB_ITEM=TEST1 ITM_TYPE=STRING MODE=EARLIEST
 getlab inp=a.img lab_item=TEST1 itm_name=T1 itm_type=STRING +
    lab_type=HISTORY mode=EARLIEST
 write "'T1' should equal 'FIRST TEST STRING'"
-disp T1
+write "T1: &T1"
  
 !test LAB_ITEM=TEST1 ITM_TYPE=STRING ITM_TASK=F2 ITM_INST=1 MODE=INSTANCE
 getlab inp=a.img lab_item=TEST1 itm_name=T1 itm_type=STRING +
    itm_task=F2 itm_inst=1 lab_type=HISTORY mode=INSTANCE
 write "'T1' should equal 'MIDDLE TEST STRING'"
-disp T1
+write "T1: &T1"
 
 write "Test correct handling of nonexistent label item."  
 write "This case should generate an ABEND." 
@@ -80,41 +80,36 @@ getlab inp=a.img lab_item=BADTEST itm_name=T1 itm_type=STRING +
 !not cause test job to report failure.
 getlab inp=a.img lab_item=TEST1 itm_name=T1 itm_type=STRING +
    lab_type=HISTORY mode=LATEST
-disp T1
+write "T1: &T1"
 
 ! test case for retriving property label
-if ($syschar(1)="UNIX")
-   let dir = "/project/test_work/testdata/cassini/iss/"
-else
-   let dir = "wms_test_work:[testdata.cassini.iss]"
-end-if
 
 !Set dns to 10 and replicate - set exposure to 0
-f2 inp=&"dir"sum2.1 out=l1.a func=10
+f2 inp=data/sum2.1 out=l1.a func=10
 label-rep l1.a 'PROP property="CASSINI-ISS" item="EXPOSURE_DURATION=0"
 label-list l1.a 'nousrtim
 
 getlab inp=l1.a lab_item="EXPOSURE_DURATION" itm_name=EXP lab_type=PROPERTY +
        itm_type=REAL itm_task="CASSINI-ISS"
 
-disp EXP
+write "EXP: &EXP"
 
 ! Test multivalued items.  Should report BB
 label-add l1.a 'prop property="CASSINI-ISS" item="MULTIVAL=(AA,BB,CC)"
 label-list l1.a 'nousrtim
 
 getlab inp=l1.a lab_item="MULTIVAL" itm_name=T1 lab_type=PROPERTY itm_type=STRING itm_task="CASSINI-ISS" element=2
-disp T1
+write "T1: &T1"
 
 ! Test multivalued string items where lengths differ
 gen a.img
 label-add a.img item="key=(abc,defgh)"
 
 getlab a.img key itm_name=T1 element=1 itm_type=string
-disp T1
+write "T1: &T1"
 
 getlab a.img key itm_name=T1 element=2 itm_type=string
-disp T1
+write "T1: &T1"
 
 if ($syschar(1)="UNIX")
 !   ush rm l1.*
@@ -127,6 +122,8 @@ end-if
 WRITE "TEST OF GETLAB COMPLETE."
  
 disable-log
+
+ush rm l1.a
 
 END-PROC
 .title

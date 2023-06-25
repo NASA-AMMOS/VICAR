@@ -147,6 +147,8 @@ if ($?VICCPU == 0 && -x /usr/bin/uname) then
          setenv VICCPU x86-macosx
       if ("`uname -m`" == "x86_64") setenv VICCPU mac64-osx
       endif
+      ##!!!! TEMPORARY until we get arm support
+      if ("`uname -p`" == "arm") setenv VICCPU mac64-osx
    endif
 endif
 
@@ -210,7 +212,11 @@ endif
 
 if ($VICCPU == 'mac-osx' || $VICCPU == 'x86-macosx' || $VICCPU == 'mac64-osx') then
    if ($?DYLD_LIBRARY_PATH != 0) then
-      setenv LD_LIBRARY_PATH $DYLD_LIBRARY_PATH
+      # Work around Mac SIP security manager.  Need a line in your .cshrc:
+      # if ($/SIP_DYLD_LIBRARY_PATH != 0) then
+      #    setenv DYLD_LIBRARY_PATH $SIP_DYLD_LIBRARY_PATH
+      # endif 
+      setenv SIP_DYLD_LIBRARY_PATH $DYLD_LIBRARY_PATH
    else
       unsetenv LD_LIBRARY_PATH
    endif
@@ -233,8 +239,14 @@ if ($?LD_LIBRARY_PATH != 0) then
       if ($?MYSQLCONCPP_LIB != 0) then
          setenv LD_LIBRARY_PATH `$V2TOP/util/remove_element.csh "$LD_LIBRARY_PATH" ${MYSQLCONCPP_LIB}/\*`
       endif
+      if ($?EMBREE_LIB != 0) then
+         setenv LD_LIBRARY_PATH `$V2TOP/util/remove_element.csh "$LD_LIBRARY_PATH" ${EMBREE_LIB}/\*`
+      endif
       if ($?FFTWLIB != 0) then
          setenv LD_LIBRARY_PATH `$V2TOP/util/remove_element.csh "$LD_LIBRARY_PATH" ${FFTWLIB}/\*`
+      endif
+      if ($?COIN_ROOT != 0) then
+         setenv LD_LIBRARY_PATH `$V2TOP/util/remove_element.csh "$LD_LIBRARY_PATH" ${COIN_ROOT}/\*`
       endif
       if ($?INVENTOR_ROOT != 0) then
          setenv LD_LIBRARY_PATH `$V2TOP/util/remove_element.csh "$LD_LIBRARY_PATH" ${INVENTOR_ROOT}/\*`
@@ -768,39 +780,6 @@ unsetenv DEFAULTSPICE
 unsetenv SPICE_CONFIG_FILE
 @endif
 
-@ifdef EXT_SYBASE
-#-----------------------------------------------------------------------
-#
-# If you do not have Sybase client software, nothing is required here.
-# If you do, you must merge the specified Sybase interface file in with
-# your own Sybase interface file.  Contact your Sybase administrator
-# or the VICAR Installation Guide for instructions.  SYBASE is only set
-# if it is not already; it is not redefined.
-#
-# Added source the SYBASE configuration script to setup a list of
-# new Sybase environment variables and the LD_LIBRARY_PATH
-#
-if ($?SYBASE == 0) then
-   setenv SYBASE $V2CONFIG/interfaces/$VICCPU
-endif
-
-# Sybase CT-Library clients looks for the environment variables LANG and 
-# LC_ALL at startup.  It uses these value to search for the proper locale
-# information in its character set files.  However, the values Sybase 
-# has chosen in its locale file for linux are not ANSI/ISO compilant.  
-# The mismatch in environment setting causes the CT-Library client application
-# to crash without any warnings.  Until Sybase corrects these bugs, the
-# workaround is as follow:  -- T. Huang, Aug. 30, 2000
-if ("$VICCPU" == "x86-linux" || "$VICCPU" == "x86-64-linx") then
-   setenv SYBPLATFORM linux
-   unsetenv LC_ALL
-   unsetenv LANG
-endif
-@else
-unsetenv SYBASE
-unsetenv SYBPLATFORM
-@endif
-
 @if defined(SS_FEI) || defined(SS_PWDSERVER)
 #-----------------------------------------------------------------------
 # 
@@ -920,20 +899,40 @@ endif
 if ("$VICCPU" == "x86-linux") then
      if (-d /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.el7_3.i386) then
         setenv V2JDK /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.el7_3.i386
+     else if (-d /etc/alternatives/java_sdk_1.8.0_openjdk) then
+        setenv V2JDK /etc/alternatives/java_sdk_1.8.0_openjdk
+     else if (-d /etc/alternatives/java_sdk_1.8.0) then
+        setenv V2JDK /etc/alternatives/java_sdk_1.8.0
      else if (-d /usr/lib/jvm/java-1.7.0-oracle-1.7.0.75-1jpp.2.el7.i386) then
         setenv V2JDK /usr/lib/jvm/java-1.7.0-oracle-1.7.0.75-1jpp.2.el7.i386
      else if (-d /usr/lib/jvm/java-1.7.0-oracle.i386) then
         setenv V2JDK /usr/lib/jvm/java-1.7.0-oracle.i386
+     else if (-d /etc/alternatives/java_sdk_1.7.0_oracle) then
+        setenv V2JDK /etc/alternatives/java_sdk_1.7.0_oracle
+     else if (-d /etc/alternatives/java_sdk_1.7.0) then
+        setenv V2JDK /etc/alternatives/java_sdk_1.7.0
+     else if (-d /etc/alternatives/java_sdk) then
+        setenv V2JDK /etc/alternatives/java_sdk
     endif        
 
 endif
 if ("$VICCPU" == "x86-64-linx") then
      if (-d /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.el7_3.x86_64) then
         setenv V2JDK /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.el7_3.x86_64 
+     else if (-d /etc/alternatives/java_sdk_1.8.0_openjdk) then
+        setenv V2JDK /etc/alternatives/java_sdk_1.8.0_openjdk
+     else if (-d /etc/alternatives/java_sdk_1.8.0) then
+        setenv V2JDK /etc/alternatives/java_sdk_1.8.0
      else if (-d /usr/lib/jvm/java-1.7.0-oracle-1.7.0.75-1jpp.2.el7.x86_64) then
         setenv V2JDK /usr/lib/jvm/java-1.7.0-oracle-1.7.0.75-1jpp.2.el7.x86_64
      else if (-d  /usr/lib/jvm/java-1.7.0-oracle-1.7.0.75.x86_64) then
         setenv V2JDK  /usr/lib/jvm/java-1.7.0-oracle-1.7.0.75.x86_64
+     else if (-d /etc/alternatives/java_sdk_1.7.0_oracle) then
+        setenv V2JDK /etc/alternatives/java_sdk_1.7.0_oracle
+     else if (-d /etc/alternatives/java_sdk_1.7.0) then
+        setenv V2JDK /etc/alternatives/java_sdk_1.7.0
+     else if (-d /etc/alternatives/java_sdk) then
+        setenv V2JDK /etc/alternatives/java_sdk
      endif 
 endif
 #
@@ -962,9 +961,14 @@ unsetenv V2EXT_JS
 # gnus gcc version 2.95.3 20010315 (release). The changes involved
 # fixing nested C-style comment, and removing embedded ^M inserted perhaps
 # from mixing DOS and UNIX source files. Also, two of the projections,
-# polarst.c and utm.c were slightly corrected/enhanced.
+# polarst.c and utm.c were slightly corrected/enhanced. Some of the
+# routines expect to find data available in $GEOTRANSLIB using the
+# envars ELLIPSOID_DATA and DATUM_DATA, so those are defined as aliases
+# here.
 #
 setenv GEOTRANSLIB $V2EXT/geotrans/v2.2.3/$VICCPU
+setenv ELLIPSOID_DATA $GEOTRANSLIB
+setenv DATUM_DATA $GEOTRANSLIB
 #
 #-----------------------------------------------------------------------
 @else
@@ -1113,7 +1117,7 @@ unsetenv PDS_LABEL_LIB
 # The following defines the TIFF library. The TIFF library  is a set of
 # routines to read/write TIFF files.  It also includes GEOTIFF library.
 #
-setenv	TIFFLIB $V2EXT/tiff/v4.0.6/$VICCPU 
+setenv	TIFFLIB $V2EXT/tiff/v4.4.0/$VICCPU 
 #
 @else
 unsetenv TIFFLIB
@@ -1140,6 +1144,19 @@ setenv	FFTWLIB $V2EXT/fftw/v3.3.4/$VICCPU
 #
 @else
 unsetenv FFTWLIB
+@endif
+
+@ifdef EXT_TINYGLTF
+#-----------------------------------------------------------------------
+#
+# The following defines the TINYGLTF library, a header only C++11
+#  version of glTF, a royalty-free specification for the efficient
+#  transmission and loading of 3D scenes and models by applications.
+#
+setenv  TINYGLTFLIB $V2EXT/tinygltf/v2.5.0 
+#
+@else
+unsetenv TINYGLTFLIB
 @endif
 
 @ifdef EXT_GDAL
@@ -1400,7 +1417,7 @@ unsetenv TAO_ROOT
 # library.  The root URL is <http://xml.apache.org/xerces-c>.  There
 # you will find both the downloads and the documentation.
 #
-setenv XERCES_C_ROOT $V2EXT/xerces-c++/v3.0.0_rhel6/$VICCPU
+setenv XERCES_C_ROOT $V2EXT/xerces-c++/v3.0.0_rhel8/$VICCPU
 
 # For Red Hat 5, replace the above line with the following:
 # setenv XERCES_C_ROOT $V2EXT/xerces-c++/v3.0.0/$VICCPU
@@ -1409,6 +1426,19 @@ setenv XERCES_C_ROOT $V2EXT/xerces-c++/v3.0.0_rhel6/$VICCPU
 #
 @else
 unsetenv XERCES_C_ROOT
+@endif
+@ifdef EXT_COIN
+#-----------------------------------------------------------------------
+#
+# The following defines the location for the COIN3D, a clone of 
+# Open Inventor Library.
+# The root source URL is https://coin3d.github.io/.
+#
+setenv COIN_ROOT $V2EXT/coin/v4.0.0/$VICCPU
+#
+#
+@else
+unsetenv COIN_ROOT
 @endif
 @ifdef EXT_INVENTOR
 #-----------------------------------------------------------------------
@@ -1518,7 +1548,7 @@ unsetenv MPILIB
 # UNIX-src-HDF4.1r5.tar.gz at <http://hdf.ncsa.uiuc.edu/obtain.html>
 # hdfeos_2_8.zip at <http://hdfeos.gsfc.nasa.gov/hdfeos/softwarelist.cfm>
 #
-setenv HDFLIB $V2EXT/HDF/v4.2.5/$VICCPU/
+setenv HDFLIB $V2EXT/HDF/v4.2.5/$VICCPU
 setenv HDFEOSLIB $V2EXT/HDF-EOS/v2.8/$VICCPU/hdfeos
 #
 @else
@@ -1667,7 +1697,11 @@ unsetenv MYSQLCONCPP_LIB
 #   On later systems the system-supplied version is sufficient and EXT_GNUPLOT
 #   should be disabled.
 #
+if ("$VICCPU" == "x86-64-linx") then
+ unsetenv GNUPLOT_LIB
+else
  setenv GNUPLOT_LIB $V2EXT/gnuplot/v4.6.1/$VICCPU/
+endif
 #
 @else
 unsetenv GNUPLOT_LIB
@@ -1733,7 +1767,8 @@ unsetenv EIGEN_LIB
 # plus formatting variants such as Infof. It also provides V-style logging
 # controlled by the -v and -vmodule=file=2 flags.  Needed by Ceres.
 # 
-setenv GLOG_LIB $V2EXT/glog/v0.3.4/$VICCPU
+setenv GLOG_LIB $V2EXT/glog/v0.3.4_rhel8/$VICCPU
+#setenv GLOG_LIB $V2EXT/glog/v0.3.4/$VICCPU
 @else
 unsetenv GLOG_LIB
 @endif
@@ -1751,7 +1786,8 @@ unsetenv GLOG_LIB
 # optimization problems. It is a mature, feature rich, and performant library
 # that has been used in production at Google since 2010.
 # 
-setenv CERES_LIB $V2EXT/ceres-solver/v1.12.0/$VICCPU
+#setenv CERES_LIB $V2EXT/ceres-solver/v1.12.0/$VICCPU
+setenv CERES_LIB $V2EXT/ceres-solver/v1.12.0_rhel8/$VICCPU
 @else
 unsetenv CERES_LIB
 @endif
@@ -1759,13 +1795,13 @@ unsetenv CERES_LIB
 @ifdef EXT_SIFT
 #----------------------------------------------------------------------
 # Pacakage: SIFT
-# Classification: proprietary
+# Classification: Moved from proprietary to external 4/27/23.
 # Version: 1.0
 # Source: /home/ayoubfra/vicar/mvor/tiepoints/marstie2/finalAsift/siftLib  (mipldevlinux8)
 #
 # This software is based on open source code implementing a patented technology 
 #
-setenv SIFT_LIB $V2PROP/sift/v1.0/$VICCPU
+setenv SIFT_LIB $V2EXT/sift/v1.0/$VICCPU
 @else
 unsetenv SIFT_LIB
 @endif
@@ -1789,12 +1825,16 @@ unsetenv TINYOBJLOADER_LIB
 #----------------------------------------------------------------------
 # Package: EMBREE
 # Classification: external
-# Version: 3.3.0
+# Version: 3.7.0
 # Source: https://embree.github.io/downloads.html
 #
 # This software is a ray tracing software, allowing fast projection of image pixel on meshes.
 # 
-setenv EMBREE_LIB $V2EXT/embree/v3.7.0/$VICCPU
+if ($VICCPU == 'x86-64-linx' || $VICCPU == 'mac64-osx') then
+   setenv EMBREE_LIB $V2EXT/embree/v3.7.0/$VICCPU
+else
+   unsetenv EMBREE_LIB
+endif
 @else
 unsetenv EMBREE_LIB
 @endif
@@ -1803,7 +1843,7 @@ unsetenv EMBREE_LIB
 #----------------------------------------------------------------------
 # Package: Reach
 # Classification: external
-# Version: 0.1.0
+# Version: 0.2.7
 # Source: https://github.jpl.nasa.gov/rsvp/reach.git
 #
 # This is a python wrapper for the (included) 'fsw_interface_server' program
@@ -1811,9 +1851,9 @@ unsetenv EMBREE_LIB
 # RMECH XYZ and UVW bands.
 # 
 if ($VICCPU == 'x86-64-linx') then
-  setenv REACH_RSVP_PATH $V2EXT/reach/v0.1.3/$VICCPU/rsvp-protos
+  setenv REACH_RSVP_PATH $V2EXT/reach/v0.2.7/$VICCPU/rsvp-protos
   setenv REACH_PY_PATH /pkg/anaconda/envs/reach/bin/python
-  setenv REACH_SSIM_PATH $V2EXT/reach/v0.1.3/$VICCPU/ssim/build/
+  setenv REACH_SSIM_PATH $V2EXT/reach/v0.2.7/$VICCPU/ssim/build/
 else
   unsetenv REACH_RSVP_PATH
   unsetenv REACH_PY_PATH
@@ -1940,8 +1980,10 @@ unsetenv V2CALLABLE_JAVA_LIB
 # Classification: external
 # Version: v1.2.2
 # Source: https://search.maven.org/remotecontent?filepath=org/owasp/encoder/encoder/1.2.2/
-# Description: 
-# 
+# Description: The OWASP Java Encoder is a library that helps prevent 
+#              cross-site scripting attacks by performing contextual output encoding. 
+#              https://owasp.org/www-project-java-encoder/
+#
 setenv J2_OWASP $V2EXT/owasp/v1.2.2
 @else
 unsetenv J2_OWASP
@@ -3376,11 +3418,11 @@ unsetenv J2_SXN
 @ifdef JEXT_PDS_MI_LABEL
 #-----------------------------------------------------------------------
 # Package:pds_mi_label
-# Version: v1.1.2
+# Version: v1.2.0
 # Source: https://nasa-pds.github.io/mi-label/
 # Description: PDS generate tool replacing $V2EXT/pds_generate_tool
 # 
-setenv J2_PDS_MI_LABEL $V2EXT/pds_mi_label/v1.1.2/lib
+setenv J2_PDS_MI_LABEL $V2EXT/pds_mi_label/v1.2.0/lib
 @else
 unsetenv J2_PDS_MI_LABEL 
 @endif
@@ -3446,6 +3488,25 @@ setenv PY_VIRTUALENV /usr/local/vicar/external/virtualenv/v1.7.1.2
 @else
 unsetenv PY_VIRTUALENV
 @endif
+
+#----------------------------------------------------------------------
+@ifdef PYEXT_GEOCAL
+#----------------------------------------------------------------------
+# Package: geocal
+# Classification: external
+# Version: 20220722
+# Source: need external github link, internal is cartography/geocal
+# Description: software for map projection, geometric calibration, 
+#     simultaneous bundle adjustment, etc.
+# 
+#
+setenv PY_GEOCAL $V2EXT/geocal/$VICCPU/geocal-20220722
+setenv GEOCALLIB $PY_GEOCAL/afids/vdev
+@else
+unsetenv PY_GEOCAL 
+unsetenv GEOCALLIB 
+@endif
+
 #-----------------------------------------------------------------------
 @ifdef SS_TAE
 #-----------------------------------------------------------------------
@@ -3657,6 +3718,15 @@ endif
 @endif
 @ifdef EXT_FFTW
    setenv LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:${FFTWLIB}/lib
+@endif
+@ifdef EXT_EMBREE
+# EMBREE_LIB does not exist for 32-bit linux
+  if ($VICCPU == 'x86-64-linx' || $VICCPU == 'mac64-osx') then
+    setenv LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:${EMBREE_LIB}
+  endif
+@endif
+@ifdef EXT_COIN
+   setenv LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:${COIN_ROOT}/lib
 @endif
 @ifdef EXT_INVENTOR
    setenv LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:${INVENTOR_ROOT}/lib

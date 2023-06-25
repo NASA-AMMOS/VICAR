@@ -2,7 +2,11 @@ Procedure help=*
 Refgbl $echo
 refgbl $autousage
 Body
+enable-log
+
 let $echo="no"
 write  "Test of subroutine lspfit"
 tlspfit
+
+disable-log
 End-proc

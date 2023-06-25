@@ -1,0 +1,105 @@
+procedure help=*
+parm inp string
+parm out string
+parm lon real
+parm lat real
+parm nlon real default=3.0
+parm nlat real default=2.0
+parm pixdeg int default=7200
+parm skirt int default=0
+
+local slo int
+local sso int
+local nlo int
+local nso int
+local rtype int
+body
+
+ibis-gen xxxxxa nc=6 nr=1 format=(DOUB,DOUB,DOUB,DOUB,FULL,FULL) +
+   datacol=(1,2) data=(&lon,&lat)
+mf3 xxxxxa f="c2=c2+&nlat"
+pixmap (xxxxxa,&inp) mapcol=(1,2) pixcol=(3,4) 'maptopix
+mf3 xxxxxa f="c5=c3+0.5$c6=c4+0.5"
+ibis-l xxxxxa
+ibis2tcl xxxxxa v1=slo v2=sso vartype=(1,1) ibisloc=(1,5,1,6)
+let slo = slo-skirt
+let sso = sso-skirt
+let nso = $fix(nlon*$float(pixdeg))
+let nso = nso+2*skirt
+
+let nlo = $fix(nlat*$float(pixdeg))
+let nlo = nlo+2*skirt
+
+plab2tcl &inp val=rtype keyword=GTRASTERTYPEGEOKEY vtype=4
+if (rtype=2)
+   let nlo = nlo+1
+   let nso = nso+1
+end-if
+
+gtcopy &inp &out size=(&slo,&sso,&nlo,&nso)
+
+end-proc
+.TITLE
+CUTQUAD - cut a quadrangle from a geographic image
+.HELP
+PURPOSE
+     CUTQUAD uses a lower left coordinate point to cut a degree quadrangle
+     from a geographic image.
+	   
+CALL
+     cutquad INPUT OUTPUT PARAMS
+  WHERE:
+     INPUT          is the input data set (must have a GeoTIFF label).
+     OUTPUT         is the output data set (will have a GeoTIFF label).
+     PARAMS         lon,lat,nlon,nlat,pixdeg.
+
+  
+OPERATION
+
+The corner given by parameters (lon,lat) is converted to a pixel
+coordinate with pixmap referring to the input image.  Then the
+size is calculated by pixdeg times nlon and pixdeg times nlat.
+One pixel is added for point type images to nl,ns.
+
+Finally gtcopy is applied.  This guarantees no resampling, if the user
+ensures that the image aligns with degree quadrangles.
+PERFORMANCE
+
+.PAGE
+Restrictions
+------------
+
+The input image must have a GeoTIFF label and be mapped geo-
+graphically.
+
+The input image must align properly with the desired quadrangle,
+otherwise resampling will take place.
+
+
+.PAGE
+HISTORY
+Original Programmer: A. L. Zobrist, 30 Jan, 2007
+Current Cognizant Programmer: A. L. Zobrist
+Revised: A. L. Zobrist, 27 Feb, 2007  ll corner
+Revised: A. L. Zobrist, 03 Mar, 2007  skirt param
+2022-06-28 B. Crocco afids to opensource
+
+.LEVEL1
+.VARI INP
+Input file name with GeoTIFF
+label
+.VARI OUT
+Output file name
+.VARI LON
+Lon of lower left corner
+.VARI LAT
+Lat of lower left corner
+.VARI NLON
+Horizontal number of degrees
+.VARI NLAT
+Vertical number of degrees
+.VARI PIXDEG
+number of pixels per degree
+.VARI SKIRT
+added pixels of skirt
+.END

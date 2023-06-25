@@ -2,6 +2,9 @@
  * Test program for ISTAT library
  */
 
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 #include "xvmaininc.h"
 #include "ftnbridge.h"
 #include "ibisfile.h"

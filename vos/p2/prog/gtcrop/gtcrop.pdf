@@ -1,0 +1,123 @@
+PROCESS    HELP=*
+LOCAL DUMINT1  TYPE=INTEGER
+LOCAL DUMINT2  TYPE=INTEGER
+PARM INP      TYPE=STRING COUNT=2
+PARM OUT      TYPE=STRING COUNT=1
+PARM COLS     TYPE=INTEGER COUNT=2 DEFAULT=(1,2)
+parm typref type=keyword count=(0:1) valid=(COVERINP,COVERPOL) +
+     default=COVERPOL
+parm vsline   type=name default="DUMINT1"
+parm vssamp   type=name default="DUMINT2"
+
+END-PROC
+.TITLE
+VICAR/IBIS Program  gtcrop
+.HELP     
+PURPOSE
+
+     gtcrop cuts an image by a polygon, leaving the inside
+     at the input image value and the outside all zero.  The
+     polygon is stored in two columns of an IBIS table and
+     is in (line,samp) coordinate of the image.  If you have
+     geographic coordinates, use gtproj and/or pixmap to get
+     the coordinates into image (line,samp).
+     
+     The user can choose whether the output is the same size
+     as the input, or is reduced in size to barely contain 
+     the polygon.  The latter case has two features:
+     
+     1.  A geotiff label is updated for the reduced image.
+     2.  The starting (line,samp) of the reduced image in
+         the original image can be output to TCL variables.
+.PAGE
+TAE COMMAND LINE FORMAT
+
+     gtcrop INP=(PIC,INT) OUT=CUTPIC COLS=(XCOL,YCOL) 'COVERINP
+
+     where
+
+     PIC                 is an image.
+     INT                 is    an   IBIS   interface    file 
+                         containing the polygon that cuts the
+                         image.
+     CUTPIC              is  a copy of PIC with pixels outside 
+                         of the polygon changed to zero.
+     COLS                are the columns containing the polygon
+                         in the IBIS table
+     'COVERINP           causes CUTPIC to have the same size and
+                         location as PIC, see other case below
+
+     gtcrop INP=(PIC,INT) OUT=CUTPIC COLS=(XCOL,YCOL) 'COVERPOL
+
+     where
+
+     PIC                 is an image.
+     INT                 is    an   IBIS   interface    file 
+                         containing the polygon that cuts the
+                         image.
+     CUTPIC              is  a subimage of PIC with pixels outside 
+                         of the polygon changed to zero.
+     COLS                are the columns containing the polygon
+                         in the IBIS table
+     'COVERPOL           causes CUTPIC to have a reduced size, just
+                         large enough to contain the intersection of
+                         the poly with PIC
+.PAGE
+OPERATION
+The pixel center is used to determine whether a pixel is
+in or out.
+
+"Inside" is determined in a primitive fashion by
+determining the number of crossings (of the polygon)
+by the infinite horizontal line containing the pixel.
+The polygon is not checked for closedness, so a u-shaped
+polygon will cut an image as well.  Closed polygons
+(last point equals the first point) are recommended.
+Difficult cases of polygon corners nearly exactly on
+a line of pixels are handled by varying the polygon
+by 1.e-8 of a pixel usually in the larger direction.
+
+The polygon should be in the cyclic order (line,sample,
+line,sample,...) in the columns specified by the COLS
+parameter.
+
+
+WRITTEN BY:                   Al Zobrist         18 JUL 00
+COGNIZANT PROGRAMMER:         B. McGuffie
+Revisions:
+
+  2008-01-11 WLB Switched to USES_ANSI_C AND LIB_CARTO; misc cleanup  
+  2015-10-15 WLB Migrated to mipl
+  2022-07-14 B. Crocco afids to opensource
+  
+.PAGE
+.LEVEL1
+.VARIABLE INP
+Input image and interface file
+.VARIABLE OUT
+Output image
+.VARIABLE COLS
+Column numbers for (line,samp)
+.var typref
+'COVERINP - output same image
+     size as input
+'COVERPOL - output just large
+   enough to cover the polygon
+.variable vsline
+TAE TCL name without & (integer
+type), gets starting line of
+output relative to the input
+.variable vssamp
+TAE TCL name without & (integer
+type), gets starting sample of
+output relative to the input
+.LEVEL2
+.var typref    
+     The user can choose whether the output is the same size
+     as the input, or is reduced in size to barely contain 
+     the polygon.  The latter case has two features:
+     
+     1.  A geotiff label is updated for the reduced image.
+     2.  The starting (line,samp) of the reduced image in
+         the original image can be output to TCL variables.
+.END

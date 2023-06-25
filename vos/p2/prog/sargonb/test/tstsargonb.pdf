@@ -33,31 +33,31 @@ let $echo="yes"
 !First, we will test all functions on byte data
 !generate and show the input data
 gen a.img NL=12 NS=15
-list INP=a.img
+list INP=a.img 'nousrtim
 
 ! Test 1 - Function : MULT=2  (Should double all DNs in the area)
 sargonb a.img b.img MULT 2 (5,5,8,8,5,10,5,13,2,8)
-list INP=b.img
+list INP=b.img 'nousrtim
 
 ! Test 2 - Function : DIV=2    (Should half all DNs in the area)
 sargonb a.img b.img DIVIDE 2 (5,5,8,8,5,10,5,13,2,8)
-list INP=b.img
+list INP=b.img 'nousrtim
 
 ! Test 3 - Function : ADD=50   (Should increase DN values in area by 50)
 sargonb a.img b.img ADD 50 (5,5,8,8,5,10,5,13,2,8)
-list INP=b.img
+list INP=b.img 'nousrtim
 
 ! Test 4 - Function : SUB=5   (Should decrease DN values in area by 5)
 sargonb a.img b.img SUBTRACT 5 (5,5,8,8,5,10,5,13,2,8)
-list INP=b.img
+list INP=b.img 'nousrtim
 
 ! Test 5 - Function : SET=255  (Should SET area to uniform 255 DN)
 sargonb a.img b.img SETTO 255 (1,10,9,10,9,11,1,11)
-list INP=b.img
+list INP=b.img 'nousrtim
 
 ! Test 6 - Function : ZERO  (Should ZERO out the area)
 sargonb b.img c.img ZERO VERT1=(1,7,9,7,9,8,1,8)
-list INP=c.img
+list INP=c.img 'nousrtim
 let $echo="no"
 write " "
 write " BYTE INTERP Options *****************"
@@ -65,22 +65,22 @@ write " "
 let $echo="yes"
 ! Test 7  - Function : INTERPOLATE  (Should INTERP for values within area)
 sargonb c.img b.img INTERP (200,100) (5,5, 8,8, 5,10, 5,13, 2,8)
-list INP=b.img
+list INP=b.img 'nousrtim
 
 ! Test 8 - Subfunction : MIN=1 MAX=254 (Should IGNORE values outside this range 
 !while interpolating.)
 sargonb c.img b.img INTERP (200,100,1,254) (5,5,8,8,5,10,5,13,2,8)
-list INP=b.img
+list INP=b.img 'nousrtim
 
 ! Test  9 - Subfunction : PERC=60 (Should get APPROX same interpolation as with
 !PERC=100 but using fewer points)
 sargonb c.img b.img INTERP (200,60) (5,5,8,8,5,10,5,13,2,8)
-list INP=b.img
+list INP=b.img 'nousrtim
 
 ! Test 10 - Subfunction : RADI=2 (Should INTERP using only border points within 
 !2 pixels of this pixel)
 sargonb c.img b.img INTERP (2,100) (5,5,8,8,5,10,5,13,2,8)
-list INP=b.img
+list INP=b.img 'nousrtim
 let $echo="no"
 write " "
 write " HALF IMAGES *****************"
@@ -89,31 +89,31 @@ let $echo="yes"
 
 !Now, do same stuff with HALFWORD data
 gen NL=12 NS=15 'HALF OUT=hen.img
-list INP=hen.img
+list INP=hen.img 'nousrtim
 
 ! Test 11 - Function : MULT=2  (Should double all DNs in the area)
 sargonb hen.img hb.img MULT 2 (5,5,8,8,5,10,5,13,2,8)
-list INP=b.img
+list INP=b.img 'nousrtim
 
 ! Test 12 - Function : DIV=2    (Should half all DNs in the area)
 sargonb hen.img hb.img DIVIDE 2 (5,5,8,8,5,10,5,13,2,8)
-list INP=b.img
+list INP=b.img 'nousrtim
 
 ! Test 13 - Function : ADD=50   (should increase DN values in area by 50)
 sargonb hen.img hb.img ADD 50 (5,5,8,8,5,10,5,13,2,8)
-list INP=b.img
+list INP=b.img 'nousrtim
 
 ! Test 14 - Function : SUB=50   (Should decrease DN values in area by 50)
 sargonb hen.img hb.img SUBTRACT 50 (5,5,8,8,5,10,5,13,2,8)
-list INP=b.img
+list INP=b.img 'nousrtim
 
 ! Test 15 - Function : SET=255  (Should SET area to uniform 255 DN)
 sargonb hen.img hb.img SETTO 255 (1,10,9,10,9,11,1,11)
-list INP=b.img
+list INP=b.img 'nousrtim
 
 ! Test 16 - Function : ZERO  (Should ZERO out the area)
 sargonb hb.img c.img ZERO VERT1=(1,7,9,7,9,8,1,8)
-list INP=c.img
+list INP=c.img 'nousrtim
 let $echo="no"
 write " "
 write " HALF INTERP Options *****************"
@@ -122,22 +122,22 @@ let $echo="yes"
 
 ! Test 17 - Function : INTERPOLATE  (Should INTERP for values within area)
 sargonb c.img b.img INTERP (200,100) (5,5, 8,8, 5,10, 5,13, 2,8)
-list INP=b.img
+list INP=b.img 'nousrtim
 
 ! Test 18 - Subfunction : MIN=1 MAX=254 (Should ignore values outside this range 
 !while interpolating)
 sargonb c.img b.img INTERP (200,100,1,254) (5,5,8,8,5,10,5,13,2,8)
-list INP=b.img
+list INP=b.img 'nousrtim
 
 ! Test 19 - Subfunction : PERC=60 (Should get approx same interpolation as with
 !PERC=100 but using fewer points)
 sargonb c.img b.img INTERP (200,60) (5,5,8,8,5,10,5,13,2,8)
-list INP=b.img
+list INP=b.img 'nousrtim
 
 ! Test 20 - Subfunction : RADI=2 (Should INTERP using only border points within 
 !2 pixels of this pixel)
 sargonb c.img b.img INTERP (2,100) (5,5,8,8,5,10,5,13,2,8)
-list INP=b.img
+list INP=b.img 'nousrtim
 let $echo="no"
 write " "
 write " MULTIPLE POLYGONS  Options *****************"
@@ -151,11 +151,11 @@ sargonb a.img b.img ADD 10 (2,2,2,10,10,10,10,2) +
    divide 3 (21,21,21,25,30,25,30,21) SETTO 250 (31,42,31,47,41,47,41,42)+
    zero -- (51,51,51,55,55,55,55,51)
 
-list b.img (2,2,9,9)
-list b.img (81,12,10,9)
-list b.img (21,21,10,5)
-list b.img (31,42,11,6)
-list b.img (51,51,5,5)
+list b.img (2,2,9,9) 'nousrtim
+list b.img (81,12,10,9) 'nousrtim
+list b.img (21,21,10,5) 'nousrtim
+list b.img (31,42,11,6) 'nousrtim
+list b.img (51,51,5,5) 'nousrtim
 let $echo="no"
 let _onfail="continue"
 write "******** The following step should ABEND *********"
@@ -180,7 +180,7 @@ insect (A,B) W insect=(1,1,256,256,1,257)
 insect (W,C) X insect=(1,1,256,256,257,1)
 ! Test 23 - Complicated example 
 sargonb X  B1 func1=setto const1=255 vert1=(255,255,257,255,257,257,255,257)
-list B1 (251,251,10,10)
+list B1 (251,251,10,10) 'nousrtim
 
 
 gen A 512 512  LINC=1 SINC=3 FORMAT=HALF
@@ -192,7 +192,7 @@ insect (A,B) W insect=(1,1,256,256,1,257)
 insect (W,C) X insect=(1,1,256,256,257,1)
 ! Test 24 - 
 sargonb X  B2 func1=setto const1=2000 vert1=(255,255,257,255,257,257,255,257)
-list B2 (251,251,10,10)
+list B2 (251,251,10,10) 'nousrtim
 
 gen A 512 512  LINC=1 SINC=3 FORMAT=FULL
 gen B 256 256  LINC=1 SINC=-2 ival=500 FORMAT=FULL
@@ -203,7 +203,7 @@ insect (A,B) W insect=(1,1,256,256,1,257)
 insect (W,C) X insect=(1,1,256,256,257,1)
 ! Test 25 - 
 sargonb X  B3  func1=setto const1=10000 vert1=(255,255,257,255,257,257,255,257)
-list B3 (251,251,10,10)
+list B3 (251,251,10,10) 'nousrtim
 
 gen A 512 512  LINC=1 SINC=3 FORMAT=REAL
 gen B 256 256  LINC=1 SINC=-2 ival=500 FORMAT=REAL
@@ -214,11 +214,13 @@ insect (A,B) W insect=(1,1,256,256,1,257)
 insect (W,C) X insect=(1,1,256,256,257,1)
 ! Test 26 - 
 sargonb X  B4  func1=setto const1=10000 vert1=(255,255,257,255,257,257,255,257)
-list B4 (251,251,10,10)
-
+list B4 (251,251,10,10) 'nousrtim
 
 let $echo="no"
 
 disable-log
+
+ush rm A a.img B B1 B2 B3 B4 b.img C c.img hb.img hen.img W X z.img
+
 end-proc
 

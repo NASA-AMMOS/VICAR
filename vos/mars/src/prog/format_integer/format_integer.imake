@@ -1,0 +1,13 @@
+/*
+*****************************************************************************
+*  MARS RMC PROCESSING SCRIPTS
+*****************************************************************************
+*/
+#define PROCEDURE format_integer
+
+#define MODULE_LIST format_integer.sh
+
+#define USES_SH
+
+#define MARSLIB
+

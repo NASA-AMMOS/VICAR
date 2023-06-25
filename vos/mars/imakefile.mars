@@ -1,0 +1,17 @@
+#
+# Imakefile for MARS Subroutines and Applications
+#
+
+all: make_sub make_prog
+
+make_inc:
+	($(CD) inc; $(V2UTIL)/unpack_inc.csh)
+
+make_sub:
+	($(CD) src/sub; $(V2UTIL)/bldcomfiles_nounpack.csh $(MARSLIB)) 
+
+make_prog: 
+	-($(CD) src/prog; $(V2UTIL)/bldcomfiles_nounpack.csh $(MARSLIB)) 
+	-(cd $(MARSLIB); $(V2UTIL)/make_pdf_cache.perl)
+	-($(V2UTIL)/make_html.csh $(MARSLIB) index_mars.html)
+

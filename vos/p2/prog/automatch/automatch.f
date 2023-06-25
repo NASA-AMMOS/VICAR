@@ -67,7 +67,7 @@ C		Global variables
         data one/1/,iseed/98737461/
 
 
-	call ifmessage('**** AUTOMATCH - version Nov 8 2002 ****')
+	call ifmessage('AUTOMATCH version 2021-10-13')
 
 C		Get the parameters
 
@@ -423,7 +423,7 @@ C			Do subpixel interpolation if desired
 			CORRPATCH(I,J) = BUFOUT(S + WINNS*(L-1))
 		    ENDDO
 		ENDDO
-		CALL REFINE (CORRPATCH, DELLINE, DELSAMP, 190)
+		CALL REFINE (CORRPATCH, DELLINE, DELSAMP, *190)
 	    ENDIF
 
 c           store the tiepoint
@@ -914,7 +914,7 @@ c compute a set of candidate tiepoints to correlate on.
       logical valid(20)
 
       scale=20.
-      iseed=987654321
+      iseed=15876543
 
 c select points in right image.
       if(right-left.gt.bottom-top)then

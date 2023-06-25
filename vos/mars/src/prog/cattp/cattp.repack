@@ -1,0 +1,6 @@
+$ vpack cattp.com -mixed -
+	-s cattp.cc -
+	-p cattp.pdf -
+	-t tstcattp.pdf inp.lis img.lis out.tie -
+	-i cattp.imake
+$ Exit

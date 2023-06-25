@@ -675,9 +675,14 @@ Compile Error: *_ARCH either not defined or not defined correctly!!!!!!!!!!!
 #define SIGVEC_OS 1
 #endif
 
-#if SUN3_ARCH + SUN4_ARCH + SGI_ARCH + MAC_AUX_ARCH + AXP_UNIX_ARCH + ANY_LINUX_ARCH + ANY_OSX_ARCH
+#if SUN3_ARCH + SUN4_ARCH + SGI_ARCH + MAC_AUX_ARCH + AXP_UNIX_ARCH + ANY_OSX_ARCH
 #define SIGACT_OS 0
 #define SIGVEC_OS 1
+#endif
+
+#if ANY_LINUX_ARCH
+#define SIGACT_OS 1
+#define SIGVEC_OS 0
 #endif
 
 #if HP700_ARCH

@@ -1,6 +1,8 @@
 procedure
 refgbl $echo
 body
+enable-log
+
 let _onfail="continue"
 let $echo="yes"
 ttxtsubs
@@ -20,4 +22,6 @@ ttxtsubs 4 Hello height=-2
 ttxtsubs 4 Hello height=15 scale=-2.0
 ttxtsubs 3 "Hi There" height=10 scale=1.0
 ttxtsubs 3 Done height=15 scale=1.0
+
+disable-log
 end-proc

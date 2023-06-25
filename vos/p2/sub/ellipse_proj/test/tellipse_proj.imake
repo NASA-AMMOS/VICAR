@@ -17,4 +17,4 @@
 #define USES_FORTRAN
 #define LIB_FORTRAN
 
-#define DEBUG		/* for development, remove on delivery */
+/* #define DEBUG		/ * for development, remove on delivery */

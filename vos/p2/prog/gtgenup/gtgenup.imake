@@ -1,0 +1,26 @@
+/***********************************************************************
+
+                     IMAKE FILE FOR PROGRAM gtgenup
+
+   To Create the build file give the command:
+
+		$ vimake gtgenup			(VMS)
+   or
+		% vimake gtgenup			(Unix)
+
+
+************************************************************************/
+
+
+#define PROGRAM	gtgenup
+
+#define MODULE_LIST gtgenup.c
+
+#define MAIN_LANG_C
+#define USES_ANSI_C
+
+#define LIB_CARTO
+#define LIB_RTL
+#define LIB_TAE
+#define LIB_P2SUB
+/************************* End of Imake file ***************************/

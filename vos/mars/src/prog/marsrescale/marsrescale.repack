@@ -1,0 +1,6 @@
+$ vpack marsrescale.com -mixed -
+	-s marsrescale.cc DoubleVector.cc DoubleVector.h DoubleMatrix.cc -
+	   DoubleMatrix.h -
+	-i marsrescale.imake -
+	-p marsrescale.pdf
+$ Exit

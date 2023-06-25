@@ -1,0 +1,87 @@
+gengrid2 out=xxx1 ncol=8 nah=3 nav=4  +
+     l1=2.2 s1=5.5  +
+     l2=2.6 s2=7.5  +
+     l3=2.4 s3=5.7  +
+     l4=2.8 s4=7.7
+let nahp1=nah+1
+let navp1=nav+1
+let nahxnav=nahp1*navp1
+ibis-gen xxx1 version="ibis-2" org="column" nc=8      +
+ nr=20 deffmt=DOUB
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+mf3 xxx1 func="c3=@int((@index-1)/4)/4"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+mf3 xxx1 func="c4=@mod(@index+3,4)/3"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+mf3 xxx1 func="c5=c3*(2.400000000000e+00-(2.200000000000e+00))+(2.200000000000e+00)$c6=c3*(2.800000000000e+00-(2.600000000000e+00))+
++(2.600000000000e+00)"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+mf3 xxx1 func="c1=c4*(c6-c5)+c5"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+mf3 xxx1 func="c7=c4*(7.500000000000e+00-(5.500000000000e+00))+(5.500000000000e+00)$c8=c4*(7.700000000000e+00-(5.700000000000e+00))+
++(5.700000000000e+00)"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+mf3 xxx1 func="c2=c3*(c8-c7)+c7"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+mf3 xxx1 func="c3=0$c4=0$c5=0$c6=0$c7=0$c8=0$"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+end-proc
+mf3 xxx1 func="c3=@index$c4=100-@index"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+ibis-list xxx1 cols=(1,2,3,4)
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:20  Number of Columns: 8       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:20
++-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4
++-----------+-----------+-----------+-----------
+        2.20        5.50        1.00       99.00
+        2.33        6.17        2.00       98.00
+        2.47        6.83        3.00       97.00
+        2.60        7.50        4.00       96.00
+        2.25        5.55        5.00       95.00
+        2.38        6.22        6.00       94.00
+        2.52        6.88        7.00       93.00
+        2.65        7.55        8.00       92.00
+        2.30        5.60        9.00       91.00
+        2.43        6.27       10.00       90.00
+        2.57        6.93       11.00       89.00
+        2.70        7.60       12.00       88.00
+        2.35        5.65       13.00       87.00
+        2.48        6.32       14.00       86.00
+        2.62        6.98       15.00       85.00
+        2.75        7.65       16.00       84.00
+        2.40        5.70       17.00       83.00
+        2.53        6.37       18.00       82.00
+        2.67        7.03       19.00       81.00
+        2.80        7.70       20.00       80.00
+grid3pt xxx1 cols=(1,2,3,4) v11=rv11 v21=rv21 v31=rv31 v41=rv41  +
+       v12=rv12 v22=rv22 v32=rv32 v42=rv42  +
+       v13=rv13 v23=rv23 v33=rv33 v43=rv43
+Beginning VICAR task grid3pt
+grid3pt version Thu Mar 05 2008
+write "2.800000000000e+00 7.700000000000e+00 2.000000000000e+01 8.000000000000e+01"
+2.800000000000e+00 7.700000000000e+00 2.000000000000e+01 8.000000000000e+01
+write "2.600000000000e+00 7.500000000000e+00 4.000000000000e+00 9.600000000000e+01"
+2.600000000000e+00 7.500000000000e+00 4.000000000000e+00 9.600000000000e+01
+write "2.200000000000e+00 5.500000000000e+00 1.000000000000e+00 9.900000000000e+01"
+2.200000000000e+00 5.500000000000e+00 1.000000000000e+00 9.900000000000e+01
+grid3pt xxx1 cols=(1,2,3,4) ix1=iix1 ix2=iix2 ix3=iix3
+Beginning VICAR task grid3pt
+grid3pt version Thu Mar 05 2008
+write "20 4 1"
+20 4 1
+disable-log

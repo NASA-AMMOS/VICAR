@@ -1,0 +1,270 @@
+gen xxxim1 nl=1 ns=1
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+gtgenup inp=xxxim1  +
+   geotiff=("PCSCitationGeoKey=""Updating xxxim1""",  +
+            "GTRasterTypeGeoKey=1(RasterPixelIsArea)",  +
+            "RPC_FIELD1720=-0.135637E-7")
+Beginning VICAR task gtgenup
+gtgenup version 2015-10-15
+label-list xxxim1 'nousrtim
+Beginning VICAR task label
+LABEL version 2019-09-06
+************************************************************
+ 
+        ************  File xxxim1 ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in BYTE format from a X86-64-LIN host
+                1 bands
+                1 lines per band
+                1 samples per line
+                0 lines of binary header
+                0 bytes of binary prefix per line
+---- Property: GEOTIFF ----
+PCSCITATIONGEOKEY='"Updating xxxim1"'
+GTRASTERTYPEGEOKEY='1(RasterPixelIsArea)'
+RPC_FIELD1720='-0.135637E-7'
+---- Task: GEN -- User:  --  ----
+IVAL=0.0
+SINC=1.0
+LINC=1.0
+BINC=1.0
+MODULO=0.0
+ 
+************************************************************
+gen xxxim2 nl=1 ns=1
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+gtgenup inp=xxxim2  +
+   geotiff=("PCSCitationGeoKey=""Updating xxxim2""",  +
+            "GTRasterTypeGeoKey=1(RasterPixelIsArea)",  +
+            "RPC_FIELD1720=-0.135637E-7")
+Beginning VICAR task gtgenup
+gtgenup version 2015-10-15
+label-list xxxim2 'nousrtim
+Beginning VICAR task label
+LABEL version 2019-09-06
+************************************************************
+ 
+        ************  File xxxim2 ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in BYTE format from a X86-64-LIN host
+                1 bands
+                1 lines per band
+                1 samples per line
+                0 lines of binary header
+                0 bytes of binary prefix per line
+---- Property: GEOTIFF ----
+PCSCITATIONGEOKEY='"Updating xxxim2"'
+GTRASTERTYPEGEOKEY='1(RasterPixelIsArea)'
+RPC_FIELD1720='-0.135637E-7'
+---- Task: GEN -- User:  --  ----
+IVAL=0.0
+SINC=1.0
+LINC=1.0
+BINC=1.0
+MODULO=0.0
+ 
+************************************************************
+gtgenup inp=(xxxim2,xxxim1)
+Beginning VICAR task gtgenup
+gtgenup version 2015-10-15
+label-list xxxim2 'nousrtim
+Beginning VICAR task label
+LABEL version 2019-09-06
+************************************************************
+ 
+        ************  File xxxim2 ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in BYTE format from a X86-64-LIN host
+                1 bands
+                1 lines per band
+                1 samples per line
+                0 lines of binary header
+                0 bytes of binary prefix per line
+---- Property: GEOTIFF ----
+PCSCITATIONGEOKEY='"Updating xxxim1"'
+GTRASTERTYPEGEOKEY='1(RasterPixelIsArea)'
+RPC_FIELD1720='-0.135637E-7'
+---- Task: GEN -- User:  --  ----
+IVAL=0.0
+SINC=1.0
+LINC=1.0
+BINC=1.0
+MODULO=0.0
+ 
+************************************************************
+ush echo RPC_FIELD1720=1234 > test.dat
+ush echo RPC_FIELD1721=5678 >> test.dat
+gen xxxim3 nl=1 ns=1
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+gtgenup inp=xxxim3 parmfile=test.dat
+Beginning VICAR task gtgenup
+gtgenup version 2015-10-15
+label-list xxxim3 'nousrtim
+Beginning VICAR task label
+LABEL version 2019-09-06
+************************************************************
+ 
+        ************  File xxxim3 ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in BYTE format from a X86-64-LIN host
+                1 bands
+                1 lines per band
+                1 samples per line
+                0 lines of binary header
+                0 bytes of binary prefix per line
+---- Property: GEOTIFF ----
+RPC_FIELD1720='1234'
+RPC_FIELD1721='5678'
+---- Task: GEN -- User:  --  ----
+IVAL=0.0
+SINC=1.0
+LINC=1.0
+BINC=1.0
+MODULO=0.0
+ 
+************************************************************
+gen xxxim1 nl=1 ns=1
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+gtgenup inp=xxxim1 property="FOO"  +
+   geotiff=("PCSCitationGeoKey=""Updating xxxim1""",  +
+            "GTRasterTypeGeoKey=1(RasterPixelIsArea)",  +
+            "RPC_FIELD1720=-0.135637E-7")
+Beginning VICAR task gtgenup
+gtgenup version 2015-10-15
+label-list xxxim1 'nousrtim
+Beginning VICAR task label
+LABEL version 2019-09-06
+************************************************************
+ 
+        ************  File xxxim1 ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in BYTE format from a X86-64-LIN host
+                1 bands
+                1 lines per band
+                1 samples per line
+                0 lines of binary header
+                0 bytes of binary prefix per line
+---- Property: FOO ----
+PCSCITATIONGEOKEY='"Updating xxxim1"'
+GTRASTERTYPEGEOKEY='1(RasterPixelIsArea)'
+RPC_FIELD1720='-0.135637E-7'
+---- Task: GEN -- User:  --  ----
+IVAL=0.0
+SINC=1.0
+LINC=1.0
+BINC=1.0
+MODULO=0.0
+ 
+************************************************************
+gen xxxim2 nl=1 ns=1
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+gtgenup inp=xxxim2 property="FOO"  +
+   geotiff=("PCSCitationGeoKey=""Updating xxxim2""",  +
+            "GTRasterTypeGeoKey=1(RasterPixelIsArea)",  +
+            "RPC_FIELD1720=-0.135637E-7")
+Beginning VICAR task gtgenup
+gtgenup version 2015-10-15
+label-list xxxim2 'nousrtim
+Beginning VICAR task label
+LABEL version 2019-09-06
+************************************************************
+ 
+        ************  File xxxim2 ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in BYTE format from a X86-64-LIN host
+                1 bands
+                1 lines per band
+                1 samples per line
+                0 lines of binary header
+                0 bytes of binary prefix per line
+---- Property: FOO ----
+PCSCITATIONGEOKEY='"Updating xxxim2"'
+GTRASTERTYPEGEOKEY='1(RasterPixelIsArea)'
+RPC_FIELD1720='-0.135637E-7'
+---- Task: GEN -- User:  --  ----
+IVAL=0.0
+SINC=1.0
+LINC=1.0
+BINC=1.0
+MODULO=0.0
+ 
+************************************************************
+gtgenup inp=(xxxim2,xxxim1) property="FOO"
+Beginning VICAR task gtgenup
+gtgenup version 2015-10-15
+label-list xxxim2 'nousrtim
+Beginning VICAR task label
+LABEL version 2019-09-06
+************************************************************
+ 
+        ************  File xxxim2 ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in BYTE format from a X86-64-LIN host
+                1 bands
+                1 lines per band
+                1 samples per line
+                0 lines of binary header
+                0 bytes of binary prefix per line
+---- Property: FOO ----
+PCSCITATIONGEOKEY='"Updating xxxim1"'
+GTRASTERTYPEGEOKEY='1(RasterPixelIsArea)'
+RPC_FIELD1720='-0.135637E-7'
+---- Task: GEN -- User:  --  ----
+IVAL=0.0
+SINC=1.0
+LINC=1.0
+BINC=1.0
+MODULO=0.0
+ 
+************************************************************
+gen xxxim3 nl=1 ns=1
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+gtgenup inp=xxxim3 parmfile=test.dat property="FOO"
+Beginning VICAR task gtgenup
+gtgenup version 2015-10-15
+label-list xxxim3 'nousrtim
+Beginning VICAR task label
+LABEL version 2019-09-06
+************************************************************
+ 
+        ************  File xxxim3 ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in BYTE format from a X86-64-LIN host
+                1 bands
+                1 lines per band
+                1 samples per line
+                0 lines of binary header
+                0 bytes of binary prefix per line
+---- Property: FOO ----
+RPC_FIELD1720='1234'
+RPC_FIELD1721='5678'
+---- Task: GEN -- User:  --  ----
+IVAL=0.0
+SINC=1.0
+LINC=1.0
+BINC=1.0
+MODULO=0.0
+ 
+************************************************************
+ush rm xxxim1 xxxim2 xxxim3 test.dat
+disable-log

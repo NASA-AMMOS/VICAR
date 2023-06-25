@@ -1,0 +1,9 @@
+#define SUBROUTINE surf_fit
+
+#define MODULE_LIST polyFit.cc rbfFit.cc
+
+#define USES_C_PLUS_PLUS
+
+#define P2_SUBLIB
+#define LIB_EIGEN
+#define LIB_OMP

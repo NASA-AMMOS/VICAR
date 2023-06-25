@@ -1,0 +1,101 @@
+PROCESS      HELP=*
+PARM INP       TYPE=STRING  COUNT=1
+PARM SKIP      TYPE=INTEGER COUNT=1     DEFAULT=0
+PARM RANDOM    TYPE=KEYWORD COUNT=(0:1) DEFAULT=-- VALID=RANDOM
+PARM SEED      TYPE=KEYWORD COUNT=(0:1) DEFAULT=-- VALID=SEED
+PARM PERCENT   TYPE=INTEGER COUNT=(0:1) DEFAULT=0  VALID=(0:100)
+PARM SR        TYPE=INTEGER COUNT=(0:1) DEFAULT=0
+PARM NR        TYPE=INTEGER COUNT=(0:1) DEFAULT=0
+
+END-PROC
+
+.TITLE
+VICAR/IBIS Program "ibisx"
+.HELP
+PURPOSE
+
+   This program displays the contents of an IBIS file.  The display
+mechanism was copied out of ibis-list and is similar to ibis-list.
+Along with displaying the contents, ibisx will display the
+statistics.  Only the data that is displayed are used to
+calculate the statistics.
+
+
+EXECUTION
+
+   The program opens the ibis file, determines which rows should
+be printed, prints the rows and calculates the statistics on the
+rows that were printed.
+
+EXAMPLES
+
+   ibisx inp=x1 sr=2 nr=10
+
+This command will display ibis file x1 starting at row 2 and
+display 10 rows.
+
+   ibisx inp=x1 skip=5 percent=10
+
+This command will display every 5th element.  The total number
+of displays will equal 10 percent of the number of rows.
+
+   ibisx inp=x1 'random 'seed sr=5 nr=10
+
+This command will randomly pick 10 rows but only that come after
+row 5.
+
+   ibisx inp=x1 'random percent=50
+
+This command will randomly pick 50 percent of rows.
+
+RESTRICTIONS
+
+The size of image cannot be greater than 
+18,446,744,073,709,551,616 bytes.  64 bit long integer is
+used to keep track of EOL label position.
+
+Original Programmer: P. Kim, 13 Oct 2008
+
+REVISIONS
+
+  2015-11-05 W. Bunch - Migrated to MIPL.
+  2017-08-08 W. Bunch - Removed DEBUG from imake; replaced printf with zifmessage.
+  2019-07-31 W. Bunch - IDS-7923 - Replaced sprintf calls with snprintf or zvnprintf,
+                        cleaned up misc -Wall warnings.
+  2022-07-14 B. Crocco afids to opensource
+  
+.LEVEL1
+.VARIABLE INP
+ Input image file
+.VARIABLE SKIP
+ Number of rows to skip
+.VARIABLE RANDOM
+ Keyword to tell it to randomly choose the rows
+.VARIABLE SEED
+ Keyword to seed the random
+.VARIABLE PERCENT
+ Percent of the rows to pick
+.VARIABLE SR
+ Starting row
+.VARIABLE NR
+ Number of rows
+
+.LEVEL2
+.VARIABLE PERCENT
+
+ This variable specifies the percent of the rows
+ to be displayed.  This variable takes precedence
+ over the NR variable.
+
+.END
+
+
+
+
+
+
+
+
+
+
+

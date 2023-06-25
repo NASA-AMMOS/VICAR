@@ -2,9 +2,11 @@
 #include "defines.h"
 #include "declares.h"
 #include "externs.h"
+#include "zvproto.h"
 #include "rtlintproto.h"
 #include <time.h>
 #include <stdio.h>
+#include <stdlib.h>
 #if CUSERID_AVAIL_OS == 0
 #include <pwd.h>
 #else
@@ -44,9 +46,19 @@ void v2_collect_history_info(void)
    value = cuserid(NULL);			/* Get user ID */
 #else
    pw = getpwuid(getuid());
-   value = pw->pw_name;
+   if(pw)
+     value = pw->pw_name;
+   else
+     value = NULL;
 #endif
-   strncpy(history[USER].value, value, maxlen);
+   if(!value) {
+     /* Under some circumstances we may have a uid but no username
+	(e.g., running in a docker container with a uid that isn't in
+	the docker passwd file). In those cases, fall back to the UID */
+     snprintf(history[USER].value, maxlen, "%ld", (long) getuid());
+   } else {
+     strncpy(history[USER].value, value, maxlen);
+   }
    history[USER].value[maxlen-1] = '\0';
 
    maxlen = sizeof(history[DAT_TIM].value);	/* max len of dest string */

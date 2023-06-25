@@ -17,4 +17,7 @@ photfit2 inp=(phottest_m.dat,phottest_m.dat) pho_func=MINNAERT +
    toleranc=0.02 'print 
 
 disable-log
+
+ush rm phottest_m.dat
+
 end-proc

@@ -1,0 +1,78 @@
+gtgen out=xxxlab1 'tiecnvrt geotiff=  +
+   ("ModelTiePointTag=(2,3,0,350807.4,5317081.3,123456789.123456789)",  +
+          "ModelTiePointTag=(202,103,0,351807.4,5316081.3,0.0)",  +
+          "ModelTiePointTag=(2,103,0,350807.4,5316081.3,0.0)",  +
+          "GTRasterTypeGeoKey=2(RasterPixelIsPoint)")
+Beginning VICAR task gtgen
+gtgen version Fri Jan 11 2008
+gt2tcl xxxlab1 val=s1 keyword=GTRASTERtypEGEOKEY vtype=0
+Beginning VICAR task gt2tcl
+gt2tcl version 2015-11-01
+let $echo="no"
+GTRASTERtypEGEOKEY = 2(RasterPixelIsPoint)
+Should be          = 2(RasterPixelIsPoint)
+
+gt2tcl xxxlab1 val=n1 keyword=GTrasTERTYPEGEOKEY vtype=4
+Beginning VICAR task gt2tcl
+gt2tcl version 2015-11-01
+let $echo="no"
+GTrasTERTYPEGEOKEY = 2
+Should be          = 2
+
+gt2tcl xxxlab1 val=s1 keyword=NeverFindThisKey vtype=0
+Beginning VICAR task gt2tcl
+gt2tcl version 2015-11-01
+let $echo="no"
+NeverFindThisKey = -999
+Should be        = -999
+
+gt2tcl xxxlab1 val=s1 keyword=ModelTiePointTag vtype=0 sequence=6
+Beginning VICAR task gt2tcl
+gt2tcl version 2015-11-01
+let $echo="no"
+ModelTiePointTag = 123456789.123456789
+Should be        = 123456789.123456789
+
+gt2tcl xxxlab1 val=r1 keyword=ModelTiePointTag vtype=8 sequence=6
+Beginning VICAR task gt2tcl
+gt2tcl version 2015-11-01
+let $echo="no"
+ModelTiePointTag = 1.234567891235e+08
+Should be        = 1.234567891235e+08
+
+gt2tcl xxxlab1 val=s1 keyword=ModelTiePointTag vtype=0 sequence=7
+Beginning VICAR task gt2tcl
+gt2tcl version 2015-11-01
+let $echo="no"
+ModelTiePointTag = -999
+Should be        = -999
+
+gt2tcl xxxlab1 val=r1 keyword=ModelTiePointTag vtype=8 sequence=7
+Beginning VICAR task gt2tcl
+gt2tcl version 2015-11-01
+let $echo="no"
+ModelTiePointTag = -9.990000000000e+02
+Should be        = -9.990000000000e+02
+
+gtgen out=xxxlab2 'tiecnvrt  +
+   geotiff=("ModelTiePointTag=(2,3,0,350807.4,5317081.3,0.0)",  +
+          "ModelTiePointTag=(202,103,0,351807.4,5316081.3,0.0)",  +
+          "ModelTiePointTag=(2,103,0,350807.4,5316081.3,0.0)",  +
+          "GTRasterTypeGeoKey=2(RasterPixelIsPoint)",  +
+          "GTRasterTypeGeoKey=1(RasterPixelIsArea)")
+Beginning VICAR task gtgen
+gtgen version Fri Jan 11 2008
+gt2tcl xxxlab2 val=s1 keyword=GTrasTERTYPEGEOKEY vtype=0 element=1
+Beginning VICAR task gt2tcl
+gt2tcl version 2015-11-01
+let $echo="no"
+GTrasTERTYPEGEOKEY (element 1) = 2(RasterPixelIsPoint)
+Should be                      = 2(RasterPixelIsPoint)
+
+gt2tcl xxxlab2 val=s1 keyword=GTrasTERTYPEGEOKEY vtype=0 element=2
+Beginning VICAR task gt2tcl
+gt2tcl version 2015-11-01
+let $echo="no"
+GTrasTERTYPEGEOKEY (element 2) =  1(RasterPixelIsArea)
+Should be                      =  1(RasterPixelIsArea)
+

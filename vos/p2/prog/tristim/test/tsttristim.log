@@ -1,4 +1,3 @@
-tsttristim
 tristim
 Beginning VICAR task tristim
 TRISTIM VERSION 11-JAN-2013
@@ -280,16 +279,4 @@ X TRISTIM =  26.192980 Y TRISTIM = 14.684481  Z TRISTIM   0.049205
 X CHROM  =  0.63999790 Y CHROM   =0.35879982  Z CHROM   0.00120228
 
 TRISTIM END
-end-proc
-exit
-slogoff
-if ($RUNTYPE = "INTERACTIVE")
-  if ($syschar(1) = "VAX_VMS")
-  end-if
-else
-  if ($syschar(1) = "VAX_VMS")
-  end-if
-end-if
-ulogoff
-END-PROC
-END-PROC
+disable-log

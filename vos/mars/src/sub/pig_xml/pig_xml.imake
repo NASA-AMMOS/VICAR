@@ -1,0 +1,13 @@
+#define SUBROUTINE pig_xml
+
+#define MODULE_LIST PigXerces.cc PigSolutionManager.cc PigRoverStateManager.cc \
+ PigCameraMapper.cc PigCameraMapEntry.cc PigPointingCorrections.cc \
+ PigPCCameraModel.cc PigPointingParams.cc PigSurfaceModelParams.cc
+
+#define MARS_SUBLIB
+
+#define USES_C_PLUS_PLUS
+
+#define LIB_P2SUB
+#define LIB_XERCES
+

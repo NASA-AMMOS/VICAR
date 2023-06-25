@@ -1,0 +1,63 @@
+PROCESS       HELP=*
+PARM INP       TYPE=STRING
+PARM COLS      TYPE=INTEGER COUNT=1:20
+PARM OUTCOL    TYPE=INTEGER COUNT=1
+PARM CONCOL    TYPE=INTEGER COUNT=0:1   DEFAULT=--
+PARM THRESH    TYPE=REAL    COUNT=1     DEFAULT=10.0
+END-PROC
+.TITLE
+VICAR/IBIS Program "ibisclst"
+.HELP
+PURPOSE
+
+   "ibisclst" finds a cluster from a given dataset.  The dataset
+that belong to the cluster will be marked with 1 and those that
+do not will be marked with a 0 in the outcol of the "inp" ibis
+file.
+
+EXECUTION
+
+    This program will break the datasets into corresponding
+control numbers and cluster each set.
+
+Clustering Algorithm:
+   1. calculate distance for each datapoint to others - O(n^2)
+   2. mark neighbors (adjacent points that lie w/i thresh radius)
+   3. find the largest cluster by adding up connecting points
+   4. mark the points that belong in the largest cluster
+
+EXAMPLES
+     ibisclst inp=data.ing col=(1,2,3) outcol=4 concol=5 thresh=10
+
+    This example will find a cluster from the dataset specified by
+the col parameter and write the output to the outcol parameter.
+The clusters will be done for each control number specified by the
+concol
+
+RESTRICTIONS
+
+Original Programmers: P. Kim 15 Nov 2009
+
+REVISIONS
+
+  2015-11-04 W. Bunch - Migrated to MIPL
+  2017-08-08 W. Bunch - Removed DEBUG from imake.
+  2022-07-14 B. Crocco afids to opensource
+  
+.LEVEL1
+.VARIABLE INP
+ Input IBIS interface file
+.VARIABLE COL
+ Columns that specify the 
+ data points
+.VARIABLE OUTCOL
+ output column marked with
+ 1 for in cluster
+ 0 for not in cluster
+.VARIABLE CONCOL
+ Control column
+.VARIABLE THRESH
+ Threshold value
+ See EXECUTION statement
+
+.END

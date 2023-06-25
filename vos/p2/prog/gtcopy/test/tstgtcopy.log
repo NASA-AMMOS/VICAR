@@ -1,0 +1,238 @@
+let $autousage = "none"
+let _onfail="stop"
+translog INP=GEOTRANSLIB TRANS=geotranslib
+ush ln -fs /usr/local/vicar/dev/../external/geotrans/v2.2.3/x86-64-linx/3_param.dat .
+ush ln -fs /usr/local/vicar/dev/../external/geotrans/v2.2.3/x86-64-linx/7_param.dat .
+ush ln -fs /usr/local/vicar/dev/../external/geotrans/v2.2.3/x86-64-linx/ellips.dat .
+gen xxxim1 nl=9 ns=9
+Beginning VICAR task gen
+GEN Version 6
+GEN task completed
+gtgen inp=xxxim1 out=xxxim2 'tiecnvrt  +
+   geotiff=("ModelTiePointTag=(0,0,0,.3,.3,0.0)",  +
+          "ModelTiePointTag=(10,0,0,.5,.3,0.0)",  +
+          "ModelTiePointTag=(0,10,0,.3,.5,0.0)",  +
+          "ProjectionGeoKey=20(CT_MillerCylindrical)",  +
+          "GTRasterTypeGeoKey=2(RasterPixelIsPoint)",  +
+          "GeogEllipsoidGeoKey=7030(Ellipse_WGS84)")
+Beginning VICAR task gtgen
+gtgen version Fri Jan 11 2008
+list xxxim2 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTGEN     User:          Date_Time:                        
+     Samp     1       3       5       7       9
+   Line
+      1       0   1   2   3   4   5   6   7   8
+      2       1   2   3   4   5   6   7   8   9
+      3       2   3   4   5   6   7   8   9  10
+      4       3   4   5   6   7   8   9  10  11
+      5       4   5   6   7   8   9  10  11  12
+      6       5   6   7   8   9  10  11  12  13
+      7       6   7   8   9  10  11  12  13  14
+      8       7   8   9  10  11  12  13  14  15
+      9       8   9  10  11  12  13  14  15  16
+gtcopy xxxim2 xxxim3 size=(2,3,4,5)
+Beginning VICAR task gtcopy
+gtcopy version 2017-08-03
+list xxxim3 'zero 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTCOPY    User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1       3   4   5   6   7
+      2       4   5   6   7   8
+      3       5   6   7   8   9
+      4       6   7   8   9  10
+gtcopy xxxim2 xxxim3 size=(-1,-2,4,5)
+Beginning VICAR task gtcopy
+gtcopy version 2017-08-03
+list xxxim3 'zero 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTCOPY    User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1       0   0   0   0   0
+      2       0   0   0   0   0
+      3       0   0   0   0   1
+      4       0   0   0   1   2
+gtcopy xxxim2 xxxim3 size=(7,8,4,5)
+Beginning VICAR task gtcopy
+gtcopy version 2017-08-03
+list xxxim3 'zero 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTCOPY    User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1      13  14   0   0   0
+      2      14  15   0   0   0
+      3      15  16   0   0   0
+      4       0   0   0   0   0
+gtcopy xxxim2 xxxim3 size=(-2,3,14,5)
+Beginning VICAR task gtcopy
+gtcopy version 2017-08-03
+list xxxim3 'zero 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTCOPY    User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1       0   0   0   0   0
+      2       0   0   0   0   0
+      3       0   0   0   0   0
+      4       2   3   4   5   6
+      5       3   4   5   6   7
+      6       4   5   6   7   8
+      7       5   6   7   8   9
+      8       6   7   8   9  10
+      9       7   8   9  10  11
+     10       8   9  10  11  12
+     11       9  10  11  12  13
+     12      10  11  12  13  14
+     13       0   0   0   0   0
+     14       0   0   0   0   0
+gtcopy xxxim2 xxxim3 size=(2,-3,4,15)
+Beginning VICAR task gtcopy
+gtcopy version 2017-08-03
+list xxxim3 'zero 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTCOPY    User:          Date_Time:                        
+     Samp     1       3       5       7       9      11      13      15
+   Line
+      1       0   0   0   0   1   2   3   4   5   6   7   8   9   0   0
+      2       0   0   0   0   2   3   4   5   6   7   8   9  10   0   0
+      3       0   0   0   0   3   4   5   6   7   8   9  10  11   0   0
+      4       0   0   0   0   4   5   6   7   8   9  10  11  12   0   0
+gen xxxim1 nl=100 ns=100
+Beginning VICAR task gen
+GEN Version 6
+GEN task completed
+gtgen inp=xxxim1 out=xxxim2 'tiecnvrt  +
+   geotiff=("ModelTiePointTag=(0,0,0,.3,.3,0.0)",  +
+          "ModelTiePointTag=(10,0,0,.5,.3,0.0)",  +
+          "ModelTiePointTag=(0,10,0,.3,.5,0.0)",  +
+          "ProjectionGeoKey=20(CT_MillerCylindrical)",  +
+          "GTRasterTypeGeoKey=2(RasterPixelIsPoint)",  +
+          "GeogEllipsoidGeoKey=7030(Ellipse_WGS84)")
+Beginning VICAR task gtgen
+gtgen version Fri Jan 11 2008
+gtcopy xxxim2 xxxim3 size=(2,3,95,96)
+Beginning VICAR task gtcopy
+gtcopy version 2017-08-03
+gtcomp xxxim2 xxxim3
+lab2tcl xxxim2 v1=nl v2=ns keyword=(nl,ns) 'system
+Beginning VICAR task lab2tcl
+LAB2TCL - 09 Dec 2012 - rjb - (64-bit)
+ibis-gen xxqqgrid1 version="ibis-2" org="column"  nc=11 nr=10 deffmt=DOUB
+Beginning VICAR task ibis
+mf3 xxqqgrid1 func=("c1=@rand*(100-2)+1$c2=@rand*(100-2)+1")
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+pixmap (xxqqgrid1,xxxim2) mapcols=(3,4) pixcols=(1,2) 'pixtomap
+Beginning VICAR task pixmap
+pixmap version Thu Jan  3 2008
+gtproj (xxqqgrid1,xxxim2,xxxim3) incol=(3,4) outcol=(5,6)
+Beginning VICAR task gtproj
+gtproj version 2016-01-08
+Input GeoTIFF label:
+MODELTIEPOINTTAG=(0,0,0,.3,.3,0.0)
+MODELPIXELSCALETAG=(0.02,-0.02,0.0)
+PROJECTIONGEOKEY=20(CT_MillerCylindrical)
+GTRASTERTYPEGEOKEY=2(RasterPixelIsPoint)
+GEOGELLIPSOIDGEOKEY=7030(Ellipse_WGS84)
+
+Output GeoTIFF label:
+MODELTIEPOINTTAG=(-2.0,-1.0,0,.3,.3,0.0)
+MODELPIXELSCALETAG=(0.02,-0.02,0.0)
+PROJECTIONGEOKEY=20(CT_MILLERCYLINDRICAL)
+GTRASTERTYPEGEOKEY=2(RASTERPIXELISPOINT)
+GEOGELLIPSOIDGEOKEY=7030(ELLIPSE_WGS84)
+
+inverse applied
+eposc arg  1: inv
+eposc arg  2: +proj=mill
+eposc arg  3: +ellps=WGS84
+forward applied
+eposc arg  1: fwd
+eposc arg  2: +proj=mill
+eposc arg  3: +ellps=WGS84
+datum shift not applied
+pixmap (xxqqgrid1,xxxim3) mapcols=(5,6) pixcols=(7,8) 'maptopix
+Beginning VICAR task pixmap
+pixmap version Thu Jan  3 2008
+getzval (xxxim2,xxqqgrid1) cols=(1,2,9) win=2
+Beginning VICAR task getzval
+getzval version 2015-10-14
+getzval (xxxim3,xxqqgrid1) cols=(7,8,10) win=2
+Beginning VICAR task getzval
+getzval version 2015-10-14
+mf3 xxqqgrid1 func=("c11=c9-c10")
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+ibis-list xxqqgrid1 cols=(1,2,3,4,5,6)  +
+     cfor="%8.3f %8.3f %14.6f %14.6f %14.6f %14.6f"
+Beginning VICAR task ibis
+ 
+Number of Rows:10  Number of Columns: 11      
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:10
++--------+--------+--------------+--------------+--------------+-------------
+      C:1      C:2            C:3            C:4            C:5           C:6
++--------+--------+--------------+--------------+--------------+-------------
+  17.741   44.712       1.174250       0.634823       1.174250       0.634823
+  74.490   35.665       0.993307       1.769808       0.993307       1.769808
+  10.444   72.787       1.735738       0.488888       1.735738       0.488888
+  86.306   26.502       0.810035       2.006112       0.810035       2.006112
+  57.576   39.641       1.072816       1.431515       1.072816       1.431515
+  78.008   77.125       1.822508       1.840167       1.822508       1.840167
+  68.835   83.813       1.956269       1.656701       1.956269       1.656701
+  37.139   57.427       1.428545       1.022782       1.428545       1.022782
+  86.643   71.123       1.702456       2.012852       1.702456       2.012852
+  74.019    9.134       0.462688       1.760386       0.462688       1.760386
+ibis-list xxqqgrid1 cols=(7,8,9,10,11)  +
+     cfor="%8.3f %8.3f %8.3f %8.3f %8.3f %8.3f"
+Beginning VICAR task ibis
+ 
+Number of Rows:10  Number of Columns: 11      
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:10
++--------+--------+--------+--------+--------
+      C:7      C:8      C:9     C:10     C:11
++--------+--------+--------+--------+--------
+  16.741   42.712   60.454   60.454    0.000 
+  73.490   33.665  108.156  108.156    0.000 
+   9.444   70.787   81.231   81.231    0.000 
+  85.306   24.502  110.807  110.807   -0.000 
+  56.576   37.641   95.217   95.217   -0.000 
+  77.008   75.125  153.134  153.134   -0.000 
+  67.835   81.813  150.648  150.648    0.000 
+  36.139   55.427   92.566   92.566   -0.000 
+  85.643   69.123  155.765  155.765   -0.000 
+  73.019    7.134   81.154   81.154   -0.000 
+end-proc
+let $echo="yes"
+disable-log

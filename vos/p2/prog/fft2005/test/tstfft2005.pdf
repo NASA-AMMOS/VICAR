@@ -1,0 +1,221 @@
+procedure
+parm    mode    type=keyword count=(0:1) valid=(batch,nobatch,inter) default=batch
+! Sep 18, 2013 - RJB
+! TEST SCRIPT FOR FFT2005
+! tests REAL images
+!
+! Vicar Programs:
+!       gen list f2 ccomp fft22 fftflip wiener
+!       difpic hist
+! 
+! External Programs:
+!   <none>
+!
+! Parameters:
+!   mode - method for processing: 
+!       1) batch provides no xvd display
+!       2) interactive or nobatch is used for xvd 
+!           display requiring user interaction.
+!           
+!
+! Requires NO external test data: 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+refgbl $echo
+refgbl $autousage
+body
+
+enable-log
+
+let $autousage = "none"
+let _onfail="stop"
+let $echo="yes"
+
+! TEST SCRIPT FOR fft2005
+!gen yya nl=64 ns=64 ival=0 linc=1 sinc=1 modulo=2 'real !checkerboard
+!gen yyb nl=64 ns=64 ival=0 linc=1 sinc=0 modulo=2 'real !horizontal bars
+!gen yyc nl=64 ns=64 ival=0 linc=0 sinc=1 modulo=2 'real !vertical bars
+gen yya nl=64 ns=64 ival=0 linc=1 sinc=1 modulo=6 'real
+gen yyb nl=64 ns=64 ival=0 linc=1 sinc=3 modulo=8.3 'real
+gen yyc nl=64 ns=64 ival=0 linc=1 sinc=6 modulo=12.7 'real
+!
+! TEST 1 - 3 simple FFTS
+!
+f2 yya yyax func=("in1*51")
+fft2005 yyax yya1 'quadswap
+ccomp yya1 (yya1a,yya1p) 
+list yyax size=(1,1,10,10)
+list yya1a size=(28,28,10,10)       !amplitude
+list yya1p size=(28,28,10,10)       !phase
+
+f2 yyb yybx func=("in1*16")
+fft2005 yybx yyb1 'quadswap
+ccomp yyb1 (yyb1a,yyb1p)
+list yybx size=(1,1,10,10)
+list yyb1a size=(28,28,10,10)       !amplitude
+list yyb1p size=(28,28,10,10)       !phase
+
+f2 yyc yycx func=("in1*13")
+fft2005 yycx yyc1 'quadswap
+ccomp yyc1 (yyc1a,yyc1p)
+list yycx size=(1,1,10,10)
+list yyc1a size=(28,28,10,10)       !amplitude
+list yyc1p size=(28,28,10,10)       !phase
+!fft2005 yyax yyax1 'quadswap
+!ccomp yyax1 (yyax1a,yyax1p)   !dc is greater
+
+!
+!  TEST 2 - Compare ffts from fft2005 and older fft22
+!
+gen xxb nl=8 ns=8 ival=3 linc=20 sinc=3 'real
+f2 inp=xxb out=xxa func="sqrt(im1)"
+list xxa
+
+! - comparison run, shows difference in ordering
+! fft22 rows are fft2005 columns, vice versa
+fft22 xxa xxa0
+ccomp xxa0 (xxa0a,xxa0p) 
+fftflip xxa0a xxa1a 
+fft2005 xxa xxa2 'quadswap
+! you can see this better in the following shorter files
+fft22 xxa xxb1 size=(2,3,4,2) 'forward 'comp
+list xxb1
+fft2005 xxa xxb2 size=(2,3,4,2) 'forward 'comp
+list xxb2
+!inverse it producing a real image
+fft2005 xxb2 xxc2 size=(1,1,4,2) 'inverse 'real
+list xxc2
+! inverse it producing a byte image
+fft2005 xxb2 xxc3 size=(1,1,4,2) 'inverse 'byte
+list xxc3
+
+! TEST 3 - amt case FFT of 3375 x 3648
+!           with wiener restoration
+! xxa = xxg xxb=xxh xxc=xxi xxd=xxi xxp=xxp xxo=xxo
+gen xxf nl=3375 ns=3648 ival=0 linc=0 sinc=0 'byte
+!the following puts a 1 in center
+f2 inp=xxf out=xxp func="(line==1688)*(samp==1825)"
+list xxp sl=1686 ss=1823 nl=5 ns=5 'zer
+!gen a nice gentle brightening wedge
+gen xxg nl=3375 ns=3648 ival=1 linc=2 sinc=1 'half
+! xxoa amplitude, xxop phase
+fft2005 xxp xxo 
+fft2005 xxp xxq 'quadswap
+ccomp xxq (xxqa,xxqp)  
+fft2005 xxg xxh 'quadswap
+ccomp xxh (xxha,xxhp) 
+list xxha size=(1682,1819,10,10)        ! center at (1688,1825)
+
+! Now do wiener restoration
+wiener (xxh,xxo) out=xxi option=direct SN=30.0
+ccomp xxi (xxia,xxip) 
+list xxia  size=(1682,1819,10,10)       ! center at (1688,1825)
+
+! The following should abend
+let _onfail="continue"
+fft2005 xxi xxj 'inverse 'half 'quadswap
+let _onfail="stop"
+list xxj sl=1686 ss=1823 nl=5 ns=5
+
+list xxj sl=0 ss=0 nl=5 ns=5
+list xxj sl=3371 ss=0 nl=5 ns=5
+list xxj sl=0 ss=3644 nl=5 ns=5
+list xxj sl=3371 ss=3644 nl=5 ns=5
+
+
+
+! TEST 4 - test insect parm, odd psf, even x odd image
+! xxa = xxm xxp=xxn 
+gen xxm nl=3 ns=3 ival=0 linc=0 sinc=0 'byte
+f2 inp=xxm out=xxn func="(line==2)*(samp==2)"
+list xxn 'zer
+
+fft2005 xxn xxo2 insect=(3375,3648)
+! xxo from Test 2
+difpic (xxo,xxo2)
+
+! TEST 5 - test insect parm, even psf, even x odd image
+! xxa = xxr xxp=xxs xxo2=xxt
+gen xxr nl=4 ns=4 ival=0 linc=0 sinc=0 'byte
+f2 inp=xxr out=xxs func="(line==3)*(samp==3)"
+list xxs 'zer
+
+fft2005 xxs xxt insect=(3375,3648)
+! xxo from wiener
+difpic (xxo,xxt)
+
+!SKIP THE FOLLOWING IF BATCH
+
+if (mode = "nobatch" or mode = "inter")
+! TIMING TEST  I
+
+gen wwb nl=2048 ns=2048 ival=3 linc=20 sinc=3 'real
+f2 inp=wwb out=wwc func="sqrt(im1)"
+
+datetime
+fft22 wwc wwd 'forward 'comp
+datetime
+fft2005 wwc wwe 'forward 'comp
+datetime
+
+! TIMING TEST  II
+
+gen vvb nl=1232 ns=1232 ival=3 linc=20 sinc=3 'real
+f2 inp=vvb out=vvc func="sqrt(im1)"
+
+datetime
+fft22 vvc vvd 'forward 'comp
+datetime  
+fft2005 vvc vve  'forward 'comp
+datetime
+
+! TIMING TEST  III
+
+gen uub nl=3375 ns=3648 ival=3 linc=20 sinc=3 'real
+f2 inp=uub out=uuc func="sqrt(im1)"
+
+datetime
+fft22 uuc uud 'forward 'comp
+datetime
+fft2005 uuc uud 'forward 'comp
+datetime
+
+end-if
+
+
+! ACCURACY TEST  I
+
+gen iib nl=2048 ns=2048 ival=3 linc=20 sinc=3 'real
+f2 inp=iib out=iia func="sqrt(im1)"
+
+fft22 iia iib 'forward 'comp
+fft22 iib iic 'inverse 'real
+f2 inp=(iia,iic) out=iid func="abs(im1-im2)"
+hist iid
+
+! ACCURACY TEST  II
+
+gen jjb nl=2048 ns=2048 ival=3 linc=20 sinc=3 'real
+f2 inp=jjb out=jja func="sqrt(im1)"
+
+fft2005 jja jjb 'forward 'comp
+fft2005 jjb jjc 'inverse 'real
+f2 inp=(jja,jjc) out=jjd func="abs(im1-im2)"
+hist jjd
+
+! ACCURACY TEST  III - odd factor set
+
+gen kkb nl=29 ns=1155 ival=3 linc=20 sinc=3 'real
+f2 inp=kkb out=kka func="sqrt(im1)"
+
+fft2005 kka kkb 'forward 'comp
+fft2005 kkb kkc 'inverse 'real
+f2 inp=(kka,kkc) out=kkd func="abs(im1-im2)"
+hist kkd
+
+theend>
+
+disable-log
+
+let $echo="no"
+end-proc

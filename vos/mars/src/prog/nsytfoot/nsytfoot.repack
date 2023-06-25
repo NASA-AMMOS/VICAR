@@ -1,0 +1,5 @@
+$ vpack nsytfoot.com -mixed -
+	-s nsytfoot.cc -
+	-i nsytfoot.imake -
+	-p nsytfoot.pdf
+$ Exit

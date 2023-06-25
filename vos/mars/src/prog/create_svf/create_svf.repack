@@ -1,0 +1,4 @@
+$ vpack create_svf.com -mixed -
+	-s create_svf.sh -
+	-i create_svf.imake
+$ Exit

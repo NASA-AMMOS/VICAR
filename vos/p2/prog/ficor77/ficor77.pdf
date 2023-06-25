@@ -398,6 +398,7 @@ Revisions:
                      CALL OPSCALE(ICAM,IFILT,IPLAN,ISPEED,MAXDN,NC,IBUG,
                                                    1
                      Warning: Type mismatch in argument 'speed' at (1); passed INTEGER(4) to REAL(4)
+  2021-11-02 WLB - IDS-9132 - Enhanced to read new labels from RAV PDART.
 
 RESTRICTIONS:
 

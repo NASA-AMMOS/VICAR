@@ -1,0 +1,20 @@
+#define PROGRAM marsmesh
+
+#define MODULE_LIST marsmesh.cc convert_frames.cc xyz_to_mesh.cc write_label_pds.cc image_processing.cc WriteMTL.cc
+#define INCLUDe_LIST convert_frames.h xyz_to_mesh.h write_label_pds.h image_processing.h WriteMTL.h
+
+#define MAIN_LANG_C_PLUS_PLUS
+#define MARSLIB
+
+#define USES_C_PLUS_PLUS
+#define USES_ANSI_C
+
+#define LIB_TAE_NOSHR
+#define LIB_RTL_NOSHR
+#define LIB_P2SUB
+#define LIB_MARSSUB
+#define LIB_FORTRAN
+#define LIB_XERCES
+#define LIB_CRUMBS
+#define LIB_PDS
+#define LIB_MOTIF

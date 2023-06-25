@@ -1,0 +1,15 @@
+let $autousage = "no"
+tvwait
+Beginning VICAR task tvwait
+
+Testing VWAIT subroutine C interface
+
+**suspend execution for approximately 10-seconds
+It generally should be 10 or 11 seconds
+Time interval was approximately  10 seconds
+
+Testing VWAIT subroutine Fortran interface
+
+**suspend execution for approximately 10-seconds
+Time interval was approximately  10 seconds
+disable-log

@@ -72,7 +72,7 @@ ibis-list xxxaggo2
 ! case showing mix of types
 
 ibis-gen xxxa nc=2 nr=1 format=("A5","A5","A5","A5","A5","DOUB")
-acopin (ct/aggrg2.dat,xxxa) cols=(1,2,3,4,5,6) lead_rm=2
+acopin (aggrg2.dat,xxxa) cols=(1,2,3,4,5,6) lead_rm=2
 aggrg2 xxxa xxxa2 AGCOL=1 AREA=4 BYAR=(2,3) SUMCOL=6
 ibis-list xxxa 'format
 ibis-list xxxa2 'format

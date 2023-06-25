@@ -12,6 +12,13 @@ C
 
       INTEGER*4 IDN,NPIX
       REAL*8 SUM,SUMSQ,DMEAN,DN
+      LOGICAL NPIX_OVERFLOW
+      LOGICAL NPTS_OVERFLOW
+      INTEGER*4 MAX_INT4
+
+      NPIX_OVERFLOW = .FALSE.
+      NPTS_OVERFLOW = .FALSE.
+      MAX_INT4 = 2147483647
 
       SUMSQ=0.0D0
       SUM=0.0D0
@@ -19,11 +26,30 @@ C
 
       DO IDN=INMIN,INMAX
          NPIX = HIST(IDN)
+         IF (NPIX .LT. 0) THEN
+            NPIX = MAX_INT4
+            NPIX_OVERFLOW = .TRUE.
+            WRITE(*,*) "**** NPIX_OVERFLOW at DN", IDN
+         ENDIF
 	 DN = IDN
          SUM = SUM + NPIX*DN
          SUMSQ = SUMSQ + NPIX*DN*DN
          NPTS = NPTS + NPIX
+         IF (NPTS .LT. 0) THEN
+            NPTS = MAX_INT4
+            NPTS_OVERFLOW = .TRUE.
+         ENDIF
       END DO
+
+      IF (NPIX_OVERFLOW) THEN
+         CALL XVMESSAGE('**** WARNING: STATI NPIX OVERFLOW ****', ' ')
+         CALL XVMESSAGE('THE NOTED DN SHOULD BE EXCLUDED FROM HISTO',
+     +   ' ')
+      ENDIF
+      IF (NPTS_OVERFLOW) THEN
+         CALL XVMESSAGE('**** WARNING: STATI NPTS OVERFLOW ****', ' ')
+         CALL XVMESSAGE('**** DO NOT TRUST HISTO STATS ****', ' ')
+      ENDIF
 
       IF (NPTS.GT.0) THEN
          DMEAN = SUM/NPTS

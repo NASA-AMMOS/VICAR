@@ -14,16 +14,16 @@ enable-log
 
 local PATH TYPE=STRING 
 
-#if ($SYSCHAR(1)="VAX_VMS")
-#  let PATH = "WMS_TEST_WORK:[TESTDATA.GLL]"
-#  dcl del diff.out;*
-#  dcl del test*.img*
-#else
-  let PATH = "/project/test_work/testdata/gll/"
+!#if ($SYSCHAR(1)="VAX_VMS")
+!#  let PATH = "WMS_TEST_WORK:[TESTDATA.GLL]"
+!#  dcl del diff.out;*
+!#  dcl del test*.img*
+!#else
+  let PATH = "data/"
   ush unalias rm
-#  ush rm -f diff?.out
+!#  ush rm -f diff?.out
   ush rm -f test*.img*
-#end-if
+!#end-if
 
 !
 !cellgen OUT=C1515 NL=15 NS=15 CSIZE=5
@@ -44,41 +44,41 @@ genthis OUT=C1515 NL=15 NS=15 DN=(1,1,1,1,1,2,2,2,2,2,3,3,3,3,3, +
                                   7,7,7,7,7,8,8,8,8,8,9,9,9,9,9)
 !
 zfill C1515 OUT 
-list OUT
+list OUT 'nousrtim
 zfill C1515 OUT REPL=5 
-list OUT
+list OUT 'nousrtim
 zfill C1515 OUT REPL=1 
-list OUT
+list OUT 'nousrtim
 zfill C1515 OUT REPL=6 
-list OUT
+list OUT 'nousrtim
 zfill C1515 OUT REPL=5 'DENSE
-list OUT
+list OUT 'nousrtim
 zfill C1515 OUT NSW=3 NLW=3 REPL=5
-list OUT
+list OUT 'nousrtim
 zfill C1515 OUT NSW=5 NLW=5 REPL=5
-list OUT
+list OUT 'nousrtim
 zfill C1515 OUT NSW=5 NLW=5 REPL=5 EXCL=2
-list OUT
+list OUT 'nousrtim
 zfill C1515 OUT NSW=7 NLW=6 REPL=5
-list OUT
+list OUT 'nousrtim
 zfill C1515 OUT NSW=7 NLW=6 REPL=5 EXCL=2
-list OUT
+list OUT 'nousrtim
 zfill C1515 OUT NSW=1 NLW=5 REPL=5
-list OUT
+list OUT 'nousrtim
 zfill C1515 OUT NSW=5 NLW=1 REPL=5
-list OUT
+list OUT 'nousrtim
 zfill C1515 OUT REPL=257 'DENSE
-list OUT
+list OUT 'nousrtim
 zfill C1515 (OUT,MSK) REPL=6
-list OUT
-list MSK
+list OUT 'nousrtim
+list MSK 'nousrtim
 zfill C1515 (OUT,MSK) REPL=6 NSW=5 NLW=5
-list OUT
-list MSK
+list OUT 'nousrtim
+list MSK 'nousrtim
 zfill C1515 OUT REPL=5 SIZE=(5,5,4,4)
-list OUT
+list OUT 'nousrtim
 zfill C1515 OUT REPL=5 SIZE=(4,4,7,7)
-list OUT
+list OUT 'nousrtim
 !
 let $echo="no"
 write ""
@@ -92,7 +92,7 @@ write "*                                             *"
 write "***********************************************"
 
 let $echo="yes"
- adespike inp=&"PATH"s0539939965.r out=test1.img
+ adespike inp=&"PATH"s0539939965.r.vic out=test1.img
  zfill inp=test1.img out=test2.img 'bin
 #gedrlist|stdout=in.out| test1.img nlh=800
 #gedrlist|stdout=out.out| test2.img nlh=800
@@ -123,4 +123,7 @@ write "*****************************************************"
 #let $echo="no"
 
 disable-log
+
+ush rm C1515 MSK OUT test1.img test2.img test3.img
+
 end-proc

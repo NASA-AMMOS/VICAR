@@ -17,6 +17,8 @@ refgbl $autousage
 ! Requires NO external test data: 
 
 body
+enable-log
+
 let $autousage="none"
 let _onfail="stop"
 let $echo="yes"
@@ -27,55 +29,60 @@ let $echo="yes"
 !
 gen qsara NL=10 NS=10 IVAL=0 LINC=0 SINC=0
 qsar INP=qsara OUT=qsarao AREA=( 2 4 8 3 111 )
-list qsarao 'ZEROES
+list qsarao 'ZEROES 'nousrtim
 !
 !  TEST 2  -try SL and SS not equal to 1.
 !
 gen qsarb NL=10 NS=10
-list qsarb
+list qsarb 'nousrtim
 qsar INP=qsarb OUT=qsarbo SIZE=(2,3,8,7) AREA=(4,6,3,1,100) 
-list qsarbo
+list qsarbo 'nousrtim
 !
 !  TEST 3 - try with no optional parameters. should do a copy.
 !
 qsar qsarb qsarb1
-list qsarb1
+list qsarb1 'nousrtim
 !
 !  TEST 4 - try out the cutoff at 0 and 255.
 !
 qsar qsarb qsarb2 AREA=( 2 2 5 5 -3,   5 5 5 5 240 )
-list qsarb2     
+list qsarb2      'nousrtim
 !
 !  Repeat above tests for halfword images.
 !  TEST 5 - first make a rectangle against a zero background.
 !
 gen qsard NL=10 NS=10 IVAL=0 LINC=0 SINC=0 'HALF
 qsar INP=qsard OUT=qsardo AREA=( 2 4 8 3 111 )
-list qsardo 'ZEROES
+list qsardo 'ZEROES 'nousrtim
 !
 !  TEST 6 - try SL and SS not equal to 1.
 !
 gen qsare NL=10 NS=10 'HALF
-list qsare
+list qsare 'nousrtim
 qsar INP=qsare OUT=qsareo SIZE=(2,3,8,7) AREA=(4,6,3,1,100)
-list qsareo
+list qsareo 'nousrtim
 !
 !  TEST 7 - try with no optional parameters. should do a copy.
 !
 qsar qsare qsare1
-list qsare1
+list qsare1 'nousrtim
 !
 !  TEST 8 - try out the cutoff at -32768 and 32767.
 !
 qsar qsare qsare2 AREA=( 2 2 5 5 -32771,   5 5 5 5 32760 )
-list qsare2     
+list qsare2      'nousrtim
 !
 !  TEST 9 - TEST 3D IMAGES
 !
 gen qsar3d 10 10 3 'HALF
-list qsar3d
+list qsar3d 'nousrtim
 qsar INP=qsar3d OUT=qsar3do SIZE=(2,3,8,7) AREA=(4,6,3,1,100)
-list qsar3do
+list qsar3do 'nousrtim
 !
 let $echo="no"
+
+disable-log
+
+ush rm qsar3d qsar3do qsara qsarao qsarb qsarb1 qsarb2 qsarbo qsard qsardo qsare qsare1 qsare2 qsareo
+
 end-proc

@@ -261,6 +261,72 @@ static LblApiElement_typ	LabelTbl[] = {
         LBL_OFFSET(LblProdRequest_typ, CommandedFocalLengthUnit.Valid),
         LBL_NO_RETURN,  LBL_SIZE(CommandedFocalLengthUnit.Value)},
 
+    {"IMAGE_BLENDING_FLAG",        "STRING",       LBL_OPTIONAL,
+        LBL_NO_CONT,    1,  1,  LBL_NULL,
+        LBL_OFFSET(LblProdRequest_typ, ImageBlendingFlag.Value),
+        LBL_OFFSET(LblProdRequest_typ, ImageBlendingFlag.Valid),
+        LBL_NO_RETURN,  LBL_SIZE(ImageBlendingFlag.Value)},
+
+    {"IMAGE_REGISTRATION_FLAG",        "STRING",       LBL_OPTIONAL,
+        LBL_NO_CONT,    1,  1,  LBL_NULL,
+        LBL_OFFSET(LblProdRequest_typ, ImageRegistrationFlag.Value),
+        LBL_OFFSET(LblProdRequest_typ, ImageRegistrationFlag.Valid),
+        LBL_NO_RETURN,  LBL_SIZE(ImageRegistrationFlag.Value)},
+
+    {"INTERFRAME_DELAY",               "INT",     LBL_OPTIONAL,
+        LBL_NO_CONT,    1,  1,  LBL_NULL,
+        LBL_OFFSET(LblProdRequest_typ, InterframeDelay.Value),
+        LBL_OFFSET(LblProdRequest_typ, InterframeDelay.Valid),
+        LBL_NO_RETURN,  LBL_SIZE(InterframeDelay.Value)},
+
+    {"FRAME_RATE",                     "REAL",     LBL_OPTIONAL,
+        LBL_NO_CONT,    1,  1,  LBL_NULL,
+        LBL_OFFSET(LblProdRequest_typ, FrameRate.Value),
+        LBL_OFFSET(LblProdRequest_typ, FrameRate.Valid),
+        LBL_NO_RETURN,  LBL_SIZE(FrameRate.Value)},
+
+    {"FRAME_INDEX",                "INT",     LBL_OPTIONAL,
+        LBL_NO_CONT,    1,  1,  LBL_NULL,
+        LBL_OFFSET(LblProdRequest_typ, FrameIndex.Value),
+        LBL_OFFSET(LblProdRequest_typ, FrameIndex.Valid),
+        LBL_NO_RETURN,  LBL_SIZE(FrameIndex.Value)},
+
+    {"COMMANDED_VIDEO_FRAMES",         "INT",     LBL_OPTIONAL,
+        LBL_NO_CONT,    1,  1,  LBL_NULL,
+        LBL_OFFSET(LblProdRequest_typ, CommandedVideoFrames.Value),
+        LBL_OFFSET(LblProdRequest_typ, CommandedVideoFrames.Valid),
+        LBL_NO_RETURN,  LBL_SIZE(CommandedVideoFrames.Value)},
+
+    {"GOP_FRAME_INDEX",                "INT",     LBL_OPTIONAL,
+        LBL_NO_CONT,    1,  1,  LBL_NULL,
+        LBL_OFFSET(LblProdRequest_typ, GOPFrameIndex.Value),
+        LBL_OFFSET(LblProdRequest_typ, GOPFrameIndex.Valid),
+        LBL_NO_RETURN,  LBL_SIZE(GOPFrameIndex.Value)},
+
+    {"GOP_TOTAL_FRAMES",               "INT",     LBL_OPTIONAL,
+        LBL_NO_CONT,    1,  1,  LBL_NULL,
+        LBL_OFFSET(LblProdRequest_typ, GOPTotalFrames.Value),
+        LBL_OFFSET(LblProdRequest_typ, GOPTotalFrames.Valid),
+        LBL_NO_RETURN,  LBL_SIZE(GOPTotalFrames.Value)},
+
+    {"GOP_OFFSET",                     "INT",     LBL_OPTIONAL,
+        LBL_NO_CONT,    1,  1,  LBL_NULL,
+        LBL_OFFSET(LblProdRequest_typ, GOPOffset.Value),
+        LBL_OFFSET(LblProdRequest_typ, GOPOffset.Valid),
+        LBL_NO_RETURN,  LBL_SIZE(GOPOffset.Value)},
+
+    {"GOP_LENGTH",                     "INT",     LBL_OPTIONAL,
+        LBL_NO_CONT,    1,  1,  LBL_NULL,
+        LBL_OFFSET(LblProdRequest_typ, GOPLength.Value),
+        LBL_OFFSET(LblProdRequest_typ, GOPLength.Valid),
+        LBL_NO_RETURN,  LBL_SIZE(GOPLength.Value)},
+
+    {"START_IMAGE_ID",                 "INT",      LBL_OPTIONAL,
+        LBL_NO_CONT,    1,  1,  LBL_NULL,
+        LBL_OFFSET(LblProdRequest_typ, StartImageId.Value),
+        LBL_OFFSET(LblProdRequest_typ, StartImageId.Valid),
+        LBL_NO_RETURN,  LBL_SIZE(StartImageId.Value)},
+
 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
 
 /***  Table Definitions  ***/

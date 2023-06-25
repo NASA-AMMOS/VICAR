@@ -128,7 +128,7 @@ int SetPseudoMode(env)
   return SUCCESS;
 }
 /************************************************************************/
-SetColorMode(env)
+void SetColorMode(env)
 
   VIDSEnvironment *env;
   
@@ -486,7 +486,7 @@ FileInfo *findFileSlot(env,filename)
  *  does not load the file into the plane, but merely provides a logical
  *  relationship.
  */
-TieImp(imp, file, band)
+void TieImp(imp, file, band)
 
   PlaneInfo	*imp;			/* IMP to tie to file		*/
   FileInfo	*file;			/* info of file			*/
@@ -501,7 +501,7 @@ TieImp(imp, file, band)
 /*  UntieImp breaks the logical connection between a plane and a file that
  *  TieImp sets up.  The plane is left with no associated file.
  */
-UntieImp(imp)
+void UntieImp(imp)
 
   PlaneInfo	*imp;			/* IMP to untie			*/
 
@@ -565,7 +565,7 @@ int PixelSize(format)
  * string to be the same as the destination string.
  */
 
-UpperCase(s, d)
+void UpperCase(s, d)
 
   char *s;				/* source string		*/
   char *d;				/* destination string		*/
@@ -582,7 +582,7 @@ UpperCase(s, d)
 /* SetFileWindow sets the desired display window associated with the
  * specific file.
  */
-SetFileWindow(thePlane, sl, ss, nl, ns)
+void SetFileWindow(thePlane, sl, ss, nl, ns)
 
   PlaneInfo		*thePlane;	/* File whose window we will set      */
   int			sl,ss,nl,ns;	/* New window (size field) parameters */

@@ -1,0 +1,5 @@
+$ vpack marscolor.com -mixed -
+	-s marscolor.cc -
+	-i marscolor.imake -
+	-p marscolor.pdf
+$ Exit

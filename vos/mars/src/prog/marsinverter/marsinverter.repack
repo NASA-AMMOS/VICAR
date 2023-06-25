@@ -1,0 +1,5 @@
+$ vpack marsinverter.com -mixed -
+	-s marsinverter.cc -
+	-i marsinverter.imake -
+	-p marsinverter.pdf
+$ Exit

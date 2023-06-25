@@ -24,4 +24,5 @@
 #define LIB_TAE
 #define LIB_P2SUB
 #define LIB_SPICE
+#define LIB_NETWORK
 /************************* End of Imake file ***************************/

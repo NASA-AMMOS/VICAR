@@ -1,0 +1,48 @@
+tsumv
+Beginning VICAR task tsumv
+B should be equal to 100
+b= 100
+B should be equal to 99
+b=  99
+B should be equal to 0
+b=   0
+D should be equal to 510
+d=   510
+D should be equal to 100
+d=   100
+F should be equal to 22222223
+f=   22222223
+H should be approximately equal to 79.750886
+h=  79.750885
+H should be approximately equal to 12.188
+h=  12.188000
+J should be approximately equal to 999999.d8
+j=  1.000E+14
+J should be approximately equal to 110666.d8
+j=  1.107E+13
+L should be equal to 1634
+l=  1634
+L should be equal to 867
+l=   867
+N should be equal to 238
+N= 238
+N should be equal to 250
+N= 250
+F should be equal to 1634
+f=       1634
+B should be equal to 1
+b=   1
+F should be equal to 93000
+f=      93000
+F should be equal to 93100
+f=      93100
+D should be equal to -31000
+d=-31000
+J should be approximately equal to 79.750886
+j=  79.750885
+H should be approximately equal to 999999.d8
+h=  1.000E+14
+Test the C interface
+Output from zsumv = 640100
+Correct value is 640100
+disable-log

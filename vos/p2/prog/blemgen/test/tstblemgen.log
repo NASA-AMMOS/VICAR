@@ -1,14 +1,11 @@
-galgen INP=(/project/test_wor+
-k/testdata/mipl/gll/galt1.dat+
-,/project/test_work/te+
-stdata/mipl/gll/galt2.dat,/project/test_work/testd+
-ata/mipl/gll/gal+
-t3.dat,/project/test_work/testdata/mipl/gll/galt4.dat    +
-          /project/test_work/testdata/mipl/gll/galt5.dat,/project/test_work/testdata/mipl/gll/galt6.dat,/project/test_work/testdata+
-/mipl/gll/galt7.dat,/project/test_work/testdata/mipl/gll/galt8.dat              /project/test_work/testdata/mipl/gll/galt9.dat,/pro+
-ject/test_work/testdata/mipl/gll/galt10.dat)  out=(cal.100, sat.100, fit.100, rms.100, dc.100)  offsets=/project/test_work/testdata+
-/mipl/gll/goffsets.img   gain=100 light=3.54 shutter=(0,7,8,9,10,11,12,13,14,15)  'lfwpt error=(0,7) skip=4 numb=(3,3,3,3,3,3,3,3,3+
-,3)
+galgen INP=(data/galt1.dat,da+
+ta/galt2.dat,data/galt3.dat,d+
+ata/galt4.dat         +
+     data/galt5.dat,data/galt6.dat,data/galt7.dat,+
+data/galt8.dat  +
+            data/galt9.dat,data/galt10.dat)  out=(cal.100+
+, sat.100, fit.100, rms.100, dc.100)  offsets=data/goffsets.img   gain=100 light=3.54 shutter=(0,7,8,9,10,11,12,13,14,15)  'lfwpt e+
+rror=(0,7) skip=4 numb=(3,3,3,3,3,3,3,3,3,3)
 Beginning VICAR task galgen
 GALGEN version MAY 22, 2003
 ... No Dark current file specified
@@ -457,19 +454,19 @@ NUMBER OF ELEMENTS =      1499
 BLEMGEN done.
   if ($syschar(1) = "VAX_VMS")
   else
-    let s1   = "/project/test_work/testdata/cassini/iss/sum2.1"
-    let s2   = "/project/test_work/testdata/cassini/iss/sum2.2"
-    let s7   = "/project/test_work/testdata/cassini/iss/sum2.7"
-    let s8   = "/project/test_work/testdata/cassini/iss/sum2.8"
-    let s14  = "/project/test_work/testdata/cassini/iss/sum2.14"
-    let s15  = "/project/test_work/testdata/cassini/iss/sum2.15"
-    let s24  = "/project/test_work/testdata/cassini/iss/sum2.24"
-    let s25  = "/project/test_work/testdata/cassini/iss/sum2.25"
-    let s36  = "/project/test_work/testdata/cassini/iss/sum2.36"
-    let s37  = "/project/test_work/testdata/cassini/iss/sum2.37"
-    let sol  = "/project/test_work/testdata/cassini/iss/sol.dat"
+    let s1   = "data/sum2.1.dat"
+    let s2   = "data/sum2.2.dat"
+    let s7   = "data/sum2.7.dat"
+    let s8   = "data/sum2.8.dat"
+    let s14  = "data/sum2.14.dat"
+    let s15  = "data/sum2.15.dat"
+    let s24  = "data/sum2.24.dat"
+    let s25  = "data/sum2.25.dat"
+    let s36  = "data/sum2.36.dat"
+    let s37  = "data/sum2.37.dat"
+    let sol  = "data/sol.dat"
   end-if
-picsum (/project/test_work/testdata/cassini/iss/sum2.1 /project/test_work/testdata/cassini/iss/sum2.2 ) cgdc
+picsum (data/sum2.1.dat data/sum2.2.dat ) cgdc
 Beginning VICAR task picsum
 PICSUM version 14 Feb 2011
 GROUP_BLOCKS VALUE MISSING
@@ -490,7 +487,7 @@ QUANTIZATION_FACTOR_INDEX VALUE MISSING
 MISSING_LINES VALUE MISSING
 SCLK=        2 CAM=ISSNA GAIN=100K  MODE=SUM2 EXP=      0 FILT1=RED   FILT2=CLR
 PICSUM task completed
-picsum (/project/test_work/testdata/cassini/iss/sum2.7 /project/test_work/testdata/cassini/iss/sum2.7 ) cg1
+picsum (data/sum2.7.dat data/sum2.7.dat ) cg1
 Beginning VICAR task picsum
 PICSUM version 14 Feb 2011
 GROUP_BLOCKS VALUE MISSING
@@ -511,7 +508,7 @@ QUANTIZATION_FACTOR_INDEX VALUE MISSING
 MISSING_LINES VALUE MISSING
 SCLK=        7 CAM=ISSNA GAIN=100K  MODE=SUM2 EXP=     33 FILT1=RED   FILT2=CLR
 PICSUM task completed
-picsum (/project/test_work/testdata/cassini/iss/sum2.14 /project/test_work/testdata/cassini/iss/sum2.15 ) cg2
+picsum (data/sum2.14.dat data/sum2.15.dat ) cg2
 Beginning VICAR task picsum
 PICSUM version 14 Feb 2011
 GROUP_BLOCKS VALUE MISSING
@@ -532,7 +529,7 @@ QUANTIZATION_FACTOR_INDEX VALUE MISSING
 MISSING_LINES VALUE MISSING
 SCLK=       15 CAM=ISSNA GAIN=100K  MODE=SUM2 EXP=     67 FILT1=RED   FILT2=CLR
 PICSUM task completed
-picsum (/project/test_work/testdata/cassini/iss/sum2.24 /project/test_work/testdata/cassini/iss/sum2.25 ) cg3
+picsum (data/sum2.24.dat data/sum2.25.dat ) cg3
 Beginning VICAR task picsum
 PICSUM version 14 Feb 2011
 GROUP_BLOCKS VALUE MISSING
@@ -553,7 +550,7 @@ QUANTIZATION_FACTOR_INDEX VALUE MISSING
 MISSING_LINES VALUE MISSING
 SCLK=       25 CAM=ISSNA GAIN=100K  MODE=SUM2 EXP=    133 FILT1=RED   FILT2=CLR
 PICSUM task completed
-picsum (/project/test_work/testdata/cassini/iss/sum2.36 /project/test_work/testdata/cassini/iss/sum2.37 ) cg4
+picsum (data/sum2.36.dat data/sum2.37.dat ) cg4
 Beginning VICAR task picsum
 PICSUM version 14 Feb 2011
 GROUP_BLOCKS VALUE MISSING
@@ -575,7 +572,7 @@ MISSING_LINES VALUE MISSING
 SCLK=       37 CAM=ISSNA GAIN=100K  MODE=SUM2 EXP=    267 FILT1=RED   FILT2=CLR
 PICSUM task completed
 galgen (cg1,cg2,cg3,cg4) out=(cal,sat,err,rms,dc) dc=cgdc  +
-        offset=/project/test_work/testdata/cassini/iss/sol.dat light=5.1
+        offset=data/sol.dat light=5.1
 Beginning VICAR task galgen
 GALGEN version MAY 22, 2003
 ... Dark current file specified
@@ -728,7 +725,7 @@ F2 calculating every pixel
 FUNCTION EVALUATED 262144 TIMES
 list sat2 (5,5,12,12) 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
  Task:PICSUM    User:          Date_Time:                        
@@ -1014,7 +1011,7 @@ F2 calculating every pixel
 FUNCTION EVALUATED 262144 TIMES
 list sat2 (1,1,5,5) 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
  Task:PICSUM    User:          Date_Time:                        
@@ -1603,7 +1600,7 @@ The 9's will become blemishes, the 1's won't
 let $becho="yes"
 list g 'dump 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
  Task:GENTHIS   User:          Date_Time:                        
@@ -1682,7 +1679,7 @@ Beginning VICAR task size
  SIZE task completed
 list v 'dump 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
  Task:PICSUM    User:          Date_Time:                        
@@ -1708,4 +1705,8 @@ Number of low-full-well-pixels=          0
 Total number of blemishes=          0
 Histogram of low-full-well pixels
 BLEMGEN done.
+ush rm blem dc cal v u t blem.tmp d cal2 g r e s
+ush rm c sat2 bx b rms err sat cg4 cg3 cg2 cg1
+ush rm cgdc blem.100. dc.100 cal.100 rms.100
+ush rm fit.100 sat.100
 disable-log

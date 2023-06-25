@@ -16,7 +16,7 @@ write "Generate a VICAR file"
 if ($syschar(1) = "VAX_VMS")
    ddd2vic dev:[bam059.test]M12-963.DDD ddd.vic
 else
-   ddd2vic /home/bam/porting/sun-solr/M12-963.DDD ddd.vic
+   ddd2vic data/M12-963.DDD ddd.vic
 end-if
 
 write "Now list out the labels and a chunk of the data"
@@ -28,8 +28,8 @@ if ($syschar(1) = "VAX_VMS")
    label-list dev:[bam059.test]M12.VIC 'nousrtim
    list dev:[bam059.test]M12.VIC nl=10 ns=5 'nousrtim
 else
-   label-list /home/bam/porting/sun-solr/M12.VIC 'nousrtim
-   list /home/bam/porting/sun-solr/M12.VIC nl=10 ns=5 'nousrtim
+   label-list data/M12.VIC 'nousrtim
+   list data/M12.VIC nl=10 ns=5 'nousrtim
 end-if
 if ($syschar(1) = "UNIX")
   ush rm ddd.vic

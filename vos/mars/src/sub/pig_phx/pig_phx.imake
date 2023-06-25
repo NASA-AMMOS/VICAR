@@ -1,0 +1,13 @@
+#define SUBROUTINE pig_phx
+
+#define MODULE_LIST  PigFileModelPHX.cc PigPointPHXssiCamera.cc PigPointPHXssiCamera3dof.cc \
+PigPointPHXracCamera.cc PigPointPHXracCamera6dof.cc PigPHX.cc \
+PigRoverStateManagerPHX.cc PigLabelModelPHX.cc PigConfigMgrTempPHX.cc
+
+#define MARS_SUBLIB
+
+#define USES_C_PLUS_PLUS
+
+#define LIB_P2SUB
+#define LIB_XERCES
+

@@ -1,0 +1,19 @@
+#define SUBROUTINE mars_support
+
+#define LIB_OMP
+
+#define MODULE_LIST mars_setup.cc mars_read_filelist.cc mars_get_filelist.cc \
+ mars_apply_navtable.cc mars_create_pointing_model.cc \
+ mars_get_pointing_corrections.cc mars_get_azel_minmax.cc mars_get_az_range.cc \
+ mars_print_inputs.cc mars_read_inputs.cc mars_footprints.cc \
+ mars_write_text.cc mars_read_rsf.cc mars_setup_coords.cc mars_grow_window.cc \
+ mars_create_tile_res_map.cc mars_mosaic_bbox.cc
+
+#define MARS_SUBLIB
+
+#define USES_C_PLUS_PLUS
+
+#define LIB_P2SUB
+#define LIB_XERCES
+
+#define STD_CPP_11

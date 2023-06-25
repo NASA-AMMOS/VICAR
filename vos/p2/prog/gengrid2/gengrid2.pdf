@@ -1,0 +1,123 @@
+procedure help=*
+ !
+ parm out type=string count=1
+ parm ncol type=int count=1 default=4
+ parm nah type=int count=1
+ parm nav type=int count=1
+ parm l1 type=real count=1
+ parm s1 type=real count=1
+ parm l2 type=real count=1
+ parm s2 type=real count=1
+ parm l3 type=real count=1
+ parm s3 type=real count=1
+ parm l4 type=real count=1
+ parm s4 type=real count=1
+ 
+ !
+
+local nahp1 int
+local navp1 int
+local nahxnav int
+local hinc real
+local vinc real
+
+body
+
+let nahp1=nah+1
+let navp1=nav+1
+let nahxnav=nahp1*navp1
+
+ibis-gen &out version="ibis-2" org="column" nc=&ncol +
+     nr=&nahxnav deffmt=DOUB
+
+mf3 &out func="c3=@int((@index-1)/&nahp1)/&nav"
+mf3 &out func="c4=@mod(@index+&nah,&nahp1)/&nah"
+mf3 &out func="c5=c3*(&l3-(&l1))+(&l1)$c6=c3*(&l4-(&l2))+(&l2)"
+mf3 &out func="c1=c4*(c6-c5)+c5"
+
+mf3 &out func="c7=c4*(&s2-(&s1))+(&s1)$c8=c4*(&s4-(&s3))+(&s3)"
+mf3 &out func="c2=c3*(c8-c7)+c7"
+   
+mf3 &out func="c3=0$c4=0$c5=0$c6=0$c7=0$c8=0$"
+
+end-proc
+!
+! HELP TEXT FOR GENGRID2
+.TITLE
+GENGRID2 - Procedure to generate a skewed grid in an ibis file
+.HELP
+PURPOSE
+
+     GENGRID2 creates an ibis file containing a grid in the first two
+columns.  The user can select the number of columns if more than four
+are desired (all will be double precision).  If other types of columns
+are desired (say character), they can be joined in the usual way.  In 
+addition a skew can be added horizontally or vertically.
+
+     Bilinear interpolation is used to generate the skewed grid between 
+the four points.
+
+     To turn the grid into a geom grid, two more columns must be
+provided by the user, usually by mapping the first two columns with
+PIXMAP using a reference (mapped) image, or by applying PICMTCH4 to
+a pair of images.
+	   
+CALL
+     gengrid2 output parms
+  WHERE:
+     output       is the output ibis table containing a grid in two columns
+     parms        specify the size and spacing of the grid
+
+
+  
+OPERATION
+
+The ibis file is generated with IBIS-GEN and the grid points are calculated
+by the routine MF3.
+
+Bilinear interpolation is used to generate the skewed grid between 
+the four points.
+
+PERFORMANCE
+
+A 1000 x 1000 grid should only take a few seconds.
+
+.PAGE
+Restrictions
+------------
+
+The ibis file must have at least 8 columns.
+
+.PAGE
+Original Programmer: A. L. Zobrist, 04 Sep. 2002
+Current Cognizant Programmer: A. L. Zobrist
+.LEVEL1
+.VARI OUT
+Output ibis file name
+.VARI ncol
+Number of columns to generate
+.VARI nah
+Grid number areas horizontally
+.VARI nav
+Grid number areas vertically
+.VARI l1
+upper left corner, line
+.VARI s1
+upper left corner, sample
+.VARI l2
+upper right corner, line
+.VARI s2
+upper right corner, sample
+.VARI l3
+lower left corner, line
+.VARI s3
+lower left corner, sample
+.VARI l4
+lower right corner, line
+.VARI s4
+lower right corner, sample
+.LEVEL2
+.VARI l1
+Bilinear interpolation is used to generate the skewed grid between 
+the four points.
+.END

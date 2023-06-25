@@ -13,11 +13,13 @@ procedure help=*
 refgbl $echo
 
 body
+enable-log
 
 let _onfail="continue"
 let $echo="yes"
 tvgrcam
 
+disable-log
 end-proc
 .title TSTVGRCAM.PDF - unit test for subroutine VGRCAM
 .end

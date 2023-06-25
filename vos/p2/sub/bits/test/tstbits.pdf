@@ -1,6 +1,8 @@
 procedure
 refgbl $echo
 body
+enable-log
+
 let _onfail="continue"
 let $echo="yes"
 ! First, test the internal tzbits help mode.  Should display a list
@@ -22,4 +24,6 @@ tzbits lobit=0 hibit=15
 ! Extract an arbitrary portion of the full word
 tzbits lobit=3 hibit=23
 let $echo="no"
+
+disable-log
 end-proc

@@ -1,0 +1,5 @@
+$ vpack marsdebayer.com -mixed -
+	-s marsdebayer.cc -
+	-i marsdebayer.imake -
+	-p marsdebayer.pdf
+$ Exit

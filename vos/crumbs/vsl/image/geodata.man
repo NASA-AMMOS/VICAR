@@ -1,0 +1,196 @@
+\^GEODATA(XX)\^
+
+\^NAME\^
+	geodata - C++ class library for georeferencing images (vesa/vsl)
+
+\^SYNOPSIS\^
+	\^#include "/ware/proj/development/include/image/geodata.h"\^
+		or
+	#include "image/geodata.h"
+		with
+	cc -I../../$LIB_DIR/include
+
+\^DESCRIPTION\^
+	\^geodata\^ provides a C++ library of routines to work with various 
+	types of georeferenced image data.  A georeferenced image, of 
+	base class GeoImage, contains a pointer to a GeoData object 
+	which implements the georeferencing functions.  If the image 
+	object is of type Image or if the GeoData pointer is NULL, the 
+	image is considered to NOT be georeferenced.
+
+\^GEOREFERENCING\^
+	Georeferencing, in this application, refers specifically to the
+	ability to map back and forth from lat/long to x/y, such that an
+	image pixel can be tied to a geolocation on Earth or some other
+	planet.  For convention, longitude west of the central meridian
+	is negative (-) and east is positive (+).  Latitudes north of 
+	the equator are positive (+) and south of the equator are
+	negative(-).  Images which cross the -180 meridian are very
+	challenging and the specific methods must address this problem.
+
+	Many methods exist to do georeferencing and the GeoData is a base
+	class for derived classes implementing specific methods.  In
+	addition to latitude and longitude, an additional method of
+	referring to a location on the Earth as available.  This is called
+	UTM (Universal Transverse Mercator) which utilizes easting and 
+	northing values.  Easting is distance east (+) or west (-) from
+	the center of a quadrant on the Earth, in meters, and northing is
+	distance north(+) or south(-) from the equator.  These units are
+	only valid for the Earth, or at least the mapping from lat/long
+	to UTM and back is unique for each planet or body.  \_NOTE: due to\_
+	\_lack of a requirement for this, the UTM methods have not been\_
+	\_implemented and always return 0.0.  If a requirement arises for\_
+	\_this type of data, the stubs are present to implement them.\_
+
+	Georeferencing is generally based on a projection with possibly 
+	a datum thrown in to confuse the issue.  A projection is merely
+	a mapping from spherical to planar coordinates and many types
+	are possible.  These can include Mercator, geographic (lat/long),
+	polar, and others.  These fall into a few general categories
+	based on such things as whether the lines of latitude are parallel
+	in the planar space, whether regions of equal area on the globe map
+	to equal areas on the plane, etc.  The datum, as far as I can tell,
+	handles the fact that most planets are not spheres so adjustments
+	are needed to correct for that.  Don't ask me for more details.
+	However, due to the prevalence of projections and datums, methods
+	for accessing these features are available, in addition to the
+	coordinate space conversion methods.  The types of projections
+	and datums are listed in the file geodatatypes.h.
+
+\^NOTES\^
+	The following methods are found in the GeoData base class.  Most
+	are virtual and some must be implemented in the derived class.
+	Typically, as an image file is being read in, the filetype
+	specific reader knows whether or not the image is georeferenced.
+	It tests the image object to see if it is a GeoImage and, if so,
+	instantiates the appropriate type of GeoData subclass, populates
+	it with data from the file, and attaches it to the image.  This
+	will not handle individual filetypes which could have different
+	types of georeferencing data unless the specific reader allows
+	for it.  In any case, once the image is read in, the original
+	filetype is generally ignored and the georeferencing data is
+	hidden.  Thus, in general, usage should be limited to any of 
+	the coordinate space transforms and the projection and datum
+	access methods which are available in any derived class.
+
+	virtual	int	\^data_class_type\^(void) { return(BASE_GEO_DATA); }
+
+	virtual	char	*\^datum_type_to_string\^(DatumType dt) { 
+			if(datum_strings && dt >= 0 && dt < NUM_DATUM_TYPES) {
+				return(datum_strings[dt]);
+			} else {
+				return("UNKNOWN"); 
+			}
+		}
+	virtual	DatumType	\^datum_type_from_string\^(char *ds) { 
+			int	i;
+			if(datum_strings && ds) {
+				for(i=0; i<NUM_DATUM_TYPES; i++) {
+					if(!strcmp(ds, datum_strings[i])) {
+						return((DatumType)i);
+					}
+				}
+			}
+			return(UNKNOWN); 
+		}
+
+	virtual	char	*\^projection_type_to_string\^(ProjectionType dt) { 
+			if(projection_strings && dt >= 0 && dt < NUM_DATUM_TYPES) {
+				return(projection_strings[dt]);
+			} else {
+				return("UNKNOWN"); 
+			}
+		}
+	virtual	ProjectionType	\^projection_type_from_string\^(char *ds) { 
+			int	i;
+			if(projection_strings && ds) {
+				for(i=0; i<NUM_PROJECTION_TYPES; i++) {
+					if(!strcmp(ds, projection_strings[i])) {
+						return((ProjectionType)i);
+					}
+				}
+			}
+			return(UNKNOWN); 
+		}
+
+	// get projection and datum from  correct file type - danp
+	virtual ProjectionType \^get_projection\^() { return(UNKNOWN); }
+	virtual DatumType \^get_datum\^() { return(UNKNOWN); }
+
+	// coordinate space converters (virtuals)
+	virtual	double	\^lltox\^(double , double ) { return(0.0); }
+	virtual	double	\^lltoy\^(double , double ) { return(0.0); }
+	virtual	void	\^lltoxy\^(double latitude, double longitude, double &x, double&y) {
+			x = lltox(latitude, longitude);
+			y = lltoy(latitude, longitude);
+		}
+	virtual	double	\^utmtox\^(double , double ) { return(0.0); }
+	virtual	double	\^utmtoy\^(double , double ) { return(0.0); }
+	virtual	void	\^utmtoxy\^(double easting, double northing, double &x, double&y) {
+			x = utmtox(easting, northing);
+			y = utmtoy(easting, northing);
+		}
+	virtual	double	\^utmtolat\^(double , double ) { return(0.0); }
+	virtual	double	\^utmtolong\^(double , double ) { return(0.0); }
+	virtual	void	\^utmtoll\^(double easting, double northing, double &latitude, double &longitude) {
+			latitude = utmtolat(easting, northing);
+			longitude = utmtolong(easting, northing);
+		}
+	virtual	double	\^lltoe\^(double , double ) { return(0.0); }
+	virtual	double	\^llton\^(double , double ) { return(0.0); }
+	virtual	void	\^lltoutm\^(double latitude, double longitude, double &easting, double &northing) {
+			easting = lltoe(latitude, longitude);
+			northing = llton(latitude, longitude);
+		}
+	virtual	double	\^xytolat\^(double , double ) { return(0.0); }
+	virtual	double	\^xytolong\^(double , double ) { return(0.0); }
+	virtual	void	\^xytoll\^(double x, double y, double &latitude, double &longitude) {
+			latitude = xytolat(x, y);
+			longitude = xytolong(x, y);
+		}
+	virtual	double	\^xytoe\^(double , double ) { return(0.0); }
+	virtual	double	\^xyton\^(double , double ) { return(0.0); }
+	virtual	void	\^xytoutm\^(double x, double y, double &easting, double &northing) {
+			easting = xytoe(x, y);
+			northing = xyton(x, y);
+		}
+
+
+	// Constructors:
+	\^GeoData\^()  { init(); }
+
+	~\^GeoData\^() { ; }
+
+
+\^ENVIRONMENT VARIABLES\^
+	ARCH		local machine architecture
+		may be sun4, sgi, cray, etc. as set by ourgetarch
+	LIB_DIR		release level (almost always development)
+		may be development, beta, or release
+
+\^BUGS\^
+	The UTM handling methods in GeoImage and in the existing GeoData
+	classes are not functional and always return 0.0.
+
+	At present, conversion from one form of georeferencing to another,
+	such as KAP to PDS, is not supported, even when the projections
+	and such are the same.  Reprojection of images is a major area of
+	work for all organizations working in this field.  Approaches,
+	such as creating an empty base image in one projection, then
+	overlaying the image to be reprojected onto it and saving the
+	result, may work and need to be investigated.
+
+\^FILES\^
+	/ware/proj/development/include/image/geodatatypes.h	include file
+	/ware/proj/development/include/image/geodata.h		include file
+	/ware/proj/development/lib/sgi/libimage.a	sgi library
+	/ware/proj/development/lib/sun4/libimage.a	sun4 library
+
+\^SEE ALSO\^
+	proj, vsl, image
+
+\^AUTHOR\^
+	John Wright (john.r.wright@jpl.nasa.gov)	March 10, 1999
+
+
+

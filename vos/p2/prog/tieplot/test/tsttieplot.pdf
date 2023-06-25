@@ -34,6 +34,8 @@ local   clen    type=integer count=1
 refgbl $echo
 refgbl $autousage
 body
+enable-log
+
 let $autousage="none"
 let _onfail="stop"
 let $echo="yes"
@@ -67,8 +69,6 @@ tieplot inp=table1.dat NL=3000 NS=3000 KEYCOL=1 KEY=(1) +
 if (mode = "nobatch" or mode = "inter")
     ush gnuplot test2.gpi
 end-if
-
-
 
 ibis-gen out=table2.dat nc=7 nr=30
 
@@ -130,4 +130,10 @@ if (mode = "nobatch" or mode = "inter")
 end-if
 
 let $echo="no"
+
+disable-log
+
+ush rm table1.dat table2.dat test1.asc test1.gpi test2.asc test2.gpi test4.asc
+ush rm test4.gpi test5.asc test5.eps test5.eps.gpi test5.gpi test6.asc test6.gpi tieplot.asc tieplot.gpi
+
 end-proc

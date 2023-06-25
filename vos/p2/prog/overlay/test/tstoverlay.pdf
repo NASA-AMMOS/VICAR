@@ -7,8 +7,8 @@ refgbl $syschar
 
 if ($syschar(1) = "UNIX")	
 
-  ush cp /project/it/testdata/mipl/vgr/f1636832.geo geo
-  ush cp /project/it/testdata/mipl/gll/venus.img venus
+  ush cp /project/test_work/testdata/mipl/vgr/f1636832.geo geo
+  ush cp /project/test_work/testdata/mipl/gll/venus.img venus
 
 else				! on Alpha:
 

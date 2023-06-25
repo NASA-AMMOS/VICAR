@@ -1,0 +1,5 @@
+$ vpack marsuvwproj.com -mixed -
+	-s marsuvwproj.cc -
+	-i marsuvwproj.imake -
+	-p marsuvwproj.pdf
+$ Exit

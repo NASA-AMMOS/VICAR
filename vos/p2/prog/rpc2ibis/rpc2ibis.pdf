@@ -1,0 +1,68 @@
+PROCESS       HELP=*
+PARM INP      TYPE=(STRING,99) COUNT=2
+PARM COLS     TYPE=INT COUNT=2 DEFAULT=(1,2)
+END-PROC
+.TITLE
+VICAR Program rpc2ibis
+.HELP
+PURPOSE
+
+     rpc2ibis reads the RPC fields of a VICAR image and places them in an
+     IBIS file.  The IBIS file must be 80 columns in length.  The 80 RPC's
+     are placed in one column in the A or B order (the same order as in the
+     image.  The second column has the scales and offsets saved in records
+     6 through 15.  Records 3 through 5 have the success, error_bias, and 
+     error_rand values.  Record one has 0.0 for type A and 10 for type B.
+     Record two has the "length" field from the original source file (though
+     it means little in this format).
+
+.PAGE
+TAE COMMAND LINE FORMAT
+
+     rpc2ibis INP=(A,B) COLS=(C1,C2)
+     
+     where
+
+     A	     is a VICAR image with a GeoTIFF label with RPC or a
+                      standalone ascii GeoTIFF label with RPC
+     B           is an IBIS file 
+     COLS        are the IBIS file columns (integers) to receive the
+                 coefficients of the RPC's and the scales and offsets, etc.
+
+.PAGE
+OPERATION
+   The GeoTIFF label is accessed and the RPC's are read. They are written to an
+   ibis file.
+   
+.PAGE
+
+TIMING
+
+     Less than a second.
+     
+RESTRICTIONS
+
+   The IBIS file must have length 80, and the column must be double precision.
+
+
+.PAGE
+WRITTEN BY:            A. L. Zobrist, 3 April 2005
+
+COGNIZANT PROGRAMMER:  A. L. Zobrist
+
+REVISIONS: 
+  2008-01-02 WLB Switched to USES_ANSI_C AND LIB_CARTO; misc cleanup  
+  2015-11-01 WLB Migrated to MIPL
+  2019-08-06 WLB IDS-7923 - replaced sprintf calls, misc -Wall cleanup,
+                            added enable-log to tst.pdf.
+  2022-07-14 B. Crocco afids to opensource
+  
+.LEVEL1
+.VARIABLE INP
+GeoTIFF reference with RPC's
+Input/output IBIS table
+.VARIABLE COLS
+Columns in IBIS file for
+1. RPC coefficients (80)
+2. RPC info, scales, offsets (15)
+.END

@@ -1,6 +1,8 @@
 Procedure
 Refgbl $Echo
 Body
+Enable-Log
+
 Let _onfail="Continue"
 Let $Echo="Yes"
 WRITE "THIS IS A SCRIPT FOR TESTING SUBROUTINES FOMCLV AND"
@@ -18,4 +20,6 @@ WRITE "AND THE RETURN CODE, WHICH IS 0 FOR NORMAL RETURN, AND 1"
 WRITE "OR 3 FOR ERROR RETURNS, ARE PRINTED."
 TFOMCLV
 Let $Echo="No"
+
+Disable-Log
 End-Proc

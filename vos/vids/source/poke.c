@@ -7,7 +7,7 @@
  * not passed, the DN is used.
  */
 #include "VIDSdefs.h"
-
+void ButtonMessage();
 /************************************************************************/
 int PokeSquare(env, imp, color, points)
   VIDSEnvironment	*env;	/* The VIDS environment			*/
@@ -636,7 +636,7 @@ int ExpandOval(env, imp, isCircle, startPt, endPt)
 /* ButtonMessage tells the user which buttons to hit.  The buttons are
  * always consistent in function for a given trackball/mouse.
  */
-ButtonMessage(env, acceptFlag, cancelFlag, rejectFlag)
+void ButtonMessage(env, acceptFlag, cancelFlag, rejectFlag)
   VIDSEnvironment	*env;
   Boolean		acceptFlag;	/* True if ACCEPT button needed	*/
   Boolean		cancelFlag;	/* True if CANCEL button needed	*/

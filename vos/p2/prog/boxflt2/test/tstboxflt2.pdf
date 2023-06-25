@@ -18,75 +18,83 @@ refgbl $autousage
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 body
+enable-log
 let _onfail="stop"
 let $autousage="none"
 let $echo="yes"
 !  TEST WITH BYTE IMAGES
 !
 gen boxfa 20 20 linc=10 sinc=4 ival=0
-list boxfa
+list boxfa 'nousrtim
 boxflt2 boxfa boxfb
-list boxfb
+list boxfb 'nousrtim
 boxflt2 boxfa boxfc nlw=1 nsw=1
-list boxfc
+list boxfc 'nousrtim
 boxflt2 boxfa boxfd 'highpass dclevel=100 'cycle
-list boxfd
+list boxfd 'nousrtim
 boxflt2 boxfa boxfe 'lcycle
-list boxfe
+list boxfe 'nousrtim
 boxflt2 boxfa boxff 'scycle
-list boxff
+list boxff 'nousrtim
 boxflt2 boxfa boxfg 'reflect 'highpass
-list boxfg
+list boxfg 'nousrtim
 !  TEST WITH HALFWORD IMAGES
 !
 gen boxfh 20 20 linc=10 sinc=4 ival=-100 'half
-list boxfh
+list boxfh 'nousrtim
 boxflt2 boxfh boxfhb
-list boxfhb
+list boxfhb 'nousrtim
 boxflt2 boxfh boxfhc nlw=1 nsw=1
-list boxfhc
+list boxfhc 'nousrtim
 boxflt2 boxfh boxfhd 'highpass dclevel=100 'cycle
-list boxfhd
+list boxfhd 'nousrtim
 boxflt2 boxfh boxfhe 'lcycle
-list boxfhe
+list boxfhe 'nousrtim
 boxflt2 boxfh boxfhf 'scycle
-list boxfhf
+list boxfhf 'nousrtim
 boxflt2 boxfh boxfhg 'reflect 'highpass
-list boxfhg
+list boxfhg 'nousrtim
 !  TEST WITH FULLWORD IMAGES
 !
 gen boxff 20 20 linc=10 sinc=4 ival=-100 'full
-list boxff
+list boxff 'nousrtim
 boxflt2 boxff boxffb
-list boxffb
+list boxffb 'nousrtim
 boxflt2 boxff boxffc nlw=1 nsw=1
-list boxffc
+list boxffc 'nousrtim
 boxflt2 boxff boxffd 'highpass dclevel=100 'cycle
-list boxffd
+list boxffd 'nousrtim
 boxflt2 boxff boxffe 'lcycle
-list boxffe
+list boxffe 'nousrtim
 boxflt2 boxff boxfff 'scycle
-list boxfff
+list boxfff 'nousrtim
 boxflt2 boxff boxffg 'reflect 'highpass
-list boxffg
+list boxffg 'nousrtim
 !  TEST WITH REAL IMAGES
 !
 gen boxfr 20 20 linc=10 sinc=4 ival=-100. 'real
-list boxfr
+list boxfr 'nousrtim
 boxflt2 boxfr boxfrb
-list boxfrb
+list boxfrb 'nousrtim
 boxflt2 boxfr boxfrc nlw=1 nsw=1
-list boxfrc
+list boxfrc 'nousrtim
 boxflt2 boxfr boxfrd 'highpass dclevel=100. 'cycle
-list boxfrd
+list boxfrd 'nousrtim
 boxflt2 boxfr boxfre 'lcycle
-list boxfre
+list boxfre 'nousrtim
 boxflt2 boxfr boxfrf 'scycle
-list boxfrf
+list boxfrf 'nousrtim
 boxflt2 boxfr boxfrg 'reflect 'highpass
-list boxfrg
+list boxfrg 'nousrtim
 !
 
 let $echo="no"
 ! 
+
+ush rm boxfa boxfb boxfc boxfd boxfe boxff boxffb boxffc
+ush rm boxffd boxffe boxfff boxffg boxfg boxfh boxfhb
+ush rm boxfhc boxfhd boxfhe boxfhf boxfhg boxfr boxfrb
+ush rm boxfrc boxfrd boxfre boxfrf boxfrg
+
+disable-log
 end-proc

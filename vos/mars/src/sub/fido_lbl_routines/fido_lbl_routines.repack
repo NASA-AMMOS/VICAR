@@ -1,0 +1,4 @@
+$ vpack fido_lbl_routines.com -mixed -
+	-s fido_lbl_wits_info.c -
+	-i fido_lbl_routines.imake
+$ Exit

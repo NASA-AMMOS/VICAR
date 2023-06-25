@@ -1,0 +1,24 @@
+ 
+ The Test Data can be modified to suit the test. 
+ To Change the test data, simply modify the
+ Default parameters in the ttimeout.pdf file
+ 
+ 
+ *************TEST ON TIMEOUT ROUTINE************
+ 
+Beginning VICAR task ttimeout
+2000.121 10:20:30.040
+
+Beginning VICAR task ttimeout
+Year=12 changed to 2012.
+2012.121 10:20:30.040
+
+Beginning VICAR task ttimeout
+1980.198 35:42:16.053
+
+Beginning VICAR task ttimeout
+Year=80 changed to 1980.
+1980.198 35:42:16.053
+
+ 
+ *************TEST COMPLETED************

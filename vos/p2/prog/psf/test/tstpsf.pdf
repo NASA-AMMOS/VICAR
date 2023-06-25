@@ -80,7 +80,7 @@ let INPIC= "vg/star.img"
 label-li &INPIC
 maxmin &inpic
 psf inp=&INPIC out=vgrpsf.vic size=(1,1,50,50) AREA=(10,10,30,30) SHIFT=SHIFT
-list vgrpsf.vic (1,1,20,20)
+list vgrpsf.vic (1,1,20,20) 'nousrtim
 
 ! TEST 2 - PSF from BYTE IMAGE
  
@@ -92,7 +92,7 @@ psf  psf1.vic psf1.out size=(1,1,50,50) AREA=(17,17,33,33) shift=shift
 
 cform psf1.vic psfh1.vic oform=half
 psf  psfh1.vic psf1h.out size=(1,1,50,50) AREA=(17,17,33,33) shift=shift
-list  psf1h.out (1,1,1,20)
+list  psf1h.out (1,1,1,20) 'nousrtim
 
 ! TEST 4 - PSF from FULL IMAGE
 
@@ -100,12 +100,12 @@ spot   psf2.vic size=(1,1,50,50) shape=gaussian sigmax=10 sigmay=10 dnmax=120
 cform psf2.vic psff2.vic oform=full
 f2 psff2.vic psff2a.vic func=(in1+5000)
 psf psff2a.vic psff2a.out size=(1,1,50,50) AREA=(17,17,33,33) shift=shift
-list psff2a.out (1,1,1,20)
+list psff2a.out (1,1,1,20) 'nousrtim
 
 ! TEST 5 - PSF from increased area
 
 psf psff2a.vic psff2b.out size=(1,1,50,50) AREA=(6,6,44,44) shift=shift
-list psff2b.out (1,1,1,20)
+list psff2b.out (1,1,1,20) 'nousrtim
 
 qplot2 psff2b.out proc=(1,1,1,1,25, 1,1,1,25,1) +
       title="PSF Test - Line1: Horiz PSF   Line2: Vertical PSF" +
@@ -121,7 +121,7 @@ end-if
 cform psf2.vic psfr2.vic oform=real
 f2 psfr2.vic psfr2a.vic func=(in1+5000)
 psf psfr2a.vic psfr2a.out size=(1,1,50,50) AREA=(17,17,33,33) shift=shift
-list psfr2a.out (1,1,1,20)
+list psfr2a.out (1,1,1,20) 'nousrtim
 
 ! TEST 7 - OFFSET PSF
 
@@ -146,5 +146,10 @@ let  $echo="no"
 ush rm vg
 
 disable-log
+
+ush rm psf1h.out psf1.out psf1.vic psf2.vic psf3.out psf3.vic psf4.asc1
+ush rm psf4.asc2 psf4.gpi psf4.out psf4.vic psff2a.out psff2a.vic
+ush rm psff2b.asc1 psff2b.asc2 psff2b.gpi psff2b.out psff2.vic psfh1.vic
+ush rm psfr2a.out psfr2a.vic psfr2.vic vgrpsf.vic
 
 end-proc

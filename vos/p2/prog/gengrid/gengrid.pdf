@@ -1,0 +1,93 @@
+procedure help=*
+ !
+ parm out type=string count=1
+ parm ncol type=int count=1 default=4
+ parm nah type=int count=1
+ parm nav type=int count=1
+ parm hbase type=real count=1
+ parm hsize type=real count=1
+ parm vbase type=real count=1
+ parm vsize type=real count=1
+ !
+
+local nahp1 int
+local navp1 int
+local nahxnav int
+
+body
+
+let nahp1=nah+1
+let navp1=nav+1
+let nahxnav=nahp1*navp1
+
+ibis-gen &out version="ibis-2" org="column" nc=&ncol +
+     nr=&nahxnav deffmt=DOUB
+mf3 &out func=("c1=(@int((@index-1)/&nahp1)/&nav)*&vsize+(&vbase)$", +
+    "c2=(@mod(@index+&nah,&nahp1)/&nah)*&hsize+(&hbase)")
+   
+end-proc
+!
+! HELP TEXT FOR GENGRID
+.TITLE
+GENGRID - Procedure to generate a grid in an ibis file
+.HELP
+PURPOSE
+
+     GENGRID creates an ibis file containing a grid in the first two
+columns.  The user can select the number of columns if more than four
+are desired (all will be double precision).  If other types of columns
+are desired (say character), they can be joined in the usual way.
+
+     To turn the grid into a geom grid, two more columns must be
+provided by the user, usually by mapping the first two columns with
+PIXMAP using a reference (mapped) image, or by applying PICMTCH4 to
+a pair of images.
+	   
+CALL
+     gengrid output parms
+  WHERE:
+     output       is the output ibis table containing a grid in two columns
+     parms        specify the size and spacing of the grid
+
+
+  
+OPERATION
+
+The ibis file is generated with IBIS-GEN and the grid points are calculated
+by the routine MF3.
+
+PERFORMANCE
+
+A 1000 x 1000 grid should only take a few seconds.
+
+.PAGE
+Restrictions
+------------
+
+
+.PAGE
+PROGRAM HISTORY:
+
+Original Programmer: A. L. Zobrist, 01 Nov. 2001
+Current Cognizant Programmer: B. A. McGuffie
+
+2022-06-27 B. Crocco afids to opensource
+
+.LEVEL1
+.VARI OUT
+Output ibis file name
+.VARI ncol
+Number of columns to generate
+.VARI nah
+Grid number areas horizontally
+.VARI nav
+Grid number areas vertically
+.VARI hbase
+Leftmost value of grid
+.VARI hsize
+horizontal size of grid
+.VARI vbase
+Topmost value of grid
+.VARI vsize
+vertical size of grid
+.END

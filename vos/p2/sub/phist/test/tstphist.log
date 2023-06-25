@@ -1463,7 +1463,7 @@ NUMBER OF ELEMENTS =       255
 let $echo="no"
 ENTROPY test with Cassini input
 
-entropy /project/test_work/testdata/cassini/iss/sum2.1 'phist 'zeroes
+entropy ./sum2.1 'phist 'zeroes
 Beginning VICAR task entropy
 ENTROPY version April 22, 2000
  GRAY      FREQ   PERCENT   0        10        20        30        40        50        60        70        80        90       100

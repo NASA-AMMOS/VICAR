@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "zmabend.h"
 #define TINY 1.0e-20
  
 void ludcmp(a, n, indx, d)

@@ -1,0 +1,19 @@
+procedure
+refgbl $echo
+parm version string def="ibis-1"
+parm org string def="column"
+body
+!let _onfail="continue"
+let $echo="yes"
+
+enable-log
+
+! test scale change
+
+gengrid out=xxx1 ncol=6 nah=3 nav=4 hbase=2.2 hsize = 3.0 +
+                                    vbase=5.5 vsize = 8.0
+
+ibis-list xxx1
+
+disable-log
+end-proc

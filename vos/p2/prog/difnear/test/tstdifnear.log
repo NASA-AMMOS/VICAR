@@ -1,0 +1,170 @@
+gen xxxim1 nl=4 ns=5 linc=3 sinc=7
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+gen xxxim2 nl=4 ns=5 linc=11 sinc=5
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+difnear (xxxim1,xxxim2) xxxim3 'add128
+Beginning VICAR task difnear
+difnear version 2015-11-24
+list xxxim1 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1       0   7  14  21  28
+      2       3  10  17  24  31
+      3       6  13  20  27  34
+      4       9  16  23  30  37
+list xxxim2 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1       0   5  10  15  20
+      2      11  16  21  26  31
+      3      22  27  32  37  42
+      4      33  38  43  48  53
+list xxxim3 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:DIFNEAR   User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1     128 130 127 128 130
+      2     126 128 129 126 128
+      3     123 130 127 129 131
+      4     115 122 124 126 128
+difnear (xxxim1,xxxim2) xxxim3 'halfpix 'absval
+Beginning VICAR task difnear
+difnear version 2015-11-24
+list xxxim1 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1       0   7  14  21  28
+      2       3  10  17  24  31
+      3       6  13  20  27  34
+      4       9  16  23  30  37
+list xxxim2 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1       0   5  10  15  20
+      2      11  16  21  26  31
+      3      22  27  32  37  42
+      4      33  38  43  48  53
+list xxxim3 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:DIFNEAR   User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1       0   0   1   0   2
+      2       2   0   1   1   0
+      3       5   2   1   1   0
+      4      13   6   4   2   0
+difnear (xxxim1,xxxim2) xxxim3 'absval
+Beginning VICAR task difnear
+difnear version 2015-11-24
+list xxxim1 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1       0   7  14  21  28
+      2       3  10  17  24  31
+      3       6  13  20  27  34
+      4       9  16  23  30  37
+list xxxim2 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1       0   5  10  15  20
+      2      11  16  21  26  31
+      3      22  27  32  37  42
+      4      33  38  43  48  53
+list xxxim3 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:DIFNEAR   User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1       0   2   1   0   2
+      2       2   0   1   2   0
+      3       5   2   1   1   3
+      4      13   6   4   2   0
+difnear (xxxim1,xxxim2) xxxim3 window=5 'absval
+Beginning VICAR task difnear
+difnear version 2015-11-24
+list xxxim1 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1       0   7  14  21  28
+      2       3  10  17  24  31
+      3       6  13  20  27  34
+      4       9  16  23  30  37
+list xxxim2 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1       0   5  10  15  20
+      2      11  16  21  26  31
+      3      22  27  32  37  42
+      4      33  38  43  48  53
+list xxxim3 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:DIFNEAR   User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1       0   2   1   0   2
+      2       2   0   1   2   0
+      3       1   2   0   0   2
+      4       2   0   1   1   0
+ush rm -f xxxim1  xxxim2  xxxim3
+disable-log

@@ -1,5 +1,5 @@
 procedure
-! To run on UNIX,   Type tstgridlocb "/project/it/testdata/gll/"
+! To run on UNIX,   Type tstgridlocb "/project/test_work/testdata/gll/"
 ! To run on AXP     Move the test files f.dat, tf.dat, m2.dat, raw.dat, 
 ! or the VAX,       and marka.dat to your directory, and then type - 
 !                   tstgridlocb ""

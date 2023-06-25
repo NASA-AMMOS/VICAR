@@ -1,0 +1,29 @@
+/***********************************************************************
+
+                     IMAKE FILE FOR PROGRAM fft2005
+
+   To Create the build file give the command:
+
+		$ vimake fft2005			(VMS)
+   or
+		% vimake fft2005			(Unix)
+
+
+************************************************************************/
+
+
+#define PROGRAM	fft2005
+
+#define MODULE_LIST fft2005.c
+#define INCLUDE_LIST my_fftw3.h
+
+#define MAIN_LANG_C
+#define R2LIB
+#define USES_ANSI_C
+
+#define LIB_CARTO
+#define LIB_FFTW
+#define LIB_RTL
+#define LIB_TAE
+#define LIB_P2SUB
+/************************* End of Imake file ***************************/

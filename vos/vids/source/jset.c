@@ -76,7 +76,7 @@ int jset_range_do(env)
  * parameters.  This routine is needed so the default range can be
  * variables local to this module instead of global.
  */
-GetDefDataRange(env, slope, offset)
+void GetDefDataRange(env, slope, offset)
   VIDSEnvironment *env;			/* the VIDS environment */
   float *slope;				/* returned slope of range */
   float *offset;			/* returned offset of range */

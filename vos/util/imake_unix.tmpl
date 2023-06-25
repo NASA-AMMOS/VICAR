@@ -91,6 +91,12 @@ UNIT_NAME = PROCEDURE
 
 
 
+
+/************************************************************************/
+/* Library Dependencies - "Library that turns on other libraries" */
+/************************************************************************/
+
+
 /* All TAO services use TAO, so define LIB_TAO if LIB_TAO_* is defined. */
 
 #if defined(LIB_TAO_COS_NAMING) || \
@@ -104,6 +110,25 @@ UNIT_NAME = PROCEDURE
 #ifdef LIB_TAO
 #define LIB_ACE_WRAPPERS
 #endif
+
+
+/* Turning on MARS automatically turns on the EMBREE library (for mesh        */
+/* processing). Note that EMBREE also needs USES_PIG_MESH defined in          */
+/* imake.config to be turned on (verification done later in this file)        */
+#if defined(LIB_MARSSUB)||defined(LIB_MARSSUB_DEBUG)||defined(MARSLIB)||defined(MARS_SUBLIB)
+#ifndef LIB_EXCLUDE_EMBREE
+#define EMBREE_auto
+#endif
+#endif
+
+/* EMBREE depends on C++11, so define C++11 */
+/* It also needs -pthread. So turn on OMP for now */
+/* #define STD_CPP_11 */
+#ifdef EMBREE_auto
+#define LIB_OMP
+#endif
+
+
 
 
 
@@ -142,10 +167,17 @@ LDFLAGS = LinkDefaultFlags ShareLink
 
 #if defined(PROGRAM) || defined(SUBROUTINE)
 
-#ifdef SHARED_LIBRARY		/* They're the same for all compilers(!) */
-#define ShareComp SharedCompileOpts
-#else
 #define ShareComp
+#ifdef SHARED_LIBRARY		/* They're the same for all compilers(!) */
+#undef ShareComp
+#define ShareComp SharedCompileOpts
+#endif
+#if defined(SUBROUTINE)
+#if defined(FORCE_FPIC)
+/* FORCE_FPIC is used to compile p1, p2 libraries -fPIC */
+#undef ShareComp
+#define ShareComp SharedCompileOpts
+#endif
 #endif
 
 #ifdef DEBUG
@@ -279,37 +311,25 @@ FFLAGS = F77DefaultFlags ShareComp
 #define INC_P1SUB
 #endif
 
-/* Automatically turn on LIB_EXCLUDE_MER_IDD if MSL_FSW is on */
 #if defined(LIB_MSL_FSW)
 #define INC_MSLFSW -I$(MSLFSWLIB)/src -DTGT_LINUX_SSIM
-#define LIB_EXCLUDE_MER_IDD
 #else
 #define INC_MSLFSW
 #endif
 
-/* Automatically turn on LIB_EXCLUDE_MER_IDD if M20_SSIM is on */
 #if defined(LIB_M20_SSIM)
 #define INC_M20SSIM -I$(M20SSIMLIB)/../src/ssim/core/ -I$(M20SSIMLIB)/../src/ssim/core/m20fsw/src -DTGT_LINUX_SSIM
-#define LIB_EXCLUDE_MER_IDD
 #else
 #define INC_M20SSIM
 #endif
 
-/* Note: turning on MARS automatically turns on MER_IDD now...		*/
-/* unless LIB_EXCLUDE_MER_IDD is turned on.  Using LIB_EXCLUDE_MER_IDD	*/
-/* is likely to lead to link errors unless you stub out the necessary	*/
-/* routines.  See mslreach.com.						*/
-
 #if defined(LIB_MARSSUB)||defined(LIB_MARSSUB_DEBUG)||defined(MARSLIB)||defined(MARS_SUBLIB)
-#ifndef LIB_EXCLUDE_MER_IDD
-#define IDD_inc_auto
-#endif
 #define INC_MARSSUB -I$(MARSINC)
 #else
 #define INC_MARSSUB
 #endif
 
-#if defined(LIB_MER_IDD) || defined(IDD_inc_auto)
+#if defined(LIB_MER_IDD)
 #define INC_MERIDD -I$(MERIDDLIB) -I$(MERIDDLIB)/merfsw_stubs -I$(MERIDDLIB)/idd
 #else
 #define INC_MERIDD
@@ -477,6 +497,12 @@ FFLAGS = F77DefaultFlags ShareComp
 #define INC_FFTW
 #endif
 
+#if defined(LIB_TINYGLTF)
+#define INC_TINYGLTF -I$(TINYGLTFLIB)
+#else
+#define INC_TINYGLTF
+#endif
+
 #if defined(LIB_GDAL)
 #define INC_GDAL -I$(GDALLIB)/include
 #else
@@ -495,8 +521,12 @@ FFLAGS = F77DefaultFlags ShareComp
 #define INC_SIMBAD
 #endif
 
-#if defined(LIB_EMBREE)
+#if (defined(LIB_EMBREE) || defined(EMBREE_auto))
+#if defined(USES_PIG_MESH)
 #define INC_EMBREE -I$(EMBREE_LIB)/include/embree3
+#else 
+#define INC_EMBREE
+#endif
 #else
 #define INC_EMBREE
 #endif
@@ -598,15 +628,24 @@ FFLAGS = F77DefaultFlags ShareComp
 #endif
 
 #if defined(LIB_TCL_TK)
-#define INC_TK -I$(TCLINC)
+/* TCL/TK used to live in externals, but was pushed out to the system */
+/* environment. So make does not need to be told where to find the */
+/* includes anymore. */
+#define INC_TCL
 #else
-#define INC_TK
+#define INC_TCL
 #endif
 
 #if defined(LIB_ROGUEWAVE)
 #define INC_RW -I$(ROGUEINC)
 #else
 #define INC_RW
+#endif
+
+#if defined(LIB_NETWORK)
+#define INC_NETL NETinc 
+#else
+#define INC_NETL
 #endif
 
 #if defined(LIB_SIRTF_PHE)
@@ -639,7 +678,7 @@ FFLAGS = F77DefaultFlags ShareComp
 #define INC_TINYOBJLOADER
 #endif
 
-CPPFLAGS = INC_LOCAL -I$(V2INC) INC_TAE INC_VRDI INC_CILY INC_GUISUB INC_P1SUB INC_UPLINKSUB INC_UPLINKTOURSUB INC_SSVSUB INC_NEATSUB INC_P2SUB INC_CRUMBS INC_GLLSUB INC_CASSUB INC_P3SUB INC_MARSSUB INC_MROSUB INC_DIVSUB INC_MERIDD INC_MSLFSW INC_M20SSIM INC_JNI INC_JAVA INC_FEI INC_MDMS INC_KRB INC_KRB4 INC_SYBASE INC_MYSQL INC_ACEW INC_TAO INC_XERCES INC_CSPICE INC_PDSL INC_PDS INC_ISIS INC_HDF INC_GEOTRANS INC_NATGRID INC_TIFF INC_JPEG INC_FFTW INC_GDAL INC_GSL INC_SIMBAD INC_PGPLOT INC_EIGEN INC_GLOG INC_SIFT INC_CERES INC_PVM INC_MPI INC_TK INC_MA INC_MOTIF INC_XRT INC_CANDELA INC_RW INC_SIRTF INC_EXPAT INC_CPPUNIT INC_MYSQLCONCPP INC_BOOST INC_TINYOBJLOADER INC_EMBREE INC_PNG
+CPPFLAGS = INC_LOCAL -I$(V2INC) INC_TAE INC_VRDI INC_CILY INC_GUISUB INC_P1SUB INC_UPLINKSUB INC_UPLINKTOURSUB INC_SSVSUB INC_NEATSUB INC_P2SUB INC_CRUMBS INC_GLLSUB INC_CASSUB INC_P3SUB INC_MARSSUB INC_MROSUB INC_DIVSUB INC_MERIDD INC_MSLFSW INC_M20SSIM INC_JNI INC_JAVA INC_FEI INC_MDMS INC_KRB INC_KRB4 INC_SYBASE INC_MYSQL INC_ACEW INC_TAO INC_XERCES INC_CSPICE INC_PDSL INC_PDS INC_ISIS INC_NETL INC_HDF INC_GEOTRANS INC_NATGRID INC_TIFF INC_JPEG INC_FFTW INC_TINYGLTF INC_GDAL INC_GSL INC_SIMBAD INC_PGPLOT INC_EIGEN INC_GLOG INC_SIFT INC_CERES INC_PVM INC_MPI INC_TCL INC_MA INC_MOTIF INC_XRT INC_CANDELA INC_RW INC_SIRTF INC_EXPAT INC_CPPUNIT INC_MYSQLCONCPP INC_BOOST INC_TINYOBJLOADER INC_EMBREE INC_PNG 
 
 #endif
 
@@ -1147,24 +1186,17 @@ ERRFILE = TAE_ERRMSG.msg
 #endif
 #endif
 
-/* Note: turning on MARS automatically turns on MER_IDD now...	*/
-/* unless LIB_EXCLUDE_MER_IDD is on (see above).		*/
-
 #ifdef LIB_MARSSUB
 #define MARSSL MARSSUBlib
-#ifndef LIB_EXCLUDE_MER_IDD
-#define IDD_lib_auto
-#endif
 #else
 #ifdef LIB_MARSSUB_DEBUG
 #define MARSSL -lmarssub_debug
-#define IDD_lib_auto
 #else
 #define MARSSL
 #endif
 #endif
 
-#if defined(LIB_MER_IDD) || defined(IDD_lib_auto)
+#if defined(LIB_MER_IDD)
 #define MERIDDL $(MERIDDLIB)/idd_gds/libidd_gds.a $(MERIDDLIB)/merfsw_stubs/libmerfsw_stubs.a
 #else
 #define MERIDDL
@@ -1221,7 +1253,7 @@ ERRFILE = TAE_ERRMSG.msg
 #endif
 
 #ifdef LIB_BOOST
-#define BOOSTL $(BOOST_ROOT)/lib
+#define BOOSTL -L$(BOOST_ROOT)/lib
 #else
 #define BOOSTL
 #endif
@@ -1583,7 +1615,7 @@ external, yet it is not used, apparently (!) */
 #endif
 
 #if defined(LIB_NETWORK) || defined(LIB_NETWORK_NOSHR)
-#define NETL NETlib
+#define NETL NETlib 
 #else
 #define NETL
 #endif
@@ -1673,7 +1705,10 @@ external, yet it is not used, apparently (!) */
 #endif
 
 #if defined(LIB_TCL_TK)
-#define TCLL -L$(TCLLIB) -ltk -ltcl
+/* TCL/TK used to live in externals, but was pushed out to the system */
+/* environment. So make does not need to be told where to find the */
+/* libraries anymore, but they still need to be linked in. */
+#define TCLL -ltcl -ltk
 #else
 #define TCLL
 #endif
@@ -1692,13 +1727,17 @@ external, yet it is not used, apparently (!) */
 #define OMPL
 #endif
 
-#if defined(LIB_EMBREE)
-#define EMBREEL $(EMBREE_LIB)/libembree3.a $(EMBREE_LIB)/libembree_avx.a $(EMBREE_LIB)/libembree_avx2.a $(EMBREE_LIB)/libembree_sse42.a $(EMBREE_LIB)/liblexers.a $(EMBREE_LIB)/libmath.a $(EMBREE_LIB)/libsimd.a $(EMBREE_LIB)/libsys.a $(EMBREE_LIB)/libtasking.a
+#if (defined(LIB_EMBREE) || defined(EMBREE_auto)) 
+#if defined(USES_PIG_MESH)
+#define EMBREEL -L$(EMBREE_LIB) -lembree3 
+#else
+#define EMBREEL
+#endif
 #else
 #define EMBREEL
 #endif
 
-LIBS = -L$(V2OLB) LOCL CJL P3SL MARSSL MROL MERIDDL MSLFSWL M20SSIML UPLINKTOURL SSVL NEATL GLLL CASL P2SL CRUMBSL GUISL P1SL DIVL CILYL VRDIL MATH77L SIRTFPHEL SPICEL FEI3L DBIL TSVCL TNAML TNOTL TPORL TAOL ACEWL PTHRL FEIL MDMSL SYBASEL MYSQLL XERL PDSLL PDSL HDFL GEOTRANSL NATGRIDL TIFFL JPEGL FFTWL GDALL GSLL SIMBADL PGPLOTL SIFTL CERESL GLOGL MCL MDCL PVML MPIL EXPL RWL THRL V2L ISISL NETL CRSL TAEL TCLL MAL XRTGRL XRT3DL MOTIFL CANDELAL CPPUNITL MYSQLCONCPPL BOOSTL EMBREEL FTNL CCCL MATHlib KRB4L KRBL OMPL PNGL SPECIALlib
+LIBS = -L$(V2OLB) LOCL CJL P3SL MARSSL MROL MERIDDL MSLFSWL M20SSIML UPLINKTOURL SSVL NEATL GLLL CASL CRUMBSL P2SL GUISL P1SL DIVL CILYL VRDIL MATH77L SIRTFPHEL SPICEL FEI3L DBIL TSVCL TNAML TNOTL TPORL TAOL ACEWL PTHRL FEIL MDMSL SYBASEL MYSQLL XERL PDSLL PDSL HDFL GEOTRANSL NATGRIDL TIFFL JPEGL FFTWL GDALL GSLL SIMBADL PGPLOTL SIFTL CERESL GLOGL MCL MDCL PVML MPIL EXPL RWL THRL V2L ISISL NETL CRSL TAEL TCLL MAL XRTGRL XRT3DL MOTIFL CANDELAL CPPUNITL MYSQLCONCPPL BOOSTL EMBREEL FTNL CCCL MATHlib KRB4L KRBL OMPL PNGL SPECIALlib
 
 #endif			/* PROGRAM || CCC_TEMPLATES */
 

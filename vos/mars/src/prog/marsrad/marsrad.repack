@@ -1,0 +1,5 @@
+$ vpack marsrad.com -mixed -
+	-s marsrad.cc -
+	-i marsrad.imake -
+	-p marsrad.pdf
+$ Exit

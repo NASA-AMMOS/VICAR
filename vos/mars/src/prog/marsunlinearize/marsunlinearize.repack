@@ -1,0 +1,5 @@
+$ vpack marsunlinearize.com -mixed -
+	-s marsunlinearize.cc -
+	-i marsunlinearize.imake -
+	-p marsunlinearize.pdf
+$ Exit

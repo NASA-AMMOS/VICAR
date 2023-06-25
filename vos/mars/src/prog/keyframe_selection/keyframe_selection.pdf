@@ -1,0 +1,684 @@
+process help=*
+PARM INP TYPE=STRING COUNT=(1:200)
+PARM OUT TYPE=STRING COUNT=1 
+PARM IN_TPT TYPE=STRING COUNT=0:1 DEFAULT=--
+PARM REFIMAGE TYPE=INTEGER COUNT=(0:200) VALID=(-1000:1000) DEFAULT=--
+PARM UNTIL TYPE=KEYWORD COUNT=(0:1) +
+  VALID=("UNTIL","NULL") DEFAULT="NULL"
+PARM IGNORE TYPE=INTEGER COUNT=(0:200) VALID=(-1000:1000) DEFAULT=--
+PARM IGNORE_INTRA TYPE=KEYWORD COUNT=(0:1) VALID="IGNORE_INTRA" DEFAULT=--
+PARM START_KEY TYPE=INTEGER COUNT=1 DEFAULT=0
+PARM OMP_ON TYPE=KEYWORD VALID=(OMP_ON,OMP_OFF) DEFAULT=OMP_ON
+PARM CONFIG_PATH STRING DEFAULT="$MARS_CONFIG_PATH"
+PARM POINT_METHOD TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM RSF TYPE=STRING COUNT=0:100 DEFAULT=--
+PARM DEBUG_RSF TYPE=KEYWORD COUNT=0:1 VALID=DEBUG_RSF DEFAULT=--
+PARM COORD TYPE=KEYWORD VALID=("FIXED", "INSTRUMENT", "SITE", "ROVER", +
+        "LOCAL_LEVEL") DEFAULT="FIXED"
+PARM COORD_INDEX TYPE=INTEGER COUNT=0:10 DEFAULT=--
+PARM FIXED_SITE TYPE=INTEGER COUNT=0:1 DEFAULT=--
+PARM DISP_CONNECT TYPE=KEYWORD COUNT=1 VALID=(DISP_CONNECT, NODISP_CONNECT) +
+           DEFAULT="DISP_CONNECT"
+PARM DISP_COST TYPE=KEYWORD COUNT=1 VALID=(DISP_COST, NODISP_COST) +
+           DEFAULT="DISP_COST"
+PARM EDGE_DIST TYPE=REAL COUNT=1 DEFAULT=.05
+PARM SEQUENTIAL TYPE=KEYWORD COUNT=1 VALID=(SEQUENTIAL, NOSEQUENTIAL) +
+           DEFAULT="SEQUENTIAL"
+PARM SEL_PERCENT TYPE=REAL COUNT=1 DEFAULT=80.0
+
+
+!# parm inp(2-200) hints=default
+!# parm in_tpt file=vicar; direction=input
+!# parm out_tpt file=vicar; direction=output
+
+END-PROC
+
+.TITLE
+VICAR program KEYFRAME_SELECTION.
+
+.HELP
+
+Keyframe_selection allows the user to obtain a list of keyframes from an initial
+list of frames. The chosen keyframes should have good baselines for both feature tracking plus triangulation and pointing correction via bundle adjustment. The 
+goal is to eliminate frames which can be problematic in the bundle adjustment
+process. Typically, pairs of frames with very short baselines tend to have very
+good feature tracking but the resulting XYZ points can have a large uncertainty.
+Inaccurate XYZ points can drive bundle adjustment towards a local minimum, and 
+fail in correctly optimizing the input camera pointings. On the other hand, very
+large baselines tend to have poorer feature tracking due to perspective 
+distortions and lighting changes, but tend to be better suited for triangulation
+of XYZ points. There, we seek a "sweet spot" in the baseline of the input images
+such that both feature tracking and the resulting bundle adjustment process can
+be as accurate as possible. 
+
+Keyframe selection is non-unique, meaning that different frames can be obtained
+depending on run parameters and what the user desires. Currently, two modes are
+supported: sequential processing and global processing. Sequential processing 
+is better suited for straight, linear motions such as those achieved by the 
+Mars helicopter, where a given frame tends to share tiepoints only with other
+frames in its temporal vicinity. Global processing is more general and includes
+any type of motion, such that any frame can share tiepoints with any other. This
+includes the movement of a robotic arm, a rover traversing terrain it had 
+already visited, etc.
+ 
+
+PURPOSE:
+To perform a selection of keyframes from an original list of images. The set of 
+overlapping images are related to each other by tiepoints (input). The keyframes
+are recorded in a .txt file (output).
+
+The parameters and overall usage of KEYFRAME_SELECTION is related to the 
+MARSNAV2 program, and is expected to used in conjunction with MARSNAV2, which 
+would receive keyframes as input. The overall goal of keyframe selection is to provide a set of frames to marsnav2 which provide better results than the 
+original list. 
+
+KEYFRAME_SELECTION supports any mission, instrument, and camera model supported 
+by the Planetary Image Geometry (PIG) software suite.
+
+
+EXECUTION:
+
+keyframe_selection inp=ascii_listoffiles out=keyframes.txt in_tpt=images.tpt
+
+where ascii_listoffiles is a text file of image names and locations, one per 
+line, containing the list of filenames to select keyframes from.
+
+An input tiepoint list must be provided.
+
+Note: there are two tiepoint file formats; "old" is the text-based list,
+while "xml" is an XML-based format.  The format is auto-detected on read.
+Over time "old" should be phased out. Output tiepoint file (see OUT_TPT)
+is always in the new XML format. This can be converted back to the old 
+format if necessary using marstie.
+
+USAGE:
+It is important that all images be connected to at least one other via 
+tiepoints, and also strongly recommended that images be connected by 
+"tracks". A track is an extension of a traditional tiepoint. A tiepoint is an association of 2 observations from 2 images, a track is an association of N observations from N images. A tiepoint is therefore a 2-elements track. 
+All the observations of a given track "look" at the same ground location. 
+A track is therefore associated to one XYZ ground coordinates. By 
+construction, the maximum number of observations contained in a track is 
+equal to the number of image in the project. It is also important to make 
+sure that images or block of images are not disconnected from each other, 
+otherwise a continuous set of keyframes will not be obtained. While keyframe
+selection does not currently deal with tracks directly, just tiepoints between
+pairwise images, the framework which deals with tiepoints and tracks is very 
+similar. 
+
+
+METHOD:
+
+1) The tiepoint list is analyzed and a connectivity matrix is created such that
+every (i, j) entry provides the number of tiepoints for that specific pair.
+
+2) Given the above connectivity matrix and the tiepoints between frames,  homographies 'H' and fundamental matrices 'F' are computed between all available pairs. A homography can model the relationship between the left and right pixel values of a tiepoint very well for small baselines, but the error increases as
+the baseline grows. The opposite happens for a fundamental matrix. The condition
+number of the data matrix for the fundamental matrix solve tends to be very high
+for short baselines, which is undesirable, so this is also taken into account.
+
+3) A cost function is computed based on the parsimony between F and H for each 
+pair, as well as a measure of the overlap between the images, as measured by the
+ratio of the area occupied by matches versus the total image area, aR. The ratio
+of condition numbers for F and H is also measure, aC. Parsimony is measured via 
+the Geometric Robust Information Criterion (GRIC, Torr et al 1997). The cost 
+function is the following:
+
+	F = aC*aR*relGRIC(F,H)
+	relGRIC(F,H) = GRIC(F)/GRIC(H)
+
+This cost function is designed to increase in value when relGRIC(F, H) 
+increases (meaning that F is a better fit than H for the given tiepoints), but 
+at the same time be penalized for a bad condition number in solving for F 
+relative to solving for H, which typically happens with very short baselines, 
+and for relatively low aR values, which typically happen with large baselines.
+
+4) The above cost function is computed across all available pairs and used to 
+fill the keyframe scores matrix, whose dimension is NxN for N input frames.
+
+5) Depending on the choice of sequential versus global processing, the keyframe
+scores matrix is traversed via distinct algorithms, both of which result in a 
+final list of frames which were chosen as keyframes. 
+
+
+NOTES:
+
+Study the output log file, since it provides valuable information about
+the process, such as tiepoints connectivity, pairwise keyframe scores, 
+etc. Overall, keyframe_selection was designed to be not just a program
+to help automatically detect keyframes from a stream of images, but also
+to be a diagnostic tool about the relationships between pairs of images.
+For example, the resulting log file provides information about the 
+condition numbers of the data matrices for homographies "H" and fundamental 
+matrices "F", where for example a high condition number for the fundamental 
+matrix typically occurs with very small baselines or pure rotations. On
+the other hand, a relatively small number of matches between an image 
+pair coupled with a very good estimation of "F" but poor for "H" typically
+occurs when the baseline is too wide. Therefore, though a set of keyframes
+is found automatically by this program, the output log file allows for
+further analysis in manually adding or deleting more frames.
+
+Finally, any tiepoints containing an image listed in the IGNORE list will be 
+removed from consideration.  This allows you to concentrate on certain images without being influenced by others. IGNORE accepts ranges of images.
+
+
+.page
+PARALLEL EXECUTION
+
+Part of this program has been parallelized using Open MP (OMP), which is built 
+into the g++ compiler.
+
+By default the number of threads used equals the number of cores on the machine
+where the program is being run. Parallel processing can be disabled via the 
+-OMP_OFF keyword.  The number of threads can be controlled by setting the 
+OMP_NUM_THREADS environment variable before running the program.  There are 
+numerous other OMP variables that can be set; see the OMP documentation.  
+However, the number of threads is the only one that is likely to be useful in 
+most cases.
+
+
+.PAGE
+TIEPOINT TYPES
+
+Not all formats are supported in keyframe_selection. Only the Traditional (0), 
+fiducial (1), Z surface (8), Dynamic (9), and Miss (10) formats are currently 
+supported. Other types may be added later on. 
+
+IMPORTANT: Note that keyframe_selection is only interested in the pixel 
+association, i.e., left line/sample and right line/sample. It does not use 
+other information (projected line/sample, z, for instance). In essence, 
+all tiepoints are seen as traditional tiepoints by keyframe_selection. Because 
+of the nature of fundamental and homography matrix estimation, 
+keyframe_selection CANNOT (currently) use FIDUCIAL tiepoints, though it can read 
+them in. The following specifies formats for each type of input tiepoint (xml). 
+
+0) Traditional
+
+    <tie type="0" left_key="1" right_key="2">
+      <left line="53.43125" samp="356.2353"/>
+      <projected line="634.3415" samp="43.43512"/>
+      <right line="634.4556" samp="44.43252"/>
+      <flags quality="0.85635" interactive="0"/>
+    </tie>
+
+1) Fiducial
+
+    <tie type="1" left_key="1">
+      <left line="326.32523" samp="21.43516"/>
+      <xyz x="0.43156" y="1.3455" z="-0.65425"/>
+      <flags quality="0.764626" interactive="1"/>
+    </tie>
+
+8) Z Surface
+
+    <tie type="8" left_key="1" right_key="2">
+      <left line="53.43125" samp="356.2353"/>
+      <projected line="634.3415" samp="43.43512"/>
+      <right line="634.4556" samp="44.43252"/>
+      <z z="-0.387"/>
+      <flags quality="0.85635" interactive="0"/>
+    </tie>
+
+
+9) Dynamic XYZ
+
+    <tie type="9" left_key="1" right_key="2">
+      <left line="53.43125" samp="356.2353"/>
+      <projected line="634.3415" samp="43.43512"/>
+      <right line="634.4556" samp="44.43252"/>
+      <flags quality="0.85635" interactive="0"/>
+    </tie>
+
+10) Miss Distance
+
+    <tie type="10" left_key="1" right_key="2">
+      <left line="53.43125" samp="356.2353"/>
+      <projected line="634.3415" samp="43.43512"/>
+      <right line="634.4556" samp="44.43252"/>
+      <flags quality="0.85635" interactive="0"/>
+    </tie>
+
+
+.page
+
+HISTORY:
+  2022-09-30 Mauricio Hess-Flores - Initial keyframe_selection
+
+COGNIZANT PROGRAMMER:  Mauricio Hess-Flores
+
+.LEVEL1
+.VARI INP
+Input image(s) or
+file list.
+
+.VARI OUT
+Output keyframes file.
+
+.VARI IN_TPT
+Input tiepoint file.
+
+.VARI REFIMAGE
+Reference image override.
+Can be a list of images.
+refimage=-1 means no reference
+image.
+
+.VARI UNTIL
+All images up to
+REFIMAGE(1) are reference
+images.
+
+.VARI IGNORE
+List of images to ignore
+in the tiepoint list.
+
+.VARI IGNORE_INTRA
+Causes intra-set overlaps
+(within the non-reference
+set) to be ignored.
+
+.VARI START_KEY
+Starting key number for
+tiepoint file (XML format
+only).
+
+.VARI OMP_ON
+Turns on or off parallel
+processing (multiple threads,
+single machine).  Default: on
+
+.VARI CONFIG_PATH
+Path used to find
+configuration/calibration
+files.
+
+.VARI POINT_METHOD
+Specifies a mission-
+specific pointing
+method to use.
+Ignored by keyframe_selection,
+for now.
+
+.VARI RSF
+Rover State File(s) to use.
+Ignored by keyframe_selection,
+for now.
+
+.VARI DEBUG_RSF
+Turns on debugging of RSF
+parameter.
+Ignored by keyframe_selection,
+for now.
+
+.VARI COORD
+Coordinate system to use.
+Ignored by keyframe_selection,
+for now.
+
+.VARI COORD_INDEX
+Coordinate system index for
+some COORD/mission combos.
+Ignored by keyframe_selection,
+for now.
+
+.VARI FIXED_SITE
+Which site is FIXED for
+rover missions.
+Ignored by keyframe_selection,
+for now.
+
+.VARI DISP_CONNECT
+Display or not in the stdout
+the images connectivity matrix.
+
+.VARI DISP_COST
+Display or not in the stdout
+the cost matrix of pairwise
+cost function values.
+
+.VARI EDGE_DIST 
+Percentage from all edges of 
+the image to discard matches
+from, to account for fisheye
+adverse effects on homography
+and fundamental matrix 
+computation. 
+
+.VARI SEQUENTIAL
+Type of keyframe selection
+to perform; choose between
+"sequential" and 
+"nosequential" (global).
+
+.VARI SEL_PERCENT
+Percentage of top-scoring 
+frames to keep during 
+global keyframe selection.
+
+
+.LEVEL2
+.VARI INP
+There are two options for describing input images. 
+
+Either:
+List the image file names 
+
+Or:
+provide an ascii file with the file names listed, one per record.
+
+Note that normally only the label is used from the input images.  They
+are typically image files for convenience and compatibility with marstie et al.
+However, Dynamic XYZ tiepoints require the corresponding input file to be an
+XYZ image.
+
+.VARI OUT
+Output file containing the list of selected keyframes and other information (if
+specified through parameters) regarding the computed cost matrix and other 
+intermediate values. This is is a .TXT file.
+
+.VARI IN_TPT
+The input tiepoint file, as generated by MARSAUTOTIE2 (or a previous run of
+MARSNAV).  This file must be specified.  It can be in either the old text
+format, or the new XML format (it detects this automatically).
+
+.VARI REFIMAGE
+Specifies which image (if any) are reference images.
+
+Reference images are assumed to be correctly navigated and will not be
+adjusted.
+
+Defaults to the image with the greatest number of connected images once
+tiepoints have been culled to one per pair.
+
+REFIMAGE=-1 means no reference image.
+
+REFIMAGE can be a single image, or a list of images.  Each image in the
+list will be a reference image.  (see also UNTIL).  This allows any arbitrary
+images to be selected as references.  If an image number is negative, it means
+all images from the previous number through (the absolute value of) this one 
+will be references.  For example a list:
+
+1,3,-6,8,11,-15
+
+will cause the following images to be reference imgaes:
+
+1,3,4,5,6,8,11,12,13,14,15
+
+Numbering of images starts at 1.
+
+.VARI UNTIL
+Means that all images from 1 to the first value of REFIMAGE inclusive are
+treated as reference images.  The pointing of these will not change.  Any
+additional images listed in REFIMAGE will also be reference images.
+
+The functionality of this parameter has been subsumed by the negative number
+feature of REFIMAGE.  For example, REF=5 -UNTIL is the same as REF=\(1,-5\).
+
+.VARI IGNORE
+Specifies a list of images that will be ignored.  Tiepoints containing this
+image will be ignored and excluded from consideration (but see IGNORE_INTRA).
+This has two purposes.  First, for very large tiepoint files, when adjusting
+only a few images (via REFIMAGE), the presence of spurious tiepoints can be a
+significant performance drain.  Second, this allows you to exclude a tiepoint
+that is known to be problematic.  This might occur, for example, when matching
+a foreground mastcam image to a background navcam image - even though the
+foreground to background connections are correct, they may pull the foreground
+solution out of alignment.
+
+Ignored tiepoints still appear in the output tiepoint file (if one is written).
+
+Ignored images should always be reference images (although this is not checked
+nor enforced).  A non-reference (active) image cannot be adjusted if all
+tiepoints containing that image are removed.
+
+Like REFIMAGE, IGNORE accepts negative numbers to indicate ranges.  So a value
+of 4,-7 means 4,5,6,7 are all ignored.  See REFIMAGE for more examples.
+
+.VARI IGNORE_INTRA
+This flag causes all tiepoints between non-reference (active) images to be
+ignored.  Only tiepoints between non-reference and reference images will be
+considered.
+
+The use case for this is as follows:  Say you are insetting images (e.g.
+mastcam on MSL) into a background (e.g. navcam) mosaic that has already been
+tiepointed and nav'd.  You want to coregister the images to the background.
+This flag allows you to use autotie to get a complete set of tiepoints but
+then only use the ones tying the foreground to the background.  This is
+beneficial because the normal autotie modes will create many more overlap
+ties than full-image ties, making the overlap ties overwhelm the full-image
+ties.  Since you want the full-image ties, this flag lets you ignore the
+overlap ties.
+
+.VARI START_KEY
+Starting key number for the tiepoint file (XML format only).  Tiepoint files
+contain a list of images, each of which is associated with an integer key.
+Setting START_KEY to some value allows tiepoint files to be merged easily,
+without the keys conflicting.  It is acceptable to have the same image in
+different sections of a merged file (with different keys); they are properly
+merged when read in.
+
+.VARI OMP_ON
+Turns on or off parallel processing using OMP, which uses multiple cores on
+a single host machine.  The default is on.  The main help describes some
+environment variables that can further control parallel processing.  Note
+that this program uses standard OpenMP (which is built in to the gcc/g++
+compilers), so further details can be found in the OpenMP documentation.
+
+.VARI CONFIG_PATH
+A colon-separated list of directories in which to look for configuration
+and calibration files.  Environment variables are allowed in the list
+(and may themselves contain colon-separated lists).  The directories are
+searched in order for each config/cal file when it is loaded.  This allows
+multiple projectes to be supported simultaneously, and allows the user to
+override any given config/cal file.  Note that the directory structure below
+the directories specified in this path must match what the project expects.
+For example, Mars 98 expects flat fields to be in a subdirectory named
+"flat_fields" while Mars Pathfinder expects them to be directly in the
+directory specified by the path (i.e. no intermediate subdirectories).
+
+.VARI POINT_METHOD
+Specifies a mission-specific pointing method to use.  Normally this
+parameter is not used, in which case the "default" pointing methods
+are used.  Some missions may have special, or alternate, pointing
+methods available, which are indicated by this string (for example,
+backlash models, using arm joint angles instead of x/y/z/az/el, etc).
+A substring search is used, so multiple methods (where that makes sense)
+can be specified by separating the keywords with commas.
+
+The methods available vary per mission, but some methods available at
+the time of this writing are:
+
+BACKLASH : Mars 98 SSI only.  Selects a backlash pointing model,
+which adjusts the telemetered azimuth and elevation values based on
+knowledge of the camera's mechanical backlash and the direction the
+motor was travelling when the image was taken.
+
+NOTE: This parameter is currently ignored by keyframe_selection, but
+kept for compatibility with other programs and potential future use.
+
+.VARI RSF
+Rover State File.  This is a list of filenames to load containing
+Rover State information.  These files contain position and orientation
+information for a rover (or other mobile spacecraft) at various sites.
+They are in XML format.  See the "Rover Motion Counter (RMC) Master File SIS"
+for details on these files.
+
+Rover State Files have a priority order.  The files listed first have
+the highest priority.
+
+Environment variables may be used in the list.
+
+For MER, if a directory is specified, then that directory is searched for
+RMC Master files and any found are loaded.  The directory structure and
+filename convention is covered in the RMC SIS.  The directory specified
+is the one containing "master", so if <dir> is the name specified in the
+RSF parameter, the following files will be searched for:
+
+<dir>/master/<mission>_Master.svf
+<dir>/master/<mission>_Site_<n>_Master.rvf
+
+The name of each file loaded is printed to the stdout log for reference.
+
+.VARI DEBUG_RSF
+If enabled, this causes the internal database of RMC locations to be
+printed out to the stdout log.  This is after the RSF files have been
+loaded and the coordinate systems read from the input label(s).
+
+NOTE: This parameter is currently ignored by keyframe_selection, but
+kept for compatibility with other programs and potential future use.
+
+.VARI COORD
+NOTE: This parameter is currently ignored by keyframe_selection, but
+kept for compatibility with other programs and potential future use.
+
+.VARI COORD_INDEX
+NOTE: This parameter is currently ignored by keyframe_selection, but
+kept for compatibility with other programs and potential future use.
+
+.VARI FIXED_SITE
+Specifies which major Site is the "Fixed" Site for this run.
+
+Historically, MPF and M98 had a single "Surface Fixed" frame which never
+moved, and which all other coordinate system frames were referenced to.
+With the advent of long-range rovers (such as MER and FIDO), that became
+insufficient.  The rover traverses far enough that errors in knowledge of
+coordinate system offset and orientation become unacceptable.
+
+For this reason, a system of major Sites was introduced.  Periodically
+during the mission, a Site frame is declared.  This then becomes the
+reference frame for all activities until the next Site is declared.
+References are kept local, and errors don't propogate across Sites.
+
+However, if images from more than one Site are combined together, the
+Site's must be placed relative to each other.  Therefore a single reference
+frame is still needed to combine different sites.
+
+The FIXED_SITE parameter controls which of the major Site frames is
+the reference ("fixed") site for this program run.  This fixed frame
+can vary in different program runs, but is constant throughout one
+execution.
+
+If not specified, FIXED_SITE defaults to the minimum Site number (i.e.
+lowest numbered, or earliest chronologically) used in all input images.
+Normally this default is sufficient; rarely must FIXED_SITE be specified.
+
+One or more Rover State Files must usually be specified in order to combine
+image from more than one Site.  These describe the relationship between
+sites.  See the RSF parameter.
+
+NOTE: This parameter is currently ignored by keyframe_selection, but
+kept for compatibility with other programs and potential future use.
+
+.VARI DISP_CONNECT
+If ON, the connectivity matrix of the images will be printed to the stdout.
+The connectivity matrix shows the connection of the images between each other
+trough the number of tiepoints each pair shares. 
+
+An example of a printed out connectivity matrix for 10 images is:
+
+0: 0 615 6 5 5 4 7 3 3 0 
+1: 0 0 614 3 2 5 2 6 5 6 
+2: 0 0 0 292 2 1 3 1 1 2 
+3: 0 0 0 0 676 3 3 5 4 2 
+4: 0 0 0 0 0 677 2 7 3 2 
+5: 0 0 0 0 0 0 441 4 0 4 
+6: 0 0 0 0 0 0 0 772 1 1 
+7: 0 0 0 0 0 0 0 0 502 2 
+8: 0 0 0 0 0 0 0 0 0 568 
+9: 0 0 0 0 0 0 0 0 0 0 
+
+NOTE: This matrix is symmetric, so only the upper-triangular portion should be
+interpreted. Eventually, the format will be replaced to match the DISP_CONNECT
+parameter from marsnav2:
+
+0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19
+0  .  1  .  .  .  .  .  .  .  .  .  .  .  .  .  2  .  .  .
+1     3  1  .  .  .  .  .  .  .  .  .  .  .  1  1  1  .  .
+2        5  1  .  .  .  .  .  .  1  1  1  .  1  1  1  .  1
+3           1  .  .  .  .  .  .  2  4  1  .  .  2  9  .  .
+4              4  1  .  .  .  .  9 10  .  .  .  1  1  2  5
+5                 3  1  .  1  1  5  .  .  .  .  1  3  2  .
+6                    1  .  .  .  .  .  .  .  .  .  2  .  .
+7                       .  .  1  .  .  .  .  .  .  .  .  .
+8                          .  .  .  .  .  .  .  .  .  .  .
+9                             1  .  1  .  .  .  .  .  .  .
+10                               7  1  .  .  .  .  1  .  .
+11                                  8  .  .  .  1  .  .  .
+12                                     8  .  .  2  6  1  .
+13                                        1  .  .  1  .  .
+14                                           .  .  .  .  .
+15                                              5  1  .  .
+16                                                 7  1  .
+17                                                    .  .
+18                                                       7
+19 
+ 
+A dot (".") indicates no connection between the two images. A number 
+indicates the number of connections between the two images, i.e., the number of
+tracks containing both images.
+
+Obviously, if the number of image is large, the printing of the connectivity
+matrix will pose problem. In such case, the printing could be disabled
+(NODISP_CONNECT). 
+
+.VARI DISP_COST
+If ON, the cost matrix of the pairwise cost function values will be printed to 
+the stdout.
+
+An example of a printed-out cost matrix for 5 images is:
+
+      0:    1:    2:    3:    4:    
+0:    0    0.5   -2   0.7   1.1   
+1:    0     0    0.2   -5    1.2    
+2:    0     0     0    5.2   1.0  
+3:    0     0     0     0    0.6 
+4:    0     0     0     0     0   
+ 
+A "0" indicates no connection between the two images. A number indicates the 
+cost function value between the two images. The following explain the different error codes, for keyframe scores:
+
+     -1: not enough matches
+	 -2: H matrix failed to compute
+	 -3: F matrix failed to compute
+	 -4: negative relative GRIC score obtained
+	 -5: no relative motion between pair
+	 -6: pure rotation detected
+
+Notice that there should be a "0" for any image against itself, for example 
+(1,1), (2,2), etc. Also notice how the matrix is upper-triangular, since it's symmetric and a value for each pair only needs to be computed once. It also 
+makes traversal simpler than if the entire matrix is filled. If the number of 
+images is large, the printing of the connectivity matrix will pose a problem. In such cases, the printing could be disabled (NODISP_COST). 
+
+.VARI EDGE_DIST 
+Percentage from all edges of the image to discard matches from, to account for 
+fisheye lens adverse effects on homography and fundamental matrix computation.
+Most computer vision algorithms from estimating these 3x3 matrices assume the 
+pinhole camera model, for which fisheye lenses with CAHVORE parameters result in
+inaccurate estimates. Eventually, fisheye-specific methods may be incorporated.
+The default value is set to 0.05; larger values can result in a greatly-reduced
+number of matches available for homography and fundamental matrix computation.
+
+.VARI SEQUENTIAL
+Type of keyframe selection to perform; choose between sequential and global 
+("nosequential").
+
+Sequential processing: this method is preferred for sequential, mainly linear 
+motion over time, such as the flight path of the Mars helicopter. In this 
+scenario, frames share tiepoints mainly with their adjacent neighbors. The 
+algorithm first finds the first keyframe based on the highest average score for 
+the first few frames, and then fills a list of the highest scores per line and 
+their respective pairs. The method is simple but works surprisingly well.  
+	
+Global processing: in this case, the motion model is more general and includes scenarios where locations are revisited and where frames can share tiepoints 
+with many other frames, without any expectation of adjacency. The motion of a robotic arm or a rover traversing over previous locations are good examples of 
+this. The keyframe scores matrix is viewed as a whole, regardless of frame 
+ordering, and the highest X% of average keyframe scores is chosen.
+
+An important future improvement is to look for “optimal paths” on a graph. If 
+the keyframe scores matrix is treated as a graph, composed of nodes (image 
+pairs) and links (weights) representing the keyframe score, algorithms such as "Djikstra’s shortest path” algorithm, the "longest path problem", and others can 
+be implemented to traverse the graph.
+
+.VARI SEL_PERCENT
+Percentage of top-scoring frames to keep during global keyframe selection. The
+selection algorithm computes the average score per frame, sorts by value, and
+the top X% are selected as the final keyframes.

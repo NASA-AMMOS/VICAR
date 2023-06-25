@@ -63,6 +63,7 @@
 
 /*>>UNIX<<	*/
 #include <stdio.h>
+#include <stdlib.h>
 #include <signal.h>
 #include <curses.h>
 #include "taeconf.inp"
@@ -372,7 +373,7 @@ FUNCTION CODE t_init
 	}
     *type = ltype = T_CRT;		/* has everything TAE needs	*/
     ptr = tgetstr ("is", &area);	
-    if (ptr != NULL && !processInit) 
+    if (ptr != NULL && !processInit && getenv("ENABLE_TAE_TERM_INIT") != NULL) 
 	tputs (ptr, 1, t_outc);		/* init terminal	*/
     ptr = tgetstr ("ks", &area);
     if (ptr != NULL && !processInit) 

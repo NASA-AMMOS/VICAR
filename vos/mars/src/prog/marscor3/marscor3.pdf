@@ -1,0 +1,1552 @@
+process help=*
+PARM INP TYPE=STRING COUNT=2
+PARM OUT TYPE=STRING COUNT=(1:2)
+PARM IN_DISP TYPE=STRING COUNT=(1:2)
+PARM MASK TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM OUT_QUALITY TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM IN_COEFS TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM OUT_COEFS TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM BAND    TYPE=INTEGER COUNT=(0:1) DEFAULT=1
+PARM TEMPLATE TYPE=INTEGER COUNT=(0:2) DEFAULT=15
+PARM SEARCH TYPE=INTEGER COUNT=(0:2) DEFAULT=35
+PARM QUALITY TYPE=REAL COUNT=1 DEFAULT=.6
+PARM GORES TYPE=KEYWORD COUNT=1 VALID=("GORES", "NOGORES") DEFAULT=NOGORES
+PARM GORE_QUALITY TYPE=REAL COUNT=(0:1) DEFAULT=--
+PARM GORE_PASSES TYPE=INTEGER COUNT=1 DEFAULT=0
+PARM GORE_REVERSE TYPE=KEYWORD COUNT=(0:1) VALID="GORE_REVERSE" DEFAULT=--
+PARM DISP_PYRAMID TYPE=INTEGER COUNT=1 DEFAULT=0
+PARM STOP_PYRAMID TYPE=INTEGER COUNT=1 DEFAULT=0
+PARM MODE TYPE=KEYWORD COUNT=1 VALID=("linear_only", "annealing", "amoeba", +
+	 "linear_amoeba", "annealing_amoeba", "amoeba2", "linear_amoeba2", +
+	 "amoeba8", "amoeba4", "amoeba5" ) +
+	DEFAULT="amoeba"
+PARM CUBIC_GRUEN TYPE=KEYWORD COUNT=1 VALID=("cubicgruen","nocubicgruen") DEFAULT="nocubicgruen"
+PARM LINEAR TYPE=KEYWORD COUNT=1 VALID=("linear","nolinear") DEFAULT="nolinear"
+PARM FTOL TYPE=REAL COUNT=1 DEFAULT=0.001
+PARM CHECK TYPE=REAL COUNT=0:1 DEFAULT=--
+PARM CHECK_QUALITY TYPE=REAL COUNT=1 DEFAULT=1.0
+PARM MULTIPASS TYPE=KEYWORD COUNT=1 VALID=("multipass","singlepass") +
+		DEFAULT="singlepass"
+PARM FILTER TYPE=KEYWORD COUNT=1 VALID=("filter", "nofilter", "gaussfilter") +
+DEFAULT="nofilter"
+PARM FILTER_SIZE TYPE=REAL COUNT=(0:2) DEFAULT=--
+PARM PI_SOURCE TYPE=KEYWORD COUNT=1 VALID=("pi_from_inp","pi_from_disp") +
+	DEFAULT="pi_from_disp"
+PARM ROTATION TYPE=REAL COUNT=1 DEFAULT=0.0
+PARM XSCALE TYPE=REAL COUNT=0:1 DEFAULT=--
+PARM YSCALE TYPE=REAL COUNT=0:1 DEFAULT=--
+PARM FEEDBACK_COEFS TYPE=KEYWORD COUNT=1 VALID=("nofeedback_coefs", +
+		"feedback_coefs") DEFAULT="nofeedback_coefs"
+PARM ROT_RANGE TYPE=REAL COUNT=(0:2) DEFAULT=--
+PARM SCALE_RANGE TYPE=REAL COUNT=(0:2) DEFAULT=--
+PARM IN_COEFS_RANGE TYPE=KEYWORD COUNT=1 VALID=("COEFS_RANGE_ON","COEFS_RANGE_OFF") +
+                 DEFAULT="COEFS_RANGE_OFF"
+
+PARM OMP_ON TYPE=KEYWORD VALID=(OMP_ON,OMP_OFF) DEFAULT=OMP_ON
+
+PARM DATA_SET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM DATA_SET_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM RELEASE_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCT_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_INST TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_TYPE TYPE=STRING COUNT=(0:1) DEFAULT=--
+
+
+PARM SCALING TYPE=KEYWORD COUNT=1 VALID=("SCALING","NOSCALING") +
+              DEFAULT="NOSCALING"
+PARM SCALING_THRESH TYPE=REAL COUNT=1 VALID=(0:1) DEFAULT=0.8
+PARM DECIMATION TYPE=KEYWORD COUNT=1 VALID=("DECIMATION","NODECIMATION") +
+              DEFAULT="NODECIMATION"
+PARM TILING TYPE=KEYWORD COUNT=1 VALID=("TILING","NOTILING") DEFAULT="NOTILING"
+PARM DECILEFT TYPE=KEYWORD COUNT=1 VALID=("DECILEFT","NODECILEFT") +
+              DEFAULT="NODECILEFT"
+
+PARM MAX_RATIO TYPE=REAL COUNT=1 DEFAULT=20
+PARM COEFS_SCALE TYPE=REAL COUNT=(0:6) DEFAULT=0
+PARM LOCAL_LIMIT TYPE=KEYWORD COUNT=1 VALID=("LOCAL_LIMIT_ON","LOCAL_LIMIT_OFF") +
+                 DEFAULT="LOCAL_LIMIT_OFF"
+
+PARM KEWA_SIGMA TYPE=REAL COUNT=1 DEFAULT=0.5
+PARM KEWA_NSIGMA TYPE=INTEGER COUNT=1 DEFAULT=3
+PARM KEWA_NSAMPLES TYPE=INTEGER COUNT=1 DEFAULT=10000
+
+PARM STAT_FILTER TYPE=KEYWORD COUNT=1 VALID=("STAT_FILTER","NOSTAT_FILTER") DEFAULT="NOSTAT_FILTER"
+PARM STAT_EXTENT TYPE=INTEGER COUNT=1 DEFAULT=2
+PARM STAT_STHRESHOLD TYPE=REAL COUNT=1 DEFAULT=1.2
+PARM STAT_NTHRESHOLD TYPE=INTEGER COUNT=1 DEFAULT=50 VALID=(0:100)
+
+END-PROC
+
+.TITLE
+VICAR program MARSCOR3.
+
+.HELP
+PURPOSE:
+Given a stereo pair of images and a low-resolution or low-quality disparity
+map representing line and sample disparities for every pixel in the scene,
+this program refines the disparities to create a higher-quality map.
+The input typically comes from a 1-D, fast correlator such as MARSJPLSTEREO.
+The output is typically run through the program MARSXYZ to generate X,Y,Z
+coordinates over the entire image.
+
+This is a general-purpose correlation program, which does not make use of
+any pointing or camera model information.  The input images do not have to
+be registered or epipolar aligned, as long as a lower-quality disparity map
+is available.  However, MARSJPLSTEREO requires aligned images with camera
+models, so the inputs will typically be so.
+
+This program is derived from MARSCORR and MARSCOR2.
+
+EXECUTION:
+marscor3 inp=(left,right) out=disparity in_disp=input_disparity params
+
+where:
+left is the left eye image of a stereo pair
+right is the corresponding right eye image of a stereo pair
+disparity is the output disparity map (one or two files).
+input_disparity is the input disparity map (one or two files).
+
+Although "left" and "right" are used above, there is no actual restriction
+that the first image be left and the second be right.  Correlations are done
+from the first image to the second.  Output images (disparity and mask)
+correspond to the first image, containing matching coordinates in the second
+image.  However, for convenience, "left" and "right" are used throughout
+this help.  Note that the input disparity map must use the same convention.
+
+Additionally, out_quality can be used to name an output file which will
+contain the correlation qualities for each pixel.
+.PAGE
+
+METHOD:
+
+The program loops through every pixel in the image.  For each pixel, the
+corresponding input disparity is obtained.  This input disparity may be
+adjusted based on the input zoom factor (derived from DISP_PYRAMID).
+This point is then used as a starting point to obtain a refined correlation.
+If there is no input disparity for the pixel, no correlation is performed.
+Previous versions truncated the input disparity to an integer; now sub-pixel
+disparity information is retained.
+
+If CHECK is non-zero, the point is then correlated a second time, this time
+going right-to-left (right is the reference).  The result must be within
+CHECK pixels of the original left point or the pixel is rejected.  (This
+only happens if the quality is less than the CHECK_QUALITY threshhold).
+
+Once that is complete, if GORES is turned on, then the program makes an
+additional set of passes through the image.  In each pass, pixels for which
+no disparity exists are examined.  For each such pixel, the 8 neighbors are
+examined to find the one with the best correlation value so far.  This
+neighbor is used as the initial guess for the pixel in question (modified
++/-1 as appropriate).  If no correlated neighbors are found, the pixel is
+skipped.  This process allows holes caused by failure of the input (1-D)
+correlator to be filled.  The program keeps making passes through the image
+until GORE_PASSES is exhausted (and non-0), or no gores are filled in a pass.
+The reverse check is again performed for each new pixel if CHECK is non-zero.
+
+Note that the image may be pre-processed due to MULTIPASS (downsampled)
+or FILTER (low-pass filtered) before the correlation takes place. Pre-
+filtering the image tends to improve the results - See Quality of Result
+Discussion section below.
+
+
+
+.page
+
+Correlation Modes
+-----------------
+All correlations are performed using the gruen correlation routine.  See
+the gruen documentation for details of the algorithm.  The TEMPLATE parameter
+specifies the size of the correlation window and SEARCH specifies the size
+of the area in which to search for a match.
+
+The MODE parameter is used to select the gruen mode:
+
+linear_only:       gruen mode 0
+annealing:         gruen mode 1
+amoeba:            gruen mode 2
+linear_amoeba:     gruen mode 3
+annealing_amoeba:  gruen mode 4
+amoeba2:           gruen mode 5
+linear_amoeba2:    gruen mode 6
+amoeba8:           gruen mode 7
+amoeba4:           gruen mode 8
+amoeba5:           gruen mode 9
+
+The separate keyword LINEAR can be used to add linear pre-searching to
+any of the above modes (it sends -(mode) to gruen()).  Linear searching is
+done only once even if e.g. both -linear and -linear_amoeba are specified.
+
+Of the above, the recommended modes are the five starting with "amoeba".
+The others are provided only for experimentation, and may significantly
+increase the execution time of the program.  The annealing modes are not
+fully implemented in the code at this time, but it would be trivial to do
+so if necessary.
+
+The amoeba modes work with 2, 4, 5, 6, or 8 degrees of freedom (for historical
+reasons, 6 is called simply "amoeba").  In general, the left template is
+mapped to the right using the following equations:
+
+x' = a*x + b*y + c + g*x*y
+y' = d*x + e*y + f + h*x*y
+
+This implements a generic perspective transform (it maps the square to any
+quadrilateral).  Each of the amoeba modes works as described below.  For
+parameters not adjustable in a given mode, they are fixed as follows:
+a = 1, b = 0, c = 0, d = 0, e = 1, f = 0, g = 0, h = 0
+
+amoeba2: Adjusts c and f only.  This allows for translation of the correlation
+window only.  It is the fastest mode, but generally the least accurate.
+
+amoeba4: Adjusts b, c, f, and g.  This allows for translation, shear, and
+trapezoid in x, but only translation in y.  This models a pair of epipolar-
+aligned stereo cameras looking out at a flat plane (such as from a rover).
+
+amoeba5: Adjusts a, b, c, f, and g.  This allows for any transform in x
+(translation, shear, trapezoid, and scale) but only translation in y.  This
+models a pair of epipolar-aligned stereo cameras looking at a more general
+scene (not constrained to a flat plane).  This is generally the best mode for
+epipolar-aligned cameras.
+
+amoeba:  Adjusts a, b, c, d, e, and f.  This implements a generic affine
+transform with no trapezoidal parameters.  Translation, scale, shear, and
+rotation are modeled.  This mode is historically the primary mode, but does
+not model in-situ cameras very well.
+
+amoeba8: Adjusts all parameters.  This implements a generic perspective
+transform with translation, scale, shear, rotation, and trapezoid (or
+perspective) transforms.  This is the most general mode, but may be
+underconstrained for small window sizes.
+
+The best mode to use is the one that best models the transform from the
+left to right cameras, without providing too many degrees of freedom.
+Sometimes, execution speed may drive one to a lower degree of freedom,
+trading accuracy for speed.
+
+Historically, amoeba has been initialized with an identity transform,
+plus the disparity translation. This is the default. There are now three 
+additional ways to initilialize the input transform: The average scale 
+difference in the input disparity label, the ROTATION, XSCALE, and YSCALE 
+parameters, and the IN_COEFS parameter.
+
+Starting with M2020, input disparity obtained from marsecorr contains in the
+labels the average scale difference between the L and R. If present in the
+input disparity, the scale value will be read and will be used to set the 
+initial transform. Note that the label contains only one value which constrain
+the initial transform to have same X/Y scaling and no rotation. In practice,
+that average scale value is the "default" values for X/YSCALE and ROTATION. 
+
+The ROTATION, XSCALE, and YSCALE parameters allow the initial transform to
+be set to a given rotation and scale.  This is useful if there is an overall
+frame rotation between the images (such as a mast camera looking straight
+down and being repointed, or an arm camara), or a scale difference (such as
+when correlating different instruments).  This starting point makes amoeba's
+job easier, since it doesn't have to determine the rotation and scale each
+time (which often fails with marginal correlations, or it "looks" in the
+wrong direction).  Thus the results are more stable, when the rotation or scale
+difference is severe. These parameters, if set,  have precedence over the
+average scale value retrieved from the labels.
+
+The IN_COEFS parameter allows the user to directly specify the initial
+transform on a per-pixel basis.  The input file should be a 6-band file the
+same size as the input disparity file, containing the parameters a,b,d,e,g,h.
+Note that the translation terms, c and f, are not included because they come
+from the input disparity file. Note that this option will provide different 
+transform for each pixel, whereas the other ones are global, i.e., one transform
+for all pixels.  Also note that OUT_COEF can be used to save the final 
+coefficients, in the same file format.
+
+
+While searching for the best match, amoeba will change the parameters of the 
+initial transform (which parameters are changed depends on which amoeba is 
+selected by user) to test different transforms. The search space of these 
+parameters can be with or without a limited range. Ideally we’d like to have no 
+limit and let amoeba find out the best match. Although the no-limit does work 
+for most cases (the easier ones like standard stereo), it does show limitation 
+with more challenging cases. The user have control over the coefficients limits 
+with a series of parameters described below; Similar to the coefficients, the 
+coefficients limits can be global (same for all pixels) or local (unique to each
+pixel):
+- No limit (default case)
+- If using X/YSCALE and/or ROTATION, user can set limits on the corresponding 
+transform coefficients with RANGE_SCALE and ROT_SCALE. 
+The ROT_RANGE and SCALE_RANGE parameters, if set, establish limits on what
+the rotation and scale are allowed to be.  This is accomplished by setting
+limits on the transform coefficients based on the parameters, so it's not an
+absolute limit on rotation or scale (certain transforms, generally pathological
+cases, could have rotation or scale outside the range yet have coefficients
+within the limits).  Limits are only applied if either are given; if only
+one set is given, the other defaults (rotation +/- 5 degrees, scale 0.9-1.1).
+Determining the rotation and scale is currently an exercise for the user.
+It would be possible to determine these given the camera models; this is
+done for rotation in marsautotie.  However, since marscor3 does not use
+camera models, that is not done here.
+- If using IN_COEFS, the limits can be set up to the min/max of each parameter 
+in the input coefficients file. This is selected with IN_COEF_LIMIT.
+
+Then two more parameters are available for further tuning:
+- COEFS_SCALE. Will enlarge or reduce the limits set by the above methods. 
+COEFS_SCALE is a percentage. Positive values will increase the limit, negative 
+values will decrease the values. For instance, if COEFS_SCALE=30, then the limit 
+[min, max] of a coefficient will be increased to [min-0.3min, max+0.3max]. 
+-LOCAL_LIMIT: Will activate local-only limits. All the above global methods 
+won’t have an effect. For each pixel, the initial coefficients of the transform
+are used to define the limit, using COEFS_SCALE to scale the limit range. For 
+instance, for initial parameter a (of a,b,d,e for affine transform), the limit 
+will be set to [a-0.3a, a+0.3a] (if COEFS_SCALE=30). Negative value of COEFS_SCALE
+have no effect if LOCAL_LIMIT is used. LOCAL_LIMIT requires the use of 
+COEFS_SCALE.
+
+
+
+.page
+
+
+Note on combining IN_COEFS and (XSCALE, YSCALE and/or ROTATION)
+---------------------------------------------------------------
+
+Intuitively, the user would have to choose between initializing the transform
+with IN_COEFS or (XSCALE, YSCALE and/or ROTATION). However, both can be 
+supplied with different strategies for -gores and -multipass processing.
+
+When IN_COEFS is supplied, the transform parameters initialization for the 
+first correlation pass (i.e., first pyramid level, first correlation pass (pre
+gores pass)) is based on the in_coefs file and on a per-pixel basis. This is 
+true independantly of all other input parameters. If IN_COEFS is off and if 
+XSCALE, YSCALE and/or ROTATION are supplied, the transform initialization is 
+defined from these parameters.
+If GORES is ON, the initialization of the gore pixel will be done depending on 
+the input parameters: If FEEDBACK is on, the transform of the best neighbor is 
+used to initialize the transform parameters of the current pixel. If FEEDBACK 
+is OFF, then the gore pixel transform initiliazation is based on the transfom 
+defined by (XSCALE, YSCALE, and/or ROTATION). If none of these parameters are 
+supplied (and FEEDBACK is OFF) then a +- one pixel shift from the best neighbor 
+is assumed.
+
+The pixel initialization from a pyramid level to the next one follows the same
+logic. If FEEDBACK is ON, the initialization is based on the transform 
+parameters found on the previous pyramid level. If FEEDBACK is OFF, the 
+transform parameters are initialized from the (XSCALE, YSCALE, and/or ROTATION)
+if supplied.
+
+
+.page
+
+Important Parameters
+--------------------
+The template (correlation patch) and search area sizes may be rectangular
+instead of square.  For landed images such as Mars Pathfinder or MER,
+it may be advantageous to specify areas that are much wider than they are
+tall.
+
+The FTOL parameter deserves special discussion, as it plays a huge factor
+in execution time.  FTOL is a parameter passed in to the amoeba function
+minimization routine.  It represents the tolerance in the function being
+minimized.  When the function (in this case, the inverse of correlation
+quality) starts changing by amounts less than FTOL, the algorithm assumes
+it has found a minimum and returns.
+
+Thus the size of FTOL has a direct correlation with the accuracy of the
+result.  Smaller values mean a more accurate result, with commensurately
+longer runtimes.  However, FTOL is NOT the actual accuracy.  While there
+is a correlation with accuracy, it is not a simple relationship.  Setting
+it to, say, 0.01 most definitely does NOT imply a correlation accuracy of
+0.01 pixels.  It represents how accurate the correlation quality is, not
+the pixel locations.
+
+Historically, FTOL has been fixed to 0.000001.  This led to very accurate
+results, but horribly long runtimes.  Experimentation has shown that a
+value around 0.001, or slightly higher, should be sufficient for most
+purposes, but this should be re-verified for each new type of data.
+
+.page
+
+Input disparities
+-----------------
+The input disparities are typically generated by MARSJPLSTEREO, but might
+also come from MARSUNLINEARIZE or MARSDISPINVERT.  They can be generated
+using a "pyramid" value.  This value must be input to MARSCOR3 via the
+DISP_PYRAMID parameter.
+
+The pyramid value represents a zoom down of the image, by a factor of
+2^pyramid.  So a pyramid of 0 implies full scale, 1 means half-scale,
+2 represents a quarter-scale image, etc.  The values IN the file are
+similarly zoomed down - they map from e.g. a quarter-scale image to
+a quarter-scale image.
+
+Furthermore, the pixel in the file actually represents the upper-left
+pixel in the zoom box.  For a pyramid of 3 (zoom of 8), the upper left
+pixel of each 8x8 box is the one mapped in the file.
+
+As with output files, the input disparity may be a single 2-band file, or
+two separate single-band files.  The first contains line disparities, and
+the second contains sample disparities.
+
+If the pyramid value is more than 1, then it is quite likely that the
+initial point obtained from the input disparity is off by more than amoeba
+can handle, giving very "patchy" results.  The amoeba algorithm really
+needs to start within a pixel or so for reliable results.
+
+To handle this case, MULTIPASS may be specified.  If MULTIPASS is turned on
+and DISP_PYRAMID is greater than 1, then the entire correlation process is
+repeated multiple times.  At each iteration, the input image is downsampled
+so it is twice the size of the input correlation map, for an effective
+pyramid level of 1.  The result then becomes the input disparity map for
+the next iteration.
+
+So, for example, with MULTIPASS and DISP_PYRAMID=3, then input disparity
+map is 1/8 the size of the input.  The first correlation is performed with
+a 1/4 scale image pair (the full correlation, including gore passes).
+The resulting 1/4 scale disparity is then correlated with a 1/2 scale image,
+then the result of that is correlated with the full scale image to produce
+the final result.
+
+The STOP_PYRAMID parameter can be used in conjunction with DISP_PYRAMID and
+MULTIPASS to stop the pyramid process prematurely.  Normally STOP_PYRAMID
+is 0, meaning go all the way to full-res.  But if STOP_PYRAMID is non-0,
+the process stops there.  A value of 1 would produce a half-scale output,
+2 would produce quarter-scale, etc.  At least one pass is done regardless
+of STOP_PYRAMID.  Note that the output can be fed back into another run of
+marscor3 by adjusting DISP_PYRAMID to the prior STOP_PYRAMID value.  This
+would allow, for example, use of different correlation parameters at
+different pyramid levels.
+
+If FEEDBACK_COEFS is on, the perspective transform coefficients are
+"remembered" from one pyramid pass to the next.  So for the next stage
+of the pyramid, the starting point uses the coefficients derived from the
+previous stage.  This helps retain the "shape" of the correlation window
+mapping across pyramid levels.
+Also, if FEEDBACK_COEFS is on, the perspective transform coefficients of the
+best neighbor during -gore process are used to provide an estimate of the
+current pixel.
+
+
+.page
+
+Output file contents
+--------------------
+All output files are in the coordinates of the first (left eye) image.
+For example if the sample disparity file has a value of 56.67 at sample 50
+it means that the sample location of a tiepoint located at sample 50 in the
+left eye image corresponds to sample 56.67 in the right eye image.   
+
+The line and sample disparities can be in two separate files.  However,
+normally (if only one filename is provided), both are written to a single,
+2-banded file, with line in the first band and sample in the second.
+
+First output (or band): A REAL image containing the line disparity.  The
+line/sample coordinate of each pixel in the output defines the position
+in the left eye.  The value of the pixel contains the line coordinate of
+the corresponding pixel in the right eye image.
+
+Second output (or band): A REAL image containing the sample disparity.  The
+line/sample coordinate of each pixel in the output defines the position
+in the left eye.  The value of the pixel contains the sample coordinate of
+the corresponding pixel in the right eye image.
+
+If both line & sample disparity values are 0.000 the point has no value
+(meaning correlation failed for that point).
+
+Note that all disparity values use 1-based coordinates for the right
+image, per VICAR conventions.
+
+Mask file (optional): A BYTE image showing the coverage of tiepoints.
+ 0 dn means the pixel could not be reached in order to be correlated
+   (i.e. there were no neighbors to supply an initial value, or TPTLIMIT
+   was reached).
+ 128 dn means a correlation was successfully performed at this location.
+ 255 dn means a correlation was attempted at this location but it failed,
+   usually because of low correlation quality.
+
+Output quality file (optional): A REAL image containing the correlation
+quality of each pixel attempted, from 0 to 1.  0 indicates either a
+correlation failure unrelated to the QUALITY setting, or a pixel that was
+not attempted due to lack of input disparity.
+
+Output coefficients file (optional): A 6-band REAL image containing the
+rest of the perspective transform (except the translation terms).  See
+OUT_COEF.
+
+.page
+
+Quality of Results Discussion
+-----------------------------
+A close look at the results shows a certain "bias" in the disparities
+away from integer values.  This is most easily seen by running F2 to
+subtract off the line or sample to get a "raw" disparity:
+
+$R2LIB/f2 disp.img disp_line.img func='"(in1.ne.0)*(in1-line)"' nb=1 sb=1
+$R2LIB/f2 disp.img disp_samp.img func='"(in1.ne.0)*(in1-samp)"' nb=1 sb=2
+
+Then run a histogram on the results.  The histogram will tend to peak on
+half-integer values, with valleys on the integers.  This is most obvious
+when the degrees of freedom are restricted, say using -amoeba2.
+
+Extensive analysis leads us to believe that this result is caused by
+the bilinear interpolation that is performed in the heart of gruen()
+(to warp the right image to match the left template).  The interpolation
+process tends to "smooth out" high-frequency random noise that is typically
+in the input images.  Because the noise does not match between the right
+and left images, the "best" fit tends to be where the noise is least.
+Bilinear interpolation has the effect of smoothing out noise when the
+interpolation is the highest - in between pixels or offsets of 0.5.  At
+integral pixel locations, it passes the original data through unchanged,
+causing no interpolation smoothing.
+
+Thus the least-squares fit in the correlator is "pulled" slightly away
+from the integer values, toward the half-integer.  This has been somewhat
+verified by correlating the same image against itself, introducing random
+noise into the "right" side.  As more noise is added, the histogram pulls
+away from the integers.
+
+This effect can be mitigated in two ways, in the current version:
+
+1) Use more degrees of freedom.  The effect is most pronounced with only 2
+degrees of freedom.  It is greatly reduced with 4, 5, 6, or 8.  The higher
+degrees of freedom cause more interpolation to be done (as the transform
+does more extensive warping).  Of course, the more degrees of freedom, the
+slower the algorithm.
+
+2) Use the -filter option to prefilter the images using a low-pass filter.
+This reduces the high-frequency noise and reduces the effect (but does not
+eliminate it, at least not in all cases).  Doing the filter should have
+minimal impact on the precision of the results, while improving accuracy
+due to the lower noise.
+
+An avenue for future exploration would be to try a method other than bilinear
+to do the interpolation, to see if that avoids the integer anti-bias effect.
+That would slow down the program tremendously, however.
+
+Update notes: Indeed, this half-integer bias is a known effect of bilinear
+interpolator smoothing effect. The problem is not the smoothing effect of the
+bilinear interpolator per se, but the fact that the smoothing intensity depends 
+on the shift (strongest at half pixel). One approach is to smooth (lowpass) the 
+right image before correlation, such that when the right image is interpolated
+at various shifts during the correlation, the bilinear smoothing effect is 
+limited. This can be done using FILTER. The intensity of the lowpass filtering 
+to apply is something to be adjusted. The more filtering, the less bias, but at 
+the same time more high frequency content is removed which is necessary for 
+good matching. A possible improvement is to use edge-preserving lowpass filters 
+such as the bilateral filter and TV-based filters. High frequency structures in
+the image would be preserved while reducing the noise.  
+ 
+Two low-pass filters are currently available: boxcar and gaussian. The boxcar 
+filter returns the pixel intensity resulting from the convolution of the image 
+with a NxN pixels rectangular kernel. Gaussian filter returns the pixel 
+intensity resulting from the convolution of the image with a gaussian-shaped 
+kernel of standard deviation sigma pixels.
+The gaussian filter is a better choice as it filters out better high frequencies
+(no secondary lobes) and is the recommended filter. Historically, in marscor3, 
+the boxcar filter has been implemented and used before the gaussian filter. It 
+is left available for convenience and compatibiliy.
+Default values for the boxcar filter is 3x3. Using the gaussian filter, similar 
+filtering intensity is obtained with a sigma of about 0.9.
+
+In addition to the prefiltering (denoising) of the images with a boxcar or 
+gaussian filter, it is possible to automatically scale the filtering to account
+for a scale ratio between the images. As the scale ratio between L and R can be
+different (geometric and/or tiling), one of the image will need to be lowpassed
+according to this ratio in order to be compared to the other one. Usually, this
+scaling was left to the user to set using a different FILTER_SIZE for the L and
+R. The theory states that before resampling an image, it must be low-passed 
+according to the resampling grid to avoid introduction of aliasing in the 
+resampled image. Ideally, this lowpass filtering should be done for every 
+transform tried by amoeba algorithm. This is in practice not doable because of 
+the shear processing time that would involve. However, an intermediate solution
+is to low pass the entire image according to the average scaling between the 
+two. In doing such, amoeba transforms, which will hover around that average 
+scale factor, will use an image that is approximatelly well filtered. This is 
+automatically achieved if SCALING and FILTER (or GAUSSFILTER) are on. If 
+activated, the L and R images are prefiletered according to the  average scaling 
+factor (infered either from the input disparity labels, or input parameters 
+(X/YSCALE and ROTATION), or input coefficients, and tiling factors).
+
+.page
+
+Parallel Processing
+-------------------
+This program has been parallelized using Open MP (OMP), which is built in
+to the g++ compiler.
+
+By default the number of threads used equals the number of cores on the machine
+where the program is being run.  Each image line is assigned to a different
+core, with "dynamic" scheduling to keep the workload for eeach core similar.
+
+Parallel processing can be disabled via the -OMP_OFF keyword.  The number
+of threads can be controlled by setting the OMP_NUM_THREADS environment
+variable before running the program.  There are numerous other OMP variables
+that can be set; see the OMP documentation.  However, the number of threads
+is the only one that is likely to be useful in most cases.
+
+Note that parallel processing necessitated a change in the gore filling
+algorithm, but the results should be identical.
+
+.page
+
+Scaling, tiling and decimation for processing performances
+-----------------------------------------------------------
+
+The TEMPLATE parameter sets the size of left image (the reference image) 
+patch. If the left and right images are approximately of the same resolution, 
+the size of the patch retrieved from the right image will be approximately 
+identical to the left patch (not accounting for the search area here).
+If however the left image is low resolution compared to the right image, the 
+size of the right patch retrieved from the image will be larger than the left 
+patch (need a larger patch to cover a similar "area" imaged by the low 
+resolution left patch). Note that the correlation will still be run on identical
+patch size, i.e., of left patch size (given by TEMPLATE), but the affine 
+transformation will automatically decimate the right image. For instance, if 
+left patch is 5x5 and difference of resolution between left and right is 2 
+(left has 2 times less resolution than right image), then a ~10x10 patch from 
+the right image will be retrieved and the affine transformation will point to 
+every other pixel to obtain a 5x5 patch from right image. If the left image is 
+high resolution compared to the right image, the behavior is the same, and the 
+size of the patch retrieved from the right image is according to the difference
+of resolution. For instance if the left image has twice more resolution than the 
+right image, a 5x5 template (left) patch will correspond to a ~3x3 (2.5x2.5 
+really, but increased to next integer) right patch. One can see that large 
+difference of resolution can be problematic as with increasing difference in 
+resolution, we get a smaller and smaller right patch, which means that 
+correlation will be done with fewer and fewer "real" pixels from the right 
+image. To alleviate the problem, the old solution was to increase the left 
+window size (template parameter) such that the resulting right size patch was 
+about the size we initially wanted for the template. In the previous example 
+that would correspond in setting the template to a 10x10 size. This is taken 
+care of with the SCALING parameter now, where the patches are automatically 
+increased such that the patches contains TEMPLATE "real" pixels.
+
+Starting with M2020 (Perseverance), we differentiate between two types of
+"resolution difference":
+- The "geometric" resolution difference.
+This is the standard type. There are various reasons why the "geometric" 
+resolution could be different between two images. Obviously, one reason is 
+because of the camera specs (e.g., Mastcam), but it can also be because of the
+relative position between the poses (e.g., one image acquired close range while
+the other acquired from afar). Starting with M2020, there is also the 
+possibility of a downsampled left and/or right images (see section on 
+"Correlation of tiled image"). If the left and right are upsampled back at  
+different resolutions, then they'll have a different "geometric" resolutions 
+despite having the same nominal resolution initially.
+- The "tiling" resolution difference.
+This is specific to M2020 engineering cameras and is related to the onboard 
+downsampling and ground upsampling alluded above (see section on 
+"Correlation of tiled image"). Given the possible various levels of onboard
+downsampling applied to different parts of each image, the reconstruced images
+could have the same sampling (i.e., same size) but the content could be of
+different resolution. 
+An example of "tiling" resolution difference would be a pair of navcam images
+with the left image downloaded at full resolution, while the right image was
+downsampled by a factor of 4 onboard and then upsampled back at full resolution
+on ground. In the correlation context, a 5x5 patch in the left image will 
+correspond to a 5x5 patch in the right image, but the left patch would contain
+25 "real" pixels while the right patch much less (most of them being just 
+replicated during the upsampling).
+
+The "SCALING" parameter, if activated, scales the patches for any geometric
+resolution difference, such that at least TEMPLATE "real" pixels in both left
+and right patches are correlated.
+If "TILING" parameter is activated, the tiling resolution difference is also
+accounted for during the scaling of the patches.
+
+
+The main problem in increasing the patches because of geometric and/or tiling
+resolution difference is an increase of processing time. To limit the processing
+time, but to still account for the scaling, the enlarged patches can be 
+decimated back to TEMPLATE size. This decimation is controlled via DECIMATION 
+parameter. Going back to the example above considering a high resolution left
+image (geometric difference of 2) compared to the right image, a TEMPLATE 5x5
+would require a scaling of left patch to 10x10 to insure that, among the 10x10
+right patch, there are at least 5x5 (25) real pixels (the other ones being just
+interpolated). In that case, 10x10 patches would be correlated. If DECIMATION is
+ON, then the 10x10 patches are decimated every other pixel, back to 5x5 pixels 
+patches, and the correlation would be run on 5x5 patches instead of 10x10. Note
+that prior to decimation, the patches are lowpass filtered to avoid aliasing 
+during the decimation.
+
+
+Notes:
+
+- CHECK cannot be run with SCALING 
+
+- The geometric resolution difference is defined from the afffine transform 
+parameters a,b,d,and e parameters. The g and h parameters are not checked.
+In theory they should be accounted for, but this is more complex as they 
+introduce an irregular sampling (linearly varying) inside the patch. It is 
+likely that their values are small enough to be neglected. This could be 
+investigated further. 
+
+.page
+
+Correlation of *tiled* images
+-----------------------------------------------------------
+A tiled image is an image whose frequency content - may be not constant 
+throughout the image or not corresponding to the pixel sampling resolution.
+This type of image arose with M2020 engineering cameras for bandwidth/memory 
+consideration. These images are sliced on-board in several chuncks and each part
+may be downsampled via a box filter by a factor of 0 (no downsampling), 2, 4, 
+or 8. Note that the downsampling level of each part may be different. The choice
+of which parts gets downsampled and by which amount is decided by ops. Once 
+downlinked, the image parts are upsampled back to original sampling (or not) and
+stitched back together to form the reconstructed image. 
+Although the final image may have the same size as the original image, its 
+content has been irremediably altered (~lowpass filtered) over the parts that 
+have been downsampled-then-upsampled. The reconstructed image may also have
+different part with different level of lowpass.
+The TILING parameters allows to account for this type of image to insure that
+proper care is taken prior to correlation. When correlating tiled images, we 
+need to make sure that:
+1 - Correlated patches from left and right images have the same level of 
+    content, that is they have *virtually* sustained the same amount of 
+    downsampling-then-upsampling. This is necessary to avoid that the high 
+    frequencies in one patch, and which have been filtered out in the other 
+    patch, pollute the correlation. These frequencies will be seen as "noise"
+    by the correlator as they can't be matched in the other patch. It's an apple
+    to apple comparison situation.
+2 - The amount of *real* information contained in each correlation patches 
+    (left and right) is the same for all correlated points. A user who set a 
+    template size of 5x5 "expects" the correlation to be based on 25 *real* 
+    measurements. If the images were downsampled-then-upsampled, a 5x5 patch 
+    does not contain 25 *real* measurements but less. The actual number of real
+    measurement depends on the downsampling factor (4 times less for each 
+    downsampling level).
+
+It is expected that left and right images contain tiling information in the 
+labels that allows to infer the tiling index for each pixel.
+
+If TILING is ON and the images are not tiled images, the TILING option is 
+turned OFF and the correlation is carried out in normal mode. An information
+message is displayed in that case.
+
+
+.PAGE
+
+HISTORY:
+
+  1995-12-01 J Lorre - Initial MPFTPT program
+  1999-07    Bob Deen - Signficant internal restructuring and addition of features.
+             Program renamed to marscorr.
+  2003-07    rgd - Creation of marscor3 from marscorr.
+  2003-10    rgd - Addition of -MULTIPASS, -FILTER, -CHECK, and several other new
+	     features.
+  2016-05    rgd - Parallelization of code
+  2017-05    ayoubfra - Addition of -DECILEFT and -GLOBAL_DECI
+  2017-10    ayoubfra - Addition of Gaussian lowpass filter, and strategy using both
+             IN_COEFS and X-YSCALE/ROTATION
+  2018-10    Implemention of BAND parameter
+  2019-10-02 Walt Bunch - IDS-7926 - Initialized some variables.
+             Commented unused variables. Added test script and log.
+  2020-02    ayoubfra - Addition of -TILING
+  2020-03    ayoubfra - Addition of -SCALING and -DECIMATION
+
+
+COGNIZANT PROGRAMMER:  Bob Deen
+
+.LEVEL1
+.VARI INP
+input images.
+first: left eye
+second: right eye
+
+.VARI OUT
+Output disparity
+file(s)
+
+.VARI IN_DISP
+Input disparity
+file(s)
+
+.VARI MASK
+Output mask file
+(optional)
+
+.VARI OUT_QUALITY
+Output quality image
+(optional)
+
+.VARI IN_COEFS
+Input coefficients file
+(optional)
+
+.VARI OUT_COEFS
+Output coefficients file
+(optional)
+
+.VARI BAND
+The vicar image 
+band number. 
+Defaults to 1
+
+.VARI TEMPLATE
+correlation size
+
+.VARI SEARCH
+correlation search
+area
+
+.VARI QUALITY
+Minimum acceptable
+correlation quality
+Square of correlation
+coefficient.
+
+.VARI TPTLIMIT
+Limit number of
+tiepoints to TPTLIMIT
+
+.VARI GORES
+Whether or not to
+fill in gores
+
+.VARI GORE_QUALITY
+Minimum correlation
+quality for gore passes
+
+.VARI GORE_PASSES
+Max gore passes (or 0
+for unlimited)
+
+.VARI GORE_REVERSE
+Whether or not to add
+reverse gore passes
+
+.VARI DISP_PYRAMID
+Pyramid level of
+input disparities
+
+.VARI STOP_PYRAMID
+Pyramid level at
+which to stop
+
+.VARI MODE
+Correlation mode.
+Use one of the amoeba*
+modes
+
+.VARI CUBIC_GRUEN
+use bicubic interpolator
+in gruen algorithm
+
+.VARI LINEAR
+Adds linear search
+to any MODE.
+
+.VARI FTOL
+Accuracy tolerance for
+correlation quality
+
+.VARI CHECK
+Turns on reverse correlation
+checking; also acceptable
+radius.
+
+.VARI CHECK_QUALITY
+Threshhold below which
+reverse checking is done.
+
+.VARI MULTIPASS
+Turns on multiple passes
+for pyramids > 1
+
+.VARI FILTER
+Turns on pre-correlation
+low-pass filter
+
+.VARI FILTER_SIZE
+Size of low-pass filter
+window.  If two values, size
+of filter for left and right
+sides
+
+.VARI PI_SOURCE
+Where the primary input
+labels come from.
+
+.VARI ROTATION
+Overall frame rotation.
+
+.VARI XSCALE
+Overall scale difference,
+in the X direction.
+
+.VARI YSCALE
+Overall scale difference,
+in the Y direction.
+
+.VARI FEEDBACK_COEFs
+Turns on coefficient feedback
+between pyramid levels.
+
+.VARI ROT_RANGE
+Establishes rotation
+limits for the transform.
+
+.VAR SCALE_RANGE
+Establishes scale
+limits for the transform.
+
+.VAR IN_COEFS_RANGE
+Establishes coef limit
+based on IN_COEFS
+
+.VARI OMP_ON
+Turns on or off parallel
+processing (default: on)
+
+.VARI DATA_SET_NAME
+Specifies the full name given
+to a data set or a data product.
+
+.VARI DATA_SET_ID
+Specifies a unique alphanumeric
+identifier for a data set or data
+product.
+
+.VARI RELEASE_ID
+Specifies the unique identifier
+associated with the release to the
+public of all or part of a data set.
+The release number is associated with
+the data set, not the mission.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique
+identifier assigned to a data
+product by its producer.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier
+of an entity associated with the
+production a data set.
+
+.VARI PRODUCER_INST
+Specifies the full name of the
+identity of an entity associated
+with the production of a data set.
+
+.VARI TARGET_NAME
+Specifies a target.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target.
+
+.VARI SCALING
+Activate scaling of TEMPLATE and/or
+SEARCH
+
+.VARI SCALING_THRES
+Threshold at which scaling is
+activated
+
+.VARI DECIMATION
+Activate decimation of scaled left/
+right correlated patches
+
+.VARI DECILEFT
+Convenience function for backward
+compatibility of old DECILEFT param
+
+.VARI MAX_RATIO
+Maximum scale difference between the
+Left and Right images
+
+.VARI COEFS_SCALE
+Scalar applied to the transform limits
+
+.VARI LOCAL_LIMIT
+Set if transform limits are to be 
+defined from the coefficient for each pixel
+
+.VARI TILING
+Activate adaptive filtering and
+correlation window sizing of tiled images.
+
+.VARI STAT_FILTER
+Activate post-process outlier
+filteting
+
+.VARI STAT_EXTENT
+Number of pixel to extend the
+filter neighborood window
+
+.VARI STAT_STHRESHOLD
+Scaler for similarity threshold
+
+.VARI STAT_NTHRESHOLD
+percentage of similar pixel
+in neighborood to validate pixel
+
+
+
+
+.LEVEL2
+.VARI INP
+First left eye image, then right eye image.
+
+There is nothing actually requiring left/right order, other than convention.
+If left/right is unclear (e.g. the images are not from a stereo camera) then
+either order is acceptable.  If the output is used with MARSXYZ, the same
+order must be used.  The order must also match that of the program used to
+calculate input disparities (typically MARSJPLSTEREO).
+
+.VARI OUT
+The line and sample disparity files.  If one filename is given, a two-banded
+file is created with line disparity as band 1 and sample disparity as band 2.
+If two filenames are given, two single-band files are created.  Line disparity
+is in file 1, and sample disparity is in file 2.
+
+See the main program help for output file contents and formatting.
+
+.VARI IN_DISP
+The input disparity images.  If one filename is given, a two-banded file
+is expected with line disparity as band 1 and sample disparity as band 2.
+If two filenames are given, the first file is expected to contain line
+disparities and the second, sample disparities.
+
+The size of the disparity image compared with the input images must be
+related as specified by the DISP_PYRAMID parameter.
+
+See the main program help for output file contents and formatting.
+
+.VARI MASK
+Optional output file showing the coverage of tiepoints (correlated pixels),
+in BYTE format.
+ 0 dn means the pixel could not be reached in order to be correlated.
+   (i.e. the input file had no disparity for the pixel).
+ 128 dn means a correlation was successfully performed at this location.
+ 255 dn means a correlation was attempted at this location but it failed,
+   usually because of low correlation quality.
+
+.VARI OUT_QUALITY
+Output quality file (optional): A REAL image containing the correlation
+quality of each pixel attempted, from 0 to 1.  0 indicates either a
+correlation failure unrelated to the QUALITY setting, or a pixel that was
+not available in the input.
+
+This file could be used in conjunction with a very low quality setting
+to allow correlation in low-quality areas, with the result filtered
+afterwards using a higher quality (i.e. use the output quality file as
+a mask).  Unlike marscorr/marscor2, this is a reasonably safe operation,
+as long as no gore passes were performed.  Gore passes, however, run the
+same risk as marscorr/marscor2: if there is any kind of repeating pattern
+in the image, the correlator could get "stuck" on the wrong match for the
+pattern and propogate that error.
+
+.VARI IN_COEFS
+The IN_COEFS parameter allows the user to directly specify the transform on
+a per-pixel basis.  The input file should be a 6-band file the same size
+as the input disparity file, containing the parameters a,b,d,e,g,h.  Note
+that the translation terms, c and f, are not included because they come from
+the input disparity file.  Note that OUT_COEF can be used to save the
+final coefficients, in the same file format.
+
+.VARI OUT_COEFS
+The OUT_COEFS parameter specifies an optional file to contain the output
+coefficients from the transform.  This will be a 6-band file the same size
+as the output disparity file, containing the parameters a,b,d,e,g,h.  Note
+that the translation terms, c and f, are not included because they are in
+the output disparity file.  Note that IN_COEFS uses the same file format.
+
+.VARI BAND
+The vicar image band number for the input images.  Defaults to 1
+
+.VARI TEMPLATE
+Correlation size.  Must be an odd number.  Defaults to 15 square.
+
+If only one value is given, a square template is used.  If two values are
+given, the first is the template height (line direction) and the second is
+the template width (sample direction).  Rectangular templates that are
+wider than they are tall should be useful for lander images.
+
+.VARI SEARCH
+Correlation search area.  Must be an odd number.  Defaults to 35 square.
+SEARCH must be > TEMPLATE.  If SEARCH is only a bit larger than TEMPLATE
+then many correlations will abort because they will be prohibited from
+searching in promising directions. 
+
+If only one value is given, a square search area is used.  If two values are
+given, the first is the search height (line direction) and the second is
+the search width (sample direction).  Rectangular search areas that are
+wider than they are tall should be useful for lander images.
+
+.VARI QUALITY
+Minimum acceptable correlation quality.  Correlations with qualities below
+QUALITY will be rejected. Qualities range from 0 (poor) to 1 (excellent).
+
+Note that this value is the square of the correlation coefficient.  The
+definition of correlation coefficient is a/sqrt(b); we maximize a**2/b
+instead to avoid the square root calculation (negative correlations are
+checked for and given a negative result).  Therefore if a quality value of
+(for example) 0.36 is given, that corresponds to a correlation coefficient
+of 0.6.  The difference does not matter except insofar as people are used
+to using the correlation coefficient number.
+
+Defaults to 0.6  
+
+.VARI GORES
+Specifies whether or not gore passes are performed.  The default is not to
+do them.  See the main help for details.
+
+.VARI GORE_PASSES
+Specifies the maximum number of gore passes through the image to perform.
+If the value is 0, the number of passes is unlimited.  The program will
+stop making gore passes once a pass produces no more tiepoints, even if
+GORE_PASSES has not yet been reached.
+
+Limiting the number of gore passes prevents the correlator from "breaking
+in" to invalid areas and getting "lost", such as often happens with
+marscorr/marscor2.  Similar limiting may also be done via a high
+GORE_QUALITY.
+
+.VARI GORE_QUALITY
+Specifies the correlation quality to be used during gore passes.  If not
+specified, the value for QUALITY is used.
+
+Usually, a reasonably low quality, such as 0.36, is acceptable for the main
+correlation.  This is because we know a priori that all points considered
+have passed the first correlation program, which acts as a kind of filter.
+So it is quite likely that the point is good, even with a lower quality.
+
+However, in gore filling, that filter no longer applies.  Any point could
+be considered for correlation.  By setting GORE_QUALITY quite high (perhaps
+.6 or .8), we insure that only very good points are included without the
+benefit of the filter.  This prevents the correlator from getting "lost"
+such as often happens with marscorr/marscor2 and generating spurious results.
+Points not filled in by the first correlator may still be good for marscor3,
+since the first correlator usually does only a square mapping, not a
+quadrilateral mapping, from left to right, and square doesn't always work
+very well.
+
+This value is the square of the correlation coefficient, as with QUALITY.
+
+.VARI GORE_REVERSE
+Normally, gore passes are processed top-to-bottom, left-to-right.  As
+each pixel is filled in, it becomes eligible to be a neighbor to the next
+pixel.  So a gore pass can fill in arbitrarily far to the right or down,
+but can only fill in one pixel to the left or up.  This often leads to
+diagonal edges in coverage (moving down and to the left), as each successive
+line is only able to move one pixel farther left.  Filling much up/left
+requires a huge number of gore passes.
+
+Turning on GORE_REVERSE enables a second iteration through the data in each
+gore pass.  This second iteration processes in the reverse order... bottom-
+to-top, right-to-left.  This allows it to fill in up and to the left as well
+as down/right.  Note that one gore pass consists of going *both* directions.
+
+The reverse pass can leave diagonal coverage edges moving up and to the right.
+If 0 degrees is to the right and angles increase counterclockwise, then the
+areas between 0 and 45 degrees, and between 180 and 225 degrees, will not be
+filled by a single gore pass.  (Without reverse, the unfilled area is 0 to 225).
+For this reason, it is recommended that at least two gore passes be used if
+reverse is turned on.
+
+.VARI DISP_PYRAMID
+Specifies the "pyramid level" of the input disparities.  The input is zoomed
+down by a factor of 2 ^ DISP_PYRAMID.  This corresponds directly to the
+PYRLEVEL parameter to MARSJPLSTEREO.
+
+A value of 1, 2, or 3 is generally recommended.  Pyramids of 0 (no zoom) are
+often susceptible to minor variations in the camera model and sometimes
+produce sparse images out of MARSJPLSTEREO.  Higher pyramid levels are less
+sensitive to the accuracy of the camera model and generally produce better
+coverage.
+
+See the main help for a discussion of the input file format and how it
+relates to DISP_PYRAMID.
+
+.VARI STOP_PYRAMID
+The STOP_PYRAMID parameter can be used in conjunction with DISP_PYRAMID and
+MULTIPASS to stop the pyramid process prematurely.  Normally STOP_PYRAMID
+is 0, meaning go all the way to full-res.  But if STOP_PYRAMID is non-0,
+the process stops there.  A value of 1 would produce a half-scale output,
+2 would produce quarter-scale, etc.  At least one pass is done regardless
+of STOP_PYRAMID.  The intent of this is to facilitate debugging by being
+able to examine the intermediate pyramid results; operational use is not
+anticipated.  Note that the output can be fed back into another run of
+marscor3 by adjusting DISP_PYRAMID to the prior STOP_PYRAMID value.
+
+.VARI MODE
+Specifies which mode of the gruen correlator to use.
+
+All correlations are performed using the gruen correlation routine.  See
+the gruen documentation for details of the algorithm.
+
+The MODE parameter is fully described in the main program help.  Only the
+five "amoeba*" modes are recommended.
+
+.VARI CUBIC_GRUEN
+At the deepest loop in the gruen correlator, the right image is interpolated
+using a bilinear interpolator by default. If using CUBIC_GRUEN, a bicubic
+interpolator is used. Early experiments shows that correlations based on the
+bilinear correlator are ~2-3 times faster than the bicubic one.
+However, bicubic interpolation is a better one and could improve the quality
+of the correlation. 
+
+.VARI LINEAR
+Adds linear search to any MODE.  This can help when the initial point is more
+than a pixel or two away from the true point, since the various amoeba modes
+don't generally like walking more than that in the parameter space.  However,
+the linear mode is limited to a square transform, so it may not match the
+cemra geometry very well.  See the MODE parameter and description in the
+main program help.
+
+.VARI FTOL
+FTOL specifies the tolerance, or accuracy, in the function minimization
+process (the correlation quality).  While directly related to accuracy of
+the results, this relationship is not simple.  See the main help for a
+more involved discussion.
+
+Higher values of FTOL cause the program to run faster, sometimes MUCH faster,
+at the expense of some accuracy.
+
+Typical values range from .000001 (historically the only value; probably too
+tight a tolerance) to .001 or .004.  This parameter should be experimented
+with for each new type of data.
+
+.VARI CHECK
+If non-zero, turns on reverse-check mode.  After every point is correlated
+(whether in the main or gore passes), the pixel is again correlated in
+reverse.  Instead of left-to-right, it goes right-to-left (right is the
+template) using the current result as the starting point.  Thus a left-side
+coordinate is obtained that matches the right-side image.
+
+This coordinate is then compared to the original left-side coordinate.  If
+they differ by more than CHECK pixels, the point is rejected.  (This is a
+square window; line and sample are compared independently).
+
+The result is that more "bad" pixels are filtered out, at the expense of
+some time.  This may allow the quality to be lowered without getting too
+many bad matches.
+
+Note that CHECK should not be run with DECILEFT or ROTATION or X/YSCALE
+as the inverse affine transformation is not fully implemented yet.
+
+See also CHECK_QUALITY; the reverse check is omitted if the quality is
+higher than CHECK_QUALITY.
+
+Note that CHECK is not all that useful in the amoeba-only modes, because
+we start at a known peak already.  The reverse check could be more useful
+when combined with a -LINEAR search.  A true reverse check would do an
+independent, complete right->left correlation, then compare the results.
+
+.VARI CHECK_QUALITY
+Minimum threshhold at which the reverse check is performed.  The theory
+is, if the quality is good enough, a reverse check is unnecessary.  See
+the CHECK parameter.
+
+.VARI MULTIPASS
+If the pyramid value is more than 1, then it is quite likely that the
+initial point obtained from the input disparity is off by more than amoeba
+can handle, giving very "patchy" results.  The amoeba algorithm really
+needs to start within a pixel or so for reliable results.
+
+To handle this case, MULTIPASS may be specified.  If MULTIPASS is turned on
+and DISP_PYRAMID is greater than 1, then the entire correlation process is
+repeated multiple times.  At each iteration, the input image is downsampled
+so it is twice the size of the input correlation map, for an effective
+pyramid level of 1.  The result then becomes the input disparity map for
+the next iteration.
+
+So, for example, with MULTIPASS and DISP_PYRAMID=3, then input disparity
+map is 1/8 the size of the input.  The first correlation is performed with
+a 1/4 scale image pair (the full correlation, including gore passes).
+The resulting 1/4 scale disparity is then correlated with a 1/2 scale image,
+then the result of that is correlated with the full scale image to produce
+the final result.
+
+The default is not to do multiple passes.
+
+.VARI FILTER
+Turns on a pre-correlation low-pass filter of the images.  This can tend
+to reduce interpolation noise; see Quality of Results Discussion in the
+main help.
+
+Note that the filter is applied only to the full-res image.  If -MULTIPASS
+is also used, only the last pass is filtered.  (Downsampling does an inherent
+filtering so it is not needed).
+
+There are two low-pass filtering techniques available:
+-FILTER is simply an NxN average of surrounding pixels (boxcar filtering),
+with N given by FILTER_SIZE.  So with FILTER_SIZE=3, the 9 surrounding pixels
+(including the central pixel) are averaged. Default value is 3.
+-GAUSSFILTER uses a Gaussian convolution to lowpass the image. The sigma (or
+standard deviation) of the gaussian is given by FILTER_SIZE. Default value
+is 0.9 (which roughly corresponds to a 3x3 boxcar filtering).
+
+
+.VARI FILTER_SIZE
+Specifies the size of the averaging window for -FILTER or the sigma for
+-GAUSSFILTER.  Must be an odd in case of box filter.  See -FILTER.
+In case of GAUSSFILTER use, the sigma of the gaussian low pass is set with
+FILTER_SIZE. One way to decide which sigma is needed/wanted, is to think about 
+the output "resolution" equivalent you want to achieve. For instance, if you 
+wanted to filter the image such that you could decimate it with a factor of 2 (
+size reduction of 2) without introducing too much aliasing, how would you 
+relate that factor of 2 with the sigma ? There is no one answer, but a general 
+relationship that is used in the literature which gives reasonable results is:
+
+sigma = 0.8 * sqrt(T^2 -1). 
+
+With T, the output virtual sampling step (would be T=2 for our example above). 
+If you wanted to smooth a bit the image, you could use T=1.2 for instance and
+compute what sigma should be.
+
+If one value is given, it applies to both the left and right inputs.  If
+two values are given, the first applies to the left and the second to the
+right.  This allows differential filtering levels, for use e.g. when
+correlating different-scale images (such as the MSL mastcams).
+
+.VARI PI_SOURCE
+Specifies where the primary input labels come from.  The default is
+PI_FROM_DISP, meaning that the labels are transferred from the (first)
+disparity input.  This preserves the history labels that the 1-D correlator
+added.  However, it presumes that the 1-D correlator itself transferred
+labels from the input images.
+
+In the uncommon case of a disparity file where the labels are insufficient,
+PI_FROM_INP can be used.  This causes the label to be transferred from the
+first INP parameter.  This might be necessary if e.g. a synthetic disparity
+map were created which did not have all the labels of the input.
+
+.VARI ROTATION
+Specifies the overall frame rotation (in degrees) between the two images.
+A positive value says the right image should be rotated clockwise by that
+amount in order to match the left.
+
+This is not normally needed for standard stereo pairs.  However, for repointed
+pairs, or arm-camera pairs, this can significantly improve amoeba's results.
+The solution is more stable because amoeba is less likely to go off in bad
+directions looking for the proper transform, especially when the correlations
+are marginal due to noise.
+
+.VARI XSCALE
+Similar to ROTATION, but specifies the overall X-direction scaling factor
+between the images.  This factor applied to the right image should produce
+an image closely matching the left image's scale.
+
+See ROTATION or the main help for more.
+
+.VARI YSCALE
+Excactly like XSCALE, except it applies in the Y direction (line) instead.
+
+.VARI FEEDBACK_COEFS
+If FEEDBACK_COEFS is on, the perspective transform coefficients are
+"remembered" from one pyramid pass to the next.  So for the next stage
+of the pyramid, the starting point uses the coefficients derived from the
+previous stage.  This helps retain the "shape" of the correlation window
+mapping across pyramid levels.
+FEEDBACK_COEFS is also used for gores transform initialization. If ON, the
+transform coefficient of the best neighbor are used to initialize the 
+current pixel.
+See main help for further details.
+
+.VARI ROT_RANGE
+Establishes limits for the allowed rotation values.  This is accomplished
+by setting limits on the transform coefficients based on the range input,
+so it is not a perfect limit (see discussion in main help).  If SCALE_RANGE
+is given but ROT_RANGE is not, ROT_RANGE defaults to -5 to +5 degrees.
+
+.VARI SCALE_RANGE
+Establishes limits for the allowed scale.  This is accomplished by setting
+limits on the transform coefficients based on the scale input, so it is not
+a perfect limit (see discussion in main help).  If ROT_RANGE is given but
+SCALE_RANGE is not, SCALE_RANGE defaults to 0.9 to 1.1.
+
+.VARI IN_COEFS_RANGE
+Only used with IN_COEFS. If ON, the limit on the coefficients transforms
+will be set based on IN_COEFS. The min/max of each coefficients will be
+the limit on each coefficients. 
+
+.VARI OMP_ON
+Turns on or off parallel processing.  The default is on.  The main help
+describes some environment variables that can further control parallel
+processing.  Note that this program uses standard OpenMP (which is built in
+to the gcc/g++ compilers), so further details can be found in the OpenMP
+documentation.
+
+.VARI DATA_SET_NAME
+The DATA_SET_NAME typically identifies the instrument that acquired the
+data, the target of that instrument, and the processing level of the data.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_NAME.
+
+.VARI DATA_SET_ID
+The DATA_SET_ID value for a given data set or product is constructed
+according to flight project naming conventions.  In most cases the
+DATA_SET_ID is an abbreviation of the DATA_SET_NAME.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_ID.
+
+.VARI RELEASE_ID
+When a data set is released incrementally, such as every three months during
+a mission, the RELEASE_ID is updated each time part of the data set is released.
+For each mission(or host id if multiple spacecrafts), the first release of a data
+set should have a value of "0001".
+This value is copied to the output label, property IDENTIFICATION,
+keyword RELEASE_ID.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique identifier assigned to a data product by
+its producer. Most commonly, it is the filename minus the extension.
+This value is copied to the output label, property IDENTIFICATION,
+keyword PRODUCT_ID.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier of an entity associated with the
+production of a data set. This value is copied to the output label,
+property IDENTIFICATION, keyword PRODUCER_ID.
+
+.VARI PRODUCER_INST
+Specifies the identity of a university, research center, NASA center or other
+institution associated with the production of a data set.
+This value is copied to the output label, property IDENTIFICATION, keyword
+PRODUCER_INSTITUTION_NAME.
+
+.VARI TARGET_NAME
+Specifies a target.  The target may be a planet, satelite, ring, region, feature,
+asteroid or comet.  This value is copied to the output label, property
+IDENTIFICATION, keyword TARGET_NAME.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target. This value is copied to the output
+label, property IDENTIFICATION, keyword TARGET_NAME.
+
+.VARI DECILEFT
+Whether or not to decimate the left template image if the difference
+of resolution between the left and right images allows it, that is, if
+left image resolution is at least twice higher than right image. See main 
+program help for more information.
+
+.VARI MAX_RATIO
+Maximum scale difference between the Left and Right images. This is to prevent 
+unrealistic scale difference that would render the process very long with poor
+results. In the process, if the ratio is exceeded, the transform ratio between 
+the two images is limited to MAX_RATIO. MAX_RATIO needs to be >=1, otherwise
+it defaults to 1.
+
+.VARI COEFS_SCALE
+If the transform coefficients limits are set globally (from SCALE_RANGE, ROT_RANGE, 
+or IN_COEF_RANGE), this allow to adjust further these limits. COEFS_SCALE is a 
+percentage. Positive values will increase the limit, negative values will decrease 
+the values. For instance, if COEFS_SCALE=30, then the limit [min, max] of a 
+coefficient will be increased to [min-0.3min, max+0.3max].
+If the limits are set locally (via LOCAL_LIMIT), then COEFS_SCALE sets the limit
+based on each pixel transfrom coefficients. For instance, for initial parameter
+a (of a,b,d,e for affine transform), the limit will be set to [a-0.3a, a+0.3a] 
+(if COEFS_SCALE=30). Negative value of COEFS_SCALE have no effect for local limit
+COEFS_SCALE is either a 1-value or 6-values parameters. In case of 1-value, the
+same scaling is applied to the 6 transform parameters (a,b,f, d,e,g). Otherwise
+a value for each is necessary. Note that not all transfrom parameters are used.
+It depends on the amoeba selected.
+
+
+.VARI_LOCAL_LIMIT
+Will activate local-only limits. All global method to set transform limit will 
+be invalidated. The transform coefficients limits are defined based on the 
+transform coefficients and COEFS_SCALE. 
+
+
+.VARI SCALING
+If SCALING is ON, activates the possible scaling (i.e., enlargement) of the
+TEMPLATE patch and/or SEARCH patch to insure that the number of "real" pixels
+in the correlated patches corresponds to user input TEMPLATE and SEARCH. 
+
+.VARI SCALING_THRESH
+In theory, as soon as the Left image is higher resolution than the Right, ie,
+scaling between L and R < 1, the upscale of the Left template is activated
+(If SCALING is on). However, even for a pair of image with the same theoretical
+resolution (say a Nav pair), the computed scaling ratio is going to be around
+1, but not a perfect 1. So upscale could go ON, although it is not really 
+needed. To alleviate this problem, the upscaling is actually done if the 
+computed scaling ratio is less than SCALING_THRESH. Default is 0.8. Note that
+when scaling is not activated, the correlated patches are just a subset of the
+main images taken as-is. If activated, the EWA resampler is used. If one wants
+the EWA resampler to be used no matter if scaling is needed (for noisy image,
+this resampler has a light low-pass filtering component), set SCALING_THRESHOLD
+to 1.
+
+
+.VARI TILING
+If TILING is ON, activates the scaling of the correlated patches due to 
+difference in tiling levels between the images. This option implies that SCALING
+must be ON (if not, SCALING is automatically turned ON).
+
+.VARI DECIMATION
+When left/right patches are scaled up to insure that they have at least TEMPLATE
+and/or SEARCH "real" pixels, their increased size lead to longer processing time.
+However, these increased patches are oversampled by construction, whether
+because of geometric scaling or tiling scaling. In order to limit the processing
+time, if DECIMATION is ON, the patches are going to be downsampled in such a way
+that their size is equal to TEMPLATE and SEARCH. Decimation of the patches only
+happens if the scaling factor is at least 2. There is no interpolation, only 
+decimation on integer grid.
+
+.VARI DECILEFT
+This is a convenience parameter for backward compatibility with previous 
+version of marscor3. Essentially when DECILEFT is ON, then
+SCALING is ON
+TILING is OFF
+DECIMATION is ON
+Also, only the left patch is scaled and decimated (if that is possible), not the 
+SEARCH.
+For new use of marscor3, this parameter should not be used. 
+
+
+
+
+.VARI STAT_FILTER
+This parameter activate a median-of-sort filter applied to the disparity
+maps. This is meant to remove outliers, and *patch* of similarly-valued 
+outliers. 
+In a truly randomly-distributed outliers situation, a regular median filter 
+usually doesa good job at removing them. The problem with dense correlation, 
+i.e., correlation done for each pixel of the Left image with a TEMPLATE, is that
+a bogus value has high chances to be replicated in the neighbooring pixels. The
+reason is that the TEMPLATE content of a neighbooring pixel has more or
+less the same content that the content of the pixel. Hence, whatever in the
+TEMPLATE content caused a bogus measurement for a particular pixel is likely to
+be present in the TEMPLATE content of the neighboor pixel and cause a similar 
+bogus measurement. It's related to the fattening effect, a well known effect in
+correlation. As a consequence, the correlation map is polluted with *patches* of
+outliers that are hard to remove with a standard median filter.
+The STAT_FILTER is based on the assumption that disparity changes smoothly, so 
+we're checking that the neighborood of a given pixel has a disparity similar to 
+that given pixel. To overcome the fattening effect, the neighborood is defined 
+as the correlation template size (TEMPLATE) slightly augmented by a few pixels. 
+As explained above, the reason is that a salient feature will be seen in a 
+series of neighbooring correlation window (depends on the TEMPLATE size). This
+may cause a patch of uniform outliers which may satisfy the smoothness criteria.
+Therefore a neighborood slightly larger than the template size is taken. 
+Two thresholds are used to check the validity of a pixel:
+- the allowed disparity amplitude difference between the queried pixel and the
+  ones in the neighborood
+- the minimum number of pixels in the neighborood that need to satisfy the 
+  disparity amplitude criteria to deem the current pixel not an outlier
+
+The filter works like this (think of it as sort or median filter):
+For a given pixel:
+- Compute the disparity difference between the pixels of the neighborood and 
+  the disparity of that queried pixel ("remove" the line/samp offset before). 
+- Count the number of pixel whose difference is less than a threshold
+- If that number is larger than a threshold, the current pixel is valid.
+  Otherwise, it is deemed an outlier.
+
+.VARI STAT_EXTENT
+The number of pixels beyond the TEMPLATE size that will define the neighborood.
+Default is 2. So, for instance, if TEMPLATE=9 and STAT_EXTENT=2, then the
+neighborood will be a 13x13 patch.
+
+.VARI STAT_STHRESHOLD 
+This variable indicates the amount of variation in terms of disparity changes
+that is allowed in the neighborood. The default is 1.2. Note that the line/samp 
+disparity has been removed as well as the scale factor between the left and
+right image.
+
+.VARI STAT_NTHRESHOLD 
+Percentage (values between 0 and 100) of the required number of *smooth* pixels
+in the neighborood to validate the current pixel as a good one.
+Default is 50. A large value will force smoothness which will remove more 
+outliers but which may also remove good values that are in an area of strong
+disparity changes. A small value will have the opposite effect, that is keep as
+much inliers are possible but letting more outliers in.
+

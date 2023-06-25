@@ -3,6 +3,8 @@ refgbl $echo
 refgbl $syschar
 parm inp string count=0:1 default=--
 body
+enable-log
+
 let _onfail="continue"
 let $echo="yes"
 
@@ -16,4 +18,6 @@ if ($syschar(1)="UNIX")
 else
    dcl delete/log testimage.pgrid;* 
 end-if
+
+disable-log
 end-proc

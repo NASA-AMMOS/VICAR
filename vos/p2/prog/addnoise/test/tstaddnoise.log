@@ -1,14 +1,14 @@
 gen out=a.img nl=100 ns=100 ival=100 linc=0 sinc=0
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen out=h.img nl=100 ns=100 ival=3000 linc=0 sinc=0 format=half
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 hist a.img
 Beginning VICAR task hist
-*** HIST version Aug 10 2015 ***
+*** HIST version 2017-08-08 ***
 
 Bin Width =        1.0
         100*   10000   **************************************************  1
@@ -29,7 +29,7 @@ ADDNOISE version 2016-05-26
 Input format is BYTE
 hist b1.img
 Beginning VICAR task hist
-*** HIST version Aug 10 2015 ***
+*** HIST version 2017-08-08 ***
 
 Bin Width =        1.0
          61*       1
@@ -118,7 +118,7 @@ ADDNOISE version 2016-05-26
 Input format is BYTE
 hist b2.img
 Beginning VICAR task hist
-*** HIST version Aug 10 2015 ***
+*** HIST version 2017-08-08 ***
 
 Bin Width =        1.0
          94*       5
@@ -148,7 +148,7 @@ Input format is BYTE
      821 pixels hit by bit errors
 hist b3.img
 Beginning VICAR task hist
-*** HIST version Aug 10 2015 ***
+*** HIST version 2017-08-08 ***
 
 Bin Width =        1.0
          36*     104   ******************************************
@@ -175,7 +175,7 @@ Input format is BYTE
      821 pixels hit by bit errors
 hist c.img
 Beginning VICAR task hist
-*** HIST version Aug 10 2015 ***
+*** HIST version 2017-08-08 ***
 
 Bin Width =        1.0
           0        1
@@ -362,7 +362,7 @@ Input format is HALF
      817 pixels hit by bit errors
 hist h1.img
 Beginning VICAR task hist
-*** HIST version Aug 10 2015 ***
+*** HIST version 2017-08-08 ***
 
 Bin Width =        1.0
        2823        1
@@ -637,7 +637,7 @@ RANGEN::: Random Seed value of 73299341 adjusted to 6190477
     1170 pixels hit by bit errors
 hist h2.img
 Beginning VICAR task hist
-*** HIST version Aug 10 2015 ***
+*** HIST version 2017-08-08 ***
 
 Bin Width =        4.0
         872        1
@@ -847,23 +847,10 @@ MIN. DN=       872
 MAX. DN=      4094
 
 let $echo="no"
-********************************
-Comparing no seed with a seed
-**** Will change run to run ****
-********************************
-Beginning VICAR task addnoise
-ADDNOISE version 2016-05-26
-Input format is HALF
-RANGEN::: Random Seed value of 1464299148 adjusted to 4681356
-    1251 pixels hit by bit errors
 Beginning VICAR task addnoise
 ADDNOISE version 2016-05-26
 Input format is HALF
     1249 pixels hit by bit errors
-**** Will change run to run, but NUMBER OF DIFFERENCES should be > 0 ****
-Beginning VICAR task difpic
-DIFPIC version 06Oct11
- NUMBER OF DIFFERENCES =9928
 ****************************************
 Comparing one seed with a different seed
 ****************************************
@@ -873,5 +860,5 @@ Input format is HALF
     1216 pixels hit by bit errors
 NUMBER OF DIFFERENCES should be > 0
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  NUMBER OF DIFFERENCES =9920

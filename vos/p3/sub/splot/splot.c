@@ -177,5 +177,5 @@ int splot(x,y,n,xlo,xhi,ylo,yhi,xtic,ytic,mode,grid1)
       }
 
    printf("%c\\%c[22;1H",esc,esc);		/* exit regis */
-   return;
+   return 0;
 }

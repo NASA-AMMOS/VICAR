@@ -20,6 +20,7 @@ static struct TextAttr CurrentAttr = {0, -1, 1.0, 0.0};
 /************************************************************************/
 /* jtext_do allows the user to write text on the graphics plane.
  */
+void ParseJTextString(); 
 int jtext_do(env)
   VIDSEnvironment	*env;
 {
@@ -133,7 +134,7 @@ int jtext_do(env)
  * ASCII characters, so you can say for example "\042234" to get a funny
  * character (42) followed by the ascii string "234"
  */
-ParseJTextString(original, parsed, len)
+void ParseJTextString(original, parsed, len)
   char *original;			/* input string */
   char *parsed;				/* output string */
   int *len;				/* output string length */

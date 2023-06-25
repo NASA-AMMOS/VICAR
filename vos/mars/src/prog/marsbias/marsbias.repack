@@ -1,0 +1,6 @@
+$ vpack marsbias.com -mixed -
+	-s marsbias.f -
+	-i marsbias.imake -
+	-p marsbias.pdf -
+	-t tstmarsbias.pdf
+$ Exit

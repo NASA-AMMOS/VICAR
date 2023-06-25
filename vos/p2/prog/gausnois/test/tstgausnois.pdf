@@ -76,26 +76,28 @@ let $echo="yes"
 gausnois  noise.img  nl=10 ns=30  mean=50 sigma=5 format=byte  seed=2167275
 gausnois  noise2.img  nl=10 ns=30  mean=50 sigma=5 format=byte  seed=94151
 difpic inp=(noise.img,noise2.img)
-let $echo="no"
-write " Here, I called gaussnois twice with a different seed.  I should get"
-write " very different images out. (expect 285 differences)"
-write ""
-write ""
+!let $echo="no"
+!write " Here, I called gaussnois twice with a different seed.  I should get"
+!write " very different images out. (expect 285 differences)"
+!write ""
+!write ""
 !
 !
-let $echo="yes"
-gausnois  noise.img  nl=10 ns=30  mean=50 sigma=5 format=byte
-!list noise.img
-gausnois  noise2.img  nl=10 ns=30  mean=50 sigma=5 format=byte
-!list noise2.img
-difpic inp=(noise.img,noise2.img)
-let $echo="no"
-write " In this case, I let the seed parameter default.  It should give me"
-write " 2 very different images.  However, it does NOT with todays faster"
-write " processors. Not enough time elapses on the system clock when"
-write " two succesive calls to gausnois occurs with no intervening processes"
-write " "
+!let $echo="yes"
+!gausnois  noise.img  nl=10 ns=30  mean=50 sigma=5 format=byte
+!!list noise.img
+!gausnois  noise2.img  nl=10 ns=30  mean=50 sigma=5 format=byte
+!!list noise2.img
+!difpic inp=(noise.img,noise2.img)
+!let $echo="no"
+!write " In this case, I let the seed parameter default.  It should give me"
+!write " 2 very different images.  However, it does NOT with todays faster"
+!write " processors. Not enough time elapses on the system clock when"
+!write " two succesive calls to gausnois occurs with no intervening processes"
+!write " "
 
 disable-log
+
+ush rm noise2.img noise.img
 
 end-proc

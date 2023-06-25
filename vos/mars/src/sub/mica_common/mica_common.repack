@@ -1,0 +1,4 @@
+$ vpack mica_common.com -
+	-s mica_common.cc -
+	-i mica_common.imake
+$ Exit

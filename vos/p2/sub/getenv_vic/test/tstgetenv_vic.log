@@ -1,0 +1,23 @@
+Beginning VICAR task tgetenv_vic_c
+this should be a non-existent name:
+
+XYZZY =
+
+this should always return a value:
+
+SPICEKER =
+
+'this name has a system value in VMS but none in Unix:
+
+CLUE$HISTORY =
+
+Beginning VICAR task tgetenv_vic_f
+
+this should be a non-existent name:
+XYZZY =
+
+this should always return a value:
+SPICEKER =
+
+this name has a system value in VMS but none in Unix:
+CLUE$HISTORY =

@@ -1,0 +1,66 @@
+gen xxx1 nl=6 ns=6 'half
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+f2 xxx1 out=xxx2 func="line*((samp<4)+(samp>4))"
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 36 TIMES
+f2 xxx1 out=xxx2a  +
+  func="(line==3)*(samp==5)"
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 36 TIMES
+list xxx2  'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   HALF     samples are interpreted as HALFWORD data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2        User:          Date_Time:                        
+     Samp       1     2     3     4     5     6
+   Line
+      1         1     1     1     0     1     1
+      2         2     2     2     0     2     2
+      3         3     3     3     0     3     3
+      4         4     4     4     0     4     4
+      5         5     5     5     0     5     5
+      6         6     6     6     0     6     6
+list xxx2a 'zer 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   HALF     samples are interpreted as HALFWORD data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2        User:          Date_Time:                        
+     Samp       1     2     3     4     5     6
+   Line
+      1         0     0     0     0     0     0
+      2         0     0     0     0     0     0
+      3         0     0     0     0     1     0
+      4         0     0     0     0     0     0
+      5         0     0     0     0     0     0
+      6         0     0     0     0     0     0
+concompi (xxx2,xxx2a) (xxx4,xxx3)
+Beginning VICAR task concompi
+concompi version 2016-01-13
+2 preliminary, 2 final regions
+list xxx4 ndig=2 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   FULL     samples are interpreted as FULLWORD data
+ Task:GEN       User:          Date_Time:                        
+ Task:CONCOMPI  User:          Date_Time:                        
+     Samp            1          2          3          4          5          6
+   Line
+      1              0          0          0          0          2          2
+      2              0          0          0          0          2          2
+      3              0          0          0          0          2          2
+      4              0          0          0          0          2          2
+      5              0          0          0          0          2          2
+      6              0          0          0          0          2          2
+ush rm -f xxx1  xxx2  xxx2a  xxx3  xxx4
+disable-log

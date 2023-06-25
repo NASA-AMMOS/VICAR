@@ -115,14 +115,14 @@ void leftprop(ival,moorebuf,currix,i,tns)
 
 void main44(void)
 {
-   int i,j,k,ip,dmax=0,count,i_unit,nl,ns=0,o_unit2,outcnt;
+   int i,j,k,ip,dmax=0,count,i_unit,nl,ns=0,o_unit2=0,outcnt;
    int o_unit=0,dmaxp1,iline=0,previx,currix,numpix,*pixval=NULL;
    short int ***inbuf=NULL,***moore=NULL,newmoore,prevmoore,*outbuf=NULL;
    short int *readbuf=NULL,lookup[65536];
    int *outbits=NULL;
    char fmt_str[10];
    
-   zifmessage("MOORESC version 2019-09-06");
+   zifmessage("MOORESC version 2021-11-12");
    
    /* fetch params */
    

@@ -1,6 +1,8 @@
 procedure help=*
 body
+enable-log
 TUSR_MESSAGE
+disable-log
 end-proc
 .title 
 TSTUSR_MESSAGE.PDF

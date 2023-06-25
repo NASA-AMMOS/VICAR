@@ -1,0 +1,16 @@
+#define SUBROUTINE pig_m20
+
+#define MODULE_LIST  PigFileModelM20.cc PigPointM20mastCamera.cc \
+PigPointM20mastCamera3dof.cc PigPointM20armCamera.cc \
+PigPointM20armCamera6dof.cc PigM20.cc \
+PigPointM20heliCamera.cc PigPointM20heliCamera6dof.cc \
+PigRoverStateManagerM20.cc PigLabelModelM20.cc \
+PigPointM20mastCameraScale.cc PigColorModelM20.cc
+
+#define MARS_SUBLIB
+
+#define USES_C_PLUS_PLUS
+
+#define LIB_P2SUB
+#define LIB_XERCES
+

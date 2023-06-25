@@ -9,10 +9,10 @@
 
 #define LIB_SPICE
 #define LIB_RTL
+#define LIB_P2SUB
 #define LIB_TAE
 #define LIB_FORTRAN
-#define LIB_P2SUB
 #define LIB_NETWORK
 
-#define DEBUG		/* for local testing */
-#define LIB_LOCAL	/* for local testing */
+/* #define LIB_LOCAL	/ * for development, remove on delivery */ 
+/* #define DEBUG	/ * for development, remove on delivery */ 

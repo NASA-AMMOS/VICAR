@@ -1,0 +1,5 @@
+$ vpack marsmesh.com -mixed -
+	-s marsmesh.cc -
+	-i marsmesh.imake -
+	-p marsmesh.pdf
+$ Exit

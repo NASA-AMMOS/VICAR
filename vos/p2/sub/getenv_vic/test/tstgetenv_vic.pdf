@@ -1,6 +1,8 @@
 procedure
 refgbl $echo
 body
+enable-log
+
 let _onfail="continue"
 let $echo="no"
 refgbl $syschar
@@ -24,4 +26,6 @@ tgetenv_vic_f
 dcl deassign clue$history
 
 let $echo="no"
+
+disable-log
 end-proc

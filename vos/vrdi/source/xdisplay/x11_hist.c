@@ -79,7 +79,8 @@ extern long bg;
 extern Colormap default_cmap;
 
 int fonty;
-
+void collect_histogram();
+void collect_str_histogram();
 
 initialize_histogram(dpy, win)
 Display *dpy;
@@ -216,7 +217,7 @@ MAIN_WINDOW *win;
 }
 
 
-refresh_histogram(dpy, win, imp)
+void refresh_histogram(dpy, win, imp)
 Display *dpy;
 MAIN_WINDOW *win;
 int imp;
@@ -262,7 +263,7 @@ int imp;
 }
 
 
-collect_histogram(win, imp)
+void collect_histogram(win, imp)
 MAIN_WINDOW *win;
 int imp;
 {
@@ -287,7 +288,7 @@ int imp;
 }
 
 
-collect_str_histogram(win, imp)
+void collect_str_histogram(win, imp)
 MAIN_WINDOW *win;
 int imp;
 {
@@ -344,7 +345,7 @@ int spike;
 }
 
 
-adjust_spike(dpy, win, incr, plane)
+void adjust_spike(dpy, win, incr, plane)
 Display *dpy;
 MAIN_WINDOW *win;
 int incr, plane;

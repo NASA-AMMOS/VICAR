@@ -235,6 +235,12 @@ static LblApiElement_typ	LabelTbl[] = {
         LBL_OFFSET(LblIlluminationParms_typ, IlluminationLedState[13].Valid),
         LBL_NO_RETURN,  LBL_SIZE(IlluminationLedState[13].Value)},
 
+    {"ILLUMINATION_MODE",                   "STRING",   LBL_OPTIONAL,
+        LBL_NO_CONT,    1,  1,  LBL_NULL,
+        LBL_OFFSET(LblIlluminationParms_typ, IlluminationMode.Value),
+        LBL_OFFSET(LblIlluminationParms_typ, IlluminationMode.Valid),
+        LBL_NO_RETURN,  LBL_SIZE(IlluminationMode.Value)},
+
     {"ILLUM_LED_WAVELENGTH",                 "INT",      LBL_OPTIONAL,
         LBL_NO_CONT,    1,  1,  LBL_NULL,
         LBL_OFFSET(LblIlluminationParms_typ, IllumLedWaveLength[0].Value),

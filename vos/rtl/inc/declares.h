@@ -53,7 +53,7 @@ typedef struct VALUE_TABLE_INIT {   /* needed cuz unions can't be initialized */
 struct UNITS {
    unsigned unit : 1;
    unsigned was_once_open : 1;
-   char name[PARAM_NAME_LENGTH];
+   char name[PARAM_NAME_LENGTH+1];
    int instance;
 };
 

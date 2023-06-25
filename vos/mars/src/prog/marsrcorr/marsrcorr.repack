@@ -1,0 +1,5 @@
+$ vpack marsrcorr.com -mixed -
+	-s marsrcorr.cc ImgDispFinderArea.cc  ImgDispFinderArea.h  ImgDispFinder.cc  ImgDispFinder.h  ImgMatcher.cc  ImgMatcher.h  ImgUtilities.cc  ImgUtilities.h -
+	-i marsrcorr.imake -
+	-p marsrcorr.pdf
+$ Exit

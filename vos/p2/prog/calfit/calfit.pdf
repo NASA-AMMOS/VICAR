@@ -1,0 +1,96 @@
+process help=*
+PARM INP TYPE=STRING COUNT=2:48
+PARM OUT TYPE=STRING COUNT=2:3
+PARM CALVAL TYPE=REAL COUNT=2:48
+PARM MODE TYPE=KEYWORD VALID=("CALIBAVG","CALIBMED","FITONLY") DEFAULT="CALIBAVG"
+PARM DEGREE TYPE=INTEGER DEFAULT=1 VALID=(1:2)
+PARM INVERSE TYPE=KEYWORD COUNT=(0:1) VALID=INVERSE DEFAULT=--
+PARM SIZE TYPE=INTEGER COUNT=4 DEFAULT=(1,1,0,0)
+PARM SL TYPE=INTEGER DEFAULT=1
+PARM SS TYPE=INTEGER DEFAULT=1
+PARM NL TYPE=INTEGER DEFAULT=0
+PARM NS TYPE=INTEGER DEFAULT=0
+END-PROC
+.TITLE
+calfit - calculates linear calibration from 2 to 48 calibration images
+.HELP
+PURPOSE:
+
+EXECUTION:
+
+Example
+
+calfit INP=(C1,C2,C3,C4) OUT=(A,B) CALVAL=(0.0,5.0,10.0,20.0)
+
+OPERATION:
+
+For each pixel, a linear calibration is calculated by least squares fit
+on the calibration images.  Then, the average value for each pixel is
+calculated for the first and last calval values.  Then for each pixel,
+a linear transformation is calculated for compounding the lsq linear to
+the average values.  This compounded linear transformation is output
+to the output images (y=ax+b) where a values are real values in the
+first output image and b values are real values in the second output
+image.  A new image from the sensor can then be calibrated with these
+two real images (A and B) by applying the VICAR routine f2 and the 
+function IN1*IN2+IN3; where IN1 is the A image, IN3 is the B image and
+IN2 is the sensor image to be calibated.
+
+The calibration can be dropped and the least squares fit for each pixel
+can be output in the A and B images.  Select mode=fitonly for this option.
+Also, if numerous extreme values (dead sensor pixels) are ruining the
+average value, the median value can be selected.
+
+(alz comment) I'm not sure, but dead pixels may have been causing lsq fit
+error returns.  Adespike of the inputs cured but too expensive.  So I
+intercepted the lsq error message and output (0,0) as gain and offset.
+
+Quadratic fit is performed if a third output file name is given. Can be
+used only for the FITONLY mode.
+
+The INVERSE keyword causes the program to invert y=ax+b solution
+into x=ay+b solution.  Can be used to invert quadratic as well.
+TIMING: 
+
+TBD
+
+ ORIGINAL PROGRAMMER:    A. Zobrist          12 Feb 2006
+ COGNIZANT PROGRAMMER:   A. Zobrist          12 Feb 2006
+ 
+ REVISION HISTORY
+  2006-02-12 AZ  Initial version
+  2006-12-18 AZ  Quadratic fit added
+  2006-12-19 AZ  Inverse keyword added
+  2008-01-03 WLB switched to USES_ANSI_C AND LIB_CARTO; misc cleanup  
+  2019-08-22 WLB - IDS-7922 - Cleaned up -Wall warnings.
+  2022-07-14 B. Crocco afids to opensource
+  
+.LEVEL1
+.VARIABLE INP
+STRING - Calibration files
+.VARIABLE OUT
+STRING - (A,B) calibration for
+linear case
+STRING - (A,B,Q) calibration
+for quadratic case
+.VARIABLE CALVAL
+REAL - Abscissa of the input
+calibration files
+.VAR INVERSE
+KEYWORD - invert y=ax+b solu-
+tion into x=ay+b solution
+.VAR MODE
+KEYWORD - select calibration or
+fit only, and calibration can
+be to average or median value
+.VARIABLE SIZE
+INTEGER - Region of input files
+to be concatenated
+.VARIABLE SL
+INTEGER - Starting line
+.VARIABLE SS
+INTEGER - Starting sample
+.VARIABLE NL
+INTEGER - Number of lines
+.VARIABLE NS
+.END

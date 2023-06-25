@@ -1,0 +1,36 @@
+procedure
+refgbl $echo
+refgbl $autousage
+parm version string def="ibis-2"
+parm org string def="column"
+body
+let _onfail="continue"
+let $autousage="none"
+let $echo="yes"
+
+enable-log
+
+fitg bam01.hlf bam01.vic +
+   left=1 right=1 mean=128.0 sigma=3.0 'gauss 'byte
+list bam01.vic 'nousrtim
+
+gen out=testin.hlf nl=10 ns=10 format=half
+gen out=testin.vic nl=10 ns=10 format=byte
+
+# half to half
+fitg testin.hlf testout.hlf outmin=0 outmax=18
+list testout.hlf 'nousrtim
+
+# half to byte
+fitg testin.hlf testout.hlf.vic outmin=0 outmax=18 'byte
+list testout.hlf.vic 'nousrtim
+
+# byte to byte
+fitg testin.vic testout.vic outmin=0 outmax=18
+list testout.vic 'nousrtim
+
+ush rm -f bam01.vic  testin.hlf  testin.vic  testout.hlf  testout.hlf.vic  testout.vic
+
+disable-log
+
+end-proc

@@ -9,19 +9,19 @@ refgbl $echo
 refgbl $syschar
 parm inp string count=0:1 default=--
 body
+enable-log
+
 let _onfail="continue"
 let $echo="yes"
 
-if ($count(inp)=0) let inp = "testimage.fftt;"
+if ($count(inp)=0) let inp = "testimage.fftt"
 gen out=&inp nl=1 ns=16 format=real
 
 tfftt inp=&inp
 
-if ($syschar(1)="UNIX")
-  ush rm &inp
-else
-  dcl delete/log &inp
-end-if
+ush rm &inp
+
+disable-log
 end-proc
 .title TSTFFTT.PDF - unit test for subroutine FFTT
 .end

@@ -1,0 +1,32 @@
+procedure
+refgbl $echo
+body
+enable-log
+
+let $echo="yes"
+
+
+!   TEST RPC2GRID HANDYPROC
+
+rpc2grid in=(../test_data/xxchip2.img, +
+   ../test_data/qb1_iraq_dem.hlf) +
+   out=xxxgrid nah=2 nav=2
+
+ibis-l xxxgrid cols=(1,2,3,4,5) csiz=(15,15,12,12,12) +
+  cfor="%15.10f %15.10f %12.6f %12.6f %12.6f" 'format
+
+! test the geographic input
+
+rpc2grid in=(../test_data/xxchip2.img, +
+   ../test_data/qb1_iraq_dem.hlf) +
+   out=xxxgrid nah=2 nav=2 +
+   lon1=44.82 lat1=35.87 +
+   lon2=44.84 lat2=35.87 +
+   lon3=44.84 lat3=35.85 +
+   lon4=44.82 lat4=35.85
+   
+ibis-l xxxgrid
+
+disable-log
+theend>
+end-proc

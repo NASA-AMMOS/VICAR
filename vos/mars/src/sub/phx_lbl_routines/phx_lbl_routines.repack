@@ -1,0 +1,9 @@
+$ vpack phx_lbl_routines.com -mixed -
+	-s phx_lbl_articulation.c phx_lbl_derived_geometry.c -
+	   phx_lbl_coordinate.c phx_lbl_compression.c -
+	   phx_lbl_instrument_state.c phx_lbl_image.c phx_lbl_telemetry.c -
+	   phx_lbl_product_request.c -
+	-i phx_lbl_routines.imake -
+	-t tst_phx_lbl_routines.c tst_phx_lbl_routines.imake label_test.img -
+	   test_output.txt
+$ Exit

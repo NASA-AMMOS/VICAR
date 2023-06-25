@@ -1,0 +1,27 @@
+/***********************************************************************
+
+                     IMAKE FILE FOR PROGRAM gt2tcl
+
+   To Create the build file give the command:
+
+		$ vimake gt2tcl			(VMS)
+   or
+		% vimake gt2tcl			(Unix)
+
+
+************************************************************************/
+
+
+#define PROGRAM	gt2tcl
+
+#define MODULE_LIST gt2tcl.c
+
+#define MAIN_LANG_C
+#define R2LIB
+#define USES_ANSI_C
+
+#define LIB_CARTO
+#define LIB_RTL
+#define LIB_TAE
+#define LIB_P2SUB
+/************************* End of Imake file ***************************/

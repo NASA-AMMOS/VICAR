@@ -33,6 +33,7 @@
    VRH   4-01  Changed camera to reflect summation mode
    VRH   4-03  Cassini Tour projects will have 'CASSINI-HUYGENS' as MISSION.
    RGD 2018-09 Added Mars 2020 (also, earlier, MER, PHX, MSL, NSYT...)
+   RGD 2022-03-22 Added Coldarm and Psyche
 **********************************************************************/
 #include "xvmaininc.h"
 #include "ftnbridge.h"
@@ -430,6 +431,31 @@ void FTN_NAME2(getproj, GETPROJ) (int *unit, char *project, int *camera,
 		*fds = 0;
 		return;
 	      }
+
+/* Coldarm lunar mission*/
+
+	    if (strcasecmp(labi, "COLDARM" ) == 0)
+	      {
+		strcpy(project, "COLDARM");
+
+		*ind = 0;
+		*camera = 0;
+		*fds = 0;
+		return;
+	      }
+
+/* Psyche mission*/
+
+	    if (strcasecmp(labi, "PSYCHE" ) == 0)
+	      {
+		strcpy(project, "PSYCHE");
+
+		*ind = 0;
+		*camera = 0;
+		*fds = 0;
+		return;
+	      }
+
 
 
 /* unrecognizable project */

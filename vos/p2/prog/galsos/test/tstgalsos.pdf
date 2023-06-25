@@ -9,7 +9,7 @@ body
 
 enable-log
 
-local PATH1 TYPE=STRING init="/project/test_work/testdata/gll/"
+local PATH1 TYPE=STRING init="data/"
 
 let _onfail="stop"
 let $echo="yes"
@@ -21,6 +21,7 @@ galsos &"PATH1"7213r.img 7213.cal dircal=&"PATH1" diroff=&"PATH1" +
 
 ! check that output is the same:
 f2 (7213.cal &"PATH1"7213.cal) d func="in1-in2"
+write "HIST SHOULD HAVE MIN AND MAX == 0"
 hist d 'nohist
 
 ! NOTE: - file 3f8c.dc was downloaded from PDS file 3f8c_dc04.dat and renamed.
@@ -28,5 +29,7 @@ hist d 'nohist
 !
 
 disable-log
+
+ush rm 7213.cal d
 
 end-proc

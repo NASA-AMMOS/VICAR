@@ -3,13 +3,14 @@ c program bestfocus
       include 'VICMAIN_FOR'
       subroutine main44
       
-      parameter (nlmax=1100,nsmax=1100,maxpix=10)
+      parameter (nlmax=2000,nsmax=2000,nbmax=3,maxpix=20)
       real*4 buf(nsmax,nlmax),obuf(nsmax,nlmax,maxpix)
-      real*4 inbuf(nsmax,nlmax,maxpix)
+      real*4 inbuf(nsmax,nlmax,nbmax,maxpix)
       integer*4 sborder,count,def,status,unit(maxpix),ounit(2)
       real*8 sum(nsmax),sumc(nsmax),sumc2(nsmax),normalize
       real*8 sum2(nsmax)
       logical inverse,xvptst
+      integer b
 
 c parameters
       call xveaction('SA',' ')
@@ -24,18 +25,26 @@ c parameters
       call xvparm('NSW',nsw,count,def,1)
       if(nsw.eq.(nsw/2)*2)nsw=nsw+1
       inverse=xvptst('INVERSE')
+      call xvparm('BAND',band,count,def,1)
+      if ((count.eq.0) .or. (band.gt.nb)) then
+        band = nb
+      endif
 
 c open inputs
       do i=1,nin
         call xvunit(unit(i),'INP',i,status,' ')
         call xvopen(unit(i),status,'U_FORMAT','REAL',' ')
-        call xvget(unit(i),status,'NL',nl,'NS',ns,' ')
+        call xvget(unit(i),status,'NL',nl,'NS',ns,'NB',nb,' ')
         if(ns.gt.nsmax)then
           call xvmessage('Line length too long',' ')
           call abend
         endif
         if(nl.gt.nlmax)then
           call xvmessage('Line column too long',' ')
+          call abend
+        endif
+        if(nb.gt.nbmax)then
+          call xvmessage('Too many bands',' ')
           call abend
         endif
       enddo
@@ -58,16 +67,17 @@ c open outputs
         stop
       endif
 
+c Read the input band we use for analysis
       image=0
 10    image=image+1
       do j=1,nl
-        call xvread(unit(image),buf(1,j),status,'LINE',j,' ')
+        call xvread(unit(image),buf(1,j),status,'LINE',j,'BAND',band,' ')
       enddo
 
-c save inputs
-      do j=1,nl
-        do i=1,ns
-          inbuf(i,j,image)=buf(i,j)
+c Read the full imagery.  Inefficent to re-read, but easier
+      do k=1,nb
+        do j=1,nl
+          call xvread(unit(image),inbuf(1,j,k,image),status,'LINE',j,'BAND',k,' ')
         enddo
       enddo
 
@@ -148,18 +158,20 @@ c compute standard deviation
       if(image.lt.nin)goto 10
 
 c create best focus image
-      do j=1,nl
-        do i=1,ns
-          best=-1.0
-          do k=1,nin
-            if(obuf(i,j,k).gt.best)then
-              best=obuf(i,j,k)
-              n=k
-            endif
+      do b=1,nb
+        do j=1,nl
+          do i=1,ns
+            best=-1.0
+            do k=1,nin
+              if(obuf(i,j,k).gt.best)then
+                best=obuf(i,j,k)
+                n=k
+              endif
+            enddo
+            buf(i,j)=inbuf(i,j,b,n)
           enddo
-          buf(i,j)=inbuf(i,j,n)
+          call xvwrit(ounit(1),buf(1,j),status,'LINE',j,'BAND',b,' ')
         enddo
-        call xvwrit(ounit(1),buf(1,j),status,' ')
       enddo
 
       if(nout.lt.2)return

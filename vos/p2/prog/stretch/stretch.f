@@ -17,7 +17,7 @@ C     ....Note: HIST is made an extra 512 words longer to prevent overflow
 C     ....when reading it in from an IBIS file.
       INTEGER*4 HIST(-32768:33280)	!Input histogram
       INTEGER*4 BHIST(0:255)		!Copy of input histogram (byte data)
-      INTEGER*2 BUF(65536)		!Input line buffer
+      INTEGER*2 BUF(524288)		!Input line buffer 65536 * 8
       INTEGER*2 LUT(-32768:32767)	!Stretch look-up table
 
       INTEGER*4 STAT,IMODE,NSTRETCH
@@ -28,17 +28,21 @@ C     ....when reading it in from an IBIS file.
       INTEGER*4 NCHAR,NCHAR2
       CHARACTER*80 PRT,PRT2
 
-      CALL XVMESSAGE('STRETCH version 11 Jan 2013',' ')
+      CALL XVMESSAGE('STRETCH version 2021-07-14',' ')
 
 C     ....Open input image and check format and size field
       CALL OPENINP(format,sl,ss,sb,nlo,nso,nbo,nli,nsi,nbi,iunit,inmin,
      .             inmax)
 
+      IF (NSO > 524288) CALL MABEND(
+     +  'NSO > 524288 - OUTPUT IMAGE TOO WIDE') 
+
 C     ....Open output image and check output DN range
       CALL OPENOUT(FORMAT,NLO,NSO,NBO,ounit,dnmin,dnmax)
 
-      IMODE=0			!Stretch mode
-      NSTRETCH = 0              !Count of number of stretches specified
+      IMODE=0                 !Stretch mode
+      NSTRETCH = 0            !Count of number of stretches specified
+      NCHAR2 = 0              !Ensure value is 0 if POST doesn't init
 C     ....Compute look-up table for non-histogram stretches
       CALL MANUAL_STRETCH(FORMAT,lut,imode,nstretch,nchar,prt)
 C     ....Get most histogram-related user parameters

@@ -1,6 +1,7 @@
 /************************************************************************/
 /* Test program for C subroutine zputspice2
 /************************************************************************/
+#include <string.h>
 #include "xvmaininc.h"
 #include "ftnbridge.h"
 #include "spiceinc.h"

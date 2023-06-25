@@ -1,0 +1,480 @@
+TGETGEOM PROJ="GLL  " CAM=1
+Beginning VICAR task TGETGEOM
+GLL
+camera serial number=          1
+
+obtaining geom parameters from nominals
+ Elements 1 & 2 in BUF 
+          GLL  
+ Camera S/N=          1
+TGETGEOM PROJ="VGR-2" CAM=4
+Beginning VICAR task TGETGEOM
+VGR-2
+camera serial number=          4
+
+obtaining geom parameters from nominals
+ First 8 Elements in BUF:
+ NAH =          23
+ Elements 4 & 5 in BUF 
+          NAV     
+ NAV =          22
+ Elements 7 & 8 in BUF 
+          TIEP    
+ First PART OF GEOMA PARAMETERS:
+  2.511E+01  2.529E+01  2.336E+01  1.136E+01  2.511E+01  2.529E+01  2.336E+01  1.136E+01  2.033E+01  8.548E+01
+            1.422E+01  5.770E+01  2.033E+01  8.548E+01  1.422E+01  5.770E+01  2.511E+01  1.775E+02  1.142E+01  1.320E+02
+            2.511E+01  1.775E+02  1.142E+01  1.320E+02  2.511E+01  2.698E+02  6.920E+00  2.093E+02  2.511E+01  2.698E+02
+            6.920E+00  2.093E+02
+
+TGETGEOM PROJ="VGR-2" CAM=5
+Beginning VICAR task TGETGEOM
+VGR-2
+camera serial number=          5
+
+obtaining geom parameters from nominals
+ First 8 Elements in BUF:
+ NAH =          23
+ Elements 4 & 5 in BUF 
+          NAV     
+ NAV =          22
+ Elements 7 & 8 in BUF 
+          TIEP    
+ First PART OF GEOMA PARAMETERS:
+  2.539E+01  2.522E+01  1.222E+01 -1.580E+00  2.539E+01  2.522E+01  1.222E+01 -1.580E+00  2.056E+01  8.544E+01
+            4.680E+00  4.514E+01  2.056E+01  8.544E+01  4.680E+00  4.514E+01  2.539E+01  1.775E+02  2.460E+00  1.205E+02
+            2.539E+01  1.775E+02  2.460E+00  1.205E+02  2.539E+01  2.698E+02 -1.080E+00  1.980E+02  2.539E+01  2.698E+02
+           -1.080E+00  1.980E+02
+
+TGETGEOM PROJ="VGR-1" CAM=6
+Beginning VICAR task TGETGEOM
+VGR-1
+camera serial number=          6
+
+obtaining geom parameters from nominals
+ First 8 Elements in BUF:
+ NAH =          23
+ Elements 4 & 5 in BUF 
+          NAV     
+ NAV =          22
+ Elements 7 & 8 in BUF 
+          TIEP    
+ First PART OF GEOMA PARAMETERS:
+  2.536E+01  2.531E+01  1.140E+01  1.430E+01  2.536E+01  2.531E+01  1.140E+01  1.430E+01  2.053E+01  8.559E+01
+            4.000E+00  5.930E+01  2.053E+01  8.559E+01  4.000E+00  5.930E+01  2.536E+01  1.776E+02  4.300E+00  1.317E+02
+            2.536E+01  1.776E+02  4.300E+00  1.317E+02  2.536E+01  2.697E+02  2.900E+00  2.072E+02  2.536E+01  2.697E+02
+            2.900E+00  2.072E+02
+
+TGETGEOM PROJ="VGR-1" CAM=7
+Beginning VICAR task TGETGEOM
+VGR-1
+camera serial number=          7
+
+obtaining geom parameters from nominals
+ First 8 Elements in BUF:
+ NAH =          23
+ Elements 4 & 5 in BUF 
+          NAV     
+ NAV =          22
+ Elements 7 & 8 in BUF 
+          TIEP    
+ First PART OF GEOMA PARAMETERS:
+  2.528E+01  2.524E+01  3.600E+00  1.140E+01  2.528E+01  2.524E+01  3.600E+00  1.140E+01  2.041E+01  8.553E+01
+           -1.000E+00  5.050E+01  2.041E+01  8.553E+01 -1.000E+00  5.050E+01  2.528E+01  1.775E+02  1.000E+00  1.256E+02
+            2.528E+01  1.775E+02  1.000E+00  1.256E+02  2.528E+01  2.698E+02  0.000E+00  2.042E+02  2.528E+01  2.698E+02
+            0.000E+00  2.042E+02
+
+TGETGEOM PROJ="VIKOR" CAM=4
+Beginning VICAR task TGETGEOM
+VIKOR
+camera serial number=          4
+
+obtaining geom parameters from nominals
+ First 8 Elements in BUF:
+ NAH =          21
+ Elements 4 & 5 in BUF 
+          NAV     
+ NAV =           8
+ Elements 7 & 8 in BUF 
+          TIEPOINT
+ First PART OF GEOMA PARAMETERS:
+  4.544E+01  3.007E+01  5.400E+00  2.370E+01  4.544E+01  3.007E+01  5.400E+00  2.370E+01  4.439E+01  1.490E+02
+            6.864E+00  1.416E+02  4.439E+01  1.490E+02  6.864E+00  1.416E+02  4.401E+01  2.678E+02  8.551E+00  2.586E+02
+            4.401E+01  2.678E+02  8.551E+00  2.586E+02  4.385E+01  3.869E+02  9.599E+00  3.752E+02  4.385E+01  3.869E+02
+            9.599E+00  3.752E+02
+
+TGETGEOM PROJ="VIKOR" CAM=6
+Beginning VICAR task TGETGEOM
+VIKOR
+camera serial number=          6
+
+obtaining geom parameters from nominals
+ First 8 Elements in BUF:
+ NAH =          21
+ Elements 4 & 5 in BUF 
+          NAV     
+ NAV =           8
+ Elements 7 & 8 in BUF 
+          TIEPOINT
+ First PART OF GEOMA PARAMETERS:
+  4.462E+01  3.041E+01  5.500E+00  2.300E+01  4.462E+01  3.041E+01  5.500E+00  2.300E+01  4.497E+01  1.498E+02
+            7.523E+00  1.409E+02  4.497E+01  1.498E+02  7.523E+00  1.409E+02  4.457E+01  2.688E+02  8.844E+00  2.575E+02
+            4.457E+01  2.688E+02  8.844E+00  2.575E+02  4.423E+01  3.875E+02  9.927E+00  3.733E+02  4.423E+01  3.875E+02
+            9.927E+00  3.733E+02
+
+TGETGEOM PROJ="VIKOR" CAM=7
+Beginning VICAR task TGETGEOM
+VIKOR
+camera serial number=          7
+
+obtaining geom parameters from nominals
+ First 8 Elements in BUF:
+ NAH =          21
+ Elements 4 & 5 in BUF 
+          NAV     
+ NAV =           8
+ Elements 7 & 8 in BUF 
+          TIEPOINT
+ First PART OF GEOMA PARAMETERS:
+  4.387E+01  2.978E+01  4.700E+00  1.840E+01  4.387E+01  2.978E+01  4.700E+00  1.840E+01  4.396E+01  1.496E+02
+            8.063E+00  1.376E+02  4.396E+01  1.496E+02  8.063E+00  1.376E+02  4.360E+01  2.689E+02  1.079E+01  2.552E+02
+            4.360E+01  2.689E+02  1.079E+01  2.552E+02  4.376E+01  3.875E+02  1.298E+01  3.721E+02  4.376E+01  3.875E+02
+            1.298E+01  3.721E+02
+
+TGETGEOM PROJ="VIKOR" CAM=8
+Beginning VICAR task TGETGEOM
+VIKOR
+camera serial number=          8
+
+obtaining geom parameters from nominals
+ First 8 Elements in BUF:
+ NAH =          21
+ Elements 4 & 5 in BUF 
+          NAV     
+ NAV =           8
+ Elements 7 & 8 in BUF 
+          TIEPOINT
+ First PART OF GEOMA PARAMETERS:
+  4.385E+01  3.009E+01  3.500E+00  2.500E+01  4.385E+01  3.009E+01  3.500E+00  2.500E+01  4.411E+01  1.489E+02
+            7.274E+00  1.418E+02  4.411E+01  1.489E+02  7.274E+00  1.418E+02  4.389E+01  2.682E+02  9.987E+00  2.583E+02
+            4.389E+01  2.682E+02  9.987E+00  2.583E+02  4.379E+01  3.873E+02  1.247E+01  3.743E+02  4.379E+01  3.873E+02
+            1.247E+01  3.743E+02
+
+TGETGEOM PROJ="MAR10" CAM=1
+Beginning VICAR task TGETGEOM
+MAR10
+camera serial number=          1
+
+obtaining geom parameters from nominals
+ First 8 Elements in BUF:
+ NAH =          15
+ Elements 4 & 5 in BUF 
+          NAV     
+ NAV =          12
+ Elements 7 & 8 in BUF 
+          TIEPOINT
+ First PART OF GEOMA PARAMETERS:
+  4.615E+01  1.848E+01  2.369E+01  2.627E+01  4.427E+01  7.196E+01  1.830E+01  6.862E+01  4.427E+01  7.196E+01
+            1.830E+01  6.862E+01  4.397E+01  2.066E+02  1.217E+01  1.823E+02  4.397E+01  2.066E+02  1.217E+01  1.823E+02
+            4.385E+01  3.406E+02  1.066E+01  3.010E+02  4.385E+01  3.406E+02  1.066E+01  3.010E+02  4.379E+01  4.749E+02
+            1.127E+01  4.205E+02
+
+TGETGEOM PROJ="MAR10" CAM=2
+Beginning VICAR task TGETGEOM
+MAR10
+camera serial number=          2
+
+obtaining geom parameters from nominals
+ First 8 Elements in BUF:
+ NAH =          15
+ Elements 4 & 5 in BUF 
+          NAV     
+ NAV =          12
+ Elements 7 & 8 in BUF 
+          TIEPOINT
+ First PART OF GEOMA PARAMETERS:
+  4.130E+01  1.501E+01  2.237E+01  2.171E+01  4.035E+01  7.058E+01  1.811E+01  6.668E+01  4.035E+01  7.058E+01
+            1.811E+01  6.668E+01  4.082E+01  2.053E+02  1.366E+01  1.819E+02  4.082E+01  2.053E+02  1.366E+01  1.819E+02
+            4.069E+01  3.399E+02  1.257E+01  3.001E+02  4.069E+01  3.399E+02  1.257E+01  3.001E+02  4.082E+01  4.748E+02
+            1.314E+01  4.193E+02
+
+TGETGEOM PROJ="MAR-9" CAM=1
+Beginning VICAR task TGETGEOM
+MAR-9
+camera serial number=          1
+
+obtaining geom parameters from nominals
+ First 8 Elements in BUF:
+ NAH =          15
+ Elements 4 & 5 in BUF 
+          NAV     
+ NAV =          12
+ Elements 7 & 8 in BUF 
+          TIEPOINT
+ First PART OF GEOMA PARAMETERS:
+  4.400E+01  1.865E+01  4.581E+01  2.986E+01  4.202E+01  7.121E+01  3.991E+01  7.523E+01  4.202E+01  7.121E+01
+            3.991E+01  7.523E+01  4.214E+01  2.044E+02  2.884E+01  1.903E+02  4.214E+01  2.044E+02  2.884E+01  1.903E+02
+            4.245E+01  3.402E+02  2.138E+01  3.079E+02  4.245E+01  3.402E+02  2.138E+01  3.079E+02  4.206E+01  4.753E+02
+            1.543E+01  4.255E+02
+
+TGETGEOM PROJ="MAR-9" CAM=2
+Beginning VICAR task TGETGEOM
+MAR-9
+camera serial number=          2
+
+obtaining geom parameters from nominals
+ First 8 Elements in BUF:
+ NAH =          15
+ Elements 4 & 5 in BUF 
+          NAV     
+ NAV =          12
+ Elements 7 & 8 in BUF 
+          TIEPOINT
+ First PART OF GEOMA PARAMETERS:
+  4.235E+01  1.422E+01  2.701E+01  1.829E+01  4.194E+01  6.934E+01  2.028E+01  6.238E+01  4.194E+01  6.934E+01
+            2.028E+01  6.238E+01  4.107E+01  2.050E+02  1.161E+01  1.769E+02  4.107E+01  2.050E+02  1.161E+01  1.769E+02
+            4.026E+01  3.393E+02  7.755E+00  2.944E+02  4.026E+01  3.393E+02  7.755E+00  2.944E+02  4.108E+01  4.749E+02
+            6.418E+00  4.124E+02
+
+Write  " "
+ 
+   let vgr2_4   = "vgr2.cam4.vic"
+   let vgr2_5   = "vgr2.cam5.vic"
+   let vgr1_6   = "vgr1.cam6.vic"
+   let vgr1_7   = "vgr1.cam7.vic"
+   let vik_4    = "vikor.cam4.vic"
+   let vik_6    = "vikor.cam6.vic"
+   let vik_7    = "vikor.cam7.vic"
+   let vik_8    = "vikor.cam8.vic"
+   let m10_1    = "mar10.cam1.vic"
+   let m10_2    = "mar10.cam2.vic"
+   let m9_1     = "mar9.cam1.vic"
+   let m9_2     = "mar9.cam2.vic"
+TGETGEOM  inp=@vgr2_4  PROJ="VGR-2"  CAM=4
+Beginning VICAR task TGETGEOM
+VGR-2
+camera serial number=          4
+
+obtaining geom parameters from input file
+ First 8 Elements in BUF:
+ NAH =          23
+ Elements 4 & 5 in BUF 
+          NAV     
+ NAV =          22
+ Elements 7 & 8 in BUF 
+          TIEPOINT
+ First PART OF GEOMA PARAMETERS:
+  2.511E+01  2.529E+01  2.336E+01  1.136E+01  2.511E+01  2.529E+01  2.336E+01  1.136E+01  2.033E+01  8.548E+01
+            1.422E+01  5.770E+01  2.033E+01  8.548E+01  1.422E+01  5.770E+01  2.511E+01  1.775E+02  1.142E+01  1.320E+02
+            2.511E+01  1.775E+02  1.142E+01  1.320E+02  2.511E+01  2.698E+02  6.920E+00  2.093E+02  2.511E+01  2.698E+02
+            6.920E+00  2.093E+02
+
+TGETGEOM  inp=@vgr2_5  PROJ="VGR-2"  CAM=5
+Beginning VICAR task TGETGEOM
+VGR-2
+camera serial number=          5
+
+obtaining geom parameters from input file
+ First 8 Elements in BUF:
+ NAH =          23
+ Elements 4 & 5 in BUF 
+          NAV     
+ NAV =          22
+ Elements 7 & 8 in BUF 
+          TIEPOINT
+ First PART OF GEOMA PARAMETERS:
+  2.539E+01  2.522E+01  1.222E+01 -1.580E+00  2.539E+01  2.522E+01  1.222E+01 -1.580E+00  2.056E+01  8.544E+01
+            4.680E+00  4.514E+01  2.056E+01  8.544E+01  4.680E+00  4.514E+01  2.539E+01  1.775E+02  2.460E+00  1.205E+02
+            2.539E+01  1.775E+02  2.460E+00  1.205E+02  2.539E+01  2.698E+02 -1.080E+00  1.980E+02  2.539E+01  2.698E+02
+           -1.080E+00  1.980E+02
+
+TGETGEOM  inp=@vgr1_6  PROJ="VGR-1"  CAM=6
+Beginning VICAR task TGETGEOM
+VGR-1
+camera serial number=          6
+
+obtaining geom parameters from input file
+ First 8 Elements in BUF:
+ NAH =          23
+ Elements 4 & 5 in BUF 
+          NAV     
+ NAV =          22
+ Elements 7 & 8 in BUF 
+          TIEPOINT
+ First PART OF GEOMA PARAMETERS:
+  2.536E+01  2.531E+01  1.140E+01  1.430E+01  2.536E+01  2.531E+01  1.140E+01  1.430E+01  2.053E+01  8.559E+01
+            4.000E+00  5.930E+01  2.053E+01  8.559E+01  4.000E+00  5.930E+01  2.536E+01  1.776E+02  4.300E+00  1.317E+02
+            2.536E+01  1.776E+02  4.300E+00  1.317E+02  2.536E+01  2.697E+02  2.900E+00  2.072E+02  2.536E+01  2.697E+02
+            2.900E+00  2.072E+02
+
+TGETGEOM  inp=@vgr1_7  PROJ="VGR-1"  CAM=7
+Beginning VICAR task TGETGEOM
+VGR-1
+camera serial number=          7
+
+obtaining geom parameters from input file
+ First 8 Elements in BUF:
+ NAH =          23
+ Elements 4 & 5 in BUF 
+          NAV     
+ NAV =          22
+ Elements 7 & 8 in BUF 
+          TIEPOINT
+ First PART OF GEOMA PARAMETERS:
+  2.528E+01  2.524E+01  3.600E+00  1.140E+01  2.528E+01  2.524E+01  3.600E+00  1.140E+01  2.041E+01  8.553E+01
+           -1.000E+00  5.050E+01  2.041E+01  8.553E+01 -1.000E+00  5.050E+01  2.528E+01  1.775E+02  1.000E+00  1.256E+02
+            2.528E+01  1.775E+02  1.000E+00  1.256E+02  2.528E+01  2.698E+02  0.000E+00  2.042E+02  2.528E+01  2.698E+02
+            0.000E+00  2.042E+02
+
+TGETGEOM  inp=@vik_4   PROJ="VIKOR"  CAM=4
+Beginning VICAR task TGETGEOM
+VIKOR
+camera serial number=          4
+
+obtaining geom parameters from input file
+ First 8 Elements in BUF:
+ NAH =          21
+ Elements 4 & 5 in BUF 
+          NAV     
+ NAV =           8
+ Elements 7 & 8 in BUF 
+          TIEPOINT
+ First PART OF GEOMA PARAMETERS:
+  4.544E+01  3.007E+01  5.400E+00  2.370E+01  4.544E+01  3.007E+01  5.400E+00  2.370E+01  4.439E+01  1.490E+02
+            6.864E+00  1.416E+02  4.439E+01  1.490E+02  6.864E+00  1.416E+02  4.401E+01  2.678E+02  8.551E+00  2.586E+02
+            4.401E+01  2.678E+02  8.551E+00  2.586E+02  4.385E+01  3.869E+02  9.599E+00  3.752E+02  4.385E+01  3.869E+02
+            9.599E+00  3.752E+02
+
+TGETGEOM  inp=@vik_6   PROJ="VIKOR"  CAM=6
+Beginning VICAR task TGETGEOM
+VIKOR
+camera serial number=          6
+
+obtaining geom parameters from input file
+ First 8 Elements in BUF:
+ NAH =          21
+ Elements 4 & 5 in BUF 
+          NAV     
+ NAV =           8
+ Elements 7 & 8 in BUF 
+          TIEPOINT
+ First PART OF GEOMA PARAMETERS:
+  4.462E+01  3.041E+01  5.500E+00  2.300E+01  4.462E+01  3.041E+01  5.500E+00  2.300E+01  4.497E+01  1.498E+02
+            7.523E+00  1.409E+02  4.497E+01  1.498E+02  7.523E+00  1.409E+02  4.457E+01  2.688E+02  8.844E+00  2.575E+02
+            4.457E+01  2.688E+02  8.844E+00  2.575E+02  4.423E+01  3.875E+02  9.927E+00  3.733E+02  4.423E+01  3.875E+02
+            9.927E+00  3.733E+02
+
+TGETGEOM  inp=@vik_7   PROJ="VIKOR"  CAM=7
+Beginning VICAR task TGETGEOM
+VIKOR
+camera serial number=          7
+
+obtaining geom parameters from input file
+ First 8 Elements in BUF:
+ NAH =          21
+ Elements 4 & 5 in BUF 
+          NAV     
+ NAV =           8
+ Elements 7 & 8 in BUF 
+          TIEPOINT
+ First PART OF GEOMA PARAMETERS:
+  4.387E+01  2.978E+01  4.700E+00  1.840E+01  4.387E+01  2.978E+01  4.700E+00  1.840E+01  4.396E+01  1.496E+02
+            8.063E+00  1.376E+02  4.396E+01  1.496E+02  8.063E+00  1.376E+02  4.360E+01  2.689E+02  1.079E+01  2.552E+02
+            4.360E+01  2.689E+02  1.079E+01  2.552E+02  4.376E+01  3.875E+02  1.298E+01  3.721E+02  4.376E+01  3.875E+02
+            1.298E+01  3.721E+02
+
+TGETGEOM  inp=@vik_8   PROJ="VIKOR"  CAM=8
+Beginning VICAR task TGETGEOM
+VIKOR
+camera serial number=          8
+
+obtaining geom parameters from input file
+ First 8 Elements in BUF:
+ NAH =          21
+ Elements 4 & 5 in BUF 
+          NAV     
+ NAV =           8
+ Elements 7 & 8 in BUF 
+          TIEPOINT
+ First PART OF GEOMA PARAMETERS:
+  4.385E+01  3.009E+01  3.500E+00  2.500E+01  4.385E+01  3.009E+01  3.500E+00  2.500E+01  4.411E+01  1.489E+02
+            7.274E+00  1.418E+02  4.411E+01  1.489E+02  7.274E+00  1.418E+02  4.389E+01  2.682E+02  9.987E+00  2.583E+02
+            4.389E+01  2.682E+02  9.987E+00  2.583E+02  4.379E+01  3.873E+02  1.247E+01  3.743E+02  4.379E+01  3.873E+02
+            1.247E+01  3.743E+02
+
+TGETGEOM  inp=@m10_1   PROJ="MAR10"  CAM=1
+Beginning VICAR task TGETGEOM
+MAR10
+camera serial number=          1
+
+obtaining geom parameters from input file
+ First 8 Elements in BUF:
+ NAH =          15
+ Elements 4 & 5 in BUF 
+          NAV     
+ NAV =          12
+ Elements 7 & 8 in BUF 
+          TIEPOINT
+ First PART OF GEOMA PARAMETERS:
+  4.615E+01  1.848E+01  2.369E+01  2.627E+01  4.427E+01  7.196E+01  1.830E+01  6.862E+01  4.427E+01  7.196E+01
+            1.830E+01  6.862E+01  4.397E+01  2.066E+02  1.217E+01  1.823E+02  4.397E+01  2.066E+02  1.217E+01  1.823E+02
+            4.385E+01  3.406E+02  1.066E+01  3.010E+02  4.385E+01  3.406E+02  1.066E+01  3.010E+02  4.379E+01  4.749E+02
+            1.127E+01  4.205E+02
+
+TGETGEOM  inp=@m10_2   PROJ="MAR10"  CAM=2
+Beginning VICAR task TGETGEOM
+MAR10
+camera serial number=          2
+
+obtaining geom parameters from input file
+ First 8 Elements in BUF:
+ NAH =          15
+ Elements 4 & 5 in BUF 
+          NAV     
+ NAV =          12
+ Elements 7 & 8 in BUF 
+          TIEPOINT
+ First PART OF GEOMA PARAMETERS:
+  4.130E+01  1.501E+01  2.237E+01  2.171E+01  4.035E+01  7.058E+01  1.811E+01  6.668E+01  4.035E+01  7.058E+01
+            1.811E+01  6.668E+01  4.082E+01  2.053E+02  1.366E+01  1.819E+02  4.082E+01  2.053E+02  1.366E+01  1.819E+02
+            4.069E+01  3.399E+02  1.257E+01  3.001E+02  4.069E+01  3.399E+02  1.257E+01  3.001E+02  4.082E+01  4.748E+02
+            1.314E+01  4.193E+02
+
+TGETGEOM  inp=@m9_1    PROJ="MAR-9"  CAM=1
+Beginning VICAR task TGETGEOM
+MAR-9
+camera serial number=          1
+
+obtaining geom parameters from input file
+ First 8 Elements in BUF:
+ NAH =          15
+ Elements 4 & 5 in BUF 
+          NAV     
+ NAV =          12
+ Elements 7 & 8 in BUF 
+          TIEPOINT
+ First PART OF GEOMA PARAMETERS:
+  4.400E+01  1.865E+01  4.581E+01  2.986E+01  4.202E+01  7.121E+01  3.991E+01  7.523E+01  4.202E+01  7.121E+01
+            3.991E+01  7.523E+01  4.214E+01  2.044E+02  2.884E+01  1.903E+02  4.214E+01  2.044E+02  2.884E+01  1.903E+02
+            4.245E+01  3.402E+02  2.138E+01  3.079E+02  4.245E+01  3.402E+02  2.138E+01  3.079E+02  4.206E+01  4.753E+02
+            1.543E+01  4.255E+02
+
+TGETGEOM  inp=@m9_2    PROJ="MAR-9"  CAM=2
+Beginning VICAR task TGETGEOM
+MAR-9
+camera serial number=          2
+
+obtaining geom parameters from input file
+ First 8 Elements in BUF:
+ NAH =          15
+ Elements 4 & 5 in BUF 
+          NAV     
+ NAV =          12
+ Elements 7 & 8 in BUF 
+          TIEPOINT
+ First PART OF GEOMA PARAMETERS:
+  4.235E+01  1.422E+01  2.701E+01  1.829E+01  4.194E+01  6.934E+01  2.028E+01  6.238E+01  4.194E+01  6.934E+01
+            2.028E+01  6.238E+01  4.107E+01  2.050E+02  1.161E+01  1.769E+02  4.107E+01  2.050E+02  1.161E+01  1.769E+02
+            4.026E+01  3.393E+02  7.755E+00  2.944E+02  4.026E+01  3.393E+02  7.755E+00  2.944E+02  4.108E+01  4.749E+02
+            6.418E+00  4.124E+02
+
+Let  $echo="no"

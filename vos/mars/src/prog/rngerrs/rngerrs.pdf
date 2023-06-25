@@ -1,0 +1,88 @@
+process help=*
+PARM INP TYPE=STRING COUNT=2
+PARM DISPARITY TYPE=STRING COUNT=2
+PARM NLW TYPE=INTEGER COUNT=0:1 DEFAULT=7
+PARM NSW TYPE=INTEGER COUNT=0:1 DEFAULT=11
+PARM PSEUDOX TYPE=STRING COUNT=0:1 DEFAULT=""
+PARM DIFF TYPE=STRING COUNT=0:1 DEFAULT=""
+PARM Q TYPE=STRING COUNT=0:1 DEFAULT=""
+PARM NQ TYPE=STRING COUNT=0:1 DEFAULT=""
+PARM AREA TYPE=INTEGER COUNT=0:4 DEFAULT=(1,1,0,0)
+END-PROC
+
+.TITLE
+VICAR program rngerrs
+.HELP
+PURPOSE: Determine relative accuracy of outputs from program rng.
+
+EXECUTION:
+
+  rng inp=(x,y) out=tran disparity=(dx,dy)
+  rngerrs inp=(x,y) disparity=(dx,dy) pseudox=z diff=diff q=q nq=nq
+
+The stereo pair (x,y) is input to rng, which computes the horizontal
+and vertical disparities (dx,dy) of the right image y relative to the left
+image x.  rngerrs uses these disparities to distort the right image into a
+pseudo-image.  Differences between the left and pseudo-left image are then
+measured by correlating over local areas (q) and differencing of the two
+images (diff).
+
+OPERATION:
+
+The pseudo-left image z is computed as follows:
+
+	z(i,j) = y(i+dx(i,j),j+dy(i,j))
+
+where (i,j) are the (sample,line) image coordinates.  Since the coordinates
+(i+dx(i,j),j+dy(i,j) is generally not at an integral pixel position, bilinear
+interpolation is used to compute the value of y at that location.
+
+The difference image diff is simply:
+
+	diff(i,j) = x(i,j) = z(i,j)
+
+The correlation quality image q is computed by matching a nlw x nsw area
+surrounding each pixel location x(i,j) and z(i,j).  See NLW and NSW parameters.
+
+	q(i,j) = correlation coefficient for area surrounding (i,j)
+
+There are gaps in the disparity map (dx,dy).  All pixel locations where the
+disparity was not measured is flagged as dx(i,j)=-999 and dy(i,j)=-999.
+Whenever such a pixel is encountered during area matching, that pixel is
+ignored during the match.  A count of all the valid pixels in the correlation
+area is output to image nq:
+
+	0 < nq(i,j) < nlw*nsw
+
+If program rng has succeeded in computing the disparities, the pseudo-left
+image should match the left image, except for differences in intensity
+between the images.  The correlation quality is a measure of how well rng
+has succeeded at each pixel location.  The mean value of q is computed and
+printed for a specified area of the image (see AREA parameter).
+
+.page
+HISTORY:
+
+Written by: Gary Yagi, Feb 6, 2007
+Cognizant programmer: Gary Yagi
+
+.level1
+.vari inp
+inp=(left,right)
+.vari out
+correlation coefficients
+  out=q
+.vari area
+define area for stats
+  area=(sl,ss,el,es)
+
+.level2
+.vari inp
+Byte or halfword
+Max sample size=1024
+
+.vari area
+Define area by entering a size field:
+     area=(sl,ss,nl,ns)
+The default area is the entire image.
+.end

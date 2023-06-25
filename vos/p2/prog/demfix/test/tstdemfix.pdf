@@ -1,0 +1,149 @@
+procedure
+refgbl $echo
+refgbl $autousage
+
+body
+let $autousage="none"
+!let _onfail="continue"
+let $echo="yes"
+
+enable-log
+
+gen xxxim0 nl=10 ns=10 'half
+f2 inp=xxxim0 out=xxxdted +
+    func="(line+samp-6)*((line+samp)<16)+(((line+samp-6)*((line+samp)<16))>0)*line"
+gen xxxim0 nl=11 ns=11 'half
+f2 inp=xxxim0 out=xxxdted2 func="100-line-samp"
+
+gtgen in=xxxdted 'tiecnvrt 'rectfit +
+   geotiff=("GTModelTypeGeoKey=2(ModelTypeGeographic)", +
+          "GeogEllipsoidGeoKey=7030(Ellipse_WGS84)", +
+          "ModelTiePointTag=(0,0,0,-110,35,0.0)", +
+          "ModelTiePointTag=(0,10,0,-110,33,0.0)", +
+          "ModelTiePointTag=(10,0,0,-108,35,0.0)", +
+          "GTRasterTypeGeoKey=2(RasterPixelIsPoint)")
+gtgen in=xxxdted2 'tiecnvrt 'rectfit +
+   geotiff=("GTModelTypeGeoKey=2(ModelTypeGeographic)", +
+          "GeogEllipsoidGeoKey=7030(Ellipse_WGS84)", +
+          "ModelTiePointTag=(0,0,0,-110,35,0.0)", +
+          "ModelTiePointTag=(0,8,0,-110,33,0.0)", +
+          "ModelTiePointTag=(8,0,0,-108,35,0.0)", +
+          "GTRasterTypeGeoKey=2(RasterPixelIsPoint)")
+
+! standard case
+
+demfix inp=(xxxdted,xxxdted2) out=xxxdted3 thresh=0
+
+list xxxdted 'nousrtim
+list xxxdted2 'nousrtim
+list xxxdted3 'nousrtim
+
+!  case with no second input
+
+demfix inp=xxxdted out=xxxdted3 thresh=0
+
+list xxxdted 'nousrtim
+list xxxdted3 'nousrtim
+
+
+!  edge correction case, right side
+
+gen xxxim0 nl=12 ns=12 'half
+f2 inp=xxxim0 out=xxxdted +
+    func="line+samp + (samp>11.5)*100"
+gtgen in=xxxdted 'tiecnvrt 'rectfit +
+   geotiff=("GTModelTypeGeoKey=2(ModelTypeGeographic)", +
+          "GeogEllipsoidGeoKey=7030(Ellipse_WGS84)", +
+          "ModelTiePointTag=(0,0,0,-110,35,0.0)", +
+          "ModelTiePointTag=(0,10,0,-110,33,0.0)", +
+          "ModelTiePointTag=(10,0,0,-108,35,0.0)", +
+          "GTRasterTypeGeoKey=2(RasterPixelIsPoint)")
+
+demfix inp=xxxdted out=xxxdted3 thresh=0
+
+list xxxdted 'nousrtim
+list xxxdted3 'nousrtim
+
+!  edge correction case, left side
+
+gen xxxim0 nl=12 ns=12 'half
+f2 inp=xxxim0 out=xxxdted +
+    func="line+samp + (samp<1.5)*100"
+gtgen in=xxxdted 'tiecnvrt 'rectfit +
+   geotiff=("GTModelTypeGeoKey=2(ModelTypeGeographic)", +
+          "GeogEllipsoidGeoKey=7030(Ellipse_WGS84)", +
+          "ModelTiePointTag=(0,0,0,-110,35,0.0)", +
+          "ModelTiePointTag=(0,10,0,-110,33,0.0)", +
+          "ModelTiePointTag=(10,0,0,-108,35,0.0)", +
+          "GTRasterTypeGeoKey=2(RasterPixelIsPoint)")
+
+demfix inp=xxxdted out=xxxdted3 thresh=0
+
+list xxxdted 'nousrtim
+list xxxdted3 'nousrtim
+
+
+!  edge correction case, top
+
+gen xxxim0 nl=12 ns=12 'half
+f2 inp=xxxim0 out=xxxdted +
+    func="line+samp + (line<1.5)*100"
+gtgen in=xxxdted 'tiecnvrt 'rectfit +
+   geotiff=("GTModelTypeGeoKey=2(ModelTypeGeographic)", +
+          "GeogEllipsoidGeoKey=7030(Ellipse_WGS84)", +
+          "ModelTiePointTag=(0,0,0,-110,35,0.0)", +
+          "ModelTiePointTag=(0,10,0,-110,33,0.0)", +
+          "ModelTiePointTag=(10,0,0,-108,35,0.0)", +
+          "GTRasterTypeGeoKey=2(RasterPixelIsPoint)")
+
+demfix inp=xxxdted out=xxxdted3 thresh=0
+
+list xxxdted 'nousrtim
+list xxxdted3 'nousrtim
+
+
+!  edge correction case, bottom, also pow function
+
+gen xxxim0 nl=12 ns=12 'half
+f2 inp=xxxim0 out=xxxdted +
+    func="line+samp + (line>11.5)*100"
+gtgen in=xxxdted 'tiecnvrt 'rectfit +
+   geotiff=("GTModelTypeGeoKey=2(ModelTypeGeographic)", +
+          "GeogEllipsoidGeoKey=7030(Ellipse_WGS84)", +
+          "ModelTiePointTag=(0,0,0,-110,35,0.0)", +
+          "ModelTiePointTag=(0,10,0,-110,33,0.0)", +
+          "ModelTiePointTag=(10,0,0,-108,35,0.0)", +
+          "GTRasterTypeGeoKey=2(RasterPixelIsPoint)")
+
+demfix inp=xxxdted out=xxxdted3 thresh=0 pow=1.0
+
+list xxxdted 'nousrtim
+list xxxdted3 'nousrtim
+
+! real case near korea, tom's gtlabel screwed up
+
+goto theend
+
+dtedlog /export/data1/dted1/e125/n35.dt1 out=xxxim0 +
+   lon=125 lat=35 hemi1="e" hemi2="n" 
+
+ush cp /export/data1/srtm2/n35e125.hlf xxxim1
+
+gtgen in=xxxim1 'tiecnvrt 'rectfit +
+   geotiff=("GTModelTypeGeoKey=2(ModelTypeGeographic)", +
+          "GeogEllipsoidGeoKey=7030(Ellipse_WGS84)", +
+          "ModelTiePointTag=(0,0,0,125,36,0.0)", +
+          "ModelTiePointTag=(0,3600,0,125,35,0.0)", +
+          "ModelTiePointTag=(3600,0,0,126,36,0.0)", +
+          "GTRasterTypeGeoKey=2(RasterPixelIsPoint)")
+gtlist xxxim0
+gtlist xxxim1
+
+demfix inp=(xxxim1,xxxim0) out=xxxim2 thresh=-1 +
+     ocnthrsh=30 'noneg
+
+theend>
+
+disable-log
+
+END-PROC

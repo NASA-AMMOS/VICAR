@@ -1,0 +1,243 @@
+process        help=*
+! ifthen.pdf - VICAR/IBIS SOFTWARE
+parm inp    type=string
+parm if     type=(string,250),count=(1:40)
+parm then   type=(string,250),count=(1:40) def=noop
+parm else   type=(string,250),count=(1:40) def=noop
+parm code   type=integer count=1 def=0
+parm debug  type=integer count=1 def=0
+end-proc
+.TITLE
+VICAR/IBIS Program IFTHEN
+.HELP
+PURPOSE
+
+Ifthen allows the user to perform if-then-else constructs
+on columns of data in an ibis tabular file.
+
+There are 3 string parameter functions for the program, 
+IF, THEN and ELSE. They use math and logical expressions
+to perform column manipulations. The default options
+for the THEN and ELSE parameters are NOOP, meaning
+perform no operations.
+
+.page
+MATH AND FUNCTIONS
+
+The math functions available are: @sqrt, @alog, @alog10,
+@aint, @sin, @cos, @tan, @asin, @acos, @atan,
+@atan2, @abs, @min, @max, @mod.
+
+Standard binary operations are: +,- *, / and ^ (pow).
+
+Logic operations <, >, <=, >=, ==, !=, && (and), || (or),
+and ! (not).  The main difference with C vs the FORTRAN
+conventions used by program MF is the use of ^ for power
+of two integers or reals.
+
+Note 1: ^^ (xor) is not implemented (use (a||b)&&(!(a&&b))).
+
+Note 2: The old FORTRAN constructs .EQ., .NE. and **
+are no longer allowed.
+
+Note 3: When && is entered in a function, the internal
+print shows only 1 &. Thats because TAE uses & for variable
+names and traps it out. Putting in 3 & shows the correct
+&& in the function. It doesnt realy matter, the function
+is evaluated properly.
+
+ABOUT MATH AND LOGIC OPERATORS IN FUCTION STATEMENTS
+
+You need to be careful about 2 operators following each
+other.  They can lead to incorrect code and not give
+warnings about what is happening. You should be especially
+careful about occurences where negative numbers might
+inadvertently enter into the function.  This might happen
+in scripts where a large number of ifthen calls are being
+made.
+
+Suppose you have a then function like
+       then=("c4=(c3 > &sigtest)")             (1)
+                                                                                                                             
+As long as sigtest is a positive number everything proceeds
+OK, but if it is negative than what you will have is
+
+       then=("c4=(c3 > -&sigtest)")            (2)
+                                                                                                                             
+Internally this is translated into two operators and will
+give bad results.
+                                                                                                                             
+Therefore, if neg numbers are possible then the function
+should be written
+                                                                                                                             
+       then=("c4=(c3 > (&sigtest))")           (3)
+
+See documentation for mf3 for more information on function
+parsing.
+
+If you forget then the program will terminate with the following
+message:
+
+ifthen  ibis.tbl if=("(c12==1") then=("c15=-1.538559496403e-01") else=("c15=C15")
+if   string = (c12==1
+then string = c15=-1.538559496403e-01
+else string = c15=C15
+??E stsget: illegal symbol [
+??E program terminating
+ ** ABEND called **
+
+(Not a very good message, I'll grant you).
+
+.PAGE
+METHOD
+
+    IFTHEN performs arithmetic operations on an interface file.
+    The  program  uses  two  library  routines SP_KNUTH  and
+    SP_XKNUTH,   to   compile  and  interpret  C-like
+    expressions  entered by the parameters in an expression
+    such as:
+
+           IF=("(100*C34)/C4")  THEN=("C135=17") ELSE=("C135=0")
+
+    In this expression,  C34 and C4 are columns used in the
+    test (IF) function. If the IF expression is evaluated as
+    TRUE (i.e., == 1) then the THEN expression is put in C135.
+    IF the IF expression is evaluated as FALSE (i.e., == 0),
+    then the ELSE expression is put in C135.
+
+    Notice that no single = is placed in the IF function.
+    Equalities are expressed as == just like in C.
+
+    If you need an equals sign then uses expressions like:
+
+        IF=("C100==12") THEN=("C135=17") ELSE=("C135=0")
+
+    However, internal expressions are evaluated as DOUBLE and
+    so doing this can be dicey, at best.
+
+    There is no requirement for the THEN and ELSE functions
+    to evaluate to the same column.
+
+        IF=("C100>12") THEN=("C135=17") ELSE=("C136=17")
+
+    is legal.
+ 
+
+     SP_KNUTH    compiles   the   expression   into  pseudo-machine
+     instructions.   The  expression is applied to the input
+     columns in SP_XKNUTH to produce the output column, C135.
+                                                                                                                            
+RESTRICTIONS
+
+1.     Maximum number of columns in one execution is 100. (oops, 9 until bug is fixed)
+2.     The number of columns in the IBIS file is not limited here.
+3.     Maximum input string length is 10,000 (40 x 250).
+4.     Maximum number of operations is 3000.
+5.     Maximum number of temp locations is 938.
+6.     Maximum number of constants from the expression is 960.
+7.     Operators must be separated by parentheses.
+
+notes:
+                                                                                                                             
+1.  Column numbers greater than 100 are mapped sequentially 1,2,3...
+    so there is no limit on the number of columns in the IBIS file.
+3.  The input parameter is a string array (40) each with 250 chars.
+    The array is concatenated by the program into a single array.
+4.  These can be counted by setting debug to one and counting the
+    lines that begin with "xknuth:op,opnd".  The count is not
+    easily determined by looking at a long input.
+5.  These can be counted by setting debug to one and counting the
+    lines that begin with "xknuth:op,opnd" and having an opnd
+    value above 1061.  The count is not easily determined by
+    looking at a long input.
+6.  These can be counted in the input, or by setting debug to one
+    and counting the lines that begin with "xknuth:op,opnd" and
+    having an opnd value between 103 and 1061, inclusive.
+                                                                                                                             
+.PAGE
+EXAMPLES
+                                                                                                                             
+     IFTHEN INP=FILE.INT if=("c3>(&sigtest)") then=("c4=(&xthresh)") else=("c4=(c1*(c1>0))")
+                                                                                                                             
+                                                                                                                             
+
+
+
+.page
+
+TAE COMMAND LINE FORMAT
+
+     IFTHEN INP=int PARAMS
+
+     where
+     
+     int                 is a random access file.  Since it
+                         is used for both input and  output,
+                         no output file is specified.
+     PARAMS              is   a  standard  VICAR   parameter
+                         field.
+
+    IF is a string of math or logical operations
+    given in examples below.
+
+    THEN is a string of math or logical operations
+    given in examples below.
+
+    ELSE is a string of math or logical operations (or noop)
+    given in examples below.
+
+    The DEBUG parameter will show the pseudo instructions for
+    math and logic functions that arise from the
+    internal routine sp_xknuth as well as other information.
+
+    The CODE parameter will show the pseudo instructions for
+    math and logic functions. The nmenomics are the same
+    as for the CODE parameter for mf3 but have different
+    operands for program mf.
+
+
+.PAGE
+HISTORY
+
+Original Programmer:  R. J. Bambery - Oct 25, 2007
+
+Revision:
+  2008-02-24 - R.J. Bambery - For Linux - remove a bad strcpy
+               for combining thenfunction with elsefunction
+  2008-02-27 - R.J. Bambery - Fixes for ANSI_C compiler
+  2008-06-19 - R.J. Bambery  - Error elaboration in pdf
+  2008-07-27 - R.J. Bambery - Merged solaris pdf with linux pdf
+  2008-07-28 - R.J. Bambery - Made compatible with linux afids 5b
+  2008-08-20 - R.J. Bambery - Fixed bug in fstorecd which caused
+               incorrect packing of double into unsigned chars
+  2010-01-29 - R.J. Bambery - Made compatible with 64-bit afids Build 793      
+               Linux, MacOSX (both Intel/PowerPC)          
+  2011-05-05 - R.J. Bambery - Removed all warning messages generated from gcc 4.4.4
+               Build 1009
+  2011-06-20 - R.J. Bambery - Fixed warning messages with gcc 4.5.2 on macosx
+  2012-06-06 - R.J. Bambery - initialize a variable
+  2012-06-22 - R.J. Bambery - comment out an include p1proto.h. It is used
+               in cartlab to define zmve
+  2012-12-09 - R.J. Bambery - remove unused variables ptr, mxddwid
+  2015-11-05 - W.L. Bunch - Migrated to MIPL.
+  2017-08-08 - W.L. Bunch - Removed DEBUG from imake.
+  2019-07-31 - W.L. Bunch - IDS-7923 - Replaced sprintfs with snprintfs.
+  2022-07-14 - B. Crocco afids to opensource
+  
+.LEVEL1
+.VARIABLE INP
+Input IBIS interface file
+.VARIABLE IF      
+Specifies function and columns,
+case insensitive
+.VARIABLE THEN
+Specifies function and columns,
+case insensitive
+.VARIABLE ELSE
+Specifies function and columns,
+case insensitive
+.VARIABLE DEBUG
+Set 1 to see symbol fetch and
+compiled expression
+.VARIABLE CODE
+.end

@@ -6,8 +6,8 @@
 #define MODULE_LIST tbl.mar ztbl.c
 #define CLEAN_OTHER_LIST tbl.c 
 #else 
-#define MODULE_LIST tbl.c 
-#define CLEAN_OTHER_LIST tbl.mar ztbl.c 
+#define MODULE_LIST tbl.c ztbl.c
+#define CLEAN_OTHER_LIST tbl.mar
 #endif 
 
 #define P2_SUBLIB

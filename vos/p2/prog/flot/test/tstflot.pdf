@@ -2,6 +2,8 @@ procedure
 refgbl $echo
 refgbl $autousage
 body
+enable-log
+
 let $autousage="none"
 let _onfail="continue"
 let $echo="yes"
@@ -12,80 +14,80 @@ let $echo="yes"
 !
 gen FLOTA NL=10 NS=12
 flot INP=FLOTA OUT=FLOTAO 
-list FLOTAO 
+list FLOTAO 'nousrtim
 !
 !    try SL and SS not equal to 1 with 'HORIZ.
 !
 flot INP=FLOTA OUT=FLOTAO2 SIZE=(2,3,8,7) 'HORIZ
-list FLOTAO2
+list FLOTAO2 'nousrtim
 !
 !    try other modes
 !
 flot FLOTA FLOTAO3 'COUNTER
-list FLOTAO3
+list FLOTAO3 'nousrtim
 !
 flot FLOTA FLOTAO4 'VERT
-list FLOTAO4
+list FLOTAO4 'nousrtim
 !
 flot FLOTA FLOTAO5 'ROT180
-list FLOTAO5
+list FLOTAO5 'nousrtim
 !
 !      halfword image - first test defaults.
 !
 gen FLOTB NL=10 NS=12 'HALF
 flot INP=FLOTB OUT=FLOTBO 
-list FLOTBO 
+list FLOTBO  'nousrtim
 !
 !    try SL and SS not equal to 1 with 'VERT.
 !
 flot INP=FLOTB OUT=FLOTBO2 SIZE=(2,3,8,7) 'VERT
-list FLOTBO2
+list FLOTBO2 'nousrtim
 !
 !    try other modes
 !
 flot FLOTB FLOTBO3 'CLOCK
-list FLOTBO3
+list FLOTBO3 'nousrtim
 !
 flot FLOTB FLOTBO4 'TRANS
-list FLOTBO4
+list FLOTBO4 'nousrtim
 !
 !      fullword image - first test defaults.
 !
 gen FLOTC NL=10 NS=12 'FULL
 flot INP=FLOTC OUT=FLOTCO 
-list FLOTCO 
+list FLOTCO  'nousrtim
 !
 !    try SL and SS not equal to 1 with 'CLOCK.
 !
 flot INP=FLOTC OUT=FLOTCO2 SIZE=(2,3,8,7) 'CLOCK
-list FLOTCO2
+list FLOTCO2 'nousrtim
 !
 !    try other modes
 !
 flot FLOTC FLOTCO3 'COUNTER
-list FLOTCO3
+list FLOTCO3 'nousrtim
 !
 flot FLOTC FLOTCO4 'VERT
-list FLOTCO4
+list FLOTCO4 'nousrtim
 !
 !      REAL*4 image - first test defaults.
 !
 gen FLOTD NL=10 NS=12 'REAL4
 flot INP=FLOTD OUT=FLOTDO 
-list FLOTDO 
+list FLOTDO  'nousrtim
 !
 !    try SL and SS not equal to 1 with 'HORIZ.
 !
 flot INP=FLOTD OUT=FLOTDO2 SIZE=(2,3,8,7) 'HORIZ
-list FLOTDO2
+list FLOTDO2 'nousrtim
 !
 !    try other modes
 !
 flot FLOTD FLOTDO3 'COUNTER
-list FLOTDO3
+list FLOTDO3 'nousrtim
 !
 flot FLOTD FLOTDO4 'TRANS
-list FLOTDO4
+list FLOTDO4 'nousrtim
 !
 !    try multi-band input
 !
@@ -94,11 +96,12 @@ gen FLOTGRN NL=10 NS=12 IVAL=101
 gen FLOTBLU NL=10 NS=12 IVAL=201
 viccub (FLOTRED,FLOTGRN,FLOTBLU) FLOTCOLOR
 flot FLOTCOLOR FLOTCOLORROT
-list FLOTCOLORROT
+list FLOTCOLORROT 'nousrtim
 flot FLOTCOLOR FLOTCOLORROT BAND=2
-list FLOTCOLORROT
+list FLOTCOLORROT 'nousrtim
 !
 !    clean up
 !
 ush rm FLOTA* FLOTB* FLOTC* FLOTD* FLOTG* FLOTR*
+disable-log
 END-PROC

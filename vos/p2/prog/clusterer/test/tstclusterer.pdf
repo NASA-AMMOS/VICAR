@@ -5,9 +5,6 @@ body
 let $autousage="none"
 let $echo="yes"
 
-ush rm -f data
-ush ln -s /project/test_work/testdata/carto/lsat7 data
-
 enable-log
 
 ! Landsat 7 imagery of Saticoy acquired 2000-07-27
@@ -17,5 +14,7 @@ clusterer subsamples.ibis (subclusters.ibis, classifiedsubsamples.ibis) ncluster
 ibis-l subclusters.ibis
 
 disable-log
+
+ush rm classifiedsubsamples.ibis subclusters.ibis subsamples.ibis
 
 end-proc

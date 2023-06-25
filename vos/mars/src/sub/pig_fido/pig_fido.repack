@@ -1,0 +1,6 @@
+$ vpack pig_fido.com -mixed -
+	-s PigFIDO.cc PigFileModelFIDO.cc PigPointFIDOMastArmCamera.cc -
+	   PigPointFIDOMastArmCamera2DOF.cc PigSiteFIDO.cc -
+	   PigRoverStateManagerFIDO.cc -
+	-i pig_fido.imake
+$ Exit

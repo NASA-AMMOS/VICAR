@@ -1,0 +1,47 @@
+gen xxim1 nl=10 ns=10
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+gtgen inp=xxim1 'tiecnvrt  +
+   geotiff=("ModelTiePointTag=(0,0,0,.3,.3,0.0)",  +
+          "ModelTiePointTag=(10,0,0,.5,.3,0.0)",  +
+          "ModelTiePointTag=(0,10,0,.3,.5,0.0)",  +
+          "ProjectionGeoKey=20(CT_MillerCylindrical)",  +
+          "GTRasterTypeGeoKey=2(RasterPixelIsPoint)",  +
+          "GeogEllipsoidGeoKey=7030(Ellipse_WGS84)")
+Beginning VICAR task gtgen
+GTGEN version 2019-09-05
+gtcopy xxim1 xxim2 size=(5,6,1,1)
+Beginning VICAR task gtcopy
+gtcopy version 2017-08-03
+gtoffset xxim1 xxim2
+ibis-gen xxqqmap1 nc=8 nr=1 deffmt=DOUB
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+mf3 xxqqmap1 func="c1=0$c2=0"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+pixmap (xxqqmap1,xxim2) mapcols=(3,4) pixcols=(1,2) 'pixtomap
+Beginning VICAR task pixmap
+pixmap version Thu Jan  3 2008
+pixmap (xxqqmap1,xxim1) mapcols=(3,4) pixcols=(5,6) 'maptopix
+Beginning VICAR task pixmap
+pixmap version Thu Jan  3 2008
+mf3 xxqqmap1 func="c7=c5+1$c8=c6+1"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+ibis-list xxqqmap1 cols=(5,6,7,8) csiz=(16,16,16,16)  +
+     cfor="%16.6f%16.6f%16.6f%16.6f"
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:1  Number of Columns: 8       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:1
++---------------+---------------+---------------+---------------
+             C:5             C:6             C:7             C:8
++---------------+---------------+---------------+---------------
+        4.000000        5.000000        5.000000        6.000000
+end-proc
+disable-log

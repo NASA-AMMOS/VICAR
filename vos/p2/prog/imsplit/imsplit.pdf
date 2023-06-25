@@ -1,0 +1,42 @@
+process help=*
+PARM INP TYPE=STRING COUNT=1
+PARM OUT TYPE=STRING COUNT=2
+
+END-PROC
+.TITLE
+imsplit - splits even and odd columns of an image into two images
+.HELP
+PURPOSE:
+imsplit copies the odd columns of an image into one image and even
+lines of the image into another.
+
+EXECUTION:
+
+Example
+
+imsplit A (B,C)   will copy the odd columns of image A into image B
+                  and the even columns of image A into image C
+                               
+OPERATION:
+
+TIMING: 
+
+As fast as VICAR can read and write the lines.  
+
+RESTRICTIONS:
+
+ORIGINAL PROGRAMMER:    A. Zobrist          21 Oct 2005
+COGNIZANT PROGRAMMER:   A. Zobrist          21 Oct 2005
+ 
+REVISION HISTORY
+  2005-10-21 AZ  Initial version
+  2008-01-03 WLB Switched to USES_ANSI_C AND LIB_CARTO; misc cleanup  
+  2015-11-05 WLB Migrated to MIPL
+  2022-07-14 B. Crocco afids to opensource
+  
+.LEVEL1
+.VARIABLE INP
+STRING - Input image file
+.VARIABLE OUT
+STRING - Output image files
+.END

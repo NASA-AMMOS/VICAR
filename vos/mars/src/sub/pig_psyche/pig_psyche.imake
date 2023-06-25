@@ -1,0 +1,13 @@
+#define SUBROUTINE pig_psyche
+
+#define MODULE_LIST  PigFileModelPsyche.cc PigPsyche.cc \
+PigRoverStateManagerPsyche.cc PigLabelModelPsyche.cc \
+PigColorModelPsyche.cc
+
+#define MARS_SUBLIB
+
+#define USES_C_PLUS_PLUS
+
+#define LIB_P2SUB
+#define LIB_XERCES
+

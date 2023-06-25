@@ -1,65 +1,545 @@
-procedure
-refgbl $echo
-body
-let _onfail="continue"
-let $echo="yes"
-
-enable-log
-
-! THIS IS A TEST FILE FOR GEN
-! THE FOLLOWING TESTS SHOW THE USE OF GEN WITH ONLY 2D DATA
-
-! BYTE
 GEN TGEN1 10 10 IVAL=50.5 SINC=10.5 LINC=-20.5
+Beginning VICAR task GEN
+GEN Version 2019-05-28
+GEN task completed
 LIST TGEN1 'nousrtim
-LABEL-LIST TGEN1 'nousrtim
+Beginning VICAR task LIST
+LIST version 2019-09-06
 
-! HALF
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+     Samp     1       3       5       7       9
+   Line
+      1      50  61  71  82  92 103 113 124 134 145
+      2      30  40  51  61  72  82  93 103 114 124
+      3       9  20  30  41  51  62  72  83  93 104
+      4     245   0  10  20  31  41  52  62  73  83
+      5     225 235 246   0  10  21  31  42  52  63
+      6     204 215 225 236 246   0  11  21  32  42
+      7     184 194 205 215 226 236 247   1  11  22
+      8     163 174 184 195 205 216 226 237 247   1
+      9     143 153 164 174 185 195 206 216 227 237
+     10     122 133 143 154 164 175 185 196 206 217
+LABEL-LIST TGEN1 'nousrtim
+Beginning VICAR task LABEL
+LABEL version 2019-09-06
+************************************************************
+ 
+        ************  File TGEN1 ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in BYTE format from a X86-64-LIN host
+                1 bands
+                10 lines per band
+                10 samples per line
+                0 lines of binary header
+                0 bytes of binary prefix per line
+---- Task: GEN -- User:  --  ----
+IVAL=50.5
+SINC=10.5
+LINC=-20.5
+BINC=1.0
+MODULO=0.0
+ 
+************************************************************
 GEN TGEN1 10 20 'HALF IVAL=-100.5 SINC=0.0 LINC=0.0
+Beginning VICAR task GEN
+GEN Version 2019-05-28
+GEN task completed
 LIST TGEN1 'nousrtim
-LABEL-LIST TGEN1 'nousrtim
+Beginning VICAR task LIST
+LIST version 2019-09-06
 
-! FULL
+   HALF     samples are interpreted as HALFWORD data
+ Task:GEN       User:          Date_Time:                        
+     Samp       1     2     3     4     5     6     7     8     9    10    11    12    13    14    15
+   Line
+      1      -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100
+      2      -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100
+      3      -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100
+      4      -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100
+      5      -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100
+      6      -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100
+      7      -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100
+      8      -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100
+      9      -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100
+     10      -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100  -100
+
+   HALF     samples are interpreted as HALFWORD data
+ Task:GEN       User:          Date_Time:                        
+     Samp      16    17    18    19    20
+   Line
+      1      -100  -100  -100  -100  -100
+      2      -100  -100  -100  -100  -100
+      3      -100  -100  -100  -100  -100
+      4      -100  -100  -100  -100  -100
+      5      -100  -100  -100  -100  -100
+      6      -100  -100  -100  -100  -100
+      7      -100  -100  -100  -100  -100
+      8      -100  -100  -100  -100  -100
+      9      -100  -100  -100  -100  -100
+     10      -100  -100  -100  -100  -100
+LABEL-LIST TGEN1 'nousrtim
+Beginning VICAR task LABEL
+LABEL version 2019-09-06
+************************************************************
+ 
+        ************  File TGEN1 ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in HALF format from a X86-64-LIN host
+                1 bands
+                10 lines per band
+                20 samples per line
+                0 lines of binary header
+                0 bytes of binary prefix per line
+---- Task: GEN -- User:  --  ----
+IVAL=-100.5
+SINC=0.0
+LINC=0.0
+BINC=1.0
+MODULO=0.0
+ 
+************************************************************
 GEN TGEN3 10 10 'FULL IVAL=0 SINC=20 LINC=-3
+Beginning VICAR task GEN
+GEN Version 2019-05-28
+GEN task completed
 LIST TGEN3 'nousrtim
-LABEL-LIST TGEN3 'nousrtim
+Beginning VICAR task LIST
+LIST version 2019-09-06
 
-! REAL
+   FULL     samples are interpreted as FULLWORD data
+ Task:GEN       User:          Date_Time:                        
+     Samp            1          2          3          4          5          6          7          8          9         10
+   Line
+      1              0         20         40         60         80        100        120        140        160        180
+      2             -3         17         37         57         77         97        117        137        157        177
+      3             -6         14         34         54         74         94        114        134        154        174
+      4             -9         11         31         51         71         91        111        131        151        171
+      5            -12          8         28         48         68         88        108        128        148        168
+      6            -15          5         25         45         65         85        105        125        145        165
+      7            -18          2         22         42         62         82        102        122        142        162
+      8            -21         -1         19         39         59         79         99        119        139        159
+      9            -24         -4         16         36         56         76         96        116        136        156
+     10            -27         -7         13         33         53         73         93        113        133        153
+LABEL-LIST TGEN3 'nousrtim
+Beginning VICAR task LABEL
+LABEL version 2019-09-06
+************************************************************
+ 
+        ************  File TGEN3 ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in FULL format from a X86-64-LIN host
+                1 bands
+                10 lines per band
+                10 samples per line
+                0 lines of binary header
+                0 bytes of binary prefix per line
+---- Task: GEN -- User:  --  ----
+IVAL=0.0
+SINC=20.0
+LINC=-3.0
+BINC=1.0
+MODULO=0.0
+ 
+************************************************************
 GEN TGEN3 10 10 'REAL IVAL=0.0 SINC=1.5 LINC=25.
+Beginning VICAR task GEN
+GEN Version 2019-05-28
+GEN task completed
 LIST TGEN3 'nousrtim
-LABEL-LIST TGEN3 'nousrtim
+Beginning VICAR task LIST
+LIST version 2019-09-06
 
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+     Samp             1           2           3           4           5           6           7           8           9          10
+   Line
+      1       0.000E+00   1.500E+00   3.000E+00   4.500E+00   6.000E+00   7.500E+00   9.000E+00   1.050E+01   1.200E+01   1.350E+01
+      2       2.500E+01   2.650E+01   2.800E+01   2.950E+01   3.100E+01   3.250E+01   3.400E+01   3.550E+01   3.700E+01   3.850E+01
+      3       5.000E+01   5.150E+01   5.300E+01   5.450E+01   5.600E+01   5.750E+01   5.900E+01   6.050E+01   6.200E+01   6.350E+01
+      4       7.500E+01   7.650E+01   7.800E+01   7.950E+01   8.100E+01   8.250E+01   8.400E+01   8.550E+01   8.700E+01   8.850E+01
+      5       1.000E+02   1.015E+02   1.030E+02   1.045E+02   1.060E+02   1.075E+02   1.090E+02   1.105E+02   1.120E+02   1.135E+02
+      6       1.250E+02   1.265E+02   1.280E+02   1.295E+02   1.310E+02   1.325E+02   1.340E+02   1.355E+02   1.370E+02   1.385E+02
+      7       1.500E+02   1.515E+02   1.530E+02   1.545E+02   1.560E+02   1.575E+02   1.590E+02   1.605E+02   1.620E+02   1.635E+02
+      8       1.750E+02   1.765E+02   1.780E+02   1.795E+02   1.810E+02   1.825E+02   1.840E+02   1.855E+02   1.870E+02   1.885E+02
+      9       2.000E+02   2.015E+02   2.030E+02   2.045E+02   2.060E+02   2.075E+02   2.090E+02   2.105E+02   2.120E+02   2.135E+02
+     10       2.250E+02   2.265E+02   2.280E+02   2.295E+02   2.310E+02   2.325E+02   2.340E+02   2.355E+02   2.370E+02   2.385E+02
+LABEL-LIST TGEN3 'nousrtim
+Beginning VICAR task LABEL
+LABEL version 2019-09-06
+************************************************************
+ 
+        ************  File TGEN3 ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in REAL format from a X86-64-LIN host
+                1 bands
+                10 lines per band
+                10 samples per line
+                0 lines of binary header
+                0 bytes of binary prefix per line
+---- Task: GEN -- User:  --  ----
+IVAL=0.0
+SINC=1.5
+LINC=25.0
+BINC=1.0
+MODULO=0.0
+ 
+************************************************************
 GEN TGEN3 10 10 'REAL4 IVAL=0.0 SINC=1.5 LINC=25.
+Beginning VICAR task GEN
+GEN Version 2019-05-28
+GEN task completed
 LIST TGEN3 'nousrtim
-LABEL-LIST TGEN3 'nousrtim
+Beginning VICAR task LIST
+LIST version 2019-09-06
 
-! DOUB
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+     Samp             1           2           3           4           5           6           7           8           9          10
+   Line
+      1       0.000E+00   1.500E+00   3.000E+00   4.500E+00   6.000E+00   7.500E+00   9.000E+00   1.050E+01   1.200E+01   1.350E+01
+      2       2.500E+01   2.650E+01   2.800E+01   2.950E+01   3.100E+01   3.250E+01   3.400E+01   3.550E+01   3.700E+01   3.850E+01
+      3       5.000E+01   5.150E+01   5.300E+01   5.450E+01   5.600E+01   5.750E+01   5.900E+01   6.050E+01   6.200E+01   6.350E+01
+      4       7.500E+01   7.650E+01   7.800E+01   7.950E+01   8.100E+01   8.250E+01   8.400E+01   8.550E+01   8.700E+01   8.850E+01
+      5       1.000E+02   1.015E+02   1.030E+02   1.045E+02   1.060E+02   1.075E+02   1.090E+02   1.105E+02   1.120E+02   1.135E+02
+      6       1.250E+02   1.265E+02   1.280E+02   1.295E+02   1.310E+02   1.325E+02   1.340E+02   1.355E+02   1.370E+02   1.385E+02
+      7       1.500E+02   1.515E+02   1.530E+02   1.545E+02   1.560E+02   1.575E+02   1.590E+02   1.605E+02   1.620E+02   1.635E+02
+      8       1.750E+02   1.765E+02   1.780E+02   1.795E+02   1.810E+02   1.825E+02   1.840E+02   1.855E+02   1.870E+02   1.885E+02
+      9       2.000E+02   2.015E+02   2.030E+02   2.045E+02   2.060E+02   2.075E+02   2.090E+02   2.105E+02   2.120E+02   2.135E+02
+     10       2.250E+02   2.265E+02   2.280E+02   2.295E+02   2.310E+02   2.325E+02   2.340E+02   2.355E+02   2.370E+02   2.385E+02
+LABEL-LIST TGEN3 'nousrtim
+Beginning VICAR task LABEL
+LABEL version 2019-09-06
+************************************************************
+ 
+        ************  File TGEN3 ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in REAL format from a X86-64-LIN host
+                1 bands
+                10 lines per band
+                10 samples per line
+                0 lines of binary header
+                0 bytes of binary prefix per line
+---- Task: GEN -- User:  --  ----
+IVAL=0.0
+SINC=1.5
+LINC=25.0
+BINC=1.0
+MODULO=0.0
+ 
+************************************************************
 GEN TGEN3 10 10 'DOUB LINC=.1 SINC=.01
+Beginning VICAR task GEN
+GEN Version 2019-05-28
+GEN task completed
 LIST TGEN3 NDIGITS=16 'nousrtim
-LABEL-LIST TGEN3 'nousrtim
+Beginning VICAR task LIST
+LIST version 2019-09-06
 
+   DOUB     samples are interpreted as  REAL*8  data
+ Task:GEN       User:          Date_Time:                        
+     Samp                         1                       2                       3                       4                       5
+   Line
+      1       0.000000000000000E+00   1.000000000000000E-02   2.000000000000000E-02   3.000000000000001E-02   4.000000000000001E-02
+      2       1.000000000000000E-01   1.100000000000000E-01   1.200000000000000E-01   1.300000000000000E-01   1.400000000000000E-01
+      3       2.000000000000000E-01   2.100000000000000E-01   2.200000000000000E-01   2.300000000000000E-01   2.400000000000000E-01
+      4       3.000000000000000E-01   3.100000000000001E-01   3.200000000000001E-01   3.300000000000001E-01   3.400000000000001E-01
+      5       4.000000000000000E-01   4.100000000000000E-01   4.200000000000000E-01   4.300000000000000E-01   4.400000000000001E-01
+      6       5.000000000000000E-01   5.100000000000000E-01   5.200000000000000E-01   5.300000000000000E-01   5.400000000000000E-01
+      7       6.000000000000000E-01   6.100000000000000E-01   6.200000000000000E-01   6.300000000000000E-01   6.400000000000000E-01
+      8       7.000000000000000E-01   7.100000000000000E-01   7.200000000000000E-01   7.300000000000000E-01   7.400000000000000E-01
+      9       7.999999999999999E-01   8.099999999999999E-01   8.200000000000000E-01   8.300000000000000E-01   8.400000000000000E-01
+     10       8.999999999999999E-01   9.099999999999999E-01   9.199999999999999E-01   9.299999999999999E-01   9.399999999999999E-01
+
+   DOUB     samples are interpreted as  REAL*8  data
+ Task:GEN       User:          Date_Time:                        
+     Samp                         6                       7                       8                       9                      10
+   Line
+      1       5.000000000000001E-02   6.000000000000001E-02   7.000000000000001E-02   8.000000000000002E-02   9.000000000000002E-02
+      2       1.500000000000000E-01   1.600000000000001E-01   1.700000000000001E-01   1.800000000000001E-01   1.900000000000001E-01
+      3       2.500000000000001E-01   2.600000000000001E-01   2.700000000000001E-01   2.800000000000001E-01   2.900000000000001E-01
+      4       3.500000000000001E-01   3.600000000000001E-01   3.700000000000001E-01   3.800000000000001E-01   3.900000000000001E-01
+      5       4.500000000000001E-01   4.600000000000001E-01   4.700000000000001E-01   4.800000000000001E-01   4.900000000000001E-01
+      6       5.500000000000000E-01   5.600000000000001E-01   5.700000000000001E-01   5.800000000000001E-01   5.900000000000001E-01
+      7       6.500000000000000E-01   6.600000000000000E-01   6.700000000000000E-01   6.800000000000000E-01   6.900000000000001E-01
+      8       7.500000000000000E-01   7.600000000000000E-01   7.700000000000000E-01   7.800000000000000E-01   7.900000000000000E-01
+      9       8.500000000000000E-01   8.600000000000000E-01   8.700000000000000E-01   8.800000000000000E-01   8.900000000000000E-01
+     10       9.500000000000000E-01   9.600000000000000E-01   9.700000000000000E-01   9.800000000000000E-01   9.900000000000000E-01
+LABEL-LIST TGEN3 'nousrtim
+Beginning VICAR task LABEL
+LABEL version 2019-09-06
+************************************************************
+ 
+        ************  File TGEN3 ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in DOUB format from a X86-64-LIN host
+                1 bands
+                10 lines per band
+                10 samples per line
+                0 lines of binary header
+                0 bytes of binary prefix per line
+---- Task: GEN -- User:  --  ----
+IVAL=0.0
+SINC=0.01
+LINC=0.1
+BINC=1.0
+MODULO=0.0
+ 
+************************************************************
 GEN TGEN3 10 10 'REAL8 LINC=.1 SINC=.01
+Beginning VICAR task GEN
+GEN Version 2019-05-28
+GEN task completed
 LIST TGEN3 NDIGITS=16 'nousrtim
+Beginning VICAR task LIST
+LIST version 2019-09-06
+
+   DOUB     samples are interpreted as  REAL*8  data
+ Task:GEN       User:          Date_Time:                        
+     Samp                         1                       2                       3                       4                       5
+   Line
+      1       0.000000000000000E+00   1.000000000000000E-02   2.000000000000000E-02   3.000000000000001E-02   4.000000000000001E-02
+      2       1.000000000000000E-01   1.100000000000000E-01   1.200000000000000E-01   1.300000000000000E-01   1.400000000000000E-01
+      3       2.000000000000000E-01   2.100000000000000E-01   2.200000000000000E-01   2.300000000000000E-01   2.400000000000000E-01
+      4       3.000000000000000E-01   3.100000000000001E-01   3.200000000000001E-01   3.300000000000001E-01   3.400000000000001E-01
+      5       4.000000000000000E-01   4.100000000000000E-01   4.200000000000000E-01   4.300000000000000E-01   4.400000000000001E-01
+      6       5.000000000000000E-01   5.100000000000000E-01   5.200000000000000E-01   5.300000000000000E-01   5.400000000000000E-01
+      7       6.000000000000000E-01   6.100000000000000E-01   6.200000000000000E-01   6.300000000000000E-01   6.400000000000000E-01
+      8       7.000000000000000E-01   7.100000000000000E-01   7.200000000000000E-01   7.300000000000000E-01   7.400000000000000E-01
+      9       7.999999999999999E-01   8.099999999999999E-01   8.200000000000000E-01   8.300000000000000E-01   8.400000000000000E-01
+     10       8.999999999999999E-01   9.099999999999999E-01   9.199999999999999E-01   9.299999999999999E-01   9.399999999999999E-01
+
+   DOUB     samples are interpreted as  REAL*8  data
+ Task:GEN       User:          Date_Time:                        
+     Samp                         6                       7                       8                       9                      10
+   Line
+      1       5.000000000000001E-02   6.000000000000001E-02   7.000000000000001E-02   8.000000000000002E-02   9.000000000000002E-02
+      2       1.500000000000000E-01   1.600000000000001E-01   1.700000000000001E-01   1.800000000000001E-01   1.900000000000001E-01
+      3       2.500000000000001E-01   2.600000000000001E-01   2.700000000000001E-01   2.800000000000001E-01   2.900000000000001E-01
+      4       3.500000000000001E-01   3.600000000000001E-01   3.700000000000001E-01   3.800000000000001E-01   3.900000000000001E-01
+      5       4.500000000000001E-01   4.600000000000001E-01   4.700000000000001E-01   4.800000000000001E-01   4.900000000000001E-01
+      6       5.500000000000000E-01   5.600000000000001E-01   5.700000000000001E-01   5.800000000000001E-01   5.900000000000001E-01
+      7       6.500000000000000E-01   6.600000000000000E-01   6.700000000000000E-01   6.800000000000000E-01   6.900000000000001E-01
+      8       7.500000000000000E-01   7.600000000000000E-01   7.700000000000000E-01   7.800000000000000E-01   7.900000000000000E-01
+      9       8.500000000000000E-01   8.600000000000000E-01   8.700000000000000E-01   8.800000000000000E-01   8.900000000000000E-01
+     10       9.500000000000000E-01   9.600000000000000E-01   9.700000000000000E-01   9.800000000000000E-01   9.900000000000000E-01
 LABEL-LIST TGEN3 'nousrtim
-
+Beginning VICAR task LABEL
+LABEL version 2019-09-06
+************************************************************
+ 
+        ************  File TGEN3 ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in DOUB format from a X86-64-LIN host
+                1 bands
+                10 lines per band
+                10 samples per line
+                0 lines of binary header
+                0 bytes of binary prefix per line
+---- Task: GEN -- User:  --  ----
+IVAL=0.0
+SINC=0.01
+LINC=0.1
+BINC=1.0
+MODULO=0.0
+ 
+************************************************************
 GEN TGEN4 10 10 'DOUB IVAL=-1000 SINC=20 LINC=3
+Beginning VICAR task GEN
+GEN Version 2019-05-28
+GEN task completed
 LIST TGEN4 'nousrtim
+Beginning VICAR task LIST
+LIST version 2019-09-06
+
+   DOUB     samples are interpreted as  REAL*8  data
+ Task:GEN       User:          Date_Time:                        
+     Samp             1           2           3           4           5           6           7           8           9          10
+   Line
+      1      -1.000E+03  -9.800E+02  -9.600E+02  -9.400E+02  -9.200E+02  -9.000E+02  -8.800E+02  -8.600E+02  -8.400E+02  -8.200E+02
+      2      -9.970E+02  -9.770E+02  -9.570E+02  -9.370E+02  -9.170E+02  -8.970E+02  -8.770E+02  -8.570E+02  -8.370E+02  -8.170E+02
+      3      -9.940E+02  -9.740E+02  -9.540E+02  -9.340E+02  -9.140E+02  -8.940E+02  -8.740E+02  -8.540E+02  -8.340E+02  -8.140E+02
+      4      -9.910E+02  -9.710E+02  -9.510E+02  -9.310E+02  -9.110E+02  -8.910E+02  -8.710E+02  -8.510E+02  -8.310E+02  -8.110E+02
+      5      -9.880E+02  -9.680E+02  -9.480E+02  -9.280E+02  -9.080E+02  -8.880E+02  -8.680E+02  -8.480E+02  -8.280E+02  -8.080E+02
+      6      -9.850E+02  -9.650E+02  -9.450E+02  -9.250E+02  -9.050E+02  -8.850E+02  -8.650E+02  -8.450E+02  -8.250E+02  -8.050E+02
+      7      -9.820E+02  -9.620E+02  -9.420E+02  -9.220E+02  -9.020E+02  -8.820E+02  -8.620E+02  -8.420E+02  -8.220E+02  -8.020E+02
+      8      -9.790E+02  -9.590E+02  -9.390E+02  -9.190E+02  -8.990E+02  -8.790E+02  -8.590E+02  -8.390E+02  -8.190E+02  -7.990E+02
+      9      -9.760E+02  -9.560E+02  -9.360E+02  -9.160E+02  -8.960E+02  -8.760E+02  -8.560E+02  -8.360E+02  -8.160E+02  -7.960E+02
+     10      -9.730E+02  -9.530E+02  -9.330E+02  -9.130E+02  -8.930E+02  -8.730E+02  -8.530E+02  -8.330E+02  -8.130E+02  -7.930E+02
 LABEL-LIST TGEN4 'nousrtim
-
-! COMP
+Beginning VICAR task LABEL
+LABEL version 2019-09-06
+************************************************************
+ 
+        ************  File TGEN4 ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in DOUB format from a X86-64-LIN host
+                1 bands
+                10 lines per band
+                10 samples per line
+                0 lines of binary header
+                0 bytes of binary prefix per line
+---- Task: GEN -- User:  --  ----
+IVAL=-1000.0
+SINC=20.0
+LINC=3.0
+BINC=1.0
+MODULO=0.0
+ 
+************************************************************
 GEN TGEN1 10 10 IVAL=(10,-10) SINC=.5 LINC=(10,-10) 'COMP
+Beginning VICAR task GEN
+GEN Version 2019-05-28
+GEN task completed
 LIST TGEN1 'nousrtim
-LABEL-LIST TGEN1 'nousrtim
+Beginning VICAR task LIST
+LIST version 2019-09-06
 
-!THESE TESTS SHOW THE USE OF MOD
+   COMP     samples are interpreted as COMPLEX  data
+ Task:GEN       User:          Date_Time:                        
+     Samp                         1                       2                       3                       4                       5
+   Line
+      1       1.000E+01  -1.000E+01   1.050E+01  -9.000E+00   1.100E+01  -8.000E+00   1.150E+01  -7.000E+00   1.200E+01  -6.000E+00
+      2       2.000E+01  -2.000E+01   2.050E+01  -1.900E+01   2.100E+01  -1.800E+01   2.150E+01  -1.700E+01   2.200E+01  -1.600E+01
+      3       3.000E+01  -3.000E+01   3.050E+01  -2.900E+01   3.100E+01  -2.800E+01   3.150E+01  -2.700E+01   3.200E+01  -2.600E+01
+      4       4.000E+01  -4.000E+01   4.050E+01  -3.900E+01   4.100E+01  -3.800E+01   4.150E+01  -3.700E+01   4.200E+01  -3.600E+01
+      5       5.000E+01  -5.000E+01   5.050E+01  -4.900E+01   5.100E+01  -4.800E+01   5.150E+01  -4.700E+01   5.200E+01  -4.600E+01
+      6       6.000E+01  -6.000E+01   6.050E+01  -5.900E+01   6.100E+01  -5.800E+01   6.150E+01  -5.700E+01   6.200E+01  -5.600E+01
+      7       7.000E+01  -7.000E+01   7.050E+01  -6.900E+01   7.100E+01  -6.800E+01   7.150E+01  -6.700E+01   7.200E+01  -6.600E+01
+      8       8.000E+01  -8.000E+01   8.050E+01  -7.900E+01   8.100E+01  -7.800E+01   8.150E+01  -7.700E+01   8.200E+01  -7.600E+01
+      9       9.000E+01  -9.000E+01   9.050E+01  -8.900E+01   9.100E+01  -8.800E+01   9.150E+01  -8.700E+01   9.200E+01  -8.600E+01
+     10       1.000E+02  -1.000E+02   1.005E+02  -9.900E+01   1.010E+02  -9.800E+01   1.015E+02  -9.700E+01   1.020E+02  -9.600E+01
+
+   COMP     samples are interpreted as COMPLEX  data
+ Task:GEN       User:          Date_Time:                        
+     Samp                         6                       7                       8                       9                      10
+   Line
+      1       1.250E+01  -5.000E+00   1.300E+01  -4.000E+00   1.350E+01  -3.000E+00   1.400E+01  -2.000E+00   1.450E+01  -1.000E+00
+      2       2.250E+01  -1.500E+01   2.300E+01  -1.400E+01   2.350E+01  -1.300E+01   2.400E+01  -1.200E+01   2.450E+01  -1.100E+01
+      3       3.250E+01  -2.500E+01   3.300E+01  -2.400E+01   3.350E+01  -2.300E+01   3.400E+01  -2.200E+01   3.450E+01  -2.100E+01
+      4       4.250E+01  -3.500E+01   4.300E+01  -3.400E+01   4.350E+01  -3.300E+01   4.400E+01  -3.200E+01   4.450E+01  -3.100E+01
+      5       5.250E+01  -4.500E+01   5.300E+01  -4.400E+01   5.350E+01  -4.300E+01   5.400E+01  -4.200E+01   5.450E+01  -4.100E+01
+      6       6.250E+01  -5.500E+01   6.300E+01  -5.400E+01   6.350E+01  -5.300E+01   6.400E+01  -5.200E+01   6.450E+01  -5.100E+01
+      7       7.250E+01  -6.500E+01   7.300E+01  -6.400E+01   7.350E+01  -6.300E+01   7.400E+01  -6.200E+01   7.450E+01  -6.100E+01
+      8       8.250E+01  -7.500E+01   8.300E+01  -7.400E+01   8.350E+01  -7.300E+01   8.400E+01  -7.200E+01   8.450E+01  -7.100E+01
+      9       9.250E+01  -8.500E+01   9.300E+01  -8.400E+01   9.350E+01  -8.300E+01   9.400E+01  -8.200E+01   9.450E+01  -8.100E+01
+     10       1.025E+02  -9.500E+01   1.030E+02  -9.400E+01   1.035E+02  -9.300E+01   1.040E+02  -9.200E+01   1.045E+02  -9.100E+01
+LABEL-LIST TGEN1 'nousrtim
+Beginning VICAR task LABEL
+LABEL version 2019-09-06
+************************************************************
+ 
+        ************  File TGEN1 ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in COMP format from a X86-64-LIN host
+                1 bands
+                10 lines per band
+                10 samples per line
+                0 lines of binary header
+                0 bytes of binary prefix per line
+---- Task: GEN -- User:  --  ----
+IVAL=(10.0, -10.0)
+SINC=(0.5, 1.0)
+LINC=(10.0, -10.0)
+BINC=(1.0, 1.0)
+MODULO=(0.0, 0.0)
+ 
+************************************************************
 GEN TGEN1 10 10 MOD=10 LINC=3 SINC=2
+Beginning VICAR task GEN
+GEN Version 2019-05-28
+GEN task completed
 LIST TGEN1 'nousrtim
-LABEL-LIST TGEN1 'nousrtim
+Beginning VICAR task LIST
+LIST version 2019-09-06
 
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+     Samp     1       3       5       7       9
+   Line
+      1       0   2   4   6   8   0   2   4   6   8
+      2       3   5   7   9   1   3   5   7   9   1
+      3       6   8   0   2   4   6   8   0   2   4
+      4       9   1   3   5   7   9   1   3   5   7
+      5       2   4   6   8   0   2   4   6   8   0
+      6       5   7   9   1   3   5   7   9   1   3
+      7       8   0   2   4   6   8   0   2   4   6
+      8       1   3   5   7   9   1   3   5   7   9
+      9       4   6   8   0   2   4   6   8   0   2
+     10       7   9   1   3   5   7   9   1   3   5
+LABEL-LIST TGEN1 'nousrtim
+Beginning VICAR task LABEL
+LABEL version 2019-09-06
+************************************************************
+ 
+        ************  File TGEN1 ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in BYTE format from a X86-64-LIN host
+                1 bands
+                10 lines per band
+                10 samples per line
+                0 lines of binary header
+                0 bytes of binary prefix per line
+---- Task: GEN -- User:  --  ----
+IVAL=0.0
+SINC=2.0
+LINC=3.0
+BINC=1.0
+MODULO=10.0
+ 
+************************************************************
 GEN TGEN1 10 10 MOD=1.5
+Beginning VICAR task GEN
+GEN Version 2019-05-28
+GEN task completed
 LIST TGEN1 'nousrtim
+Beginning VICAR task LIST
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+     Samp     1       3       5       7       9
+   Line
+      1       0   1   0   0   1   0   0   1   0   0
+      2       1   0   0   1   0   0   1   0   0   1
+      3       0   0   1   0   0   1   0   0   1   0
+      4       0   1   0   0   1   0   0   1   0   0
+      5       1   0   0   1   0   0   1   0   0   1
+      6       0   0   1   0   0   1   0   0   1   0
+      7       0   1   0   0   1   0   0   1   0   0
+      8       1   0   0   1   0   0   1   0   0   1
+      9       0   0   1   0   0   1   0   0   1   0
+     10       0   1   0   0   1   0   0   1   0   0
 LABEL-LIST TGEN1 'nousrtim
-
+Beginning VICAR task LABEL
+LABEL version 2019-09-06
+************************************************************
+ 
+        ************  File TGEN1 ************
+                3 dimensional IMAGE file
+                File organization is BSQ
+                Pixels are in BYTE format from a X86-64-LIN host
+                1 bands
+                10 lines per band
+                10 samples per line
+                0 lines of binary header
+                0 bytes of binary prefix per line
+---- Task: GEN -- User:  --  ----
+IVAL=0.0
+SINC=1.0
+LINC=1.0
+BINC=1.0
+MODULO=1.5
+ 
+************************************************************
 disable-log
-
-end-proc

@@ -1,0 +1,140 @@
+Beginning VICAR task tgetcamcon
+************FORTRAN CALLABLE************
+GLL
+focal length=         1501.0389
+optical axis line=    400.00000
+optical axis sample=  400.00000
+image scale=          65.616798
+
+************C- CALLABLE************
+GLL  
+focal length=         1501.0389
+optical axis line=    400.00000
+optical axis sample=  400.00000
+image scale=          65.616798
+Beginning VICAR task tgetcamcon
+************FORTRAN CALLABLE************
+GLL
+focal length=         1501.0389
+optical axis line=    200.00000
+optical axis sample=  200.00000
+image scale=          32.808399
+
+************C- CALLABLE************
+GLL  
+focal length=         1501.0389
+optical axis line=    200.00000
+optical axis sample=  200.00000
+image scale=          32.808399
+Beginning VICAR task tgetcamcon
+************FORTRAN CALLABLE************
+GLL
+focal length=         1501.0389
+optical axis line=    400.00000
+optical axis sample=  400.00000
+image scale=          65.616798
+
+************C- CALLABLE************
+GLL  
+focal length=         1501.0389
+optical axis line=    400.00000
+optical axis sample=  400.00000
+image scale=          65.616798
+Beginning VICAR task tgetcamcon
+************FORTRAN CALLABLE************
+GLL
+focal length=         1501.0389
+optical axis line=    200.00000
+optical axis sample=  200.00000
+image scale=          32.808399
+
+************C- CALLABLE************
+GLL  
+focal length=         1501.0389
+optical axis line=    200.00000
+optical axis sample=  200.00000
+image scale=          32.808399
+Beginning VICAR task tgetcamcon
+************FORTRAN CALLABLE************
+VGR-1
+focal length=         1500.1899
+optical axis line=    500.00000
+optical axis sample=  500.00000
+image scale=          84.821426
+
+************C- CALLABLE************
+VGR-1
+focal length=         1500.1899
+optical axis line=    500.00000
+optical axis sample=  500.00000
+image scale=          84.821426
+Beginning VICAR task tgetcamcon
+************FORTRAN CALLABLE************
+VGR-2
+focal length=         1503.4900
+optical axis line=    500.00000
+optical axis sample=  500.00000
+image scale=          84.821426
+
+************C- CALLABLE************
+VGR-2
+focal length=         1503.4900
+optical axis line=    500.00000
+optical axis sample=  500.00000
+image scale=          84.821426
+Beginning VICAR task tgetcamcon
+************FORTRAN CALLABLE************
+CASSI
+focal length=         2000.0000
+optical axis line=    256.00000
+optical axis sample=  256.00000
+image scale=          41.666668
+
+************C- CALLABLE************
+CASSI
+focal length=         2000.0000
+optical axis line=    256.00000
+optical axis sample=  256.00000
+image scale=          41.666668
+Beginning VICAR task tgetcamcon
+************FORTRAN CALLABLE************
+CASSI
+focal length=         2000.0000
+optical axis line=    512.00000
+optical axis sample=  512.00000
+image scale=          83.333336
+
+************C- CALLABLE************
+CASSI
+focal length=         2000.0000
+optical axis line=    512.00000
+optical axis sample=  512.00000
+image scale=          83.333336
+Beginning VICAR task tgetcamcon
+************FORTRAN CALLABLE************
+CASSI
+focal length=         2000.0000
+optical axis line=    256.00000
+optical axis sample=  256.00000
+image scale=          41.666668
+
+************C- CALLABLE************
+CASSI
+focal length=         2000.0000
+optical axis line=    256.00000
+optical axis sample=  256.00000
+image scale=          41.666668
+Beginning VICAR task tgetcamcon
+************FORTRAN CALLABLE************
+CASSI
+focal length=         2000.0000
+optical axis line=    128.00000
+optical axis sample=  128.00000
+image scale=          20.833334
+
+************C- CALLABLE************
+CASSI
+focal length=         2000.0000
+optical axis line=    128.00000
+optical axis sample=  128.00000
+image scale=          20.833334

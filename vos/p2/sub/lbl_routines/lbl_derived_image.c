@@ -892,6 +892,12 @@ static LblApiElement_typ	LabelTbl[] = {
                 LBL_OFFSET(LblDerivedImage_typ, CorrelationOverlapPercentage.Valid),
                 LBL_NO_RETURN, LBL_SIZE(CorrelationOverlapPercentage.Value)},
 
+	{"CORRELATION_PYRAMID_LEVEL",		"INT",		LBL_OPTIONAL,
+		LBL_NO_CONT,	1,	1,	LBL_NULL,
+		LBL_OFFSET(LblDerivedImage_typ, CorrelationPyramidLevel.Value),
+		LBL_OFFSET(LblDerivedImage_typ, CorrelationPyramidLevel.Valid),
+		LBL_NO_RETURN,	LBL_SIZE(CorrelationPyramidLevel.Value)},
+
         {"AVERAGE_FILTER_WINDOW",               "REAL",         LBL_OPTIONAL,
                 LBL_NO_CONT,    1,      1,      LBL_NULL,
                 LBL_OFFSET(LblDerivedImage_typ, AverageFilterWindow.Value),

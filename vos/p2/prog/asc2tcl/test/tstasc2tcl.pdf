@@ -1,0 +1,139 @@
+procedure
+local   afidsroot   type=string count=1
+local   aftestdata  type=string count=1
+
+local tclint    int    
+local tclint2   int    
+local tclreal   real   
+local tclstr (string,20) 
+local TLCTime string
+! Aug 28, 2013 - RJB
+! TEST SCRIPT FOR ASC2TCL
+!
+! Vicar Programs:
+!   <none>
+!
+! Parameters:
+!   <none>
+!   
+! External programs
+!   <none>
+!
+! Requires external test data: 
+!   cartlab or mipl dependent pointers
+!
+!   Cartlab defines env var $AFIDS_ROOT, mipl doesn't
+!   The test data in cartlab is on /raid1/test_data 
+!   but in other facilities it might be somewhere else. 
+!   
+!   To facilitate this test you can define an
+!   environment variable $AFIDS_TESTDATA to point to
+!   that data. The cartlab system does not. In the git archive
+!   on pistol there is softlink to the test data in vdev that
+!   allows this test to pass 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+refgbl $echo
+refgbl $autousage
+refgbl $syschar
+
+body
+enable-log
+
+let $autousage = "none"
+let _onfail="stop"
+!check to see if mipl or cartlab for test images
+!cartlab defines env var $AFIDS_ROOT, mipl doesm't
+translog INP=AFIDS_ROOT TRANS=afidsroot
+translog INP=AFIDS_TESTDATA TRANS=aftestdata
+if (afidsroot = "")
+!MIPL
+!    ush ln -s /project/test_work/testdata/carto ct
+     ush ln -s . ct
+else
+!CARTLAB
+    if (aftestdata = "")
+        ush ln -s /raid1/vicar_test_images/testdata/carto ct
+    else 
+        ush ln -s $AFIDS_TESTDATA/vicar_test_images/testdata/carto ct
+    end-if
+end-if
+let _onfail="goto rm"
+
+let $echo="yes"
+
+asc2tcl ct/asc2tcl.dat seq=5 val=tclint vtype=4
+let $echo="no"
+write "tclint = &tclint"
+let $echo="yes"
+
+asc2tcl ct/asc2tcl.dat lineno=2 seq=2 val=tclint vtype=4
+let $echo="no"
+write "tclint = &tclint"
+let $echo="yes"
+
+asc2tcl ct/asc2tcl.dat lineno=6 seq=2 val=tclreal vtype=8
+let $echo="no"
+write "tclreal = &tclreal"
+let $echo="yes"
+
+asc2tcl ct/asc2tcl.dat lineno=2 seq=5 val=tclstr vtype=0
+let $echo="no"
+write "tclstr = &tclstr"
+let $echo="yes"
+
+asc2tcl ct/asc2tcl.dat keyword="lat=" val=tclint vtype=4
+let $echo="no"
+write "tclint = &tclint"
+let $echo="yes"
+
+asc2tcl ct/asc2tcl.dat lineno=6 seq=4 val=tclint vtype=4 'comma
+let $echo="no"
+write "tclint = &tclint"
+let $echo="yes"
+
+asc2tcl ct/asc2tcl.dat keyword="lat=" seq=2 val=tclint vtype=4 'comma
+let $echo="no"
+write "tclint = &tclint"
+let $echo="yes"
+!  .met cases, note two different types
+
+asc2tcl ct/asc2tcl.dat  keyword="ZONEIDENTIFIER" val=tclint vtype=4 'met
+let $echo="no"
+write "tclint = &tclint"
+let $echo="yes"
+
+asc2tcl ct/asc2tcl.dat keyword="ReferencePixelNorthing" val=tclreal vtype=8 'met
+let $echo="no"
+write "tclreal = &tclreal"
+let $echo="yes"
+! case with blanks in keyword
+
+asc2tcl ct/asc2tcl.dat keyword="test param with blanks =" val=tclint vtype=4
+let $echo="no"
+write "tclint = &tclint"
+let $echo="yes"
+
+!  multi keyword case
+
+asc2tcl ct/asc2tcl.dat keyword=("lon=","lat=") +
+   val=tclint v2=tclint2 vtype=4 'comma
+let $echo="no"
+write "tclint,tclint2 = &tclint &tclint2"
+let $echo="yes"
+!
+! long file
+!
+asc2tcl ct/sample.pvl keyword=("firstLineAcquisitionDateTime =") val=TLCTime vtype=0 etrim=1
+let $echo="no"
+write "TCLCTime = &TLCTime"
+
+
+
+
+rm>
+ush rm ct
+let $echo="no"
+
+disable-log
+end-proc

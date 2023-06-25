@@ -1,0 +1,97 @@
+PROCESS       HELP=*
+PARM INP      TYPE=(STRING,99) COUNT=2
+PARM OUT      TYPE=(STRING,99) COUNT=1
+PARM COLS     TYPE=INT COUNT=(0:4) DEFAULT=(1,2,3,4)
+PARM NSCAN    TYPE=INT COUNT=1
+
+END-PROC
+.TITLE
+VICAR Program bowtie - fix image and grid with bowtie overlap
+.HELP
+PURPOSE
+
+     BOWTIE can be applied to data with a bowtie overlap to
+     give a non-overlapped grid and matching resampled image.
+     Applications would include MODIS and AVHRR.
+
+TAE COMMAND LINE FORMAT
+
+     bowtie INP=(A,G) OUT=B
+     
+     where
+
+     A                   is the image dataset
+     G                   is the tiepoint dataset (IBIS file), this
+                           file will be modified
+     B                   is the output image dataset
+     
+OPERATION
+
+     The (line,samp) part of the grid must be a perfect rectangular
+     grid.  The (lat,lon) part can have varying bowtie overlap
+     in a vertical direction for each column of image data.
+
+     The grid is checked for nah and nav values.  Then the
+     bowtie overlaps (using parameter NSCAN) are determined
+     and a new set of points are determined for each line
+     that do not overlap and give even coverage of the overlap
+     area.  Each vertical row is done separately, so for an
+     image with ns samples, this is done up and down with a
+     new set of points for each bowtie overlap.
+     
+     Once the grid has been rectified so that there are no
+     overlaps, the image is resampled according to the location
+     of the new grid points.  The resampling is along the line
+     coordinate only (one dimensional) with the sample coordinate
+     fixed.
+     
+     Since there is overlap, the interpolation can come from 
+     either of the overlapping scans.  The method used is to use
+     the interpolation from the upper bowtie scan for the upper
+     half of the overlap and the lower..lower.  This is best for
+     the case where the overlaps might disagree a little (otherwise
+     we could use a simple vertical sort of the columns to get an
+     acceptable grid (tieconv is very tolerant).
+     
+TIMING
+
+     tbd, expected to be very fast, dominated by reading and writing
+     the data sets.
+     
+RESTRICTIONS
+
+     The input array is mallocked.  Compare the size of the input
+     IBIS file with system parameters.
+     
+     The vertical spacing of the grid must be one pixel.  Otherwise
+     too much accuracy is lost.  The horizontal spacing could be
+     from one to five pixels without much loss of accuracy.
+
+WRITTEN BY:            A. L. Zobrist, 23 March 2003
+
+COGNIZANT PROGRAMMER:  A. L. Zobrist
+
+REVISIONS:
+  2008-12-28 WLB Switched to USES_ANSI_C AND LIB_CARTO; misc cleanup
+  2016-01-13 WLB Migrated to MIPL; replaced printfs with zifmessages
+  2022-07-14 B. Crocco afids to opensource
+  
+.LEVEL1
+.VARIABLE INP
+Input image with bowtie scan;
+Input IBIS tabular file that
+contains an overlapped grid;
+is modified as output
+.VARIABLE OUT
+Output image, no bowtie
+.VARIABLE NSCAN
+number of lines in a scan
+.VARIABLE COLS
+The columns containing the grid
+in order (line,samp,lat,lon)
+.LEVEL2
+.VARIABLE NSCAN
+for MODIS 1km, use 10
+for MODIS 250m, use 40
+for AVHRR, use 40 (I think)
+.END

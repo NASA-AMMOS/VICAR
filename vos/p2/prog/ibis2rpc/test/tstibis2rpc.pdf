@@ -1,0 +1,18 @@
+procedure
+body
+
+!   TEST ibis2rpc HANDYPROC
+
+enable-log
+
+ibis-l tstibis2rpc.int  csiz=(18,18) cfor="%16.14 f%16.9f"
+
+ibis2rpc tstibis2rpc.int xxxb
+
+label-list xxxb 'nousrtim
+
+ush rm -f xxxb
+
+disable-log
+
+end-proc

@@ -1,0 +1,550 @@
+process help=*
+PARM INP TYPE=STRING COUNT=(1:2)
+PARM OUT TYPE=STRING COUNT=1
+PARM DISP TYPE=STRING COUNT=1
+PARM BAND TYPE=INTEGER COUNT=(0:1) DEFAULT=--
+PARM DISP_PYRAMID TYPE=INTEGER COUNT=1 DEFAULT=0
+PARM DISP_ZOOM TYPE=REAL COUNT=1 DEFAULT=1.0
+PARM ZOOM TYPE=REAL COUNT=1 DEFAULT=1.0
+PARM INTERP TYPE=KEYWORD COUNT=1 VALID=(INTERP,NOINTERP) DEFAULT=INTERP
+PARM DISP_INTERP TYPE=KEYWORD COUNT=1 VALID=(DISP_INTERP,NODISP_INTERP) +
+		DEFAULT=DISP_INTERP
+PARM NONZERO_INTERP TYPE=KEYWORD COUNT=1 +
+		VALID=(NONZERO_INTERP,NONONZERO_INTERP) DEFAULT=NONZERO_INTERP
+PARM REF_NOT_ZOOMED TYPE=KEYWORD VALID=REF_NOT_ZOOMED COUNT=(0:1) DEFAULT=--
+PARM DISP_ZOOM_ONLY TYPE=KEYWORD VALID=DISP_ZOOM_ONLY COUNT=(0:1) DEFAULT=--
+PARM PIXEL_COUNT TYPE=KEYWORD VALID=PIXEL_COUNT COUNT=(0:1) DEFAULT=--
+PARM SL TYPE=INTEGER COUNT=1 DEFAULT=1
+PARM SS TYPE=INTEGER COUNT=1 DEFAULT=1
+PARM NL TYPE=INTEGER COUNT=(0:1) DEFAULT=--
+PARM NS TYPE=INTEGER COUNT=(0:1) DEFAULT=--
+
+PARM NAVTABLE TYPE=STRING COUNT=(0:1) DEFAULT=--
+
+PARM CONFIG_PATH STRING DEFAULT="$MARS_CONFIG_PATH"
+PARM POINT_METHOD TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM NOSITE TYPE=KEYWORD COUNT=(0:1) VALID=NOSITE DEFAULT=--
+
+
+END-PROC
+
+.TITLE
+VICAR program MARSDISPWARP
+.HELP
+PURPOSE:
+
+This program is used to transform an image through a disparity map so the
+geometry matches that of the partner.  For example, transforming a right-eye
+image so it coregisteres with the left eye, using a left-to-right disparity
+map.
+
+This can be used to create a multiple-eye coregistered all-filter data set,
+to coregister across camera instruments, or as a quality check for correlation
+programs such as marsjplstereo and marscor3.  It can also be used for
+cross-instrument coregistration, for example to colorize a BW imager or to
+transfer XYZ data to a non-stereo camera.  Finally, it can also be used to
+"chain" together disparity maps, creating a single A->C out of A->B and B->C.
+
+It uses the disparity map to transform the non-reference image (usually the
+right image) so it matches the reference (usually the left) image.  For
+simplicity, the reference image is called left here; the other is called right.
+In reality, the program will work either direction (e.g. mapping the left image
+to the right geometry, using an R->L disparity map).
+
+When using this as a quality control, if the correlation succeeded, the
+resulting image (derived from the right) should exactly match the left image,
+modulo differences in intensity (or filters) between the images.  In practice
+of course, this is impossible; some differences remain.  The amount of these
+differences provides an indication as to the quality of the correlation and
+noise in the imagery.
+
+EXECUTION:
+
+marsjplstereo inp=(left,right) out=dispar.1d
+marscor3 inp=(left,right) out=dispar.2d in_disp=dispar.1d
+
+marsdispwarp inp=(right left) out=right_warp_to_left.1d disp=dispar.1d
+marsdispwarp inp=(right left) out=right_warp_to_left.2d disp=dispar.2d
+
+Note that the inputs are given in (R L) order, which is backwards from how
+the disparity was run.  Note also that the disparity input to marsdispwarp
+must be a single two-band file.  Separate one-band files (which are legal
+outputs of the correlators) are not accepted.
+
+The program can also handle pyramid (downsampled) disparity maps:
+
+marsjplstereo (left,right) dispar.1d pyramid=1
+marsdispwarp (right left) right_warp_to_left.2d dispar.1d disp_pyr=1
+
+as well as image pairs that have differential zoom (see the REF_NOT_ZOOMED
+parameter).
+
+The first input ("right") is the image being transformed; the pixel data
+comes from here.  The second input ("left") is optional but is used to set
+the label of the output.
+
+Finally, disparity maps (also called Inter-camera Coregistration Maps, or
+ICM's, on Mars 2020) can be "chained" together to create a single map that
+does a dual transform.  So given disparity maps or ICM's that go from A->B
+and B->C, the combined map A->C can be created:
+
+marsdispwarp inp=b_to_c out=a_to_c disp=a_to_b
+
+which creates an image in A's geometry that points to coordinates in C.
+
+OPERATION:
+
+The process works by looping over the disparity map.  For each pixel, the
+value of the disparity map is retrieved.  This represents the location of
+the corresponding pixel in the right image.  Optionally, bilinear interpolation
+is performed on the disparity map (i.e. on the *coordinates* of the pixel);
+this allows the output to be larger than the disparity map.  This uses the
+nonzero interp method (see below).  Then the pixel itself is retrieved (again
+using bilinear interpolation, with optional nonzero interp) from the right
+image and placed in the output image.  Interpolation can be turned off if it
+is not appropriate.
+
+Note that the left *image* is not used, but the label is used as the source
+of the camera model for the output image label.  The left image is thus
+optional, if a camera model is not required.  The results should match the
+geometry of the left image (ignoring the effects of zoom).
+
+See the documentation for the correlation programs for the format of the
+disparity map files.
+
+The output label will match the first ("right") input, except that the camera
+model has been replaced with the model from the second ("left") input.  This
+means the camera model correctly describes the geometry of the image (it is
+adjusted for all zooms).  However, because the image is still labeled as a
+"right" image, kinematics will no longer work (it would give you a right-eye
+model, when a left-eye model is needed here).  Relabeling it as "left" would
+lose the information that this was once a right-eye image, which can be
+important e.g. for filters.  Thus, future uses of the resulting image in the
+mars* program suite will need the point=cm=label parameter.
+
+If the second ("left") input is not given, the camera model will be copied
+from the disparity map.  This is okay as long as disp_pyramid is 0 (and
+disparity zoom is 1) but will result in an incorrect model if it is not.  If
+the disparity map does not have a camera model either, no model is put in
+the output.
+
+As with other Mars programs, all bands of the input are processed for the
+defualt (band not specified) case.  This means the output will have the same
+number of bands as the input.  If you specify band=n, only that one band will
+be processed, and the output will be a single band.
+
+Zooming and Line/Sample Coordinates
+-----------------------------------
+
+The program supports a number of zoom and pyramid modes.  Together these
+greatly increase the use cases for the program.
+
+There are actually five different line/sample coordinates involved here.
+
+1) Line/sample coordinates in the reference (left) image.
+2) Line/sample coordinates in the disparity file.  Normally these match #1
+but they can differ in some cases.
+3) Line/sample coordinates in the non-reference (right) image, where the
+pixels come from.
+4) Line/sample coordinates which are the *values* (DN's) in the disparity file.
+Normally the same as #3 but can differ in some cases.
+5) Line/sample coordinates in the output image.  Normally the same as #1 but
+can differ in some cases.
+
+In the most normal case, 1, 2, and 5 all match, and 3 matches 4.
+
+The ZOOM parameter modifies the relationship between output coordinates (#5)
+and the input geometry (#1/2).  A given zoom factor will cause the output
+size to be increased (or shrunk) by that amount.  So zoom=2 will double the
+output size, while zoom=0.5 will halve it.
+
+The DISP_PYRAMID and DISP_ZOOM parameters modify the relationship between
+disparity coordinates (#2 and #4) and their corresponding image files (#1 and
+#3, and by implication #5).  DISP_PYRAMID works exactly the same as
+DISP_PYRAMID for marscor3 or other programs.  It says that the disparity file
+is a certain power of 2 smaller than it should "naturally" be.  So if the input
+images are 1024x1024, a DISP_PYRAMID of 3 says the disparity map should be
+128x128 (2^3=8; 1024/8=128), and the values in the disparity map should
+likewise be in the range 1-128.  The output size will be 1024x1024 (in the
+absence of ZOOM).
+
+DISP_ZOOM has the same effect as DISP_PYRAMID, except it is not constrained
+to an integer power of two.  So a DISP_ZOOM of 3 or 0.5 are legal.  Note that
+DISP_ZOOM is applied to the pyramid level, so DISP_PYR=3 DISP_ZOOM=1.5 means
+a final disparity zoom of 12 (2^3 * 1.5).
+
+Finally, the REF_NOT_ZOOMED parameter changes the relationship between
+the disparity line/sample coordinates (#2) and the reference image coordinates
+(#1).  It says that the reference image is *not* zoomed by the disparity zoom.
+In other words, coordinates #2 match #1, even though the disparity zoom says
+otherwise.  This allows the output of disparity (#4) to be zoomed differently
+from the input (#2).
+
+In all cases, the output image's camera model will be correct if a reference
+image is supplied as the second input.  If the second input is not given, the
+camera model will be correct only if there is no disparity zoom.
+
+Finally, the output may be windowed.  The SL, SS, NL, NS parameters specify the
+size of the desired output file.  The output will be a window into (or cutout
+from) the large virtual image.  For example, say you are warping a high-zoom
+Mastcam-Z onto Navcam (2020).  The zoom parameter, to get full-res zcam, is 9.7.
+That would normally be 1920 x 2560 * 9.7 = 24832 x 18624 pixels, an unwieldy
+size, especially because most of the image is black.  If the caller knows the
+bounding box of the navcam (via prior analysis of the ICM, CRISP provides this),
+then that bounding box can be supplied to the program to get a much smaller
+output.  Note that the bounding box is specified in final output coordinates, so
+in this example the caller would need to multiply their bounding box (in navcam
+coordinates) by 9.7 to get the box in output image coordinates.
+
+Nonzero Interpolation
+---------------------
+
+When interpolating in the disparity map (which happens when zooms or pyramids
+are in effect) or, more importantly, when the input image is an XYZ image or
+another disparity map (for chaining), then standard bilinear interpolation
+is modified slightly to avoid zeros.  Interpolating with 0's for an intensity
+image can be useful, as it aliases the edges.  However, interpolating
+disparities, XYZ's, or other coordinates with 0 creates incorrect results.
+
+The nonzero interpolation method works as follows.  First, if the coordinate
+is within .0001 of the integer, no interpolation is done.  This avoids extra
+holes for the very common case of no zooming of the disparity map.  (this
+check is not done for the pixel interpolation because exactly hitting
+integers is extremely rare).
+
+Then the four neighboring pixels are examined, as for normal bilinear
+interpolation.  If any of them are 0, we attempt to fill them.  This fill
+is accomplished by examining the neighbors of *that* pixel in one of several
+patterns.  If all pixels in the pattern are non-0, the pixels are averaged
+and the result is used in the bilinear interpolation.  If any of the four
+pixels can't be filled, the interpolation fails (resulting in a hole in the
+output).
+
+The patterns are all symmetric around the central pixel, to avoid biasing
+coordiantes.  The patterns (in order) are: four pixels in a "+", four pixels
+in a "X", then two pixels each in "I", "-", "\", and "/" configurations.
+
+Nonzero interpolation is always used for disparity values (unless disparity
+interpolation is off altogether).  It is optional for pixel values, but
+defaults to ON.  That's because it really must be used for disparity and XYZ
+values, but it generally doesn't apply for pixels because images rarely have
+missing pixels.  However, for standard intensity images, where there are 0's
+in the output, turning this off may be advantageous in order to alias the
+edges.
+
+Disparity Zoom Only
+-------------------
+
+The DISP_ZOOM_ONLY flag sets a special mode that simply zooms the given
+disparity file.  This takes advantage of the special non-zero interpolation
+normally done for disparities.  However, rather than looking up the result
+in the input file, the coordinate itself is used. The practical upshot is
+that the disparity file is zoomed in or out with interpolation, but the
+actual input file is not actually read, except to get labels.
+
+The fact that the input is used to get labels means that the disparity file
+should be given as INP(1) as well as the DISP parmeter.  This means that
+INP(1) is not actually in the right-image geometry, an exception to the
+general rule.
+
+Use Cases
+---------
+
+NOTE: point=cm=label should be added to all these command lines in this
+section; it has been omitted for simplicity.
+
+Some use cases may help clarify.  First the simple case, a stereo pair of
+Navcams.  Coregistering the data with the full-res disparity map is simple:
+
+$MARSLIB/marsdispwarp \( NR.vic NL.vic \) NL_geom_NR_data.vic disp=NL_to_NR.dsp
+
+If you want to use the first-stage correlator output instead, use DISP_PYRAMID
+to set the disparity zoom:
+
+$MARSLIB/marsdispwarp \( NR.vic NL.vic \) NL_geom_NR_data.vic
+    disp=NL_to_NR_dff.vic disp_pyr=2
+
+Now for a more complex example.  Let's say you have three MSL images at
+very different image scales: Navcam, Mastcam-L, and Mastcam-R.  Each are
+a factor of 3 (approximately) higher resolution than the previous.  Disparity
+maps have been created by correlating N<->ML and ML<->MR.
+
+Creating an image of ML data coregistered to MR is simple:
+
+$MARSLIB/marsdispwarp \( ML.vic MR.vic \) MR_geom_ML_data.vic disp=MR_to_ML.dsp
+
+The inverse (MR data coregistered to ML) is equally simple:
+
+$MARSLIB/marsdispwarp \( MR.vic ML.vic \) ML_geom_MR_data.vic disp=ML_to_MR.dsp
+
+However, this data is at the ML resolution - the MR detail is lost.  To get
+data in the ML geometry but preserving the MR detail requires the output
+be zoomed (by a factor of 3 in this case):
+
+$MARSLIB/marsdispwarp \( MR.vic ML.vic \) ML_geom_MR_data_big.vic
+    disp=ML_to_MR.dsp zoom=3
+
+The same applies to making a ML at Nav resolution:
+
+$MARSLIB/marsdispwarp \( ML.vic NAV.vic \) NAV_geom_ML_data_big.vic
+    disp=NAV_to_ML.dsp zoom=3
+
+But now let's say we want to get the MR data coregistered to the Navcam.
+Because we don't have a Nav to MR correlation directly, we have to chain the
+results together.  We already have the MR at ML resolution, so that can be
+used as the input to marsdispwarp.  However, the ML_geom_MR_data_big.vic file
+is 3x the size of the ML itself.  That means the NAV_to_ML.dsp disparity file
+effectively has a disparity zoom of 3 - the values (coordinate #4) are 3x
+smaller than the actual file (coordinate #3).  But, the NAV_to_ML.dsp file
+is properly coregistered to the Navcam input already - there is no difference
+between coordinates #2 and #1.  This is handled by using the -REF_NO_ZOOM
+parameter:
+
+$MARSLIB/marsdispwarp \( ML_geom_MR_data_big.vic NAV.vic \)
+    NAV_geom_MR_data_big.vic disp=NAV_to_ML.dsp disp_zoom=3 -ref zoom=3
+
+The last zoom=3 preserves the MR resolution in the output.  The final result
+(assuming 1024x1024 navcams) is 9x that size: 9216x9216, but it coregisters
+the MR with the NAV without sacrificing resolution.
+
+Note that in these cases, a simple zoom of the reference image (using e.g.
+$R2LIB/size) is needed to make the reference as big as the output.  This is
+fine for imagery but loses the camera model.  Another option is to not zoom
+the reference image but rather use the mosaic programs to create a common
+output image.  As long as the camera models are correct, the different zooms
+will be handled properly.
+
+The following will zoom the given disparity by a factor of 2.  The disparity
+file will be 2x larger but will point at the same places in the right-side
+image.  Interpolation is used.  Note that this is not what is normally
+thought of by disparity zooming, because it's pointing to the same place
+in the right image.
+
+marsdispwarp inp=NAV_to_ML.dsp out=big_NAV_to_ML.dsp disp=NAV_to_ML.dsp
+	zoom=2 -disp_zoom_only
+
+The following will do a "normal" zooming of the disparity by a factor of 2.
+This is the way to simply undo a pyramid level in the correlators.  Note that
+we could say disp_zoom=2 rather than disp_pyr=1 but pyr is clearer in this
+context.  Note that the camera model will be wrong but cmods are generally
+ignored in disparity maps anyway.
+
+marsdispwarp inp=NAV_to_ML.dsp out=nopyr_NAV_to_ML.dsp disp=NAV_to_L.dsp
+	disp_pyr=1 -disp_zoom_only
+
+Finally, there's ICM chaining.  Let's say we have an MSL Mastcam pair and
+a Navcam, with bidirectional correlation maps between the ML-MR and ML-N.
+Maps going directly from MR to N can be created:
+
+n->ml->mr
+marsdispwarp inp=ml_to_mr out=n_to_mr disp=n_to_ml
+mr->ml->n
+marsdispwarp inp=ml_to_n out=mr_to_n disp=mr_to_ml
+
+
+HISTORY:
+2003-10	   rgd	Initial version by Bob Deen
+2013-08	   rgd	Fix labels, make it work with differently-sized inputs
+2016-05    rgd	Added zooms, band parameter, disparity interpolation
+2018-02	   rgd	Multi-band support, nonzero interp, make cmod optional
+2019-08    rgd	Added pixel_count, fixed disp_zoom_only
+
+.LEVEL1
+.VARI INP
+Input right image
+and (optional) left image
+
+.VARI OUT
+Output warped image
+
+.VARI DISP
+Input disparity image
+
+.VARI BAND
+The input file band number to use
+or empty for all bands
+
+.VARI DISP_PYRAMID
+Pyramid level of disparity
+
+.VARI DISP_ZOOM
+Zoom factor for disparity
+
+.VARI PIXEL_COUNT
+Will set # of non-zero pixels
+in label if set
+
+.VARI ZOOM
+Zoom factor for output file
+
+.VARI INTERP
+Turns on or off interpolation
+of the image.  On by default.
+
+.VARI DISP_INTERP
+Turns on or off interpolation
+of the disparity map.  On by default.
+
+.VARI NONZERO_INTERP
+Turns on or off non-zero interp
+for pixels.  On by default.
+
+.VARI REF_NOT_ZOOMED
+Specifies the reference is not
+zoomed.  See the main help.
+
+.VARI SL
+Starting line for output
+
+.VARI SS
+Starting sample for output
+
+.VARI NL
+Number of lines for output
+
+.VARI NS
+Number of samples for output
+
+.VARI NAVTABLE
+Corrected navigation filename
+
+.VARI CONFIG_PATH
+Path used to find configuration/
+calibration files
+
+.VARI POINT_METHOD
+Specifies a mission-specific
+pointing method to use
+
+.VARI NOSITE
+Disables coordinate system sites.
+
+.LEVEL2
+.VARI INP
+Input right image and (optional) left image.  Can be any format (except
+complex).  Providing the left (second) image is highly recommended, to get
+the camera models in the output label correct (see the main help).
+
+The image data and the bulk of the label is taken from the first image.
+It is the non-reference image (by convention, "right") used in the correlation
+process.  So if the disparity map goes L->R, the input files are (R, L).
+
+.VARI OUT
+Output warped image.  Image will match the geometry of the reference ("left")
+image given to the correlator.
+
+.VARI DISP
+Input disparity image.  See the correlator programs for a description of
+the format.  Must be a single 2-band file.
+
+.VARI BAND
+The input file band number to use, if a single band is desired.  The default
+if not specified is to process all bands.
+
+.VARI DISP_PYRAMID
+Pyramid level of disparity.  Matches PYRAMID in marsjplstereo and
+DISP_PYRAMID in marscor3.  0 means the disparity image is full size,
+1 means half size, 2 means quarter size, etc.  See the main help, and
+also DISP_ZOOM.
+
+.VARI PIXEL_COUNT
+If enabled, the number of non-zero pixels will be writen out to
+CORRELATION_PIXEL_COUNT in the DERIVED_IMAGE_PARMS label.  For multiband
+images, the count is incremented if any of the bands are non-zero (so
+100% coverage would be NL*NS, not NL*NS*NB).
+
+.VARI DISP_ZOOM
+Zoom factor for disparity.  Combined with DISP_PYRAMID via multiplication,
+thus final zoom is (2^DISP_PYRAMID)*DISP_ZOOM).  Allows for disparity
+zooms other than powers of 2.
+
+.VARI ZOOM
+Zoom factor for the output image.  Creates an image bigger or smaller than
+what it "naturally" would be given the inputs.  See the main help.
+
+.VARI INTERP
+Turns on or off interpolation in the image.  Interpolation is on by default,
+and should be used with normal images.  With the advent of nonzero interp,
+interpolation should normally be used, unless warping an image of discrete
+values, such as a classification map or status flag band.
+
+.VARI DISP_INTERP
+Turns on or off interpolation in the disparity map.  Disparity interpolation
+is on by default, and should normally be used.  It allows zooms and disparity
+zooms to occur without blockiness, but can also be affected by noise in the
+disparity map.
+
+.VARI NONZERO_INTERP
+Turns on or off nonzero interpolation of the pixels.  See the main help for
+a description of this algorithm.  Interp must also be on for this to have any
+effect.  The default is on.  Nonzero interp is always on for the input
+disparity map (unless disp_interp is entirely off).
+
+.VARI REF_NOT_ZOOMED
+Specifies that the reference image has NOT been zoomed by the disparity zoom.
+Useful in certain situations involving chanining of warps through multiple
+disparity maps.  See the main help.
+
+.VARI SL
+Starting line for output.  Specified relative to the "natural" size of the
+output (as if this parameter were not given).  Defaults to 1 (no window).
+
+.VARI SS
+Starting sample for output.  Specified relative to the "natural" size of the
+output (as if this parameter were not given).  Defaults to 1 (no window).
+
+.VARI NL
+Number of lines for output.  Specified relative to the "natural" size of the
+output (as if this parameter were not given).  Defaults to full natural size.
+
+.VARI NS
+Number of samples for output.  Specified relative to the "natural" size of the
+output (as if this parameter were not given).  Defaults to full natural size.
+
+.VARI NAVTABLE
+Corrected navigation filename.
+If marsnav was run on the input images it created a table of corrected
+pointing parameters. If you refer to this table using NAVTABLE it
+will override the pointing parameters (e.g. azimuth and elevation) in the
+picture labels, giving you a better registered mosaic.
+
+.VARI CONFIG_PATH
+A colon-separated list of directories in which to look for configuration
+and calibration files.  Environment variables are allowed in the list
+(and may themselves contain colon-separated lists).  The directories are
+searched in order for each config/cal file when it is loaded.  This allows
+multiple projectes to be supported simultaneously, and allows the user to
+override any given config/cal file.  Note that the directory structure below
+the directories specified in this path must match what the project expects.
+For example, Mars 98 expects flat fields to be in a subdirectory named
+"flat_fields" while Mars Pathfinder expects them to be directly in the
+directory specified by the path (i.e. no intermediate subdirectories).
+
+.VARI POINT_METHOD
+Specifies a mission-specific pointing method to use.  Normally this
+parameter is not used, in which case the "default" pointing methods
+are used.  Some missions may have special, or alternate, pointing
+methods available, which are indicated by this string (for example,
+backlash models, using arm joint angles instead of x/y/z/az/el, etc).
+A substring search is used, so multiple methods (where that makes sense)
+can be specified by separating the keywords with commas.
+
+Note that nav files created using one pointing method will most likely
+not be compatible with a mosaic created using a different pointing method.
+
+Also used for general but uncommonly used parameters in the PIG library.
+
+.VARI NOSITE
+Disables all label-derived parameters to the Site mechanism which underlies
+coordinate systems.  This forces all sites to be identical, with all rotations
+and offsets set the same.  In the case of MPF or Mars 98, this disables
+the lander quaternion and offset (sets them to identity and 0, respectively).
+This option should not be used with images taken from different vantage
+points (e.g. the spacecraft moved, or mixing a lander and a rover) or
+invalid results will be obtained.  The use of this option invalidates the
+Fixed coordinate frame; any values reported in the Fixed frame will not
+correctly reflect the orientation of the lander/rover.
+
+Obviously, this option should be rarely used; it is intended for when the
+image labels defining the site are invalid or inconsistent.
+

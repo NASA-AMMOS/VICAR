@@ -1,0 +1,13 @@
+
+Results will vary depending on what system you are using
+
+*******************************************************
+For Y2K testing, you need to modify the source code for
+get_seconds by setting TEST_PURPOSE to 0XC000000 or higher
+value and including LIB_LOCAL in tget_seconds.imake.
+*******************************************************
+
+tget_seconds
+Beginning VICAR task tget_seconds
+ The GMT time in seconds since 1-JAN-1970 is: 1610499341
+disable-log

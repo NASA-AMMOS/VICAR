@@ -1,0 +1,66 @@
+procedure
+! Sep 16, 2013 - RJB
+! TEST SCRIPT FOR IBIS2ASC
+! tests IBIS tabular files
+!
+! Vicar Programs:
+!       ibis-gen mf3 typetext
+! 
+! External Profgrams:
+!   <none>
+!
+! Parameters:
+!   <none>
+!
+! Requires NO external test data: 
+
+refgbl $echo
+body
+let _onfail="stop"
+!   TEST ibis2asc HANDYPROC
+let $echo="yes"
+
+enable-log
+
+ibis-gen xxxa nr=4 nc=4 format=("REAL","DOUB","HALF","FULL") +
+   datacol=(1,2,3,4) +
+   data=(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16)
+
+ibis2asc xxxa xxxb cols=(3,4,1,2) sr=2 nr=2
+typetext xxxb
+
+ibis2asc xxxa xxxb cols=(1,2,3,4) sr=0 sep=","
+typetext xxxb
+
+ibis-gen xxxa nr=2 nc=3 format=("A10","A12","DOUB") +
+  data=(0.00001,0.00002) datacols=(3) strcols=(1,2) +
+  string=("aaaaabbbbb","ccccccdddddd","eeeeefffff","gggggghhhhhh")
+mf3 xxxa f="c3=@index*0.00001"
+ibis2asc xxxa xxxb cols=(3,2,1)
+typetext xxxb
+
+ibis2asc xxxa xxxb cols=(3,2,1) 'quote
+typetext xxxb
+
+!test the penup
+
+ibis-gen xxxa nr=4 nc=4 format=("REAL","DOUB","HALF","FULL") +
+   datacol=(1,2,3,4) +
+   data=(-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10,11,12)
+let $echo="no"
+write "penupval=6 case"
+let $echo="yes"
+ibis2asc xxxa xxxb cols=(1,2,3,4) penupval=6
+typetext xxxb
+
+let $echo="no"
+write "penupval=0 case"
+let $echo="yes"
+ibis2asc xxxa xxxb cols=(1,2,3,4) penupval=0
+typetext xxxb
+
+!let $echo="no"
+
+disable-log
+
+end-proc

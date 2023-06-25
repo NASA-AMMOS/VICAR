@@ -1,0 +1,44 @@
+/***********************************************************************
+
+                     IMAKE FILE FOR PROGRAM lbstereo
+
+   To Create the build file give the command:
+		$ vimake lbstereo			(VMS)
+   or
+		% vimake lbstereo			(Unix)
+
+************************************************************************/
+
+#define PROGRAM	lbstereo
+#define R2LIB
+
+#define MODULE_LIST lbstereo.f open_inp.f get_params.f \
+		get_stereo.f read_inp.f compute_avg2.f zoomout.f \
+		horizon.f compute_avg.f compute_sig.f \
+		clean_patches.f find_horizon.f write_horizon.f \
+		spider.f spider_cage.f sort_vertices.f \
+		compute_stats.f fill_buf.f \
+		get_vthresh.f init_rho.f \
+		find_candidates.f find_matches.f \
+		project.f BilinearInt.f find_match.f \
+		flag_mismatches.f flag_ratios.f \
+		flag_rho.f flag_dxdy.f scale_matches1.f flag_mismatch2.f \
+		plant_seeds.f grow_seeds.f match_maker.f \
+                get_limits.f get_limits2.f closest_points.f \
+		get_window.f match_affine.f match_bilinear.f \
+		match_offset1.f match_affine1.f \
+		LinearSolution.f compute_Atr.f compute_b.f \
+		Cholesky.f compute_AtA.f forward_sub.f \
+		tsub.f print_hist0.f get_hist.f \
+		image_displays.f compute_sqrt.f \
+                display_candidates.f display_ctp.f \
+		display_matches.f mark_pt.f print_matches.f \
+		write_out.f write_out2.f output_image.f write_marsout.f
+
+#define MAIN_LANG_FORTRAN
+#define USES_FORTRAN
+#define FTNINC_LIST fortport
+#define LIB_RTL
+#define LIB_TAE
+#define LIB_P2SUB
+/************************* End of Imake file ***************************/

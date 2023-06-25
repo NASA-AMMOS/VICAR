@@ -1,14 +1,14 @@
 gen r nl=256 ns=256 sinc=1
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen g nl=256 ns=256 sinc=2
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen b nl=256 ns=256 sinc=3
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 rgb2ish inp=(r,g,b) out=(i,s,h)
 Beginning VICAR task rgb2ish
@@ -18,83 +18,83 @@ Beginning VICAR task rgb2ish
 rgb2ish version 2016-09-12
 difpic inp=(r,rr) out=rdif
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
- AVE VAL OF POS DIFFS=  1.66363
- NUMBER OF POS DIFF=      25252
- AVE VAL OF NEG DIFFS= -1.06175
- NUMBER OF NEG DIFFS=5198
- TOTAL NUMBER OF DIFFERENT PIXELS=      30450
- AVE VAL OF DIFFS= 0.556808
- % DIFF PIXELS=  46.4630
+DIFPIC version 2021-03-09
+ AVE VAL OF POS DIFFS=  1.67458
+ NUMBER OF POS DIFF=      24826
+ AVE VAL OF NEG DIFFS= -1.06168
+ NUMBER OF NEG DIFFS=5204
+ TOTAL NUMBER OF DIFFERENT PIXELS=      30030
+ AVE VAL OF DIFFS= 0.550049
+ % DIFF PIXELS=  45.8221
 hist rdif
 Beginning VICAR task hist
-*** HIST version Aug 10 2015 ***
+*** HIST version 2017-08-08 ***
 
 Bin Width =        1.0
-          0    40284   **************************************************  1
-          1    19921   **************************************************  2
-          2     4488   ***********
-          3      801   **
+          0    40710   **************************************************  1
+          1    19501   **************************************************  2
+          2     4487   ***********
+          3      796   **
         255*      42
 
-AVERAGE GRAY LEVEL=0.641022
-STANDARD DEVIATION=6.476844
+AVERAGE GRAY LEVEL=0.634354
+STANDARD DEVIATION=6.476948
 NUMBER ELEMENTS=     65536
 MIN. DN=         0
 MAX. DN=       255
 
 difpic inp=(g,gg) out=gdif
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
- AVE VAL OF POS DIFFS=  1.72308
- NUMBER OF POS DIFF=      48224
- AVE VAL OF NEG DIFFS= -1.16519
- NUMBER OF NEG DIFFS=5545
- TOTAL NUMBER OF DIFFERENT PIXELS=      53769
- AVE VAL OF DIFFS=  1.16933
- % DIFF PIXELS=  82.0450
+DIFPIC version 2021-03-09
+ AVE VAL OF POS DIFFS=  1.72462
+ NUMBER OF POS DIFF=      48116
+ AVE VAL OF NEG DIFFS= -1.16574
+ NUMBER OF NEG DIFFS=5551
+ TOTAL NUMBER OF DIFFERENT PIXELS=      53667
+ AVE VAL OF DIFFS=  1.16747
+ % DIFF PIXELS=  81.8893
 hist gdif
 Beginning VICAR task hist
-*** HIST version Aug 10 2015 ***
+*** HIST version 2017-08-08 ***
 
 Bin Width =        1.0
-          0    17312   **************************************************  2
-          1    43706   **************************************************  1
-          2     4350   ************
+          0    17420   **************************************************  2
+          1    43600   **************************************************  1
+          2     4348   ************
           3       48
-        253*       2
-        254       52
+        253*       4
+        254       50
         255       66
 
-AVERAGE GRAY LEVEL=1.267914
-STANDARD DEVIATION=10.86098
+AVERAGE GRAY LEVEL=1.266205
+STANDARD DEVIATION=10.86038
 NUMBER ELEMENTS=     65536
 MIN. DN=         0
 MAX. DN=       255
 
 difpic inp=(b,bb) out=bdif
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
- AVE VAL OF POS DIFFS=  1.66672
- NUMBER OF POS DIFF=      25381
- AVE VAL OF NEG DIFFS= -1.06246
- NUMBER OF NEG DIFFS=5107
- TOTAL NUMBER OF DIFFERENT PIXELS=      30488
- AVE VAL OF DIFFS= 0.562698
- % DIFF PIXELS=  46.5210
+DIFPIC version 2021-03-09
+ AVE VAL OF POS DIFFS=  1.68922
+ NUMBER OF POS DIFF=      24905
+ AVE VAL OF NEG DIFFS= -1.06228
+ NUMBER OF NEG DIFFS=5122
+ TOTAL NUMBER OF DIFFERENT PIXELS=      30027
+ AVE VAL OF DIFFS= 0.558914
+ % DIFF PIXELS=  45.8176
 hist bdif
 Beginning VICAR task hist
-*** HIST version Aug 10 2015 ***
+*** HIST version 2017-08-08 ***
 
 Bin Width =        1.0
-          0    40155   **************************************************  1
-          1    19922   **************************************************  2
-          2     4580   ***********
-          3      837   **
-        255*      42
+          0    40631   **************************************************  1
+          1    19451   **************************************************  2
+          2     4579   ***********
+          3      832   **
+        255*      43
 
-AVERAGE GRAY LEVEL=0.645493
-STANDARD DEVIATION=6.477216
+AVERAGE GRAY LEVEL=0.641937
+STANDARD DEVIATION=6.553104
 NUMBER ELEMENTS=     65536
 MIN. DN=         0
 MAX. DN=       255
@@ -102,15 +102,15 @@ MAX. DN=       255
 ush rm -f r g b rr gg bb i s h rdif gdif bdif
 gen r nl=256 ns=256 sinc=10 format=half
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen g nl=256 ns=256 sinc=20 format=half
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen b nl=256 ns=256 sinc=30 format=half
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 rgb2ish inp=(r,g,b) out=(i,s,h)
 Beginning VICAR task rgb2ish
@@ -120,69 +120,69 @@ Beginning VICAR task rgb2ish
 rgb2ish version 2016-09-12
 difpic inp=(r,rr) out=rdif
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  AVE VAL OF POS DIFFS=  1.00000
- NUMBER OF POS DIFF=      32776
+ NUMBER OF POS DIFF=      32461
  NUMBER OF NEG DIFFS=   0
- TOTAL NUMBER OF DIFFERENT PIXELS=      32776
- AVE VAL OF DIFFS= 0.500122
- % DIFF PIXELS=  50.0122
+ TOTAL NUMBER OF DIFFERENT PIXELS=      32461
+ AVE VAL OF DIFFS= 0.495316
+ % DIFF PIXELS=  49.5316
 hist rdif
 Beginning VICAR task hist
-*** HIST version Aug 10 2015 ***
+*** HIST version 2017-08-08 ***
 
 Bin Width =        1.0
-          0    32760   **************************************************  2
-          1    32776   **************************************************  1
+          0    33075   **************************************************  1
+          1    32461   **************************************************  2
 
-AVERAGE GRAY LEVEL=0.500122
-STANDARD DEVIATION=0.500000
+AVERAGE GRAY LEVEL=0.495316
+STANDARD DEVIATION=0.499978
 NUMBER ELEMENTS=     65536
 MIN. DN=         0
 MAX. DN=         1
 
 difpic inp=(g,gg) out=gdif
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  AVE VAL OF POS DIFFS=  1.00000
- NUMBER OF POS DIFF=      65535
+ NUMBER OF POS DIFF=      65342
  NUMBER OF NEG DIFFS=   0
- TOTAL NUMBER OF DIFFERENT PIXELS=      65535
- AVE VAL OF DIFFS= 0.999985
- % DIFF PIXELS=  99.9985
+ TOTAL NUMBER OF DIFFERENT PIXELS=      65342
+ AVE VAL OF DIFFS= 0.997040
+ % DIFF PIXELS=  99.7040
 hist gdif
 Beginning VICAR task hist
-*** HIST version Aug 10 2015 ***
+*** HIST version 2017-08-08 ***
 
 Bin Width =        1.0
-          0        1   **************************************************  2
-          1    65535   **************************************************  1
+          0      194   **************************************************  2
+          1    65342   **************************************************  1
 
-AVERAGE GRAY LEVEL=0.999985
-STANDARD DEVIATION=0.003906
+AVERAGE GRAY LEVEL=0.997040
+STANDARD DEVIATION=0.054327
 NUMBER ELEMENTS=     65536
 MIN. DN=         0
 MAX. DN=         1
 
 difpic inp=(b,bb) out=bdif
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  AVE VAL OF POS DIFFS=  1.00000
- NUMBER OF POS DIFF=3328
+ NUMBER OF POS DIFF=3077
  NUMBER OF NEG DIFFS=   0
- TOTAL NUMBER OF DIFFERENT PIXELS=3328
- AVE VAL OF DIFFS= 0.507813E-01
- % DIFF PIXELS=  5.07813
+ TOTAL NUMBER OF DIFFERENT PIXELS=3077
+ AVE VAL OF DIFFS= 0.469513E-01
+ % DIFF PIXELS=  4.69513
 hist bdif
 Beginning VICAR task hist
-*** HIST version Aug 10 2015 ***
+*** HIST version 2017-08-08 ***
 
 Bin Width =        1.0
-          0    62208   **************************************************  1
-          1     3328   **************************************************  2
+          0    62459   **************************************************  1
+          1     3077   **************************************************  2
 
-AVERAGE GRAY LEVEL=0.050781
-STANDARD DEVIATION=0.219551
+AVERAGE GRAY LEVEL=0.046951
+STANDARD DEVIATION=0.211535
 NUMBER ELEMENTS=     65536
 MIN. DN=         0
 MAX. DN=         1

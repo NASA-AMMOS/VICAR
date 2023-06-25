@@ -1,8 +1,12 @@
 procedure
 refgbl $echo
 body
+enable-log
+
 let _onfail="continue"
 let $echo="yes"
 write "The test programs outputs differ because of the format restrictions."
 tdarray
+
+disable-log
 end-proc

@@ -1,0 +1,15 @@
+**/*~
+VICAR/mars/src/prog/nsyt_camera_telemproc/*.o
+VICAR/mars/src/prog/nsyt_camera_telemproc/*.o
+VICAR/mars/src/prog/nsyt_camera_telemproc/nsyt_camera_telemproc.make
+VICAR/mars/src/sub/nsyt_spice/*.o
+VICAR/mars/src/sub/nsyt_spice/nsyt_spice.make
+VICAR/mars/src/sub/nsyt_spice/sublib.a
+VICAR/mars/src/sub/nsyt_telemlib/*.o
+VICAR/mars/src/sub/nsyt_telemlib/nsyt_telemlib.make
+VICAR/mars/src/sub/nsyt_telemlib/sublib.a
+
+# General # 
+**/__MACOSX
+**/.DS_Store
+

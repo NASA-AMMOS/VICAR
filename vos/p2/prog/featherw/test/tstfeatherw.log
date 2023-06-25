@@ -1,0 +1,75 @@
+                Version 5C/16C
+
+      ***********************************************************
+      *                                                         *
+      *                  Welcome to VICAR                       *
+      *                                                         *
+      *          VICAR Supervisor version 5C, TAE V5.3          *
+      *                 Distribution 29.0                       *
+      *                                                         *
+      *          #    #  #####   ###     ##    #####            *
+      *          #    #    #    #   #   #  #   #    #           *
+      *          #    #    #   #       #    #  #    #           *
+      *          #    #    #   #       ######  #####            *
+      *           #  #     #    #   #  #    #  #   #            *
+      *            ##    #####   ###   #    #  #    #           *
+      *                                                         *
+      *         Video Image Communication and Retrieval         *
+      *        and Image Based Information System (IBIS)        *
+      *            ** AFIDS Package Distribution **             *
+      *                                                         *
+      ***********************************************************
+
+  --- Type NUT for the New User Tutorial ---
+
+  --- Type MENU for a menu of available applications ---
+
+$R2LIB set to /data/afids5/vdev
+Disabling interrupts ...
+
+Beginning VICAR task gen
+GEN Version 6
+GEN task completed
+Beginning VICAR task gen
+GEN Version 6
+GEN task completed
+Beginning VICAR task list
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:pkim      Date_Time:Tue Mar 25 17:47:50 2008
+     Samp     1       3       5       7       9
+   Line
+      1      10  10  10  10  10  10  10  10  10  10
+      2      10  10  10  10  10  10  10  10  10  10
+      3      10  10  10  10  10  10  10  10  10  10
+      4      10  10  10  10  10  10  10  10  10  10
+      5      10  10  10  10  10  10  10  10  10  10
+      6      10  10  10  10  10  10  10  10  10  10
+      7      10  10  10  10  10  10  10  10  10  10
+      8      10  10  10  10  10  10  10  10  10  10
+      9      10  10  10  10  10  10  10  10  10  10
+     10      10  10  10  10  10  10  10  10  10  10
+     11      10  10  10  10  10  10  10  10  10  10
+     12      10  10  10  10  10  10  10  10  10  10
+Beginning VICAR task list
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:pkim      Date_Time:Tue Mar 25 17:47:50 2008
+     Samp     1       3       5       7       9      11
+   Line
+      1     110 110 110 110 110 110 110 110 110 110 110 110
+      2     110 110 110 110 110 110 110 110 110 110 110 110
+      3     110 110 110 110 110 110 110 110 110 110 110 110
+      4     110 110 110 110 110 110 110 110 110 110 110 110
+      5     110 110 110 110 110 110 110 110 110 110 110 110
+      6     110 110 110 110 110 110 110 110 110 110 110 110
+      7     110 110 110 110 110 110 110 110 110 110 110 110
+      8     110 110 110 110 110 110 110 110 110 110 110 110
+      9     110 110 110 110 110 110 110 110 110 110 110 110
+     10     110 110 110 110 110 110 110 110 110 110 110 110
+Beginning VICAR task ibis
+Beginning VICAR task ibis
+Beginning VICAR task ibis
+[TAE-PRCSTRM] Abnormal process termination; process status code = 11.;
+ proc 'tstfeatherw', line 27
+

@@ -1,0 +1,21 @@
+#define PROGRAM marsjplstereo
+ 
+#define MODULE_LIST marsjplstereo.cc ErrHandle.c JPLStereo.cc Camera.cc JPLPic.cc FloatMatrix.cc good_fopen.c range.c list_type.c st_warp.c errors.c StackMemory.c must_malloc.c cistr.c fmultout.c itoa.c c2s.c
+#define MODULE_LIST2 NamedCaches.cc JPLStereo_Obstacle.cc pic_cmap.cc pic_draw.cc pic_filter.cc pic_filter_mem.cc pic_io.cc pic_poly.cc pic_stats.cc pic_units.cc stereo_filter.cc
+#define MODULE_LIST3 stereo_inner_loop.cc stereo_interface.cc stereo_io.cc stereo_less_memory.cc stereo_show.cc stereo_statics.cc stereo_trinocular.cc stereo_vis.cc 
+
+#define INCLUDE_LIST ErrHandle.h JPLStereo.h Camera.h JPLPic.h FloatMatrix.h good_fopen.h stereo.h MDTypes.h nav_memory.h real_helpers.h range.h list_type.h mwm.h float_matrix.h st_warp.h viscommon.h errors.h cmod_fp_stubs.h NamedCaches.h Timing.h
+
+#define MAIN_LANG_C_PLUS_PLUS
+#define MARSLIB
+
+#define USES_C_PLUS_PLUS
+#define USES_ANSI_C
+ 
+#define LIB_TAE_NOSHR
+#define LIB_RTL_NOSHR
+#define LIB_P2SUB
+#define LIB_MARSSUB
+#define LIB_FORTRAN
+#define LIB_XERCES
+

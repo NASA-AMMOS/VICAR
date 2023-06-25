@@ -1,7 +1,7 @@
 sampler inp=(data/band1.vic,data/band2.vic,data/band3.vic,data/band4.vic,data/band5.vic) out=subsamples.ibis ngridx=200 ngridy=200 +
 seed=30
 Beginning VICAR task sampler
-sampler version 2017-08-11
+SAMPLER version 2019-09-06
 clusterer subsamples.ibis (subclusters.ibis, classifiedsubsamples.ibis) nclusters=20 conv=0.1 maxi=200
 Beginning VICAR task clusterer
 CLUSTERER version 2019-08-22

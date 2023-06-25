@@ -1,0 +1,26 @@
+/***********************************************************************
+
+                     IMAKE FILE FOR PROGRAMtcl2file 
+
+   To Create the build file give the command:
+
+		$ vimake tcl2file		(VMS)
+   or
+		% vimake tcl2file       	(Unix)
+
+
+************************************************************************/
+
+
+#define PROGRAM	tcl2file
+
+#define MODULE_LIST tcl2file.c
+
+#define MAIN_LANG_C
+#define USES_ANSI_C
+
+#define LIB_CARTO
+#define LIB_RTL
+#define LIB_TAE
+#define LIB_P2SUB
+/************************* End of Imake file ***************************/

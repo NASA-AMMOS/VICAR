@@ -1,10 +1,11 @@
 //      Copyright (c) 1999, California Institute of Technology
 //      U. S. Government sponsorship under NASA contract is acknowledged
 
-#include <fstream.h>
+#include <fstream>
+#include <iostream>
 #include <string.h>
 #include <stdlib.h>     // Cause of main()
-#include <iomanip.h>    // Cause of main()
+#include <iomanip>    // Cause of main()
 
 #include "return_status.h"
 #include "DataSourceDisk.h"
@@ -21,7 +22,7 @@ main(
   DataSinkDisk		Out(1);
 
   if (argc < 2)
-  { cout << "Must supply an input filename: ";
+    { cout << "Must supply an input filename: ";
     cin >> FileName;
   } else strcpy(FileName,argv[1]);
 

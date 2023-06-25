@@ -1,0 +1,426 @@
+process help=*
+PARM INP TYPE=STRING COUNT=1
+PARM OUT TYPE=STRING COUNT=1
+PARM OUT_IRGB TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM BAND TYPE=INTEGER COUNT=(0:1) DEFAULT=--
+PARM DEST_COLOR TYPE=KEYWORD VALID=("XYZ", "wRGB", "xyY", "sRGB", "pRGB") DEFAULT=--
+PARM DNSCALE TYPE=REAL DEFAULT=1.0
+PARM DNSCALE_IN TYPE=KEYWORD COUNT=1 VALID=("AUTOSCALE", "RESCALE", "NOSCALE") DEFAULT=RESCALE
+PARM DNSCALE_OUT TYPE=KEYWORD COUNT=1 VALID=("STATIC", "DYNAMIC", "IDENTITY") DEFAULT=STATIC
+PARM DN_COLOR TYPE=KEYWORD COUNT=1 VALID=("DN_COLOR", "COMPENSATED_COLOR") DEFAULT=COMPENSATED_COLOR
+PARM FORMAT TYPE=KEYWORD VALID=("HALF", "REAL", "BYTE") DEFAULT=HALF
+PARM BITS TYPE=INTEGER COUNT=1 DEFAULT=12
+PARM CONFIG_PATH STRING DEFAULT="$MARS_CONFIG_PATH"
+PARM POINT_METHOD TYPE=STRING COUNT=(0:1) DEFAULT=--
+
+PARM DATA_SET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM DATA_SET_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM RELEASE_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCT_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_INST TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_TYPE TYPE=STRING COUNT=(0:1) DEFAULT=--
+
+PARM RSF TYPE=STRING COUNT=0:100 DEFAULT=--
+PARM DEBUG_RSF TYPE=KEYWORD COUNT=0:1 VALID=DEBUG_RSF DEFAULT=--
+PARM COORD TYPE=KEYWORD VALID=("FIXED", "INSTRUMENT", "SITE", "ROVER", +
+        "LOCAL_LEVEL") DEFAULT="FIXED"
+PARM COORD_INDEX TYPE=INTEGER COUNT=0:10 DEFAULT=--
+PARM FIXED_SITE TYPE=INTEGER COUNT=0:1 DEFAULT=--
+
+END-PROC
+
+.TITLE
+VICAR program MARSCOLOR
+
+.HELP
+PURPOSE:
+This program provides the capability of converting an image from source color 
+space into a target color space. 
+
+This is a multimission program.  It supports any mission, instrument,
+and camera model supported by the Planetary Image Geometry (Pig) software
+suite and its associated color model (with actual color space converters 
+specified).
+
+Note that this program works only for color (3-band) images, and it converts
+images one-by-one. The color space of input images is determined by looking 
+at the COLOR_SPACE label in the DERIVED_IMAGE_PARMS group. 
+
+EXECUTION:
+
+An input must be a 3-band color image, and the output can be either 1-band (if 
+the parameter BAND is used), or 3-band (default, when BAND isn't specified).
+
+1. Convert instrument RGB (iRGB) image to CIE XYZ (tristimulus values) image.
+Note the color space CIE XYZ is different than the term XYZ that is commonly 
+used for point cloud data.
+
+marscolor inp=irgb_image.vic out=cie_xyz.vic -xyz
+
+2. Convert instrument RGB (iRGB) image to white-balanced RGB (wRGB) image.
+
+marscolor inp=irgb_image.vic out=wrgb_image.vic -wrgb
+
+3. Convert CIE XYZ image to standard RGB (sRGB) image.
+
+marscolor inp=cie_xyz.vic out=srgb_image.vic -srgb
+
+4. Convert CIE XYZ to CIE xyY color space.
+
+marscolor inp=cie_xyz.vic out=cie_xyy.vic -xyy
+
+5. Convert standard RGB (sRBG) to planetary RGB (pRGB) image.
+
+marscolor inp=srgb_image.vic out=prgb_image.vic -prgb
+
+6. Convert CIE XYZ to planetery RGB (pRGB) image.
+
+marscolor inp=cie_xyz.vic out=prgb_image.vic -prgb
+
+.PAGE
+
+HISTORY:
+  2018       Steven Lu - Initial version
+
+  2019-10-02 WLB - IDS-7926 - initialized a variable.
+             Commented an unused variable.
+             Added test script and log.
+
+  2020-04-30 WLB - IDS-7927 - replaced sprintf calls with snprintf.
+
+  2020-05-11 Steven Lu - IDS-8365 - Added DNSCALE_IN, DNSCALE_OUT, and DN_COLOR 
+                                    parameters
+
+COGNIZANT PROGRAMMER: Steven Lu/Bob Deen
+
+.LEVEL 1
+.VARI INP
+input image
+
+.VARI OUT
+output image
+
+.VARI OUT_IRGB
+Output intermediate
+irgb image
+
+.VARI BAND
+Input image band number to
+write to output image. Defaults
+to all bands.
+
+.VARI DEST_COLOR
+Specify the color space 
+of the output image
+
+.VARI DNSCALE
+DN scaling factor.
+
+.VARI DNSCALE_IN
+Selects the mode for
+applying scaling parameters
+
+.VARI DNSCALE_OUT
+Selects the mode for
+scaling outputs
+
+.VARI DN_COLOR
+Scaling factor applied 
+to color products (including 
+float values). 
+
+.VARI FORMAT
+Selects HALF (short int)
+or REAL (float) output
+format.
+
+.VARI BITS
+Sets number of bits in output
+for non-floating-point files.
+
+.VARI CONFIG_PATH
+Path used to find
+configuration/calibration
+files.
+
+.VARI POINT_METHOD
+Specifies a mission-
+specific pointing
+method to use
+
+.VARI DATA_SET_NAME
+Specifies the full name given
+to a data set or a data product.
+
+.VARI DATA_SET_ID
+Specifies a unique alphanumeric
+identifier for a data set or data
+product.
+
+.VARI RELEASE_ID
+Specifies the unique identifier
+associated with the release to the
+public of all or part of a data set.
+The release number is associated with
+the data set, not the mission.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique
+identifier assigned to a data
+product by its producer.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier
+of an entity associated with the
+production a data set.
+
+.VARI PRODUCER_INST
+Specifies the full name of the
+identity of an entity associated
+with the production of a data set.
+
+.VARI TARGET_NAME
+Specifies a target.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target.
+
+.VARI RSF
+Rover State File(s) to use.
+Not used by this program.
+
+.VARI DEBUG_RSF
+Turns on debugging of RSF
+parameter.
+
+.VARI COORD
+Coordinate system to use.
+Not used by this program.
+
+.VARI COORD_INDEX
+Coordinate system index for
+some COORD/mission combos.
+Not used by this program.
+
+.VARI FIXED_SITE
+Which site is FIXED for
+rover missions.
+Not used by this program.
+
+.LEVEL2
+.VARI INP
+The name of the input image. Unlike other programs, marscolor takes only 1 
+3-band color image at a time. Marscolor doesn't accept ascii file as input.
+Note that the input must be a 3-band color image.
+
+.VARI OUT
+The name of the output image. The output can be either 1-band if the parameter
+BAND is used or 3-band (default) if BAND isn't used. 
+
+.VARI OUT_IRGB
+Output intermediate iRGB image.  Implemented as kind of a hack.  This is not
+really intended for production code but is useful when deriving matrices,
+especially the iRGB->XYZ matrix.  If the color conversion does not go through
+iRGB (i.e. input is not rad), no error is issued; the output file is simply
+not created.
+
+.VARI BAND
+Specifies which band from the input image to write to the output image file.
+If no band is specified, all bands from the input image will be processed then
+written to the output image.
+
+.VARI DEST_COLOR
+Specifies the color space of the output image. The color space of the input image
+is determined by look at the COLOR_SPACE label. Only valid conversions can be 
+performed. Valid conversions are shown in the diagram below:
+
+                      xyY
+                     /  
+RAD -> iRGB -> XYZ  -> sRGB
+            \        \
+           wRGB      pRGB
+
+If -XYZ is enabled, the input image will be converted into CIE XYZ color space.
+
+If -wRGB is enabled, the input image will be converted into white balanced RGB 
+(wRGB) image.
+
+If -xyY is enabled, the input image will be converted into CIE xyY color space.
+
+If -sRGB is enabled, the input image will be converted into standard RGB (sRGB) 
+image using CIE standard illuminant D65. 
+
+If -pRGB is enabled, the input image will be converted into planetary RGB (pRGB) 
+image.
+
+.VARI DNSCALE
+DN scaling factor.  This factor is used to convert between physical
+radiometric units (watts/(meter**2, steradian, micron)) and DN's for the
+output mosaic.  The formula is:
+
+true_radiance = offset + (factor * DN)
+
+where "offset" is 0.0 in the current implementation, and "factor" is
+1.0 / DNSCALE (making the formula equivalently:  offset + (DN / DNSCALE)).
+The offset and factor (1.0/DNSCALE) are written to the output mosaic label.
+
+If FORMAT=REAL is specified, DNSCALE should be set to 1.0, or a warning
+will be printed.  The given DNSCALE is still applied, however.
+
+.VARI DNSCALE_IN
+Three-state keyword parameter to control whether or not to apply scaling
+parameters to reconstruct floating point values.
+
+RESCALE says to do the conversion, and reconstitute the float based on the
+RADIANCE_* keywords.  Note that if there are no RADIANCE_* keywords,
+this is a no-op, so it doesn't hurt to turn this on for non-scaled images.
+
+NOSCALE says to not to the conversion.  This is what we do now.  If your
+inputs are dynamically scaled, you'll probably get surprising results.
+
+AUTOSCALE says to figure it out based on the DNSCALE_OUT parameter (see
+DNSCALE_OUT for details) and -ZENITH_SCALED_RAD flag. If DNSCALE_OUT is STATIC,
+then it is NOSCALE; if DNSCALE_OUT is DYNAMIC/IDENTIT or RAD=ZENITH_SCALED_RAD,
+then it is RESCALE.
+
+.VARI DNSCALE_OUT
+Three-state keywork parameter to scale output DN values.
+
+If -STATIC is enabled, then the value specified by DNSCALE will be used
+as the DN scaling factor (note the unit scaling factor as well) for all
+radiometric models supplied.
+
+If -DYNAMIC is enabled, then the maximum responsivity value across all
+radiometric models will be used as the DN scaling factor (note the unit
+scaling factor as well).
+
+If -IDENTITY is enabled, then no scaling will be applied.
+
+.VARI DN_COLOR
+Special DN scaling facotr applied to only color products (including floating 
+point values). There are options available:
+
+If -COMPENSATED_COLOR (default) is enabled, the program will use a scalar 
+value defined in mission's config file (see the CONFIG_PATH parameter for 
+details) as the scaling factor.
+
+If -DN_COLOR is enabled, the program will use the exposure time as the scaling 
+factor.
+
+.VARI FORMAT
+Selects short int (HALF) or float (REAL) output format.  The default
+is short int; the values are scaled using DNSCALE to the short int range.
+However, direct radiometry units can be created using -REAL.  In this case,
+DNSCALE should be set to 1.0 (if not, a warning is printed, but DNSCALE
+*is* used).
+
+.VARI BITS
+If BITS is specified (and FORMAT=REAL is not), then the results are clamped
+to have that many bits, e.g. if BITS is 12 then the results will be in the
+range 0-4095.  The sample bit mask in the label will be set appropriately.
+As a backward compatibility feature, if BITS is not set then there is no
+clamping but the sample bit mask is still set to 15 bits.  BITS is ignored
+for floating-point files.
+
+.VARI CONFIG_PATH
+A colon-separated list of directories in which to look for configuration
+and calibration files.  Environment variables are allowed in the list
+(and may themselves contain colon-separated lists).  The directories are
+searched in order for each config/cal file when it is loaded.  This allows
+multiple projectes to be supported simultaneously, and allows the user to
+override any given config/cal file.  Note that the directory structure below
+the directories specified in this path must match what the project expects.
+For example, Mars 98 expects flat fields to be in a subdirectory named
+"flat_fields" while Mars Pathfinder expects them to be directly in the
+directory specified by the path (i.e. no intermediate subdirectories).
+
+.VARI POINT_METHOD
+Specifies a mission-specific pointing method to use.  Normally this
+parameter is not used, in which case the "default" pointing methods
+are used.  Some missions may have special, or alternate, pointing
+methods available, which are indicated by this string (for example,
+backlash models, using arm joint angles instead of x/y/z/az/el, etc).
+A substring search is used, so multiple methods (where that makes sense)
+can be specified by separating the keywords with commas.
+
+Note that nav files created using one pointing method will most likely
+not be compatible with a mosaic created using a different pointing method.
+
+The methods available vary per mission, but some methods available at
+the time of this writing are:
+
+BACKLASH : Mars 98 SSI only.  Selects a backlash pointing model,
+which adjusts the telemetered azimuth and elevation values based on
+knowledge of the camera's mechanical backlash and the direction the
+motor was travelling when the image was taken.
+
+.VARI DATA_SET_NAME
+The DATA_SET_NAME typically identifies the instrument that acquired the
+data, the target of that instrument, and the processing level of the data.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_NAME.
+
+.VARI DATA_SET_ID
+The DATA_SET_ID value for a given data set or product is constructed
+according to flight project naming conventions.  In most cases the
+DATA_SET_ID is an abbreviation of the DATA_SET_NAME.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_ID.
+
+.VARI RELEASE_ID
+When a data set is released incrementally, such as every three months during
+a mission, the RELEASE_ID is updated each time part of the data set is released.
+For each mission(or host id if multiple spacecrafts), the first release of a data
+set should have a value of "0001".
+This value is copied to the output label, property IDENTIFICATION,
+keyword RELEASE_ID.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique identifier assigned to a data product by
+its producer. Most commonly, it is the filename minus the extension.
+This value is copied to the output label, property IDENTIFICATION,
+keyword PRODUCT_ID.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier of an entity associated with the
+production of a data set. This value is copied to the output label,
+property IDENTIFICATION, keyword PRODUCER_ID.
+
+.VARI PRODUCER_INST
+Specifies the identity of a university, research center, NASA center or other
+institution associated with the production of a data set.
+This value is copied to the output label, property IDENTIFICATION, keyword
+PRODUCER_INSTITUTION_NAME.
+
+.VARI TARGET_NAME
+Specifies a target.  The target may be a planet, satelite, ring, region, feature,
+asteroid or comet.  This value is copied to the output label, property
+IDENTIFICATION, keyword TARGET_NAME.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target. This value is copied to the output
+label, property IDENTIFICATION, keyword TARGET_NAME.
+
+.VARI RSF
+The Rover State File is loaded by, but not used by, marsrad.  The parameter
+exists for compatibility with subroutines used by other programs (see
+e.g. marsmap).
+
+.VARI DEBUG_RSF
+If enabled, this causes the internal database of RMC locations to be
+printed out to the stdout log.  This is after the RSF files have been
+loaded and the coordinate systems read from the input label(s).
+
+.VARI COORD
+This parameter is ignored by marsrad.  The parameter exists for
+compatibility with subroutines used by other programs (see e.g. marsmap).
+
+.VARI COORD_INDEX
+This parameter is ignored by marsrad.  The parameter exists for
+compatibility with subroutines used by other programs (see e.g. marsmap).
+
+.VARI FIXED_SITE
+This parameter is ignored by marsrad.  The parameter exists for
+compatibility with subroutines used by other programs (see e.g. marsmap).

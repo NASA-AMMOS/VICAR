@@ -2,6 +2,7 @@ procedure
 refgbl $echo
 refgbl $autousage
 body
+enable-log
 let $autousage="none"
 let _onfail="continue"
 let $echo="yes"
@@ -11,4 +12,5 @@ let $echo="yes"
 !THE SYSTEM TIME IS RETURNED IN A 6 BYTE ASCII BUFFER AS
 !   HHMMSS   (24 HOUR CLOCK)
 txtime
+disable-log
 end-proc

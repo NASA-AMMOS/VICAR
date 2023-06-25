@@ -1,0 +1,15 @@
+#define SUBROUTINE pig_msl
+
+#define MODULE_LIST  PigFileModelMSL.cc PigPointMSLmastCamera.cc \
+PigPointMSLmastCamera3dof.cc PigPointMSLmahliCamera.cc \
+PigPointMSLmahliCamera6dof.cc PigMSL.cc \
+PigRoverStateManagerMSL.cc PigLabelModelMSL.cc \
+PigPointMSLmastCameraScale.cc
+
+#define MARS_SUBLIB
+
+#define USES_C_PLUS_PLUS
+
+#define LIB_P2SUB
+#define LIB_XERCES
+

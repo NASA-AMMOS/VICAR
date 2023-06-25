@@ -40,9 +40,14 @@
      IHIGH are truncated.  
 
      If IHIGH < ILOW, then IHIGH = ILOW + 1
+
+     The HIST array uses INTEGER*4 (signed), so the max hist value is
+     2^31 - 1. If a hist value exceeds this (goes negative) the value
+     is forced to 2^31 - 1 and a warning is issued.
+
 2 HISTORY:
  
      Original Programmer: Budak Barkan, Jan. 1985
      Current Cognizant Programmer: Florance Moss
-     Source Language: Macro
 
+     2021-07-14 Walt Bunch - added overflow check/warning, max forcing.

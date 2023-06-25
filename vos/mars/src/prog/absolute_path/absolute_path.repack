@@ -1,0 +1,4 @@
+$ vpack absolute_path.com -mixed -
+	-s absolute_path.sh -
+	-i absolute_path.imake
+$ Exit

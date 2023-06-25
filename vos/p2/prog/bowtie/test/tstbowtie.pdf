@@ -1,0 +1,42 @@
+procedure
+refgbl $echo
+parm version string def="ibis-1"
+parm org string def="column"
+body
+enable-log
+
+!let _onfail="continue"
+let $echo="yes"
+
+gengrid2 out=xxx1 ncol=8 nah=3 nav=4 +
+     l1=21.0 s1=1.0 +
+     l2=21.0 s2=9.0 +
+     l3=12.0 s3=1.0 +
+     l4=18.0 s4=9.0
+     
+ibis-list xxx1 cols=(1,2)
+
+gengrid2 out=xxx2 ncol=8 nah=3 nav=4 +
+     l1=19.0 s1=1.0 +
+     l2=17.0 s2=9.0 +
+     l3=10.0 s3=1.0 +
+     l4=10.0 s4=9.0
+     
+ibis-list xxx2 cols=(1,2)
+ibis-cat (xxx1,xxx2) xxx3
+mf3 xxx3 f="x3=x1$x4=x2$x1=@int((@index+3)/4+0.001)$x2=@mod(@index-1,4)*2+1"
+ibis-list xxx3 cols=(1,2,3,4)
+
+gen xximg nl=10 ns=7 linc=10 sinc=0
+
+ibis-copy xxx3 xxx4
+bowtie (xximg,xxx4) xximg2 cols=(1,2,3,4) nscan=8
+
+ibis-list xxx3 cols=(1,2,3,4)
+ibis-list xxx4 cols=(1,2,3,4)
+list xximg2 'zero 'nousrtim
+
+ush rm xximg  xximg2  xxx1  xxx2  xxx3  xxx4
+
+disable-log
+end-proc

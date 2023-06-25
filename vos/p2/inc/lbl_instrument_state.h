@@ -159,6 +159,8 @@ typedef struct
         LblApiTypeItem_typ              HdrExposureTimeDeltaUnit[7];
     LblApiIntItem_typ       DCOffset;
 	LblApiIntItem_typ		OriginalSampleBits;
+    LblApiIntItem_typ       CenterFilterWavelength[LBL_MAX_ITEMS];
+    LblApiStringItem_typ    CenterFilterWavelengthUnit[LBL_MAX_ITEMS];
     
 	} LblInstrumentState_typ;
 

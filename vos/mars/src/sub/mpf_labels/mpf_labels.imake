@@ -1,0 +1,38 @@
+/******************************************************************************
+/*
+/*                     IMAKE FILE FOR MODULE mpf_imp_lbls
+/*
+/*   To Create the build file give the command:
+/*
+/*		$ vimake mpf_imp_lbls			(VMS)
+/*   or
+/*		% vimake mpf_imp_lbls			(Unix)
+/*
+/*****************************************************************************/
+
+/***  Define for whom this file exisits  ***/
+#define SUBROUTINE mpf_imp_lbls		/* Only one of these */
+
+/***  List all modules which are used by locally by this module  ***/
+#define MODULE_LIST mpf_gen_lbls.c mpf_imp_lbls.c mpf_apx_lbls.c mpf_rvr_lbls.c
+
+#define MAIN_LANG_C
+
+#define USES_ANSI_C
+
+/***  Specify  Program or Subroutine specific DEFINES  ***/
+#ifdef PROGRAM
+#define R2LIB
+#define LIB_RTL
+#define LIB_TAE
+#define LIB_P2SUB
+#endif
+
+#ifdef SUBROUTINE
+#define MARS_SUBLIB
+#endif
+
+/***  Defines required for both Programs and Subroutines  ***/
+#define LIB_P2SUB
+#define LIB_MARSSUB
+

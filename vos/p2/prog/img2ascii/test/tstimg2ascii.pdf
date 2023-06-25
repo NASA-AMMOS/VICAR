@@ -22,6 +22,8 @@ refgbl $echo
 refgbl $syschar
 refgbl $autousage
 body
+enable-log
+
 let $autousage="none"
 let _onfail="stop"
 let $echo="yes"
@@ -177,4 +179,13 @@ write "************************************************"
 let $echo="yes"
 typetext rout1c.txt
 let $echo="no"
+
+disable-log
+
+ush rm bout1a.txt bout1b.txt bout1c.txt bout1.txt bout2.txt byte1.img
+ush rm byte2.img fout1a.txt fout1b.txt fout1c.txt fout1.txt fout2.txt
+ush rm full1.img full2.img half1.img half2.img hout1a.txt hout1b.txt
+ush rm hout1c.txt hout1.txt hout2.txt real1.img real2.img rout1a.txt
+ush rm rout1b.txt rout1c.txt rout1.txt rout2.txt
+
 end-proc

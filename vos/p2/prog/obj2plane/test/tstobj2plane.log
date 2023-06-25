@@ -1,0 +1,33 @@
+CASE 1: with decimation, and solving using regression
+Beginning VICAR task OBJ2PLANE
+Obj2plane version 2.0
+Processing mesh: test_mesh_octahedron.OBJ
+Output filename: plane_octahedron_dec2_reg.txt
+Decimation value: 2
+Algorithm type: regression
+Loading mesh file. Can take a while for large mesh file...
+Number of points in mesh: 6
+Number of triangles in mesh: 8
+Number of vertices after decimation: 3
+Plane-fitting phase
+Saved output to file.
+CASE 1 (regression, decimation=2) produces this best-fit plane:
+Average = (0.000000 0.000000 0.333333), normal = (0.000000 0.000000 1.000000)
+
+
+
+CASE 2: no decimation, and solving using SVD
+Beginning VICAR task OBJ2PLANE
+Obj2plane version 2.0
+Processing mesh: test_mesh_teapot.OBJ
+Output filename: plane_teapot_dec1_svd.txt
+Decimation value: 1
+Algorithm type: svd
+Loading mesh file. Can take a while for large mesh file...
+Number of points in mesh: 530
+Number of triangles in mesh: 1024
+Number of vertices after decimation: 530
+Plane-fitting phase
+Saved output to file.
+CASE 2 (svd, no decimation) produces this best-fit plane:
+Average = (2.112149 9.725438 -1.108034), normal = (0.000153 -0.000099 1.000000)

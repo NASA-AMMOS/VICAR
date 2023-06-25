@@ -14,12 +14,9 @@ echo "##########"
 echo " Copying external jars"
 echo "##########"
 
-if ( ! -e $V2HTML ) then
-   mkdir $V2HTML
-endif
-if ( ! -e $V2HTML/jars ) then
-   mkdir $V2HTML/jars
-endif
+# Create output product directories if necessary
+mkdir -p ${V2HTML}/jars
+
 
 if ($?J2_XAMPLE != 0) then
   cp $J2_XAMPLE/lib/mdate.jar $V2HTML/jars
@@ -669,7 +666,7 @@ endif
 
 # PDS_MI_LABEL
 if ($?J2_PDS_MI_LABEL != 0) then
-  cp $J2_PDS_MI_LABEL/mi-label-1.1.2.jar $V2HTML/jars
+  cp $J2_PDS_MI_LABEL/mi-label-1.2.0.jar $V2HTML/jars
 endif
 
 # PDS4_TOOLS
@@ -794,13 +791,14 @@ if ($?J2_MAVEN_REFLECTIONS != 0) then
     cp $J2_MAVEN_REFLECTIONS/reflections-0.9.10.jar $V2HTML/jars
 endif
 
-chmod u+w $V2HTML/jars/*
-chmod a+r $V2HTML/jars/*
-
 # OWASP
 if ($J2_OWASP != 0) then
    cp $J2_OWASP/encoder-1.2.2.jar $V2HTML/jars
    cp $J2_OWASP/encoder-jsp-1.2.2.jar $V2HTML/jars
 endif
+
+# ensure access rights
+chmod u+w $V2HTML/jars/*
+chmod a+r $V2HTML/jars/*
 
 # Done!

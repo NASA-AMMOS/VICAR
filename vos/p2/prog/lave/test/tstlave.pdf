@@ -32,30 +32,30 @@ enable-log
 gen lavea 11 10
 !
 lave lavea lavea1
-list lavea1
+list lavea1 'nousrtim
 !
 lave lavea lavea2 'vert exclude=0
-list lavea2
+list lavea2 'nousrtim
 !
 lave lavea lavea3  (6,2,5,7) 'horiz 'image
-list lavea3
+list lavea3 'nousrtim
 !
 qsar lavea laveb area=(3,3,6,6,100)
 !
 lave laveb laveb1 'stdev
-list laveb1
+list laveb1 'nousrtim
 !
 lave laveb laveb2 filter=3
-list laveb2
+list laveb2 'nousrtim
 !
 lave laveb laveb3 filter=3 'highpass
-list laveb3
+list laveb3 'nousrtim
 !
 gen lavec 1 2048
 !
 lave lavec lavec1 'ais 'vert title="HERE IS SOME DATA PRINTED IN AIS FORMAT"
-list lavec1 (1,1,1,10)
-label-list lavec1
+list lavec1 (1,1,1,10) 'nousrtim
+label-list lavec1 'nousrtim
 !
 lave lavec size=(1,1,1,1024) 'ais 'vert title="HERE IS DATA IN AIS FORMAT"
 !
@@ -65,31 +65,31 @@ lave lavec size=(1,1,1,1024) 'ais 'vert title="HERE IS DATA IN AIS FORMAT"
 gen lavea 11 10  'half
 !
 lave lavea lavea1  
-list lavea1
+list lavea1 'nousrtim
 !
 lave lavea lavea2 'vert exclude=0   
-list lavea2
+list lavea2 'nousrtim
 !
 lave lavea lavea3  (6,2,5,7) 'horiz 'image  
-list lavea3
+list lavea3 'nousrtim
 !
 qsar lavea laveb area=(3,3,6,6,100)
 !
 lave laveb laveb1 'stdev  
-list laveb1
+list laveb1 'nousrtim
 !
 lave laveb laveb2 filter=3  
-list laveb2
+list laveb2 'nousrtim
 !
 lave laveb laveb3 filter=3 'highpass  
-list laveb3
+list laveb3 'nousrtim
 !
 gen lavec 1 2048  'half
 !
 lave lavec lavec1 'ais 'vert title="HERE IS SOME DATA PRINTED IN AIS FORMAT" 
                      
-list lavec1 (1,1,1,10)
-label-list lavec1
+list lavec1 (1,1,1,10) 'nousrtim
+label-list lavec1 'nousrtim
 !
 lave lavec size=(1,1,1,1024) 'ais 'vert title="HERE IS DATA IN AIS FORMAT"  
 !
@@ -98,28 +98,28 @@ lave lavec size=(1,1,1,1024) 'ais 'vert title="HERE IS DATA IN AIS FORMAT"
 gen lavea 11 10 'full
 !
 lave lavea lavea1
-list lavea1
+list lavea1 'nousrtim
 !
 lave lavea lavea2 'vert exclude=0
-list lavea2
+list lavea2 'nousrtim
 !
 lave lavea lavea3  (6,2,5,7) 'horiz 'image
-list lavea3
+list lavea3 'nousrtim
 !
 lave lavea laveb1 'stdev
-list laveb1
+list laveb1 'nousrtim
 !
 lave lavea laveb2 filter=3
-list laveb2
+list laveb2 'nousrtim
 !
 lave lavea laveb3 filter=3 'highpass
-list laveb3
+list laveb3 'nousrtim
 !
 gen lavec 1 2048 'full
 !
 lave lavec lavec1 'ais 'vert title="HERE IS SOME DATA PRINTED IN AIS FORMAT"
-list lavec1 (1,1,1,10)
-label-list lavec1
+list lavec1 (1,1,1,10) 'nousrtim
+label-list lavec1 'nousrtim
 !
 lave lavec size=(1,1,1,1024) 'ais 'vert title="HERE IS DATA IN AIS FORMAT"
 !
@@ -128,28 +128,28 @@ lave lavec size=(1,1,1,1024) 'ais 'vert title="HERE IS DATA IN AIS FORMAT"
 gen lavea 11 10 'real
 !
 lave lavea lavea1
-list lavea1
+list lavea1 'nousrtim
 !
 lave lavea lavea2 'vert exclude=0
-list lavea2
+list lavea2 'nousrtim
 !
 lave lavea lavea3  (6,2,5,7) 'horiz 'image
-list lavea3
+list lavea3 'nousrtim
 !
 lave lavea laveb1 'stdev
-list laveb1
+list laveb1 'nousrtim
 !
 lave lavea laveb2 filter=3
-list laveb2
+list laveb2 'nousrtim
 !
 lave lavea laveb3 filter=3 'highpass
-list laveb3
+list laveb3 'nousrtim
 !
 gen lavec 1 2048 'real
 !
 lave lavec lavec1 'ais 'vert title="HERE IS SOME DATA PRINTED IN AIS FORMAT"
-list lavec1 (1,1,1,10)
-label-list lavec1
+list lavec1 (1,1,1,10) 'nousrtim
+label-list lavec1 'nousrtim
 !
 lave lavec size=(1,1,1,1024) 'ais 'vert title="HERE IS DATA IN AIS FORMAT"
 !   CLEANUP
@@ -158,6 +158,7 @@ lave lavec size=(1,1,1,1024) 'ais 'vert title="HERE IS DATA IN AIS FORMAT"
 disable-log
 
 let $echo="no"
-!
+
+ush rm lavea lavea1 lavea2 lavea3 laveb laveb1 laveb2 laveb3 lavec lavec1
 
 end-proc

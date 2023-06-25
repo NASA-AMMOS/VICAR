@@ -1,0 +1,8 @@
+$ vpack disp2tp.com -mixed -
+	-s disp2tp.cc -
+	-p disp2tp.pdf -
+	-t tstdisp2tp.pdf test1inp.lis test1rhs.lis test1xyz.lis -
+	   test1inptie.lis test1.tie left_dsp.lis test2.tie right_edr.lis -
+	   test1noxyz.tie tstdisp2tp.log -
+	-i disp2tp.imake
+$ Exit

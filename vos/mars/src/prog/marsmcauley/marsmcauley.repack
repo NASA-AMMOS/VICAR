@@ -1,0 +1,5 @@
+$ vpack marsmcauley.com -mixed -
+	-s marsmcauley.cc -
+	-i marsmcauley.imake -
+	-p marsmcauley.pdf
+$ Exit

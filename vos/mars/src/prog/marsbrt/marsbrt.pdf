@@ -1,0 +1,1194 @@
+process help=*
+PARM INP TYPE=STRING COUNT=(1:200)
+PARM OUT TYPE=STRING COUNT=1 
+PARM IN_OVR TYPE=STRING COUNT=1
+PARM NAVTABLE TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM OUT_SOLUTION_ID TYPE=STRING COUNT=0:1 DEFAULT=--
+PARM SOLUTION_ID TYPE=STRING COUNT=0:1 DEFAULT=--
+PARM REFIMAGE TYPE=INTEGER COUNT=(0:200) VALID=(-1000:1000) DEFAULT=--
+PARM UNTIL TYPE=KEYWORD COUNT=(0:1) +
+  VALID=("UNTIL","NULL") DEFAULT="NULL"
+PARM IGNORE TYPE=INTEGER COUNT=(0:200) VALID=(-1000:1000) DEFAULT=--
+PARM IGNORE_INTRA TYPE=KEYWORD COUNT=(0:1) VALID="IGNORE_INTRA" DEFAULT=--
+PARM IGNORE_PARTIAL TYPE=KEYWORD COUNT=(0:1) VALID="IGNORE_PARTIAL" DEFAULT=--
+PARM RECYCLE TYPE=INTEGER COUNT=1 DEFAULT=4
+PARM FTOL TYPE=REAL COUNT=1 DEFAULT=.00001
+PARM DO_WHAT TYPE=KEYWORD COUNT=1 VALID=("DO_LINEAR","DO_ADD","DO_MULT") +
+		DEFAULT="DO_LINEAR"
+PARM USE_MEAN TYPE=KEYWORD COUNT=1 VALID=("USE_MEAN","NO_MEAN") +
+		DEFAULT="USE_MEAN"
+PARM USE_STDEV TYPE=KEYWORD COUNT=1 VALID=("USE_STDEV","NO_STDEV") +
+		DEFAULT="USE_STDEV"
+PARM WHICH_OVR TYPE=KEYWORD COUNT=1 VALID=("NORMAL","OVERALL","BOTH","NONE") +
+		DEFAULT="NORMAL"
+PARM PRE_OVERALL TYPE=KEYWORD VALID=("PRE_OVERALL","NO_PRE_OVERALL") +
+		DEFAULT="PRE_OVERALL"
+PARM OVERALL_MEAN TYPE=REAL COUNT=0:1 DEFAULT=--
+PARM OVERALL_STDEV TYPE=REAL COUNT=0:1 DEFAULT=--
+PARM COLORSPACE TYPE=KEYWORD COUNT=1 VALID=("RGB","HSI","PER_OVERLAPS") +
+		DEFAULT="PER_OVERLAPS"
+PARM INERTIA TYPE=REAL COUNT=(0:2) DEFAULT=--
+PARM START_KEY TYPE=INTEGER COUNT=1 DEFAULT=0
+PARM LAMBDA_MULT TYPE=REAL COUNT=1 DEFAULT=0.01
+PARM LAMBDA_ADD TYPE=REAL COUNT=1 DEFAULT=1.0
+PARM DRIFT_WT TYPE=REAL COUNT=2 DEFAULT=(0.0, 0.0)
+PARM NORMALIZE TYPE=KEYWORD COUNT=1 VALID=("NORMALIZE","NONORMALIZE") +
+		DEFAULT="NORMALIZE"
+PARM ITER_OUTLIER TYPE=INTEGER COUNT=1 DEFAULT=2
+PARM OUTLIER TYPE=REAL COUNT=1 DEFAULT=4.0
+PARM OUT_OVR TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM BRTCORR TYPE=STRING COUNT=(0:1) DEFAULT=--
+
+PARM NORMAL  TYPE=REAL COUNT=(0:3) DEFAULT=--
+PARM GROUND  TYPE=REAL COUNT=(0:3) DEFAULT=--
+PARM SURF_COORD TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM SURF_MESH TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM SURF_CSFILE TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM SURFACE TYPE=KEYWORD COUNT=(0:1) +
+  VALID=("INFINITY","PLANE", "SPHERE1", "SPHERE2", "MESH") DEFAULT=--
+PARM CONFIG_PATH STRING DEFAULT="$MARS_CONFIG_PATH"
+PARM POINT_METHOD TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM MATCH_METHOD TYPE=STRING COUNT=(0:1) VALID=("LOOSE", "TIGHT") +
+	DEFAULT=LOOSE
+PARM MATCH_TOL TYPE=REAL COUNT=1 DEFAULT=.002
+PARM NOSITE TYPE=KEYWORD COUNT=(0:1) VALID=NOSITE DEFAULT=--
+
+PARM RSF TYPE=STRING COUNT=0:100 DEFAULT=--
+PARM DEBUG_RSF TYPE=KEYWORD COUNT=0:1 VALID=DEBUG_RSF DEFAULT=--
+PARM COORD TYPE=KEYWORD VALID=("FIXED", "INSTRUMENT", "SITE", "ROVER", +
+        "LOCAL_LEVEL") DEFAULT="FIXED"
+PARM COORD_INDEX TYPE=INTEGER COUNT=0:10 DEFAULT=--
+PARM FIXED_SITE TYPE=INTEGER COUNT=0:1 DEFAULT=--
+
+!# parm inp(2-200) hints=default
+!# parm in_tpt file=vicar; direction=input
+!# parm out_tpt file=vicar; direction=output
+
+END-PROC
+
+.TITLE
+VICAR program MARSBRT.
+
+.HELP
+
+drift_wt and inertia are always (mult,add).
+
+PURPOSE:
+This program computes intensity (or "brightness") corrections for a mosaic.
+These corrections are intended to reduce radiometric seams in the image.
+It requires as input an XML file of "overlaps", such as generated from MARSMAP
+using the OVR_OUT parameter.  This file contains statistics on overlapping
+regions in the mosaic.  MARSBRT analyzes these to come up with a globally
+best solution to reduce the radiometric seams.
+
+The output is an XML file containing corrections to apply to each image.
+This file can be supplied to any of the mosaic programs (e.g. MARSMAP).
+Note that the result loses some radiometric accuracy, but typically looks
+much better.
+
+Corrections can be made in normal image space or, with color input images,
+in hue-saturation-intensity (HSI) space (only intensity is adjusted).
+
+This program was derived from MARSNAV and shares many of the same parameters
+with that program.  It accomplishes a similar purpose.  But instead of
+converting geometric tiepoints to a geometry solution, it converts overlap
+"tiepoints" into a brightness-matching solution.
+
+MARSBRT supports any mission, instrument, and camera model supported by the
+Planetary Image Geometry (Pig) software suite.
+
+.page
+
+EXECUTION:
+
+A typical execution sequence would be as follows:
+
+marsmap mosaic.lis mosaic.vic zoom=.25 ovr_out=mosaic.ovr
+marsbrt mosaic.lis mosaic.brt in_ovr=mosaic.ovr
+marsmap mosaic.lis mosaic.vic brtcorr=mosaic.brt
+
+Note that the mosaic must be run once just to get the overlaps; it is then
+run again to make use of the brightness solution.
+
+.page
+
+USAGE:
+It is important that all images be connected to each other via overlap
+"tiepoints".  If an image or block of images is not connected, the entire
+block can "drift" in brightness.  This can be counteracted to some extent
+using the INERTIA parameter, which can prevent the solution from drifting
+too far.  Note that disconnection can occur when removing outliers (see
+below).
+
+It is recommended that a small amount of inertia be used in most cases.
+For a typical image (DN's in the 0-4k range) a good value might be
+(0.1, 0.0001).  For IFF-style images (floating-point I/F radiances) in
+a 0-0.5 range, use (0.1, 0.1).  For IFF's in 0-0.1 range, try (0.1,1.0).
+Some experimentation may be required.
+
+The simplex method of finding pointing solutions can often benefit by being
+rerun multiple times, starting from where it left off the last time, as
+opposed to resetting the solution to the initial conditions.  The program
+allows this in both batch and interactive modes.  Experience has shown that
+as many as half a dozen reruns can still show improvement in the solution.
+
+Note that the mosaic should ideally be nav'd (pointing corrected) before
+doing this brightness correction.  That ensures the overlaps are correct.
+Also, when generating the overlaps, you rarely need to generate the mosaic
+full-size; a zoom of 0.5 or even 0.25 is usually sufficient to get proper
+statistics.
+
+Three of the parameters need to vary based on the DN range of the input.
+They need not be precise but should at least be adjusted for order of
+magnitude differences.  For example, standard images are in the 0-4k range
+while floating-point I/F radiances can be in the 0-0.5 range.  The three
+parameters are directly tied to the additive correction, whose scale is
+related to the DN range.  The parameters are:  inertia(2), drift_wt(2),
+and lambda_add.  In general, inertia(2) and drift_wt(2) should go up as
+the DN range decreases, while lambda_add should go down with decreasing
+DN range.  An order of magnitude change in DN range should mean approximately
+an order of magnitude change in these parameters.  The default for lambda_add
+is set for typical 0-4k images; the others default to off.
+
+This program does not currently make use of a surface model or coordinate
+systems.  Therefore the parameters related to those are unused.  They are
+retained just in case they are needed in the future.
+
+An input brightness correction file can be supplied via BRTCORR.  This
+serves as a starting point and can be useful to build up the brt corr file
+piecemeal.  It can be helpful to do some of the images, then load the results
+via BRTCORR and set all those images as references so they don't change.
+This way an image with bad overlaps doesn't pull everything else out of
+whack.  Once the rest of the images are set, the offending image can be
+added back in, letting it adjust as needed without hurting the rest of the
+mosaic.  This technique can be especially useful when combined with setting
+the border in marsmap when creating the ovr file (e.g. point='"border_left=100,
+border_right=100,border_top=200,border_bottom=10"' on marsmap) to eliminate
+the bad overlaps.
+
+.page
+
+METHOD:
+
+In a nutshell, the program works by performing a global function minimization
+using the "amoeba" simplex method.  Each image gets one additive and one
+multiplicative factor, which are applied to every pixel in that image.
+These are adjusted until the error represented by the statistics in the
+overlap file is minimized.
+
+.page
+Initial Conditions
+------------------
+
+The starting point for brightness correction is usually a no-op correction.
+It is often useful to refine an existing correction, however.  If a brightness
+file is provided via the BRT mosaic, it will be read, and the resulting
+corrections will be the initial conditions.
+
+Alternatively, it is possible to analyze "overall" overlaps in order to balance
+the entire image.  Overall overlaps provide statistics for the entire image,
+rather than overlapping areas.  The average mean and standard deviation of
+the overall overlaps are computed and used as a target (alternatively, the
+OVERALL_MEAN and OVERALL_STDEV parameters can set that target).  A correction
+is computed which causes the image to match (exactly; this is algorithmic not
+iterative) the overall statistics, and that is used as a starting point.
+
+This can help even out overall differences such as time-of-day acquisition
+differences.
+
+Overall statistics must be gathered by marsmap in order for this mode to work.
+
+.page
+Error Metric
+------------
+
+The error is defined as follows.  Each overlap entry contains a list of the
+images involved in that overlap (it often is more than 2).  For each image,
+the entry contains the mean and standard deviation of the pixels in the
+overlap.  These statistics are modified based on the putative additive and
+multiplicative factors.  Ideally the resulting modified mean and stdev should
+equal each other across all images in the overlap.  To the extent they don't,
+that is the error.
+
+For each pair, the difference between the modified means and stdevs are
+computed.  These are normalized by the average of the means and the average
+of the stdevs in order to make the very different mean and stdev statistics
+combinable.  They are squared (to make it least squares) and combined,
+summed across each pair of images, then normalized by the number of pairs.
+Finally, the result is multiplied by the number of pixels in the overlap,
+so that large overlaps count more heavily than small overlaps.
+
+This metric is then summed across all overlaps, normalized by the total number
+of pixels, and that becomes the error metric.
+
+Note that parameters allow you to use only the mean or only the stdev
+statistics, and likewise, to use only additive or only multiplicative
+corrections.  Generally, however, all should be used.
+
+.page
+
+Outlier Rejection
+-----------------
+
+An important feature of MARSBRT is that of outlier rejection.  Overlaps that
+really don't match each other are common.  They occur due to sun glints,
+parallax (e.g. rover deck vs. ground) obstructing hardware like the MER
+LGA which appears in one image but not the other (really a form of severe
+parallax), and even differences in lighting causing shadow differences.
+
+These false matches can "pull" on the solution and create very visible seams.
+In order to minimize their effect, the error metric for each overlap (weighted
+by the number of pixels) is gathered, and the standard deviation of the error
+is computed (technically, we use both +error and -error to keep an
+approximately normal distribution).  Then, any overlaps whose metric is
+outside the limit is deleted.  The limit is defined by the OUTLIER parameter,
+which is multiplied by the standard deviation.  So OUTLIER=3 would reject
+3-sigma outliers.
+
+After the overlaps are rejected, the solution is restarted from initial
+conditions.  This erases the effect of the rejected overlaps, which could
+still cause trouble if we restarted from the solution.  This process is
+repeated ITER_OUTLIER times, or until no outliers are rejected.
+
+This process works best with smaller overlap regions.  For this reason, the
+RADIUS parameter to marsmap was introduced.  That forces the overlaps to be
+no bigger than RADIUS in size, so e.g. a left-right edge would be broken into
+several overlap regions.  This limits the effect of troublesome false matches
+because such false matches are usually localized; the rest of the seam is
+often okay and will still be used with smaller regions.
+
+TBD!!!!  The outlier rejection process does NOT take into account connectivity.
+It is quite possible for an image (or block of images) to become disconnected
+from the rest of the mosaic during outlier rejection.  This is NOT examined
+or otherwise accounted for.  This is the primary reason that some amount of
+inertia is recommended.  In the future, outlier rejection should ensure
+connectivity via some means.
+
+After the outlier passes are done, the solution will be restarted RECYCLE
+number of times.  In each recycle, the previous solution is used for the
+initial conditions.  Experience with MARSNAV has shown this to be beneficial.
+
+.page
+
+Normalization and Drift
+-----------------------
+
+The overall solution should not "drift".  Ideally the average multiplicative
+correction will be 1.0 and the average additive correction will be 0.0.
+This helps to preserve some radiometric accuracy.  In addition, something
+must be done to counteract the degenerate solution: if all mults are 0 there
+will be 0 residual error, even though the result is useless.  Using some
+inertia helps to maintain the solution near its ideal state, but supplying
+enough inertia to rigorously enforce it does not leave enough room for
+adjustment.  Reference images can also help to a limited extent.
+
+Thus there are two other methods available to help preserve this property.
+
+The most important is normalization.  When this is on (the default), the
+solution additive and multiplicative factors are modified to force their
+averages to be 0.0 and 1.0, respectively.  This is done in a way that
+preserves the found solution; it's equivalent to changing the brightness
+and contrast of the mosaic as a whole.
+
+The second is called drift adjustment.  When computing the error metric for
+the function minimization, drift inserts an extra term.  The add/mult factors
+are averaged and differenced from their ideal.  This difference is multipled
+by DRIFT_WT (drift weight), squared, and added to the error metric.  The
+result is a force that tries to pull the solution into the ideal state by
+penalizing the solution when it is not.  Unfortunately, this method did not
+work well in testing.  It is believed that the inclusion of this term in the
+error does not allow enough flexibility to explore promising directions in the
+solution.  Amoeba works by modifying one parameter at a time, and all single-
+parameter modifications are "bad" according to drift.  A modification has to
+be offset by another parameter in order to keep the drift balanced.  Thus,
+disappointing results.  This functionality is retained for experimental use
+but should not generally be used.
+
+.page
+
+Reference Images
+----------------
+
+As with MARSNAV, one or more images can be designated as "Reference" images.
+These images are "fixed" in that they receive no correction (mult=1.0 and
+add=0.0).  This "anchor" can also keep the mosaic as a whole from drifting
+too far in brightness.
+
+Unlike marsnav, no reference image is automatically assigned. REFIMAGE=-1
+will turn off all reference images, but that is also the default state.
+REFIMAGE is a list, allowing you to specify a number of reference images
+if needed.
+
+In order to accommodate large numbers of reference images, REFIMAGE accepts
+negative numbers to represent a range,  For example, the sequence 5,-8 says
+that 5,6,7,8 are references.  This shorthand is more convenient than the old
+UNTIL parameter.  See the help for REFIMAGE.
+
+See the USAGE section above for suggestions on how reference images can be
+used in conjunction with an input BRTCORR file to add images to a mosaic.
+
+Ignored Images
+--------------
+
+Sometimes it is desirable to ignore images represented in the overlap file.
+This can be accomplished via the IGNORE, IGNORE_INTRA, and IGNORE_PARTIAL
+parameters.  Overlaps containing ignored images are removed from consideration.
+This is helpful for performance tuning on large runs, but also to eliminate
+known bad overlaps (say, where shadows differ or the rover parallax dominates)
+without having to edit the overlap file.
+
+A common use case for IGNORE is when refining brightness corrections.  Often
+a brightness solution will be obtained, but there are a few frames that don't
+quite match the others.  In order to preserve the work already done, set
+everything but the bad frames as reference images, and ignore everything but
+the bad frames and some of their immediate neighbors.  This prevents spurious
+overlaps from dominating the solution.
+
+.page
+
+Overlap File Format
+-------------------
+
+The overlap file looks very much like a tiepoint file in structure.  A sample
+file:
+
+<?xml version="1.0" encoding="UTF-8"?>
+<overlap_file version="1.0">
+<overlap_set>
+  <images>
+    <image unique_id="..." key="0"/>
+    ...
+  </images>
+  <overlaps>
+    <overlap type="0" n_images="2" n_pixels="238" radius="250">
+      <img key="0" mean="55.321" stdev="1.2335" line="1004.54" samp="53.55"/>
+    </overlap>
+    ...
+  </overlaps>
+</overlap_set>
+</overlap_file>
+
+As with tiepoint files, the individual <overlap> elements identify images
+using a key defined by <image> entries.
+
+.page
+
+Overlap Types
+-------------
+
+Currently there are four types of overlap.
+
+0) Mean_Stdev
+
+    <overlap type="0" n_images="3" n_pixels="468" radius="100.000000">
+      <img key="29" mean="0.218250" stdev="0.018176" line="282.179460" samp="104
+.664452"/>
+      <img key="30" mean="0.220311" stdev="0.018180" line="285.170722" samp="102
+0.639571"/>
+      <img key="31" mean="0.195057" stdev="0.014857" line="2.264217" samp="566.7
+62307"/>
+    </overlap>
+
+Overlap containing mean and stdev statistics.  Each image participating in
+the overlap gets an entry.  "n_pixels" refers to the number of pixels in
+the overlap area in the mosaic (thus, it can change based on the zoom factor
+when the overlaps are generated).  "radius" simply documents the RADIUS
+parameter to marsmap.  The "line" and "samp" entries are optional, and
+indicate where in the input image the overlap occurs (in 1-based image
+coordinates) and is unaffected by zoom.  The specific point in the overlap
+named by these coordinates is not rigorously defined, other than that it
+must be part of the overlap.  These fields are really intended for future
+use in corrections that vary across the image.
+
+Note, the above example is from an IFF mosaic, so the means are I/F radiance
+values rather than typical DN's.
+
+1) Overall
+
+    <overlap type="1" n_images="1" n_pixels="992012" radius="0.000000">
+      <img key="893" mean="677.168590" stdev="551.558688" line="0.000000" samp="0.000000"/>
+    </overlap>
+
+This overlap type is not really an "overlap" but instead it contains
+statistics (mean and standard deviation) about the entire image.  There can
+be only one <img> element in this type of overlap.  The line, samp, and radius
+attributes are meaningless and are ignored.
+
+2) HSI
+
+    <overlap type="2" n_images="3" n_pixels="2699" radius="200.000000">
+      <img key="870" mean="1159.198124" stdev="14.568335" line="38.833518" samp="293.526863"/>
+      <img key="872" mean="1663.807538" stdev="43.621013" line="441.286011" samp="650.354704"/>
+      <img key="873" mean="1316.756407" stdev="30.641209" line="411.041737" samp="15.104069"/>
+    </overlap>
+
+Overlap containing mean and stdev statistics.  This is like Type 0 (Mean_Stdev)
+except that instead of considering the raw value of each pixel, we look
+at it in Hue-Saturation_intensity (HSI) space.  The pixels (which should be
+color, 3-band pixels) are converted to HSI space and then statistics are
+gathered on the Intensity value.  If the image is not color, this is treated
+the same as type 0.
+
+3) Overall HSI
+
+    <overlap type="3" n_images="1" n_pixels="992012" radius="0.000000">
+      <img key="893" mean="677.168590" stdev="551.558688" line="0.000000" samp="0.000000"/>
+    </overlap>
+
+Exactly like Overall (type 1) except the values are in HSI space.
+
+.page
+
+Brightness File Format
+----------------------
+
+The output file looks very similar to a nav file.  A sample file:
+
+<?xml version="1.0" encoding="UTF-8"?>
+<brightness_correction mission="MER:MER2" version="1.0">
+  <origination id="rgd" institution="mipl" program="marsbrt">
+    <purpose>Brightness correction file for a mosaic</purpose>
+  </origination>
+  <priority>
+    <entry solution_id="rgd"/>
+  </priority>
+
+  <brt_solution solution_id="rgd">
+    <image filter="2" frame_id="LEFT" image_id="1000001" instrument="PANCAM_LEFT
+" unique_id="MER2PL_297973167"/>
+    <correction type="LINEAR">
+      <parameter id="ADD" value="-0.000245"/>
+      <parameter id="MULT" value="0.898743"/>
+    </correction>
+  </brt_solution>
+
+  <brt_solution ...>
+    ...
+  </brt_solution>
+  ...
+</brightness_correction>
+
+An HSI-space correction looks the same except for the <correction> element.
+For example:
+
+...
+  <brt_solution solution_id="rgd">
+    <image filter="0" frame_id="RIGHT" image_id="3000285024" instrument="MAST_RIGHT" unique_id="MSLMR_403160011"/>
+    <correction type="HSI_LIN">
+      <parameter id="ADD" value="56.867680"/>
+      <parameter id="MULT" value="0.862299"/>
+    </correction>
+  </brt_solution>
+...
+
+
+.page
+
+HISTORY:
+
+  2010-01    B. Deen - Initial version (derived from marsnav)
+  2012-10-10 rgd - Added input BRTCORR parameter
+  2013-04-02 rgd - Added HSI space, Overall overlaps, REFIMAGE ranges, IGNORE
+  2019-10-02 wlb - IDS-7926 - Initialized some variables; 
+		   Commented some unused variables; Added test script and log.
+  2020-02-18 wlb - IDS-7927 - Replaced sprintf() calls with snprintf() calls.
+
+COGNIZANT PROGRAMMER:  Bob Deen
+
+.LEVEL1
+.VARI INP
+Input image(s) or
+file list.
+
+.VARI OUT
+Output brightness
+correction file.
+
+.VARI IN_OVR
+Input overlap file.
+
+.VARI NAVTABLE
+Input navigation table.
+
+.VARI OUT_SOLUTION_ID
+Solution ID for OUTPUT
+brt file (required).
+
+.VARI SOLUTION_ID
+Solution ID for INPUT
+nav file, if needed.
+
+.VARI REFIMAGE
+Sets reference images.
+Can be a list of images.
+refimage=-1 means no reference
+image.  Negative number means
+a range from the previous.
+
+.VARI UNTIL
+All images up to
+REFIMAGE(1) are reference
+images.
+
+.VARI IGNORE
+List of images to ignore
+in the overlap list.
+
+.VARI IGNORE_INTRA
+Causes intra-set overlaps
+(within the non-reference
+set) to be ignored.
+
+.VARI IGNORE_PARTIAL
+Causes the IGNORE parameter
+to remove just those images
+from overlaps, rather than
+discarding the entire overlap.
+
+.VARI RECYCLE
+How many times to
+recycle solution.
+
+.VARI FTOL
+Tolerance value for amoeba
+
+.VARI DO_WHAT
+Which corrections to perform
+
+.VARI USE_MEAN
+Whether or not to use
+overlap mean statistics
+
+.VARI USE_STDEV
+Whether or not to use
+overlap stdev statistics
+
+.VARI WHICH_OVR
+Whether to use normal or
+overall statistics, or both.
+
+.VARI PRE_OVERALL
+Turns on a preprocessing step
+for overall statistics.
+
+.VARI OVERALL_MEAN
+Target mean override for
+overall overlaps.
+
+.VARI OVERALL_STDEV
+Target stdev override for
+overall overlaps.
+
+.VARI COLORSPACE
+Normal or HSI colorspace.
+Default is to match overlap file.
+
+.VARI INERTIA
+Inertia factor for
+each brt param.
+
+.VARI START_KEY
+Starting key number for
+overlap file.
+
+.VARI LAMBDA_MULT
+Initial amount to vary
+for multiplicative factor
+
+.VARI LAMBDA_ADD
+Initial amount to vary
+for additive factor
+
+.VARI DRIFT_WT
+Drift weight for overall
+solution
+
+.VARI NORMALIZE
+Turn on or off normalization
+of solution
+
+.VARI ITER_OUTLIER
+How many iterations of
+outlier removal to do
+
+.VARI OUTLIER
+Defines an outlier, e.g.
+3 for 3-sigma
+
+.VARI OUT_OVR
+Output overlap filename
+
+.VARI BRTCORR
+Input brightness correction
+file.
+
+.VARI NORMAL
+Surface normal vector.
+
+.VARI GROUND
+Surface ground point.
+
+.VARI SURF_COORD
+Coordinate system used to define
+surface parameters.
+
+.VARI SURFACE
+The type of mars surface to use.
+INFINITY, PLANE, SPHERE1, SPHERE2,
+MESH
+
+.VARI SURF_MESH 
+Mesh file for surface model
+
+VARI SURF_CSFILE 
+File containing CS for surface
+
+.VARI CONFIG_PATH
+Path used to find
+configuration/calibration
+files.
+
+.VARI POINT_METHOD
+Specifies a mission-
+specific pointing
+method to use
+
+.VARI MATCH_METHOD
+Specifies a method
+for pointing corrections.
+
+.VARI MATCH_TOL
+Tolerance value for
+matching pointing params
+in pointing corrections file.
+
+.VARI NOSITE
+Disables coordinate
+system sites.
+
+.VARI RSF
+Rover State File(s) to use.
+
+.VARI DEBUG_RSF
+Turns on debugging of RSF
+parameter.
+
+.VARI COORD
+Coordinate system to use.
+Ignored by marsbrt
+
+.VARI COORD_INDEX
+Coordinate system index for
+some COORD/mission combos.
+Ignored by marsbrt.
+
+.VARI FIXED_SITE
+Which site is FIXED for
+rover missions.
+
+.LEVEL2
+.VARI INP
+There are two options for describing input images. 
+
+Either:
+List the image file names 
+
+Or:
+provide an ascii file with the file names listed, one per record.
+
+.VARI OUT
+Output brightnexx correction file.
+
+This is an XML file describing the parameters (additive and multiplicative
+factors) used to correct each input file.  See the main help for file format.
+
+.VARI IN_OVR
+The input overlap file, generated by a program such as MARSMAP (using OVR_OUT).
+This file must be specified.  It is an XML file; see the main help for file
+format.
+
+.VARI NAVTABLE
+The optional input navigation table.  Since pointing and camera models are
+not used currently, this parameter is not really needed.
+
+.VARI OUT_SOLUTION_ID
+Solution id for the OUTPUT brightness correction file in XML format.
+This parameter is required.
+
+.VARI SOLUTION_ID
+Specifies which solution ID to use for the INPUT nav file (if present).
+
+Unused for MARSBRT.
+
+.VARI REFIMAGE
+Specifies which image (if any) are reference images.
+
+Reference images are assumed to be correct and will not be adjusted.
+
+Defaults to no reference, which can also be explicitly specified via
+REFIMAGE=-1.
+
+REFIMAGE can be a single image, or a list of images.  Each image in the
+list will be a reference image.  (see also UNTIL).  This allows any arbitrary
+images to be selected as references.  If an image number is negative, it
+means all images from the previous number through (the absolute value of)
+this one will be references.  For example a list:
+
+1,3,-6,8,11,-15
+
+will cause the following images to be reference imgaes:
+
+1,3,4,5,6,8,11,12,13,14,15
+
+Numbering of images starts at 1.
+
+.VARI UNTIL
+Means that all images from 1 to the first value of REFIMAGE inclusive are
+treated as reference images.  The radiometry of these will not change.  Any
+additional images listed in REFIMAGE will also be reference images.
+
+The functionality of this parameter has been subsumed by the negative number
+feature of REFIMAGE.  For example, REF=5 -UNTIL is the same as REF=\(1,-5\).
+
+.VARI IGNORE
+Specifies a list of images that will be ignored.  Overlaps containing this
+image will be ignored and excluded from consideration (but see IGNORE_INTRA).
+This has two purposes.  First, for very large overlap files, when adjusting
+only a few images (via REFIMAGE), the presence of spurious overlaps can be a
+significant performance drain.  Second, and more important, this allows you to
+exclude a match that is known bad.  For example if trying to adjust a single
+tile (only one non-reference image), a neighbor that has a different shadow,
+or bad rover parallax, could be ignored without having to hand-edit or
+regenerate the overlap file.
+
+Ignored overlaps still appear in the output
+overlap file (if one is written).
+
+Ignored images should always be reference images (although this is not checked
+nor enforced).  A non-reference (active) image cannot be adjusted if all
+overlaps containing that image are removed.
+
+Like REFIMAGE, IGNORE accepts negative numbers to indicate ranges.  So a value
+of 4,-7 means 4,5,6,7 are all ignored.  See REFIMAGE for more examples.
+
+.VARI IGNORE_INTRA
+This flag causes all overlaps between non-reference (active) images to be
+ignored.  Only overlaps between non-reference and reference images will be
+considered.
+
+The use case for this is as follows:  Say you are doing a color mosaic (e.g.
+Mastcam on MSL) which has already been corrected, and you want to fill in
+gaps with navcam images.  This flag allows you to mark the entire color set
+as reference images, with the navcams active.  Then when adjusting navcams,
+only the nav-mast borders will be considered.  This is beneficial because
+that is the interface that is of most interest, and the navcams are likely
+to contain large bits of the rover itself, which do not brightness-match
+well due do parallax.  The navcams match their neighbors but not each other.
+
+.VARI IGNORE_PARTIAL
+This flag modifies the behavior of IGNORE slightly.  By default, if an overlap
+contains an ignored image, the entire overlap is thrown out.  However,
+sometimes that is not desirable.  For example, a small mastcam mosaic on top
+of a navcam (MSL) will have 100% overlap with the navcam.  But you want to
+match the mastcams to each other, not the navcam.  You can't ignore the navcam
+though because every overlap contains it - there would be none left.
+
+With IGNORE_PARTIAL, the ignored images are removed from overlaps, rather
+than disqualifying the entire overlap.  The overlap is ignored entirely only
+if there are one or fewer images left after removing the ignored ones.  In the
+example scenario above, ignoring the navcam will preserve all the intra-mastcam
+overlaps.
+
+.VARI RECYCLE
+RECYCLE specifies the number of times to re-run the solution, starting where
+the previous one ended.  This happens after any outlier rejection.
+
+.VARI FTOL
+Tolerance value for amoeba.  Specifies how accurate the answer should be.
+(more precisely, amoeba terminates when the amount of change in the cost
+function is less than this amount).  Larger numbers can greatly speed up
+runtime.  For marsbrt, values of .001 are probably sufficient for most
+cases, but this has not been rigorously tested.  The default is .00001.
+
+.VARI DO_WHAT
+This keyword specifies which parameters should be adjusted.  The default
+of DO_LINEAR allows both additive and multiplicative factors to vary.
+Specifying DO_ADD or DO_MULT limits changes to just one parameter.
+
+.VARI USE_MEAN
+Controls whether or not the overlap mean statistics are used from the
+overlap file.  The default is on.  If you turn this off, you may have to
+change DO_WHAT to ensure there are enough degrees of freedom to accommodate
+all the parameters being changed.
+
+.VARI USE_STDEV
+Controls whether or not the overlap standard deviation statistics are used
+from the overlap file.  The default is on.  If you turn this off, you may
+have to change DO_WHAT to ensure there are enough degrees of freedom to
+accommodate all the parameters being changed.
+
+.VARI WHICH_OVR
+Specifies whether to use normal or overall statistics (or both, or neither) in
+the function minimization process.  
+
+This should almost always be NORMAL.  It is possible to have overall overlaps
+considered during the function minimization process but this has not worked
+well in testing.  It is far better to preprocess them (using -PRE_OVERALL)
+instead.  Thus OVERALL and BOTH should rarely if ever be used.  NONE can be
+useful if you ONLY want to do the overall preprocessing.
+
+.VARI PRE_OVERALL
+Turns on the preprocessing step for overall statistics which, as described
+in "Initial Conditions" in the main help, will compute initial conditions
+based on the overall statistics.  Combining this with -NORMAL (WHICH_OVR
+parameter) makes the overall be used only in this preprocessing step, which
+is almost always what you want.
+
+.VARI OVERALL_MEAN
+Target value for the overall preprocessing mean.  The default is the average
+of all the overall overlaps' means.
+
+.VARI OVERALL_STDEV
+Target value for the overall preprocessing standard devations.  The default
+is the average of all the overall overlaps' standard devations.
+
+.VARI COLORSPACE
+Specifies whether to use normal or HSI colorspace overlaps.  Normally this
+should be left to the default PER_OVERLAPS, which uses whichever mode the
+overlaps are set to in the input file.
+
+.VARI INERTIA
+The INERTIA parameter modifies the residual used for function minimiziation
+by adding a factor that makes the radiometry of the images tend to stay in
+place.  For each brightness parameter, the difference between the original
+value of the parameter and the current value is multiplied by the corresponding
+INERTIA value, and the result is added to the residual.  Each parameter can
+have a different value for INERTIA.  The result of this is that, depending on
+the weight imparted by INERTIA, images will tend to stay where they are,
+adjusting less in response to overlaps than they otherwise would.  This has
+the beneficial effect of preventing "drift" of the entire solution.  For
+example, you can multiply everything in a mosaic by a constant value and the
+mosaic will still look the same, with the same residuals.  INERTIA can prevent
+that by introducing an error term whenever the parameter moves.
+
+Selecting an appropriate value for INERTIA is a dicey proposition.  The unit
+of the residual is hard to define, since both differences in mean and
+differences in stdev are combined (each is normalized by the average and then
+squared).  It is best selected by trial and error.  For a typical image
+(DN's in the 0-4k range) a good value might be (0.1, 0.0001).  For IFF-style
+images (floating-point I/F radiances) in a 0-0.5 range, use (0.1, 0.1).  For
+IFF's in 0-0.1 range, try (0.1,1.0).  Some experimentation may be required.
+
+Note that the first element of INERTIA always refers to the multiplicative
+factor, while the second element always refers to the additive.  This is
+true even if one or the other is turned off via DO_WHAT.
+
+The additive component of INERTIA should vary in order of magnitude with the
+range of the input DN.  See the discussion in the main help.
+
+.VARI START_KEY
+Starting key number for the overlap file.  Overlap files contain a list of
+images, each of which is associated with an integer key.  Setting START_KEY
+to some value allows overlap files to be merged easily, without the keys
+conflicting.  It is acceptable to have the same image in different sections
+of a merged file (with different keys); they are properly merged when read in.
+
+.VARI LAMBDA_MULT
+Specifies the lambda, or length scale, for the multiplicative factor.  This
+is the value used by amoeba to decide how much to move the parameters when
+starting off.  It will not generally need to change.
+
+.VARI LAMBDA_ADD
+Specifies the lambda, or length scale, for the additive factor.  This is the
+value used by amoeba to decide how much to move the parameters when starting
+off.  Unlike LAMBDA_MULT, it will likely need to vary in order of magnitude
+with the range of the input DN.  See the discussion in the main help.
+
+.VARI DRIFT_WT
+Specifies a drift weight to use to keep the solution in place.  This has not
+performed well in testing and should be used advisedly; see the main help
+for details.  The first element always applies to the multiplicative factor
+and the second the additive, regardless of whether something is turned off
+via DO_WHAT.  
+
+The additive component of DRIFT_WT should vary in order of magnitude with the
+range of the input DN.  See the discussion in the main help.
+
+.VARI NORMALIZE
+Turns on or off the normalization process, which is preferred over DRIFT_WT
+as a means to keep the solution centered around mult=1.0 and add=0.0.  See
+the discussion in the main help.
+
+.VARI ITER_OUTLIER
+Specifies the number of iterations to perform while removing outliers.
+If at any point there are no outliers to remove, the remaining iterations
+are bypassed.  Each iteration restarts the solution from initial conditions
+(unlike RECYCLE) to avoid "contamination" by the removed outliers.
+
+.VARI OUTLIER
+Specifies what an outlier is.  This is a factor multiplied by the standard
+deviation of the errors to set a threshold for elimination.  So a value of
+3 is equivalent to rejecting 3-sigma outliers.  See the discussion on outlier
+rejection in the main help.
+
+.VARI OUT_OVR
+An optional output overlap file, which holds changes to the overlap made by
+the outlier rejection mechanism.
+
+.VARI BRTCORR
+A brightness correction file (such as produced by an earlier run of marsbrt)
+that specifies the starting point for images.  By setting those images
+mentioned in the BRTCORR file as references, the mosaic can be added to without
+disturbing the existing images.
+
+.VARI NORMAL
+The local surface normal vector in the coordinate system specified by
+SURF_COORD (defaults to surface fixed).
+
+For most pan/tilt cameras, if the lander is not tilted this vector
+would be: normal=(0,0,-1).  ie: x_component=0, y_component=0, z_component=-1.
+This need not be a unit vector.  This vector is used to define the
+surface plane to which image points are projected in order to minimize
+parallax.
+For SPHERE1/2 surface models, normal's first parameter is used to
+denote sphere's radius.  Thus to describe sphere of radius R, user
+would specify normal=(R, 0, 0).
+
+Surface normals and coordinates are not currently used by MARSBRT, therefore
+this parameter is ignored.  It is retained for potential future use.
+
+.VARI GROUND
+Any point on the surface, in the coordinate system specified by SURF_COORD
+(defaults to surface fixed).  This defines where the tilted plane is in
+space.  Although any point may be used, normally the point just "under" the
+origin is selected.
+Defaults:
+Mars Pathfinder:  (0.0, 0.0, 0.0)       (lander zero point is on the ground)
+Mars 98 Lander:   (0.0, 0.0, 1.64)      (lander zero point is on top of deck)
+MER           :   (0.0, 0.0, 0.294)
+For MER images taken on top of the lander, the ground is roughly at (0.0, 0.0, 0.7)
+For SPHERE1/2 surface models, GROUND parameter is used to denote sphere's
+center.
+
+Surface normals and coordinates are not currently used by MARSBRT, therefore
+this parameter is ignored.  It is retained for potential future use.
+
+.VARI SURF_COORD
+The coordinate system that surface parameters like GROUND and NORMAL are
+defined in.  For valid values refer to COORD parameter description.  The
+interpretation of the values is dependent on the mission.  Defaults to
+surface fixed coordinate system.
+
+Note that no validation is done for input strings because COORD is using
+the same values.  So the user needs to be extra careful in specifying
+SURF_COORD values.  For example COORD=local would be correctly interpreted
+to mean LOCAL_LEVEL because of the validation process.  On the other hand
+specifying SURF_COORD=local would lead to underlying code treating the input
+value as invalid and reverting to default which is FIXED frame.  So the
+values for SURF_COORD should be spelled exactly as found in the list of
+valid values for the COORD parameter.
+
+Surface normals and coordinates are not currently used by MARSBRT, therefore
+this parameter is ignored.  It is retained for potential future use.
+
+
+.VARI SURFACE
+The type of mars surface to use. The surface is used to intercept view rays
+emanating from the cameras in order to model out parallax between the
+stereo cameras. The options are surface=INFINITY which means no surface
+is used, surface=PLANE (the default case). If surface = PLANE then the plane
+is defined by the NORMAL and GROUND parameters.  For the cases when PLANE 
+doesn't match local topography sufficiently well, here are two sphere surface
+models: surface=SPHERE1 and surface=SPHERE2.  SPHERE1 is useful to model
+convex surfaces like hills, it returns closest(first) ray-surface intersection 
+point.  SPHERE2 is useful to model concave surfaces, like crater when the
+camera point is outside looking in, it returns farthest(second) ray-surface 
+intersection point.  For the case when camera is inside the sphere surface, 
+like rover sitting in the crater, there is only a single intersection point
+and SPHERE1 and SPHERE2 behave exactly the same. Last, MESH is a surface
+model defined by a mesh file (.obj) which path is given with SURF_MESH.
+
+Surface normals and coordinates are not currently used by MARSBRT, therefore
+this parameter is ignored.  It is retained for potential future use.
+
+
+.VARI SURF_MESH 
+Mesh OBJ file to use as the surface model. For the mesh to be used,
+SURFACE must be set to MESH. The coordinates of the mesh vertices can be 
+expressed in any CS. However the mesh CS must be supplied via SURF_CSFILE.
+If SURF_CSFILE is not used, then the mesh is assumed to be to the CS that
+results from COORD or SURF_COORD
+
+VARI SURF_CSFILE 
+File name of a vicar file whose CS (contained in the labels) will be read and
+assigned to the SURFACE model. The type of image and its content are of no
+interest, we are just reading the CS. That CS will supersede any other surface 
+CS definition (COORD or SURF_COORD). Its typical use is to supply a CS to a
+given mesh file (expectedly the XYZ from which the mesh is computed from, but
+doesn't have to). But SURF_CSFILE could be use to define a CS in which NORMAL 
+and GROUND for a PLANE surface are expressed in.
+
+
+
+.VARI CONFIG_PATH
+A colon-separated list of directories in which to look for configuration
+and calibration files.  Environment variables are allowed in the list
+(and may themselves contain colon-separated lists).  The directories are
+searched in order for each config/cal file when it is loaded.  This allows
+multiple projectes to be supported simultaneously, and allows the user to
+override any given config/cal file.  Note that the directory structure below
+the directories specified in this path must match what the project expects.
+For example, Mars 98 expects flat fields to be in a subdirectory named
+"flat_fields" while Mars Pathfinder expects them to be directly in the
+directory specified by the path (i.e. no intermediate subdirectories).
+
+.VARI POINT_METHOD
+Specifies a mission-specific pointing method to use.  Normally this
+parameter is not used, in which case the "default" pointing methods
+are used.  Some missions may have special, or alternate, pointing
+methods available, which are indicated by this string (for example,
+backlash models, using arm joint angles instead of x/y/z/az/el, etc).
+A substring search is used, so multiple methods (where that makes sense)
+can be specified by separating the keywords with commas.
+
+Note that nav files created using one pointing method will most likely
+not be compatible with a mosaic created using a different pointing method.
+
+The methods available vary per mission, but some methods available at
+the time of this writing are:
+
+BACKLASH : Mars 98 SSI only.  Selects a backlash pointing model,
+which adjusts the telemetered azimuth and elevation values based on
+knowledge of the camera's mechanical backlash and the direction the
+motor was travelling when the image was taken.
+
+Pointing and camera models are not currently used by MARSBRT, therefore
+this parameter is ignored.  It is retained for potential future use.
+
+.VARI MATCH_METHOD
+Specifies a method for reading the nav file.
+
+Loose method matches with pointing parameters of the image.
+Tight method matches with unique id of the image.
+
+Applies only to an input nav file, if given (not to the output nav file).
+
+Pointing and camera models are not currently used by MARSBRT, therefore
+this parameter is ignored.  It is retained for potential future use.
+
+.VARI MATCH_TOL
+Tolerance value for matching pointing parameters in the pointing corrections file.
+Used if MATCH_METHOD=LOOSE
+Default value is pretty arbitrary, though seems to work well so far....
+
+Pointing and camera models are not currently used by MARSBRT, therefore
+this parameter is ignored.  It is retained for potential future use.
+
+.VARI NOSITE
+Disables all label-derived parameters to the Site mechanism which underlies
+coordinate systems.  This forces all sites to be identical, with all rotations
+and offsets set the same.  In the case of MPF or Mars 98, this disables
+the lander quaternion and offset (sets them to identity and 0, respectively).
+This option should not be used with images taken from different vantage
+points (e.g. the spacecraft moved, or mixing a lander and a rover) or
+invalid results will be obtained.  The use of this option invalidates the
+Fixed coordinate frame; any values reported in the Fixed frame will not
+correctly reflect the orientation of the lander/rover.
+
+Obviously, this option should be rarely used; it is intended for when the
+image labels defining the site are invalid or inconsistent.
+
+Surface normals and coordinates are not currently used by MARSBRT, therefore
+this parameter is ignored.  It is retained for potential future use.
+
+.VARI RSF
+Rover State File.  This is a list of filenames to load containing
+Rover State information.  These files contain position and orientation
+information for a rover (or other mobile spacecraft) at various sites.
+They are in XML format.  See the "Rover Motion Counter (RMC) Master File SIS"
+for details on these files.
+
+Rover State Files have a priority order.  The files listed first have
+the highest priority.
+
+Environment variables may be used in the list.
+
+For MER, if a directory is specified, then that directory is searched for
+RMC Master files and any found are loaded.  The directory structure and
+filename convention is covered in the RMC SIS.  The directory specified
+is the one containing "master", so if <dir> is the name specified in the
+RSF parameter, the following files will be searched for:
+
+<dir>/master/<mission>_Master.svf
+<dir>/master/<mission>_Site_<n>_Master.rvf
+
+The name of each file loaded is printed to the stdout log for reference.
+
+Surface normals and coordinates are not currently used by MARSBRT, therefore
+this parameter is ignored.  It is retained for potential future use.
+
+.VARI DEBUG_RSF
+If enabled, this causes the internal database of RMC locations to be
+printed out to the stdout log.  This is after the RSF files have been
+loaded and the coordinate systems read from the input label(s).
+
+Surface normals and coordinates are not currently used by MARSBRT, therefore
+this parameter is ignored.  It is retained for potential future use.
+
+.VARI COORD
+This parameter is ignored by marsnav, except for one place.  It is
+here for compatibility with subroutines used by other programs (see
+e.g. marsmap).
+
+If DO_SURFACE is specified, then the final surface model is printed out
+in the coordinate system specified by COORD as well as SURF_COORD.  This
+allows for example the input surface to be specified in ROVER frame, and
+ROVER frame will be used to adjust it.  But the final surface will be
+printed in both ROVER and SITE frames.  This allows the SITE frame value
+to be used in subsequent steps, which more closely follows normal practice.
+
+Surface normals and coordinates are not currently used by MARSBRT, therefore
+this parameter is ignored.  It is retained for potential future use.
+
+.VARI COORD_INDEX
+This parameter is ignored by marsnav (except in one case; see COORD).  It
+is here for compatibility with subroutines used by other programs (see
+e.g. marsmap).
+
+Surface normals and coordinates are not currently used by MARSBRT, therefore
+this parameter is ignored.  It is retained for potential future use.
+
+.VARI FIXED_SITE
+Specifies which major Site is the "Fixed" Site for this run.
+
+Historically, MPF and M98 had a single "Surface Fixed" frame which never
+moved, and which all other coordinate system frames were referenced to.
+With the advent of long-range rovers (such as MER and FIDO), that became
+insufficient.  The rover traverses far enough that errors in knowledge of
+coordinate system offset and orientation become unacceptable.
+
+For this reason, a system of major Sites was introduced.  Periodically
+during the mission, a Site frame is declared.  This then becomes the
+reference frame for all activities until the next Site is declared.
+References are kept local, and errors don't propogate across Sites.
+
+However, if images from more than one Site are combined together, the
+Site's must be placed relative to each other.  Therefore a single reference
+frame is still needed to combine different sites.
+
+The FIXED_SITE parameter controls which of the major Site frames is
+the reference ("fixed") site for this program run.  This fixed frame
+can vary in different program runs, but is constant throughout one
+execution.
+
+If not specified, FIXED_SITE defaults to the minimum Site number (i.e.
+lowest numbered, or earliest chronologically) used in all input images.
+Normally this default is sufficient; rarely must FIXED_SITE be specified.
+
+One or more Rover State Files must usually be specified in order to combine
+image from more than one Site.  These describe the relationship between
+sites.  See the RSF parameter.
+
+Surface normals and coordinates are not currently used by MARSBRT, therefore
+this parameter is ignored.  It is retained for potential future use.
+

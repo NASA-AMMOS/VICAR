@@ -1,0 +1,483 @@
+process help=*
+PARM INP TYPE=STRING COUNT=(1:3)
+PARM OUT TYPE=STRING COUNT=1
+
+PARM NAVTABLE TYPE=STRING COUNT=(0:1) DEFAULT=--
+
+PARM INST TYPE=KEYWORD VALID=(HP3,SEIS)
+PARM OUTSIDE_DN TYPE=INTEGER DEFAULT=1
+
+PARM WTS_OFF TYPE=REAL COUNT=(1:2) DEFAULT=(0.05,0)
+
+PARM CONFIG_PATH STRING DEFAULT="$MARS_CONFIG_PATH"
+PARM POINT_METHOD TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM NOSITE TYPE=KEYWORD COUNT=(0:1) VALID=NOSITE DEFAULT=--
+
+PARM DATA_SET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM DATA_SET_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM RELEASE_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCT_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_INST TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_TYPE TYPE=STRING COUNT=(0:1) DEFAULT=--
+
+PARM RSF TYPE=STRING COUNT=0:100 DEFAULT=--
+PARM DEBUG_RSF TYPE=KEYWORD COUNT=0:1 VALID=DEBUG_RSF DEFAULT=--
+PARM COORD TYPE=KEYWORD VALID=("FIXED", "INSTRUMENT", "SITE", "ROVER", +
+        "LOCAL_LEVEL") DEFAULT="ROVER"
+PARM COORD_INDEX TYPE=INTEGER COUNT=0:10 DEFAULT=--
+PARM FIXED_SITE TYPE=INTEGER COUNT=0:1 DEFAULT=--
+PARM SOLUTION_ID TYPE=STRING COUNT=0:1 DEFAULT=--
+
+END-PROC
+
+.TITLE
+VICAR program NSYTWKSP
+
+.HELP
+PURPOSE:
+
+NSYTWKSP computes a mask showing the workspace boundaries for the
+InSight mission.  The boundaries are computed by comparing the XYZ
+coordinates with precomputed polygons indicating the edges of the
+workspace.
+
+The output is a single-band BYTE image, containing a code 0-7 showing
+which polygons the point is inside.  See below for values.
+
+This program could easily by multimission-ized.
+
+EXECUTION:
+
+nsytwksp inp=data.xyz out=data.wss -seis
+where:
+data.xyz is an input 3-band image of type REAL with the X, Y and Z values
+at that pixel in meters (the unit is actually irrelevant).
+
+.PAGE
+METHOD:
+
+The actual core algorithm was developed by Steven Myint from Section 347.
+It was then refactored to meet VICAR standards by Bob Deen.
+
+The algorithm is simple: for each point, it checks if the XY coordinate
+is within the boundary specified by the input polygon file.  Z is ignored.
+The XYZ coordinate is converted to the coordinate system specified in
+COORD first.
+
+The files are different based on instrument: HP3 and SEIS (actually a
+combination of SEIS and WTS).  Selection is made via a parameter.
+
+.page
+OUTPUT FORMAT:
+
+The output is a 1-band file in BYTE format.
+
+For HP3 the possible values are:
+
+  0 = no data
+  1 = outside HP3 boundary, or no data
+  2 = HP3 footplane (footprint) boundary
+  3 = n/a
+  4 = IDA grapple workspace --- IDA grapple kinematically reachable zone for
+      HP3 deployment
+  5 = nominal (IDA grapple workspace) zone for HP3 deployment
+  6 = inside HP3 grapple point boundary, but ICC view partially occluded
+  7 = inside HP3 grapple point boundary, but more maneuvering required for 
+      collision prevention 
+
+For SEIS/WTS the possible values are:
+
+  0 = no data
+  1 = outside all SEIS/WTS areas, or no data
+  2 = WTS footplane (footprint) boundary
+  3 = SEIS footplane (footprint) boundary
+  4 = IDA grapple workspace --- IDA grapple kinematically reachable zone for 
+      SEIS/WTS deployment
+  5 = nominal (IDA grapple workspace) zone for SEIS/WTS deployment
+  6 = inside SEIS/WTS grapple point boundary, but ICC view partially occluded
+  7 = inside SEIS/WTS grapple point boundary, but more maneuvering required for 
+      collision prevention
+
+The value 5 is assigned to the "best" workspace, in order to maintain
+consistency across all InSight masks.  The values above 5 are
+technically acceptable for placement, but are sub-optimal due to their
+constraints.  The goodness program will accept all of 5-7 as "good".
+
+Note: it is assumed the polygons strictly nest, with higher numbers above
+being smaller than previous polygons.  If not, the highest number wins
+(in other words, polygons are traversed in order from highest to lowest, and
+once a number is assigned to a given pixel, no other polyons are checked).
+
+.PAGE
+POLYGON FILES:
+
+The program reads polygon vertices from five polygon files provided by
+Won Kim (347). These files are found using the standard MARS_CONFIG_PATH
+mechanism in the "param_files" directory.  The files are:
+
+param_files/NSYT_wksp_hp3_boundary.txt
+param_files/NSYT_wksp_hp3_grapple_kinematic.txt
+param_files/NSYT_wksp_hp3_grapple_nominal.txt
+param_files/NSYT_wksp_hp3_grapple_ICC.txt
+param_files/NSYT_wksp_hp3_grapple_maneuvering.txt
+param_files/NSYT_wksp_wts_boundary.txt
+param_files/NSYT_wksp_seis_boundary.txt
+param_files/NSYT_wksp_seis-wts_grapple_kinematic.txt
+param_files/NSYT_wksp_seis-wts_grapple_nominal.txt
+param_files/NSYT_wksp_seis-wts_grapple_ICC.txt
+param_files/NSYT_wksp_seis-wts_grapple_maneuvering.txt
+
+where "NSYT" is actually the host ID (NSYT for flight, NSYTTBC for the
+testbed, etc).
+
+The polygon files may be replaced with different ones if the lander ends
+up with a significant tilt (because the tilt affects how the grapple hangs).
+
+.PAGE
+
+HISTORY:
+2015-05-02	rgd	Initial version, based on code from Steven Myint (347)
+2017-12-11  Steven Lu   Read polygon files from MARS_CONFIG_PATH.
+2018-01-18  Steven Lu   Implement radial and cross-radial offsets for WTS.
+2018-04-03  Steven Lu   Add addtional polygons and change assigned numbers.
+COGNIZANT PROGRAMMER: B. Deen
+
+.LEVEL1
+.VARI INP
+Input XYZ image.
+Must be 1 3-band file
+or (x,y,z) triplet.
+
+.VARI OUT
+Output file.
+Must be 1 filename.
+
+.VARI NAVTABLE
+Corrected navigation
+filename.
+
+.VARI INST
+Instrument to use:
+HP3 or SEIS
+
+.VARI OUTSIDE_DN
+DN to use for outside
+all polygons
+
+.VARI WTS_OFF
+Radial and cross-radial offsets
+between SEIS and WTS
+
+.VARI CONFIG_PATH
+Path used to find
+configuration/calibration
+files.
+
+.VARI POINT_METHOD
+Specifies a mission-
+specific pointing
+method to use
+
+.VARI NOSITE
+Disables coordinate
+system sites.
+
+.VARI RSF
+Rover State File(s) to use.
+
+.VARI DEBUG_RSF
+Turns on debugging of RSF
+parameter.
+
+.VARI COORD
+Coordinate system to use.
+
+.VARI COORD_INDEX
+Coordinate system index for
+some COORD/mission combos.
+
+.VARI FIXED_SITE
+Which site is FIXED for
+rover missions.
+
+.VARI SOLUTION_ID
+Solution ID to use for
+COORD_INDEX
+
+.VARI DATA_SET_NAME
+Specifies the full name given
+to a data set or a data product.
+
+.VARI DATA_SET_ID
+Specifies a unique alphanumeric
+identifier for a data set or data
+product.
+
+.VARI RELEASE_ID
+Specifies the unique identifier
+associated with the release to the
+public of all or part of a data set.
+The release number is associated with
+the data set, not the mission.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique
+identifier assigned to a data
+product by its producer.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier
+of an entity associated with the
+production a data set.
+
+.VARI PRODUCER_INST
+Specifies the full name of the
+identity of an entity associated
+with the production of a data set.
+
+.VARI TARGET_NAME
+Specifies a target.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target.
+
+.LEVEL2
+.VARI INP
+Input files contain the XYZ coordinates. If three filenames are given,
+they all should be single band files each containing X, Y and Z values
+in that order.  If only one filename is given, it should be a 3-band
+file with bands in (X,Y,Z) order.
+
+The input files are in REAL (float) format.
+
+.VARI OUT
+Output file containing the mask.
+
+The file will be in 1-band BYTE format.  See "OUTPUT FORMAT" in the main
+help for the file format.
+
+.VARI INST
+Chooses which instrument to use.  Based on this, the proper config file
+is loaded to obtain the polygons.
+
+.VARI OUTSIDE_DN
+DN to use for pixels that have an XYZ value but are outside of all polygons.
+Default is 1, which distinguishes outside vs. no-value cases.
+
+.VARI WTS_OFF
+There are radial and cross-radial offsets between the WTS and SEIS, because
+the grapples are not coaxial in the nominal placement.  The WTS position is
+thus offset by an amount determined in the WTS_OFF parameter. WTS_OFF parameter
+has 1 or 2 valid values. The first value defines radial offset along the
+direction back to the Lander(IDA) frame origin, and the second value defines
+cross-radial offset along the direction perpendicular to radial direction.
+Radial offset defaults to 0.05 meters, and cross-radial offset defaults to 0.
+THe cross-radial offset is 0 if it is unspecified. Consider positive toward the 
+Lander frame origin for radial and to the right (+Y when looking down +X) for 
+cross-radial. Both radial and cross-radial offsets are applied after WTS
+rotations (instrument clocking and rotations due to tether) are done.
+See the NSYTTILT help for details. 
+
+.VARI CONFIG_PATH
+A colon-separated list of directories in which to look for configuration
+and calibration files.  Environment variables are allowed in the list
+(and may themselves contain colon-separated lists).  The directories are
+searched in order for each config/cal file when it is loaded.  This allows
+multiple projects to be supported simultaneously, and allows the user to
+override any given config/cal file.  Note that the directory structure below
+the directories specified in this path must match what the project expects.
+For example, Mars 98 expects flat fields to be in a subdirectory named
+"flat_fields" while Mars Pathfinder expects them to be directly in the
+directory specified by the path (i.e. no intermediate subdirectories).
+
+.VARI POINT_METHOD
+Specifies a mission-specific pointing method to use.  Normally this
+parameter is not used, in which case the "default" pointing methods
+are used.  Some missions may have special, or alternate, pointing
+methods available, which are indicated by this string (for example,
+backlash models, using arm joint angles instead of x/y/z/az/el, etc).
+A substring search is used, so multiple methods (where that makes sense)
+can be specified by separating the keywords with commas.
+
+Note that nav files created using one pointing method will most likely
+not be compatible with a mosaic created using a different pointing method.
+
+The methods available vary per mission, but some methods available at
+the time of this writing are:
+
+BACKLASH : Mars 98 SSI only.  Selects a backlash pointing model,
+which adjusts the telemetered azimuth and elevation values based on
+knowledge of the camera's mechanical backlash and the direction the
+motor was travelling when the image was taken.
+
+.VARI NOSITE
+Disables all label-derived parameters to the Site mechanism which underlies
+coordinate systems.  This forces all sites to be identical, with all rotations
+and offsets set the same.  In the case of MPF or Mars 98, this disables
+the lander quaternion and offset (sets them to identity and 0, respectively).
+This option should not be used with images taken from different vantage
+points (e.g. the spacecraft moved, or mixing a lander and a rover) or
+invalid results will be obtained.  The use of this option invalidates the
+Fixed coordinate frame; any values reported in the Fixed frame will not
+correctly reflect the orientation of the lander/rover.
+
+Obviously, this option should be rarely used; it is intended for when the
+image labels defining the site are invalid or inconsistent.
+
+.VARI DATA_SET_NAME
+The DATA_SET_NAME typically identifies the instrument that acquired the
+data, the target of that instrument, and the processing level of the data.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_NAME.
+
+.VARI DATA_SET_ID
+The DATA_SET_ID value for a given data set or product is constructed
+according to flight project naming conventions.  In most cases the
+DATA_SET_ID is an abbreviation of the DATA_SET_NAME.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_ID.
+
+.VARI RELEASE_ID
+When a data set is released incrementally, such as every three months during
+a mission, the RELEASE_ID is updated each time part of the data set is released.
+For each mission(or host id if multiple spacecrafts), the first release of a data
+set should have a value of "0001".
+This value is copied to the output label, property IDENTIFICATION,
+keyword RELEASE_ID.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique identifier assigned to a data product by
+its producer. Most commonly, it is the filename minus the extension.
+This value is copied to the output label, property IDENTIFICATION,
+keyword PRODUCT_ID.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier of an entity associated with the
+production of a data set. This value is copied to the output label,
+property IDENTIFICATION, keyword PRODUCER_ID.
+
+.VARI PRODUCER_INST
+Specifies the identity of a university, research center, NASA center or other
+institution associated with the production of a data set.
+This value is copied to the output label, property IDENTIFICATION, keyword
+PRODUCER_INSTITUTION_NAME.
+
+.VARI TARGET_NAME
+Specifies a target.  The target may be a planet, satelite, ring, region, feature,
+asteroid or comet.  This value is copied to the output label, property
+IDENTIFICATION, keyword TARGET_NAME.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target. This value is copied to the output
+label, property IDENTIFICATION, keyword TARGET_NAME.
+
+.VARI RSF
+Rover State File.  This is a list of filenames to load containing
+Rover State information.  These files contain position and orientation
+information for a rover (or other mobile spacecraft) at various sites.
+They are in XML format.  See the "Rover Motion Counter (RMC) Master File SIS"
+for details on these files.
+
+Rover State Files have a priority order.  The files listed first have
+the highest priority.
+
+Environment variables may be used in the list.
+
+For MER, if a directory is specified, then that directory is searched for
+RMC Master files and any found are loaded.  The directory structure and
+filename convention is covered in the RMC SIS.  The directory specified
+is the one containing "master", so if <dir> is the name specified in the
+RSF parameter, the following files will be searched for:
+
+<dir>/master/<mission>_Master.svf
+<dir>/master/<mission>_Site_<n>_Master.rvf
+
+The name of each file loaded is printed to the stdout log for reference.
+
+.VARI DEBUG_RSF
+If enabled, this causes the internal database of RMC locations to be
+printed out to the stdout log.  This is after the RSF files have been
+loaded and the coordinate systems read from the input label(s).
+
+.VARI COORD
+The coordinate system in which the polygons are expressed.  The input XYZ
+values will be translated to this coordinate system.
+
+The interpretation of the values is dependent on the mission.  Some
+representative missions are listed here:
+
+Fixed - The Fixed frame.  This is the ultimate reference frame
+    (see also FIXED_SITE for rover missions).
+Instrument - (default) The "natural" frame for the instrument 
+    (of the first input image).  MPF: Lander or Rover; M98: MVACS; MER: Rover.
+Site - A major Site frame.  For rover missions, COORD_INDEX specifies which
+    Site frame to use.  Non-rover missions treat this as Fixed.
+Rover - An instance of the Rover frame.  For rover missions, COORD_INDEX
+    specifies which instance of the rover frame to use.  Non-rover mission
+    use the spacecraft frame (e.g. Lander for M98).
+Local_Level - An instance of a Local Level frame.  This is typically
+    coincident with the Rover frame (in XYZ) but oriented toward North
+    like the Site and Fixed frames.  For MER, this is an instance of a
+    Drive index move.
+
+.VARI COORD_INDEX
+The index specifies which instance of a coordinate system to use.  It is
+currently applicable only to rover-based missions, but could have other
+uses.  The index is equivalent to the Rover Motion Counter (RMC) for MER
+and FIDO.
+
+For MER/FIDO, there are many Site frames.  Each is numbered with a single
+index.  For Site Frames, coord_index specifies which to use.  Likewise,
+there are many Local_Level and Rover frames, corresponding to values of
+the RMC.  The multiple instances of this frame are selected by COORD_INDEX.
+
+Generally COORD_INDEX defaults sensibly so you don't usually need to
+specify it.  It will default to the instance used by the first input.
+
+.VARI FIXED_SITE
+Specifies which major Site is the "Fixed" Site for this run.
+
+Historically, MPF and M98 had a single "Surface Fixed" frame which never
+moved, and which all other coordinate system frames were referenced to.
+With the advent of long-range rovers (such as MER and FIDO), that became
+insufficient.  The rover traverses far enough that errors in knowledge of
+coordinate system offset and orientation become unacceptable.
+
+For this reason, a system of major Sites was introduced.  Periodically
+during the mission, a Site frame is declared.  This then becomes the
+reference frame for all activities until the next Site is declared.
+References are kept local, and errors don't propogate across Sites.
+
+However, if images from more than one Site are combined together, the
+Site's must be placed relative to each other.  Therefore a single reference
+frame is still needed to combine different sites.
+
+The FIXED_SITE parameter controls which of the major Site frames is
+the reference ("fixed") site for this program run.  This fixed frame
+can vary in different program runs, but is constant throughout one
+execution.
+
+If not specified, FIXED_SITE defaults to the minimum Site number (i.e.
+lowest numbered, or earliest chronologically) used in all input images.
+Normally this default is sufficient; rarely must FIXED_SITE be specified.
+
+One or more Rover State Files must usually be specified in order to combine
+image from more than one Site.  These describe the relationship between
+sites.  See the RSF parameter.
+
+.VARI SOLUTION_ID
+Specifies which solution ID to use when specifying the coordinate system.
+
+There are potentially many different definitions for the same coordinate
+system.  These are identified via a unique Solution ID.  If this parameter
+is given, only the specified solution's definition is searched for.  Without
+it, the "best" available solution is chosen.
+
+It is extremely rare that this parameter should be needed.  The default
+will be sufficient in almost every case.
+
+Note that the current MER implementation requires that a value for COORD_INDEX
+also be provided, in order for this parameter to take effect.
+

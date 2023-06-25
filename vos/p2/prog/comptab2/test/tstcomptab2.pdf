@@ -1,0 +1,20 @@
+procedure
+refgbl $echo
+body
+enable-log
+let $echo="yes"
+
+! TEST SCRIPT FOR comptab2
+
+gen xxx1 nl=7 ns=7 'half
+f2 xxx1 out=xxx2 func="line*((samp<5)+(samp>5))"
+list xxx2 'nousrtim
+concomp xxx2 (xxx4,xxx3)
+list xxx4 'nousrtim
+
+comptab2 (xxx4,xxx2) xxx5
+ibis-l xxx5 'format
+
+theend>
+disable-log
+end-proc

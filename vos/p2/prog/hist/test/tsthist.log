@@ -1,6 +1,6 @@
 gen g1515 15 15
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 hist g1515 area=(1,1,3,3,10,10,2,2)
 Beginning VICAR task hist
@@ -281,18 +281,12 @@ MAX. DN=        28
 
 let $echo="no"
 Print average and stdev variables
-disp avg
-
-avg=14.0
-
-disp sd
-
-sd=6.11010074615
-
-disp sum
-
-sum=3150.0
-
+write "avg: 1.400000000000e+01"
+avg: 1.400000000000e+01
+write "sd: 6.110100746155e+00"
+sd: 6.110100746155e+00
+write "sum: 3.150000000000e+03"
+sum: 3.150000000000e+03
 hist g1515 'screen spike=1
 Beginning VICAR task hist
 *** HIST version 2017-08-08 ***
@@ -322,7 +316,7 @@ Beginning VICAR task hist
        225PIXELS   RANGE   0- 28     MEAN  14.000     STD DEV   6.110
 gen g 10 10 linc=0 sinc=0
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 hist g 'exclude
 Beginning VICAR task hist
@@ -340,7 +334,7 @@ MAX. DN=         0
 
 gen g 1024 1000 sinc=0
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 let $echo="no"
 Should get mean =128.0 because of exclude
@@ -369,7 +363,7 @@ MAX. DN=       255
 
 gen g 10 10 sinc=0
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 hist g inc=3
 Beginning VICAR task hist
@@ -410,7 +404,7 @@ let $echo="no"
 Mean should be 6.0.
 gen g1515 15 15 linc=-1000 sinc=-1000 'half
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 hist g1515 area=(1,1,3,3,10,10,2,2)
 Beginning VICAR task hist
@@ -709,21 +703,15 @@ MAX. DN=         0
 
 let $echo="no"
 Print average and stdev variables
-disp AVG
-
-AVG=-14000.0
-
-disp SD
-
-SD=6110.10107422
-
-disp sum
-
-sum=-3150000.0
-
+write "AVG: -1.400000000000e+04"
+AVG: -1.400000000000e+04
+write "SD: 6.110101074219e+03"
+SD: 6.110101074219e+03
+write "sum: -3.150000000000e+06"
+sum: -3.150000000000e+06
 gen g 10 10 linc=1000 'half
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 hist g nlines=30 spikes=9
 Beginning VICAR task hist
@@ -769,7 +757,7 @@ MAX. DN=      9009
 
 gen f1515 15 15 linc=-100000 sinc=-100000 'full
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 hist f1515 area=(1,1,3,3,10,10,2,2)
 Beginning VICAR task hist
@@ -1068,21 +1056,15 @@ MAX. DN=         0
 
 let $echo="no"
 Print average and stdev variables
-disp avg
-
-avg=-1400000.0
-
-disp sd
-
-sd=611010.0625
-
-disp sum
-
-sum=-315000000.0
-
+write "avg: -1.400000000000e+06"
+avg: -1.400000000000e+06
+write "sd: 6.110100625000e+05"
+sd: 6.110100625000e+05
+write "sum: -3.150000000000e+08"
+sum: -3.150000000000e+08
 gen r1515 15 15 linc=1.e8 sinc=1.e8 'real4
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 hist r1515 area=(1,1,3,3,10,10,2,2)
 Beginning VICAR task hist
@@ -1381,21 +1363,15 @@ MAX. DN=2.800E+9
 
 let $echo="no"
 Print average and stdev variables
-disp AVG
-
-AVG=1400000000.0
-
-disp SD
-
-SD=611010112.0
-
-disp sum
-
-sum=314999996416.0
-
+write "AVG: 1.400000000000e+09"
+AVG: 1.400000000000e+09
+write "SD: 6.110101120000e+08"
+SD: 6.110101120000e+08
+write "sum: 3.149999964160e+11"
+sum: 3.149999964160e+11
 gen r1515 15 15 linc=-123456789.e4 sinc=-1234567890.e4 'real4
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 let $echo="no"
  Try some wild numbers.  3000 bins.  225 are non-empty.
@@ -1569,7 +1545,7 @@ MAX. DN=0.000000
 
 gen d1515 15 15 linc=-1.e-9 sinc=-1.e-9 'real8
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 hist d1515 area=(1,1,3,3,10,10,2,2)
 Beginning VICAR task hist
@@ -1868,21 +1844,15 @@ MAX. DN=0.000000
 
 let $echo="no"
 Print a1verage and stdev variables
-disp AVG
-
-AVG=-1.40000002702e-08
-
-disp SD
-
-SD=6.11010086971e-09
-
-disp sum
-
-sum=-3.15000011142e-06
-
+write "AVG: -1.400000027019e-08"
+AVG: -1.400000027019e-08
+write "SD: 6.110100869705e-09"
+SD: 6.110100869705e-09
+write "sum: -3.150000111418e-06"
+sum: -3.150000111418e-06
 gen x1515 NS=10 NL=10 NB=10
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 hist x1515
 Beginning VICAR task hist
@@ -1960,7 +1930,7 @@ MAX. DN=        21
 
 gen x1515 337 364 ival=200 linc=0 sinc=0
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 hist x1515
 Beginning VICAR task hist
@@ -1977,7 +1947,7 @@ MAX. DN=       200
 
 gen g1515 10 10 ival=0 linc=0 sinc=0
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 hist g1515 'nohis
 Beginning VICAR task hist
@@ -1990,7 +1960,7 @@ MAX. DN=         0
 
 gen g1515 10 10 ival=0 linc=0 sinc=0 'real
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 hist g1515 'nohis
 Beginning VICAR task hist

@@ -5,10 +5,13 @@ procedure help=*
 refgbl $echo
 
 body
+enable-log
+
 let _onfail="continue"
 let $echo="yes"
 ttiechv
 
+disable-log
 end-proc
 .title TSTTIECHV.PDF - unit test for subroutine TIECHV
 .end

@@ -1,0 +1,84 @@
+PROCESS HELP=*
+!------ input/output
+PARM    IN            T=string          C=1
+PARM    OUT_DIR       T=string          C=1    DEFAULT="./"
+PARM    CONFIG_PATH   T=string          C=1    DEFAULT="$MARS_CONFIG_PATH"
+PARM    MIPL          T=keyword         C=1    VALID=("MIPL", "SSV")  DEFAULT=MIPL
+PARM    EDR           T=keyword         C=1    VALID=("EDR", "RDR") DEFAULT=RDR
+PARM    VERSION       type=keyword count=(0:1) valid=VERSION default=--
+End-Proc
+
+.TITLE
+VICAR Program merinverter
+PURPOSE:
+   MERINVERTER reads MER EDR (in Vicar HALF format) and perform inverse LUT 
+      (8bits -> 12bits).
+
+.page
+Author:     Hyun H. Lee
+            Jet Propulsion Laboratory
+            Pasadena, California 91109
+
+            Email: Hyun.H.Lee@jpl.nasa.gov
+            Tel  : (818)354-8466
+
+HISTORY:
+  2003-12-30 H. Lee - Initial version.
+  2019-12-13 W. Bunch - IDS-7926 - initialized some variables; cleaned up -Wall warnings.
+  2020-02-04 W. Bunch - IDS-7929 - fixed buffer overrun bug.
+
+.LEVEL1
+
+.VARIABLE IN
+Name of input file (EDR).
+
+.VARIABLE OUT_DIR
+Directory name of output.
+
+.VARIABLE CONFIG_PATH
+Path name that inverse lut files resides.
+
+.VARIABLE MIPL
+Affects the output label and
+generated filename.
+
+.VARIABLE EDR
+Affects the generated filename.
+
+.VARIABLE VERSION
+If set, adds software
+version info to label.
+
+.LEVEL2
+.VARI IN
+Name of input file (EDR).
+
+.VARI OUT_DIR
+Directory name of output.  Unlike every other VICAR program, the output
+name is interally generated rather than being supplied by the user.  This
+needs to be changed to follow standard conventions.
+
+.VARI CONFIG_PATH
+Specifies where to look for the inverse lut file.
+
+.VARI MIPL
+If MIPL, uses M for the producer.  If not, uses V and modifies a few
+labels to indicate SSV team.
+
+.VARI EDR
+Affects the generated filename.  If EDR, the output name is an EDR style.
+If RDR, it is an RDR style (e.g. ILF instead of EFF).  EDR should not be used.
+
+.VARI VERSION
+If specified, updates the following labels:
+PRODUCT_CREATION_TIME (identification)
+PROCESSING_HISTORY_TEXT (pds_history)
+SOFTWARE_NAME (pds_history)
+SOFTWARE_VERSION_ID (pds_history)
+
+If not specified (the default), these values are not modified from the input.
+Note that most RDR programs do not modify these keywords, thus the default
+is off.
+
+.END
+

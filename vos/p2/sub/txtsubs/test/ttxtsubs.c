@@ -1,4 +1,6 @@
+#include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "vicmain_c"
 #include "ftnbridge.h"
 
@@ -8,7 +10,7 @@
 
 /*  Program to test subroutines in TXTSUBS.                                   */
 
-main44()
+void main44()
 {
    int   lc, flag, def, status, temp, cnt;
    short char_height, line, sample, text_loc, dn;

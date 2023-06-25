@@ -1,0 +1,403 @@
+Starting ./tstgetspice2.csh ...
+TESTDIR: /usr/local/vicar/dev/p2/lib/x86-64-linx
+  let  $autousage="none"
+  WRITE "***Please read attached help file for testing instructions"
+***Please read attached help file for testing instructions
+  WRITE "Testing local mode"
+Testing local mode
+ tputspice2 inp=venus.img.vic  SPICEMODE=LOCAL CKNAME=NAIF  +
+            INSTITUTE=USC PURPOSE=COLO REQNUM=0123 CDATE=199603151213
+Beginning VICAR task tputspice2
+
+..................................
+PUTSPICE2 test
+PUTSPICE2 test succeeded
+ tputspice2 inp=venus.img.vic  SPICEMODE=LOCAL CKNAME=NAIF  +
+            INSTITUTE=USC PURPOSE=MOSA REQNUM=0123 CDATE=199603151213
+Beginning VICAR task tputspice2
+
+..................................
+PUTSPICE2 test
+PUTSPICE2 test succeeded
+ tputspice2 inp=venus.img.vic  SPICEMODE=LOCAL CKNAME=NAIF  +
+            INSTITUTE=USC PURPOSE=MOSA REQNUM=0456 CDATE=199603151213
+Beginning VICAR task tputspice2
+
+..................................
+PUTSPICE2 test
+PUTSPICE2 test succeeded
+ tputspice2 inp=venus.img.vic  SPICEMODE=LOCAL CKNAME=NAIF  +
+            INSTITUTE=MIPS PURPOSE=MOSA REQNUM=0456 CDATE=199601221213
+Beginning VICAR task tputspice2
+
+..................................
+PUTSPICE2 test
+PUTSPICE2 test succeeded
+ tgetspice2 inp=venus.img.vic SPICEMODE=LOCAL  CKNAME=NAIF  +
+            INSTITUTE=USC PURPOSE=COLO REQNUM=0123 CDATE=199603151213
+Beginning VICAR task tgetspice2
+Comparing GETSPICE2 and GETSPICE3 output.
+Comparing GETSPICE2 and GETSPICE4 output.
+GETSPICE2 FORTRAN test succeeded
+
+GETSPICE2 C-bridge test
+SC_ID: -77
+Inst : SSI1
+measurement time year          : 1990
+measurement time day           : 44
+measurement time hour          : 5
+measurement time minute        : 58
+measurement time second        : 16
+measurement time millisec      : 962
+Target body code (target_id)   : 299
+Coordinate System              : J2000
+Source file to search          : NAIF
+XYZ of SC relative central body: 635793 -1.3434e+06 -669212
+XYZ of picture body relative SC: -635793 1.3434e+06 669212
+SC range from sun              : 1.07565e+08
+SC range from central body     : 1.62997e+06
+SC range from picture body     : 1.62997e+06
+lat & lon of sun rel pic body : -2.57927 129.476
+lat & lon of sc rel pic body  : -2.9543 176.32
+C_MATRIX:
+   -0.918831 -0.378141 -0.112957
+   0.0621291 -0.421248 0.904815
+   -0.389731 0.824354 0.410549
+lat & lon of P5 point: -4.05852 170.77
+incidence angle at P5 point: 41.2493
+emission  angle at P5 point: 5.66948
+phase     angle at P5 point: 46.8105
+Hor & Vert pix size at P5: 15.037 15.037
+ME_MATRIX:
+   -0.331693 0.867147 0.371531
+   -0.943202 -0.31263 -0.112393
+   0.0186908 -0.387709 0.921592
+SC Range to P5 : 1.62386e+06
+North Angle    : 88.5464
+Picture body equat radius, long : 6137
+Picture body equat radius, short: 6137
+Picture body polar radius       : 6137
+OM_MATRIX:
+   -0.0651013 -0.0497253 0.996639
+   0.997557 -0.0285999 0.0637344
+   0.0253346 0.998353 0.0514657
+RS-Vector: -1.62445e+06 -104478 -84007.7
+line   sub-s/c-point: 406.351
+sample sub-s/c-point: 436.08
+Year: 2021
+Month_day: 0804
+Hour_min: 2000
+SPK_ref: N083
+CK_ref: M903
+Purpose: COLO
+Prog_name: TPUT  
+Job_req_no: 0123
+Usr_grp_id: WBUNCH
+Institution: USC 
+Comparing GETSPICE2 and zgetspice2 output.
+ tgetspice2 inp=venus.img.vic SPICEMODE=LOCAL  CKNAME=NAIF  +
+            INSTITUTE=USC PURPOSE=MOSA REQNUM=0123 CDATE=199603151213
+Beginning VICAR task tgetspice2
+Comparing GETSPICE2 and GETSPICE3 output.
+Comparing GETSPICE2 and GETSPICE4 output.
+GETSPICE2 FORTRAN test succeeded
+
+GETSPICE2 C-bridge test
+SC_ID: -77
+Inst : SSI1
+measurement time year          : 1990
+measurement time day           : 44
+measurement time hour          : 5
+measurement time minute        : 58
+measurement time second        : 16
+measurement time millisec      : 962
+Target body code (target_id)   : 299
+Coordinate System              : J2000
+Source file to search          : NAIF
+XYZ of SC relative central body: 635793 -1.3434e+06 -669212
+XYZ of picture body relative SC: -635793 1.3434e+06 669212
+SC range from sun              : 1.07565e+08
+SC range from central body     : 1.62997e+06
+SC range from picture body     : 1.62997e+06
+lat & lon of sun rel pic body : -2.57927 129.476
+lat & lon of sc rel pic body  : -2.9543 176.32
+C_MATRIX:
+   -0.918831 -0.378141 -0.112957
+   0.0621291 -0.421248 0.904815
+   -0.389731 0.824354 0.410549
+lat & lon of P5 point: -4.05852 170.77
+incidence angle at P5 point: 41.2493
+emission  angle at P5 point: 5.66948
+phase     angle at P5 point: 46.8105
+Hor & Vert pix size at P5: 15.037 15.037
+ME_MATRIX:
+   -0.331693 0.867147 0.371531
+   -0.943202 -0.31263 -0.112393
+   0.0186908 -0.387709 0.921592
+SC Range to P5 : 1.62386e+06
+North Angle    : 88.5464
+Picture body equat radius, long : 6137
+Picture body equat radius, short: 6137
+Picture body polar radius       : 6137
+OM_MATRIX:
+   -0.0651013 -0.0497253 0.996639
+   0.997557 -0.0285999 0.0637344
+   0.0253346 0.998353 0.0514657
+RS-Vector: -1.62445e+06 -104478 -84007.7
+line   sub-s/c-point: 406.351
+sample sub-s/c-point: 436.08
+Year: 2021
+Month_day: 0804
+Hour_min: 2000
+SPK_ref: N083
+CK_ref: M903
+Purpose: MOSA
+Prog_name: TPUT  
+Job_req_no: 0123
+Usr_grp_id: WBUNCH
+Institution: USC 
+Comparing GETSPICE2 and zgetspice2 output.
+ tgetspice2 inp=venus.img.vic SPICEMODE=LOCAL  CKNAME=NAIF  +
+            INSTITUTE=USC PURPOSE=MOSA REQNUM=0456 CDATE=199603151213
+Beginning VICAR task tgetspice2
+Comparing GETSPICE2 and GETSPICE3 output.
+Comparing GETSPICE2 and GETSPICE4 output.
+GETSPICE2 FORTRAN test succeeded
+
+GETSPICE2 C-bridge test
+SC_ID: -77
+Inst : SSI1
+measurement time year          : 1990
+measurement time day           : 44
+measurement time hour          : 5
+measurement time minute        : 58
+measurement time second        : 16
+measurement time millisec      : 962
+Target body code (target_id)   : 299
+Coordinate System              : J2000
+Source file to search          : NAIF
+XYZ of SC relative central body: 635793 -1.3434e+06 -669212
+XYZ of picture body relative SC: -635793 1.3434e+06 669212
+SC range from sun              : 1.07565e+08
+SC range from central body     : 1.62997e+06
+SC range from picture body     : 1.62997e+06
+lat & lon of sun rel pic body : -2.57927 129.476
+lat & lon of sc rel pic body  : -2.9543 176.32
+C_MATRIX:
+   -0.918831 -0.378141 -0.112957
+   0.0621291 -0.421248 0.904815
+   -0.389731 0.824354 0.410549
+lat & lon of P5 point: -4.05852 170.77
+incidence angle at P5 point: 41.2493
+emission  angle at P5 point: 5.66948
+phase     angle at P5 point: 46.8105
+Hor & Vert pix size at P5: 15.037 15.037
+ME_MATRIX:
+   -0.331693 0.867147 0.371531
+   -0.943202 -0.31263 -0.112393
+   0.0186908 -0.387709 0.921592
+SC Range to P5 : 1.62386e+06
+North Angle    : 88.5464
+Picture body equat radius, long : 6137
+Picture body equat radius, short: 6137
+Picture body polar radius       : 6137
+OM_MATRIX:
+   -0.0651013 -0.0497253 0.996639
+   0.997557 -0.0285999 0.0637344
+   0.0253346 0.998353 0.0514657
+RS-Vector: -1.62445e+06 -104478 -84007.7
+line   sub-s/c-point: 406.351
+sample sub-s/c-point: 436.08
+Year: 2021
+Month_day: 0804
+Hour_min: 2000
+SPK_ref: N083
+CK_ref: M903
+Purpose: MOSA
+Prog_name: TPUT  
+Job_req_no: 0456
+Usr_grp_id: WBUNCH
+Institution: USC 
+Comparing GETSPICE2 and zgetspice2 output.
+ tgetspice2 inp=venus.img.vic SPICEMODE=LOCAL  CKNAME=NAIF  +
+            INSTITUTE=MIPS PURPOSE=MOSA REQNUM=0456 CDATE=199601221213
+Beginning VICAR task tgetspice2
+Comparing GETSPICE2 and GETSPICE3 output.
+Comparing GETSPICE2 and GETSPICE4 output.
+GETSPICE2 FORTRAN test succeeded
+
+GETSPICE2 C-bridge test
+SC_ID: -77
+Inst : SSI1
+measurement time year          : 1990
+measurement time day           : 44
+measurement time hour          : 5
+measurement time minute        : 58
+measurement time second        : 16
+measurement time millisec      : 962
+Target body code (target_id)   : 299
+Coordinate System              : J2000
+Source file to search          : NAIF
+XYZ of SC relative central body: 635793 -1.3434e+06 -669212
+XYZ of picture body relative SC: -635793 1.3434e+06 669212
+SC range from sun              : 1.07565e+08
+SC range from central body     : 1.62997e+06
+SC range from picture body     : 1.62997e+06
+lat & lon of sun rel pic body : -2.57927 129.476
+lat & lon of sc rel pic body  : -2.9543 176.32
+C_MATRIX:
+   -0.918831 -0.378141 -0.112957
+   0.0621291 -0.421248 0.904815
+   -0.389731 0.824354 0.410549
+lat & lon of P5 point: -4.05852 170.77
+incidence angle at P5 point: 41.2493
+emission  angle at P5 point: 5.66948
+phase     angle at P5 point: 46.8105
+Hor & Vert pix size at P5: 15.037 15.037
+ME_MATRIX:
+   -0.331693 0.867147 0.371531
+   -0.943202 -0.31263 -0.112393
+   0.0186908 -0.387709 0.921592
+SC Range to P5 : 1.62386e+06
+North Angle    : 88.5464
+Picture body equat radius, long : 6137
+Picture body equat radius, short: 6137
+Picture body polar radius       : 6137
+OM_MATRIX:
+   -0.0651013 -0.0497253 0.996639
+   0.997557 -0.0285999 0.0637344
+   0.0253346 0.998353 0.0514657
+RS-Vector: -1.62445e+06 -104478 -84007.7
+line   sub-s/c-point: 406.351
+sample sub-s/c-point: 436.08
+Year: 2021
+Month_day: 0804
+Hour_min: 2000
+SPK_ref: N083
+CK_ref: M903
+Purpose: MOSA
+Prog_name: TPUT  
+Job_req_no: 0456
+Usr_grp_id: WBUNCH
+Institution: MIPS
+Comparing GETSPICE2 and zgetspice2 output.
+  WRITE "Testing remote mode"
+Testing remote mode
+ tputspice2 inp=venus.img.vic  SPICEMODE=REMOTE CKNAME=NAIF  +
+            INSTITUTE=USC PURPOSE=COLO REQNUM=0123 CDATE=199603151213
+Beginning VICAR task tputspice2
+***SPICE error=          0
+***GETSPICE2 failed, IND=          0
+ ** ABEND called **
+continue
+ tgetspice2 inp=venus.img.vic SPICEMODE=REMOTE  CKNAME=NAIF  +
+            INSTITUTE=USC PURPOSE=COLO REQNUM=0123 CDATE=199603151213
+Beginning VICAR task tgetspice2
+***SPICE error=          0
+***GETSPICE2 FORTRAN test failed
+***SPICE error=          0
+***ZGETSPICE2 test failed
+ ** ABEND called **
+continue
+ WRITE "Testing VGR remote mode"
+Testing VGR remote mode
+ tgetspice2 inp=f1636832.geo.vic spicemode=remote ckname=SEDR target=IO
+Beginning VICAR task tgetspice2
+Warning::year number is not 4-digit.
+Warning::year number is not 4-digit.
+***SPICE error=          0
+***GETSPICE2 FORTRAN test failed
+Warning::year number is not 4-digit.
+Warning::year number is not 4-digit.
+***SPICE error=          0
+***ZGETSPICE2 test failed
+ ** ABEND called **
+continue
+ tputspice2 inp=f1636832.geo.vic spicemode=remote ckname=SEDR target=IO
+Beginning VICAR task tputspice2
+Warning::year number is not 4-digit.
+Warning::year number is not 4-digit.
+***SPICE error=          0
+***GETSPICE2 failed, IND=          0
+ ** ABEND called **
+continue
+ WRITE "Testing VGR local mode"
+Testing VGR local mode
+ tgetspice2 inp=f1636832.geo.vic spicemode=local ckname=SEDR target=IO
+Beginning VICAR task tgetspice2
+Warning::year number is not 4-digit.
+Warning::year number is not 4-digit.
+Warning::year number is not 4-digit.
+Warning::year number is not 4-digit.
+Comparing GETSPICE2 and GETSPICE3 output.
+Comparing GETSPICE2 and GETSPICE4 output.
+GETSPICE2 FORTRAN test succeeded
+
+GETSPICE2 C-bridge test
+Warning::year number is not 4-digit.
+Warning::year number is not 4-digit.
+SC_ID: -31
+Inst : ISSN
+measurement time year          : 1979
+measurement time day           : 63
+measurement time hour          : 19
+measurement time minute        : 22
+measurement time second        : 59
+measurement time millisec      : 820
+Target body code (target_id)   : 501
+Coordinate System              : B1950
+Source file to search          : SEDR
+XYZ of SC relative central body: 818623 -796570 -366736
+XYZ of picture body relative SC: -631685 455601 207571
+SC range from sun              : 7.90941e+08
+SC range from central body     : 1.19965e+06
+SC range from picture body     : 806030
+lat & lon of sun rel pic body : 0.541294 171.276
+lat & lon of sc rel pic body  : -0.0324246 156.474
+C_MATRIX:
+   0.595661 0.568173 0.567773
+   0.17471 0.598289 -0.782002
+   -0.784005 0.565004 0.257112
+lat & lon of P5 point: -6.69426 169.217
+incidence angle at P5 point: 7.64827
+emission  angle at P5 point: 14.3274
+phase     angle at P5 point: 14.8414
+Hor & Vert pix size at P5: 7.44743 7.44743
+ME_MATRIX:
+   -0.47067 0.799446 0.373303
+   -0.882197 -0.419648 -0.2136
+   -0.0141057 -0.429862 0.902784
+SC Range to P5 : 804258
+North Angle    : 285.066
+Picture body equat radius, long : 1829.4
+Picture body equat radius, short: 1819.3
+Picture body polar radius       : 1815.7
+OM_MATRIX:
+   0.385816 0.104145 0.916679
+   -0.885199 -0.238164 0.399625
+   0.259939 -0.965625 0.000302084
+RS-Vector: -739031 -321741 -456.146
+line   sub-s/c-point: 484.06
+sample sub-s/c-point: 569.94
+Year: 1986
+Month_day: 0223
+Hour_min: 0000
+SPK_ref: N005
+CK_ref: S001
+Purpose: SEDR
+Prog_name: VGRMCK
+Job_req_no: NONE
+Usr_grp_id: VRH059
+Institution: MIPS
+Warning::year number is not 4-digit.
+Warning::year number is not 4-digit.
+Comparing GETSPICE2 and zgetspice2 output.
+ tputspice2 inp=f1636832.geo.vic spicemode=local ckname=SEDR target=IO
+Beginning VICAR task tputspice2
+Warning::year number is not 4-digit.
+Warning::year number is not 4-digit.
+
+..................................
+PUTSPICE2 test
+***PUTSPICE2 failed, IND=          0
+disable-log

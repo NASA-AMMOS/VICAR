@@ -1,0 +1,387 @@
+process help=*
+parm inp type=string count=2
+parm out type=string count=2
+parm dx type=string count=0:3 default=""
+parm dy type=string count=0:3 default=""
+parm q type=string count=0:1 default=""
+parm mask type=string count=0:1 default=""
+!horizon location
+parm avgnw type=integer count=0:1 valid=1:15 default=9
+parm actnw type=integer count=0:1 valid=1:255 default=9
+parm skyact type=real count=1 default=2.
+parm maxpatch type=integer count=1 default=400
+parm hthresh type=real count=1 default=1.0
+!image matching
+parm pyramid type=integer count=1 valid=0:3 default=2
+parm hsearch type=integer count=2 default=(-200,2)
+parm vsearch type=integer count=2 default=(-7,7)
+parm hradius type=integer count=1 default=3
+parm vradius type=integer count=1 default=3
+parm nlw type=integer count=1 valid=1:25 default=7
+parm nsw type=integer count=1 valid=1:25 default=11
+parm vthresh type=real count=1 valid=0.:99999. default=1.
+parm qthresh type=real count=1 valid=-1.:1. default=.6
+parm gthresh type=real count=1 valid=-1.:1. default=.5
+!finding, deleting, and replaceing  mismatches
+parm mindx type=real count=1 default=1.
+parm mindy type=real count=1 default=1.
+parm rthresh type=integer count=1 default=200
+!program development
+parm print type=keyword count=0:1 valid=(print,noprint,verbose) default=noprint
+parm deblob type=keyword count=0:1 valid=(deblob,nodeblob) default=deblob
+parm fillmap type=keyword count=0:1 valid=(fillmap,nofill) default=fillmap
+parm sym type=keyword count=0:1 valid=(sim,nosim) default=nosim
+parm usemask type=keyword count=0:1 valid=(usemask,nomask) default=usemask
+parm activity type=string count=0:2 default=""
+parm horizon type=string count=0:2 default=""
+parm average type=string count=0:2 default=""
+parm variance type=string count=0:2 default=""
+parm region type=string count=0:1 default=""
+parm rsize type=string count=0:1 default=""
+parm pseudol type=string count=0:1 default=""
+parm diff type=string count=0:1 default=""
+parm merout type=string count=0:1 default=""
+end-proc
+.title
+Mars rover stereo ranging program rng.
+
+.help
+PURPOSE:
+
+Human vision is not double vision, it is stereo vision.  That is, instead
+of seeing two images of the world in front of us, the images from the left and
+right eyes are fused into a single image.  Moreover, the corrections necessary
+to fuse the images are converted into distance from the observer.  The
+resulting image which we perceive is that of a 3-dimensional world.  The rng
+program is an attempt to replicate this feat inside a computer.
+
+Given images taken through the left and right lenses of a stereo camera, 
+rng attempts to measure the horizontal and vertical pixel displacements
+required to merge the left image into the right image:
+
+	rng inp=(l,r) out=(dx,dy)
+
+Here, the inputs (l,r) are the left and right images.  The outputs, (dx,dy),
+are the horizontal and vertical pixel displacements required to move every
+pixel in the left image to the matching pixel in the right image.  This mapping
+is incomplete since there are regions where there is no overlapping information
+between left and right images.  These include regions along the left and right
+margins of the image, and regions occluded in one of the images by rocks or
+ridgelines in the foreground.  In addition, the mapping is undefined wherever
+there is lack of image information (e.g. regions of low contrast, including
+the sky).
+
+rng is intended for use in ground data processing in support of rover
+operations, as a part of the Mars surface exploration program at JPL.
+The dx and dy displacements are input to subsequent programs to compute the
+distance to each point in the left image.  This provides the information for
+computing a 3-D model of the surface.  This model is used by operations 
+teams to command the rover on drives, maneuver through hazardous terrain.
+Scientists use these results to model surface reflectance and to infer the
+composition of rocks and soil within the field of view.
+
+References:
+1) M. D. Levine, D. A. O'Handley, and G. M. Yagi, "Computer determination of
+   depth maps," Comput. Graphics and Image Processing, vol. 2, no. 4, 
+   pp. 131-150, 1973.
+2) Y. Yakimovsky and R. Cunningham, "A system for Extracting Three-Dimensional
+   Measurements from a Stereo Pair of TV Cameras", Computer Graphics and
+   Image Processing 7, 95-210 (1078).
+3) Gary Yagi, "Locating the horizon", JPL IOM, August 1 2006.
+
+.page
+GENERAL OUTLINE OF THE PROGRAM:
+
+The rng program performs the following sequence of steps:
+
+  1) Find the horizon (if any)
+  2) For each pixel in the left image that is part of the terrain,
+     find the matching pixel in the right image.
+  3) Identify and delete all mismatches.
+  4) Locate surface discontinuities and correct any errors resulting from
+     weaknesses in the area-matching algorithm near these discontinuities
+
+.page
+PROGRAM EXECUTION:
+
+The program is executed by inputting the left and right images of a stereo
+pair.  The input images should be "linearized", i.e. transformed into an
+epipolar projection.
+
+	rng inp=(l,r) out=(dx,dy)
+
+The outputs are the vertical and horizontal disparities between matching
+pixels in the left and right images.  Let (i,j) be the sample and line
+coordinates of a pixel in the left image.  The matching pixel in the right
+image is located at sample-line coordinates (u,v), where
+
+	u = i + dx(i,j)
+	v = j + dy(i,j)
+
+.page
+USER PARAMETERS:
+
+The following example uses all parameters controlling the operation and
+output of the program:
+
+rng inp=(l,r) +			!input stereo pair (xvd l &)
+   out=(dx,dy) +		!hori & vert pixel displacements (xvd dx &)
+   avgnw=9 +			!averaging window is 9x9
+   actnw=9 +			!scene activity window is 9x9
+   skyact=10.0 +		!sky scene activity threshold
+   pthresh=400 +		!sky patch pixel area threshold
+   hthresh=1 +			!horizon threshold
+   pyramid=2 +			!pyramid levels (0 to 3)
+   hsearch=(-200,2) +		!horizontal search limits (initial pass)
+   vsearch=(-7,7) +		!vertical search limits (initial pass)
+   hradius=3 vradius=3 +	!search radius (subsequent passes)
+   nlw=7 nsw=11 +		!correlation window size = nlw x nsw
+   vthresh=1. +			!min variance in correlation area
+   qthresh=0.6 +		!correlation quality threshold
+   gthresh=0.5 +		!gore correlation quality threshold
+   mindx=1. mindy=1. +		!surface-continuity criteria (pixels)
+   rthresh=240  		!region size threshold (pixels)
+   activity=(actl,actr) +	!scene activity (xvd actl &)
+   horizon=(hrznl,hrznr) +	!horizon overlay (xvd hrznl &)
+   aver=(avgl,avgr) +		!window averages (xvd avgl &)
+   vari=(varl,varr) +		!window variances (xvd varl &)
+   region=region +		!surface region (xvd r &)
+   rsize=rsize +		!size of each region (xvd rsize &)
+   q=q +			!correlation quality (xvd q &)
+   mask=mask +			!bad pixel mask (xvd mask &)
+   merout=coords +		!coords for marscor3
+   'noprint			!one of 3 print options
+
+Where numerical values appear, these represent the default values.  The
+remaining parameters are input or output files.  In all cases, these files
+are formated as images and may be viewed via xvd.
+
+The three print options are 'noprint, 'print, and 'verbose.
+'noprint outputs minimal text during execution.
+'print issues text indicating progress of execution.
+'verbose issues text useful in diagnosing problems in execution.
+
+.page
+EXCLUDING THE SKY FROM STEREO RANGING:
+
+The sky-exclusion algorithm is documented in Ref 3, and operates
+independently on the left and right images.  We first locate regions of the
+sky.  This is done by crudely locating image areas of low scene activity.
+Starting from these sky regions, we do a vertical scan (downward to locate
+the horizon.
+
+Before computing the scene activity, the images are first filtered to
+remove the highest frequencies.
+
+        avgnw=9                 !blur the image with a 9x9 unit filter
+
+We define the scene activity as the mean absolute difference between any two
+adjacent pixels within an n x n window.  The scene activity
+is calculated (in this case for the left image l) as follows:
+
+        act = (sum|l(i,j)-l(i+1,j)| + sum|l(i,j)-l(i,j+1)|)/4n
+
+where the summation is made over an n x n window centered over each pixel:
+
+        actnw=9                 !scene activity window is 9x9 (the default)
+
+The sky consists of image areas whose scene activity is below a specified
+threshold (sthresh).  Because a fixed threshold does not adequately separate
+sky from terrain, there will be patches of the sky above this threshold.  A
+patch removal algorithm is applied to delete patches below 400 pixels in
+size (pthresh parameter).  Once the sky has been located, an edge detector
+is used to locate the horizon (hthresh).  The sky and horizon represent
+pixels below thresholds sthresh, pthresh, and hthresh:
+
+        skyact=10.0		!sky scene activity threshold
+        pthresh=400		!sky patch threshold
+        hthresh=1.0 		!horizon edge threshold
+
+.page
+SEARCHING FOR MATCHING AREAS:
+
+A pyramid scheme is used to reduce the time required to perform the image-
+matching function.  The image matching is first performed on a reduced-
+resolution version of the stereo pair, then on an increased resolution pair,
+and finally on the full-resolution pair:
+
+        pyramid=2		!pyramid level (0 to 3)
+
+For pyramid=2, the initial resolution is 1/4, then 1/2, and finally 1/1.
+In general, for pyramid=n, the initial resolution is 1/2**n.  If pyramid=0,
+then no pyramid scheme is used.  Note that the pyramid scheme is a compromise,
+and sacrifices reliability for speed.  If the resulting range map is not
+satisfactory, try reducing the value of n.
+
+
+During the initial area matching using the reduced-resolution stereo pair,
+each matching pixel in the right image is found within a search area defined
+by the hsearch and vsearch parameters:
+
+        hsearch=(ilo,ihi) vsearch=(jlo,jhi)
+
+For any pixel (i,j) in the left image, the match is performed at every pixel
+(u,v) in the right image, where:
+
+	i+ilo <= u <= i+ihi
+        j+jlo <= v <= j+jhi
+
+The search area may be further limited by the program so that the windows
+being compared both remain within the boundaries of the images.
+
+During subsequent passes, at increasing higher resolutions, the search area
+is defined by hradius and vradius:
+
+       hradius=m vradius=n	!search radii
+
+For left pixel (i,j), let (u0,v0) be the matching right pixel, as determined
+in the previous pass.  Then the search area for the current pass will consist
+of all right pixels (u,v), where:
+
+	u0-m <= u <= u0+m
+        v0-n <= v <= v0+n
+
+The measure for the strength of the match is the correlation coefficient q,
+where (see reference 3):
+
+        q = cov/sqrt(varl*varr)
+
+The correlation is performed over an mxn area:
+
+        nsw=m nlw=n 		!window width=m, height=n
+
+For a match to be considered valid, the correlation quality and variance of
+the two areas must be above specified thresholds:
+
+        qthresh=0.6 		!correlation quality threshold is 0.6
+        vthresh=1. 		!variance threshold is 1 DN
+
+Since q is a continuous "surface", the actual maximum is usually somewhere
+between four pixels.  Let the digital maximum occur at pixel displacement
+(h,v).  We perform two 1-dimensional parabolic fits using the nearest
+horizontal and vertical neighbors:
+
+                   q(h,v-1)
+        q(h-1,v)   q(h,v)    q(h+1,v)
+                   q(h,v+1)
+
+.page
+DETECTING MISMATCHES:
+
+The most common reason for mismatches is when an object is visible in the
+left image, but is not visible in the right image.  This causes the program
+to match the object with a similar (but different) object in the right image.
+Mismatches are more common for objects in the foreground, where the disparities
+are very large.  When mismatches occur, single or multiple pixels may be
+effected.  Mismatches cause large discontinuities in the disparity map.  This
+suggests a simple algorithm for detecting mismatches.
+
+A region-growing algorithm is used to divide the disparity map into regions
+of continuous surfaces.  The result is an image where all pixels belonging
+to the same surface have the same (and unique) DN value.
+
+Two adjacent pixels belong to the same surface if their horizontal and
+vertical displacements (dx and dy) are relatively the same. We compare
+the central pixel (i,j) against the pixels to the left (i-1,j) and
+above (i,j-1).  If:
+
+	    |dx(i,j)-dx(i-1,j)| < tdx 
+	and |dy(i,j)-dy(i-1,j)| < tdy 
+
+then the central pixel is assigned the the same region as the pixel to the
+left.  If:
+
+	    |dx(i,j)-dx(i,j-1)| < tdx 
+	and |dy(i,j)-dy(i,j-1)} < tdy
+
+then the central pixel is assigned to the same region as the pixel above.
+Ties are resolved by merging the regions.  The thresholds are specified by
+the mindx and mindy parameters:
+
+        mindx=1.0	!horizontal surface-continuity (pixels)
+        mindy=1.0	!vertical surface-continuity (pixels)
+        rthresh=240 	!region size threshold (pixels)
+   
+In the subsequent gore-filling algorithm, the correlation quality must be
+greater than gthresh:
+
+        gthresh=0.5		!correlation threshold for gore filling
+
+.page
+DIAGNOSTIC DISPLAYS:
+
+The best way to check the results of rng on a particular stereo pair is to
+view the outputs dx and dy, as images via xvd.  These should be
+viewed along with the left image l (for comparison).
+
+	xvd l &
+	xvd -min -160 dx &
+	xvd -min -7 dy &
+
+The horizontal pixel displacement dx contains the parallax information.
+Regions of the image where no displacement could be computed are flagged
+as -999 DN.  These regions include (1) areas along the image margin where the
+left and right images have no overlap, (2) regions of the sky, and (3) regions
+near the edges of rocks which are visible through one eye but not the other.
+
+Any gross range errors due to mismatched areas will be visible in this display.
+If the horizontal disparities cover a large range, several different stretches
+may be necessary to view these errors in different regions of dx.  Subtle
+errors arising from the program's difficulties in dealing with surface curvature
+and surface discontinuities are harder to spot in this display.
+
+The corresponding vertical displacement dy should ideally be zero.  The fact
+that it is not reflects a failure of the rng program to deal with surface
+discontinuities, combined with imperfect knowledge of the camera's imaging
+geometry.
+
+If the output disparity map displays gaps or errors, image displays of
+image displays of intermediate nresults can be output to diagnose the
+problem:
+
+        activity=(actl,actr) 	!scene activity 
+        horizon=(hrznl,hrznr) 	!horizon overlay
+        average=(avgl,avgr)     !xvd avgl
+        variance=(varl,varr)    !xvd varl
+        region=region	 	!surface region
+        rsize=rsize 		!size of each region
+        q=q 			!correlation quality
+        mask=m 			!bad pixel mask
+
+The bad-pixel mask m has the following meaning at each pixel position (i,j)
+in the left image:
+
+        m(i,j)=0  good range value returned
+        m(i,j)=1  invalid region of image (image margins or sky)
+        m(i,j)=2  correlation peak is on margin of search area
+        m(i,j)=3  correlation peak is below threshold
+        m(i,j)=4  mismatch detected
+        m(i,j)=5  occluded pixel
+        m(i,j)=6  single-pixel spike
+
+.page
+MER OUTPUT PARAMETER:
+
+Finally, the silly MER output:
+
+   merout=mer			!mer output
+
+.page
+HISTORY:
+
+rng is a reincarnation of a program written in 1972.  The solution to stereo
+ranging written in 1972 was implemented on an IBM 360/44, a system with
+special floating-point hardware that did additions in 1 microsecond, and
+multiplications in 7 microseconds.  It had 256K of memory.  Consequently,
+the 1972 solution reflected a need to be frugal with computer resources.   
+The current program is an attempt to implement as near complete a solution
+as time and imagination permits.
+
+Written by: Gary Yagi, Jan 22, 2006
+17 Jun 06 gmy added interpolation to subpixel accuracy (rng3.com).
+              add fit_dy
+22 Jun 06 gmy scan margins for zeroes (rng4.com).
+12 Jul 06 gmy locate the horizon.
+11 May 07 gmy sleep (time passes...)
+01 Aug 07 gmy added pyramid scheme
+.end

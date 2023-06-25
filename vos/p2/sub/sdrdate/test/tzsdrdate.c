@@ -14,7 +14,7 @@
 #include "ftnbridge.h"
 #include "sfdutime.h"
 
-main44()
+void main44()
 {
 	struct sfdu_time_int sfdut;
 	struct sdr_time sdrt;

@@ -1,0 +1,5 @@
+$ vpack marserrdisp.com -mixed -
+	-s marserrdisp.cc -
+	-i marserrdisp.imake -
+	-p marserrdisp.pdf
+$ Exit

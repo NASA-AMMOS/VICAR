@@ -1,0 +1,108 @@
+procedure help=*
+
+parm fname type=(string,99) count=1
+parm seq type=(string,99) count=1 default="xyz"
+parm resname type=(string,99) count=1
+parm xval type=real count=1
+parm yval type=real count=1
+parm xcol type=int count=1 default=1 valid=1:7
+parm ycol type=int count=1 default=2 valid=1:7
+
+local xxa string
+local xxb string
+local fclosest real
+local ixclosest int
+
+body
+
+! copy the input file, make it 10 columns
+
+let xxa = "xxpta" // "&seq"
+let xxb = "xxptb" // "&seq"
+
+ibis-gen &xxa version="ibis-2" org="column" nc=7 nr=1 +
+     format=("DOUB","DOUB","DOUB","DOUB","DOUB","DOUB","DOUB")
+ibis-copy &fname &xxa nc=7
+
+
+mf3 &xxa func=("c1=(c&xcol)$c2=(c&ycol)$c4=c1-(&xval)$c5=c2-(&yval)$", +
+      "c6=c4*c4+c5*c5$c7=c6$@vmin(c7)$c6=c6-c7$c3=@index")
+rowop2 &xxa &xxb keycol=6 range=(0,0) prec=0.0001 'select
+ibis2tcl &xxb v1=fclosest vartype=(-1) ibisloc=(1,3)
+let ixclosest = $fix(fclosest)
+save-variable file=&resname variable=(ixclosest)
+write "record number &ixclosest"
+
+end-proc
+!
+! HELP TEXT FOR GETPOINT
+.TITLE
+GETPOINT - Procedure to find nearest point in an ibis file
+.HELP
+PURPOSE
+
+     GETPOINT finds the nearest point in an IBIS file to a point 
+given in the parameters.  It returns the index of the point.  The 
+parameters specify a point coordinate (x0,y0) and two columns in
+the IBIS file containing points (xi,yi).  The index of the nearest 
+of the (xi,yi) is returned.  IBIS indexes start from 1.
+
+     This is useful to find three points in a control mesh or control
+grid to map an image.  By using three corners of the image, three 
+calls of this routine can find three well-spaced mapping points in
+the grid control of the image.  These can then put a GeoTIFF label
+on the image and routine GTWARPXD can be used to map the image
+according to the approximate mapping (of the three points) and the
+additional control of the mesh or grid.
+	   
+CALL
+     getpoint input parms
+  WHERE:
+     input        is the ibis table containing two columns of (xi,yi)
+     parms        specify the (x0,y0), the column numbers, and information
+                  for passing the answer back
+
+
+  
+OPERATION
+
+MF3 is used to calculate distances to all points and find the closest.
+A tie will be broken in arbitrary fashion.
+
+PERFORMANCE
+
+Less than a second.
+
+Restrictions
+------------
+
+The restore-variable must use the name ixclosest.  The column numbers 
+cannot be greater than 7.
+
+HISTORY
+
+Original Programmer: A. L. Zobrist, 11 Nov. 2001
+Current Cognizant Programmer: A. L. Zobrist
+Last Changed: A. L. Zobrist, 16 Nov. 2001
+
+2022-06-27 B. Crocco afids to opensource
+
+.LEVEL1
+.VARI fname
+IBIS file name
+.VARI seq
+String can be used to make the
+temp files name unique
+.VARI resname
+TAE TCL parameter passing file,
+a file of this name will be 
+generated
+.VARI xval
+X value of input point
+.VARI yval
+Y value of input point
+.VARI xcol
+Column number of x value column
+.VARI ycol
+Column number of y value column
+.END

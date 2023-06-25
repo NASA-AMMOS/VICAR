@@ -1,0 +1,35 @@
+procedure
+refgbl $echo
+parm version string def="ibis-2"
+parm org string def="column"
+body
+enable-log
+
+let _onfail="continue"
+let $echo="yes"
+
+
+!   TEST SCRIPT FOR GRIDCOMP
+
+
+ibis-gen xxa version=&version org=&org  datacol=(1,2,3,4) +
+    nc=4 nr=444  deffmt=DOUB
+mf xxa func=("c1=sqrt(index*17+3743)","c2=sqrt(index*7+4431)")
+mf xxa func=("c1=mod(c1,0.0001)*10000000","c2=mod(c2,0.0001)*10000000")
+mf xxa func=("c3=c1*1.1","c4=c2*1.0-1.0")
+
+tieconv INP=xxa COLS=(1,2,3,4)  OUT=xxb +
+      NAH=2,NAV=2,MINL=1.,MINS=1.,MAXL=1000.,MAXS=1000. +
+    'GEOMV
+tieconv INP=xxa COLS=(1,2,3,4)  OUT=xxc +
+      NAH=2,NAV=2,MINL=1.,MINS=1.,MAXL=1000.,MAXS=1000. +
+    'GEOMV
+
+ibis-list xxb 'format csiz=(16,16,16,16) cfor="%16.9f %16.9f %16.9f %16.9f"
+
+gridcomp INP=(xxb,xxc) OUT=xxd
+
+ibis-list xxd 'format csiz=(16,16,16,16) cfor="%16.9f %16.9f %16.9f %16.9f"
+
+disable-log
+end-proc

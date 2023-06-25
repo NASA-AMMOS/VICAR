@@ -30,6 +30,8 @@ refgbl $echo
 refgbl $autousage
 
 body
+enable-log
+
 let _onfail="stop"
 let $autousage="none"
 let $echo="yes"
@@ -40,7 +42,8 @@ translog INP=AFIDS_ROOT TRANS=afidsroot
 translog INP=AFIDS_TESTDATA TRANS=aftestdata
 if (afidsroot = "")
 !MIPL
-    ush ln -s /project/test_work/testdata/carto ct
+!    ush ln -s /project/test_work/testdata/carto ct
+     ush ln -s . ct
 else
 !CARTLAB
     if (aftestdata = "")
@@ -92,14 +95,15 @@ ibis-list xxa 'format
 
 ! Report error for missing filea
 let $echo="no"
-write "*******************************************"
-write "-----> SHOULD REPORT acopin.dat4 is missing"
-write "*******************************************"
+write "********************************************"
+write "-----> SHOULD REPORT acopin.dat42 is missing"
+write "********************************************"
 let $echo="yes"
-acopin (ct/acopin.dat4,xxa) cols=(2,3,1) lead_rm=2
+acopin (acopin.dat42,xxa) cols=(2,3,1) lead_rm=2
 
 rm>
-ush rm ct
+ush rm ct xxa
 let $echo="no"
 
+disable-log
 end-proc

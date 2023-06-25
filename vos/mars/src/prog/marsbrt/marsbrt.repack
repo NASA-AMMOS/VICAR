@@ -1,0 +1,5 @@
+$ vpack marsbrt.com -mixed -
+	-s marsbrt.cc -
+	-i marsbrt.imake -
+	-p marsbrt.pdf
+$ Exit

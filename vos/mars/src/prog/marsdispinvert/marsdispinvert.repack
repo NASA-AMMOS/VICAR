@@ -1,0 +1,5 @@
+$ vpack marsdispinvert.com -mixed -
+	-s marsdispinvert.cc -
+	-i marsdispinvert.imake -
+	-p marsdispinvert.pdf
+$ Exit

@@ -2,8 +2,8 @@
 //      U. S. Government sponsorship under NASA contract is acknowledged
 
 #include <stdlib.h>     // Cause of main()
-#include <iomanip.h>    // Cause of main()
-#include <iostream.h>
+#include <iomanip>     // Cause of main()
+#include <iostream>
 #include <string.h>
 
 #include "return_status.h"

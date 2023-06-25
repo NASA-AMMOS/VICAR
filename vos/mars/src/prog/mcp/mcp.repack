@@ -1,0 +1,6 @@
+$ vpack mcp.com -mixed -
+	-s MCP.bash -
+	-i mcp.imake -
+	-d README -
+	-t tstjames.csh
+$ Exit

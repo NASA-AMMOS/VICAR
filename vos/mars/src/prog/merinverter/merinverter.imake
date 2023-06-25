@@ -1,0 +1,14 @@
+#define PROGRAM merinverter
+#define MODULE_LIST merinverter.cc
+#define INCLUDE_LIST
+
+#define MAIN_LANG_C_PLUS_PLUS
+#define USES_C_PLUS_PLUS
+#define USES_ANSI_C
+#define CCC_TEMPLATES
+
+#define LIB_TAE
+#define LIB_RTL
+#define LIB_P2SUB
+
+/* #define DEBUG */

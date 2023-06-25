@@ -1,0 +1,108 @@
+procedure
+refgbl $echo
+refgbl $autousage
+
+local l1 real
+local s1 real
+local l2 real
+local s2 real
+local l3 real
+local s3 real
+local l4 real
+local s4 real
+
+local sl int
+local ss int
+local nl int
+local ns int
+
+body
+enable-log
+
+let $autousage="none"
+!let _onfail="continue"
+let $echo="yes"
+
+!  simple case
+
+gen xxxim0 nl=10 ns=10
+f2 inp=xxxim0 out=xxxim1 +
+    func="(abs(line-5.5)<3)*(abs(samp-5.5)<3)"
+list xxxim1 'zer 'nousrtim
+
+imcorner xxxim1 line1=l1 samp1=s1 line2=l2 samp2=s2 +
+                line3=l3 samp3=s3 line4=l4 samp4=s4 inside=1 +
+                sldat=sl ssdat=ss nldat=nl nsdat=ns
+                
+write "c1 &l1 &s1"
+write "c2 &l2 &s2"
+write "c3 &l3 &s3"
+write "c4 &l4 &s4"
+write "sl,ss &sl &ss"
+write "nl,ns &nl &ns"
+
+gen xxxim0 nl=10 ns=10
+f2 inp=xxxim0 out=xxxim1 +
+    func="(abs(line-5.5)<3)*(abs(samp-5.5)<3)"
+list xxxim1 'zer 'nousrtim
+
+imcorner xxxim1 line1=l1 samp1=s1 line2=l2 samp2=s2 +
+                line3=l3 samp3=s3 line4=l4 samp4=s4
+                
+write "l1,s1 &l1 &s1"
+write "l2,s2 &l2 &s2"
+write "l3,s3 &l3 &s3"
+write "l4,s4 &l4 &s4"
+
+!  two input case
+
+gen xxxim0 nl=10 ns=10
+f2 inp=xxxim0 out=xxxim1 +
+    func="(abs(line-5.5)<3)*(abs(samp-5.5)<3)"
+gtgen inp=xxxim1 'tiecnvrt +
+   geotiff=("ModelTiePointTag=(0,0,0,.3,.3,0.0)", +
+          "ModelTiePointTag=(10,0,0,.5,.3,0.0)", +
+          "ModelTiePointTag=(0,10,0,.3,.5,0.0)", +
+          "ProjectionGeoKey=20(CT_MillerCylindrical)", +
+          "GTRasterTypeGeoKey=2(RasterPixelIsPoint)", +
+          "GeogEllipsoidGeoKey=7030(Ellipse_WGS84)")
+
+gtcopy xxxim1 xxxim2 size=(2,2,10,10)
+f2 inp=xxxim2 out=xxxim3 +
+    func="(abs(line-5.5)<3)*(abs(samp-5.5)<3)"
+    
+!gtoffset xxxim1 xxxim3
+list xxxim1 'zer 'nousrtim
+list xxxim3 'zer 'nousrtim
+    
+imcorner (xxxim1,xxxim3) line1=l1 samp1=s1 line2=l2 samp2=s2 +
+                line3=l3 samp3=s3 line4=l4 samp4=s4
+write "c1 &l1 &s1"
+write "c2 &l2 &s2"
+write "c3 &l3 &s3"
+write "c4 &l4 &s4"
+
+! the correlation footprint case
+
+gen xxxim0 nl=10 ns=10
+f2 inp=xxxim0 out=xxxim1 +
+    func="(abs(line-5.5)<3)*(abs(samp-5.5)<3)*((samp<7)+(line>4))"
+list xxxim1 'zer 'nousrtim
+
+imcorner xxxim1 line1=l1 samp1=s1 line2=l2 samp2=s2 +
+                line3=l3 samp3=s3 line4=l4 samp4=s4 inside=0 +
+                sldat=sl ssdat=ss nldat=nl nsdat=ns 'corrfoot
+                
+write "c1 &l1 &s1"
+write "c2 &l2 &s2"
+write "c3 &l3 &s3"
+write "c4 &l4 &s4"
+write "sl,ss &sl &ss"
+write "nl,ns &nl &ns"
+
+theend>
+
+ush rm xx*
+
+disable-log
+END-PROC

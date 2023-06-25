@@ -1,0 +1,205 @@
+process help=*
+PARM INP TYPE=STRING COUNT=1
+PARM OUT TYPE=STRING COUNT=1
+PARM MASK TYPE=STRING COUNT=1
+PARM INVERT TYPE=KEYWORD COUNT=1 VALID=(INVERT, NOINVERT) DEFAULT=NOINVERT
+PARM LABEL TYPE=KEYWORD COUNT=1 VALID=(IMAGE,MASK) DEFAULT=MASK
+PARM CORR TYPE=KEYWORD COUNT=1 VALID=(CORR,NOCORR) DEFAULT=NOCORR
+
+PARM POINT_METHOD TYPE=STRING COUNT=(0:1) DEFAULT=--
+
+PARM DATA_SET_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM RELEASE_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCT_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_INST TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_TYPE TYPE=STRING COUNT=(0:1) DEFAULT=--
+
+END-PROC
+
+.TITLE
+VICAR program MARSMASK.
+
+.HELP
+PURPOSE:
+Apply the mask to the image.
+
+This is a multimission program. 
+It supports any mission.
+
+
+EXECUTION:
+marsmask inp=inputi_image out=input_masked_image mask=mask_image
+
+.PAGE
+
+METHOD:
+Mask consists of zero and non-zero data.  For each pixel in the mask that 
+is non-zero, the corresponding pixel in the input image is assigned DN of zero.
+Inversion of this process is supported as well via INVERT parameter.
+If number of bands in the mask file is not the same as in input file,
+only first band of the mask is used and applied to all bands of the input.
+The rest of the bands of the mask will be ignored in that case.  
+
+INP: Image to be masked.  All data type formats are supported.
+
+MASK: BYTE-formatted image. If the mask is single banded, same mask will
+be applied to all bands of the input image.  If the number of bands of the
+mask matches number of bands of the input image, then the mask will be
+applied on per-band basis.
+
+OUT:  Masked-out input image.
+
+By default, the output label is derived from the mask image.  That's because
+the mask is generally made from the same input file, so using it means the
+mask program (marsfilter or marsdispcompare) is included in the history label.
+However, if the mask does not have a proper label, or is otherwise
+inappropriate, -IMAGE will cause the label to be derived from the input image
+instead.
+
+If -CORR is set, the image is a correlation image, so the
+CORRELATION_PIXEL_COUNT label will be set with the number of non-zero pixels
+in the output.  This is not the same as the number of non-masked pixels in
+the mask, as the input might be zero even where the mask lets data through.
+In addition, the CORRELATION_AVERAGE_SCALE is transferred from the image
+label to the output, even if -IMAGE is not specified.  While the average
+scale may not be accurate any more due to masking, it is only an estimate
+to start with.
+
+.PAGE
+
+HISTORY:
+Sep. 11    ozp	Initial Implementation 
+2019-04-23 rgd	Added -CORR option
+
+COGNIZANT PROGRAMMER: Oleg Pariser 
+
+.LEVEL1
+.VARI INP
+Input image.
+Must be 1.
+
+.VARI OUT
+Output file
+Must be 1.
+
+.VARI MASK
+The mask to apply. 
+
+.VARI INVERT
+Whether to invert the mask
+
+.VARI LABEL
+Which label to apply to output
+
+.VARI DATA_SET_NAME
+Specifies the full name given
+to a data set or a data product.
+
+.VARI DATA_SET_ID
+Specifies a unique alphanumeric
+identifier for a data set or data
+product.
+
+.VARI RELEASE_ID
+Specifies the unique identifier
+associated with the release to the
+public of all or part of a data set.
+The release number is associated with
+the data set, not the mission.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique
+identifier assigned to a data
+product by its producer.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier
+of an entity associated with the
+production a data set.
+
+.VARI PRODUCER_INST
+Specifies the full name of the
+identity of an entity associated
+with the production of a data set.
+
+.VARI TARGET_NAME
+Specifies a target.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target.
+
+
+.LEVEL2
+.VARI INP
+Input image that the the mask is going to be applied.
+Must be 1.
+
+.VARI OUT
+Output file containing masked image data.  The output file
+is in the same format as input file.
+Must be 1.
+
+
+.VARI MASK
+The mask to apply. It is expected to be in BYTE format.  
+
+.VARI INVERT
+If INVERT is specified, the mask is inverted from the default (so formerly
+masked areas are now passed, and vice-versa).
+
+.VARI LABEL
+By default, the output label is derived from the mask image.  That's because
+the mask is generally made from the same input file, so using it means the
+mask program (marsfilter or marsdispcompare) is included in the history label.
+However, if the mask does not have a proper label, or is otherwise
+inappropriate, -IMAGE will cause the label to be derived from the input image
+instead.
+
+.VARI DATA_SET_NAME
+The DATA_SET_NAME typically identifies the instrument that acquired the
+data, the target of that instrument, and the processing level of the data.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_NAME.
+
+.VARI DATA_SET_ID
+The DATA_SET_ID value for a given data set or product is constructed
+according to flight project naming conventions.  In most cases the
+DATA_SET_ID is an abbreviation of the DATA_SET_NAME.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_ID.
+
+.VARI RELEASE_ID
+When a data set is released incrementally, such as every three months during
+a mission, the RELEASE_ID is updated each time part of the data set is released.
+For each mission(or host id if multiple spacecrafts), the first release of a data
+set should have a value of "0001".
+This value is copied to the output label, property IDENTIFICATION,
+keyword RELEASE_ID.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique identifier assigned to a data product by
+its producer. Most commonly, it is the filename minus the extension.
+This value is copied to the output label, property IDENTIFICATION,
+keyword PRODUCT_ID.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier of an entity associated with the
+production of a data set. This value is copied to the output label,
+property IDENTIFICATION, keyword PRODUCER_ID.
+
+.VARI PRODUCER_INST
+Specifies the identity of a university, research center, NASA center or other
+institution associated with the production of a data set.
+This value is copied to the output label, property IDENTIFICATION, keyword
+PRODUCER_INSTITUTION_NAME.
+
+.VARI TARGET_NAME
+Specifies a target.  The target may be a planet, satelite, ring, region, feature,
+asteroid or comet.  This value is copied to the output label, property
+IDENTIFICATION, keyword TARGET_NAME.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target. This value is copied to the output
+label, property IDENTIFICATION, keyword TARGET_NAME.

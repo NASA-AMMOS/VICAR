@@ -295,20 +295,21 @@ Revision History:
 
 Who When       What
 --- ---------- ----------------------------------------------------------------
-SMC 09/27/1996 Updated CONVEV call to reflect (FR89818)
-SMC 09/27/1996 Make 'SEDR command reload the SEDR information.  (FR89849)
-SMC 08/05/1996 FR 89352
-               Disable 'SEDR in parameter processor initiated with 'NOSEDR
-               Took out DEVICE parameter
-SMC 10/22/1996 * Updated VALID input list for 2 parameter CORRs to match
-               * Took out parameters D1, D2, U1, and U2              (FR89888)
-SMC 10/22/1996 Make SEDR information be reloaded when 'SEDR command  (FR89849)
-SMC 10/22/1996 Updated CONVEV calling sequence so that Summation Mode is
+1996-08-05 SMC - FR 89352
+                 Disable 'SEDR in parameter processor initiated with 'NOSEDR
+                 Took out DEVICE parameter
+1996-09-27 SMC - Updated CONVEV call to reflect (FR89818)
+1996-09-27 SMC - Make 'SEDR command reload the SEDR information.  (FR89849)
+1996-10-22 SMC - Updated VALID input list for 2 parameter CORRs to match
+                Took out parameters D1, D2, U1, and U2              (FR89888)
+1996-10-22 SMC - Make SEDR information be reloaded when 'SEDR command  (FR89849)
+1996-10-22 SMC - Updated CONVEV calling sequence so that Summation Mode is
                  supported.                           (FR89818)
-SMC 10/22/1996 Use MVCL to write 'GLL  ' to CONV instead of MVE    (FR89353)
-LWK 05aug2005  Fixed some errors in the Help text.  Closed ARs 9037 and 9038
-               because they were not reproducible and predated above changes
-               by SMC.
+1996-10-22 SMC - Use MVCL to write 'GLL  ' to CONV instead of MVE    (FR89353)
+2005-08-05 LWK - Fixed some errors in the Help text.  Closed ARs 9037 and 9038
+                 because they were not reproducible and predated above changes
+                 by SMC.
+2021-11-22 WLB - updated obsolete alternate return spec
 
 .LEVEL1
 .VARIABLE INP

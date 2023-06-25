@@ -1,0 +1,104 @@
+process help=*
+PARM INP TYPE=STRING COUNT=2
+PARM OUT TYPE=STRING COUNT=1
+PARM WINDOW TYPE=INTEGER DEFAULT=3
+PARM HALFPIX TYPE=KEYWORD COUNT=(0:1) VALID=HALFPIX DEFAULT=--
+PARM ADD128 TYPE=KEYWORD COUNT=(0:1) VALID=ADD128 DEFAULT=--
+PARM ABSVAL TYPE=KEYWORD COUNT=(0:1) VALID=ABSVAL DEFAULT=--
+
+END-PROC
+.TITLE
+difnear - dif two images allowing for slight misregistration
+.HELP
+PURPOSE:
+difnear compares a pixel in the first image with a window of
+pixels in the second image.  The minimum of the dif's over
+the window is output.  So if two images are slightly misregistered
+this program will do a better job of eliminating a lot of "noise"
+in the dif image.  It is also possible that "signal" will be wiped
+out by a nearby pixel that accidentally has the same value as the
+signal.  
+
+The dif value is the closest value.  So the dif of 5 with the values
+4 and 7 is 1.  The dif of 5 with 3 and 6 is -1
+
+difnear has an option for refining the window to half step values
+and options for taking absolute value of the diff or adding 128.
+EXECUTION:
+
+Example
+
+difnear (A,B) C      will dif A and B starting naming the result C.
+                               
+OPERATION:
+Because of the window, the program uses a "rolling barrel" of input
+lines to avoid rereading a line more than once in the second input.
+
+
+TIMING: 
+
+About the same speed as convolution filter.  
+
+ ORIGINAL PROGRAMMER:    A. Zobrist          27 Jun 2002
+ COGNIZANT PROGRAMMER:   A. Zobrist          27 Jun 2002
+ 
+ REVISION HISTORY
+  2002-06-27 AZ  Initial version
+  2008-01-02 WLB Switched to USES_ANSI_C AND LIB_CARTO; misc cleanup  
+  2015-11-24 WLB Migrated to MIPL
+  2022-07-14 B. Crocco afids to opensource
+  
+.LEVEL1
+.VARIABLE INP
+STRING - Input image files
+.VARIABLE OUT
+STRING - Output image file
+.VARIABLE SIZE
+INTEGER - Region of input files
+to be diffed
+.VARIABLE SL
+INTEGER - Starting line
+.VARIABLE SS
+INTEGER - Starting sample
+.VARIABLE NL
+INTEGER - Number of lines
+.VARIABLE NS
+INTEGER - Number of samples
+.VARIABLE WINDOW
+Size of the diff window,
+must be odd
+.VARIABLE HALFPIX
+Will calculate the half steps
+between each neighbor pixel
+.VARIABLE ADD128
+Add 128 to the result to get
+rid of negative numbers
+.VARIABLE ABSVAL
+Abs() the result to get
+rid of negative numbers
+.LEVEL2
+.VARIABLE SIZE
+The default (1,1,0,0) means use the whole image.
+.VARIABLE SL
+INTEGER - Starting line (see SIZE)
+.VARIABLE SS
+INTEGER - Starting sample (see SIZE)
+.VARIABLE NL
+INTEGER - Number of lines (see SIZE)
+.VARIABLE NS
+INTEGER - Number of samples (see SIZE)
+.VARIABLE HALFPIX
+For example, in the 3 x 3 case, the closest value will be over the
+nine pixels in the window and the eight half steps to the eight
+neighbors.  These values are the averages of the center pixel and
+the neighbor pixel.
+
+comparing     5 in the first image to 
+
+4 4 7
+2 6 6
+3 8 8
+
+in the second image, not using halfpix would give -1 as the dif
+but using halfpix would give 0 because of the values 4 and 6.
+.END

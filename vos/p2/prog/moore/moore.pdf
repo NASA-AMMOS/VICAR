@@ -1,0 +1,135 @@
+PROCESS    HELP=*
+PARM INP      TYPE=STRING COUNT=1
+PARM OUT      TYPE=STRING COUNT=1
+PARM DMAX     TYPE=INTEGER COUNT=1 valid=2:5000
+PARM EDGEVAL  TYPE=KEYWORD COUNT=(0:1) VALID=EDGEVAL DEFAULT=--
+PARM OUTONE   TYPE=KEYWORD COUNT=(0:1) VALID=OUTONE DEFAULT=--
+PARM GROWONE  TYPE=KEYWORD COUNT=(0:1) VALID=GROWONE DEFAULT=--
+
+END-PROC
+.TITLE
+VICAR/IBIS Program  moore
+.HELP     
+PURPOSE
+
+     moore grows the non-zero areas of an image in all directions
+     an amount set by the parameter dmax.  a special case is
+     available that can grow different borders of the non-zero
+     areas by different amounts (depending on the initial border
+     pixel values).
+     
+     The basic case grows an area of non-zero pixels by layering
+     on 1 pixels, then 2 pixels, etc, for example:
+     
+                999999
+                999
+                99999
+                9
+                
+     becomes 
+                111111 
+               19999991
+               1999111 
+               1999991
+               191111 
+                1 
+     becomes 
+                222222  
+               21111112 
+              2199999912
+              219991112 
+              219999912 
+              21911112 
+               212222  
+                2                etc.
+     
+     The initial values of 9 can be any value greater than 0.
+     
+     The process stops when the value in the parameter DMAX is
+     reached.  The term "distance" treats diagonal distance as the
+     sum of horizontal and vertical distance.  Mathematically,
+     this is the L1 norm or "staircase" distance, which is a distance
+     function (satisfies the triangle inequality).
+     
+     The normal case grows equally at all edges, considering all
+     non-zero values to be like the 9's in the above diagram.  The
+     keyword EDGEVAL causes the program to treat all non-zero values
+     as an already calculated distance.  So, if one of the edge pixels
+     is already a 2, then it does not grow a 1 but will start growing
+     neighbors at 3.  This can be used to grow different edges at
+     different distances.  Keep in mind that the minimum "growth"
+     number now becomes 2.
+     
+     The keyword 'OUTONE will output all of the non-zero input
+     values as a one (but not the Moore values).
+     
+     The keyword 'GROWONE will output all of the Moore distance
+     values as a one (but not the non-zero input values).  This 
+     is useful perhaps for identifying the Moore distance areas
+     with a unique value (have all input pixels >1 and do not
+     use 'EDGEVAL).
+     
+     The use of 'OUTONE and 'GROWONE together will produce an
+     image that is all 0's and 1's (a binary mask).
+     
+     Logically, there are eight possible cases using the three
+     keywords 'EDGEVAL, 'OUTONE and 'GROWONE.
+.PAGE
+TAE COMMAND LINE FORMAT
+
+     moore INP=PIC OUT=OUTPIC DMAX=n PARMS
+
+     where
+
+     PIC                 is an image.
+     OUTPIC              is  a copy of PIC with non-zero areas
+                         grown by a distance of n
+     n                   is a distance in pixels
+     PARMS               any/all of the three keywords 'EDGEVAL,
+                         'OUTONE and 'GROWONE.
+
+.PAGE
+OPERATION
+The program reads DMAX lines of the input, applying the Moore
+algorithm as lines are read.  The DMAX lines are on a rolling
+barrel buffer, so that when the next line is read, the oldest
+line is written to output, then dropped.
+
+TIMING
+
+About twice as slow as an image copy.  This program is WAY, WAY
+FASTER than using a convolution filter (such as VICAR BOXFLT)
+followed by F2.
+
+RESTRICTIONS
+
+
+WRITTEN BY:                   Al Zobrist         31 JUL 00
+COGNIZANT PROGRAMMER:         B. McGuffie
+REVISIONS:
+  2008-01-02 WLB Switched to USES_ANSI_C AND LIB_CARTO; misc cleanup.
+  2015-12-09 WLB Migrated to MIPL.
+  2022-07-14 B. Crocco afids to opensource
+  
+.PAGE
+.LEVEL1
+.VARIABLE INP
+Input image
+.VARIABLE OUT
+Output image
+.VARIABLE DMAX
+How far to grow the non-zero
+areas
+.VARIABLE EDGEVAL
+Keyword to treat all non-zero
+input pixels as an already
+calculated distance
+.VARIABLE OUTONE
+Keyword to convert all non-zero
+input pixels to the value one
+in the output
+.VARIABLE GROWONE
+Keyword to convert all Moore
+distance pixels to the value
+one in the output
+.END

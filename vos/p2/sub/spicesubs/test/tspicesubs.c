@@ -3,9 +3,10 @@
 PROGRAM TO TEST SPICESUBS
 
 *************************************************************/
+#include <stdlib.h>
+#include <string.h>
 #include	"spiceinc.h"
 #include        "vicmain_c"
-#include <stdlib.h>
 
 #define		LEN_TEST	7
 
@@ -104,6 +105,7 @@ void main44()
                          /** vwait not available on alpha-vms **/
   zclpool();
 
+/* this used to work with UNIX_OS, but zrspool_1 has been dropped from spice lib
 #if UNIX_OS
 {
   env = getenv("BINPOOL");
@@ -117,14 +119,15 @@ void main44()
 #else
   zrspool_1("BINPOOL");
 #endif
+ */
+
 /*****end init_spice******/
 
   zvp("SP_KERNEL",SPfile,&count);
   zdafopr(SPfile, &handle);
   if (zfailed())
   {
-    zvmessage("dafopr failed","");
-    exit();
+    zmabend("dafopr failed");
   }
   zvmessage("If you got here, INIT_SPICE worked","");
   zvmessage(" ","");
@@ -133,8 +136,7 @@ void main44()
   zdafcls(handle);
   if (zfailed())
   {
-    zvmessage("SP Kernel closing failed","");
-    exit();
+    zmabend("SP Kernel closing failed");
   }
   zvmessage("The following segments (SUMMARIZE_SPK) are in the venus.spk kernel:","");
   zvmessage(" ","");
@@ -158,16 +160,14 @@ void main44()
   zdafopr(CKfile,&handle);
   if (zfailed())
   {
-    zvmessage("dafopr failed","");
-    exit();
+    zmabend("dafopr failed");
   }
 
   summarize_ck(handle, &c_summary);
   zdafcls(handle);
   if (zfailed())
   {
-    zvmessage("C Kernel closing failed","");
-    exit();
+    zmabend("C Kernel closing failed");
   }
   zvmessage("The following arrays (SUMMARIZE_CK) are in the venus.ck kernel:","");
   zvmessage(" ","");
@@ -189,13 +189,12 @@ void main44()
   if (status == SUCCESS)  zvmessage("LOAD_SPICE worked","");
   else
   {
-    zvmessage("Oops, LOAD_SPICE failed","");
-    exit();
+    zmabend("Oops, LOAD_SPICE failed");
   }
   zvmessage("Time to work the GET_BODY versus GET_BODY_IDS subroutines...","");
   zvmessage(" ","");
-  strcpy(craft, "GLL","");
-  strcpy(target, "VENUS","");
+  strcpy(craft, "GLL");
+  strcpy(target, "VENUS");
   status = get_body_ids(craft, target, &ids);
   if (status == SUCCESS)
   {
@@ -209,8 +208,7 @@ void main44()
   }
   else
   {
-    zvmessage("Oops, get_body_ids failed","");
-    exit();
+    zmabend("Oops, get_body_ids failed");
   }
   zvmessage(" ","");
   zvmessage("Can GET_BODY return what we want?","");
@@ -224,8 +222,7 @@ void main44()
   }
   else
   {
-    zvmessage("Oops, GET_BODY failed","");
-    exit();
+    zmabend("Oops, GET_BODY failed");
   }
   status = get_body(BODY_NAME, &ids.center, center);
   status = get_body(BODY_ID, &ids.center, center);
@@ -237,8 +234,7 @@ void main44()
   }
   else
   {
-    zvmessage("Oops, GET_BODY failed","");
-    exit();
+    zmabend("Oops, GET_BODY failed");
   }
   zvmessage(" ","");
   zvmessage("Time to work the two SCET SUBROUTINES...","");
@@ -251,7 +247,7 @@ void main44()
   sprintf(mess, " combine_scet returns scet:  %s",scet1);
   zvmessage (mess,"");
   zvmessage(" ","");
-  strcpy(scet2, "1990-44 // 05:58:16:962","");
+  strcpy(scet2, "1990-44 // 05:58:16:962");
   sprintf(mess, " Given scet: %s...", scet2);
   zvmessage (mess,"");
   split_scet(scet2, &c_year, &c_day, &c_hour, &c_minute, &c_second, &c_milli);
@@ -274,8 +270,7 @@ void main44()
 
   if (status == INSUFF_EPHEMERIS)
   {
-    zvmessage("Oops, GET_BASICS failed","");
-    exit();
+    zmabend("Oops, GET_BASICS failed");
   }
   zreset1();				/* Reset if INSUFF_POINTING	*/
   zvminus(basics.craft_target_pos,target_craft);

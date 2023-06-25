@@ -68,17 +68,17 @@ gen out=bk.img nl=40 ns=40 linc=0.0 sinc=0.0 ival=0.0
 gen out=wt.img nl=40 ns=40 linc=0.0 sinc=0.0 ival=218
 insect inp=(bk.img,wt.img) out=edge.img size=(1,1,40,40) +
    insect=(1,1,40,20,1,21)
-list edge.img (1,11,40,30)
+list edge.img (1,11,40,30) 'nousrtim
 
 !MAKE LINEAR RAMP FOR EDGE, AND EXPAND INTO A 20X16 IMAGE
 genthis a.img nl=1 ns=16 +
    dn=(0,0,0,0,24,48,72,96,120,144,168,192,216,216,216,216)
 size a.img s1edge.img 'noin lzoom=20 szoom=1
-list s1edge.img
+list s1edge.img 'nousrtim
 !deriv inp=s1edge.img out=(s1lsf.img,s1infl.img) orient=horiz
 !SMOOTH THE RAMP WITH A BOX FILTER
 boxflt2 inp=s1edge.img out=s2edge.img nlw=9 nsw=9
-list s2edge.img
+list s2edge.img 'nousrtim
 ! generate derivative to get lsf
 !deriv inp=s2edge.img out=(s2lsf.img,s2infl.img) orient=horiz
 ! NOW add noise to ramp
@@ -91,12 +91,12 @@ addnoise s2edge.img s2edgeN.img sigma=3 seed=1351456636
 genthis b.img nl=1 ns=8 +
     dn=(0,0,24,72,120,168,216,216)
 size b.img t1edge.img 'noin lzoom=20 szoom=1
-list t1edge.img
+list t1edge.img 'nousrtim
 
 
 !SMOOTH THE RAMP WITH A BOX FILTER
 boxflt2 inp=t1edge.img out=t2edge.img nlw=5 nsw=5
-list t2edge.img
+list t2edge.img 'nousrtim
 
 
 ! NOW add noise to ramp
@@ -109,11 +109,11 @@ addnoise t2edge.img t2edgeN.img sigma=3 seed=1351456636
 genthis c.img nl=1 ns=16 +
     dn=(0,0,0,0,0,0,60,96,108,170,216,216,216,216,216,216)
 size c.img u1edge.img 'noin lzoom=20 szoom=1
-list u1edge.img
+list u1edge.img 'nousrtim
 
 !SMOOTH THE RAMP WITH A BOX FILTER
 boxflt2 inp=u1edge.img out=u2edge.img nlw=5 nsw=5
-list u2edge.img
+list u2edge.img 'nousrtim
 
 ! NOW add noise to ramp - use a fixed seed for test
 addnoise u1edge.img u1edgeN.img sigma=3 seed=1351456636
@@ -456,8 +456,11 @@ otf1 inp=s2edge.img gsd=30. altitude=400000 psfpix=psfpix +
     pixrad=pixrad pixdeg=pixdeg psfrad=psfrad psfdeg=psfdeg +
     norangle=22.0 plotout=test32 plotprof=test32 plotfmt=eps
 
-ush gnuplot test32.eps.gpi
-ush gnuplot test32.prof.eps.gpi
+!*********************************************************
+! Uncomment these ushes to see gnuplots
+!*********************************************************
+!ush gnuplot test32.eps.gpi
+!ush gnuplot test32.prof.eps.gpi
 let $echo="no"
 goto theend
 !
@@ -523,4 +526,33 @@ deriv inp=s2edgeN.img out=(s2lsfN.img,s2inflN.img) orient=horiz
 theend>
  
 disable-log
+
+ush rm a.img b.img bk.img c.img edge.img otfplot.asc otfplot.gpi
+ush rm plotprof.prof.asc plotprof.prof.gpi s1edge.img s1edgeN.img
+ush rm s2edge.img s2edgeN.img sinctst2.asc
+ush rm sinctst2.gpi sinctst2.tbl sinctst.asc sinctst.gpi t1edge.img
+ush rm t1edgeN.img t2edge.img t2edgeN.img t2edgeN.prof.asc
+ush rm t2edgeN.prof.gpi t2edge.prof.asc t2edge.prof.gpi test10.asc
+ush rm test10.gpi test11.asc test11.gpi test12.asc test12.gpi
+ush rm test13.asc test13.gpi test14.asc test14.gpi test15.asc
+ush rm test15.gpi test16.asc test16.gpi test17.asc test17.gpi
+ush rm test18.asc test18.gpi test19.asc test19.gpi test19.img
+ush rm test19.tbl test20.asc test20.gpi test20.img test20.tbl
+ush rm test21.asc test21.gpi test22.asc test22.gpi test23.asc
+ush rm test23.gpi test23.tbl test24.asc test24.gpi test24.tbl
+ush rm test25.asc test25.gpi test26.asc test26.gpi test27.asc test27.gpi
+ush rm test28.asc test28.gpi test28.tbl test2.asc test2.gpi
+ush rm test2.tbl test30.asc test30.gpi test30.prof.asc test30.prof.gpi
+ush rm test3_124r.img test31.prof.asc test31.prof.gpi test32.asc
+ush rm test32.eps.gpi test32.gpi test32.prof.asc
+ush rm test32.prof.eps.gpi test32.prof.gpi
+ush rm test3.asc test3_cr.img test3.gpi test3.img test3.prof.asc
+ush rm test3.prof.gpi test3_r.img test4.asc test4.gpi test4.img
+ush rm test4.prof.asc test4.prof.gpi test4.prof.tbl test5.asc
+ush rm test5.gpi test5.prof.asc test5.prof.gpi test5.prof.tbl
+ush rm test5.tbl test6.asc test6.gpi test6.img test9.asc test9.gpi
+ush rm u1edge.img u1edgeN.img u2edge.img
+ush rm u2edgeN.img u2edgeN.prof.asc u2edgeN.prof.gpi u2edge.prof.asc
+ush rm u2edge.prof.gpi wt.img
+
 end-proc

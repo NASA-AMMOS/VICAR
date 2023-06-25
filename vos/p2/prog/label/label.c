@@ -65,6 +65,8 @@ struct multival
   int allocsize;
 };
 
+static const int buf_size = 100; /* used to limit zvnabend message length */
+
 /* Prototypes */
 
 void add_items(int action);
@@ -76,7 +78,7 @@ void list_label(void);
 void remove_label(void);
 void switch_labels(void);
 int count_sig_digits (char *str);
-void concat_set(int source_unit, int out_unit, char *type, char *set_opt, char *set_name, int instance);
+void concat_set(int source_unit, int out_unit, char *type, char *set_opt, char *set_name, int instance, char *out_name);
 int string_on_list(char *string, char list[][MAX_LABEL_KEY_SIZE+1], int list_len);
 int int_on_list(int intval, int list[], int list_len);
 void revise_instance_list(char names[MAX_SETS][MAX_LABEL_KEY_SIZE+1],
@@ -89,16 +91,12 @@ void list_task_headers(int unit,int nousrtim);
 void print_key_value_pair(char key[], struct multival *value, char *format);
 void flush_key_value_pair(void);
 
-void my_abort_int(char *str, int p1, char *p2);
-void my_abort3(char *str, char *p1, char *p2);
-void my_abort2(char *str, char *p1);
-
 void main44(void)
 {   
   int count,def;
   char command[7];
     
-  zifmessage("LABEL version 2019-09-06");
+  zifmessage("LABEL version 2021-11-12.2");
 
   zvparm("_SUBCMD",command,&count,&def,0,0);
   switch (command[0])
@@ -255,13 +253,13 @@ void add_items(int action)
 	  p++;
 	  sscanf(p, "%d", &element_number);
 	  if (element_number == 0 || element_number < -1)
-	    my_abort_int("Illegal starting element number of %d for keyword %s",
-			 element_number, key);
+	    zvnabend(buf_size, "Illegal starting element number of %d for keyword %s",
+		     element_number, key);
 	  p += strspn(p, "1234567890+");	/* find closing parenthesis */
 	  p += strspn(p, " \t");		/* skip white space */
 	  if (*p != ')')
-	    my_abort2("Missing ')' for starting element of keyword %s",
-		      key);
+	    zvnabend(buf_size, "Missing ')' for starting element of keyword %s",
+		     key);
 	  p++;			/* skip the ) */
 	  p += strspn(p, " \t");		/* skip white space */
 
@@ -295,13 +293,13 @@ void add_items(int action)
 	element_number = 0;	     /* Element number subscript not present */
 
       if (*p != '=')
-	my_abort2("Missing '=' for keyword %s", key);
+	zvnabend(buf_size, "Missing '=' for keyword %s", key);
       p++;
 
       p += strspn(p, " \t");		/* skip white space after the = */
 
       if (*p == '\0')
-	my_abort2("Null value for keyword %s", key);
+	zvnabend(buf_size, "Null value for keyword %s", key);
 
       /* We're now at the beginning of value part of buffer */
       value.data = NULL;
@@ -321,7 +319,7 @@ void add_items(int action)
 
       value.data = malloc(value.nelements * value.maxlength);
       if (value.data == NULL)
-	my_abort2("Out of memory processing keyword %s!!", key);
+	zvnabend(buf_size, "Out of memory processing keyword %s!!", key);
 
       /* Second time... fill the array.  All errors should have been caught the */
       /* first time through, so there is no need to free up value.data.	  */
@@ -530,8 +528,8 @@ char *parse_value(value, p, format, key, change_format)
 
 	  if (*format != '\0' && strcmp(format, "STRING") != 0 &&
 	      !change_format)
-	    my_abort3("Can't change format from %s to STRING for keyword %s",
-		      format, key);
+	    zvnabend(buf_size, "Can't change format from %s to STRING for keyword %s",
+		     format, key);
 	  strcpy(format, "STRING");		/* change format to STRING */
 
 	  start = p;
@@ -542,11 +540,11 @@ char *parse_value(value, p, format, key, change_format)
 	    len = strcspn(p, ",)\' \t");
 	  p += len;
 	  if ((*p != '\'' && quote) || (*p == '\'' && !quote))
-	    my_abort_int("String for keyword %s, element %d improperly terminated",
-			 nelem+1, key);
+	    zvnabend(buf_size, "String for keyword %s, element %d improperly terminated",
+		     nelem+1, key);
 	  if (!quote && len == 0)
-	    my_abort_int("Invalid value for keyword %s, element %d",
-			 nelem+1, key);
+	    zvnabend(buf_size, "Invalid value for keyword %s, element %d",
+		     nelem+1, key);
 
 	  if (value->data != NULL)
 	    {
@@ -566,8 +564,8 @@ char *parse_value(value, p, format, key, change_format)
 	  start = p;
 	  len = strspn(p, "1234567890+-.Ee");		/* find end of number */
 	  if (len == 0)
-	    my_abort_int("Invalid value for keyword %s, element %d",
-			 nelem+1, key);
+	    zvnabend(buf_size, "Invalid value for keyword %s, element %d",
+		     nelem+1, key);
 	  p += len;
 	  savechar = *p;
 	  *p = '\0';				/* make the number a string */
@@ -591,9 +589,9 @@ char *parse_value(value, p, format, key, change_format)
 
 		  if ((*format != '\0' && strcmp(format, "REAL") != 0 &&
 		       !change_format)  ||  (strcmp(format, "STRING") == 0))
-		    my_abort3(
-			      "Can't change format from %s to REAL for keyword %s",
-			      format, key);
+		    zvnabend(buf_size,
+			     "Can't change format from %s to REAL for keyword %s",
+			     format, key);
 		  strcpy(format, "REAL");
 		}
 	      else
@@ -603,9 +601,8 @@ char *parse_value(value, p, format, key, change_format)
 
 		  if ((*format != '\0' && strcmp(format, "DOUB") != 0 &&
 		       !change_format)  ||  (strcmp(format, "STRING") == 0))
-		    my_abort3(
-			      "Can't change format from %s to DOUB for keyword %s",
-			      format, key);
+		    zvnabend(buf_size, "Can't change format from %s to DOUB for keyword %s",
+			     format, key);
 		  strcpy(format, "DOUB");
 		}
 
@@ -624,9 +621,8 @@ char *parse_value(value, p, format, key, change_format)
 	      /* Can't change format to INT from anything else */
 
 	      if (*format != '\0' && strcmp(format, "INT") != 0)
-		my_abort3(
-			  "Can't change format from %s to INT for keyword %s",
-			  format, key);
+		zvnabend(buf_size, "Can't change format from %s to INT for keyword %s",
+			 format, key);
 	      strcpy(format, "INT");
 
 	      if (value->data != NULL)
@@ -656,8 +652,8 @@ char *parse_value(value, p, format, key, change_format)
 	  else if (*p == ',')		/* skip commas */
 	    p++;
 	  else if (*p == '\0')
-	    my_abort2("No closing parenthesis for multi-valued keyword %s",
-		      key);
+	    zvnabend(buf_size, "No closing parenthesis for multi-valued keyword %s",
+		     key);
 	}
       else
 	done = TRUE;
@@ -666,33 +662,9 @@ char *parse_value(value, p, format, key, change_format)
     }
 
   if (!paren && *p == ')')
-    my_abort2("Extra closing parenthesis found for keyword %s", key);
+    zvnabend(buf_size, "Extra closing parenthesis found for keyword %s", key);
 
   return p;
-}
-
-void my_abort_int(char *str, int p1, char *p2)
-{
-  char message[80];
-
-  sprintf(message, str, p1, p2);
-  zmabend(message);
-}
-
-void my_abort3(char *str, char *p1, char *p2)
-{
-  char message[80];
-
-  sprintf(message, str, p1, p2);
-  zmabend(message);
-}
-
-void my_abort2(char *str, char *p1)
-{
-  char message[80];
-
-  sprintf(message, str, p1);
-  zmabend(message);
 }
 
 int count_sig_digits (char *str)
@@ -1011,6 +983,7 @@ void concat_labels(void)
   /*  instance	-- instance of TASK or PROPERTY			*/
   /*  instances	-- List of all src set instances from zlp/hinfo	*/
   /*  nsets_label	-- # of sets in source				*/
+  /*  out_name  -- name of output set, override			*/
 
   int source_unit=0, in_unit=0, out_unit=0;
   int task_cnt, prop_cnt;
@@ -1023,6 +996,7 @@ void concat_labels(void)
   int instance=0;
   int instances[MAX_SETS];
   int nsets_label;
+  char out_name[MAX_LABEL_KEY_SIZE+1];
   char *p = NULL;
 
   /* Open input 1 (the source of the labels */
@@ -1105,13 +1079,25 @@ void concat_labels(void)
 	  if (islower(*p))
 	    *p = toupper(*p);
 	}
+
+      /* check for output name override */
+      strcpy(out_name, set_name);
+      zvpcnt("OUT_NAME", &count);
+      if (count != 0)
+        {
+	  zvp("OUT_NAME", out_name, &count);
+        }
     }
   else
-    strcpy(set_name, "");
+    {
+      strcpy(set_name, "");
+      strcpy(out_name, "");
+    }
 
   if (single_set)
     {
-      concat_set(source_unit, out_unit, type, set_opt, set_name, instance);
+      concat_set(source_unit, out_unit, type, set_opt, set_name, instance,
+								out_name);
     }
   else
     {
@@ -1125,7 +1111,7 @@ void concat_labels(void)
 	  for (i=0; i < nsets_label; i++)
 	    {
 	      concat_set(source_unit, out_unit, "PROPERTY", "PROPERTY",
-			 set_names[i], instances[i]);
+			 set_names[i], instances[i], set_names[i]);
 	    }
 	}
       if (strcmp(type, "BOTH") == 0 || strcmp(type, "HISTORY") == 0)
@@ -1138,7 +1124,7 @@ void concat_labels(void)
 	  for (i=0; i < nsets_label; i++)
 	    {
 	      concat_set(source_unit, out_unit, "HISTORY", "HIST",
-			 set_names[i], instances[i]);
+			 set_names[i], instances[i], set_names[i]);
 	    }
 	}
     }
@@ -1179,7 +1165,8 @@ void concat_set(
 		char *type,				/* HISTORY or PROPERTY */
 		char *set_opt,			/* HIST or PROPERTY, for zladd opts */
 		char *set_name,			/* Name of set to transfer */
-		int instance			/* Instance number to transfer */
+		int instance,			/* Instance number to transfer */
+		char *out_name			/* output set name */
 		)
 {
   /*	concat_set						*/
@@ -1244,7 +1231,7 @@ void concat_set(
 
   for (i=nsets_label-1; i >= 0; i--)
     {
-      if (strcmp(set_names[i], set_name) == 0)
+      if (strcmp(set_names[i], out_name) == 0)
 	{
 	  out_inst = instances[i] + 1;
 	  break;
@@ -1259,7 +1246,7 @@ void concat_set(
 
   if (strcmp(type, "HISTORY") == 0)
     {
-      status = zladd(out_unit, type, "TASK", set_name, "FORMAT", "STRING",
+      status = zladd(out_unit, type, "TASK", out_name, "FORMAT", "STRING",
 		     "MODE", "ADD", NULL);/*"HIST", set_names[nsets_label-1],
 					    "INSTANCE", instances[nsets_label-1], 0); !!!!*/
       /* Ignore errors in the above; it will return NO_SUCH_KEY */
@@ -1299,7 +1286,7 @@ void concat_set(
       /* Add value to output label */
 
       status = zladd(out_unit, type, key, value.data,
-		     set_opt,set_name, "INSTANCE", out_inst,
+		     set_opt,out_name, "INSTANCE", out_inst,
 		     "FORMAT", format, "ULEN", value.maxlength,
 		     "NELEMENT", value.nelements, "MODE", "ADD", NULL);
 
@@ -1344,7 +1331,7 @@ void delete_items(void)
   /* n_elem, n_nelem -- count of ELEMENT and NELEMENT parameter	*/
   /* nret -- # of elements actually deleted by zldel call		*/
 
-  int count,in_unit,out_unit,nsets_label,subset,maxlen,nelem,nsets,nkeys;
+  int count,in_unit=0,out_unit,nsets_label,subset,maxlen,nelem,nsets,nkeys;
   int instances[MAX_SETS],revised_instances[MAX_SETS];
   int inst_to_delete[DEL_COUNT],n_inst,i,j,data_copy;
   char keys_to_delete[DEL_COUNT][MAX_LABEL_KEY_SIZE+1];
@@ -1620,7 +1607,7 @@ void delete_items(void)
   if (data_copy)
     {
       char *buf = NULL;
-      int rec_size;
+      int rec_size=0;
       status = zvget(in_unit, "RECSIZE", &rec_size, NULL);
       abort_on_error(in_unit);
       buf = (char *)malloc(rec_size);

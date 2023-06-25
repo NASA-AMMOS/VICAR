@@ -23,6 +23,8 @@ refgbl $echo
 !       unless you enter the PDS parameter 
 !
 body
+enable-log
+
 let _onfail="stop"
 let $echo="no"
 write "*************************************************"
@@ -32,16 +34,16 @@ write "shading should appear in the sample direction only"
 write "*************************************************"
 let $echo="yes"
 gen A nl=15 ns=15 ival=90
-list A
+list A 'nousrtim
 rotate A B1 angle=-45.
-list B1
+list B1 'nousrtim
 let $echo="no"
 write "*************************************************"
 write "Shift the output center of rotation and use nointerp"
 write "*************************************************"
 let $echo="yes"
 rotate A B2 angle=-45. 'noin center=(8,4)
-list B2
+list B2 'nousrtim
 let $echo="no"
 write "*************************************************"
 write "Now lets rotate about (10,6) [104 dn]"
@@ -49,8 +51,13 @@ write " and make it end up at (3,3)....and in halfword"
 write "*************************************************"
 let $echo="yes"
 gen C nl=15 ns=15 ival=90 'half
-list C
+list C 'nousrtim
 rotate C D angle=-45. line=10 samp=6 center=(3,3)
-list D
+list D 'nousrtim
 let $echo="no"
+
+disable-log
+
+ush rm A B1 B2 C D ZZPAR
+
 end-proc

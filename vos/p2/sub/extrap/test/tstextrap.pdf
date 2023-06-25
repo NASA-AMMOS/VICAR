@@ -1,6 +1,8 @@
 procedure
 refgbl $echo
 body
+enable-log
+
 let _onfail="continue"
 let $echo="yes"
 !This is a test of module EXTRAP (subroutine)
@@ -19,15 +21,16 @@ genthis out=b nl=8 ns=8 +
 	     7, 8, 9,10,11,12,13,14, +
 	     8, 9,10,11,12,13,14,15 )
 
-list b
+list b 'nousrtim
 
 !create outputs using no radius and using large radius.
 textrap inp=b out=(e1,e2)
 
 !print result which used no radius
-list e1
+list e1 'nousrtim
 
 !print result which used large radius (should be same)
-list e2
+list e2 'nousrtim
 
+disable-log
 end-proc

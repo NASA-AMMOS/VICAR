@@ -1,0 +1,4 @@
+$ vpack nsyt_instruments.com -mixed -
+	-s nsyt_instruments.cc -
+	-i nsyt_instruments.imake
+$ Exit

@@ -1,0 +1,59 @@
+[DEFAULT]
+batch_merge_strategy = incremental
+batch_overlap = 2
+create_initial_pointings_ply = True
+create_pandas_dataframes = True
+dataframe_data_type = pointing
+dataset_type = heli
+images_per_batch = 3
+marslib_location = /usr/local/vicar/m20-d/mars/lib/x86-64-linx/
+merge_type_navigation = mean
+merge_type_tiepoints = mean
+print_verbose_vicar_output = True
+recompute_xyz_after_posegraph = False
+remove_intermediate_files = False
+run_final_ba = True
+run_keyframe_selection = True
+run_pose_graph_optimization = True
+run_tiepointing_only = False
+user = mhessflores
+keyframe_selection_location = /usr/local/vicar/m20-d/mars/lib/x86-64-linx/keyframe_selection
+ks_disp_connect = DISP_CONNECT=DISP_CONNECT
+ks_disp_cost = DISP_COST=DISP_COST
+ks_edge_dist = EDGE_DIST=.05
+ks_sequential = SEQUENTIAL=SEQUENTIAL
+ks_sel_percent = SEL_PERCENT=80.0
+tie_cross = -CROSS
+tie_gtm = GTM=3
+tie_nbest = NBEST=5
+tie_numtilts = NUMTILTS=3
+tie_pair_match = PAIR_MATCH=3
+ba_do_bboxcheck = DO_BBOXCHECK=NO_BBOXCHECK
+ba_do_mvt = DO_MVT=DO_MVT
+ba_do_triopt = DO_TRIOPT=DO_TRIOPT
+ba_inertia = INERTIA=0.001
+ba_loss_function = LOSS_FUNCTION=HUBERLOSS
+ba_max_remove = MAX_REMOVE=10
+ba_remove = REMOVE=REMOVE
+marsnav2_location = /usr/local/vicar/m20-d/mars/lib/x86-64-linx/marsnav2
+posegraph_location = /usr/local/vicar/m20-d/mars/lib/x86-64-linx/posegraph
+pg_edge_dist = EDGE_DIST=.05
+pg_use_essential = USE_ESSENTIAL=NOUSE_ESSENTIAL
+
+[small_run]
+batch_merge_strategy = full
+batch_overlap = 1
+create_initial_pointings_ply = True
+create_pandas_dataframes = True
+images_per_batch = 2
+print_verbose_vicar_output = False
+remove_intermediate_files = False
+run_final_ba = True
+run_keyframe_selection = False
+run_pose_graph_optimization = True
+use_first_images = 6
+
+[full_run]
+batch_overlap = 3
+images_per_batch = 5
+

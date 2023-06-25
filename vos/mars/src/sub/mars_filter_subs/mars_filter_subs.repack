@@ -1,0 +1,4 @@
+$ vpack mars_filter_subs.com -mixed -
+	-s FilterShapes.cc FilterShapesParsers.cc -
+	-i mars_filter_subs.imake
+$ Exit

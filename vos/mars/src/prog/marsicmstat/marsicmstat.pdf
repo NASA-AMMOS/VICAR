@@ -1,0 +1,360 @@
+process help=*
+local dummy real count=(0:2)
+PARM INP TYPE=STRING COUNT=1:2
+
+PARM DO_BOUNDS TYPE=KEYWORD COUNT=1 VALID=(BOUNDS,NOBOUNDS) DEFAULT=BOUNDS
+
+PARM NLOUT TYPE=NAME default=dummy
+PARM NSOUT TYPE=NAME default=dummy
+PARM OVR_PCT TYPE=NAME default=dummy
+PARM CORR_COUNT TYPE=NAME default=dummy
+PARM AVG_SCALE TYPE=NAME default=dummy
+PARM LMST TYPE=NAME default=dummy
+PARM BOUND_LEFT TYPE=NAME defualt=dummy
+PARM BOUND_RIGHT TYPE=NAME default=dummy
+PARM BOUND_TOP TYPE=NAME defualt=dummy
+PARM BOUND_BOTTOM TYPE=NAME default=dummy
+PARM INPUT1 TYPE=NAME default=dummy
+PARM INPUT2 TYPE=NAME default=dummy
+
+PARM NAVTABLE TYPE=STRING COUNT=0:1 DEFAULT=--
+
+PARM CONFIG_PATH STRING DEFAULT="$MARS_CONFIG_PATH"
+PARM POINT_METHOD TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM MATCH_METHOD TYPE=STRING COUNT=(0:1) VALID=("LOOSE", "TIGHT") +
+        DEFAULT=LOOSE
+PARM MATCH_TOL TYPE=REAL COUNT=1 DEFAULT=.002
+
+PARM RSF TYPE=STRING COUNT=0:100 DEFAULT=--
+PARM DEBUG_RSF TYPE=KEYWORD COUNT=0:1 VALID=DEBUG_RSF DEFAULT=--
+PARM COORD TYPE=KEYWORD VALID=("FIXED", "INSTRUMENT", "SITE", "ROVER", +
+        "LOCAL_LEVEL", "RMECH") DEFAULT="FIXED"
+PARM COORD_INDEX TYPE=INTEGER COUNT=0:10 DEFAULT=--
+PARM FIXED_SITE TYPE=INTEGER COUNT=0:1 DEFAULT=--
+PARM SOLUTION_ID TYPE=STRING COUNT=0:1 DEFAULT=--
+
+END-PROC
+
+.TITLE
+VICAR program MARSICMSTAT
+
+.HELP
+PURPOSE:
+Simple program to report various statistics from an ICM (or correlation)file.
+
+It pulls a certain set of information needed by the CRISP server from labels
+and makes them available via output variables (use v2param to access).
+
+Additionally (and optionally), it determines the bounding box of non-zero
+data for the input image.  It looks at only band 1 for efficiency, assuming
+all the other bands' non-zero status is the same.
+
+EXECUTION:
+
+marsicmstat inp=disp.imp
+
+then:
+
+set count = `v2param corr_count`
+
+or just:
+
+cat `v2param -file`
+
+.PAGE
+METHOD:
+Simple search though all pixels for the bounding box.  Uses the label API
+to pull output label items.
+
+HISTORY:
+
+2020-09-04 rgd	Initial version
+
+COGNIZANT PROGRAMMER:  Bob Deen
+
+.LEVEL1
+.VARI INP
+Input image.
+
+.VARI DO_BOUNDS
+Selects bound computation
+or not.
+
+.VARI NLOUT
+Output number of lines
+
+.VARI NSOUT
+Output number of samples
+
+.VARI OVR_PCT
+Output correlation overlap
+percentage
+
+.VARI AVG_SCALE
+Output average correlation scale
+
+.VARI LMST
+Output Local Mean Standard Time.
+
+.VARI BOUND_LEFT
+Left side of bounding box
+
+.VARI BOUND_RIGHT
+Rightside of bounding box
+
+.VARI BOUND_TOP
+Top side of bounding box
+
+.VARI BOUND_BOTTOM
+Bottom  side of bounding box
+
+.VARI INPUT1
+First input file for ICM
+
+.VARI INPUT2
+Second input file for ICM
+
+.VARI NAVTABLE
+Corrected navigation
+filename.
+
+.VARI CONFIG_PATH
+Path used to find
+configuration/calibration
+files.
+
+.VARI POINT_METHOD
+Specifies a mission-
+specific pointing
+method to use
+
+.VARI MATCH_METHOD
+Specifies a method
+for pointing corrections.
+
+.VARI MATCH_TOL
+Tolerance value for
+matching pointing params
+in pointing corrections file.
+
+.VARI RSF
+Rover State File(s) to use.
+
+.VARI DEBUG_RSF
+Turns on debugging of RSF
+parameter.
+
+.VARI COORD
+Coordinate system to use.
+
+.VARI COORD_INDEX
+Coordinate system index for
+some COORD/mission combos.
+
+.VARI FIXED_SITE
+Which site is FIXED for
+rover missions.
+
+.VARI SOLUTION_ID
+Solution ID to use for
+COORD_INDEX
+
+.LEVEL2
+.VARI INP
+Input image.  Must be something supported by PIG.
+
+.VARI DO_BOUNDS
+Selects bound computation or not.  Default is do bounds computation.
+
+.VARI NLOUT
+Output number of lines
+
+.VARI NSOUT
+Output number of samples
+
+.VARI OVR_PCT
+Output correlation overlap percentage
+
+.VARI AVG_SCALE
+Output average correlation scale
+
+.VARI LMST
+Output Local Mean Standard Time.
+
+.VARI BOUND_LEFT
+Output Left side of bounding box
+
+.VARI BOUND_RIGHT
+Output Right side of bounding box
+
+.VARI BOUND_TOP
+Output Top side of bounding box
+
+.VARI BOUND_BOTTOM
+Output Bottom side of bounding box
+
+.VARI INPUT1
+First input file for ICM
+
+.VARI INPUT2
+Second input file for ICM
+
+
+
+.VARI NAVTABLE
+Corrected navigation filename.
+If marsnav was run on the input images it created a table of corrected
+pointing parameters. If you refer to this table using NAVTABLE it
+will override the pointing parameters (e.g. azimuth and elevation) in the
+picture labels, giving different (and presumably better) output coordinates.
+
+.VARI CONFIG_PATH
+A colon-separated list of directories in which to look for configuration
+and calibration files.  Environment variables are allowed in the list
+(and may themselves contain colon-separated lists).  The directories are
+searched in order for each config/cal file when it is loaded.  This allows
+multiple projectes to be supported simultaneously, and allows the user to
+override any given config/cal file.  Note that the directory structure below
+the directories specified in this path must match what the project expects.
+For example, Mars 98 expects flat fields to be in a subdirectory named
+"flat_fields" while Mars Pathfinder expects them to be directly in the
+directory specified by the path (i.e. no intermediate subdirectories).
+
+.VARI MATCH_METHOD
+Specifies a method for pointing corrections.
+
+Loose method matches with pointing parameters of the image.
+Tight method matches with unique id of the image.
+
+.VARI MATCH_TOL
+Tolerance value for matching pointing parameters in the pointing corrections file.
+Used if MATCH_METHOD=LOOSE
+Default value is pretty arbitrary, though seems to work well so far....
+
+.VARI POINT_METHOD
+Specifies a mission-specific pointing method to use.  Normally this
+parameter is not used, in which case the "default" pointing methods
+are used.  Some missions may have special, or alternate, pointing
+methods available, which are indicated by this string (for example,
+backlash models, using arm joint angles instead of x/y/z/az/el, etc).
+A substring search is used, so multiple methods (where that makes sense)
+can be specified by separating the keywords with commas.
+
+Note that nav files created using one pointing method will most likely
+not be compatible with a mosaic created using a different pointing method.
+
+The methods available vary per mission, but some methods available at
+the time of this writing are:
+
+BACKLASH : Mars 98 SSI only.  Selects a backlash pointing model,
+which adjusts the telemetered azimuth and elevation values based on
+knowledge of the camera's mechanical backlash and the direction the
+motor was travelling when the image was taken.
+
+.VARI RSF
+Rover State File.  This is a list of filenames to load containing
+Rover State information.  These files contain position and orientation
+information for a rover (or other mobile spacecraft) at various sites.
+They are in XML format.  See the "Rover Motion Counter (RMC) Master File SIS"
+for details on these files.
+
+Rover State Files have a priority order.  The files listed first have
+the highest priority.
+
+Environment variables may be used in the list.
+
+For MER, if a directory is specified, then that directory is searched for
+RMC Master files and any found are loaded.  The directory structure and
+filename convention is covered in the RMC SIS.  The directory specified
+is the one containing "master", so if <dir> is the name specified in the
+RSF parameter, the following files will be searched for:
+
+<dir>/master/<mission>_Master.svf
+<dir>/master/<mission>_Site_<n>_Master.rvf
+
+The name of each file loaded is printed to the stdout log for reference.
+
+.VARI DEBUG_RSF
+If enabled, this causes the internal database of RMC locations to be
+printed out to the stdout log.  This is after the RSF files have been
+loaded and the coordinate systems read from the input label(s).
+
+.VARI COORD
+Specifies the coordinate system to use to interpret the XYZ value.
+
+The interpretation of the values is dependent on the mission.  Some
+representative missions are listed here:
+
+Fixed - The Fixed frame (default).  This is the ultimate reference frame
+    (see also FIXED_SITE for rover missions).
+Instrument - The "natural" frame for the instrument (of the first input
+    image).  MPF: Lander or Rover; M98: MVACS; MER: Rover.
+Site - A major Site frame.  For rover missions, COORD_INDEX specifies which
+    Site frame to use.  Non-rover missions treat this as Fixed.
+Rover - An instance of the Rover frame.  For rover missions, COORD_INDEX
+    specifies which instance of the rover frame to use.  Non-rover mission
+    use the spacecraft frame (e.g. Lander for M98).
+Local_Level - An instance of a Local Level frame.  This is typically
+    coincident with the Rover frame (in XYZ) but oriented toward North
+    like the Site and Fixed frames.  For MER, this is an instance of a
+    Drive index move.
+
+.VARI COORD_INDEX
+The index specifies which instance of a coordinate system to use.  It is
+currently applicable only to rover-based missions, but could have other
+uses.  The index is equivalent to the Rover Motion Counter (RMC) for MER
+and FIDO.
+
+For MER/FIDO, there are many Site frames.  Each is numbered with a single
+index.  For Site Frames, coord_index specifies which to use.  Likewise,
+there are many Local_Level and Rover frames, corresponding to values of
+the RMC.  The multiple instances of this frame are selected by COORD_INDEX.
+
+Generally COORD_INDEX defaults sensibly so you don't usually need to
+specify it.  It will default to the instance used by the first input.
+
+.VARI FIXED_SITE
+Specifies which major Site is the "Fixed" Site for this run.
+
+Historically, MPF and M98 had a single "Surface Fixed" frame which never
+moved, and which all other coordinate system frames were referenced to.
+With the advent of long-range rovers (such as MER and FIDO), that became
+insufficient.  The rover traverses far enough that errors in knowledge of
+coordinate system offset and orientation become unacceptable.
+
+For this reason, a system of major Sites was introduced.  Periodically
+during the mission, a Site frame is declared.  This then becomes the
+reference frame for all activities until the next Site is declared.
+References are kept local, and errors don't propogate across Sites.
+
+However, if images from more than one Site are combined together, the
+Site's must be placed relative to each other.  Therefore a single reference
+frame is still needed to combine different sites.
+
+The FIXED_SITE parameter controls which of the major Site frames is
+the reference ("fixed") site for this program run.  This fixed frame
+can vary in different program runs, but is constant throughout one
+execution.
+
+If not specified, FIXED_SITE defaults to the minimum Site number (i.e.
+lowest numbered, or earliest chronologically) used in all input images.
+Normally this default is sufficient; rarely must FIXED_SITE be specified.
+
+One or more Rover State Files must usually be specified in order to combine
+image from more than one Site.  These describe the relationship between
+sites.  See the RSF parameter.
+
+.VARI SOLUTION_ID
+Specifies which solution ID to use when specifying the coordinate system.
+
+There are potentially many different definitions for the same coordinate
+system.  These are identified via a unique Solution ID.  If this parameter
+is given, only the specified solution's definition is searched for.  Without
+it, the "best" available solution is chosen.
+
+It is extremely rare that this parameter should be needed.  The default
+will be sufficient in almost every case.
+
+Note that the current MER implementation requires that a value for COORD_INDEX
+also be provided, in order for this parameter to take effect.
+

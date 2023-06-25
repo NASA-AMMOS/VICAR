@@ -1,0 +1,187 @@
+if ($syschar(1) = "UNIX")
+  ush ln -s data/autosedr.int
+  ush ln -s data/autoover.int
+  ush ln -s data/smisedr.int
+  ush ln -s data/smiover.int
+  ush ln -s data/60.img
+  ush ln -s data/57.img
+  ush ln -s data/48.img
+  ush ln -s data/42.img
+  ush ln -s data/45.img
+  ush ln -s data/s0349666200.u.vic s0349666200.u
+  ush ln -s data/s0349666345.u.vic s0349666345.u
+else
+end-if
+automatch inp=(autosedr.int,autoover.int)  +
+          out=automatch.int project=GLL  +
+          filename=listoffiles.
+Beginning VICAR task automatch
+AUTOMATCH version 2021-10-13
+# images in FILENAME file=.   5
+Treating images as IMAGE space images
+# images in SEDR file=    5
+# image pairs in OVER file=    5
+
+Image pair #    1
+Opening filename: 60.img
+Opening filename: 57.img
+vertical correlation size=  128
+horizontal correlation size=  128
+ left  right  left(line,samp) right(line,samp)
+     1    2     83.0   680.0     134.0   137.0
+     1    2    165.0   685.0     216.0   145.0
+     1    2    247.0   686.0     300.0   149.0
+     1    2    329.0   690.0     382.0   155.0
+     1    2    411.0   685.0     466.0   152.0
+     1    2    493.0   685.0     548.0   154.0
+     1    2    575.0   685.0     631.0   156.0
+     1    2    658.0   683.0     715.0   155.0
+Largest fit residual remaining=     0.7751
+
+ left  right    2t(line,samp) right(line,samp)
+Opening filename: 60.img
+Opening filename: 45.img
+vertical correlation size=   64
+horizontal correlation size=  128
+ left  right  left(line,samp) right(line,samp)
+     1    5    740.0   220.0      72.5    76.0
+     1    5    740.0   291.0      69.4   153.0
+     1    5    749.0   362.0      78.4   230.2
+     1    5    740.0   434.0      67.4   305.2
+     1    5    747.0   505.0      72.4   379.0
+     1    5    750.0   577.0      69.0   459.0
+     1    5    750.0   649.0      67.0   535.0
+     1    5    752.0   721.0      67.0   609.0
+Largest fit residual=     2.4771
+Tiepoint # deleted=    5
+Largest fit residual=     2.3922
+Tiepoint # deleted=    4
+Largest fit residual remaining=     1.8705
+
+ left  right    3t(line,samp) right(line,samp)
+Opening filename: 57.img
+Opening filename: 42.img
+No overlap predicted from navigation.
+Unable to process this pair.
+
+ left  right    4t(line,samp) right(line,samp)
+Opening filename: 48.img
+Opening filename: 45.img
+vertical correlation size=  128
+horizontal correlation size=  128
+ left  right  left(line,samp) right(line,samp)
+     3    5     83.0   614.0     179.0   215.0
+     3    5    158.0   612.0     255.0   214.0
+     3    5    233.0   618.0     331.0   222.0
+     3    5    308.0   606.0     407.0   212.0
+     3    5    384.0   610.0     483.0   217.0
+     3    5    459.0   610.0     559.0   219.0
+     3    5    534.0   608.0     635.0   218.0
+     3    5    609.0   607.0     711.0   218.0
+Largest fit residual remaining=     0.5683
+
+ left  right    5t(line,samp) right(line,samp)
+Opening filename: 42.img
+Opening filename: 45.img
+vertical correlation size=  128
+horizontal correlation size=  128
+ left  right  left(line,samp) right(line,samp)
+     4    5     85.0   186.0     155.0   624.0
+     4    5    165.0   187.0     235.0   623.0
+     4    5    246.0   196.0     314.0   630.0
+     4    5    327.0   186.0     395.0   619.0
+     4    5    408.0   192.0     475.0   624.0
+     4    5    489.0   195.0     555.0   625.0
+     4    5    570.0   194.0     635.0   623.0
+     4    5    650.0   195.0     714.0   622.0
+Largest fit residual remaining=     0.5484
+ Number of correlations:   60
+ Number of tiepoints:    8
+ibis-list inp=automatch.int
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:8  Number of Columns: 12      
+File Version:IBIS-2  Organization:ROW  SubType:NONE
+ 
+Rows: 1:8
++-----------+-----------+-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4         C:5         C:6
++-----------+-----------+-----------+-----------+-----------+-----------
+        1.00        2.00       83.00      680.00      134.00      137.01
+        1.00        2.00      658.00      683.00      714.98      155.02
+        1.00        5.00      740.00      220.00       72.50       76.00
+        1.00        5.00      752.00      721.00       67.03      608.96
+        3.00        5.00       83.00      614.00      178.99      215.01
+        3.00        5.00      609.00      607.00      710.98      218.03
+        4.00        5.00       85.00      186.00      155.01      623.98
+        4.00        5.00      650.00      195.00      714.00      622.02
+ 
+Rows: 1:8
++-----------+-----------+-----------+-----------+-----------+-----------
+         C:7         C:8         C:9        C:10        C:11        C:12
++-----------+-----------+-----------+-----------+-----------+-----------
+        1.00        1.00        1.00        0.00        0.00        0.00
+        1.00        1.00        1.00        0.00        0.00        0.00
+        1.00        1.00        1.00        0.00        0.00        0.00
+        1.00        1.00        1.00        0.00        0.00        0.00
+        1.00        1.00        1.00        0.00        0.00        0.00
+        1.00        1.00        1.00        0.00        0.00        0.00
+        1.00        1.00        1.00        0.00        0.00        0.00
+        1.00        1.00        1.00        0.00        0.00        0.00
+automatch inp=(smisedr.int,smiover.int)  +
+	out=smimatch.int project=GLL  +
+	filename=smifiles.
+Beginning VICAR task automatch
+AUTOMATCH version 2021-10-13
+# images in FILENAME file=.   2
+Treating images as IMAGE space images
+# images in SEDR file=    2
+# image pairs in OVER file=    1
+
+Image pair #    1
+Opening filename: s0349666200.u
+Opening filename: s0349666345.u
+vertical correlation size=  128
+horizontal correlation size=  128
+ left  right  left(line,samp) right(line,samp)
+     1    2     85.0   216.0      85.0   191.0
+     1    2    118.0   223.0     118.0   193.0
+     1    2    151.0   227.0     151.0   197.0
+     1    2    184.0   233.0     184.0   206.0
+     1    2    217.0   230.0     217.0   204.0
+     1    2    250.0   231.0     250.0   204.0
+     1    2    283.0   233.0     283.0   206.0
+     1    2    316.0   233.0     316.0   205.0
+Largest fit residual=     2.9691
+Tiepoint # deleted=    1
+Largest fit residual remaining=     1.2301
+ Number of correlations:   14
+ Number of tiepoints:    2
+ibis-list inp=smimatch.int
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:2  Number of Columns: 12      
+File Version:IBIS-2  Organization:ROW  SubType:NONE
+ 
+Rows: 1:2
++-----------+-----------+-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4         C:5         C:6
++-----------+-----------+-----------+-----------+-----------+-----------
+        1.00        2.00      118.00      223.00      118.00      193.00
+        1.00        2.00      316.00      233.00      316.00      204.99
+ 
+Rows: 1:2
++-----------+-----------+-----------+-----------+-----------+-----------
+         C:7         C:8         C:9        C:10        C:11        C:12
++-----------+-----------+-----------+-----------+-----------+-----------
+        1.00        1.00        1.00        0.00        0.00        0.00
+        1.00        1.00        1.00        0.00        0.00        0.00
+if ($syschar(1) = "UNIX")
+   ush rm *.img
+   ush rm *.u
+   ush rm *.int
+else
+end-if
+disable-log

@@ -1,0 +1,86 @@
+tgetplacon  inp=f1636832.geo
+Beginning VICAR task tgetplacon
+
+GETPROJ:
+VGR-1
+camera serial number=          7
+frame number=            1636832
+
+GETCAMCON:
+focal length=         1500.1899
+optical axis line=    500.00000
+optical axis sample=  500.00000
+image scale=          84.821426
+
+GETLABCON:
+Warning::year number is not 4-digit.
+Warning::year number is not 4-digit.
+warning indicator=          1
+flight label
+GETSPICE2:
+coordinate system is: B1950
+SEDR/SPICE CKNAME set to DAVI
+Warning::year number is not 4-digit.
+Warning::year number is not 4-digit.
+ZPBID::Unknown Target
+***SPICE error=          0
+Central body=
+fatal indicator=          0
+GETPLACON:
+Test from Fortran
+unrecognizable planet name
+Target planet body is:SOLAR SYSTEM
+Planet id number                  0
+equatorial radius-long    0.000E+00
+equatorial radius-short   0.000E+00
+polar radius              0.000E+00
+longitude of long radius  0.000E+00
+rotation period           0.000E+00
+solar range               0.000E+00
+
+GETPLACON:
+Test from C
+unrecognizable planet name
+Target planet body is:SOLAR SYSTEM
+Planet id number                  0
+equatorial radius-long    0.000E+00
+equatorial radius-short   0.000E+00
+polar radius              0.000E+00
+longitude of long radius  0.000E+00
+rotation period           0.000E+00
+solar range               0.000E+00
+
+GETGEOM:
+obtaining geom parameters from nominals
+
+CONVISOS:
+assume image space l,s=400.,400.
+[TAE-PRCSTRM] Abnormal process termination; process status code = 11.;
+ proc 'tstgetplacon', line 10
+continue
+tgetplacon  inp=venus.img
+Beginning VICAR task tgetplacon
+
+GETPROJ:
+GLL
+camera serial number=          1
+frame number=           18494400
+
+GETCAMCON:
+focal length=         1501.0389
+optical axis line=    400.00000
+optical axis sample=  400.00000
+image scale=          65.616798
+
+GETLABCON:
+warning indicator=          1
+flight label
+GETSPICE2:
+coordinate system is: J2000
+SEDR/SPICE CKNAME set to DAVI
+***SPICE error=          0
+Target body=
+fatal indicator=          0
+GETPLACON:
+Test from Fortran
+disable-log

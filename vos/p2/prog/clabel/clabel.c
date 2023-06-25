@@ -67,6 +67,18 @@ int	img_ns, jj, min_len, posi_taken[ 449 ][ 3 ] ;
 /*globaldef int	unit ;*/
 int unit;
 
+void ROUTINE find_entire_contour ( CONTOUR	*contour, GRAPHICS1	*segments );
+void ROUTINE finish ( FONT	*font );
+void ROUTINE generate_font_params ( CONTOUR	*contour, FONT *font, float	trans[2] );
+void ROUTINE initialize ( GRAPHICS1	*segments, CONTOUR *contour, FONT *font );
+void ROUTINE process_parameters ( float	trans[2] );
+
+/*****
+  Generate a set of parameters for the program FONT from 'contour'.  Exclude
+  contours less than 'min_len' in length.
+ *****/
+
+
 	 
 void main44(void)
 {
@@ -101,7 +113,7 @@ void main44(void)
 
 
 
-ROUTINE check ( unit, status, message )
+void ROUTINE check ( unit, status, message )
                       
   int	unit ;
   int	status ;
@@ -137,7 +149,7 @@ int ROUTINE eq_triplet ( t1, t2 )
 
 
 
-ROUTINE find_entire_contour ( contour, segments )
+void ROUTINE find_entire_contour ( contour, segments )
 /*****
   Will follow along the contour until the entire contour has been found.  The
   contour values will be returned in 'contour'.
@@ -200,7 +212,7 @@ ROUTINE find_entire_contour ( contour, segments )
 
 
 
-ROUTINE finish ( font )
+void ROUTINE finish ( font )
 
   FONT	*font ;
 {
@@ -223,8 +235,8 @@ ROUTINE finish ( font )
         lng = strlen( ss ) ;
       tmp2 = (*font).tall * (*font).wide * lng * 1.25 ;
 
-      if (( fabs( posi_taken[ kk ][ 0 ] - posi_taken[ i ][ 0 ] ) < tmp1 ) &&
-          ( fabs( posi_taken[ kk ][ 1 ] - posi_taken[ i ][ 1 ] ) < tmp2 ))
+      if (( abs( posi_taken[ kk ][ 0 ] - posi_taken[ i ][ 0 ] ) < tmp1 ) &&
+          ( abs( posi_taken[ kk ][ 1 ] - posi_taken[ i ][ 1 ] ) < tmp2 ))
       {
         if ( posi_taken[ kk ][ 2 ] < posi_taken[ i ][ 2 ] )
         {
@@ -313,7 +325,7 @@ void ROUTINE gen_the_font_window ( len, tall, wide, dnarg )
 
 
 
-ROUTINE generate_font_params ( contour, font, trans )
+void ROUTINE generate_font_params ( contour, font, trans )
 /*****
   Generate a set of parameters for the program FONT from 'contour'.  Exclude
   contours less than 'min_len' in length.
@@ -354,7 +366,7 @@ ROUTINE generate_font_params ( contour, font, trans )
 
 
 
- ROUTINE initialize ( segments, contour, font ) 
+ void ROUTINE initialize ( segments, contour, font ) 
 
   GRAPHICS1	*segments ;
   CONTOUR	*contour ;
@@ -460,7 +472,7 @@ int ROUTINE  more_triplets ( segments, triplet )
 
 
 
-ROUTINE process_parameters ( trans ) 
+void ROUTINE process_parameters ( trans ) 
 
   float	trans[ 2 ] ;
 {

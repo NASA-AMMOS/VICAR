@@ -1,0 +1,130 @@
+C VICAR program RASTOVEC (RASter TO VECtor conversion)
+C                    1        2        3        4       5
+C   RASTOVEC INP (LABELDF,POLYDESF,SERLFILE,VERTICES,POLYINFO) ...
+C where
+C     LABELEDF     LABELED IMAGE
+C     POLYDESF     POLYGON DESCRIPTION FILE
+C     SERLFILE     Start-End-Right-Left Segment FILE
+C     VERTICES     POLYGON VERTICES FILE
+C     POLYINFO     POLYGON INFORMATION FILE 
+C
+C The program has three steps.  The first step, or the first and second steps
+C can be performed as follows:
+C
+C   RASTOVEC INP (LABELDF,POLYDESF) 'FIRST
+C   RASTOVEC INP (LABELDF,POLYDESF,SERLFILE) 'SECOND
+
+      INCLUDE 'VICMAIN_FOR'
+      SUBROUTINE MAIN44 
+      IMPLICIT NONE
+
+      COMMON/FILES/INFILE
+      INTEGER*4 INFILE
+
+      COMMON/IBIS_FILES/IBIS_PD,IBIS_S,IBIS_V,IBIS_PI
+      INTEGER*4 IBIS_PD,IBIS_S,IBIS_V,IBIS_PI
+
+      COMMON/CINP/SLINE,SSAMP,NLINE,NSAMP
+      INTEGER*4 SLINE,SSAMP,NLINE,NSAMP		!Input image size field
+
+      COMMON/CMAX/MAXPOLY,MAXVERT,MAXSIZE
+      INTEGER MAXPOLY,MAXVERT,MAXSIZE
+
+      INTEGER*4 IND,NAREA,ICNT,IDEF
+      INTEGER*4 L1,L2,L3,L4,L5,L6,L9,L11,L13,L16,TOTAL
+      INTEGER*4 NPOLY		!Number of polygon regions
+      INTEGER*4 NSEGS		!Number of horizontal and vertical line segments
+      INTEGER*4 NVERT		!Number of vertices
+      REAL*4 LARGEST
+      LOGICAL XVPTST
+      EXTERNAL LREGN,CSEGS,POLYC
+
+      CALL XVMESSAGE('RASTOVEC version 2017-08-11',' ')
+
+C     ....Open input image
+      CALL XVUNIT(INFILE,'INP',1,IND,' ')
+      CALL XVOPEN(INFILE,IND,'U_FORMAT','FULL',
+     +          'OPEN_ACT','SA','IO_ACT','SA',' ')
+      CALL GETSIZ(SLINE,SSAMP,NLINE,NSAMP)
+
+      NAREA = NLINE*NSAMP
+      CALL XVPARM('MAXPOLY',MAXPOLY,ICNT,IDEF,' ')
+      IF (ICNT.EQ.0) MAXPOLY=MAX0(NAREA/10,3000)
+      CALL PRNT(4,1,MAXPOLY,'MAXPOLY=.')
+
+      CALL XVPARM('MAXVERT',MAXVERT,ICNT,IDEF,' ')
+      IF (ICNT.EQ.0) MAXVERT=MAX0(NAREA/3,10000)
+      CALL PRNT(4,1,MAXVERT,'MAXVERT=.')
+
+      CALL XVPARM('LARGEST',LARGEST,ICNT,IDEF,' ')
+      MAXSIZE = LARGEST*MAXVERT
+      CALL PRNT(4,1,MAXSIZE,'MAXSIZE=.')
+
+C     ....Step 1: region labeling
+      L1 = 4*NSAMP		!INTEGER*4 LROW(NSAMP)
+      L2 = 4*NSAMP		!INTEGER*4 NROW(NSAMP)
+      L3 = 4*MAXPOLY		!INTEGER*4 CLASS1(MAXPOLY)
+      L4 = 4*MAXPOLY		!INTEGER*4 CLASS2(MAXPOLY)
+      L5 = 4*MAXPOLY		!INTEGER*4 LBUF(MAXPOLY)
+      L6 = 4*MAXPOLY		!INTEGER*4 PIXCNT(MAXPOLY)
+      TOTAL = L1 + L2 + L3 + L4 + L5 + L6
+      CALL XVMESSAGE('Step 1: REGION LABELING',' ')
+      CALL PRNT(4,1,TOTAL,'Total bytes of memory requested=.')
+      CALL STACKA(10,LREGN,6,L1,L2,L3,L4,L5,L6,TOTAL,npoly)
+      IF (XVPTST('FIRST')) RETURN
+
+C     ....Step 2: compute segments
+      L1 = 4*(NSAMP+2)		!INTEGER*4 LROW(NSAMP+2)
+      L2 = 4*(NSAMP+2)		!INTEGER*4 NROW(NSAMP+2)
+      L3 = 2*MAXVERT		!INTEGER*2 VLBUF(MAXVERT)
+      L4 = 2*MAXVERT		!INTEGER*2 HLBUF(MAXVERT)
+      TOTAL = L1 + L2 + L3 + L4
+      CALL XVMESSAGE('Step 2:  COMPUTE SEGMENTS',' ')
+      CALL PRNT(4,1,TOTAL,'Total bytes of memory requested=.')
+      CALL STACKA(9,CSEGS,4,L1,L2,L3,L4,TOTAL,nsegs,nvert)
+      IF (XVPTST('SECOND')) RETURN
+
+C     ....Step 3: polygon cycling
+      L1 = 4*4*NSEGS		!INTEGER*4 SERL(4,NSEGS)
+      L5 = 4*4*NVERT		!INTEGER*4 VXREF(4,NVERT)
+      L9 = 4*NVERT		!INTEGER*2 XVA(2,NVERT)
+      L11 = 4*MAXSIZE		!INTEGER*4 IVBUF(MAXSIZE)
+      L13 = 4*MAXSIZE		!INTEGER*4 IVPTR(MAXSIZE)
+      L16 = 4*MAXSIZE		!INTEGER*2 XYBUF(MAXSIZE)
+      TOTAL = L1 + L5 + L9 + L11 + L13 + L16
+      CALL XVMESSAGE('Step 3: POLYGON CYCLING',' ')
+      CALL PRNT(4,1,TOTAL,'Total bytes of memory requested=.')
+      CALL STACKA(12,POLYC,6,L1,L5,L9,L11,L13,L16,TOTAL,
+     +		NPOLY,NSEGS,NVERT)
+      RETURN
+      END
+
+CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+C Get input image SIZE parameters.
+C
+      SUBROUTINE GETSIZ(SLINE,SSAMP,NLINE,NSAMP)
+      IMPLICIT NONE
+      INTEGER*4 SLINE,SSAMP,NLINE,NSAMP	!Size field (output)
+
+      INTEGER*4 NLI,NSI			!Actual size of input image
+      CHARACTER*80 MSG
+  100 FORMAT('Input image size is',I5,' X ',I5)
+  101 FORMAT('Ouput image size is',I5,' X ',I5)
+
+C     ....Get default values
+      CALL XVSIZE(SLINE,SSAMP,NLINE,NSAMP,NLI,NSI)
+      WRITE(MSG,100) NLI,NSI
+      CALL XVMESSAGE(MSG,' ')
+
+      IF (NLINE.GT.NLI-SLINE+1) THEN
+         NLINE = NLI - SLINE + 1
+         CALL XVMESSAGE('***Output lines truncated',' ')
+      ENDIF
+      IF (NSAMP.GT.NSI-SSAMP+1) THEN
+         NSAMP = NSI - SSAMP + 1
+         CALL XVMESSAGE('***Output samples truncated',' ')
+      ENDIF
+      WRITE(MSG,101) NLINE,NSAMP
+      CALL XVMESSAGE(MSG,' ')
+      RETURN
+      END

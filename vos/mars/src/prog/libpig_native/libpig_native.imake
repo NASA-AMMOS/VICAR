@@ -1,0 +1,33 @@
+#define PROGRAM libpig_native
+
+#define MODULE_LIST PigCameraModelImpl.cc PigCoordSystemImpl.cc \
+ PigFileModelImpl.cc PigPointImpl.cc PigPointingModelImpl.cc \
+ PigSurfaceModelImpl.cc PigMICAParams.cc \
+ PigProjection.cc PigProjectionImpl.cc \
+ PigCylindricalProjection.cc PigCylindricalProjectionImpl.cc \
+ PigPolarProjection.cc PigPolarProjectionImpl.cc \
+ PigVerticalProjection.cc PigVerticalProjectionImpl.cc \
+ PigReprojectionImpl.cc
+
+#define INCLUDE_LIST PigMICAParamsJ.h PigPoint2D_C.h PigProjectionJ.h \
+ PigCylindricalProjectionJ.h PigVerticalProjectionJ.h PigPolarProjectionJ.h
+
+#define USES_C_PLUS_PLUS
+#define MAIN_LANG_C_PLUS_PLUS
+
+#define MARSLIB
+
+#define SHARED_LIBRARY
+#define SHARED_MAJOR_VERSION 1
+#define SHARED_MINOR_VERSION 1
+
+#define LIB_JNI_GEN
+#define LIB_JAVA
+#define LIB_MARSSUB
+#define LIB_P2SUB
+#define LIB_RTL_NOSHR
+#define LIB_TAE_NOSHR
+#define LIB_C_PLUS_PLUS
+#define LIB_FORTRAN		/* No idea why this is needed! */
+#define LIB_XERCES
+

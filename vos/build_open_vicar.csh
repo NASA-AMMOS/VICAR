@@ -69,7 +69,7 @@ echo "**********************************************************"
 echo "*** BUILDING JAVA"
 echo "**********************************************************"
 
-util/java_build.csh |& tee build_java.log
+util/javaprod-open.csh |& tee build_java.log
 
 echo "**********************************************************"
 echo "*** BUILDING VICAR PART 2"

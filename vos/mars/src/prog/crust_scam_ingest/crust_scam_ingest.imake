@@ -1,0 +1,5 @@
+#define PROCEDURE crust_scam_ingest
+#define MODULE_LIST crust_scam_ingest.csh
+
+#define USES_CSH
+

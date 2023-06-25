@@ -1,0 +1,11 @@
+$ vpack libpig_native.com -mixed -
+	-s PigCameraModelImpl.cc PigCoordSystemImpl.cc PigFileModelImpl.cc -
+	   PigPointImpl.cc PigPointingModelImpl.cc PigSurfaceModelImpl.cc -
+	   PigMICAParams.cc PigMICAParamsJ.h PigCylindricalProjection.cc -
+	   PigCylindricalProjectionImpl.cc PigCylindricalProjectionJ.h -
+	   PigPoint2D_C.h PigPolarProjection.cc PigPolarProjectionImpl.cc -
+	   PigPolarProjectionJ.h PigProjection.cc PigProjectionImpl.cc -
+	   PigProjectionJ.h PigReprojectionImpl.cc PigVerticalProjection.cc -
+	   PigVerticalProjectionImpl.cc PigVerticalProjectionJ.h -
+	-i libpig_native.imake
+$ Exit

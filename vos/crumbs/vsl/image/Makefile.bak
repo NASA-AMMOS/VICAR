@@ -1,0 +1,94 @@
+include make.$(ARCH)
+
+INCL = -I../../$(LIB_DIR)/include -I../.. \
+	-I/usr/include/CC
+
+CCFLAGS = -DFUNCPROTO $(INCL) -D$(ARCH) $(FLAGS)
+
+LIB = ../../$(LIB_DIR)/lib/$(ARCH)/libimage.a
+
+SRCS =  image.C imagedata.C newdata.C imagedisp.C datatypes.C filetypes.C \
+	disptypes.C imagefile.C asvcfile.C datamod.C datammap.C datads.C \
+	pgmfile.C ppmfile.C modfile.C vicarfile.C rlafile.C dsfile.C \
+	pdsfile.C kapfile.C geodata.C kap_geodata.C pds_geodata.C \
+	map_geodata.C ranfile.C rgbfile.C camera_geodata.C
+
+OBJS =  $(SRCS:.C=.o)
+
+$(LIB): $(OBJS) 
+	ar rc $(LIB) $(OBJS)
+
+.C.o:
+	CC -c $(CCFLAGS) $*.C
+
+pdsfile.o: pdsfile.C 
+	CC -c $(CCARCH_FLAGS) $(CCFLAGS) pdsfile.C
+vicarfile.o: vicarfile.C 
+	CC -c $(CCARCH_FLAGS) $(CCFLAGS) vicarfile.C
+
+man: image.z geodata.z
+
+image.z: image.man
+	rm -f image.z
+	highlight <image.man >image
+	pack image
+	cp image.z /ware/proj/man/man1/.
+	
+geodata.z: geodata.man
+	rm -f geodata.z
+	highlight <geodata.man >geodata
+	pack geodata
+	cp geodata.z /ware/proj/man/man1/.
+
+clean:
+	\rm -f $(LIB) $(OBJS)
+	make
+
+depend:
+	makedepend $(CCFLAGS) $(GCCINC) $(SRCS)
+# DO NOT DELETE
+
+filetypes.o: /usr/include/string.h /usr/include/features.h
+filetypes.o: /usr/include/sys/cdefs.h /usr/include/bits/wordsize.h
+filetypes.o: /usr/include/gnu/stubs.h /usr/include/gnu/stubs-32.h
+filetypes.o: /usr/include/stdlib.h /usr/include/sys/types.h
+filetypes.o: /usr/include/bits/types.h /usr/include/bits/typesizes.h
+filetypes.o: /usr/include/time.h /usr/include/endian.h
+filetypes.o: /usr/include/bits/endian.h /usr/include/sys/select.h
+filetypes.o: /usr/include/bits/select.h /usr/include/bits/sigset.h
+filetypes.o: /usr/include/bits/time.h /usr/include/sys/sysmacros.h
+filetypes.o: /usr/include/bits/pthreadtypes.h /usr/include/alloca.h
+datamod.o: /usr/include/math.h /usr/include/features.h
+datamod.o: /usr/include/sys/cdefs.h /usr/include/bits/wordsize.h
+datamod.o: /usr/include/gnu/stubs.h /usr/include/gnu/stubs-32.h
+datamod.o: /usr/include/bits/huge_val.h /usr/include/bits/mathdef.h
+datamod.o: /usr/include/bits/mathcalls.h
+datammap.o: /usr/include/sys/types.h /usr/include/features.h
+datammap.o: /usr/include/sys/cdefs.h /usr/include/bits/wordsize.h
+datammap.o: /usr/include/gnu/stubs.h /usr/include/gnu/stubs-32.h
+datammap.o: /usr/include/bits/types.h /usr/include/bits/typesizes.h
+datammap.o: /usr/include/time.h /usr/include/endian.h
+datammap.o: /usr/include/bits/endian.h /usr/include/sys/select.h
+datammap.o: /usr/include/bits/select.h /usr/include/bits/sigset.h
+datammap.o: /usr/include/bits/time.h /usr/include/sys/sysmacros.h
+datammap.o: /usr/include/bits/pthreadtypes.h /usr/include/sys/mman.h
+datammap.o: /usr/include/bits/mman.h /usr/include/unistd.h
+datammap.o: /usr/include/bits/posix_opt.h /usr/include/bits/confname.h
+datammap.o: /usr/include/getopt.h
+vicarfile.o: /usr/include/string.h /usr/include/features.h
+vicarfile.o: /usr/include/sys/cdefs.h /usr/include/bits/wordsize.h
+vicarfile.o: /usr/include/gnu/stubs.h /usr/include/gnu/stubs-32.h
+rlafile.o: /usr/include/string.h /usr/include/features.h
+rlafile.o: /usr/include/sys/cdefs.h /usr/include/bits/wordsize.h
+rlafile.o: /usr/include/gnu/stubs.h /usr/include/gnu/stubs-32.h
+rlafile.o: /usr/include/strings.h /usr/include/stdlib.h
+rlafile.o: /usr/include/sys/types.h /usr/include/bits/types.h
+rlafile.o: /usr/include/bits/typesizes.h /usr/include/time.h
+rlafile.o: /usr/include/endian.h /usr/include/bits/endian.h
+rlafile.o: /usr/include/sys/select.h /usr/include/bits/select.h
+rlafile.o: /usr/include/bits/sigset.h /usr/include/bits/time.h
+rlafile.o: /usr/include/sys/sysmacros.h /usr/include/bits/pthreadtypes.h
+rlafile.o: /usr/include/alloca.h
+pdsfile.o: /usr/include/libgen.h /usr/include/features.h
+pdsfile.o: /usr/include/sys/cdefs.h /usr/include/bits/wordsize.h
+pdsfile.o: /usr/include/gnu/stubs.h /usr/include/gnu/stubs-32.h

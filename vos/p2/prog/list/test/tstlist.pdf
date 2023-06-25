@@ -131,7 +131,7 @@ list b.dat 'NOUSRTIM
 list b.dat 'BSQ nb=2 ns=20 'HEX 'NOUSRTIM
 list b.dat 'BIP nl=2 'DISPLAY 'NOUSRTIM
 gen c.dat nb=10 nl=5 binc=100 linc=10 'REAL8 'BIP
-list c.dat  ! should go in 2 strips 'NOUSRTIM
+list c.dat 'NOUSRTIM  ! should go in 2 strips
 list c.dat 'BSQ nb=1 'NOUSRTIM
 list c.dat 'BIL 'DUMP nl=2 'NOUSRTIM
 gen a.dat nb=60 nl=2 ns=20 binc=100 linc=10 'HALF 'BIP

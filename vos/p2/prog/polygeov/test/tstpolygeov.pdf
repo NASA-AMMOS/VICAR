@@ -1,0 +1,54 @@
+procedure
+refgbl $echo
+refgbl $autousage
+parm version string def="ibis-1"
+parm org string def="column"
+body
+enable-log
+
+!let _onfail="continue"
+let $autousage="none"
+let $echo="yes"
+
+
+ibis-gen xxa nc=4 nr=44 deffmt=DOUB
+mf3 xxa func="c1=@sqrt(@index*17+2763)$c2=@sqrt(@index*7+3431)"
+mf3 xxa func="c1=@mod(c1,0.0001)*1000000$c2=@mod(c2,0.0001)*1000000"
+mf3 xxa func="c3=c1*1.1+@index/10$c4=c2*1.1+@index/10"
+
+ibis-gen xxb nc=4 nr=1 datacols=(1,2) deffmt=DOUB +
+   data=(5.94,67.05)
+
+polygeov INP=(xxa,xxb) COLS=(1,2,3,4)  DCOLS=(1,2,3,4)
+
+! list the IBIS file
+ibis-list xxb 'format
+
+!double check with tieconv
+
+tieconv INP=xxa out=xxc COLS=(1,2,3,4) +
+ nah=1 nav=1 minl=5.31 mins=60.86 maxl=7.01 maxs=68.55 'geomv
+
+ibis-list xxc 'format
+
+!  now the polynomial case
+
+ibis-gen xxb nc=4 nr=1 datacols=(1,2) deffmt=DOUB +
+   data=(7.25,68.35)
+
+polygeov INP=(xxa,xxb) COLS=(1,2,3,4)  DCOLS=(1,2,3,4) poly=quad
+
+! list the IBIS file
+ibis-list xxb 'format
+
+!double check with tieconv
+
+tieconv INP=xxa out=xxc COLS=(1,2,3,4) poly=quad +
+ nah=1 nav=1 minl=5.31 mins=60.86 maxl=7.01 maxs=68.55 'geomv
+
+ibis-list xxc 'format
+
+theend>
+
+disable-log
+end-proc

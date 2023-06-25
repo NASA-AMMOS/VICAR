@@ -35,8 +35,8 @@ C       real*8  lsat, hsat, iscale, oscale
         real*4  lsat, hsat, iscale, oscale
 C	real*8  mean, sigma, maxi, scale 
 	real*4  mean, sigma, maxi, scale 
-	logical*1 Anotation_Position, Anotation_Orientation 
-        logical*1 Anotation_Justification
+	CHARACTER Anotation_Position, Anotation_Orientation 
+        CHARACTER Anotation_Justification
         real*8    Anotation_Start_Value, Anotation_Increment
         real*8    Anotation_Modulus
         integer   Anotation_Significant_Digits,Anotation_Size

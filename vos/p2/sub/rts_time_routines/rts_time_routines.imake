@@ -1,0 +1,35 @@
+/******************************************************************************
+/*
+/*                     IMAKE FILE FOR MODULE rts_time_routines
+/*
+/*   To Create the build file give the command:
+/*
+/*		$ vimake rts_time_routines			(VMS)
+/*   or
+/*		% vimake rts_time_routines			(Unix)
+/*
+/*****************************************************************************/
+
+/***  Define for whom this file exisits  ***/
+#define SUBROUTINE rts_time_routines		/* Only one of these */
+/*#define PROGRAM rts_time_routines		/* Only one of these */
+
+/***  List all modules which are used by locally by this module  ***/
+#define MODULE_LIST rts_time_util.c
+
+#define MAIN_LANG_C
+
+#define USES_ANSI_C
+
+/***  Specify  Program or Subroutine specific DEFINES  ***/
+#ifdef PROGRAM
+#define R2LIB
+#define LIB_RTL
+#define LIB_TAE
+#define LIB_P2SUB
+#endif
+
+#ifdef SUBROUTINE
+#define P2_SUBLIB
+#endif
+

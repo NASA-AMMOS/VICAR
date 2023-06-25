@@ -1,0 +1,11 @@
+#define PROGRAM fitg
+
+#define MODULE_LIST fitg.c
+
+#define LIB_CARTO
+#define MAIN_LANG_C
+#define R2LIB 
+#define USES_ANSI_C
+#define LIB_P2SUB
+#define LIB_TAE
+#define LIB_RTL

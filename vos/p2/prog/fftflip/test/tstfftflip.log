@@ -1,14 +1,14 @@
 gen A 512 512  linc=1 sinc=3 format=byte
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen B 256 256  linc=1 sinc=-2 ival=200 format=byte
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen C 256 256  linc=1 sinc=5 ival=10 format=byte modulo=112
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 insect (A,B) W insect=(1,1,256,256,1,257)
 Beginning VICAR task insect
@@ -19,29 +19,29 @@ INSECT version 7 Jan 2013 (64-bit) - rjb
 sargonb X  B1 func1=setto const1=1000 vert1=(255,255,257,255,257,257,255,257)
 Beginning VICAR task sargonb
 SARGONB version 2016-05-26
-label-list B1
+label-list B1 'nousrtim
 Beginning VICAR task label
-LABEL version 15-Nov-2010
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File B1 ************
                 3 dimensional IMAGE file
                 File organization is BSQ
-                Pixels are in BYTE format from a X86-LINUX host
+                Pixels are in BYTE format from a X86-64-LIN host
                 1 bands
                 512 lines per band
                 512 samples per line
                 0 lines of binary header
                 0 bytes of binary prefix per line
----- Task: GEN -- User: wlb -- Wed Jun  8 12:49:06 2016 ----
+---- Task: GEN -- User:  --  ----
 IVAL=0.0
 SINC=3.0
 LINC=1.0
 BINC=1.0
 MODULO=0.0
----- Task: INSECT -- User: wlb -- Wed Jun  8 12:49:06 2016 ----
----- Task: INSECT -- User: wlb -- Wed Jun  8 12:49:06 2016 ----
----- Task: SARGONB -- User: wlb -- Wed Jun  8 12:49:06 2016 ----
+---- Task: INSECT -- User:  --  ----
+---- Task: INSECT -- User:  --  ----
+---- Task: SARGONB -- User:  --  ----
  
 ************************************************************
 fftflip B1 C1 'flip line=0
@@ -55,7 +55,7 @@ Beginning VICAR task fftflip
 FFTFLIP version 2016-06-08
   difpic (B1,C1) BC1
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  AVE VAL OF POS DIFFS=  74.3229
  NUMBER OF POS DIFF=     129263
  AVE VAL OF NEG DIFFS= -74.3229
@@ -65,17 +65,17 @@ DIFPIC version 06Oct11
  % DIFF PIXELS=  98.6198
   difpic (B1,D1) BD1
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  AVE VAL OF POS DIFFS=  86.4544
  NUMBER OF POS DIFF=      67165
  AVE VAL OF NEG DIFFS= -87.4239
  NUMBER OF NEG DIFFS=      66441
  TOTAL NUMBER OF DIFFERENT PIXELS=     133606
- AVE VAL OF DIFFS=-0.694275E-02
+ AVE VAL OF DIFFS=-0.693893E-02
  % DIFF PIXELS=  50.9666
   difpic (B1,E1) BE1
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  AVE VAL OF POS DIFFS=  88.3173
  NUMBER OF POS DIFF=      65541
  AVE VAL OF NEG DIFFS= -88.3173
@@ -85,28 +85,28 @@ DIFPIC version 06Oct11
  % DIFF PIXELS=  50.0038
   difpic (D1,E1) DE1
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  AVE VAL OF POS DIFFS=  30.6682
  NUMBER OF POS DIFF=2372
- AVE VAL OF NEG DIFFS= -26.3466
+ AVE VAL OF NEG DIFFS= -26.3470
  NUMBER OF NEG DIFFS=2692
  TOTAL NUMBER OF DIFFERENT PIXELS=5064
- AVE VAL OF DIFFS= 0.694275E-02
+ AVE VAL OF DIFFS= 0.693893E-02
  % DIFF PIXELS=  1.93176
 if (mode = "nobatch" or mode = "inter")
 end-if
 let $echo="yes"
 gen A 512 512  linc=1 sinc=3 format=half
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen B 256 256  linc=1 sinc=-2 ival=500 format=half
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen C 256 256  linc=1 sinc=5 ival=20 format=half modulo=412
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 insect (A,B) W insect=(1,1,256,256,1,257)
 Beginning VICAR task insect
@@ -117,29 +117,29 @@ INSECT version 7 Jan 2013 (64-bit) - rjb
 sargonb X  B2 func1=setto const1=1000 vert1=(255,255,257,255,257,257,255,257)
 Beginning VICAR task sargonb
 SARGONB version 2016-05-26
-label-list B2
+label-list B2 'nousrtim
 Beginning VICAR task label
-LABEL version 15-Nov-2010
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File B2 ************
                 3 dimensional IMAGE file
                 File organization is BSQ
-                Pixels are in HALF format from a X86-LINUX host
+                Pixels are in HALF format from a X86-64-LIN host
                 1 bands
                 512 lines per band
                 512 samples per line
                 0 lines of binary header
                 0 bytes of binary prefix per line
----- Task: GEN -- User: wlb -- Wed Jun  8 12:49:07 2016 ----
+---- Task: GEN -- User:  --  ----
 IVAL=0.0
 SINC=3.0
 LINC=1.0
 BINC=1.0
 MODULO=0.0
----- Task: INSECT -- User: wlb -- Wed Jun  8 12:49:07 2016 ----
----- Task: INSECT -- User: wlb -- Wed Jun  8 12:49:07 2016 ----
----- Task: SARGONB -- User: wlb -- Wed Jun  8 12:49:07 2016 ----
+---- Task: INSECT -- User:  --  ----
+---- Task: INSECT -- User:  --  ----
+---- Task: SARGONB -- User:  --  ----
  
 ************************************************************
 fftflip B2 C2 'flip line=0
@@ -153,19 +153,19 @@ Beginning VICAR task fftflip
 FFTFLIP version 2016-06-08
   difpic (B2,C2)
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  NUMBER OF DIFFERENCES =     261226
   difpic (B2,D2)
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  NUMBER OF DIFFERENCES =     262143
   difpic (B2,E2)
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  NUMBER OF DIFFERENCES =     262144
   difpic (B2,E2) BE2
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  AVE VAL OF POS DIFFS=  617.468
  NUMBER OF POS DIFF=     131072
  AVE VAL OF NEG DIFFS= -617.272
@@ -175,7 +175,7 @@ DIFPIC version 06Oct11
  % DIFF PIXELS=  100.000
   difpic (D2,E2) DE2
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  AVE VAL OF POS DIFFS=  254.477
  NUMBER OF POS DIFF=3381
  AVE VAL OF NEG DIFFS= -273.132
@@ -188,15 +188,15 @@ end-if
 let $echo="yes"
 gen A 512 512  linc=1 sinc=3 format=full
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen B 256 256  linc=1 sinc=-2 ival=500 format=full
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen C 256 256  linc=1 sinc=5 ival=20 format=full modulo=412
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 insect (A,B) W insect=(1,1,256,256,1,257)
 Beginning VICAR task insect
@@ -218,7 +218,7 @@ Beginning VICAR task fftflip
 FFTFLIP version 2016-06-08
   difpic (B3,C3) BC3
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  AVE VAL OF POS DIFFS=  611.930
  NUMBER OF POS DIFF=     130613
  AVE VAL OF NEG DIFFS= -613.221
@@ -228,7 +228,7 @@ DIFPIC version 06Oct11
  % DIFF PIXELS=  99.6498
   difpic (B3,D3) BD3
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  AVE VAL OF POS DIFFS=  619.526
  NUMBER OF POS DIFF=     130197
  AVE VAL OF NEG DIFFS= -614.117
@@ -238,7 +238,7 @@ DIFPIC version 06Oct11
  % DIFF PIXELS=  99.9996
   difpic (B3,E3) BE3
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  AVE VAL OF POS DIFFS=  618.023
  NUMBER OF POS DIFF=     131072
  AVE VAL OF NEG DIFFS= -617.827
@@ -248,7 +248,7 @@ DIFPIC version 06Oct11
  % DIFF PIXELS=  100.000
   difpic (D3,E3) DE3
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  AVE VAL OF POS DIFFS=  254.477
  NUMBER OF POS DIFF=3381
  AVE VAL OF NEG DIFFS= -273.132
@@ -261,15 +261,15 @@ end-if
   let $echo="yes"
 gen A 512 512 linc=1 sinc=3 format=real
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen B 256 256 linc=1 sinc=-2 ival=500 format=real
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen C 256 256 linc=1 sinc=5 ival=20 format=real modulo=412
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 insect (A,B) W insect=(1,1,256,256,1,257)
 Beginning VICAR task insect
@@ -280,29 +280,29 @@ INSECT version 7 Jan 2013 (64-bit) - rjb
 sargonb X B4 func1=setto const1=10000 vert1=(255,255,257,255,257,257,255,257)
 Beginning VICAR task sargonb
 SARGONB version 2016-05-26
-label-list B4
+label-list B4 'nousrtim
 Beginning VICAR task label
-LABEL version 15-Nov-2010
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File B4 ************
                 3 dimensional IMAGE file
                 File organization is BSQ
-                Pixels are in REAL format from a X86-LINUX host
+                Pixels are in REAL format from a X86-64-LIN host
                 1 bands
                 512 lines per band
                 512 samples per line
                 0 lines of binary header
                 0 bytes of binary prefix per line
----- Task: GEN -- User: wlb -- Wed Jun  8 12:49:08 2016 ----
+---- Task: GEN -- User:  --  ----
 IVAL=0.0
 SINC=3.0
 LINC=1.0
 BINC=1.0
 MODULO=0.0
----- Task: INSECT -- User: wlb -- Wed Jun  8 12:49:08 2016 ----
----- Task: INSECT -- User: wlb -- Wed Jun  8 12:49:08 2016 ----
----- Task: SARGONB -- User: wlb -- Wed Jun  8 12:49:08 2016 ----
+---- Task: INSECT -- User:  --  ----
+---- Task: INSECT -- User:  --  ----
+---- Task: SARGONB -- User:  --  ----
  
 ************************************************************
 fftflip B4 C4 'flip line=0
@@ -316,7 +316,7 @@ Beginning VICAR task fftflip
 FFTFLIP version 2016-06-08
   difpic (B4,C4) BC4
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  AVE VAL OF POS DIFFS=  611.930
  NUMBER OF POS DIFF=     130613
  AVE VAL OF NEG DIFFS= -613.221
@@ -326,7 +326,7 @@ DIFPIC version 06Oct11
  % DIFF PIXELS=  99.6498
   difpic (B4,D4) BD4
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  AVE VAL OF POS DIFFS=  619.519
  NUMBER OF POS DIFF=     130197
  AVE VAL OF NEG DIFFS= -614.121
@@ -336,7 +336,7 @@ DIFPIC version 06Oct11
  % DIFF PIXELS=  100.000
   difpic (B4,E4) BE4
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  AVE VAL OF POS DIFFS=  618.023
  NUMBER OF POS DIFF=     131072
  AVE VAL OF NEG DIFFS= -617.827
@@ -346,10 +346,10 @@ DIFPIC version 06Oct11
  % DIFF PIXELS=  100.000
   difpic (D4,E4) DE4
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  AVE VAL OF POS DIFFS=  254.164
  NUMBER OF POS DIFF=3390
- AVE VAL OF NEG DIFFS= -272.643
+ AVE VAL OF NEG DIFFS= -272.642
  NUMBER OF NEG DIFFS=1705
  TOTAL NUMBER OF DIFFERENT PIXELS=5095
  AVE VAL OF DIFFS=  1.51352

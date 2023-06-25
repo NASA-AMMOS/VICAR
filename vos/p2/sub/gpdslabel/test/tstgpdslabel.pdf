@@ -1,6 +1,8 @@
 procedure
 refgbl $echo
 body
+enable-log
+
 let _onfail="continue"
 let $echo="yes"
 
@@ -49,4 +51,6 @@ end-if
 !!!!!!    dcl type tstgpdslabel.pcatxt
 !!!!!!    dcl del tstgpdslabel.pca*.*
 !!!!!!    dcl del scx1:[mipl]tgpdslabel.pca.*
+
+disable-log
 end-proc

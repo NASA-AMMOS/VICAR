@@ -1,0 +1,5 @@
+$ vpack surffit.com -mixed -
+	-s surffit.cc -
+	-i surffit.imake -
+	-p surffit.pdf
+$ Exit

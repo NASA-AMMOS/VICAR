@@ -1,0 +1,9 @@
+#This version runs using Python 3.9.5, but earlier versions of Python 3 should 
+#work. The following packages are required, some of which may require 'pip 
+#install' depending on the setup:
+
+numpy
+pandas 
+scipy
+matplotlib 
+

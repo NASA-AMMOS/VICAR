@@ -1,0 +1,31 @@
+**************************************
+		NOTE TO TESTER:
+**************************************
+ 
+ The Following Test Data are handled separately for VMS and UNIX. 
+ Currently for the UNIX, in order to run the program, the data
+ files MUST be copied from $SPICEKER/* to the LOCAL directory 
+ where the program resides.
+ 
+tspicesubs  +
+	SP_KERNEL=@bsp  +
+	CK_KERNEL=@ssi_ck
+Beginning VICAR task tspicesubs
+Let's test MASSAGE_STRING first (know your ascii) ...
+First print the 7 input characters of the string to massage:
+ 
+ 1st char: 61; 2nd char: 62; 3rd char: 63; 4th char: 64
+ 5th char: 65; 6th char: 20; 7th char: 20;
+ 
+Then the 8 output characters - trailing spaces removed, null
+terminated, and changed to upper case.
+ 
+ 1st char: 41; 2nd char: 42; 3rd char: 43; 4th char: 44
+ 5th char: 45; 6th char: 0; 7th char: 0; 8th char: 0
+ 
+Wasn't that fun. Now testing SUMMARIZE_SPK:
+ 
+dafopr failed
+ ** ABEND called **
+continue
+disable-log

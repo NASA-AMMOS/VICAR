@@ -150,7 +150,7 @@ gtgen inp=xxxim1 out=xxxim2 'tiecnvrt +
           "ModelTiePointTag=(100,0,0,351807.4,5317081.3,0.0)", +
           "GTRasterTypeGeoKey=1(RasterPixelIsArea)")
 
-label-list xxxim2
+label-list xxxim2 'nousrtim
 gtlist xxxim2
 
 ! vicar case - add
@@ -158,7 +158,7 @@ gtlist xxxim2
 gtgen inp=xxxim1 out=xxxim2 'add geotiff=( +
   "PCSCitationGeoKey=""UTM Zone 60 N with WGS84""")
 
-label-list xxxim2
+label-list xxxim2 'nousrtim
 gtlist xxxim2
 
 
@@ -170,7 +170,7 @@ gtgen inp=xxxim1 out=xxxim2 +
           "ModelTiePointTag=(100,0,0,351807.4,5317081.3,0.0)", +
           "GTRasterTypeGeoKey=1(RasterPixelIsArea)")
 
-label-list xxxim2
+label-list xxxim2 'nousrtim
 gtlist xxxim2
 
 !   no image coord case
@@ -181,6 +181,8 @@ gtgen out=xxxlab6  +
 gtlist xxxlab6
 
 theend>
+
+ush rm xxxim1 xxxim2 xxxlab1 xxxlab2 xxxlab3 xxxlab4 xxxlab5 xxxlab6
 
 disable-log
 end-proc

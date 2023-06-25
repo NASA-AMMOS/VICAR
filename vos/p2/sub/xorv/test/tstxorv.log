@@ -1,0 +1,20 @@
+txorv
+Beginning VICAR task txorv
+Output values for this test should be 128
+DCODE=    1  BYTE  BYTE    128  128  128  128  128
+DCODE=    2  HALF  HALF    128  128  128  128  128
+DCODE=    3  BYTE  HALF    128  128  128  128  128
+DCODE=    4  FULL  FULL    128  128  128  128  128
+DCODE=    5  BYTE  FULL    128  128  128  128  128
+DCODE=    6  HALF  FULL    128  128  128  128  128
+
+DCODE=   -1  BYTE  BYTE    128  128  128  128  128
+DCODE=   -2  HALF  HALF    128  128  128  128  128
+DCODE=   -3  HALF  BYTE    128  128  128  128  128
+DCODE=   -4  FULL  FULL    128  128  128  128  128
+DCODE=   -5  FULL  BYTE    128  128  128  128  128
+DCODE=   -6  FULL  HALF    128  128  128  128  128
+Test the C interface
+Output from zxorv = 15   252
+Correct values are   15    252
+disable-log

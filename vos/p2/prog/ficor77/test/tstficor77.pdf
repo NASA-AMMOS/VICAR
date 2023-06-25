@@ -11,27 +11,25 @@ enable-log
 let $autousage="none"
 let _onfail="continue"
 let $echo="yes"
-local path type=string init="wms_test_work:[testdata.mipl.vgr]"
-let path="/project/test_work/testdata/mipl/vgr/"
 
 write "***** Test nanowatts scale *****"
-ficor77 (&"path"f1636832.raw,&"path"ficor77.cal,&"path"dc.cal) +
+ficor77 (data/f1636832.raw,data/ficor77.cal,data/dc.cal) +
                 A (500,500,10,10) 'NOCO CONV=1.
-fixvgr A B scf=&"path"vgrscf.dat
+fixvgr A B scf=data/vgrscf.dat
 label-l B 'nousrtim
-ficor77 (&"path"f1636832.raw,&"path"ficor77.cal,&"path"dc.cal) +
-        C (500,500,10,10) CONV=1. scf=&"path"vgrscf.dat
+ficor77 (data/f1636832.raw,data/ficor77.cal,data/dc.cal) +
+        C (500,500,10,10) CONV=1. scf=data/vgrscf.dat
 list A 'nousrtim		!CONV=1.
 list B 'nousrtim		!CONV=1. and scale corrected
 list C 'nousrtim		!Same as C
 
 write "***** Test I/F scale *****"
-ficor77 (&"path"f1636832.raw,&"path"ficor77.cal,&"path"dc.cal) +
+ficor77 (data/f1636832.raw,data/ficor77.cal,data/dc.cal) +
                 A (500,500,10,10) IOF=.5 'NOCO
-fixvgr A B scf=&"path"vgrscf.dat
+fixvgr A B scf=data/vgrscf.dat
 label-l B 'nousrtim
-ficor77 (&"path"f1636832.raw,&"path"ficor77.cal,&"path"dc.cal) +
-             C (500,500,10,10)scf=&"path"vgrscf.dat
+ficor77 (data/f1636832.raw,data/ficor77.cal,data/dc.cal) +
+             C (500,500,10,10)scf=data/vgrscf.dat
 label-l C 'nousrtim
 list A 'nousrtim		!IOF=.5
 list B 'nousrtim		!IOF=1.0 and scale corrected
@@ -39,19 +37,16 @@ list C 'nousrtim		!Same as B
 
 write "***** Test channel equivalence *****"
 
-let path="/project/test_work/testdata/p2/ficor77/"
-
 write "*** With no flag - THIS SHOULD ABEND - filter pos does not match !!! ***"
-ficor77 inp=(V1NA_0947106_RAW.vic,FICOR77_VG1_NA_CLEAR.DAT,V1NA_0946940_CLEAN.vic.ressar77,V1NA_0947132_CLEAN.vic.ressar77,V1NA_0947134_CLEAN.vic.ressar77) +
-        out=V1NA_0231550_FICOR77_noflag.vic 'nocorrec
+ficor77 inp=(data/V1NA_0947106_RAW.vic,data/FICOR77_VG1_NA_CLEAR.DAT,data/dark_06_late.vic) out=V1NA_0231550_FICOR77_noflag.vic 'nocorrec
 
 write "*** with filter=0 - this should work **"
-ficor77 inp=(V1NA_0947106_RAW.vic,FICOR77_VG1_NA_CLEAR.DAT,V1NA_0946940_CLEAN.vic.ressar77,V1NA_0947132_CLEAN.vic.ressar77,V1NA_0947134_CLEAN.vic.ressar77) +
-        out=V1NA_0231550_FICOR77_filter0.vic filter=0 'nocorrec
+ficor77 inp=(data/V1NA_0947106_RAW.vic,data/FICOR77_VG1_NA_CLEAR.DAT,data/dark_06_late.vic) out=V1NA_0231550_FICOR77_noflag.vic 'nocorrec filter=0
 
 write "*** filteq - this should work, too ***"
-ficor77 inp=(V1NA_0947106_RAW.vic,FICOR77_VG1_NA_CLEAR.DAT,V1NA_0946940_CLEAN.vic.ressar77,V1NA_0947132_CLEAN.vic.ressar77,V1NA_0947134_CLEAN.vic.ressar77) +
-        out=V1NA_0231550_FICOR77_filteq.vic 'filteq 'nocorrec
+ficor77 inp=(data/V1NA_0947106_RAW.vic,data/FICOR77_VG1_NA_CLEAR.DAT,data/dark_06_late.vic) out=V1NA_0231550_FICOR77_noflag.vic 'nocorrec 'filteq
 
 disable-log
+
+ush rm A B C V1NA_0231550_FICOR77_filteq.vic V1NA_0231550_FICOR77_filter0.vic V1NA_0231550_FICOR77_noflag.vic
 end-proc

@@ -1,0 +1,5 @@
+$ vpack nsyttilt.com -mixed -
+	-s nsyttilt.cc nsyt_tilt.cc nsyt_tilt.h -
+	-i nsyttilt.imake -
+	-p nsyttilt.pdf
+$ Exit

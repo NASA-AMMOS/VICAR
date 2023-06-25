@@ -4,12 +4,12 @@ body
 
 enable-log
 
-local inp1 string init="/project/test_work/testdata/mer/1F483288473EFFCMUFP1214L0M1.IMG"
-local inp2 string init="/project/test_work/testdata/mer/1F490747543EFFCNY9P1214L0M1.IMG"
-local inp3 string init="/project/test_work/testdata/mer/1F483644096EFFCMX8P1214L0M1.IMG"
-local inp4 string init="/project/test_work/testdata/mer/1F498644828EFFCONGP1214L0M1.IMG"
-local inp5 string init="/project/test_work/testdata/mer/1F484710941EFFCNBHP1214L0M1.IMG"
-local inp6 string init="/project/test_work/testdata/mer/1F517554350EFFCQG7P1214L0M1.IMG"
+local inp1 string init="data/1F483288473EFFCMUFP1214L0M1.IMG"
+local inp2 string init="data/1F490747543EFFCNY9P1214L0M1.IMG"
+local inp3 string init="data/1F483644096EFFCMX8P1214L0M1.IMG"
+local inp4 string init="data/1F498644828EFFCONGP1214L0M1.IMG"
+local inp5 string init="data/1F484710941EFFCNBHP1214L0M1.IMG"
+local inp6 string init="data/1F517554350EFFCQG7P1214L0M1.IMG"
 local adaptive_out1 string init="1F483288473EFFCMUFP1214L0M1_adaptive.IMG"
 local adaptive_out2 string init="1F490747543EFFCNY9P1214L0M1_adaptive.IMG"
 local adaptive_out3 string init="1F483644096EFFCMX8P1214L0M1_adaptive.IMG"
@@ -86,5 +86,36 @@ shadow inp=&inp5 out=&adaptive_out5 out_reflect=&relf_out5
 shadow inp=&inp6 out=&adaptive_out6 out_reflect=&relf_out6
 
 disable-log
+
+ush rm 1F483288473EFFCMUFP1214L0M1_adaptive.IMG
+ush rm 1F483288473EFFCMUFP1214L0M1_adaptive_sk.IMG
+ush rm 1F483288473EFFCMUFP1214L0M1_global.IMG
+ush rm 1F483288473EFFCMUFP1214L0M1.illum
+ush rm 1F483288473EFFCMUFP1214L0M1.refl
+ush rm 1F483644096EFFCMX8P1214L0M1_adaptive.IMG
+ush rm 1F483644096EFFCMX8P1214L0M1_adaptive_sk.IMG
+ush rm 1F483644096EFFCMX8P1214L0M1_global.IMG
+ush rm 1F483644096EFFCMX8P1214L0M1.illum
+ush rm 1F483644096EFFCMX8P1214L0M1.refl
+ush rm 1F484710941EFFCNBHP1214L0M1_adaptive.IMG
+ush rm 1F484710941EFFCNBHP1214L0M1_adaptive_sk.IMG
+ush rm 1F484710941EFFCNBHP1214L0M1_global.IMG
+ush rm 1F484710941EFFCNBHP1214L0M1.illum
+ush rm 1F484710941EFFCNBHP1214L0M1.refl
+ush rm 1F490747543EFFCNY9P1214L0M1_adaptive.IMG
+ush rm 1F490747543EFFCNY9P1214L0M1_adaptive_sk.IMG
+ush rm 1F490747543EFFCNY9P1214L0M1_global.IMG
+ush rm 1F490747543EFFCNY9P1214L0M1.illum
+ush rm 1F490747543EFFCNY9P1214L0M1.refl
+ush rm 1F498644828EFFCONGP1214L0M1_adaptive.IMG
+ush rm 1F498644828EFFCONGP1214L0M1_adaptive_sk.IMG
+ush rm 1F498644828EFFCONGP1214L0M1_global.IMG
+ush rm 1F498644828EFFCONGP1214L0M1.illum
+ush rm 1F498644828EFFCONGP1214L0M1.refl
+ush rm 1F517554350EFFCQG7P1214L0M1_adaptive.IMG
+ush rm 1F517554350EFFCQG7P1214L0M1_adaptive_sk.IMG
+ush rm 1F517554350EFFCQG7P1214L0M1_global.IMG
+ush rm 1F517554350EFFCQG7P1214L0M1.illum
+ush rm 1F517554350EFFCQG7P1214L0M1.refl
 
 End-proc

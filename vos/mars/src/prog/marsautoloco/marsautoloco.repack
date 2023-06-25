@@ -1,0 +1,5 @@
+$ vpack marsautoloco.com -mixed -
+	-s marsautoloco.cc -
+	-i marsautoloco.imake -
+	-p marsautoloco.pdf
+$ Exit

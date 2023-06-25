@@ -1,0 +1,7 @@
+$ vpack rngerrs.com -mixed -
+	-s rngerrs.f open_inp.f rmain.f read_inp.f read_disparity.f -
+	   read_image.f compute_z.f compute_q.f window_size.f print_stats.f -
+	   write_image.f write_nq.f write_diff.f -
+	-i rngerrs.imake -
+	-p rngerrs.pdf
+$ Exit

@@ -4,6 +4,8 @@
 procedure help=*
 refgbl $echo
 body
+enable-log
+
 let _onfail="continue"
 let $echo="no"
 write "Test subroutine ASTRCH"
@@ -16,6 +18,8 @@ write "     2nd test: When all DNs are at 255"
 write "     Results should be LOWDN=254, HIGHDN=255"
 let $echo="yes"
 TASTRCH
+
+disable-log
 end-proc
 .title TSTASTRCH.PDF - unit test for subroutine ASTRCH
 .help

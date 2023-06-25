@@ -1,0 +1,933 @@
+process help=*
+PARM INP TYPE=STRING COUNT=2
+PARM OUT TYPE=STRING COUNT=(1:2)
+PARM MASK TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM OUT_QUALITY TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM BAND    TYPE=INTEGER COUNT=(0:1) DEFAULT=1
+
+PARM TEMPLATE TYPE=INTEGER COUNT=(0:2) DEFAULT=15
+PARM SEARCH TYPE=INTEGER COUNT=(0:2) DEFAULT=35
+PARM QUALITY TYPE=REAL COUNT=(0:1) DEFAULT=.6
+PARM TPTLIMIT  TYPE=INTEGER COUNT=(0:1) DEFAULT=-1
+PARM AMAX TYPE=INTEGER COUNT=(0:2) DEFAULT=(31,81)
+PARM MODE TYPE=KEYWORD COUNT=1 VALID=("linear", "annealing", "amoeba", +
+	 "linear_amoeba", "annealing_amoeba", "amoeba2", "linear_amoeba2") +
+	DEFAULT="amoeba"
+
+PARM MAX_TRIALS TYPE=INTEGER COUNT=1 DEFAULT=5
+PARM FILL_FRACTION TYPE=REAL COUNT=1 DEFAULT=0.9
+PARM SECOND_PASS TYPE=KEYWORD COUNT=0:1 VALID=SECOND_PASS DEFAULT=--
+PARM SEGMENT_BORDER TYPE=INTEGER COUNT=1 DEFAULT=0
+PARM OUTSIDE_BORDER TYPE=INTEGER COUNT=1 DEFAULT=5
+PARM RAND_SEED TYPE=INTEGER COUNT=0:1 DEFAULT=--
+
+PARM NAVTABLE TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM NORMAL  TYPE=REAL COUNT=(0:3) DEFAULT=--
+PARM GROUND  TYPE=REAL COUNT=(0:3) DEFAULT=--
+PARM SURF_COORD TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM SURFACE TYPE=KEYWORD COUNT=(0:1) +
+  VALID=("INFINITY","PLANE", "SPHERE1", "SPHERE2") DEFAULT=--
+PARM CONFIG_PATH STRING DEFAULT="$MARS_CONFIG_PATH"
+PARM MATCH_METHOD TYPE=STRING COUNT=(0:1) VALID=("LOOSE", "TIGHT") +
+        DEFAULT=LOOSE
+PARM MATCH_TOL TYPE=REAL COUNT=1 DEFAULT=.002
+
+PARM POINT_METHOD TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM NOSITE TYPE=KEYWORD COUNT=(0:1) VALID=NOSITE DEFAULT=--
+
+PARM DATA_SET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM DATA_SET_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM RELEASE_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCT_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_INST TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_TYPE TYPE=STRING COUNT=(0:1) DEFAULT=--
+
+PARM RSF TYPE=STRING COUNT=0:100 DEFAULT=--
+PARM DEBUG_RSF TYPE=KEYWORD COUNT=0:1 VALID=DEBUG_RSF DEFAULT=--
+PARM COORD TYPE=KEYWORD VALID=("FIXED", "INSTRUMENT", "SITE", "ROVER", +
+        "LOCAL_LEVEL") DEFAULT="FIXED"
+PARM COORD_INDEX TYPE=INTEGER COUNT=0:10 DEFAULT=--
+PARM FIXED_SITE TYPE=INTEGER COUNT=0:1 DEFAULT=--
+PARM SOLUTION_ID TYPE=STRING COUNT=0:1 DEFAULT=--
+
+END-PROC
+
+.TITLE
+VICAR program MARSCOR2.
+
+.HELP
+PURPOSE:
+To compute, from a stereo pair of images, the line and sample disparity
+of every pixel in the scene.  The output is typically run through the
+program MARSXYZ to generate X,Y,Z coordinates over the entire image.
+
+This is a 2-D correlation program derived from MARSCORR.  The primary
+difference is that MARSCOR2 has been adapted to work with parallel
+processors (using MPI), but even when run on one processor, there are
+some algorithm updates w.r.t. the original MARSCORR program.
+
+The primary algorithmic difference is that MARSCOR2 acquires seed points
+automatically.  This means that the input images must be supported by the
+PIG library, because camera model information is used to determine the seeds.
+MARSSEEDGEN is not needed for, nor can it be used with, MARSCOR2.
+
+Despite the requirements of a camera model via PIG, the input images do
+not have to be epipolar aligned or linearized, because a full 2-dimensional
+correlation is performed.  This distinguishes the program from MARSJPLSTEREO,
+which correlates in one dimension only (and thus the inputs must be aligned).
+
+EXECUTION:
+marscor2 inp=(left,right) out=(disparity) params
+
+where:
+left is the left eye image of a stereo pair
+right is the corresponding right eye image of a stereo pair
+disparity is the output (2-band) disparity file.
+
+Although "left" and "right" are used above, there is no actual restriction
+that the first image be left and the second be right.  Correlations are done
+from the first image to the second.  Output images (disparity and mask)
+correspond to the first image, containing matching coordinates in the second
+image.  However, for convenience, "left" and "right" are used throughout
+this help.
+
+Additionally, mask can be used to name an output file with a completion
+status, and out_quality can name an output file which will contain the
+correlation qualities for each pixel.
+.PAGE
+
+PARALLEL EXECUTION:
+
+MARSCOR2 can be run in parallel on multiple machines.  This dramatically
+improves the wall-clock execution time of the program.  The MPI (Message
+Passing Interface) package is used for interprocess communication.  This is
+intended for Beowulf-style clusters, but can be used on any set of machines.
+Each node processes a rectangular tile of the image in a grid pattern.
+Because of the regular grid, only the following numbers of nodes are
+currently supported:
+
+1,2,3,4,5,6,9,10,12,15,16,18,20,24,25,28,32,36,40,44,45,48,49,50
+
+If parallel execution is not desired, nothing special need be done.
+The program will work on one processor with no extra parameters.
+This program can be recompiled without using the MPI library by removing
+the LIB_MPI definition from the imake file.  However, this is not
+necessary - the MPI-linked version will work in serial fashion just fine.
+
+Consult the MPI documentation for details on parallel execution.  However,
+for the simplest case, the following can be done:
+
+First, make sure all involved machines can be accessed via ssh from the
+main node (the one on which you start the program).  It is convenient
+to set up ssh to work without a password (consult your local System
+Administrator), but that is not required.
+
+Second, make sure that any required setups are done in your .cshrc file
+on each machine.  This includes environment variables and generally
+involves source'ing vicset1.csh and vicset2.csh.  The following is
+recommended for a .cshrc file:
+
+if ($?V2TOP == 0) then
+    setenv V2TOP /usr/local/vicar/dev    (or wherever your VICAR resides)
+    source $V2TOP/vicset1.csh
+endif
+source $V2TOP/vicset2.csh
+
+Third, make sure all pathnames are absolute and accessible from all
+machines.  The current directory is not transferred to the remote machines,
+so relative pathnames will not work.
+
+Finally, set up a file containing the node name of each machine to use.
+Node names can be repeated, in which case multiple processes will be started
+on each machine.  The first one becomes the master machine, and is often
+(but not necessarily) the one on which the program is being started.  The
+nodes should be of the same architecture (e.g. solaris vs. linux).
+For example:
+
+lowe% cat machines.solaris
+# Change this file to contain the machines that you want to use
+# to run MPI jobs on.  The format is one host name per line, with either
+#    hostname
+# or
+#    hostname:n
+# where n is the number of processors in an SMP.  The hostname should
+# be the same as the result from the command "hostname"
+lowe
+pinatubo
+potato
+wind
+
+Then the program can be run like this:
+
+$MPILIB/bin/mpirun -np 4 -machinefile machines.solaris $MARSLIB/marscor2 ...
+
+where -np is the number of processor nodes, -machinefile is the name of
+the file above (this pathname can be relative), and ... are the normal
+parameters to marscor2 (with absolute pathnames).
+
+Each node sends its stdout/stderr output to the controlling terminal,
+so messages from each node will be interleaved.
+
+.page
+
+METHOD:
+
+The process starts by finding a seed point, which is an initial guess to
+obtain a starting correlation.  Initally, the center of the tile being
+processed by the CPU is used.  Later seeds are obtained randomly within
+the tile.  The prospective seed is projected to the PIG surface model
+and then projected back into the second image.  The locations thus obtained
+are then correlated.  If the correlation fails (or the seed has already
+been correlated), another seed point is chosen (up to a max of 100).
+
+The seed point is correlated using a wide search area (defined by AMAX(2)).
+A region is then grown from the seed outward in a spiral-like pattern until
+the picture is filled.
+
+For each pixel, the 8 neighbors are examined to find the one with the best
+correlation value so far.  This neighbor is used as the initial guess for
+the pixel in question (modified +/-1 as appropriate).  If no correlated
+neighbors are found, the pixel is skipped.  The correlation window is
+defined via the TEMPLATE and SEARCH parameters.
+
+Once the region has grown to the size of the image segment for the current
+CPU (or TPTLIMIT pixels have been correlated), a second pass goes through
+the region and attempts to fill gores, or pixels that did not correlate on
+the first pass, by again examining all of its neighbors (since neighbors on
+the other side, which were not done previously, might provide a better
+starting location, which will correlate, especially near edges).  This
+process continues until no more gores are filled in a pass.
+
+After the gore-filling pass, the percent coverage of tiepoints is compared
+to FILL_FRACTION.  If not enough tiepoints have been acquired to satisfy
+FILL_FRACTION, the entire process is repeated using different randomly-
+chosen seeds (up to a limit of MAX_TRIALS iterations).
+
+After all that, the results from all processors are combined on the master
+node (if running in parallel).  If SECOND_PASS is defined, the master node
+then goes through the entire above algorithm again, this time using the
+entire image.  This tends to fill in some gaps that might otherwise occur
+at the boundaries between tiles.
+
+CORRELATIONS:
+
+All correlations are performed using the gruen correlation routine.  See
+the gruen documentation for details of the algorithm.  Seed points are
+always correlated using mode 3 (linear followed by amoeba) to handle large
+offsets.  The rest of the points may be correlated using any gruen mode
+via the MODE parameter:
+
+linear:            gruen mode 0
+annealing:         gruen mode 1
+amoeba:            gruen mode 2
+linear_amoeba:     gruen mode 3
+annealing_amoeba:  gruen mode 4
+amoeba2:           gruen mode 5
+linear_amoeba2:    gruen mode 6
+
+Of the above, only amoeba and amoeba2 (modes 2 and 5) are recommended.  The
+others are provided only for experimentation, and may significantly increase
+the execution time of the program.  The annealing modes are not fully
+implemented in the code at this time, but it would be trivial to do so if
+desired.
+
+The amoeba mode uses a full 6 degree of freedom search from the starting point
+(derived from the best neighbor).  The starting point must be within 2 pixels.
+The amoeba2 mode uses only 2 degrees of freedom (x/y offsets only) so it will
+be faster, at the possible expense of accuracy.  The starting point must also
+be within 2 pixels.  amoeba2 is not recommended for images that are not derived
+from a stereo camera, e.g. using different instruments or involving motion
+between the two frames.  The other modes generally do not have a 2 pixels
+starting point limitation, so they might be useful for scenes with wildly
+varying disparity values.  However, they are exceedingly slow.
+
+The template (correlation patch) and search area sizes may be rectangular
+instead of square.  For landed images such as Mars Pathfinder, the Mars 98
+lander, or MER, it may be advantageous to specify areas that are much wider
+than they are tall.
+
+OUTPUT FILE CONTENTS:
+
+All output files are in the coordinates of the first (left eye) image.
+For example if the sample disparity file has a value of 56.67 at sample 50
+it means that the sample location of a tiepoint located at sample 50 in the
+left eye image corresponds to sample 56.67 in the right eye image.   
+
+The line and sample disparities are written into two separate files, if
+two filenames are provided.  If only one filename is provided, both are
+written to a single, 2-banded file, with line in the first band and sample
+in the second.
+
+First output (or band): A REAL image containing the line disparity.  The
+line/sample coordinate of each pixel in the output defines the position
+in the left eye.  The value of the pixel contains the line coordinate of
+the corresponding pixel in the right eye image.
+
+Second output (or band): A REAL image containing the sample disparity.  The
+line/sample coordinate of each pixel in the output defines the position
+in the left eye.  The value of the pixel contains the sample coordinate of
+the corresponding pixel in the right eye image.
+
+If both line & sample disparity values are 0.000 the point has no value
+(meaning correlation failed for that point).
+
+Note that all disparity values use 1-based coordinates for the right
+image, per VICAR conventions.
+
+Mask file (optional): A BYTE image showing the coverage of tiepoints.
+ 0 dn means the pixel could not be reached in order to be correlated
+   (i.e. there were no neighbors to supply an initial value, or TPTLIMIT
+   was reached).
+ 128 dn means a correlation was successfully performed at this location.
+ 255 dn means a correlation was attempted at this location but it failed,
+   usually because of low correlation quality.
+
+Output quality file (optional): A REAL image containing the correlation
+quality of each pixel attempted, from 0 to 1.  0 indicates either a
+correlation failure unrelated to the QUALITY setting, or a pixel that was
+not reached (the MASK output can distinguish).  Note that the file will
+contain just a thin border of poor-quality pixels around each area,
+because poor-quality pixels prevent the correlator from searching farther
+in that direction.
+.PAGE
+
+HISTORY:
+
+  1995-12-01 J Lorre - Initial MPFTPT program
+  1999-07    Bob Deen - Signficant internal restructuring and addition of features.
+             Program renamed to marscorr.  
+  2002       G. Klimeck of Section 381 - Took marscorr as a base and implemented 
+             parallel algorithms and seed derivation improvements.  
+  2003-02    Bob Deen - Integrated parallel code into VICAR; became marscor2.
+  2019-10-02 Walt Bunch - IDS-7926 - Initialized some variables.
+             Commented unused variables. Added test script and log.
+  2020-03-05 Walt Bunch - IDS-7927 - Replaced sprintf with snprintf or zvnprintf.
+  2020-03-18 Walt Bunch - IDS-7927 - Replaced zvnprintf with snprintf.
+
+COGNIZANT PROGRAMMER:  Bob Deen
+
+.LEVEL1
+.VARI INP
+input images.
+first: left eye
+second: right eye
+
+.VARI OUT
+Output file(s).
+Combined disparity,
+or (line, sample)
+
+.VARI MASK
+Output mask file
+(optional)
+
+.VARI OUT_QUALITY
+Output quality image
+(optional)
+
+.VARI BAND
+The vicar image 
+band number. 
+Defaults to 1
+
+.VARI TEMPLATE
+correlation size
+
+.VARI SEARCH
+correlation search
+area
+
+.VARI QUALITY
+Minimum acceptable
+correlation quality.
+
+.VARI TPTLIMIT
+Limit number of
+tiepoints to TPTLIMIT
+
+.VARI AMAX
+Maximum template/
+search areas
+
+.VARI MODE
+Correlation mode.
+Use only amoeba,
+amoeba2.
+
+.VARI MAX_TRIALS
+Maximum iterations for
+outer loop; i.e. how many
+seeds to try.
+
+.VARI FILL_FRACTION
+Desired percentage of
+correlated pixels within
+one segment
+
+.VARI SECOND_PASS
+Turns on a second pass on
+the master CPU after the
+nodes are done
+
+.VARI SEGMENT_BORDER
+Border (in pixels) to leave
+between tiles (nodes)
+
+.VARI OUTSIDE_BORDER
+Border (in pixels) to leave
+on the outside edge of the
+image
+
+.VARI RAND_SEED
+Seeds random number generator
+if given.  0 seeds to current
+time
+
+.VARI NAVTABLE
+Corrected navigation
+filename.
+
+.VARI NORMAL
+Surface normal vector.
+
+.VARI GROUND
+Surface ground point.
+
+.VARI SURF_COORD
+Coordinate system used to define
+surface parameters.
+
+.VARI SURFACE
+The type of mars
+surface to use
+INFINITY, PLANE, SPHERE1, SPHERE2.
+
+.VARI CONFIG_PATH
+Path used to find
+configuration/calibration
+files.
+
+.VARI MATCH_METHOD
+Specifies a method
+for pointing corrections.
+
+.VARI MATCH_TOL
+Tolerance value for
+matching pointing params
+in pointing corrections file.
+
+.VARI POINT_METHOD
+Specifies a mission-
+specific pointing
+method to use
+
+.VARI NOSITE
+Disables coordinate
+system sites.
+
+.VARI DATA_SET_NAME
+Specifies the full name given
+to a data set or a data product.
+
+.VARI DATA_SET_ID
+Specifies a unique alphanumeric
+identifier for a data set or data
+product.
+
+.VARI RELEASE_ID
+Specifies the unique identifier
+associated with the release to the
+public of all or part of a data set.
+The release number is associated with
+the data set, not the mission.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique
+identifier assigned to a data
+product by its producer.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier
+of an entity associated with the
+production a data set.
+
+.VARI PRODUCER_INST
+Specifies the full name of the
+identity of an entity associated
+with the production of a data set.
+
+.VARI TARGET_NAME
+Specifies a target.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target.
+
+.VARI RSF
+Rover State File(s) to use.
+
+.VARI DEBUG_RSF
+Turns on debugging of RSF
+parameter.
+
+.VARI COORD
+Coordinate system to use.
+
+.VARI COORD_INDEX
+Coordinate system index for
+some COORD/mission combos.
+
+.VARI FIXED_SITE
+Which site is FIXED for
+rover missions.
+
+.VARI SOLUTION_ID
+Solution ID to use for
+pointing correction.
+
+.LEVEL2
+.VARI INP
+First left eye image, then right eye image.
+
+There is nothing actually requiring left/right order, other than convention.
+If left/right is unclear (e.g. the images are not from a stereo camera) then
+either order is acceptable.  If the output is used with MARSXYZ, the same
+order must be used.
+
+.VARI OUT
+The line and sample disparity files.  If one filename is given, a two-banded
+file is created with line disparity as band 1 and sample disparity as band 2.
+If two filenames are given, two single-band files are created.  Line disparity
+is in file 1, and sample disparity is in file 2.
+
+See the main program help for output file contents and formatting.
+
+.VARI MASK
+Optional output file showing the coverage of tiepoints (correlated pixels),
+in BYTE format.
+ 0 dn means the pixel could not be reached in order to be correlated.
+   (i.e. there were no neighbors to supply an initial value, or TPTLIMIT
+   was reached).
+ 128 dn means a correlation was successfully performed at this location.
+ 255 dn means a correlation was attempted at this location but it failed,
+   usually because of low correlation quality.
+
+.VARI OUT_QUALITY
+Output quality file (optional): A REAL image containing the correlation
+quality of each pixel attempted, from 0 to 1.  0 indicates either a
+correlation failure unrelated to the QUALITY setting, or a pixel that was
+not reached (the MASK output can distinguish).  Note that the file will
+contain just a thin border of poor-quality pixels around each area,
+because poor-quality pixels prevent the correlator from searching farther
+in that direction.
+
+This file could be used in conjunction with a very low quality setting
+to allow correlation in low-quality areas, with the result filtered
+afterwards using a higher quality (i.e. use the output quality file as
+a mask).  However, this is somewhat dangerous, especially if there is
+any kind of repeating pattern in the image - the correlator could get
+"stuck" on the wrong match for the pattern.
+
+.VARI BAND
+The vicar image band number for the input images.  Defaults to 1
+
+.VARI TEMPLATE
+Correlation size.  Must be an odd number.  Defaults to 15 square.
+
+If only one value is given, a square template is used.  If two values are
+given, the first is the template height (line direction) and the second is
+the template width (sample direction).  Rectangular templates that are
+wider than they are tall should be useful for lander images.
+
+.VARI SEARCH
+Correlation search area.  Must be an odd number.  Defaults to 35 square.
+SEARCH must be > TEMPLATE.  If SEARCH is only a bit larger than TEMPLATE
+then many correlations will abort because they will be prohibited from
+searching in promising directions. 
+
+If only one value is given, a square search area is used.  If two values are
+given, the first is the search height (line direction) and the second is
+the search width (sample direction).  Rectangular search areas that are
+wider than they are tall should be useful for lander images.
+
+Note that SEARCH is not used for seed points, AMAX(2) is.  However, the
+TEMPLATE parameter *is* used for seed points.
+
+.VARI QUALITY
+Minimum acceptable correlation quality.  Correlations with qualities below
+QUALITY will be rejected. Qualities range from 0 (poor) to 1 (excellent).
+Defaults to 0.6  
+
+.VARI TPTLIMIT
+Limit number of tiepoints to the first TPTLIMIT values.  Defaults to -1 which 
+indicates that all points are to be acquired.  This limits the growth of
+the search window around the seed point.  However, the gore-filling pass is
+not constrained by TPTLIMIT.
+
+If there are multiple seed points, TPTLIMIT represents an aggregate of all
+correlated points, not ones derived from each seed point.
+
+.VARI AMAX
+Specifies the maximum template and search areas.  AMAX(1) is not very useful,
+but AMAX(2) is used for seed point correlations as the search area (which is
+always square).  An error is generated if TEMPLATE or SEARCH exceed the
+AMAX limits.
+
+.VARI MODE
+Specifies which mode of the gruen correlator to use.
+
+All correlations are performed using the gruen correlation routine.  See
+the gruen documentation for details of the algorithm.  Seed points are
+always correlated using mode 3 (linear followed by amoeba) to handle large
+offsets.  The rest of the points may be correlated using any gruen mode
+via the MODE parameter:
+
+linear:            gruen mode 0
+annealing:         gruen mode 1
+amoeba:            gruen mode 2
+linear_amoeba:     gruen mode 3
+annealing_amoeba:  gruen mode 4
+amoeba2:           gruen mode 5
+linear_amoeba2:    gruen mode 6
+
+Of the above, only amoeba and amoeba2 (modes 2 and 5) are recommended.  The
+others are provided only for experimentation, and may significantly increase
+the execution time of the program.  The annealing modes are not fully
+implemented in the code at this time, but it would be trivial to do so if
+desired.
+
+The amoeba mode uses a full 6 degree of freedom search from the starting point
+(derived from the best neighbor).  The starting point must be within 2 pixels.
+The amoeba2 mode uses only 2 degrees of freedom (x/y offsets only) so it will
+be faster, at the possible expense of accuracy.  The starting point must also
+be within 2 pixels.  amoeba2 is not recommended for images that are not derived
+from a stereo camera, e.g. using different instruments or involving motion
+between the two frames.  The other modes generally do not have a 2 pixels
+starting point limitation, so they might be useful for scenes with wildly
+varying disparity values.  However, they are so slow that it will usually be
+better to supply multiple seed points in each area using MARSTIE.
+
+.VARI MAX_TRIALS
+As described under METHOD, the program starts with a seed point, expands as
+much as possible from there, and then fills in gores.  If not enough tiepoints
+have been gathered, it then repeats the entire process with a different
+(random) seed.  MAX_TRIALS specifies the maximum number of seed points (and
+thus iterations) that can be performed by each CPU.
+
+Note that this parameter also applies to the SECOND_PASS done by the master
+processor.
+
+Default: 5
+
+.VARI FILL_FRACTION
+FILL_FRACTION specifies how much of the image should be filled up with
+tiepoints.  Each CPU will continue to pick new seed points and re-do the
+correlation until either FILL_FRACTION is satisfied or MAX_TRIALS is
+exhausted.
+
+Note that this parameter also applies to the SECOND_PASS done by the master
+processor.
+
+Default: .9
+
+.VARI SECOND_PASS
+After the parallel nodes have done their work, the results are collected
+on the master node.  Sometimes there may be gaps between the tiles processed
+by individual nodes (especially if SEGMENT_BORDER is used).  Activating
+SECOND_PASS will cause the entire correlation algorithm to be run again on
+the full image, which will tend to fill in gaps between the tiles.
+
+Defaults to off.
+
+.VARI SEGMENT_BORDER
+SEGMENT_BORDER specifies the number of pixels that should be omitted from
+consideration along the border of each node's tile.  A non-zero number here
+will result in gaps between tiles, in which case the use of SECOND_PASS is
+recommended.  Note that this affects the first, or reference, image only;
+correlation matches can go anywhere in the second image.  This parameter
+is rarely needed.
+
+Default: 0
+
+.VARI OUTSIDE_BORDER
+Specifies the number of pixels that are omitted around the outside edges
+of the (first, or reference) image.  There is little point in attempting to
+compute pixels which won't correlate because they're closer to the edge of
+the image than the template window size.  This parameter can be used to trim
+those out, resulting in some execution speedup.  Note that this affects the
+first, or reference, image only; correlation matches can go anywhere in the
+second image.
+
+Default: 5
+
+.VARI RAND_SEED
+Seed points are derived using a random number generator (rand()).  In
+order to generate repeatable results, the seed for the random number
+generator may be provided via RAND_SEED.  If the parameter is not given,
+the seed is not set, and defaults to whatever the system sets.
+
+If the parameter is given, srand() is called to set the seed.  If the
+value is 0, time() is called to get a seed (this is the best "true" random
+value).  Any other value will set the seed to that value.
+
+.VARI NAVTABLE
+Corrected navigation filename.
+If marsnav was run on the input images it created a table of corrected
+pointing parameters. If you refer to this table using NAVTABLE it
+will override the pointing parameters (e.g. azimuth and elevation) in the
+picture labels, giving you more accurate pointing.
+
+.VARI NORMAL
+The local mars surface normal vector coordinate system specified by SURF_COORD 
+parameter (defaults to surface fixed).
+For most pan/tilt cameras, if the lander is not tilted this vector
+would be: normal=(0,0,-1).  ie: x_component=0, y_component=0, z_component=-1.
+This need not be a unit vector.  This vector is used to define the
+surface plane to which image points are projected in order to minimize
+parallax.
+For SPHERE1/2 surface models, normal's first parameter is used to
+denote sphere's radius.  Thus to describe sphere of radius R, user
+would specify normal=(R, 0, 0).
+
+.VARI GROUND
+Any point on the surface, in coordinate system specified by SURF_COORD parameter
+(defaults to surface fixed).  This defines where the tilted plane is in space.  
+Although any point may be used, normally the point just "under" the origin is selected.
+Defaults:
+Mars Pathfinder:  (0.0, 0.0, 0.0)       (lander zero point is on the ground)
+Mars 98 Lander:   (0.0, 0.0, 1.64)      (lander zero point is on top of deck)
+MER           :   (0.0, 0.0, 0.294)
+For MER images taken on top of the lander, the ground is roughly at (0.0, 0.0, 0.7)
+For SPHERE1/2 surface models, GROUND parameter is used to denote sphere's
+center.  
+    
+.VARI SURF_COORD
+The coordinate system that surface parameters like GROUND and NORMAL are defined in.
+For valid values refer to COORD parameter description.  The interpretation of the 
+values is dependent on the mission. Defaults to surface fixed coordinate system.
+Note that no validation is done for input strings because COORD is using the same
+values.  So user needs to be extra careful in specifying SURF_COORD value.  For 
+example COORD=local would be correctly interpreted to mean LOCAL_LEVEL because of
+validation process.  On the other hand specifying SURF_COORD=local would lead
+to underlying code treating the input value as invalid and reverting to default
+which is FIXED frame.  So the values for SURF_COORD should be spelled exactly as
+found in the list of valid values for COORD parameter.
+
+.VARI SURFACE
+The type of mars surface to use. The surface is used to intercept view rays
+emanating from the cameras in order to model out parallax between the
+stereo cameras. The two options are surface=INFINITY which means no surface
+is used or surface=PLANE (the default case). If surface=PLANE then the plane
+is defined by the NORMAL and GROUND parameters. For the cases when PLANE
+doesn't match local topography sufficiently well, here are two sphere surface
+models: surface=SPHERE1 and surface=SPHERE2.  SPHERE1 is useful to model
+convex surfaces like hills, it returns closest(first) ray-surface intersection
+point.  SPHERE2 is useful to model concave surfaces, like crater when the
+camera point is outside looking in, it returns farthest(second) ray-surface
+intersection point.  For the case when camera is inside the sphere surface,
+like rover sitting in the crater, there is only a single intersection point
+and SPHERE1 and SPHERE2 behave exactly the same.
+
+.VARI CONFIG_PATH
+A colon-separated list of directories in which to look for configuration
+and calibration files.  Environment variables are allowed in the list
+(and may themselves contain colon-separated lists).  The directories are
+searched in order for each config/cal file when it is loaded.  This allows
+multiple projects to be supported simultaneously, and allows the user to
+override any given config/cal file.  Note that the directory structure below
+the directories specified in this path must match what the project expects.
+For example, Mars 98 expects flat fields to be in a subdirectory named
+"flat_fields" while Mars Pathfinder expects them to be directly in the
+directory specified by the path (i.e. no intermediate subdirectories).
+
+.VARI MATCH_METHOD
+Specifies a method for pointing corrections.
+
+Loose method matchs with pointing parameters of the image.
+Tight method matchs with unique id of the image.
+
+.VARI MATCH_TOL
+Tolerance value for matching pointing parameters in the pointing corrections file.
+Used if MATCH_METHOD=LOOSE
+Default value is pretty arbitrary, though seems to work well so far....
+
+.VARI POINT_METHOD
+Specifies a mission-specific pointing method to use.  Normally this
+parameter is not used, in which case the "default" pointing methods
+are used.  Some missions may have special, or alternate, pointing
+methods available, which are indicated by this string (for example,
+backlash models, using arm joint angles instead of x/y/z/az/el, etc).
+A substring search is used, so multiple methods (where that makes sense)
+can be specified by separating the keywords with commas.
+
+Note that nav files created using one pointing method will most likely
+not be compatible with a program run using a different pointing method.
+
+The methods available vary per mission, but some methods available at
+the time of this writing are:
+
+BACKLASH : Mars 98 SSI only.  Selects a backlash pointing model,
+which adjusts the telemetered azimuth and elevation values based on
+knowledge of the camera's mechanical backlash and the direction the
+motor was travelling when the image was taken.
+
+.VARI NOSITE
+Disables all label-derived parameters to the Site mechanism which underlies
+coordinate systems.  This forces all sites to be identical, with all rotations
+and offsets set the same.  In the case of MPF or Mars 98, this disables
+the lander quaternion and offset (sets them to identity and 0, respectively).
+This option should not be used with images taken from different vantage
+points (e.g. the spacecraft moved, or mixing a lander and a rover) or
+invalid results will be obtained.  The use of this option invalidates the
+Fixed coordinate frame; any values reported in the Fixed frame will not
+correctly reflect the orientation of the lander/rover.
+
+Obviously, this option should be rarely used; it is intended for when the
+image labels defining the site are invalid or inconsistent.
+
+.VARI DATA_SET_NAME
+The DATA_SET_NAME typically identifies the instrument that acquired the
+data, the target of that instrument, and the processing level of the data.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_NAME.
+
+.VARI DATA_SET_ID
+The DATA_SET_ID value for a given data set or product is constructed
+according to flight project naming conventions.  In most cases the
+DATA_SET_ID is an abbreviation of the DATA_SET_NAME.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_ID.
+
+.VARI RELEASE_ID
+When a data set is released incrementally, such as every three months during
+a mission, the RELEASE_ID is updated each time part of the data set is released.
+For each mission(or host id if multiple spacecrafts), the first release of a data
+set should have a value of "0001".
+This value is copied to the output label, property IDENTIFICATION,
+keyword RELEASE_ID.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique identifier assigned to a data product by
+its producer. Most commonly, it is the filename minus the extension.
+This value is copied to the output label, property IDENTIFICATION,
+keyword PRODUCT_ID.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier of an entity associated with the
+production of a data set. This value is copied to the output label,
+property IDENTIFICATION, keyword PRODUCER_ID.
+
+.VARI PRODUCER_INST
+Specifies the identity of a university, research center, NASA center or other
+institution associated with the production of a data set.
+This value is copied to the output label, property IDENTIFICATION, keyword
+PRODUCER_INSTITUTION_NAME.
+
+.VARI TARGET_NAME
+Specifies a target.  The target may be a planet, satelite, ring, region, feature,
+asteroid or comet.  This value is copied to the output label, property
+IDENTIFICATION, keyword TARGET_NAME.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target. This value is copied to the output
+label, property IDENTIFICATION, keyword TARGET_NAME.
+
+.VARI RSF
+Rover State File.  This is a list of filenames to load containing
+Rover State information.  These files contain position and orientation
+information for a rover (or other mobile spacecraft) at various sites.
+They are in XML format.  See the "Rover Motion Counter (RMC) Master File SIS"
+for details on these files.
+
+Rover State Files have a priority order.  The files listed first have
+the highest priority.
+
+Environment variables may be used in the list.
+
+For MER, if a directory is specified, then that directory is searched for
+RMC Master files and any found are loaded.  The directory structure and
+filename convention is covered in the RMC SIS.  The directory specified
+is the one containing "master", so if <dir> is the name specified in the
+RSF parameter, the following files will be searched for:
+
+<dir>/master/<mission>_Master.svf
+<dir>/master/<mission>_Site_<n>_Master.rvf
+
+The name of each file loaded is printed to the stdout log for reference.
+
+.VARI DEBUG_RSF
+If enabled, this causes the internal database of RMC locations to be
+printed out to the stdout log.  This is after the RSF files have been
+loaded and the coordinate systems read from the input label(s).
+
+.VARI COORD
+The coordinate system to use for all input parameters and output values,
+and the mosaic itself.  The interpretation of the values is dependent on
+the mission.  Some representative missions are listed here:
+
+Fixed - The Fixed frame (default).  This is the ultimate reference frame
+    (see also FIXED_SITE for rover missions).
+Instrument - The "natural" frame for the instrument (of the first input
+    image).  MPF: Lander or Rover; M98: MVACS; MER: Rover.
+Site - A major Site frame.  For rover missions, COORD_INDEX specifies which
+    Site frame to use.  Non-rover missions treat this as Fixed.
+Rover - An instance of the Rover frame.  For rover missions, COORD_INDEX
+    specifies which instance of the rover frame to use.  Non-rover mission
+    use the spacecraft frame (e.g. Lander for M98).
+Local_Level - An instance of a Local Level frame.  This is typically
+    coincident with the Rover frame (in XYZ) but oriented toward North
+    like the Site and Fixed frames.  For MER, this is an instance of a
+    Drive index move.
+
+.VARI COORD_INDEX
+The index specifies which instance of a coordinate system to use.  It is
+currently applicable only to rover-based missions, but could have other
+uses.  The index is equivalent to the Rover Motion Counter (RMC) for MER
+and FIDO.
+
+For MER/FIDO, there are many Site frames.  Each is numbered with a single
+index.  For Site Frames, coord_index specifies which to use.  Likewise,
+there are many Local_Level and Rover frames, corresponding to values of
+the RMC.  The multiple instances of this frame are selected by COORD_INDEX.
+
+Generally COORD_INDEX defaults sensibly so you don't usually need to
+specify it.  It will default to the instance used by the first input.
+
+.VARI FIXED_SITE
+Specifies which major Site is the "Fixed" Site for this run.
+
+Historically, MPF and M98 had a single "Surface Fixed" frame which never
+moved, and which all other coordinate system frames were referenced to.
+With the advent of long-range rovers (such as MER and FIDO), that became
+insufficient.  The rover traverses far enough that errors in knowledge of
+coordinate system offset and orientation become unacceptable.
+
+For this reason, a system of major Sites was introduced.  Periodically
+during the mission, a Site frame is declared.  This then becomes the
+reference frame for all activities until the next Site is declared.
+References are kept local, and errors don't propogate across Sites.
+
+However, if images from more than one Site are combined together, the
+Site's must be placed relative to each other.  Therefore a single reference
+frame is still needed to combine different sites.
+
+The FIXED_SITE parameter controls which of the major Site frames is
+the reference ("fixed") site for this program run.  This fixed frame
+can vary in different program runs, but is constant throughout one
+execution.
+
+If not specified, FIXED_SITE defaults to the minimum Site number (i.e.
+lowest numbered, or earliest chronologically) used in all input images.
+Normally this default is sufficient; rarely must FIXED_SITE be specified.
+
+One or more Rover State Files must usually be specified in order to combine
+image from more than one Site.  These describe the relationship between
+sites.  See the RSF parameter.
+
+.VARI SOLUTION_ID
+Specifies which solution ID to use for pointng corrections.
+
+There are potentially many different definitions for the same coordinate
+system.  These are identified via a unique Solution ID.  If this parameter
+is given, only the specified solution's definition is searched for.

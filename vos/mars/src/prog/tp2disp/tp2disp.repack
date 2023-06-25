@@ -1,0 +1,6 @@
+$ vpack tp2disp.com -mixed -
+	-s tp2disp.cc -
+	-p tp2disp.pdf -
+	-t tsttp2disp.pdf tsttp2disp.log new4.lis new4.tie -
+	-i tp2disp.imake
+$ Exit

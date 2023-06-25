@@ -1,0 +1,378 @@
+!mos_dem.pdf (02AUG2007; by Albert L. Zobrist)
+!Mosaic individual srtmL2 (30m) dem files (in vicar gt format) into one mosaick.
+!
+!Output choice of geotiff or Vicar gt format (default), 16-bit.
+! 
+!Input Parameters:
+!slat - Startling latitude of DEM AOI; Bottom lat of AOI box (integer)
+!slon - Starting longitude of DEM AOI; Left lon of AOI box (integer)
+!elat - Ending latitude of DEM AOI; Top lat of AOI bounding box (integer)
+!elon - Ending longitute of DEM AOI; Right lon of AOI bounding box (integer)
+! (NOTE: DEMs are specified by their LOWER LEFT lat/lon, when viewed North up)
+! (NOTE: A DEM with the same name as the elat and elon coordinates is NOT processed)
+! (NOTE: AOI can cross the equator and Prime Meridian, but NOT the
+!        International Dateline)
+! (NOTE: An error in featherv requires that 500dn be added then substracted)
+!out - Output geotiff filename 
+!DIRin - Directory path for input dem data (hard disk or cdrom/dvd)
+!DIRout - Output directory path; Example: /data/tdps_srtm
+!
+!NOTE: This procedure SLOWS DOWN LINEARLY with increasing numbers of
+!dems (using fix by ALZ)
+!
+!Example call:
+!mos_dem 21 -106 23 -104 dem_mosaick.img
+!mos_dem -2   33  2   35 dem_mosaick.img /data/tdps_srtm /home/tll/work 1 
+
+procedure
+parm       slat    integer          !bottom lat of playbox
+parm       slon    integer          !left lon of playbox
+parm       elat    integer          !top lat of playbox
+parm       elon    integer          !right lon of playbox
+parm       out     string    def="dem_mosaick"      !Output mos tif name
+parm       DIRin   string    def="/export/raid4/srtmL2_filled" !Input dem data dir
+parm       DIRout  string    def="/export/raid4/tll"   !Ouput dem data dir
+parm       format  integer   def=1  !0 for geotiff, 1 for vicar
+local      mlat    integer          !elat minus 1
+local      mlon    integer          !elon minus 1
+local      lns     string    init="n"  !north or south in lowercase
+local      lew     string    init="e"  !east or west in lowercase
+local      I       integer          !Increment lat (n/s)
+local      J       integer          !Increment lon (e/w)
+local      I2      integer          !I without the - sign
+local      J2      integer          !J without the - sign
+local      I3      integer          !Loop Counter for file index
+local      J3      integer          !Loop Counter for file index
+local      IP1     integer          !Use in gen ocean
+local      JP1     integer          !Use in gen ocean
+local      found   integer          !0=no file; 1=file found (file2tcl)
+local      inl     integer          !number of lines
+local      ins     integer          !number of samples
+local      ntl     integer          !number of tiles in line direction
+local      nts     integer          !number of tiles in samp direction
+local      M       integer          !counter
+
+local xxA string
+local xxB string
+refgbl $echo
+
+body
+
+write "mos_l2_dem 080207"
+!test for correct afids/srtm/dem directory
+file2tcl inp=&"DIRin"/n0e100_L2.hlf val=found
+if      (found = 0) goto next2
+
+!Set n/s/e/w codes
+if             (slat >= 0) let lns = "n"
+if             (slat <  0) let lns = "s"
+if             (slon >= 0) let lew = "e"
+if             (slon <  0) let lew = "w"
+let             mlat = elat - 1
+let             mlon = elon - 1
+
+
+!Master Loop
+
+   let          J = slon - 1        !Inc longitude; e/w
+   let          J3 = 0              !Loop Counter for file index
+   let          M = 0               !Loop Counter
+   
+loop
+   let          J = J + 1
+   let          J3 = J3 + 1
+   let          I = slat - 1        !Inc latitude; n/s
+   let          I3 = 0              !Loop Counter for file index
+   if          (J > mlon) break
+
+   loop
+      write "in loop"
+      let       I = I + 1
+      let       I3 = I3 + 1
+      if       (I > mlat) break
+!Remove I and J negative signs
+      if       (I < 0)
+               let I2 = I * (-1)
+      else
+               let I2 = I
+      end-if
+      if       (J < 0)
+               let J2 = J * (-1)
+      else
+               let J2 = J
+      end-if
+!Reset n/s/e/w codes for crossing the Equator/Prime Meridian
+       if      (I >= 0) let lns = "n"
+       if      (I <  0) let lns = "s"
+       if      (J >= 0) let lew = "e"
+       if      (J <  0) let lew = "w"
+       
+       let xxA = "xxA" // "&I3"
+       let M = M+1
+       
+       file2tcl inp=&"DIRin"/&"lns"&"I2"&"lew"&"J2"_L2.hlf +
+                val=found
+
+       if (found = 1)
+          f2 &"DIRin"/&"lns"&"I2"&"lew"&"J2"_L2.hlf out=&xxA +
+                  func="in1+500"  !offset for featherv error
+       else
+          let IP1 = I+1
+          let JP1 = J+1
+          gen xxxA99 nl=3601 ns=3601 'half ival=500.0 linc=0.0 sinc=0.0
+          gtgen xxxA99 out=&xxA 'tiecnvrt 'rectfit +
+            geotiff=("ModelTiePointTag=(0,0,0,&J,&IP1,0.0)", +
+            "ModelTiePointTag=(0,3600,0,&J,&I,0.0)", +
+            "ModelTiePointTag=(3600,0,0,&JP1,&IP1,0.0)", +
+            "GTModelTypeGeoKey=2(ModelTypeGeographic)", +
+            "GeographicTypeGeoKey=4326(GCS_WGS_84)", +
+            "GTRasterTypeGeoKey=2(RasterPixelIsPoint)", +
+            "GeogEllipsoidGeoKey=7030(Ellipse_WGS84)")
+     end-if
+   
+   end-loop
+   
+   let xxB = "xxB" // "&J3"
+   if (I3=2)
+      gtcopy xxA1 &xxB
+   else-if (I3=3)
+      fthfastmos xxfth xxA1 xxA2 out=&xxB toler=.4
+   else-if (I3=4)
+      fthfastmos xxfth xxA1 xxA2 xxA3 out=&xxB toler=.4
+   else-if (I3=5)
+      fthfastmos xxfth xxA1 xxA2 xxA3 xxA4 out=&xxB toler=.4
+   else-if (I3=6)
+      fthfastmos xxfth xxA1 xxA2 xxA3 xxA4 xxA5 out=&xxB toler=.4
+   else-if (I3=7)
+      fthfastmos xxfth xxA1 xxA2 xxA3 xxA4 xxA5 xxA6 +
+           out=&xxB toler=.4
+   else-if (I3=8)
+      fthfastmos xxfth xxA1 xxA2 xxA3 xxA4 xxA5 xxA6 xxA7 +
+           out=&xxB toler=.4
+   else-if (I3=9)
+      fthfastmos xxfth xxA1 xxA2 xxA3 xxA4 xxA5 xxA6 xxA7 +
+            xxA8 out=&xxB toler=.4
+   else-if (I3=10)
+      fthfastmos xxfth xxA1 xxA2 xxA3 xxA4 xxA5 xxA6 xxA7 +
+            xxA8 xxA9 out=&xxB toler=.4
+   else-if (I3=11)
+      fthfastmos xxfth xxA1 xxA2 xxA3 xxA4 xxA5 xxA6 xxA7 +
+            xxA8 xxA9 xxA10 out=&xxB toler=.4
+   else-if (I3=12)
+      fthfastmos xxfth xxA1 xxA2 xxA3 xxA4 xxA5 xxA6 xxA7 +
+            xxA8 xxA9 xxA10 xxA11 out=&xxB toler=.4
+   else-if (I3=13)
+      fthfastmos xxfth xxA1 xxA2 xxA3 xxA4 xxA5 xxA6 xxA7 +
+            xxA8 xxA9 xxA10 xxA11 xxA12 out=&xxB toler=.4
+   else-if (I3=14)
+      fthfastmos xxfth xxA1 xxA2 xxA3 xxA4 xxA5 xxA6 xxA7 +
+            xxA8 xxA9 xxA10 xxA11 xxA12 xxA13 out=&xxB toler=.4
+   else-if (I3=15)
+      fthfastmos xxfth xxA1 xxA2 xxA3 xxA4 xxA5 xxA6 xxA7 +
+            xxA8 xxA9 xxA10 xxA11 xxA12 xxA13 xxA14 out=&xxB toler=.4
+   else-if (I3=16)
+      fthfastmos xxfth xxA1 xxA2 xxA3 xxA4 xxA5 xxA6 xxA7 +
+            xxA8 xxA9 xxA10 xxA11 xxA12 xxA13 xxA14 xxA15 +
+            out=&xxB toler=.4
+   else-if (I3=17)
+      fthfastmos xxfth xxA1 xxA2 xxA3 xxA4 xxA5 xxA6 xxA7 +
+            xxA8 xxA9 xxA10 xxA11 xxA12 xxA13 xxA14 xxA15 xxA16 +
+            out=&xxB toler=.4
+   else-if (I3=18)
+      fthfastmos xxfth xxA1 xxA2 xxA3 xxA4 xxA5 xxA6 xxA7 +
+            xxA8 xxA9 xxA10 xxA11 xxA12 xxA13 xxA14 xxA15 xxA16 xxA17 +
+            out=&xxB toler=.4
+   else-if (I3=19)
+      fthfastmos xxfth xxA1 xxA2 xxA3 xxA4 xxA5 xxA6 xxA7 +
+            xxA8 xxA9 xxA10 xxA11 xxA12 xxA13 xxA14 xxA15 xxA16 xxA17 +
+            xxA18 out=&xxB toler=.4
+   else-if (I3=20)
+      fthfastmos xxfth xxA1 xxA2 xxA3 xxA4 xxA5 xxA6 xxA7 +
+            xxA8 xxA9 xxA10 xxA11 xxA12 xxA13 xxA14 xxA15 xxA16 xxA17 +
+            xxA18 xxA19 out=&xxB toler=.4
+   else-if (I3=21)
+      fthfastmos xxfth xxA1 xxA2 xxA3 xxA4 xxA5 xxA6 xxA7 +
+            xxA8 xxA9 xxA10 xxA11 xxA12 xxA13 xxA14 xxA15 xxA16 xxA17 +
+            xxA18 xxA19 xxA20 out=&xxB toler=.4
+   else-if (I3=22)
+      fthfastmos xxfth xxA1 xxA2 xxA3 xxA4 xxA5 xxA6 xxA7 +
+            xxA8 xxA9 xxA10 xxA11 xxA12 xxA13 xxA14 xxA15 xxA16 xxA17 +
+            xxA18 xxA19 xxA20 xxA21 out=&xxB toler=.4
+   else-if (I3=23)
+      fthfastmos xxfth xxA1 xxA2 xxA3 xxA4 xxA5 xxA6 xxA7 +
+            xxA8 xxA9 xxA10 xxA11 xxA12 xxA13 xxA14 xxA15 xxA16 xxA17 +
+            xxA18 xxA19 xxA20 xxA21 xxA22 out=&xxB toler=.4
+   else-if (I3=24)
+      fthfastmos xxfth xxA1 xxA2 xxA3 xxA4 xxA5 xxA6 xxA7 +
+            xxA8 xxA9 xxA10 xxA11 xxA12 xxA13 xxA14 xxA15 xxA16 xxA17 +
+            xxA18 xxA19 xxA20 xxA21 xxA22 xxA23 out=&xxB toler=.4
+   else-if (I3=25)
+      fthfastmos xxfth xxA1 xxA2 xxA3 xxA4 xxA5 xxA6 xxA7 +
+            xxA8 xxA9 xxA10 xxA11 xxA12 xxA13 xxA14 xxA15 xxA16 xxA17 +
+            xxA18 xxA19 xxA20 xxA21 xxA22 xxA23 xxA24 out=&xxB toler=.4
+   else-if (I3=26)
+      fthfastmos xxfth xxA1 xxA2 xxA3 xxA4 xxA5 xxA6 xxA7 +
+            xxA8 xxA9 xxA10 xxA11 xxA12 xxA13 xxA14 xxA15 xxA16 xxA17 +
+            xxA18 xxA19 xxA20 xxA21 xxA22 xxA23 xxA24 xxA25 +
+            out=&xxB toler=.4
+   else-if (I3=27)
+      fthfastmos xxfth xxA1 xxA2 xxA3 xxA4 xxA5 xxA6 xxA7 +
+            xxA8 xxA9 xxA10 xxA11 xxA12 xxA13 xxA14 xxA15 xxA16 xxA17 +
+            xxA18 xxA19 xxA20 xxA21 xxA22 xxA23 xxA24 xxA25 xxA26 +
+            out=&xxB toler=.4
+   else-if (I3=28)
+      fthfastmos xxfth xxA1 xxA2 xxA3 xxA4 xxA5 xxA6 xxA7 +
+            xxA8 xxA9 xxA10 xxA11 xxA12 xxA13 xxA14 xxA15 xxA16 xxA17 +
+            xxA18 xxA19 xxA20 xxA21 xxA22 xxA23 xxA24 xxA25 xxA26 xxA27 +
+            out=&xxB toler=.4
+   else-if (I3=29)
+      fthfastmos xxfth xxA1 xxA2 xxA3 xxA4 xxA5 xxA6 xxA7 +
+            xxA8 xxA9 xxA10 xxA11 xxA12 xxA13 xxA14 xxA15 xxA16 xxA17 +
+            xxA18 xxA19 xxA20 xxA21 xxA22 xxA23 xxA24 xxA25 xxA26 xxA27 +
+            xxA28 out=&xxB toler=.4
+   else-if (I3=30)
+      fthfastmos xxfth xxA1 xxA2 xxA3 xxA4 xxA5 xxA6 xxA7 +
+            xxA8 xxA9 xxA10 xxA11 xxA12 xxA13 xxA14 xxA15 xxA16 xxA17 +
+            xxA18 xxA19 xxA20 xxA21 xxA22 xxA23 xxA24 xxA25 xxA26 xxA27 +
+            xxA28 xxA29 out=&xxB toler=.4
+   else-if (I3=31)
+      fthfastmos xxfth xxA1 xxA2 xxA3 xxA4 xxA5 xxA6 xxA7 +
+            xxA8 xxA9 xxA10 xxA11 xxA12 xxA13 xxA14 xxA15 xxA16 xxA17 +
+            xxA18 xxA19 xxA20 xxA21 xxA22 xxA23 xxA24 xxA25 xxA26 xxA27 +
+            xxA28 xxA29 xxA30 out=&xxB toler=.4
+   else
+      write "ERROR: LATITUDE EXTENT EXCEEDS 30 DEGREES"
+   end-if
+end-loop
+
+if (J3=2)
+   gtcopy xxB1 xxAfn
+else-if (J3=3)
+   fthfastmos xxfth xxB1 xxB2 out=xxAfn toler=.4
+else-if (J3=4)
+   fthfastmos xxfth xxB1 xxB2 xxB3 out=xxAfn toler=.4
+else-if (J3=5)
+   fthfastmos xxfth xxB1 xxB2 xxB3 xxB4 out=xxAfn toler=.4
+else-if (J3=6)
+   fthfastmos xxfth xxB1 xxB2 xxB3 xxB4 xxB5 out=xxAfn toler=.4
+else-if (J3=7)
+   fthfastmos xxfth xxB1 xxB2 xxB3 xxB4 xxB5 xxB6 out=xxAfn toler=.4
+else-if (J3=8)
+   fthfastmos xxfth xxB1 xxB2 xxB3 xxB4 xxB5 xxB6 xxB7 out=xxAfn toler=.4
+else-if (J3=9)
+   fthfastmos xxfth xxB1 xxB2 xxB3 xxB4 xxB5 xxB6 xxB7 xxB8 out=xxAfn +
+   toler=.4
+else-if (J3=10)
+   fthfastmos xxfth xxB1 xxB2 xxB3 xxB4 xxB5 xxB6 xxB7 xxB8 xxB9 +
+   out=xxAfn toler=.4
+else-if (J3=11)
+   fthfastmos xxfth xxB1 xxB2 xxB3 xxB4 xxB5 xxB6 xxB7 xxB8 xxB9 xxB10 +
+   out=xxAfn toler=.4
+else-if (J3=12)
+   fthfastmos xxfth xxB1 xxB2 xxB3 xxB4 xxB5 xxB6 xxB7 xxB8 xxB9 xxB10 +
+   xxB11 out=xxAfn toler=.4
+else-if (J3=13)
+   fthfastmos xxfth xxB1 xxB2 xxB3 xxB4 xxB5 xxB6 xxB7 xxB8 xxB9 xxB10 +
+   xxB11 xxB12 out=xxAfn toler=.4
+else-if (J3=14)
+   fthfastmos xxfth xxB1 xxB2 xxB3 xxB4 xxB5 xxB6 xxB7 xxB8 xxB9 xxB10 +
+   xxB11 xxB12 xxB13 out=xxAfn toler=.4
+else-if (J3=15)
+   fthfastmos xxfth xxB1 xxB2 xxB3 xxB4 xxB5 xxB6 xxB7 xxB8 xxB9 xxB10 +
+   xxB11 xxB12 xxB13 xxB14 out=xxAfn toler=.4
+else-if (J3=16)
+   fthfastmos xxfth xxB1 xxB2 xxB3 xxB4 xxB5 xxB6 xxB7 xxB8 xxB9 xxB10 +
+   xxB11 xxB12 xxB13 xxB14 xxB15 out=xxAfn toler=.4
+else-if (J3=17)
+   fthfastmos xxfth xxB1 xxB2 xxB3 xxB4 xxB5 xxB6 xxB7 xxB8 xxB9 xxB10 +
+   xxB11 xxB12 xxB13 xxB14 xxB15 xxB16 out=xxAfn toler=.4
+else-if (J3=18)
+   fthfastmos xxfth xxB1 xxB2 xxB3 xxB4 xxB5 xxB6 xxB7 xxB8 xxB9 xxB10 +
+   xxB11 xxB12 xxB13 xxB14 xxB15 xxB16 xxB17 out=xxAfn toler=.4
+else-if (J3=19)
+   fthfastmos xxfth xxB1 xxB2 xxB3 xxB4 xxB5 xxB6 xxB7 xxB8 xxB9 xxB10 +
+   xxB11 xxB12 xxB13 xxB14 xxB15 xxB16 xxB17 xxB18 out=xxAfn toler=.4
+else-if (J3=20)
+   fthfastmos xxfth xxB1 xxB2 xxB3 xxB4 xxB5 xxB6 xxB7 xxB8 xxB9 xxB10 +
+   xxB11 xxB12 xxB13 xxB14 xxB15 xxB16 xxB17 xxB18 xxB19 out=xxAfn toler=.4
+else-if (J3=21)
+   fthfastmos xxfth xxB1 xxB2 xxB3 xxB4 xxB5 xxB6 xxB7 xxB8 xxB9 xxB10 +
+   xxB11 xxB12 xxB13 xxB14 xxB15 xxB16 xxB17 xxB18 xxB19 xxB20 +
+   out=xxAfn toler=.4
+else-if (J3=22)
+   fthfastmos xxfth xxB1 xxB2 xxB3 xxB4 xxB5 xxB6 xxB7 xxB8 xxB9 xxB10 +
+   xxB11 xxB12 xxB13 xxB14 xxB15 xxB16 xxB17 xxB18 xxB19 xxB20 xxB21 +
+   out=xxAfn toler=.4
+else-if (J3=23)
+   fthfastmos xxfth xxB1 xxB2 xxB3 xxB4 xxB5 xxB6 xxB7 xxB8 xxB9 xxB10 +
+   xxB11 xxB12 xxB13 xxB14 xxB15 xxB16 xxB17 xxB18 xxB19 xxB20 xxB21 +
+   xxB22 out=xxAfn toler=.4
+else-if (J3=24)
+   fthfastmos xxfth xxB1 xxB2 xxB3 xxB4 xxB5 xxB6 xxB7 xxB8 xxB9 xxB10 +
+   xxB11 xxB12 xxB13 xxB14 xxB15 xxB16 xxB17 xxB18 xxB19 xxB20 xxB21 +
+   xxB22 xxB23 out=xxAfn toler=.4
+else-if (J3=25)
+   fthfastmos xxfth xxB1 xxB2 xxB3 xxB4 xxB5 xxB6 xxB7 xxB8 xxB9 xxB10 +
+   xxB11 xxB12 xxB13 xxB14 xxB15 xxB16 xxB17 xxB18 xxB19 xxB20 xxB21 +
+   xxB22 xxB23 xxB24 out=xxAfn toler=.4
+else-if (J3=26)
+   fthfastmos xxfth xxB1 xxB2 xxB3 xxB4 xxB5 xxB6 xxB7 xxB8 xxB9 xxB10 +
+   xxB11 xxB12 xxB13 xxB14 xxB15 xxB16 xxB17 xxB18 xxB19 xxB20 xxB21 +
+   xxB22 xxB23 xxB24 xxB25 out=xxAfn toler=.4
+else-if (J3=27)
+   fthfastmos xxfth xxB1 xxB2 xxB3 xxB4 xxB5 xxB6 xxB7 xxB8 xxB9 xxB10 +
+   xxB11 xxB12 xxB13 xxB14 xxB15 xxB16 xxB17 xxB18 xxB19 xxB20 xxB21 +
+   xxB22 xxB23 xxB24 xxB25 xxB26 out=xxAfn toler=.4
+else-if (J3=28)
+   fthfastmos xxfth xxB1 xxB2 xxB3 xxB4 xxB5 xxB6 xxB7 xxB8 xxB9 xxB10 +
+   xxB11 xxB12 xxB13 xxB14 xxB15 xxB16 xxB17 xxB18 xxB19 xxB20 xxB21 +
+   xxB22 xxB23 xxB24 xxB25 xxB26 xxB27 out=xxAfn toler=.4
+else-if (J3=29)
+   fthfastmos xxfth xxB1 xxB2 xxB3 xxB4 xxB5 xxB6 xxB7 xxB8 xxB9 xxB10 +
+   xxB11 xxB12 xxB13 xxB14 xxB15 xxB16 xxB17 xxB18 xxB19 xxB20 xxB21 +
+   xxB22 xxB23 xxB24 xxB25 xxB26 xxB27 xxB28 out=xxAfn toler=.4
+else-if (J3=30)
+   fthfastmos xxfth xxB1 xxB2 xxB3 xxB4 xxB5 xxB6 xxB7 xxB8 xxB9 xxB10 +
+   xxB11 xxB12 xxB13 xxB14 xxB15 xxB16 xxB17 xxB18 xxB19 xxB20 xxB21 +
+   xxB22 xxB23 xxB24 xxB25 xxB26 xxB27 xxB28 xxB29 out=xxAfn toler=.4
+else-if (J3=31)
+   fthfastmos xxfth xxB1 xxB2 xxB3 xxB4 xxB5 xxB6 xxB7 xxB8 xxB9 xxB10 +
+   xxB11 xxB12 xxB13 xxB14 xxB15 xxB16 xxB17 xxB18 xxB19 xxB20 xxB21 +
+   xxB22 xxB23 xxB24 xxB25 xxB26 xxB27 xxB28 xxB29 xxB30 out=xxAfn toler=.4
+else
+   write "ERROR: LONGITUDE EXTENT EXCEEDS 30 DEGREES"
+end-if
+ 
+f2              xxAfn xxBfn func="in1-500" !reset offset due to featherv
+
+stretch         xxBfn xxAfn dnmin=-500 dnmax=9000 +
+                table=(-500,0.,-499,-499.,9000,9000.)
+
+
+!Reset line and samples to a multiple of 3600
+form            xxAfn nl=inl ns=ins
+let             ntl = (inl / 3600)
+let             inl = (ntl * 3600)
+let             nts = (ins / 3600)
+let             ins = (nts * 3600)
+
+if             (format = 1) 
+   gtcopy    xxAfn xxBfn size=(1,1,&inl,&ins)
+   egm2wgs   xxBfn &"DIRout"/&"out"_dem.img
+else
+   gtcopy    xxAfn xxBfn size=(1,1,&inl,&ins)
+   egm2wgs   xxBfn xxAfn
+   vtiff3-fr xxAfn &"out".tif
+end-if
+
+write  "&M DEM tiles mosaicked**********************************"
+ush            rm xxA* xxB*
+
+write "MSG: PROCESSING COMPLETED"
+goto   theend
+
+next2>
+ write "ERROR: Valid AFIDS/SRTM/DEM directory NOT FOUND" 
+
+theend>
+end-proc

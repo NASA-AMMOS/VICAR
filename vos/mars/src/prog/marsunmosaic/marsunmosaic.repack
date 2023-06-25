@@ -1,0 +1,5 @@
+$ vpack marsunmosaic.com -mixed -
+	-s marsunmosaic.cc -
+	-i marsunmosaic.imake -
+	-p marsunmosaic.pdf
+$ Exit

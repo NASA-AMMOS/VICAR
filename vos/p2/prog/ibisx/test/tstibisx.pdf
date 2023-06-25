@@ -1,0 +1,16 @@
+procedure
+refgbl $echo
+refgbl $autousage
+
+body
+
+let $autousage="none"
+let $echo="yes"
+
+enable-log
+
+ibisx tstibis2rpc.int
+
+disable-log
+
+end-proc

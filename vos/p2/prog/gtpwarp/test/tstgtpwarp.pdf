@@ -1,0 +1,162 @@
+procedure
+refgbl $echo
+parm version string def="ibis-2" 
+parm org string def="column"
+body
+enable-log
+
+!let _onfail="continue"
+let $echo="yes"
+
+! basic case, geogr-projective
+
+gen xxxim0 nl=300 ns=310
+f2 inp=xxxim0 out=xxxim1 func="(line*327+samp*193+line*samp)%255+1"
+
+gtgen in=xxxim1 'tiecnvrt +
+   geotiff=("GTModelTypeGeoKey=2(ModelTypeGeographic)", +
+          "GeogEllipsoidGeoKey=7008(Ellipse_Clarke_1866)", +
+          "GeogPrimeMeridianGeoKey=40.0", +
+          "ModelTiePointTag=(0,0,0,-110,35,0.0)", +
+          "ModelTiePointTag=(0,300,0,-110,33,0.0)", +
+          "ModelTiePointTag=(310,0,0,-108,35,0.0)", +
+          "GTRasterTypeGeoKey=1(RasterPixelIsArea)")
+
+       
+gen xxxim0 nl=300 ns=310
+f2 inp=xxxim0 out=xxxim2 +
+  func="((line-2)*327+(samp-3)*193+(line-2)*(samp-3))%255+1"
+
+gtgen in=xxxim2 'tiecnvrt +
+   geotiff=("GTModelTypeGeoKey=2(ModelTypeGeographic)", +
+          "GeogEllipsoidGeoKey=7008(Ellipse_Clarke_1866)", +
+          "GeogPrimeMeridianGeoKey=40.0", +
+          "ModelTiePointTag=(0,0,0,-110,35,0.0)", +
+          "ModelTiePointTag=(0,300,0,-110,33,0.0)", +
+          "ModelTiePointTag=(310,0,0,-108,35,0.0)", +
+          "GTRasterTypeGeoKey=1(RasterPixelIsArea)")
+
+gtwarp xxxim1 xxxim3 ref=xxxim2 'coverref 
+
+gtpwarp xxxim1 xxxim4 ref=xxxim2 'coverref nah=10 nav=10 toler=1.5
+
+!  expect xxxim3 to be exactly like xxxim1 and xxxim4 to be like xxxim2
+!  but the picmtch5 matches will be off by several tenths of a pixel
+!  so the latter will cause some difference (see list of xxxim5)
+
+f2 inp=(xxxim2,xxxim4) out=xxxim5 func="abs(im1-im2)"
+
+list xxxim5 sl=81 ss=81 nl=20 ns=14
+
+gtoffset xxxim2 xxxim4
+
+! repeat with polyfit=linear, should do slightly better in this case
+
+gtpwarp xxxim1 xxxim4 ref=xxxim2 'coverref nah=10 nav=10 toler=1.5 +
+   polyfit=linear
+
+!  expect xxxim3 to be exactly like xxxim1 and xxxim4 to be like xxxim2
+!  but the picmtch5 matches will be off by several tenths of a pixel
+!  so the latter will cause some difference (see list of xxxim5)
+
+f2 inp=(xxxim2,xxxim4) out=xxxim5 func="abs(im1-im2)"
+
+list xxxim5 sl=81 ss=81 nl=20 ns=14
+
+gtoffset xxxim2 xxxim4
+
+
+! case with rotation of the reference image by 90 degrees
+
+
+gen xxxim0 nl=1000 ns=1010
+f2 inp=xxxim0 out=xxxim1 func="(line*327+samp*193+line*samp)%255+1"
+
+list xxxim1 nl=20 ns=14
+
+
+
+copy xxxim1 xxxim2
+
+gtgen in=xxxim1 'tiecnvrt +
+   geotiff=("GTModelTypeGeoKey=2(ModelTypeGeographic)", +
+          "GeogEllipsoidGeoKey=7008(Ellipse_Clarke_1866)", +
+          "GeogPrimeMeridianGeoKey=40.0", +
+          "ModelTiePointTag=(0,0,0,-110,35,0.0)", +
+          "ModelTiePointTag=(0,300,0,-110,33,0.0)", +
+          "ModelTiePointTag=(310,0,0,-108,35,0.0)", +
+          "GTRasterTypeGeoKey=1(RasterPixelIsArea)")
+
+gtgen in=xxxim2 'tiecnvrt +
+   geotiff=("GTModelTypeGeoKey=2(ModelTypeGeographic)", +
+          "GeogEllipsoidGeoKey=7008(Ellipse_Clarke_1866)", +
+          "GeogPrimeMeridianGeoKey=40.0", +
+          "ModelTiePointTag=(2,3,0,-110,35,0.0)", +
+          "ModelTiePointTag=(2,303,0,-110,33,0.0)", +
+          "ModelTiePointTag=(312,3,0,-108,35,0.0)", +
+          "GTRasterTypeGeoKey=1(RasterPixelIsArea)")
+gtrot xxxim2 xxxim3 rot=0
+       
+gtpwarp xxxim1 xxxim4 ref=xxxim3 'coverref nah=10 nav=10 toler=1.5 +
+   polyfit=linear
+   
+
+! check the result
+
+f2 inp=(xxxim3,xxxim4) out=xxxim5 func="abs(im1-im2)"
+
+list xxxim5 linc=67 sinc=77
+hist xxxim5
+
+gtoffset xxxim3 xxxim4
+
+! test magnify
+
+
+gen xxxim5 nl=100 ns=101
+f2 inp=xxxim5 out=xxxim0 func="(line*327+samp*193+line*samp)%255+1"
+gtsize xxxim0 xxxim1 azoom = 10
+
+list xxxim1 nl=20 ns=14
+
+copy xxxim1 xxxim2
+
+gtgen in=xxxim1 'tiecnvrt +
+   geotiff=("GTModelTypeGeoKey=2(ModelTypeGeographic)", +
+          "GeogEllipsoidGeoKey=7008(Ellipse_Clarke_1866)", +
+          "GeogPrimeMeridianGeoKey=40.0", +
+          "ModelTiePointTag=(0,0,0,-110,35,0.0)", +
+          "ModelTiePointTag=(0,300,0,-110,33,0.0)", +
+          "ModelTiePointTag=(310,0,0,-108,35,0.0)", +
+          "GTRasterTypeGeoKey=1(RasterPixelIsArea)")
+
+gtgen in=xxxim2 'tiecnvrt +
+   geotiff=("GTModelTypeGeoKey=2(ModelTypeGeographic)", +
+          "GeogEllipsoidGeoKey=7008(Ellipse_Clarke_1866)", +
+          "GeogPrimeMeridianGeoKey=40.0", +
+          "ModelTiePointTag=(2,3,0,-110,35,0.0)", +
+          "ModelTiePointTag=(2,303,0,-110,33,0.0)", +
+          "ModelTiePointTag=(312,3,0,-108,35,0.0)", +
+          "GTRasterTypeGeoKey=1(RasterPixelIsArea)")
+gtrot xxxim2 xxxim3 rot=0
+       
+gtpwarp xxxim1 xxxim4 ref=xxxim3 'coverref nah=10 nav=10 toler=1.5 +
+   magnify=6
+   
+
+! check the result
+
+f2 inp=(xxxim3,xxxim4) out=xxxim5 func="abs(im1-im2)"
+
+list xxxim5 linc=67 sinc=77
+hist xxxim5
+
+gtoffset xxxim3 xxxim4
+
+
+theend>
+
+ush rm xxxim*
+
+disable-log
+end-proc

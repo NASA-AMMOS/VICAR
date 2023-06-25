@@ -188,6 +188,11 @@ static LblApiElement_typ	LabelTbl[] = {
 		LBL_OFFSET(LblSurfaceModel_typ, SurfaceGroundLocation.Valid),
 		LBL_NO_RETURN,	LBL_SIZE(SurfaceGroundLocation.Value[2])},
 
+	{"SURFACE_MESH_NAME",			"STRING",	LBL_OPTIONAL,
+		LBL_NO_CONT,	1,	1,	LBL_NULL,
+		LBL_OFFSET(LblSurfaceModel_typ, SurfaceMeshName.Value),
+		LBL_OFFSET(LblSurfaceModel_typ, SurfaceMeshName.Valid),
+		LBL_NO_RETURN,	LBL_SIZE(SurfaceMeshName.Value)},
 
 
 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};

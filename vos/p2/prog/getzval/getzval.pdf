@@ -1,0 +1,237 @@
+PROCESS    HELP=*
+PARM INP      TYPE=(STRING,250) COUNT=2
+PARM COLS     TYPE=INTEGER COUNT=3:4 DEFAULT=(1,2,3,0)
+PARM WINDOW   TYPE=INTEGER DEFAULT=10 VALID=(2:1001)
+PARM IGZERO   TYPE=KEYWORD COUNT=(0:1) VALID=IGZERO DEFAULT=--
+PARM DTED     TYPE=KEYWORD COUNT=(0:1) VALID=DTED DEFAULT=--
+PARM REJECT   TYPE=INTEGER DEFAULT=999
+PARM THREJECT TYPE=INTEGER DEFAULT=0
+PARM ALGOR    TYPE=KEYWORD COUNT=(0:1) +
+      VALID=(BILIN,NOIN,INTEGRAL,SPOT,SPOT_R,SPOT_R2) +
+      DEFAULT=BILIN
+PARM SPOTFAC  TYPE=REAL COUNT=1 DEFAULT=2.0 VALID=(0.1:100.0)
+END-PROC
+.TITLE
+VICAR/IBIS Program  getzval
+.HELP     
+PURPOSE
+
+     getzval looks up brightness values in an image at a set 
+     of  points  specified in an IBIS interface  file.   The 
+     brightness   average   of  a  surrounding   window   is 
+     calculated  for each point and placed back in the  IBIS 
+     interface   file.    Interpolation  is  performed   for 
+     fractional  point  locations.   The  new  algorithm for 
+     interpolation  causes  the  pixels  at  the edge of the 
+     window to be "feathered" at less than full weight.  The
+     user can choose full uniform weighting on the window or
+     several circular spot algorithms.
+     
+     standard deviation can also be  requested.  It is calc-
+     ulated as the  square  root of the weighted mean of the
+     squared deviations.
+     
+     The keyword 'IGZERO causes zero  values to be  ignored.
+     The remaining  non-zero values are  used  to  calculate
+     the mean and sigma.  If there  are no non-zero  values,
+     a mean of 0.0 and a sigma of 0.0 are returned.
+     
+.PAGE
+TAE COMMAND LINE FORMAT
+
+     getzval INP=(PIC,INT) SIZE PARAMS
+
+     where
+
+     PIC                 is an image.
+     INT                 is    an   IBIS   interface    file 
+                         containing columns which give point 
+                         locations in the image PIC.
+                         No  output  file is  used  but  the 
+                         second input file is modified.
+     SIZE                is the standard VICAR size field.
+     PARAMS              is  the  standard  VICAR  parameter 
+                         field.
+.PAGE
+OPERATION
+     The  point  locations in the IBIS file are in  floating 
+     point, hence they may be fractional.  The grey value is 
+     calculated for a WxW interpolated grid about the  point 
+     location.  Bilinear interpolation is used.  The average 
+     grey  value  is  stored in the selected column  of  the 
+     interface file.   In two cases,  the flag -999.0  is 
+     stored:   first,  if the window touches the boundary of 
+     the  image,  or  second,  if the  REJECT  threshold  is 
+     achieved in the window. 
+     
+     The 2 x 2 window is the usual bilinear interpolation.  
+     If a window larger than 2 x 2 is used, the same bilinear
+     formula is applied to the edges and corners of the 
+     window area, but the interior points are added "times one".
+     This means that in all cases, moving the point a fraction
+     of a pixel will cause the z-value to change as the edges
+     of the window move the same fraction of a pixel.
+     
+     THE DEFAULT BILINEAR ALGORITHM IS RECOMMENDED FOR ALMOST
+     ALL CASES SINCE IT GIVES A GOOD RESULT FOR FRACTIONAL 
+     PIXEL LOCATIONS AND THE RESULT FOR A LOCATION NEAR A
+     PIXEL CENTER IS CLOSE TO THE RESULT FOR THE PIXEL CENTER.
+     THE INTERPOLATION AT THE EDGE PIXELS IS EQUIVALENT TO
+     A SLIGHT AMOUNT OF CENTER WEIGHTING, WHICH IS USUALLY
+     A GOOD THING.
+     
+     THE INTEGRAL ALGORITHM IS NOT RECOMMENDED UNLESS THE 
+     (X,Y) LOCATIONS ARE INTEGRAL.  THIS ALGORITHM ALSO
+     REQUIRES AN ODD WINDOW SIZE SO THE WINDOW CAN BE
+     CENTERED ON THE (X,Y).
+     
+     THE SPOT ALGORITHMS ARE RECOMMENDED WHERE A CIRCULAR
+     PATTERN IS DESIRED OR (IN THE CASE OF SPOT_R AND SPOT_R2)
+     WHERE CENTER WEIGHTING IS DESIRED.  THESE REQUIRE AN
+     ODD WINDOW SIZE.  THESE WOULD ALSO BE SUPERIOR FOR 
+     COMPARING TWO IMAGES AT 45 DEGREE ROTATION TO EACH
+     OTHER.
+     
+     All standard deviations are calculated as a weighted
+     mean using the weight of a point in the calculation of 
+     the mean.
+
+
+WRITTEN BY:           H. Wilczynski 01Dec77
+COGNIZANT PROGRAMMER:
+REVISIONS:
+  1995-01-02 CRI - Made Portable for UNIX
+  2000-04-21 Al Zobrist - Rewritten in C
+  2002-02-28 Al Zobrist - Algorithm updated
+  2002-03-04 Al Zobrist -
+  2007-12-28 Walt Bunch - Switched to USES_ANSI_C AND LIB_CARTO; misc cleanup
+  2015-10-14 Walt Bunch - Migrated to MIPL
+  2019-09-04 Walt Bunch - IDS-7922 - Initialized a variable.
+
+.PAGE
+.LEVEL1
+.VARIABLE INP
+Input image and interface file
+.VARIABLE COLS
+Column numbers for L,S and DN;
+optional 4th column for sigma
+.VARIABLE IGZERO
+If keyword is used, zeros will
+not be used in statistics
+.VARIABLE DTED
+Fixes case where DMA DTED has
+negative 1 elevation represented
+as -32767 value
+.VARIABLE REJECT
+Rejection threshold count
+.VARIABLE THREJECT
+Rejection threshold value
+.VARIABLE WINDOW
+Box size
+.VARIABLE ALGOR
+BILIN    - bilinear
+NOIN     - nearest pixel
+INTEGRAL - uniform rectangle
+SPOT     - circular spot
+SPOT_R   - 1/R weighted spot
+SPOT_R2  - 1/R*R weighted spot
+.VARIABLE SPOTFAC
+Use to vary the spot_r or
+spot_r2 formula
+.LEVEL2
+.VARIABLE INP
+     INP=(PIC,INT)       PIC is an image.
+                         INT   is  an  IBIS  interface  file 
+                         containing columns which give point 
+                         locations in the image PIC.
+                         No  output  file is  used  but  the 
+                         second input file is modified.
+.VARIABLE COLS
+     COLS=(L,S,T,S) The   integers  L,S  specify  the   file 
+                    columns   which  contain  the  line  and 
+                    sample  coordinates  to  be  looked  up.  
+                    Column T is used to store the  resultant 
+                    grey  values.  Optional  column S stores
+                    the sigma (0 means don't store sigma)
+.VARIABLE REJECT
+     REJECT=N       The  integer  N specifies that if  N  or 
+                    more  grey  values  in a  rectangle  are 
+                    less than or equal to the parameter THR-
+                    EJECT, then a "no information" marker is 
+                    stored  instead of a  grey  value.   The 
+                    marker  is  the value -999.0 .
+.VARIABLE THREJECT
+     THREJECT=M     The integer M  specifies the image value
+                    below which pixels are counted towards
+                    the reject count threshold.
+.VARIABLE WINDOW
+     WINDOW=W       specifies that a window of size W points 
+                    square  is  used to obtain  the  average 
+                    brightness  value.   The window will  be 
+                    centered on the line,  sample coordinate 
+                    even  if  it  is fractional.   W  is  an 
+                    integer (default value 10).  W cannot be
+                    larger than 1001.
+.VARIABLE ALGOR
+     BILIN          specifies  bilinear  option.    When the 
+                    WINDOW is 2 then this is normal bilinear
+                    interpolation  on the  surrounding  four
+                    pixel values.   When  WINDOW is  greater
+                    than 2  then  the  edge  pixels  of  the 
+                    window  are  interpolated in  a bilinear
+                    fashion  and the  inside  pixels of  the
+                    window are given full weight.    THIS IS
+                    THE RECOMMENDED OPTION.
+  
+     NOIN           specifies no-interpolation option.   The 
+                    DN-value  at the location nearest to the 
+                    one  specified by line-sample  from  the 
+                    columns L, S  will be read and stored in 
+                    the column T.
+  
+     INTEGRAL       specifies no-interpolation option using
+                    a window.  The window size must be odd.
+                    The pixel nearest to the line-sample
+                    location is the center of the window.
+                    The z-value will be the average of the
+                    pixels in the window.
+ 
+     SPOT           specifies no-interpolation option using
+                    a window.  The window size must be odd.
+                    The  pixel  nearest  to the line-sample
+                    location  is the  center of the window.
+                    The  z-value will be the average of the
+                    pixels in  the window that  fall within
+                    a  circular  radius of the center.  The
+                    radius is WINDOW/2.
+                          
+     SPOT_R         same as SPOT except that the pixels are
+                    weighted inversely with distance+1.  So
+                    for the case  of line-sample at a pixel
+                    the  center pixel  has weight  1.0, the
+                    four  neighbors  weight  0.5,  the four 
+                    diagonals  weight  0.414,  etc.    This 
+                    algorithm  works  well  for  fractional
+                    line-sample locations.
+                    
+                          
+     SPOT_R2        same as  SPOT_R except that  the pixels
+                    are weighted  inversely with distance+1
+                    squared.
+                    
+.VARIABLE SPOTFAC
+Use to vary the spot_r or spot_r2 formula.  The  formulas
+use distance from the pixel center (which could be zero) so
+a constant SPOTFAC is added to guarantee non-zero.  If it is
+small, a high emphasis is placed on a nearby point and other
+points will have little effect.  Larger values will de-emphasize
+the nearest point and will, in the limit, tend towards the
+overall average of the pixels.  The default value of 2.0 is
+suggested.
+.VARIABLE DTED
+Data logged from the DTED disk might have this value problem.
+You can tell by using the HIST program on the data set.  The 
+input value is compared to -5000.  If larger, then the value is
+not changed.  If smaller, then -(32768 plus the value) is used
+in place of the value.  So -32767 is -1, -32766 is -2, etc.
+.END

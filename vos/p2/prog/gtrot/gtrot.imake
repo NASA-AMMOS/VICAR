@@ -1,0 +1,28 @@
+/***********************************************************************
+
+                     IMAKE FILE FOR PROGRAM gtrot
+
+   To Create the build file give the command:
+
+		$ vimake gtrot			(VMS)
+   or
+		% vimake gtrot			(Unix)
+
+
+************************************************************************/
+
+
+#define PROGRAM	gtrot
+
+#define MODULE_LIST gtrot.c
+
+#define MAIN_LANG_C
+#define R2LIB
+#define USES_ANSI_C
+#define LIB_NETWORK
+#define LIB_CARTO
+#define LIB_RTL
+#define LIB_TAE
+#define LIB_P2SUB
+#define LIB_FORTRAN
+/************************* End of Imake file ***************************/

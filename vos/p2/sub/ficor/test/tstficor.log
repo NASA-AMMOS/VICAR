@@ -1,0 +1,28 @@
+tzficor f1636832.geo
+Beginning VICAR task tzficor
+Test the C Interface
+ 
+FIRST CONV FACTOR =  2.0224E-10
+Mode = 0: 2.0224e-10
+ 
+SECOND CONV FACTOR =  1.0000E+00
+Mode = 1: 1.0000e+00
+ 
+FIRST CONV FACTOR =  2.0224E-10
+SECOND CONV FACTOR =  1.0000E+00
+Mode = 2: 2.0224e-10 1.0000e+00
+ 
+ 
+Test the FORTRAN Interface
+ 
+FIRST CONV FACTOR =  2.0224E-10
+Mode = 0:  0.2022E-09
+
+SECOND CONV FACTOR =  1.0000E+00
+Mode = 1:  0.1000E+01
+
+FIRST CONV FACTOR =  2.0224E-10
+SECOND CONV FACTOR =  1.0000E+00
+Mode = 2:  0.2022E-09 0.1000E+01
+
+disable-log

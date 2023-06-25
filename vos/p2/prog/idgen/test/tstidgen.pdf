@@ -1,0 +1,31 @@
+procedure
+
+local myvar type=(string,200)
+
+body
+enable-log
+! Provide Prefix
+idgen prefix="My_Prefix_" outvar=myvar
+write "myvar &myvar"
+
+! Provide Prefix; with lower option
+idgen prefix="My_Prefix_" outvar=myvar 'lower
+write "myvar (lower) &myvar"
+
+! Provide Prefix; with shorter option
+idgen prefix="My_Prefix_" outvar=myvar 'shorter
+write "myvar (shorter) &myvar"
+
+! Provide Prefix; with lower and shorter options
+idgen prefix="My_Prefix_" outvar=myvar 'lower 'shorter
+write "myvar (lower and shorter) &myvar"
+
+! Use Default Prefix
+idgen outvar=myvar
+write "myvar &myvar"
+
+! Use No Prefix
+idgen prefix="" outvar=myvar
+write "myvar &myvar"
+disable-log
+end-proc

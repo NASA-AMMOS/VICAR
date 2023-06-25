@@ -23,58 +23,64 @@ enable-log
 
 !stangle in quadrant 1 - arc in quadrant 1
 wedge wedge.out nl=50 ns=50 stangle=5. arc=5.0 
-list wedge.out size=(1,25,10,10)
+list wedge.out size=(1,25,10,10) 'nousrtim
 wedge wedge2.out nl=256 ns=256 stangle=5. arc=5.0
-list wedge2.out size=(1,137,10,15)
+list wedge2.out size=(1,137,10,15) 'nousrtim
 wedge wedge3.out nl=256 ns=256 stangle=-5. arc=5.0
-list wedge3.out size=(1,116,10,15)
+list wedge3.out size=(1,116,10,15) 'nousrtim
 wedge wedge4.out nl=256 ns=256 stangle=-5. arc=-5.0
-list wedge4.out size=(1,105,10,15)
+list wedge4.out size=(1,105,10,15) 'nousrtim
 wedge wedge5.out nl=256 ns=256 stangle=-5. arc=-5.0 x0=10 y0=200
-list wedge5.out size=(1,164,10,20)
+list wedge5.out size=(1,164,10,20) 'nousrtim
 wedge wedge6.out nl=256 ns=256 stangle=45. arc=20.0 x0=10 y0=200
-list wedge6.out size=(143,245,10,11) 'zer
+list wedge6.out size=(143,245,10,11) 'zer 'nousrtim
 wedge wedge7.out nl=256 ns=256 stangle=85. arc=5.0 
-list wedge7.out size=(115,240,10,15) 'zer
+list wedge7.out size=(115,240,10,15) 'zer 'nousrtim
 !stangle in quadrant 1 - arc in quadrant 2
 wedge wedge8.out nl=256 ns=256 stangle=85. arc=10.0
-list wedge8.out size=(123,133,11,20)  'zer
+list wedge8.out size=(123,133,11,20)  'zer 'nousrtim
 wedge wedge9.out nl=256 ns=256 stangle=85. arc=40.0
-list wedge9.out size=(125,125,12,15) 'zer
+list wedge9.out size=(125,125,12,15) 'zer 'nousrtim
 wedge wedge10.out nl=256 ns=256 stangle=85. arc=40.0 x0=10 y0=10
-list wedge10.out size=(7,8,10,20) 'zer
+list wedge10.out size=(7,8,10,20) 'zer 'nousrtim
 wedge wedge11.out nl=256 ns=256 stangle=85. arc=95.0
-list wedge11.out size=(125,126,10,15) 'zer
+list wedge11.out size=(125,126,10,15) 'zer 'nousrtim
 !stangle in quadrant 1 - arc in quadrant 3
 wedge wedge12.out nl=256 ns=256 stangle=85. arc=110.
-list wedge12.out size=(125,126,10,15) 'zer
+list wedge12.out size=(125,126,10,15) 'zer 'nousrtim
 wedge wedge13.out nl=256 ns=256 stangle=85. arc=110.0 x0=10 y0=10
-list wedge13.out size=(7,8,10,15) 'zer
+list wedge13.out size=(7,8,10,15) 'zer 'nousrtim
 wedge wedge14.out nl=256 ns=256 stangle=85. arc=110.0 x0=10 y0=200
-list wedge14.out size=(198,196,10,15) 'zer
+list wedge14.out size=(198,196,10,15) 'zer 'nousrtim
 !stangle in quadrant 2 - arc in quadrant 2
 wedge wedge15.out nl=256 ns=256 stangle=105. arc=20.
-list wedge15.out size=(126,126,10,15) 'zer
+list wedge15.out size=(126,126,10,15) 'zer 'nousrtim
 wedge wedge16.out nl=256 ns=256 stangle=105. arc=20.0 x0=10 y0=10
-list wedge16.out size=(7,8,10,15) 'zer
+list wedge16.out size=(7,8,10,15) 'zer 'nousrtim
 wedge wedge17.out nl=256 ns=256 stangle=105. arc=20.0 X0=10 y0=40
-list wedge17.out size=(43,58,10,15) 'zer
+list wedge17.out size=(43,58,10,15) 'zer 'nousrtim
 !stangle in quadrant 2 - arc in quadrant 3
 wedge wedge18.out nl=256 ns=256 stangle=105. arc=80.
-list wedge18.out size=(126,126,10,15) 'zer
+list wedge18.out size=(126,126,10,15) 'zer 'nousrtim
 wedge wedge19.out nl=256 ns=256 stangle=105. arc=120.
-list wedge19.out size=(126,122,10,15) 'zer
+list wedge19.out size=(126,122,10,15) 'zer 'nousrtim
 wedge wedge20.out nl=256 ns=256 stangle=105. arc=120. X0=10 y0=40
-list wedge20.out size=(38,35,10,15) 'zer
+list wedge20.out size=(38,35,10,15) 'zer 'nousrtim
 !stangle in quadrant 2 - arc in quadrant 4
 wedge wedge21.out nl=256 ns=256 stangle=125. arc=150.
-list wedge21.out size=(125,118,10,15) 'zer
+list wedge21.out size=(125,118,10,15) 'zer 'nousrtim
 wedge wedge22.out nl=256 ns=256 stangle=125. arc=160. x0=10 y0=200
-list wedge22.out size=(196,194,10,15) 'zer
+list wedge22.out size=(196,194,10,15) 'zer 'nousrtim
 wedge wedge23.out nl=256 ns=256 stangle=125. arc=160. X0=10 y0=40
-list wedge23.out size=(36,34,10,15) 'zer
+list wedge23.out size=(36,34,10,15) 'zer 'nousrtim
 
 disable-log
 
 let $echo="no"
+
+ush rm wedge10.out wedge11.out wedge12.out wedge13.out wedge14.out
+ush rm wedge15.out wedge16.out wedge17.out wedge18.out wedge19.out
+ush rm wedge20.out wedge21.out wedge22.out wedge23.out wedge2.out
+ush rm wedge3.out wedge4.out wedge5.out wedge6.out wedge7.out wedge8.out wedge9.out wedge.out
+
 end-proc

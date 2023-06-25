@@ -1,0 +1,111 @@
+PROCESS      HELP=*
+PARM INP       TYPE=(STRING) COUNT=1
+PARM OUT       TYPE=(STRING) COUNT=1
+PARM MODE      TYPE=INTEGER  COUNT=1 VALID=(1,2,3,4) DEFAULT=1
+PARM WIN       TYPE=INTEGER  COUNT=1 DEFAULT=5
+END-PROC
+
+.TITLE
+VICAR Program "detstat"
+.HELP
+PURPOSE
+ An application program which outputs statistical images
+ of the input image by measuring the variance of the 
+ of the neighboring pixels.
+
+EXECUTION:
+
+  DETSTAT IN OUT MODE WIN
+where
+  IN is the input image (BYTE, HALF, FULL, REAL, DOUB),
+  OUT is one of 4 possible output images (always REAL),
+  MODE is one of the three options discussed below
+  WIN is the size of the window around the center pixel to
+   perform the calculations.
+
+WIN must be an odd number, >= 3, and is always square,
+default=5.
+MODE has the following valid values: 1, 2, 3, or 4,
+Default=1.
+
+.page
+OPERATION:
+
+Detstat derives a statistical relationship of a pixel
+to its neighbors. The 4 statistical relationships supported
+are:
+
+MODE=1 The center pixel is subtracted from all of its
+    neighbors in the window. The absolute value of those 
+    differences are then averaged.
+
+MODE=2 The window is averaged without the center pixel.
+
+MODE=3 The window is averaged, then subtracted from the
+    pixel and that value is squared.
+
+MODE=4 The center pixel is subtracted from all of its
+    neighbors in the window. The differences are then
+    averaged. (Will give negative values.)
+
+The edge pixels are only averaged with internal pixels.
+Thus, the window size is reduced at the image boundaries.
+
+Internally, all data read in in DOUB format, no matter
+what input format is. Output is always REAL.
+
+.page
+PROGRAM HISTORY:
+
+Written by: Peter Kim,  June, 2010
+Cognizant Programmer: Peter Kim
+
+REVSIONS:
+  2010-06-25 Peter Kim - Initial release
+  2011-04-14 Peter Kim - Change include path
+  2011-04-14 Ray Bambery - Add mode=4, improved documentation
+  2011-05-02 Ray Bambery - Fix warning messages from gcc 4.4 compiler
+  2015-11-24 Walt Bunch - Migrated to MIPL 
+  2017-08-03 Walt Bunch - Removed DEBUG from imake.
+  2022-07-14 B. Crocco afids to opensource
+  
+.LEVEL1
+.VARIABLE INP
+ Input image file
+ All formats supported
+.VARIABLE OUT
+ Output image file
+ (Always REAL)
+.VARIABLE MODE
+ Stat mode
+ 1 for abs value of 
+ sum of difference
+ between center and
+ it's neighbors
+ 2 for sum of difference
+ between mean and
+ the neighbors,
+ excluding the center
+ 3 for variance
+ excluding the center
+ 4 for value of 
+ sum of difference
+ between center and
+ it's neighbors
+ (Default=1)
+.VARIABLE WIN
+ window size
+ Must be odd.
+ (Default=5)
+.END
+
+
+
+
+
+
+
+
+
+
+

@@ -76,7 +76,7 @@ Rows: 1:2
 ibis-gen xxxa nc=2 nr=1 format=("A5","A5","A5","A5","A5","DOUB")
 Beginning VICAR task ibis
 IBIS version 2019-07-31
-acopin (ct/aggrg2.dat,xxxa) cols=(1,2,3,4,5,6) lead_rm=2
+acopin (aggrg2.dat,xxxa) cols=(1,2,3,4,5,6) lead_rm=2
 Beginning VICAR task acopin
 acopin Fri Dec  5 2014 - wlb
 Number of input cols = 6

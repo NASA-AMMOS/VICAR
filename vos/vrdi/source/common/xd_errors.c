@@ -23,6 +23,29 @@
 #include "xdroutines.h"
 #include "xdfuncs.h"
 
+void xd_sys_msg( Unit, incode )
+int	*Unit, incode;
+
+{
+  int code;
+  static char	msg[132];
+   
+  code = incode;
+  if (code == SUCCESS) return;			/*  Just in case  */
+
+  strcpy( msg, "Exception in " );
+  strcat( msg, xd_routines[xd_current_call] );
+  if (*Unit != -1) {
+    strncat( msg, " processing device:  ", 132-strlen(msg) );
+    strncat( msg, DIB[*Unit]->DeviceName, 132-strlen(msg) ); 
+/** strncat( msg, DEV_NAME, 132-strlen(msg) ); **/
+  }
+  msg[131] = 0;					/*  Just in case  */
+
+  zvmessage( msg, "VRDI-GENERR" );
+  zdesignal ( code );
+}
+
 void xd_error_handler( Unit, code )
 int	*Unit, code;
 
@@ -55,27 +78,4 @@ int	*Unit, code;
     if (ABORT_FLAG(xd_fatal_action))
       exit(-1);
   }
-}
-
-xd_sys_msg( Unit, incode )
-int	*Unit, incode;
-
-{
-  int code;
-  static char	msg[132];
-   
-  code = incode;
-  if (code == SUCCESS) return;			/*  Just in case  */
-
-  strcpy( msg, "Exception in " );
-  strcat( msg, xd_routines[xd_current_call] );
-  if (*Unit != -1) {
-    strncat( msg, " processing device:  ", 132-strlen(msg) );
-    strncat( msg, DIB[*Unit]->DeviceName, 132-strlen(msg) ); 
-/** strncat( msg, DEV_NAME, 132-strlen(msg) ); **/
-  }
-  msg[131] = 0;					/*  Just in case  */
-
-  zvmessage( msg, "VRDI-GENERR" );
-  zdesignal ( code );
 }

@@ -1,0 +1,381 @@
+NIMS I-kernel
+! 28oct90 --lwk-- this file is a modified version of one copied from 
+!  NAIF on 26-10-90
+! 5nov90 --lwk-- modified XCONE table per WSmythe mailing
+! 14may91 --lwk-- modified XCONE_WAIT to be consistent with previous change
+! 16dec91 --lwk-- shifted XCONE_UP up and XCONE_DOWN down by 0.1 mrad to
+!		test mirror asymmetry
+! 19apr94 --lwk-- put in FEL's estimate of the boresight offset
+! 16may94 --lwk-- changed XCONE_STOP to -0.264 (in spectrometer mode the
+!		mirror is at position 9, not 9.5)
+===========================================================================
+ 
+     This file contains GLL NIMS I-kernel data for Earth I.
+ 
+     This I-kernel provides a) an offset of the NIMS boresight from the
+     spacecraft L vector, b) mirror position tables in cone and cross-cone
+     for the varios NIMS mirror states, c) a mirror position, d) Mode_RIM
+     tables, which point to the correct mirror position table for each 1/2
+     minor frame in a RIM (for each NIMS mode) and e) the focal length of
+     the telescope. Additional tables must be included if new modes are
+     added to NIMS and/or if the mirror positions or focal length evolve
+     with time or temperature.
+ 
+     One minor frame refers to 2/3 of a second -- the time it takes for a
+     complete mirror scan.
+ 
+ 
+References
+--------------------------------------------------------
+ 
+         1.   ``Preliminary I-kernel Specification,'' (NAIF document number
+              177.0), by Ian Underwood, 1/19/90.
+ 
+         2.   KERNEL ``Required Reading'' file, released by NAIF, available
+              on the PRINCE VAX in directory DUA1:[NBACHMAN.SPICE.KER],
+              having file name KERNEL.REQ.
+ 
+ 
+Implementation Notes
+--------------------------------------------------------
+ 
+     This file is used by the SPICE system as follows: programs that make
+     use of the I-kernel must `load' the kernel, normally during program
+     initialization. Loading the kernel associates data items with their
+     names in a data structure called the `kernel pool'. The SPICELIB
+     routine LDPOOL loads a kernel file into the pool as shown below.
+ 
+                  CALL LDPOOL ( 'NIMS.TIK' )
+ 
+     In order for a program or subroutine to extract data from the pool,
+     the SPICELIB routine RTPOOL is used. See [2] for more details.
+ 
+ 
+File Format
+--------------------------------------------------------
+ 
+     This file conforms to the I-kernel format specification. Details of
+     the I-kernel file format are given in [2]. For convenience, a few
+     basics are repeated here:
+ 
+     All pertinent data follow the `begindata' delimiter. Similarly, all
+     text portions follow the `begintext' delimiter. The first `begindata'
+     delimiter need not be preceeded by a `begintext' delimiter. Note, for
+     example, that there is no `begintext' delimiter at the start of this
+     file. The occurance of these delimiters on a line in this file must be
+     accompanied by nothing else on that line.
+ 
+ 
+Naming Conventions
+--------------------------------------------------------
+ 
+     All names referencing values in this I kernel start with the
+     characters `INS' followed by the NIMS instrument number (including the
+     negative sign). This naming scheme is standard for all I-kernel files
+     and was instigated to distinguish I-kernel data from other types of
+     data that may also be loaded in the kernel pool.
+ 
+     The remainder of the name is an underscore character, followed by the
+     unique name of the data item. For example, the boresight cone offset
+     for the NIMS instrument has the name
+ 
+                INS-77000_BORESIGHT_CONE_OFFSET
+ 
+     The upper bound on the length of the name of any data item is 32
+     characters. This limit is a Fortran parameter and can be adjusted if
+     necessary.
+ 
+     If the same item is included in more then one file, or if the same
+     item appears more than once within a single file, the latest value
+     supersedes any earlier values. Note that this makes it possible for
+     files to contain a history of changes to an item, without making
+     obsolete values accessible to a program.
+ 
+ 
+NIMS Assumptions
+--------------------------------------------------------
+ 
+         1.   NIMS boresight lies between MP 9 and 10 (MP 0-19)
+ 
+         2.   NIMS boresight is displaced from the L vector (SSI boresight)
+              by approximately -0.25 milliradians in both cone and
+              cross-cone. 
+ 
+         3.   The timing of acquistion of data for a given mirror position
+              shall be - The 0th mirror position occurs on RTI 0 of aminor
+              frame. Each minor frame has 40 miror positions sampled at
+              even time intervals. This assumption is not exactly correct,
+              so this I-kernel includes a timing lookup table.
+ 
+         4.   The mirror is assumed to move in increments of pure cross
+              cone, this I-kernel, however, does allow lookup for cone
+              displacement - now assumed to be 0.
+ 
+         5.   Each mirror displacement is assumed to be exactly 1 FOV, 0.5
+              milliradians. This is reflected in the cross-cone
+              displacement table.
+ 
+         6.   The mirror displacements are assumed to be independent of
+              temperature.
+ 
+         7.   The first mirror motion direction is assumed to be down.
+ 
+ 
+Data
+--------------------------------------------------------
+ 
+ 
+        a.  The NIMS boresight offset from the L vector has two
+            values in milliradians:  cone and cross cone.
+ 
+        \begindata
+ 
+        INS-77000_BORESIGHT_XCONE_OFFSET  = -0.25
+        INS-77000_BORESIGHT_CONE_OFFSET   = -0.25
+ 
+        \begintext
+ 
+! 14apr94 -- lwk: changed both above values from 0.0 to -0.25 
+
+        b.  The mirror postion tables have 20 values each and cover
+            the time interval of 1/2 minor frame.  The tables state the
+            offset from the NIMS nominal boresight in cross-cone in
+            milliradians.  Nominal increment is 0.5 milliradians.
+            Similarly, the cone offset tables state the offset in cone.
+            Nominal offset is 0.0.
+ 
+            The mirror position tables consist of the following (for both
+            cone and cross-cone).
+ 
+               Table 1 - SCAN DOWN
+               Table 2 - SCAN UP
+               Table 3 - WAIT
+               Table 4 - STOP
+ 
+        The boresight position is assumed to be 9.5.
+ 
+        \begindata
+ 
+        INS-77000_BORESIGHT_POSITION =  (  9.5  )
+ 
+        \begintext
+ 
+        Mirror position table #1
+        ------------------------
+ 
+        \begindata
+ 
+        INS-77000_POS_TBL_XCONE_DOWN  = (
+
+ -4.919, -4.391, -3.862, -3.334, -2.806,
+ -2.277, -1.749, -1.221, -0.692, -0.164,
+  0.364,  0.892,  1.421,  1.949,  2.477,
+  3.006,  3.534,  4.062,  4.591,  5.119 )
+ 
+        INS-77000_POS_TBL_CONE_DOWN   = (
+                                  0.00,  0.00,  0.00,  0.00,  0.00,
+                                  0.00,  0.00,  0.00,  0.00,  0.00,
+                                  0.00,  0.00,  0.00,  0.00,  0.00,
+                                  0.00,  0.00,  0.00,  0.00,  0.00, )
+ 
+        \begintext
+
+! 28oct90 --lwk-- replaced 4.56 with 0.00 in pos. 19 of above array
+! 5nov90 --lwk-- replace XCONE_DOWN above;  old values were:
+!                                 -4.75, -4.25, -3.75, -3.25, -2.75,
+!                                 -2.25, -1.75, -1.25, -0.75, -0.25,
+!                                  0.25,  0.75,  1.25,  1.75,  2.25,
+!                                  2.75,  3.25,  3.75,  4.25,  4.75 )
+! same for XCONE_UP, only reversed
+
+        Mirror position table #2
+        ------------------------
+ 
+        \begindata
+ 
+        INS-77000_POS_TBL_XCONE_UP    = (
+
+  4.919,  4.391,  3.862,  3.334,  2.806,
+  2.277,  1.749,  1.221,  0.692,  0.164,
+ -0.364, -0.892, -1.421, -1.949, -2.477,
+ -3.006, -3.534, -4.062, -4.591, -5.119 )
+ 
+        INS-77000_POS_TBL_CONE_UP     = (
+                                  0.00,  0.00,  0.00,  0.00,  0.00,
+                                  0.00,  0.00,  0.00,  0.00,  0.00,
+                                  0.00,  0.00,  0.00,  0.00,  0.00,
+                                  0.00,  0.00,  0.00,  0.00,  0.00 )
+ 
+        \begintext
+ 
+        Mirror position table #3
+        ------------------------
+! 15may91 lwk:  changed XCONE_WAIT to -5.019 for consistency with previous mod 
+        \begindata
+ 
+ 
+        INS-77000_POS_TBL_XCONE_WAIT  = (
+  -5.019, -5.019, -5.019, -5.019, -5.019, 
+  -5.019, -5.019, -5.019, -5.019, -5.019, 
+  -5.019, -5.019, -5.019, -5.019, -5.019, 
+  -5.019, -5.019, -5.019, -5.019, -5.019 )
+ 
+        INS-77000_POS_TBL_CONE_WAIT   = (
+                                  0.00,  0.00,  0.00,  0.00,  0.00,
+                                  0.00,  0.00,  0.00,  0.00,  0.00,
+                                  0.00,  0.00,  0.00,  0.00,  0.00,
+                                  0.00,  0.00,  0.00,  0.00,  0.00 )
+ 
+        \begintext
+ 
+        Mirror position table #4
+        ------------------------
+
+! 16may94 lwk:  changed all 20 XCONE_STOP values from 0.00 to -0.264
+
+        \begindata
+ 
+ 
+        INS-77000_POS_TBL_XCONE_STOP  = (
+                                  -0.264,  -0.264,  -0.264,  -0.264,  -0.264,
+                                  -0.264,  -0.264,  -0.264,  -0.264,  -0.264,
+                                  -0.264,  -0.264,  -0.264,  -0.264,  -0.264,
+                                  -0.264,  -0.264,  -0.264,  -0.264,  -0.264 )
+ 
+        INS-77000_POS_TBL_CONE_STOP   = (
+                                  0.00,  0.00,  0.00,  0.00,  0.00,
+                                  0.00,  0.00,  0.00,  0.00,  0.00,
+                                  0.00,  0.00,  0.00,  0.00,  0.00,
+                                  0.00,  0.00,  0.00,  0.00,  0.00 )
+ 
+        \begintext
+ 
+        c.  The mirror timing table has 40 values corresponding to the
+            sample time for each mirror position in a minor frame.  Time is
+            in milliseconds from start of minor frame.  The timing of each
+            mirror position is NOMINALLY 1/40 of 2/3 second.
+ 
+        \begindata
+
+        INS-77000_TIME_TABLE = (
+ 0.00000000, 0.02380952, 0.04761905, 0.07142857, 0.09523810,
+ 0.11904762, 0.14285715, 0.16666667, 0.19047619, 0.21428572,
+ 0.23809524, 0.26190478, 0.28571430, 0.30952382, 0.33333334,
+ 0.35714287, 0.38095239, 0.40476191, 0.42857143, 0.45238096,
+ 0.50000000, 0.52380955, 0.54761904, 0.57142860, 0.59523809,
+ 0.61904764, 0.64285713, 0.66666669, 0.69047618, 0.71428573,
+ 0.73809522, 0.76190478, 0.78571427, 0.80952382, 0.83333331,
+ 0.85714287, 0.88095236, 0.90476191, 0.92857140, 0.95238096 )
+        \begintext
+
+! 28oct90 lwk: replaced entire table with above;  old table was:
+!                              0.000,  16.666,  33.333,  50.000,  66.666,
+!                             83.333, 100.000, 116.666, 133.333, 150.000,
+!                            166.666, 183.333, 200.000, 216.666, 233.333,
+!                            250.000, 266.666, 283.333, 300.000, 316.666,
+!                            333.333, 350.000, 366.666, 383.333, 400.000,
+!                            416.666, 433.333, 450.000, 466.666, 483.333,
+!                            500.000, 516.666, 533.333, 550.000, 566.666,
+!                            583.333, 600.000, 616.666, 633.333, 650.000 )
+ 
+ 
+        d.  Mode RIM tables contain 182 entries corresponding to the
+            mirror state for a given mode in a given 1/2 minor frame within
+            a RIM.  These tables merely point to the correct mirror positio
+            table for a given mode.  These RIM tables are:
+ 
+               LONG MAP
+               FULL MAP
+               SHORT MAP
+               FIXED
+               BANDEDGE
+               SPECTROMETER (Valid for all grating cycle modes.)
+ 
+            Combination modes, such as stop and slide, are not described,
+            since they are decomposed into their primitive modes prior
+            to geometry generation.
+ 
+        \begindata
+ 
+        INS-77000_LONG_MAP = (
+                 1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,3,3,
+                 1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,3,3,
+                 1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,3,3,
+                 1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,3,3,
+                 1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,3,3,
+                 1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,3,3,
+                 1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,3,3 )
+ 
+        INS-77000_FULL_MAP = (
+                 1,2,1,2,1,2,1,2,1,2,1,2,3,1,2,1,2,1,2,1,2,1,2,1,2,3,
+                 1,2,1,2,1,2,1,2,1,2,1,2,3,1,2,1,2,1,2,1,2,1,2,1,2,3,
+                 1,2,1,2,1,2,1,2,1,2,1,2,3,1,2,1,2,1,2,1,2,1,2,1,2,3,
+                 1,2,1,2,1,2,1,2,1,2,1,2,3,1,2,1,2,1,2,1,2,1,2,1,2,3,
+                 1,2,1,2,1,2,1,2,1,2,1,2,3,1,2,1,2,1,2,1,2,1,2,1,2,3,
+                 1,2,1,2,1,2,1,2,1,2,1,2,3,1,2,1,2,1,2,1,2,1,2,1,2,3,
+                 1,2,1,2,1,2,1,2,1,2,1,2,3,1,2,1,2,1,2,1,2,1,2,1,2,3 )
+ 
+        INS-77000_SHORT_MAP = (
+                 1,2,1,2,1,2,3,1,2,1,2,1,2,3,1,2,1,2,1,2,3,1,2,1,2,1,2,3,
+                 1,2,1,2,1,2,3,1,2,1,2,1,2,3,1,2,1,2,1,2,3,1,2,1,2,1,2,3,
+                 1,2,1,2,1,2,3,1,2,1,2,1,2,3,1,2,1,2,1,2,3,1,2,1,2,1,2,3,
+                 1,2,1,2,1,2,3,
+                 1,2,1,2,1,2,3,1,2,1,2,1,2,3,1,2,1,2,1,2,3,1,2,1,2,1,2,3,
+                 1,2,1,2,1,2,3,1,2,1,2,1,2,3,1,2,1,2,1,2,3,1,2,1,2,1,2,3,
+                 1,2,1,2,1,2,3,1,2,1,2,1,2,3,1,2,1,2,1,2,3,1,2,1,2,1,2,3,
+                 1,2,1,2,1,2,3 )
+ 
+        INS-77000_FIXED_MAP = (
+                 1,2,1,2,1,2,1,2,1,2,1,2,3,1,2,1,2,1,2,1,2,1,2,1,2,3,
+                 1,2,1,2,1,2,1,2,1,2,1,2,3,1,2,1,2,1,2,1,2,1,2,1,2,3,
+                 1,2,1,2,1,2,1,2,1,2,1,2,3,1,2,1,2,1,2,1,2,1,2,1,2,3,
+                 1,2,1,2,1,2,1,2,1,2,1,2,3,1,2,1,2,1,2,1,2,1,2,1,2,3,
+                 1,2,1,2,1,2,1,2,1,2,1,2,3,1,2,1,2,1,2,1,2,1,2,1,2,3,
+                 1,2,1,2,1,2,1,2,1,2,1,2,3,1,2,1,2,1,2,1,2,1,2,1,2,3,
+                 1,2,1,2,1,2,1,2,1,2,1,2,3,1,2,1,2,1,2,1,2,1,2,1,2,3 )
+ 
+        INS-77000_BANDEDGE_MAP = (
+                 1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,
+                 1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,
+                 1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,
+                 1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,
+                 1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,
+                 1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,
+                 1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2 )
+ 
+        INS-77000_SPECTROMETER_MAP = (
+                 4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+                 4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+                 4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+                 4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+                 4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+                 4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+                 4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4 )
+ 
+ 
+        \begintext
+ 
+        e.  The focal length fo the NIMS telescope is nominally
+            800 millimeters.
+ 
+        \begindata
+ 
+        INS-77000_FOCAL_LENGTH     = 800.0
+ 
+        \begintext
+ 
+! 28oct90 lwk -- replaced 8.0 with 800.0 for focal length
+
+        Date on which the above data was entered into this I-kernel:
+ 
+        \begindata
+ 
+        INS-77000_DATA_ENTRY_DATE  =  @16-MAY-1994
+ 
+        \begintext
+ 
+        Version
+ 
+        \begindata
+ 
+        INS-77000_VERSION = 1.5

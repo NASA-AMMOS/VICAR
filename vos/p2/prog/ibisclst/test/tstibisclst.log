@@ -1,0 +1,34 @@
+ibis-gen xxa nc=4 nr=9 datacols=(1,2,3)  +
+    data=(1.0, 317.0, 0.0,  +
+          1.0, -324.8, 206.0,  +
+          1.0, 210.1, 0.0,  +
+          1.0, -324.6, 205.9,  +
+          2.0, 0.0, -69.8,  +
+          2.0, 0.0, -311.8,  +
+          2.0, -0.1, 0.0,  +
+          2.0, -325.7, 206.3,  +
+          2.0, -326.0, 210.1)
+Beginning VICAR task ibis
+ibisclst inp=xxa cols=(1,2,3) concol=1 outcol=4
+Beginning VICAR task ibisclst
+ibisclst version 2017-08-08
+ibis-l xxa
+Beginning VICAR task ibis
+ 
+Number of Rows:9  Number of Columns: 4       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:9
++-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4
++-----------+-----------+-----------+-----------
+        1.00      317.00        0.00        0.00
+        1.00     -324.80      206.00        1.00
+        1.00      210.10        0.00        0.00
+        1.00     -324.60      205.90        1.00
+        2.00        0.00      -69.80        0.00
+        2.00        0.00     -311.80        0.00
+        2.00       -0.10        0.00        0.00
+        2.00     -325.70      206.30        1.00
+        2.00     -326.00      210.10        1.00
+disable-log

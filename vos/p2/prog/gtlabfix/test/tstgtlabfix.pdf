@@ -20,14 +20,14 @@ gtgenup inp=xxxim1 +
             "RPC_FIELD1720=-0.135637E-7")
 
 ! Verify the GeoTIFF parms
-label-list xxxim1
+label-list xxxim1 'nousrtim
 
 ! fix the exponent value
 
 gtlabfix inp=xxxim1 property="GeoTIFF"
 
 ! Verify the GeoTIFF parms
-label-list xxxim1
+label-list xxxim1 'nousrtim
 
 ush rm xxxim1
 

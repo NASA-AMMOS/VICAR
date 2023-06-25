@@ -1,0 +1,5 @@
+$ vpack marsdepth.com -mixed -
+	-s marsdepth.cc -
+	-i marsdepth.imake -
+	-p marsdepth.pdf
+$ Exit

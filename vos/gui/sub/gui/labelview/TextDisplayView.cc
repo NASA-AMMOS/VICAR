@@ -54,7 +54,7 @@ void TextDisplayView::update()
       if (_textM->getText())
          XmTextSetString(_textW, _textM->getText());
       else 
-         XmTextSetString(_textW, '\0');
+         XmTextSetString(_textW, "\0");
 	
       XmTextShowPosition(_textW, XmTextGetLastPosition(_textW));
    }
@@ -95,7 +95,7 @@ void TextDisplayView::addText(char *newText, int size, TextStyle style)
 {
    if (_textW) {
       if ( _clearEveryRun ) 
-         XmTextSetString(_textW, '\0');
+         XmTextSetString(_textW, "\0");
 
       XmTextPosition curPos = XmTextGetLastPosition(_textW);
       XmTextInsert(_textW, curPos, newText);

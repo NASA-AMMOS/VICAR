@@ -1,0 +1,922 @@
+process help=*
+PARM INP TYPE=STRING COUNT=(1:3)
+PARM OUT TYPE=STRING COUNT=1
+PARM UIX_OUT TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM ZIX_OUT TYPE=STRING COUNT=(0:1) DEFAULT=--
+
+PARM UPX_OUT TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM XPX_OUT TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM P_COORD TYPE=STRING COUNT=(0:1) DEFAULT="ROVER"
+
+PARM NAVTABLE TYPE=STRING COUNT=(0:1) DEFAULT=--
+
+PARM INST TYPE=KEYWORD COUNT=1 VALID=(SEIS,HP3,WTS,HELI)
+PARM DELTA TYPE=KEYWORD COUNT=0:1 VALID=DELTA DEFAULT=--
+
+#!!!! no idea what these defaults should be...
+PARM TILT_THRESHOLD TYPE=REAL COUNT=1 DEFAULT=15
+PARM SINKAGE TYPE=REAL COUNT=1 DEFAULT=.005
+
+PARM CLOCK_RANGE TYPE=REAL COUNT=2 DEFAULT=(-15,15)
+PARM CLOCK_STEP TYPE=REAL COUNT=1 DEFAULT=3
+PARM DELTA_WTS_RANGE TYPE=REAL COUNT=(0:2) DEFAULT=--
+PARM DELTA_WTS_STEP TYPE=REAL COUNT=(0:1) DEFAULT=--
+
+PARM WTS_OFF TYPE=REAL COUNT=(1:2) DEFAULT=(0.05,0)
+
+PARM LEAF_MAX_SIZE TYPE=INTEGER COUNT=1 DEFAULT=50
+PARM POINT_EPSILON TYPE=REAL COUNT=1 DEFAULT=0.004
+PARM FOOT_WINDOW TYPE=INTEGER COUNT=1 DEFAULT=75
+PARM BAD_TILT TYPE=REAL COUNT=1 DEFAULT=-1.0
+PARM FILTER_SCALE TYPE=REAL COUNT=1 DEFAULT=2.5
+
+PARM OMP_ON TYPE=KEYWORD VALID=(OMP_ON,OMP_OFF) DEFAULT=OMP_ON
+
+PARM CONFIG_PATH STRING DEFAULT="$MARS_CONFIG_PATH"
+PARM POINT_METHOD TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM NOSITE TYPE=KEYWORD COUNT=(0:1) VALID=NOSITE DEFAULT=--
+
+PARM DATA_SET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM DATA_SET_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM RELEASE_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCT_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_INST TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_TYPE TYPE=STRING COUNT=(0:1) DEFAULT=--
+
+PARM RSF TYPE=STRING COUNT=0:100 DEFAULT=--
+PARM DEBUG_RSF TYPE=KEYWORD COUNT=0:1 VALID=DEBUG_RSF DEFAULT=--
+PARM COORD TYPE=KEYWORD VALID=("FIXED", "INSTRUMENT", "SITE", "ROVER", +
+        "LOCAL_LEVEL") DEFAULT="SITE"
+PARM COORD_INDEX TYPE=INTEGER COUNT=0:10 DEFAULT=--
+PARM FIXED_SITE TYPE=INTEGER COUNT=0:1 DEFAULT=--
+PARM SOLUTION_ID TYPE=STRING COUNT=0:1 DEFAULT=--
+
+END-PROC
+
+.TITLE
+VICAR program MARSITILT.
+
+.HELP
+PURPOSE:
+
+MARSITILT computes the tilt an instrument would have if placed at
+the given point.  The minimum and maximum tilts are provided, as well as a
+status band, and the program accounts for clock angle rotation and sinkage.
+It will also compute the delta-tilt between the SEIS and WTS instruments
+for InSight.
+
+The input for MARSITILT is an XYZ image such as that created by MARSXYZ.
+This can be a single 3-band file (preferred) or three 1-band files.
+
+The output of MARSITILT is a 3-band file of type REAL.  The first band is
+a status (flag) band indicating whether or not the result is within limits.
+The second and third bands are the minimum and maximum tilts, respectively.
+MARSITILT additionally outputs instrument-specific surface normal and Z value
+files, which are needed by MARSIROUGH.
+
+EXECUTION:
+
+marsitilt inp=data.xyz out=data.tfs uix_out=data.uis zix_out=data.zis -seis
+marsitilt inp=data.xyz out=data.tfw uix_out=data.uiw zix_out=data.ziw -wts
+marsitilt inp=data.xyz out=data.tfh uix_out=data.uih zix_out=data.zih -hp3
+marsitilt inp=data.xyz out=data.tfh uix_out=data.uih zix_out=data.zih -heli
+marsitilt inp=data.xyz out=data.tds -seis -delta
+
+METHOD:
+
+At each pixel in the output file, MARSITILT attempts to "place" the given
+instrument at that point.  The point represents the grapple on the instrument,
+so the XY position of the point is what would be communicated to the IDS
+team to actually place the instrument there on the surface.  The XY position
+is derived from the XYZ input file for the given pixel.  If there is no XYZ
+position for the pixel, the pixel is skipped.
+
+Note that the program works internally in Site frame.  This aligns all the tilts
+with the gravity vector, giving true tilt relative to gravity. It will convert 
+the given XYZ to this frame automatically.  While other frames could be used 
+(e.g. -rover for Lander frame), the tilts would then be measured relative to the
+lander, which is generally not what it desired.
+
+Instrument Feet
+---------------
+The size and spacing of the feet for each instrument is given in the
+marsi_instruments class that is compiled into the program.  This should
+be read from a config file, but time constraints may prevent this from
+happening.
+
+The program represents the feet as a set of circles - 3 each for SEIS and WTS,
+4 for HP3 and HELI.  The size of these circles matches the size of the feet as
+they interact with the ground.  Although one should consult the class file for
+specific values, at the time this help was written, the circle radii are 3cm
+for SEIS, 4.2665cm for WTS, and 5cm for HP3.
+
+Note that the size of the M20 Helicopter foot is expanded to cover the
+possible leg splay.  It is this wider than it should be.  This however causes
+no issues as the helicopter use case is to always clock the entire circle, so
+the width of the foot really doesn't matter.
+
+The Z location of the foot is defined as the highest point within the foot
+patch, the idea being that the foot will "perch" on the highest point available.
+However, this is sucseptible to noise spikes in the data.  Therefore, a
+statistical analysis (mean and standard deviation, or sigma) of the Z points
+within the foot patch is done, and all points exceeding some number of sigma
+away from the mean are excluded from the analysis.  The threshold is determined
+by the FILTER_SCALE parameter, which is then multiplied by sigma.
+
+Tether Effects
+--------------
+The feet are initially set assuming the tether points directly down the
+-X axis.  However, the actual instruments while being deployed will tend to
+rotate so the tether points back toward the spacecraft.  This is accounted
+for by rotating the instrument (i.e. feet position) based on the tether pivot
+points.
+
+For SEIS, the tether emanates from a single tether box position.  This
+position is hardcoded at x=0.145, y=-0.101 in the lander frame.  The tether
+points radially from this point to the instrument deployment location, and
+the SEIS feet are rotated to match.
+
+For HP3, the algorithm is more complicated, because the tether can be routed
+different ways based on where the instrument is being deployed.  The algorithm
+comes from Won Kin in Section 347:
+
+  HP3 has two "virtual" tether anchor points.
+   - HP3 tether guard post1 --- P1 = (X1, Y1) = (0.083, -0.435)
+   - HP3 mount --- P2 = (X2, Y2) = (-1.279, 0.149)
+   - Line equation between two anchor points:
+     y = ((Y2-Y1)/(X2-X1)) * (x - X1) + Y1 = mx + b
+   - Given the current tether position (X0, Y0):
+     - If Y0 > m * X0 + b, use HP3 tether guard post1 P1 as the "virtual" anchor
+       point.
+     - Otherwise, use HP3 mount P2 as the "virtual" anchor point.
+ You can determine the tether direction by assuming that the tether passes
+ through the "virtual" anchor point.
+
+For WTS, there is no tether.  However, the arm moves slowly enough that the
+WTS is likely to rotate with the arm, meaning that there is a most-likely
+rotation value that acts as if there was a tether.
+
+Additionally, there are radial and cross-radial offsets between the WTS and 
+SEIS, because the grapples are not coaxial in the nominal placement.  The WTS 
+position is thus offset by an amount determined in the WTS_OFF parameter. These
+offsets are applied after WTS rotations (instrument clocking and rotation due to
+tether) are done. All WTS rotations (such as for clocking) are done centered 
+around the nominal(SEIS) location. This means that WTS clocking rotation 
+(see below) also introduces a small translation in the WTS.
+
+The M20 helicopter obviously has no tether.
+
+Instrument Clocking
+-------------------
+Although the tether controls the rotation of the instrument while hanging on
+the arm to some extent, the instrument can still rotate within a certain range.
+This rotation is called "clocking".  
+
+Zero clocking is defined as the rotation resulting from the tether calculation.
+
+The program analyzes the tilt throughout this range of clocking angles.
+Because it is computationally intractable to compute every possible angle,
+we settle for checking a discrete set of clock angles.  The set of angles
+checked are controlled by the CLOCK_RANGE and CLOCK_STEP parameters.  Generally
+these should be set to be centered around 0 clock angle (and to include 0
+clock angle), but this is not mandatory.
+
+Settling of Feet
+----------------
+The Z location of each foot is defined as the highest point found within the
+foot circle (after removing outliers) - the theory being, the foot will be
+perched on the highest point in the area.  However, if the ground is sandy,
+the feet are likely to "settle" into the sand by some amount.  For this reason,
+the feet are "settled" by an amount specified by the SINKAGE parameter.  This
+amount is added to each foot location (because +Z is down, adding the value
+lowers the foot location).  Tilt analysis is then done using all combinations
+of settled and unsettled feet.  This should pick up the worst-case scenario on
+both ends of the spectrum - no settling and maximum settling.
+
+Tilt Computation
+----------------
+For SEIS and WTS, tilt is computed by taking the Z value of each foot,
+constructing vectors between them, and using the cross-product to determine
+the normal of the plane defined by those points.  As noted above, this is done
+for each combination of settled and unsettled feet, and the min and max tilts
+across all combinations are gathered.
+
+HP3 and Heli have 4 feet.  The 4 foot points are unlikely to lie in a single
+plane; it it possible for the instrument to sit unstably on any set of 3 feet.
+For that reason, the above computation is performed for all combinations of 3
+of the 4 feet.  Thus the best (min) and worst (max) cases are determined no
+matter which feet are actually stably on the ground.  This means that each
+combination of 3 feet is also analyzed for each combination of settled and
+unsettled feet.  In reality, the compliance of the ground is likely to allow
+all 4 feet to sit on the ground (and for the M20 helicopter, the compliance
+of the legs), but this algorithm ensures we look at the worst case.
+
+The min and max tilts are computed as above for each clock value, and then
+the minimum and maximum across all clocks are computed to determine the final
+output value.
+
+Delta-Tilt Computation
+----------------------
+The delta-tilt is a comparison between the tilt of the SEIS and the tilt
+of the WTS that covers it.  It is computed by first computing tilt as above
+for the SEIS.  At each SEIS clock point, the tilt of the WTS is computed.
+This also follows the above tilt algorithm, except the parameters
+DELTA_WTS_RANGE and DELTA_WTS_TILT are used to determine the clock range.
+
+At each combination of SEIS and WTS tilts, the delta tilt is computed, as
+the arccos of the dot product between the two normal vectors.  The min and
+max delta tilt is then computed across all combinations of clocks for both
+instruments.
+
+It is important to note that this is not finding the min/max tilt of each
+instrument and then computing the angle between them.  It is computing the
+angle between each and every combination of clock angles (subject to the
+step size and range parameters), and determining the min/max of those.
+
+Delta-tilt is available for InSight only.
+
+Output File Format and State Band
+---------------------------------
+The output file consists of 3 bands in floating-point format:
+
+Band 1: State band (contains goodness flag)
+Band 2: Minimum tilt or delta tilt
+Band 3: Maximum tilt or delta tilt
+
+The min/max tilt/delta-tilt are expressed in degrees.
+
+The State band can contain the following values:
+
+0 = no value
+1 = n/a
+2 = n/a
+3 = exceeds tilt threshold
+4 = n/a
+5 = tilt within limits (good)
+
+As with all the instrument placement products, 5 indicates everything is within
+limits, with other values indicating what parameter is out of limits.
+
+Output Instrument Surface Normal, Z, and XYZ
+--------------------------------------------
+There are four optional output files, UIX_OUT, ZIX_OUT, UPX_OUT, and XPX_OUT.  
+UIX_OUT and ZIX_OUT files contain intermediate results that are intended to be 
+supplied as inputs to the MARSIROUGH program. UPX_OUT and XPX_OUT files are 
+similar to UIX_OUT and ZIX_OUT except that they are in general measured in 
+Lander frame instead of Site frame. Also, XPX_OUT contains all XYZ coordinates
+instead of just the Z band. 
+
+The UIX_OUT file is a 3-band float unit-vector normal file in the same format
+as produced by the MARSUVW program.  However, the normal is calculated in a
+special way.  It is the normal not of the surface, but of the instrument
+itself, when located at the given pixel.
+
+Examination of the tilt algorithm shows that the instrument normal is not
+unique - the combinations of clock angles, sinkage, and multiple feet lead
+to a variety of possible surface normals.  However, for the purpose of the
+MARSIROUGH program, we need one "most likely" normal.  Therefore we choose
+the one closest to the center of the clock range, with no sinkage.  We do
+still look at all combinations of feet, and take the average normal across
+those combinations (applies only to HP3 and Heli).  Note that no sinkage and
+full sinkage result in the same normal, since all feet sink the same amount.
+
+The ZIX_OUT file is a 1-band float file that contains the Z position of the
+instrument if it was placed at that location.  The Z position is the coordinate
+of the point directly below the grapple, in the plane of the feet.  Similar to
+UIX_OUT, this takes the center of the clock range.  Note that it uses the
+nominal feet, NOT adjusted for settling.  There is a parameter in MARSIROUGH to
+include settling if that is desired.
+
+Because the surface normal is an average, using it with the foot locations of
+the HP3 or Heli creates more than one solution.  In all cases the foot position
+is used to fix the Z value of a plane that is normal to the instrument normal,
+and then the Z position of the center of the instrument (grapple point for
+InSight) is computed.  The final Z value is the lowest (highest Z numerically
+since +Z is down) of these computed positions - again, modeling the worst
+case (since that means more interaction with the terrain).
+
+Parallel Processing
+-------------------
+This program requires a lot of computational resources - especially delta
+tilt.  The number of combinations of positions that must be checked can get
+quite large.  For this reason, the program has been parallelized using
+Open MP (OMP), which is built in to the g++ compiler.
+
+By default the number of threads used equals the number of cores on the machine
+where the program is being run.  Each image line is assigned to a different
+core, with "dynamic" scheduling to keep the workload for each core similar.
+
+Parallel processing can be disabled via the -OMP_OFF keyword.  The number
+of threads can be controlled by setting the OMP_NUM_THREADS environment
+variable before running the program.  There are numerous other OMP variables
+that can be set; see the OMP documentation.  However, the number of threads
+is the only one that is likely to be useful in most cases.
+
+Implementation Notes
+--------------------
+The instrument shapes should be in a data file but for now are compiled in
+to the program, via marsi_instruments(_h).com.
+
+Clocking is simulated by stepping to different clock values and checking each.
+There is a tradeoff between fidelity and execution time.  The smaller the clock
+steps, the more accurate the result but the slower it runs (dramatically so).
+
+Once an instrument foot point is determined, we must find the pixel that is
+closest to that point as a starting point.  This is implemented by using a
+K-D tree as implemented in the "nanoflann" package.  The POINT_EPSILON parameter
+determines how far away this point can be from the ideal point (default .004m),
+and the LEAF_MAX_SIZE determines how big the leaves of the tree can be before
+splitting them.
+
+From there, a region growing algorithm is used to determine all the XYZ points
+that belong to the foot.  The region spirals out one pixel at a time until a
+complete box (one pixel wide) is found with no hits within the confines of the
+foot circle.  This region growing is bounded by the FOOT_WINDOW parameter; once
+the box half-width exceeds the FOOT_WINDOW, the growing stops.  This is for
+efficiency (to prevent spiraling out to the entire image in pathological
+cases), but in practice the window should be set so the entire foot is within
+it.
+
+After region growing terminates, the mean and standard deviation of the
+points in the region are computed.  Outliers (more than FILTER_SCALE * sigma
+away from the mean in Z) are rejected.  Then the highest point (smallest Z)
+amongst the remaining points is retained as the position of the foot.  The min
+and max tilt are then computed, using a combinations library (combinations.hpp)
+to pick up all combinations of feet.  All sets of settled/unsettled are
+determined using a binary bit mask counting from 0 to 7 (one bit per foot).
+
+Note that for efficiency, the foot Z locations are cached for reuse as they
+are computed, since settling and clocking mean each foot location is used
+many, many times.  The K-D tree must be searched for each foot location,
+but once it is determined, the Z of the foot at that spot is computed only
+once.  There are two separate caches for delta-tilt, since the SEIS and WTS
+feet are not the same size.
+
+NOTE:  Holes or gaps in the XYZ image are generally ignored.  The central
+position of each foot has to match the given XYZ coordinate (within
+POINT_EPSILON), so holes in the middle of a foot, if big enough, could cause
+the location to be rejected.  But no analysis is done of other holes in
+the area the foot "should" cover.  Holes represent unknowns, so normally the
+presence of holes would be a red flag for placement.  However, the feet are
+generally small enough that significant unknown terrain within one foot patch
+is unlikely.  Also, we look for the maximum within the foot patch, so holes
+would have to also be the highest terrain around to cause a problem.  However,
+it does open the possibility of single pixels representing an entire foot
+patch.
+
+TBD Items
+---------
+TBD!!!!:  Improve handling of holes by computing how many pixels the foot
+should cover at the given distance and have a percentage threshold to indicate
+the maximum number of holes (i.e. minimum coverage of pixels) to allow for a
+given location.  Perhaps also a threshold for the absolute minimum number of
+pixels in a foot patch.  Throw out locations that do not meet this criteria.
+This is complicated by the potential lack of a camera model (if an ortho XYZ
+is input, which is a common use case) - a test would have to be made whether
+a camera model was available, and assume a constant iFOV if not.
+
+TBD!!!!:  Output labels are not being set correctly.
+
+.PAGE
+
+Note: This program started out as NSYTTILT, an InSight-specific program.
+It was multimissionized and renamed MARSITILT.  All of the InSight
+functionality is in this program; i.e. NSYTTILT could be obsoleted.
+
+HISTORY:
+  2015-06    S.Myint - Initial version of tilt and delta tilt programs
+  2015-10    rgd - Nearly complete rewrite; merged tilt and delta tilt
+  2015-11    rgd - Added clocking; added normal and Z outputs; fixed many
+  		   other issues; wrote help.
+  2016-01    rgd - Added outlier rejection, and caching of foot points
+  2018-01    Steven Lu - Implement radial and cross-radial offsets for WTS.
+  2018-07    Steven Lu - Added UPX_OUT and XPX_OUT.
+  2019-12-23 Walt Bunch - Initialized some variables; cleaned up -Wall warnings.
+                          Added unit test.
+  2020-05-26 Walt Bunch - Replaced sprintfs.
+  2020-07    rgd   Multimissionized, added M20 helicopter support
+
+COGNIZANT PROGRAMMER: B. Deen
+
+.LEVEL1
+.VARI INP
+Input XYZ image.
+Must be 1 3-band file
+or (x,y,z) triplet
+
+.VARI OUT
+Output file.
+Must be 1 filename
+
+.VARI UIX_OUT
+Optional output
+instrument UIX image
+
+.VARI ZIX_OUT
+Optional output
+instrument ZIX image
+
+.VARI UPX_OUT
+Optional output
+instrument UPX image
+
+.VARI XPX_OUT
+Optional output
+instrument XPX image
+
+.VARI P_COORD
+Coordinate system used 
+for UPX_OUT and XPX_OUT
+parameters
+
+.VARI NAVTABLE
+Corrected navigation
+filename.
+
+.VARI INST
+Instrument
+to use
+
+.VARI DELTA
+Selects standard or
+delta tilt
+
+.VARI TILT_THRESHOLD
+Maximum allowed tilt
+
+.VARI SINKAGE
+How much feet can sink
+
+.VARI CLOCK_RANGE
+Range for clocking
+
+.VARI CLOCK_STEP
+Step size for clocking
+
+.VARI DELTA_WTS_RANGE
+Clocking range for WTS
+with delta tilt.  Defaults
+to CLOCK_RANGE
+
+.VARI DELTA_WTS_STEP
+Step size for clocking
+WTS with delta tilt.
+Defaults to CLOCK_STEP
+
+.VARI WTS_OFF
+Radial and cross-radial offsets
+between SEIS and WTS
+
+.VARI LEAF_MAX_SIZE
+Control for KD tree
+
+.VARI POINT_EPSILON
+Control for KD tree search
+
+.VARI FOOT_WINDOW
+Window size for foot search
+
+.VARI BAD_TILT
+Value to use for
+invalid tilt
+
+.VARI FILTER_SCALE
+Sigma multiplier for
+outlier rejection filter.
+
+.VARI OMP_ON
+Turns on or off parallel
+processing (default: on)
+
+.VARI CONFIG_PATH
+Path used to find
+configuration/calibration
+files.
+
+.VARI POINT_METHOD
+Specifies a mission-
+specific pointing
+method to use
+
+.VARI NOSITE
+Disables coordinate
+system sites.
+
+.VARI DATA_SET_NAME
+Specifies the full name given
+to a data set or a data product.
+
+.VARI DATA_SET_ID
+Specifies a unique alphanumeric
+identifier for a data set or data
+product.
+
+.VARI RELEASE_ID
+Specifies the unique identifier
+associated with the release to the
+public of all or part of a data set.
+The release number is associated with
+the data set, not the mission.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique
+identifier assigned to a data
+product by its producer.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier
+of an entity associated with the
+production a data set.
+
+.VARI PRODUCER_INST
+Specifies the full name of the
+identity of an entity associated
+with the production of a data set.
+
+.VARI TARGET_NAME
+Specifies a target.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target.
+
+.VARI RSF
+Rover State File(s) to use.
+
+.VARI DEBUG_RSF
+Turns on debugging of RSF
+parameter.
+
+.VARI COORD
+Coordinate system to use.
+
+.VARI COORD_INDEX
+Coordinate system index for
+some COORD/mission combos.
+
+.VARI FIXED_SITE
+Which site is FIXED for
+rover missions.
+
+.VARI SOLUTION_ID
+Solution ID to use for
+COORD_INDEX
+
+.LEVEL2
+.VARI INP
+Input files contain the XYZ coordinates. If three filenames are given,
+they all should be single band files each containing X, Y and Z values
+in that order.  If only one filename is given, it should be a 3-band
+file with bands in (X,Y,Z) order.
+
+The input files are in REAL (float) format.
+
+.VARI OUT
+Output file containing the tilt values.  Three bands, float format:
+
+Band 1: State band (contains goodness flag)
+Band 2: Minimum tilt or delta tilt
+Band 3: Maximum tilt or delta tilt
+
+See "Output File Format" in the main help for more details.
+
+.VARI UIX_OUT
+Optional output file containing the normal of the instrument (at the middle
+of the clock range) if the instrument was placed at this pixel.  It is a
+3-band output in float format, containing a unit vector (very similar to
+UVW surface normal files).  See the main help for further description.
+
+.VARI ZIX_OUT
+Optional output file containing the Z level of the instrument (at the middle
+of the clock range) if the instrument was placed at this pixel.  It is a
+1-band output in float format.  See the main help for further description.
+
+.VARI UPX_OUT
+Optional output file containing the normal of the instrument (at the middle
+of the clock range) if the instrument was placed at this pixel. It is similar 
+to UIX_OUT except that it is generally measured in Lander frame instead of Site
+frame. The coordinate system can be defined using P_COORD.
+
+.VARI XPX_OUT
+Optional output file containing XYZ coordinates of the instrument (at the middle
+of the clock range). It is similar to ZIX_OUT except that it is generally 
+measured in Lander frame and it contains all XYZ coordinates. The coordinate
+system can be defined using P_COORD.  
+
+.VARI P_COORD
+Coordinate system used for UPX_OUT and XPX_OUT parameters. If not given, it 
+defaults to Lander (Rover) frame. This parameter is ignored unless either 
+UPX_OUT or XPX_OUT is specified.  
+
+.VARI NAVTABLE
+Corrected navigation filename.
+If marsnav was run on the input image, it created a table of corrected
+pointing parameters. If you refer to this table using NAVTABLE it
+will override the pointing parameters (e.g. azimuth and elevation) in the
+picture labels, giving different (and presumably better) output coordinates.
+
+.VARI INST
+Instrument to use.  Possible values for InSight:
+        SEIS, HP3, WTS, BOTH
+and for Mars 2020:
+        HELI
+One must be given; there is no default.  For delta-tilt, this must be SEIS.
+
+.VARI DELTA
+Keyword that selects standard or delta tilt.  Delta tilt computes the
+difference in tilt between SEIS and WTS.  See the main help for algorithm
+details.  The default is standard tilt.
+
+.VARI TILT_THRESHOLD
+Maximum allowed tilt.  If the maximum tilt goes beyond this threshold,
+the status band will change to 3 (execeds threshold).
+
+.VARI SINKAGE
+Specifies how much each foot can sink into the ground.  See the main help
+for detailed algorithm.
+
+.VARI CLOCK_RANGE
+Range of clock values to check, in the form (min,max).  Clocking is rotation
+of the instrument about its axis (which is not controlled for InSight).
+See the main help for details.
+
+.VARI CLOCK_STEP
+Step size for clocking.  Small steps give more precision, but greatly
+increase execution time.
+
+.VARI DELTA_WTS_RANGE
+Like CLOCK_RANGE, but applies only to WTS with delta tilt.  In other words,
+in delta-tilt mode, CLOCK_RANGE determines the range of the SEIS while
+DELTA_WTS_RANGE determines the range of the WTS.
+
+If not specified, this defaults to CLOCK_RANGE.
+
+.VARI DELTA_WTS_STEP
+Like CLOCK_STEP, but applies only to WTS with delta tilt.  In other words,
+in delta-tilt mode, CLOCK_STEP determines the step size for the SEIS while
+DELTA_WTS_STEP determines the step size for the WTS.
+
+If not specified this defaults to CLOCK_STEP.
+
+.VARI WTS_OFF
+There are radial and cross-radial offsets between the WTS and SEIS, because
+the grapples are not coaxial in the nominal placement.  The WTS position is
+thus offset by an amount determined in the WTS_OFF parameter. WTS_OFF parameter
+has 1 or 2 valid values. The first value defines radial offset along the
+direction back to the Lander(IDA) frame origin, and the second value defines
+cross-radial offset along the direction perpendicular to radial direction.
+Radial offset defaults to 0.05 meters, and cross-radial offset defaults to 0.
+The cross-radial offset is 0 if it is unspecified. Consider positive toward the
+Lander frame origin for radial and to the right (+Y when looking down +X) for
+cross-radial. Both radial and cross-radial offsets are applied after WTS
+rotations (instrument clocking and rotations due to tether) are done. 
+See the MARSITILT help for details.
+
+.VARI LEAF_MAX_SIZE
+Controls the leaf size for the KD tree used for searching for foot locations.
+See the main help for details.
+
+.VARI POINT_EPSILON
+Controls how close KD tree search results have to be to the nominal point.
+See the main help for details.
+
+Some notes on how the default was computed follow.  The MSL navcam is 0.82
+mrad/pixel; InSight IDC should be about the same.  None of the workspace is
+more than 4m away.  So the pixel size at extreme range is:
+	4*tan(.00082) = .00328m
+
+So if we don't find a point within 4mm of where we're looking, we don't
+have a point (e.g. there's a hole at that location).  Close in, say 1.2m range:
+	1.2*tan(.00082) = .000984m
+Call it 1mm.  So with a point_epsilon of .004 we tolerate gaps of up to 4
+pixels in the near field.
+
+
+.VARI FOOT_WINDOW
+Window size for foot search (see main help).  This is actually the half size
+(distance on either side of center).  Default is calculated as follows.
+At 1.2m, the IDC pixel size is .984mm (see POINT_EPSILON help).  For a 5cm
+radius foot (HP3, the largest), the number of pixels is .05/.000984 = 50.8130
+pixels.  Call it 75 for margin (to avoid clipping too soon).  Farther out is
+smaller, so clipping is not a danger.
+
+It may be advantageous to adjust the foot window for ortho mosaics to reflect
+the actual pixel scale (size in pixels of a 5cm patch, plus some margin).
+
+.VARI BAD_TILT
+Value to use in the min/max tilt bands to indicate an invalid (unknown) tilt.
+
+.VARI FILTER_SCALE
+This parameter is used to control the outlier filter.  Points with a Z
+excursion from the average larger than filter*sigma (where sigma is the
+standard deviation of all points within the patch being considered) will
+be discarded.  This helps to eliminate spikes and noise hits in the XYZ
+data.  However, too small a value could make it miss small rocks.
+
+.VARI OMP_ON
+Turns on or off parallel processing.  The default is on.  The main help
+describes some environment variables that can further control parallel
+processing.  Note that this program uses standard OpenMP (which is built in
+to the gcc/g++ compilers), so further details can be found in the OpenMP
+documentation.
+
+.VARI CONFIG_PATH
+A colon-separated list of directories in which to look for configuration
+and calibration files.  Environment variables are allowed in the list
+(and may themselves contain colon-separated lists).  The directories are
+searched in order for each config/cal file when it is loaded.  This allows
+multiple projects to be supported simultaneously, and allows the user to
+override any given config/cal file.  Note that the directory structure below
+the directories specified in this path must match what the project expects.
+For example, Mars 98 expects flat fields to be in a subdirectory named
+"flat_fields" while Mars Pathfinder expects them to be directly in the
+directory specified by the path (i.e. no intermediate subdirectories).
+
+.VARI POINT_METHOD
+Specifies a mission-specific pointing method to use.  Normally this
+parameter is not used, in which case the "default" pointing methods
+are used.  Some missions may have special, or alternate, pointing
+methods available, which are indicated by this string (for example,
+backlash models, using arm joint angles instead of x/y/z/az/el, etc).
+A substring search is used, so multiple methods (where that makes sense)
+can be specified by separating the keywords with commas.
+
+Note that nav files created using one pointing method will most likely
+not be compatible with a mosaic created using a different pointing method.
+
+The methods available vary per mission, but some methods available at
+the time of this writing are:
+
+BACKLASH : Mars 98 SSI only.  Selects a backlash pointing model,
+which adjusts the telemetered azimuth and elevation values based on
+knowledge of the camera's mechanical backlash and the direction the
+motor was travelling when the image was taken.
+
+.VARI NOSITE
+Disables all label-derived parameters to the Site mechanism which underlies
+coordinate systems.  This forces all sites to be identical, with all rotations
+and offsets set the same.  In the case of MPF or Mars 98, this disables
+the lander quaternion and offset (sets them to identity and 0, respectively).
+This option should not be used with images taken from different vantage
+points (e.g. the spacecraft moved, or mixing a lander and a rover) or
+invalid results will be obtained.  The use of this option invalidates the
+Fixed coordinate frame; any values reported in the Fixed frame will not
+correctly reflect the orientation of the lander/rover.
+
+Obviously, this option should be rarely used; it is intended for when the
+image labels defining the site are invalid or inconsistent.
+
+.VARI DATA_SET_NAME
+The DATA_SET_NAME typically identifies the instrument that acquired the
+data, the target of that instrument, and the processing level of the data.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_NAME.
+
+.VARI DATA_SET_ID
+The DATA_SET_ID value for a given data set or product is constructed
+according to flight project naming conventions.  In most cases the
+DATA_SET_ID is an abbreviation of the DATA_SET_NAME.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_ID.
+
+.VARI RELEASE_ID
+When a data set is released incrementally, such as every three months during
+a mission, the RELEASE_ID is updated each time part of the data set is released.
+For each mission(or host id if multiple spacecrafts), the first release of a data
+set should have a value of "0001".
+This value is copied to the output label, property IDENTIFICATION,
+keyword RELEASE_ID.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique identifier assigned to a data product by
+its producer. Most commonly, it is the filename minus the extension.
+This value is copied to the output label, property IDENTIFICATION,
+keyword PRODUCT_ID.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier of an entity associated with the
+production of a data set. This value is copied to the output label,
+property IDENTIFICATION, keyword PRODUCER_ID.
+
+.VARI PRODUCER_INST
+Specifies the identity of a university, research center, NASA center or other
+institution associated with the production of a data set.
+This value is copied to the output label, property IDENTIFICATION, keyword
+PRODUCER_INSTITUTION_NAME.
+
+.VARI TARGET_NAME
+Specifies a target.  The target may be a planet, satellite, ring, region, feature,
+asteroid or comet.  This value is copied to the output label, property
+IDENTIFICATION, keyword TARGET_NAME.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target. This value is copied to the output
+label, property IDENTIFICATION, keyword TARGET_NAME.
+
+.VARI RSF
+Rover State File.  This is a list of filenames to load containing
+Rover State information.  These files contain position and orientation
+information for a rover (or other mobile spacecraft) at various sites.
+They are in XML format.  See the "Rover Motion Counter (RMC) Master File SIS"
+for details on these files.
+
+Rover State Files have a priority order.  The files listed first have
+the highest priority.
+
+Environment variables may be used in the list.
+
+For MER, if a directory is specified, then that directory is searched for
+RMC Master files and any found are loaded.  The directory structure and
+filename convention is covered in the RMC SIS.  The directory specified
+is the one containing "master", so if <dir> is the name specified in the
+RSF parameter, the following files will be searched for:
+
+<dir>/master/<mission>_Master.svf
+<dir>/master/<mission>_Site_<n>_Master.rvf
+
+The name of each file loaded is printed to the stdout log for reference.
+
+.VARI DEBUG_RSF
+If enabled, this causes the internal database of RMC locations to be
+printed out to the stdout log.  This is after the RSF files have been
+loaded and the coordinate systems read from the input label(s).
+
+.VARI COORD
+The coordinate system to use for the output roughness (really just determines
+the unit of measurement).  The interpretation of the values is dependent on
+the mission.  Some representative missions are listed here:
+
+Fixed - The Fixed frame.  This is the ultimate reference frame
+    (see also FIXED_SITE for rover missions).
+Instrument - (default) The "natural" frame for the instrument 
+    (of the first input image).  MPF: Lander or Rover; M98: MVACS; MER: Rover.
+Site - A major Site frame.  For rover missions, COORD_INDEX specifies which
+    Site frame to use.  Non-rover missions treat this as Fixed.
+Rover - An instance of the Rover frame.  For rover missions, COORD_INDEX
+    specifies which instance of the rover frame to use.  Non-rover mission
+    use the spacecraft frame (e.g. Lander for M98).
+Local_Level - An instance of a Local Level frame.  This is typically
+    coincident with the Rover frame (in XYZ) but oriented toward North
+    like the Site and Fixed frames.  For MER, this is an instance of a
+    Drive index move.
+
+.VARI COORD_INDEX
+The index specifies which instance of a coordinate system to use.  It is
+currently applicable only to rover-based missions, but could have other
+uses.  The index is equivalent to the Rover Motion Counter (RMC) for MER
+and FIDO.
+
+For MER/FIDO, there are many Site frames.  Each is numbered with a single
+index.  For Site Frames, coord_index specifies which to use.  Likewise,
+there are many Local_Level and Rover frames, corresponding to values of
+the RMC.  The multiple instances of this frame are selected by COORD_INDEX.
+
+Generally COORD_INDEX defaults sensibly so you don't usually need to
+specify it.  It will default to the instance used by the first input.
+
+.VARI FIXED_SITE
+Specifies which major Site is the "Fixed" Site for this run.
+
+Historically, MPF and M98 had a single "Surface Fixed" frame which never
+moved, and which all other coordinate system frames were referenced to.
+With the advent of long-range rovers (such as MER and FIDO), that became
+insufficient.  The rover traverses far enough that errors in knowledge of
+coordinate system offset and orientation become unacceptable.
+
+For this reason, a system of major Sites was introduced.  Periodically
+during the mission, a Site frame is declared.  This then becomes the
+reference frame for all activities until the next Site is declared.
+References are kept local, and errors don't propagate across Sites.
+
+However, if images from more than one Site are combined together, the
+Site's must be placed relative to each other.  Therefore a single reference
+frame is still needed to combine different sites.
+
+The FIXED_SITE parameter controls which of the major Site frames is
+the reference ("fixed") site for this program run.  This fixed frame
+can vary in different program runs, but is constant throughout one
+execution.
+
+If not specified, FIXED_SITE defaults to the minimum Site number (i.e.
+lowest numbered, or earliest chronologically) used in all input images.
+Normally this default is sufficient; rarely must FIXED_SITE be specified.
+
+One or more Rover State Files must usually be specified in order to combine
+image from more than one Site.  These describe the relationship between
+sites.  See the RSF parameter.
+
+.VARI SOLUTION_ID
+Specifies which solution ID to use when specifying the coordinate system.
+
+There are potentially many different definitions for the same coordinate
+system.  These are identified via a unique Solution ID.  If this parameter
+is given, only the specified solution's definition is searched for.  Without
+it, the "best" available solution is chosen.
+
+It is extremely rare that this parameter should be needed.  The default
+will be sufficient in almost every case.
+
+Note that the current MER implementation requires that a value for COORD_INDEX
+also be provided, in order for this parameter to take effect.
+

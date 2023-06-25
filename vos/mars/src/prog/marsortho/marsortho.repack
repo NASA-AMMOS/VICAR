@@ -1,0 +1,5 @@
+$ vpack marsortho.com -mixed -
+	-s marsortho.cc -
+	-i marsortho.imake -
+	-p marsortho.pdf
+$ Exit

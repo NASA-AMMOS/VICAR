@@ -1,0 +1,5 @@
+$ vpack marsxyz.com -mixed -
+	-s marsxyz.cc -
+	-i marsxyz.imake -
+	-p marsxyz.pdf
+$ Exit

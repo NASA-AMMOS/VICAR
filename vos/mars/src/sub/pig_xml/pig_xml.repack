@@ -1,0 +1,7 @@
+$ vpack pig_xml.com -mixed -
+	-s PigXerces.cc PigSolutionManager.cc PigRoverStateManager.cc -
+	   PigCameraMapper.cc PigCameraMapEntry.cc PigPointingParams.cc -
+	   PigPCCameraModel.cc PigPointingCorrections.cc -
+	   PigSurfaceModelParams.cc -
+	-i pig_xml.imake
+$ Exit

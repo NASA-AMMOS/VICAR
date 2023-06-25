@@ -1,10 +1,11 @@
 process help=*
-PARM INP TYPE=STRING COUNT=(3:10)
+PARM INP TYPE=STRING COUNT=(3:20)
 PARM OUT TYPE=STRING COUNT=(1:2)
 PARM INVERSE TYPE=KEYWORD COUNT=(0:1) VALID=("DIRECT","INVERSE") +
  DEFAULT="DIRECT"
 PARM NLW TYPE=INTEGER COUNT=(0:1) VALID=(3:101) DEFAULT=5
 PARM NSW TYPE=INTEGER COUNT=(0:1) VALID=(3:101) DEFAULT=5
+PARM BAND TYPE=INTEGER COUNT=(0:1) DEFAULT=--
 END-PROC
 
 .TITLE
@@ -29,6 +30,11 @@ all the input images. Same format as input.
 "scale" parameter for scaling. Without scaling the topo image values
 range from 1 to nin where nin is the number of input images.
 Format is REAL.
+
+If the input is multi-band (color), the BAND parameter says which band
+to analyze.  If not given, or if BAND is larger than the number of bands,
+the last band is used.  All bands are used to create the color output image
+though, based on the analysis of that one band.
  
 Restrictions:
 The focus must monotonically increase (or decrease) in the order of the
@@ -56,6 +62,7 @@ Note a low pass median filter will improve the "topo" image.
 
 HISTORY:
 2-2004  J Lorre. 
+2021-04-14 rgd	Modified to work with color, and larger images
 COGNIZANT PROGRAMMER:  Jean Lorre
 
 .LEVEL1

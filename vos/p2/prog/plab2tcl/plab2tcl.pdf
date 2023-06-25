@@ -1,0 +1,96 @@
+process help=*
+parm inp      type=string
+parm property type=string default="GEOTIFF"
+parm keyword  type=(string,99) default=""
+parm val      type=name
+parm vtype    type=int valid=(0,2,4,7,8)
+parm element  type=int valid=(0:9999999) default=1
+parm sequence type=int valid=(0:9999999) default=1
+END-PROC
+.TITLE
+plab2tcl - get value from VICAR GeoTIFF state label to TAE TCL variable
+.HELP
+PURPOSE:
+plab2tcl gets a value (int, double, or string) and puts it into
+a TAE TCL variable.  The value is a GeoTIFF parameter in the
+VICAR label.  These are always found in the VICAR state label
+under the property "GEOTIFF".
+
+If the selection is not found, or wrong type, etc., a special value
+of -999 (int) -999.0 (real) or "-999" (character string) is output
+to the TAE TCL variable.
+
+Multiple occurrences of the GeoTIFF keyword are selected by the
+parameter element (since VICAR calls these elements) and which 
+item in a vector is handled by the parameter sequence.
+EXECUTION:
+
+Examples
+
+plab2tcl AUSTRALIA val=s1 keyword=GTRASTERTYPEGEOKEY vtype=0
+
+          gets the rastertype from the file AUSTRALIA and puts
+          into the TCL variable s1 as a string
+
+plab2tcl AUSTRALIA val=n1 keyword=GTRASTERTYPEGEOKEY vtype=4
+
+          gets the rastertype from the file AUSTRALIA and puts
+          into the TCL variable n1 as an integer (converts
+          the string to an integer)
+
+OPERATION:
+plab2tcl reads the part of the VICAR label that contains the
+GeoTIFF information and tries to find the keyword (case 
+insensitive).   When found, the value is placed in the output
+parameter.  Type conversion is performed according to the user
+request in the parameter vtype.
+
+Any errors cause -999 (int), -999.0 (real), or "-999" (string)
+to  be placed in the output parameter.
+ TIMING: 
+
+Less than one second.  
+
+ ORIGINAL PROGRAMMER:    A. Zobrist          02 Feb 2004
+ COGNIZANT PROGRAMMER:   A. Zobrist          02 Feb 2004
+ 
+ REVISION HISTORY
+2008-01-02 wlb switched to USES_ANSI_C AND LIB_CARTO; misc cleanup
+2022-06-28 B. Crocco afids to opensource
+  
+.LEVEL1
+.variable inp
+VICAR input file name
+.variable property
+The property name;
+is case insensitive
+.variable keyword
+The property keyword; is
+case insensitive
+.variable val
+TAE TCL name without &, gets
+the found value or -999
+.variable vtype
+0 - string
+2 - integer
+4 - integer
+7 - double
+8 - double
+.variable element
+for selecting when there are
+multiple of same GeoTIFF kwd
+.variable sequence
+for selecting when there is
+a vector of values
+.level2
+.variable val
+don't forget to declare the TAE TCL variable, proper type.  The 
+routine will perform conversion of type per user request in vtype.
+All floating values are double precision.
+
+Failure to find or convert the label value places -999 in val,
+converted to the proper type (-999,-999.0,"-999").
+.variable vtype
+The types 2 and 7 are provided for convenience, TAE TCL has only the
+three types string, integer, and double.
+.END

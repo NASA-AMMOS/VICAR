@@ -1,0 +1,4 @@
+$ vpack edr_get_site.com -mixed -
+	-s edr_get_site.sh -
+	-i edr_get_site.imake
+$ Exit

@@ -1,0 +1,4 @@
+$ vpack create_rvf.com -mixed -
+	-s create_rvf.sh -
+	-i create_rvf.imake
+$ Exit

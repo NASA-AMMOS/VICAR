@@ -1,0 +1,182 @@
+PROCESS    HELP=*
+PARM INP      TYPE=(STRING,99) COUNT=(1:2)
+PARM OUT      TYPE=(STRING,99) COUNT=1
+PARM THRESH   TYPE=INT COUNT=1 DEFAULT=-32000
+PARM OCNTHRSH TYPE=INT COUNT=1 DEFAULT=-32000
+PARM POW      TYPE=REAL COUNT=1 DEFAULT=2.0 VALID=(0.5:3.0)
+PARM DEMFAC   TYPE=REAL COUNT=1 DEFAULT=1.0 VALID=(0.001:100.0)
+PARM EDGETYPE TYPE=KEYWORD COUNT=(0:1) DEFAULT=EDGEAUTO +
+                    VALID=(EDGEAUTO,EDGEOFF,EDGEON)
+PARM NEGTYPE  TYPE=KEYWORD COUNT=(0:1) DEFAULT=NONEG +
+                    VALID=(NONEG,NEG)
+END-PROC
+.TITLE
+VICAR/IBIS Program  demfix
+.HELP     
+PURPOSE
+
+     demfix fills in holes in a DEM (Digital Elevation Model)
+     using another digital elevation model.  Both must have 
+     Geotiff labels.  An example would be to fix holes in a 
+     SAR image (due to layover or water) using DTED level I.
+     
+     The images must be in the same map projection but can
+     have different scales and offsets.  It is desirable but
+     not necessary for the secondary image to cover the area
+     of the image being fixed, or at least the part of the 
+     image containing holes.
+     
+     A connected component detects connected holes and their
+     boundary pixels.  The corresponding patch from the other
+     image is generated.  It is compared at the edge pixels 
+     and a "boost" value is calculated to align the patches.
+     The patch from the other image might have non-aligned
+     pixels so bilinear interpolation is used to find the 
+     best value for the pixel centers in the primary image.
+     
+     If the second image does not cover a patch, the pixel 
+     value is calculated by 1/n interpolation on all of the
+     edge pixels of the primary image.  You could think of
+     of this as a "soap bubble film" covering the patch.
+     
+     An ocean threshold is provided that will use the second-
+     ary input to mask out the ocean areas.  For SAR data
+     a value of 20 is recommended.  All SAR values less than
+     20 and the secondary input is zero (nearest neighbor)
+     will convert to zero.  Do not use this parameter if
+     ocean is not present.  IF YOU DO NOT USE THIS PARAMETER
+     IN AN OCEAN AREA, THE PROGRAM WILL RUN FOR A LONG TIME OR
+     POSSIBLY FAIL.
+     
+     Note on images with gores (such as aster).  Make the gore
+     value greather than the threshold (using photoshop if
+     necessary).  Then the gores will be left alone.  If a hole
+     is on the edge of the data, then the hole and the gore will
+     interact, the hole interpolating in some of the gore value.
+  
+.PAGE
+TAE COMMAND LINE FORMAT
+
+     demfix INP=(A,B) OUT=C THRESH=N 
+
+     where
+
+     A                   is a digital elevation model with 
+                         "holes".
+     B                   is a digital elevation model with 
+                         values to fill the holes.
+     C                   is a copy of A with the holes filled
+     N                   is the integer value that defines 
+                         holes in the image A.  Values less
+                         than or equal N is part of a hole.
+.PAGE
+OPERATION
+     demfix fills in holes in a DEM (Digital Elevation Model)
+     using another digital elevation model.  Both must have 
+     Geotiff labels.  An example would be to fix holes in a 
+     SAR image (due to layover) using DTED level I.
+     
+     The images must be in the same map projection but can
+     have different scales and offsets.  It is desirable but
+     not necessary for the secondary image to cover the area
+     of the image being fixed, or at least the part of the 
+     image containing holes.
+     
+     A connected component detects connected holes and their
+     boundary pixels.  The corresponding patch from the other
+     image is generated.  It is compared at the edge pixels 
+     and a "boost" value is calculated to align the patches.
+     The patch from the other image might have non-aligned
+     pixels so bilinear interpolation is used to find the 
+     best value for the pixel centers in the primary image.
+     The boosted patch is adjusted by the residual differences
+     of edge pixels around the hole.  All the residuals are
+     weighted by 1.0/distance-squared from each pixel in the hole
+     so the patch will smoothly meet the primary DEM at all of
+     the edges.
+     
+     If there is no second image, the pixel value is calculated
+     by 1/n**2 interpolation on all of the edge pixels of the primary
+     image.  You could think of this as a "soap bubble film"
+     covering the patch (though not exactly).
+     
+
+WRITTEN BY:                   Al Zobrist         28 JUL 02
+COGNIZANT PROGRAMMER:         Al Zobrist
+Revisions:
+  2008-01-10 WLB Switched to USES_ANSI_C AND LIB_CARTO; misc cleanup
+  2015-11-19 WLB Migrated to MIPL
+  2019-08-22 WLB IDS-7922 - initialized a bunch of variables.
+  2022-07-14 B. Crocco afids to opensource
+  
+.PAGE
+.LEVEL1
+.VARIABLE INP
+Input 1: Primary DEM
+Input 2: Secondary DEM (optional)
+.VARIABLE OUT
+Copy of primary DEM, holes
+corrected by secondary DEM
+.VARIABLE THRESH
+Values less than or equal to
+this are holes in the
+primary DEM
+.VARIABLE OCNTHRSH
+Values less than or equal to
+this are set to 0 if the
+secondary DEM is 0
+.VARIABLE POW
+User can vary the 1/d-squared
+interpolation by changing this
+.VARIABLE DEMFAC
+Factor for vertical scale
+difference (see help 2)
+.VARIABLE EDGETYPE
+EDGEON   - will recalculate all
+           edge pixels
+EDGEOFF  - no special edge
+           treatment
+EDGEAUTO - algorithm decides
+           which case
+.VARIABLE NEGTYPE
+NONEG - output negative values
+          changed to zero
+NEG   - output negative values
+          not changed
+.LEVEL2
+.VARIABLE INP
+The primary DEM is the one to be fixed.  Holes in the data are represented
+by values less than or equal to the parameter THRESH.
+
+The secondary DEM is used to supply values to fill the holes in the 
+primary DEM.  Several adjustments are done to fit the correction to the
+hole:
+     1.  The patch is "boosted" by the average of the difference of edge
+         pixels around the hole.
+     2.  The boosted patch is adjusted by the residual differences of
+         edge pixels around the hole.  All the residuals are weighted 
+         by 1.0/distance-squared from each pixel in the hole so the
+         patch will smoothly meet the primary DEM at all of the edges.
+.VARIABLE DEMFAC
+If the primary image has pixel values representing .1 meter and the
+secondary is in meters use demfac=10.0 to correct the values going
+from the secondary to the primary.
+
+Note that an offset (different values for sea level in the two images)
+would have no effect  on this algorithm since the second image patch is 
+"boosted" to agree with the primary image according to overlapping
+pixels.
+.VARIABLE POW
+The value 2 gives 1/distance-squared interpolation on edge pixels around
+the hole.  This means that the residual differences between the primary
+and secondary DEM's are interpolated to each filled (hole) pixel with a
+weight of one over the distance squared (distance between the hole pixel
+and the edge pixel).
+
+The value 1 gives one over distance interpolation.  
+
+Values between .05 and 3.0 are allowed.  The default value is 2.0.
+.VARIABLE EDGETYPE
+Use this if your DEM has bad pixels on the edge.  For example some
+SRTM images have changes of 1000 meters in one pixel at the edge.
+.END

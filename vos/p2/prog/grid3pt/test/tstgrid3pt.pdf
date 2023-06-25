@@ -1,0 +1,54 @@
+procedure
+refgbl $echo
+parm version string def="ibis-1"
+parm org string def="column"
+
+local rv11 real
+local rv21 real
+local rv31 real
+local rv41 real
+
+local rv12 real
+local rv22 real
+local rv32 real
+local rv42 real
+
+local rv13 real
+local rv23 real
+local rv33 real
+local rv43 real
+
+local iix1 int
+local iix2 int
+local iix3 int
+
+body
+
+!let _onfail="continue"
+let $echo="yes"
+enable-log
+! test all parameters
+
+gengrid2 out=xxx1 ncol=8 nah=3 nav=4 +
+     l1=2.2 s1=5.5 +
+     l2=2.6 s2=7.5 +
+     l3=2.4 s3=5.7 +
+     l4=2.8 s4=7.7
+mf3 xxx1 func="c3=@index$c4=100-@index"
+ibis-list xxx1 cols=(1,2,3,4)
+
+grid3pt xxx1 cols=(1,2,3,4) v11=rv11 v21=rv21 v31=rv31 v41=rv41 +
+       v12=rv12 v22=rv22 v32=rv32 v42=rv42 +
+       v13=rv13 v23=rv23 v33=rv33 v43=rv43
+
+write "&rv11 &rv21 &rv31 &rv41"
+write "&rv12 &rv22 &rv32 &rv42"
+write "&rv13 &rv23 &rv33 &rv43"
+
+! now test the index output
+
+grid3pt xxx1 cols=(1,2,3,4) ix1=iix1 ix2=iix2 ix3=iix3
+
+write "&iix1 &iix2 &iix3"
+disable-log
+end-proc

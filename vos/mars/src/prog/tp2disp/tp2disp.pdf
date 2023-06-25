@@ -1,0 +1,83 @@
+process help=*
+parm inp    type=string count=1:200
+parm tp     type=string count=1
+
+! used by library beneath mars_setup()
+PARM CONFIG_PATH STRING DEFAULT="$MARS_CONFIG_PATH"
+PARM POINT_METHOD TYPE=STRING COUNT=(0:1) DEFAULT=--
+end-proc
+
+.title
+VICAR Program tp2disp - generates a set of disparity maps from an XML tiepoint file
+.help
+PURPOSE
+
+    TP2DISP generates a set of disparity maps from an XML tiepoint file
+
+.PAGE
+TAE COMMAND LINE FORMAT
+
+    TP2DISP INP=(imgfiles) TP=(inptie)
+     
+    where
+
+    imgfiles is one or more VICAR images suitable for creating a PigFileModel.
+    inptie   is an input XML tiepoint files used to generate disparity mappings.
+
+    Examples
+      tp2disp img.lis x.tie
+
+.PAGE
+OPERATION
+
+    TP2DISP generates a set of disparity map images from an input
+    tiepoint file. Each tiepoint is used to set a line/samp pixel
+    value in the disparity maps of the two tied images. Every image
+    referenced in the tiepoint file must be provided in the set of
+    input images. Only the input image labels are used, so either EDR 
+    or RDR files can be used.
+
+    Output disparity map image naming is based on the unique IDs of
+    each input image file. A given tiepoint having a left and right
+    image will be stored in two new files named
+    LEFTID_RIGHTID_DISP.VIC and RIGHTID_LEFTID_DISP.VIC where the
+    shapes of the first and second DSP images are derived respectively
+    from the LEFTID and RIGHTID input files. The output images are
+    written to the current directory.
+
+.PAGE
+
+RESTRICTIONS
+
+     None known.
+
+.PAGE
+WRITTEN BY:            W. L. Bunch
+
+COGNIZANT PROGRAMMER:  W. L. Bunch
+
+REVISIONS: 
+  2014-09-29 WLB    Initial version.
+  2015-03-04 WLB    Enhanced pdf doc and changed output suffix from IMG to VIC.
+
+.LEVEL1
+
+.VAR INP
+Image files referenced by TP tiepoint file.
+
+.VAR TP
+Tiepoint file.
+
+.LEVEL2
+
+.VAR INP
+A required EDR or RDR type file corresponding to the image referenced
+in the tiepoint file. Only the RHS labels are used, so either EDR 
+or RDR files can be used.
+
+.VAR TP
+An input XML text file representing a set of tiepoints. Each tiepoint
+is used to set a line/samp pixel value in the disparity maps of the
+two tied images.
+
+.end

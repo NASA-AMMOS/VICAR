@@ -3,13 +3,14 @@
  
 gen a.img NL=12 NS=15
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
-list INP=a.img
+list INP=a.img 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Thu May 26 15:45:35 2016
+ Task:GEN       User:          Date_Time:                        
      Samp     1       3       5       7       9      11      13      15
    Line
       1       0   1   2   3   4   5   6   7   8   9  10  11  12  13  14
@@ -30,12 +31,13 @@ SARGONB version 2016-05-26
  3 Intersection points for line    5
 ??I - Fixup successful
 Pts on line          2
-list INP=b.img
+list INP=b.img 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Thu May 26 15:45:35 2016
- Task:SARGONB   User:wlb       Date_Time:Thu May 26 15:45:35 2016
+ Task:GEN       User:          Date_Time:                        
+ Task:SARGONB   User:          Date_Time:                        
      Samp     1       3       5       7       9      11      13      15
    Line
       1       0   1   2   3   4   5   6   7   8   9  10  11  12  13  14
@@ -56,12 +58,13 @@ SARGONB version 2016-05-26
  3 Intersection points for line    5
 ??I - Fixup successful
 Pts on line          2
-list INP=b.img
+list INP=b.img 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Thu May 26 15:45:35 2016
- Task:SARGONB   User:wlb       Date_Time:Thu May 26 15:45:35 2016
+ Task:GEN       User:          Date_Time:                        
+ Task:SARGONB   User:          Date_Time:                        
      Samp     1       3       5       7       9      11      13      15
    Line
       1       0   1   2   3   4   5   6   7   8   9  10  11  12  13  14
@@ -82,12 +85,13 @@ SARGONB version 2016-05-26
  3 Intersection points for line    5
 ??I - Fixup successful
 Pts on line          2
-list INP=b.img
+list INP=b.img 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Thu May 26 15:45:35 2016
- Task:SARGONB   User:wlb       Date_Time:Thu May 26 15:45:35 2016
+ Task:GEN       User:          Date_Time:                        
+ Task:SARGONB   User:          Date_Time:                        
      Samp     1       3       5       7       9      11      13      15
    Line
       1       0   1   2   3   4   5   6   7   8   9  10  11  12  13  14
@@ -108,12 +112,13 @@ SARGONB version 2016-05-26
  3 Intersection points for line    5
 ??I - Fixup successful
 Pts on line          2
-list INP=b.img
+list INP=b.img 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Thu May 26 15:45:35 2016
- Task:SARGONB   User:wlb       Date_Time:Thu May 26 15:45:35 2016
+ Task:GEN       User:          Date_Time:                        
+ Task:SARGONB   User:          Date_Time:                        
      Samp     1       3       5       7       9      11      13      15
    Line
       1       0   1   2   3   4   5   6   7   8   9  10  11  12  13  14
@@ -131,12 +136,13 @@ Beginning VICAR task list
 sargonb a.img b.img SETTO 255 (1,10,9,10,9,11,1,11)
 Beginning VICAR task sargonb
 SARGONB version 2016-05-26
-list INP=b.img
+list INP=b.img 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Thu May 26 15:45:35 2016
- Task:SARGONB   User:wlb       Date_Time:Thu May 26 15:45:35 2016
+ Task:GEN       User:          Date_Time:                        
+ Task:SARGONB   User:          Date_Time:                        
      Samp     1       3       5       7       9      11      13      15
    Line
       1       0   1   2   3   4   5   6   7   8 255 255  11  12  13  14
@@ -154,12 +160,13 @@ Beginning VICAR task list
 sargonb b.img c.img ZERO VERT1=(1,7,9,7,9,8,1,8)
 Beginning VICAR task sargonb
 SARGONB version 2016-05-26
-list INP=c.img
+list INP=c.img 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Thu May 26 15:45:35 2016
- Task:SARGONB   User:wlb       Date_Time:Thu May 26 15:45:35 2016
+ Task:GEN       User:          Date_Time:                        
+ Task:SARGONB   User:          Date_Time:                        
      Samp     1       3       5       7       9      11      13      15
    Line
       1       0   1   2   3   4   5   0   0   8 255 255  11  12  13  14
@@ -184,12 +191,13 @@ SARGONB version 2016-05-26
  3 Intersection points for line    5
 ??I - Fixup successful
 Pts on line          2
-list INP=b.img
+list INP=b.img 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Thu May 26 15:45:35 2016
- Task:SARGONB   User:wlb       Date_Time:Thu May 26 15:45:35 2016
+ Task:GEN       User:          Date_Time:                        
+ Task:SARGONB   User:          Date_Time:                        
      Samp     1       3       5       7       9      11      13      15
    Line
       1       0   1   2   3   4   5   0   0   8 255 255  11  12  13  14
@@ -210,12 +218,13 @@ SARGONB version 2016-05-26
  3 Intersection points for line    5
 ??I - Fixup successful
 Pts on line          2
-list INP=b.img
+list INP=b.img 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Thu May 26 15:45:35 2016
- Task:SARGONB   User:wlb       Date_Time:Thu May 26 15:45:35 2016
+ Task:GEN       User:          Date_Time:                        
+ Task:SARGONB   User:          Date_Time:                        
      Samp     1       3       5       7       9      11      13      15
    Line
       1       0   1   2   3   4   5   0   0   8 255 255  11  12  13  14
@@ -236,12 +245,13 @@ SARGONB version 2016-05-26
  3 Intersection points for line    5
 ??I - Fixup successful
 Pts on line          2
-list INP=b.img
+list INP=b.img 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Thu May 26 15:45:35 2016
- Task:SARGONB   User:wlb       Date_Time:Thu May 26 15:45:35 2016
+ Task:GEN       User:          Date_Time:                        
+ Task:SARGONB   User:          Date_Time:                        
      Samp     1       3       5       7       9      11      13      15
    Line
       1       0   1   2   3   4   5   0   0   8 255 255  11  12  13  14
@@ -262,12 +272,13 @@ SARGONB version 2016-05-26
  3 Intersection points for line    5
 ??I - Fixup successful
 Pts on line          2
-list INP=b.img
+list INP=b.img 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Thu May 26 15:45:35 2016
- Task:SARGONB   User:wlb       Date_Time:Thu May 26 15:45:35 2016
+ Task:GEN       User:          Date_Time:                        
+ Task:SARGONB   User:          Date_Time:                        
      Samp     1       3       5       7       9      11      13      15
    Line
       1       0   1   2   3   4   5   0   0   8 255 255  11  12  13  14
@@ -288,13 +299,14 @@ let $echo="no"
  
 gen NL=12 NS=15 'HALF OUT=hen.img
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
-list INP=hen.img
+list INP=hen.img 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
- Task:GEN       User:wlb       Date_Time:Thu May 26 15:45:35 2016
+ Task:GEN       User:          Date_Time:                        
      Samp       1     2     3     4     5     6     7     8     9    10    11    12    13    14    15
    Line
       1         0     1     2     3     4     5     6     7     8     9    10    11    12    13    14
@@ -315,12 +327,13 @@ SARGONB version 2016-05-26
  3 Intersection points for line    5
 ??I - Fixup successful
 Pts on line          2
-list INP=b.img
+list INP=b.img 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Thu May 26 15:45:35 2016
- Task:SARGONB   User:wlb       Date_Time:Thu May 26 15:45:35 2016
+ Task:GEN       User:          Date_Time:                        
+ Task:SARGONB   User:          Date_Time:                        
      Samp     1       3       5       7       9      11      13      15
    Line
       1       0   1   2   3   4   5   0   0   8 255 255  11  12  13  14
@@ -341,12 +354,13 @@ SARGONB version 2016-05-26
  3 Intersection points for line    5
 ??I - Fixup successful
 Pts on line          2
-list INP=b.img
+list INP=b.img 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Thu May 26 15:45:35 2016
- Task:SARGONB   User:wlb       Date_Time:Thu May 26 15:45:35 2016
+ Task:GEN       User:          Date_Time:                        
+ Task:SARGONB   User:          Date_Time:                        
      Samp     1       3       5       7       9      11      13      15
    Line
       1       0   1   2   3   4   5   0   0   8 255 255  11  12  13  14
@@ -367,12 +381,13 @@ SARGONB version 2016-05-26
  3 Intersection points for line    5
 ??I - Fixup successful
 Pts on line          2
-list INP=b.img
+list INP=b.img 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Thu May 26 15:45:35 2016
- Task:SARGONB   User:wlb       Date_Time:Thu May 26 15:45:35 2016
+ Task:GEN       User:          Date_Time:                        
+ Task:SARGONB   User:          Date_Time:                        
      Samp     1       3       5       7       9      11      13      15
    Line
       1       0   1   2   3   4   5   0   0   8 255 255  11  12  13  14
@@ -393,12 +408,13 @@ SARGONB version 2016-05-26
  3 Intersection points for line    5
 ??I - Fixup successful
 Pts on line          2
-list INP=b.img
+list INP=b.img 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Thu May 26 15:45:35 2016
- Task:SARGONB   User:wlb       Date_Time:Thu May 26 15:45:35 2016
+ Task:GEN       User:          Date_Time:                        
+ Task:SARGONB   User:          Date_Time:                        
      Samp     1       3       5       7       9      11      13      15
    Line
       1       0   1   2   3   4   5   0   0   8 255 255  11  12  13  14
@@ -416,12 +432,13 @@ Beginning VICAR task list
 sargonb hen.img hb.img SETTO 255 (1,10,9,10,9,11,1,11)
 Beginning VICAR task sargonb
 SARGONB version 2016-05-26
-list INP=b.img
+list INP=b.img 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Thu May 26 15:45:35 2016
- Task:SARGONB   User:wlb       Date_Time:Thu May 26 15:45:35 2016
+ Task:GEN       User:          Date_Time:                        
+ Task:SARGONB   User:          Date_Time:                        
      Samp     1       3       5       7       9      11      13      15
    Line
       1       0   1   2   3   4   5   0   0   8 255 255  11  12  13  14
@@ -439,12 +456,13 @@ Beginning VICAR task list
 sargonb hb.img c.img ZERO VERT1=(1,7,9,7,9,8,1,8)
 Beginning VICAR task sargonb
 SARGONB version 2016-05-26
-list INP=c.img
+list INP=c.img 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
- Task:GEN       User:wlb       Date_Time:Thu May 26 15:45:35 2016
- Task:SARGONB   User:wlb       Date_Time:Thu May 26 15:45:35 2016
+ Task:GEN       User:          Date_Time:                        
+ Task:SARGONB   User:          Date_Time:                        
      Samp       1     2     3     4     5     6     7     8     9    10    11    12    13    14    15
    Line
       1         0     1     2     3     4     5     0     0     8   255   255    11    12    13    14
@@ -469,12 +487,13 @@ SARGONB version 2016-05-26
  3 Intersection points for line    5
 ??I - Fixup successful
 Pts on line          2
-list INP=b.img
+list INP=b.img 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
- Task:GEN       User:wlb       Date_Time:Thu May 26 15:45:35 2016
- Task:SARGONB   User:wlb       Date_Time:Thu May 26 15:45:35 2016
+ Task:GEN       User:          Date_Time:                        
+ Task:SARGONB   User:          Date_Time:                        
      Samp       1     2     3     4     5     6     7     8     9    10    11    12    13    14    15
    Line
       1         0     1     2     3     4     5     0     0     8   255   255    11    12    13    14
@@ -495,12 +514,13 @@ SARGONB version 2016-05-26
  3 Intersection points for line    5
 ??I - Fixup successful
 Pts on line          2
-list INP=b.img
+list INP=b.img 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
- Task:GEN       User:wlb       Date_Time:Thu May 26 15:45:35 2016
- Task:SARGONB   User:wlb       Date_Time:Thu May 26 15:45:35 2016
+ Task:GEN       User:          Date_Time:                        
+ Task:SARGONB   User:          Date_Time:                        
      Samp       1     2     3     4     5     6     7     8     9    10    11    12    13    14    15
    Line
       1         0     1     2     3     4     5     0     0     8   255   255    11    12    13    14
@@ -521,12 +541,13 @@ SARGONB version 2016-05-26
  3 Intersection points for line    5
 ??I - Fixup successful
 Pts on line          2
-list INP=b.img
+list INP=b.img 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
- Task:GEN       User:wlb       Date_Time:Thu May 26 15:45:35 2016
- Task:SARGONB   User:wlb       Date_Time:Thu May 26 15:45:35 2016
+ Task:GEN       User:          Date_Time:                        
+ Task:SARGONB   User:          Date_Time:                        
      Samp       1     2     3     4     5     6     7     8     9    10    11    12    13    14    15
    Line
       1         0     1     2     3     4     5     0     0     8   255   255    11    12    13    14
@@ -547,12 +568,13 @@ SARGONB version 2016-05-26
  3 Intersection points for line    5
 ??I - Fixup successful
 Pts on line          2
-list INP=b.img
+list INP=b.img 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
- Task:GEN       User:wlb       Date_Time:Thu May 26 15:45:35 2016
- Task:SARGONB   User:wlb       Date_Time:Thu May 26 15:45:35 2016
+ Task:GEN       User:          Date_Time:                        
+ Task:SARGONB   User:          Date_Time:                        
      Samp       1     2     3     4     5     6     7     8     9    10    11    12    13    14    15
    Line
       1         0     1     2     3     4     5     0     0     8   255   255    11    12    13    14
@@ -573,7 +595,7 @@ let $echo="no"
  
 gen a.img 100 100 IVAL=120 LINC=0 SINC=0
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 sargonb a.img b.img ADD 10 (2,2,2,10,10,10,10,2)  +
    MULT 2 (81,12,81,20,90,20,90,12) +
@@ -581,12 +603,13 @@ sargonb a.img b.img ADD 10 (2,2,2,10,10,10,10,2)  +
    zero -- (51,51,51,55,55,55,55,51)
 Beginning VICAR task sargonb
 SARGONB version 2016-05-26
-list b.img (2,2,9,9)
+list b.img (2,2,9,9) 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Thu May 26 15:45:35 2016
- Task:SARGONB   User:wlb       Date_Time:Thu May 26 15:45:35 2016
+ Task:GEN       User:          Date_Time:                        
+ Task:SARGONB   User:          Date_Time:                        
      Samp     2       4       6       8      10
    Line
       2     130 130 130 130 130 130 130 130 130
@@ -598,12 +621,13 @@ Beginning VICAR task list
       8     130 130 130 130 130 130 130 130 130
       9     130 130 130 130 130 130 130 130 130
      10     130 130 130 130 130 130 130 130 130
-list b.img (81,12,10,9)
+list b.img (81,12,10,9) 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Thu May 26 15:45:35 2016
- Task:SARGONB   User:wlb       Date_Time:Thu May 26 15:45:35 2016
+ Task:GEN       User:          Date_Time:                        
+ Task:SARGONB   User:          Date_Time:                        
      Samp    12      14      16      18      20
    Line
      81     240 240 240 240 240 240 240 240 240
@@ -616,12 +640,13 @@ Beginning VICAR task list
      88     240 240 240 240 240 240 240 240 240
      89     240 240 240 240 240 240 240 240 240
      90     240 240 240 240 240 240 240 240 240
-list b.img (21,21,10,5)
+list b.img (21,21,10,5) 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Thu May 26 15:45:35 2016
- Task:SARGONB   User:wlb       Date_Time:Thu May 26 15:45:35 2016
+ Task:GEN       User:          Date_Time:                        
+ Task:SARGONB   User:          Date_Time:                        
      Samp    21      23      25
    Line
      21      40  40  40  40  40
@@ -634,12 +659,13 @@ Beginning VICAR task list
      28      40  40  40  40  40
      29      40  40  40  40  40
      30      40  40  40  40  40
-list b.img (31,42,11,6)
+list b.img (31,42,11,6) 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Thu May 26 15:45:35 2016
- Task:SARGONB   User:wlb       Date_Time:Thu May 26 15:45:35 2016
+ Task:GEN       User:          Date_Time:                        
+ Task:SARGONB   User:          Date_Time:                        
      Samp    42      44      46
    Line
      31     250 250 250 250 250 250
@@ -653,8 +679,9 @@ Beginning VICAR task list
      39     250 250 250 250 250 250
      40     250 250 250 250 250 250
      41     250 250 250 250 250 250
-list b.img (51,51,5,5)
+list b.img (51,51,5,5) 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
  ** The specified window is all zero.
 let $echo="no"
 ******** The following step should ABEND *********
@@ -674,15 +701,15 @@ let $echo="no"
  
 gen A 512 512  LINC=1 SINC=3 FORMAT=BYTE
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen B 256 256  LINC=1 SINC=-2 ival=200 FORMAT=BYTE
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen C 256 256  LINC=1 SINC=5 ival=10 FORMAT=BYTE modulo=112
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 insect (A,B) W insect=(1,1,256,256,1,257)
 Beginning VICAR task insect
@@ -693,12 +720,13 @@ INSECT version 7 Jan 2013 (64-bit) - rjb
 sargonb X  B1 func1=setto const1=255 vert1=(255,255,257,255,257,257,255,257)
 Beginning VICAR task sargonb
 SARGONB version 2016-05-26
-list B1 (251,251,10,10)
+list B1 (251,251,10,10) 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Thu May 26 15:45:35 2016
- Task:SARGONB   User:wlb       Date_Time:Thu May 26 15:45:35 2016
+ Task:GEN       User:          Date_Time:                        
+ Task:SARGONB   User:          Date_Time:                        
      Samp   251     253     255     257     259
    Line
     251     232 235 238 241 244 247 194 192 190 188
@@ -713,15 +741,15 @@ Beginning VICAR task list
     260      31  36  41  46  51  56   3   6   9  12
 gen A 512 512  LINC=1 SINC=3 FORMAT=HALF
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen B 256 256  LINC=1 SINC=-2 ival=500 FORMAT=HALF
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen C 256 256  LINC=1 SINC=5 ival=20 FORMAT=HALF modulo=412
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 insect (A,B) W insect=(1,1,256,256,1,257)
 Beginning VICAR task insect
@@ -732,12 +760,13 @@ INSECT version 7 Jan 2013 (64-bit) - rjb
 sargonb X  B2 func1=setto const1=2000 vert1=(255,255,257,255,257,257,255,257)
 Beginning VICAR task sargonb
 SARGONB version 2016-05-26
-list B2 (251,251,10,10)
+list B2 (251,251,10,10) 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
- Task:GEN       User:wlb       Date_Time:Thu May 26 15:45:35 2016
- Task:SARGONB   User:wlb       Date_Time:Thu May 26 15:45:35 2016
+ Task:GEN       User:          Date_Time:                        
+ Task:SARGONB   User:          Date_Time:                        
      Samp     251   252   253   254   255   256   257   258   259   260
    Line
     251      1000  1003  1006  1009  1012  1015   750   748   746   744
@@ -752,15 +781,15 @@ Beginning VICAR task list
     260        37    42    47    52    57    62  1027  1030  1033  1036
 gen A 512 512  LINC=1 SINC=3 FORMAT=FULL
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen B 256 256  LINC=1 SINC=-2 ival=500 FORMAT=FULL
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen C 256 256  LINC=1 SINC=5 ival=20 FORMAT=FULL modulo=412
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 insect (A,B) W insect=(1,1,256,256,1,257)
 Beginning VICAR task insect
@@ -771,12 +800,13 @@ INSECT version 7 Jan 2013 (64-bit) - rjb
 sargonb X  B3  func1=setto const1=10000 vert1=(255,255,257,255,257,257,255,257)
 Beginning VICAR task sargonb
 SARGONB version 2016-05-26
-list B3 (251,251,10,10)
+list B3 (251,251,10,10) 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    FULL     samples are interpreted as FULLWORD data
- Task:GEN       User:wlb       Date_Time:Thu May 26 15:45:35 2016
- Task:SARGONB   User:wlb       Date_Time:Thu May 26 15:45:36 2016
+ Task:GEN       User:          Date_Time:                        
+ Task:SARGONB   User:          Date_Time:                        
      Samp          251        252        253        254        255        256        257        258        259        260
    Line
     251           1000       1003       1006       1009       1012       1015        750        748        746        744
@@ -791,15 +821,15 @@ Beginning VICAR task list
     260             37         42         47         52         57         62       1027       1030       1033       1036
 gen A 512 512  LINC=1 SINC=3 FORMAT=REAL
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen B 256 256  LINC=1 SINC=-2 ival=500 FORMAT=REAL
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen C 256 256  LINC=1 SINC=5 ival=20 FORMAT=REAL modulo=412
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 insect (A,B) W insect=(1,1,256,256,1,257)
 Beginning VICAR task insect
@@ -810,12 +840,13 @@ INSECT version 7 Jan 2013 (64-bit) - rjb
 sargonb X  B4  func1=setto const1=10000 vert1=(255,255,257,255,257,257,255,257)
 Beginning VICAR task sargonb
 SARGONB version 2016-05-26
-list B4 (251,251,10,10)
+list B4 (251,251,10,10) 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    REAL     samples are interpreted as  REAL*4  data
- Task:GEN       User:wlb       Date_Time:Thu May 26 15:45:36 2016
- Task:SARGONB   User:wlb       Date_Time:Thu May 26 15:45:36 2016
+ Task:GEN       User:          Date_Time:                        
+ Task:SARGONB   User:          Date_Time:                        
      Samp           251         252         253         254         255         256         257         258         259         260
    Line
     251       1.000E+03   1.003E+03   1.006E+03   1.009E+03   1.012E+03   1.015E+03   7.500E+02   7.480E+02   7.460E+02   7.440E+02

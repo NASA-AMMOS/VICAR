@@ -1,6 +1,8 @@
 procedure
 refgbl $echo
 body
+enable-log
+
 let _onfail="continue"
 let $echo="yes"
 
@@ -95,5 +97,5 @@ difpic (GMASKAUX_U.DAT,GMASKDIF_U.DAT) DIFF.DAT
 
 TESTRAY (GMASKRAY1_U.DAT,GMASKRAY2_U.DAT)
 
+disable-log
 end-proc
-

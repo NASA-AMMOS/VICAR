@@ -602,7 +602,8 @@ int *flag;
 
    if (!ztxvisible(nl, ns, x1, y1, x2, y2)) {
       *flag = FALSE;
-      return;
+      /* meaning of return value is undocumented*/
+      return 0; 
    }
 
    idx = x2 - x1;
@@ -654,6 +655,9 @@ int *flag;
          xw += isx;
       id += incy;
    }
+
+   /* meaning of return value is undocumented*/
+   return 0;
 }
 
 

@@ -1,0 +1,5 @@
+$ vpack marsremos.com -mixed -
+	-s marsremos.cc -
+	-i marsremos.imake -
+	-p marsremos.pdf
+$ Exit

@@ -1,0 +1,6 @@
+$ vpack convert_mini_header.com -mixed -
+	-s convert_mini_header.cc read_mini_header.cc write_mini_header.cc -
+	   MiniHeader.h -
+	-i convert_mini_header.imake -
+	-p convert_mini_header.pdf
+$ Exit

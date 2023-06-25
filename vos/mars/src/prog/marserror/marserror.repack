@@ -1,0 +1,5 @@
+$ vpack marserror.com -mixed -
+	-s marserror.cc -
+	-i marserror.imake -
+	-p marserror.pdf
+$ Exit

@@ -1,0 +1,105 @@
+tgeomvo
+Beginning VICAR task tgeomvo
+**************fortran callable***********
+
+----------GEOMA parameters for ICAM=             4
+ CONV size=        888
+CONV(1)=    
+          NAH 
+CONV(2)=    
+              
+CONV(3)=             21
+CONV(4)=    
+          NAV 
+CONV(5)=    
+              
+CONV(6)=              8
+CONV(7)=    
+          TIEP
+CONV(8)=    
+              
+1st 10 of tiepoints=
+            4.511E+01  2.981E+01  2.336E+01  1.136E+01  4.511E+01
+            2.981E+01  2.336E+01  1.136E+01  4.437E+01  1.490E+02
+
+----------GEOMA parameters for ICAM=             6
+ CONV size=        888
+CONV(1)=    
+          NAH 
+CONV(2)=    
+              
+CONV(3)=             21
+CONV(4)=    
+          NAV 
+CONV(5)=    
+              
+CONV(6)=              8
+CONV(7)=    
+          TIEP
+CONV(8)=    
+              
+1st 10 of tiepoints=
+            4.462E+01  3.041E+01  1.140E+01  1.430E+01  4.462E+01
+            3.041E+01  1.140E+01  1.430E+01  4.497E+01  1.498E+02
+
+----------GEOMA parameters for ICAM=             7
+ CONV size=        888
+CONV(1)=    
+          NAH 
+CONV(2)=    
+              
+CONV(3)=             21
+CONV(4)=    
+          NAV 
+CONV(5)=    
+              
+CONV(6)=              8
+CONV(7)=    
+          TIEP
+CONV(8)=    
+              
+1st 10 of tiepoints=
+            4.387E+01  2.978E+01  3.600E+00  1.140E+01  4.387E+01
+            2.978E+01  3.600E+00  1.140E+01  4.396E+01  1.496E+02
+
+----------GEOMA parameters for ICAM=             8
+ CONV size=        888
+CONV(1)=    
+          NAH 
+CONV(2)=    
+              
+CONV(3)=             21
+CONV(4)=    
+          NAV 
+CONV(5)=    
+              
+CONV(6)=              8
+CONV(7)=    
+          TIEP
+CONV(8)=    
+              
+1st 10 of tiepoints=
+            4.385E+01  3.009E+01  1.020E+01  1.320E+01  4.385E+01
+            3.009E+01  1.020E+01  1.320E+01  4.411E+01  1.489E+02
+**************C callable***********
+
+----------GEOMA parameters for ICAM=             8
+ CONV size=        888
+CONV(1)=    
+          NAH 
+CONV(2)=    
+              
+CONV(3)=             21
+CONV(4)=    
+          NAV 
+CONV(5)=    
+              
+CONV(6)=              8
+CONV(7)=    
+          TIEP
+CONV(8)=    
+              
+1st 10 of tiepoints=
+            4.385E+01  3.009E+01  1.020E+01  1.320E+01  4.385E+01
+            3.009E+01  1.020E+01  1.320E+01  4.411E+01  1.489E+02
+disable-log

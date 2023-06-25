@@ -1,0 +1,154 @@
+
+\^NET_LIB(XX)\^
+
+\^NAME\^
+	net_lib - C++ encapsulation of PVM multiprocessor library (vesa/vsl)
+
+\^SYNOPSIS\^
+	\^#include "/ware/proj/development/include/net/net_lib.h"\^
+
+	\_Link\_ with: /ware/proj/development/lib/$ARCH/lib_network.a
+		-L/ware/proj/development/lib/$ARCH -l_network
+
+\^DESCRIPTION\^
+	\^net_lib\^ provides a C++ library of encapsulated PVM library routines
+	allowing the user to access parent and child tasks and pass messages
+	through objects instantiated in the application.  The library
+	contains two primary types of objects, tasks and hosts.  The hosts
+	are instantiated as part of a network.  There are three types of
+	task objects.  The task class hierarchy looks like this:
+
+			\^Generic_Distributed_Task\^
+			    /               \
+		\^Message_Passing_Task\^	\^Child_Task\^
+		 /            \          /       \
+	\^Master_Task\^	\^Distributed_PVM_Task\^	\^Distributed_Command\^
+
+	Distributed_Command objects are used for UNIX shell commands and
+	scripts which cannot do message passing.  Distributed_PVM_Task
+	objects are used for executable object files which have been
+	compiled and linked with this library.  These objects can do
+	message passing to communicate with the parent task.  The
+	Master_Task object, if instantiated, represents a port to the
+	parent of a spawned child task and can be used to send and
+	receive messages to and from the parent.
+
+	Child_Task objects may be grouped and instantiated together in
+	a pool to automate distribution of the tasks across the network.
+	The user may specify a pool of a particular size matching some
+	characteristic of the problem space or let the network create a
+	pool sized to match the network space.  The two types of pools
+	are Pool_Of_Commands which contain a set of Distributed_Command
+	objects and Pool_Of_Tasks which contain a set of Distributed_
+	PVM_Task objects.
+
+	The PVM network is represented by a Network object which contains
+	a list of Network_Host objects.  Tasks may be sent to an individual
+	Network_Host for execution or to the Network for distribution to
+	a "random" Network_Host.  Network_Hosts can only execute
+	Distributed_Commands or Distributed_PVM_Tasks, not Pool_Of_Tasks
+	or Pool_Of_Commands.  The user may instantiate additional
+	Network_Host objects which will try to launch PVM if it is not
+	already running.  Thus, it is possible to start PVM (it will use
+	a hostfile as specified in the \^net\^ man pages) and only use a
+	single host or specific set of hosts which are instantiated
+	explicitly.  Network_Host objects may not be instantiated for
+	hosts not in an already running PVM network.
+
+	Normally, tasks are executed on a Network object.  The Network
+	can execute Distributed_Command objects, Distributed_PVM_Task
+	objects, Pool_Of_Commands objects, or Pool_Of_Tasks objects.
+	The pool objects can be run in a variety of modes to tailor the
+	task distribution across the network.
+
+\^NOTES\^
+	The following are available for all \^Generic_Distributed_Tasks\^:
+
+	Task_Status	\^get_status\^(void)
+		Gets the status of a task.  Returns one of the following:
+		DIST_TASK_BUSY		task is currently running
+		DIST_TASK_COMPLETE	task has completed
+		DIST_TASK_IDLE		task has not started execution
+		DIST_TASK_ERROR		task error of some sort
+
+	Task_Status	\^wait_for_completion\^(void)
+		Awaits completion of a task which is currently running.
+		Returns one of the following:
+		DIST_TASK_COMPLETE	task has completed
+		DIST_TASK_IDLE		task has not started execution
+		DIST_TASK_ERROR		task error of some sort
+
+	The following functions are implemented for \^Message_Passing_Tasks\^.
+
+	void	\^reset_buffer\^(int code = PvmDataDefault)
+		Resets the send buffer for the task and sets the message
+		passing protocol to code which may be one of the following:
+		PvmDataDefault		default method for all architectures
+		PvmDataRaw		no data formatting for architectures
+		PvmDataInPlace		leave data in place until sent
+
+	int	\^put_in_buffer\^(any)
+		Puts an item of any fundamental type into the send buffer.
+		Fundamental types include char, short, int, long, float,
+		double, unsigned char, unsigned short, unsigned int,
+		unsigned long, or char *.  A single item is placed in the
+		send buffer with the exception of char * which puts a NULL
+		terminated string into the buffer.
+
+	int	\^put_in_buffer\^(any *, count = 1)
+		Puts count items of any fundamental type into the send buffer
+		except pointer types.  Fundamental types include char, short, 
+		int, long, float, double, unsigned char, unsigned short, 
+		unsigned int, or unsigned long.
+
+	int	\^send_buffer\^(int tag = 0)
+		Sends the send buffer to the task with message tag tag.
+		Return values less than zero indicate an error.
+
+	int	\^send_this\^(void *mesg, int mesg_size, int count=1, int tag = 0)
+		Packs and sends the contents of the buffer pointed to by mesg
+		as a byte stream with block size mesg_size, block count count,
+		and message tag tag.  Block size and block count are similar 
+		to those used by fwrite.  Return values less than zero 
+		indicate an error.
+		
+
+\^ENVIRONMENT VARIABLES\^
+	PVM_ROOT		PVM root directory
+		normally /ware/proj/etc/pvm3
+	PVM_ARCH		local machine architecture
+		may be SUN4, SGI5, SGIMP, etc. set by pvmgetarch
+
+\^BUGS\^
+	Use of the encapsulated library allows use of direct PVM calls.  Use
+	of direct PVM calls, bypassing the instantiated objects, may conflict
+	with certain modes of operation.  However, tests for status probably
+	will not and many other types of calls may be safe.  Caveat Emptor.
+
+	As of version 3.3.3 of PVM, installed as of 5/9/95, the use of the
+	SGIMP architecture type could cause errors in message passing.
+	This problem has been avoided by modifying the system pvmgetarch
+	script to return SGI5 instead of SGIMP.  This should have no
+	effect on users except that making executables under the SGIMP
+	architecture is more difficult.
+
+	Other unknown bugs.
+
+\^FILES\^
+	/ware/proj/development/include/net/net_lib.h	include file
+	/ware/proj/development/lib/sgi/lib_network.a	sgi library
+	/ware/proj/development/lib/sun4/lib_network.a	sun4 library
+	/usr/catman/local/cat1/net_lib.z		these man pages
+	/ware/proj/etc/pvm3/include/pvm3.h		pvm include file
+	/ware/proj/etc/pvm3/lib/$PVM_ARCH/libpvm3.a	pvm library
+	/ware/proj/etc/pvm3/hostfile			default hostfile
+	./.hostfile					override hostfile
+
+\^SEE ALSO\^
+	pvm, pvm_intro, net
+
+\^AUTHOR\^
+	John Wright (john.r.wright@jpl.nasa.gov)
+
+
+

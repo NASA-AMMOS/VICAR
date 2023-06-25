@@ -1,0 +1,379 @@
+procedure
+
+local   numpix  integer count=1
+local   numzero integer count=1
+local   numpos  integer count=1
+local   numneg  integer count=1
+local   sumall  real    count=1
+local   sumpos  real    count=1
+local   sumneg  real    count=1
+
+refgbl $echo
+! Jun 24, 2012 - RJB
+! TEST SCRIPT FOR IMGSUM 
+! tests BYTE, HALF, FULL, REAL images
+!
+! Vicar Programs:
+!       gen list ibis-list  
+!
+! External Programs:
+!   <none>
+! 
+! Parameters:
+!   <none>
+!
+! Requires NO external test data: 
+body
+enable-log
+
+let _onfail="stop"
+let $echo="no"
+write "*****************"
+write "** BYTE IMAGES **"
+write "*****************"
+let $echo="yes"
+gen xxA nl=10 ns=10 ival=1 linc=0 sinc=1 format=byte
+list xxA 'nousrtim
+!
+! TEST 1 -
+!
+imgsum xxA numpix=numpix numzero=numzero numpos=numpos +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+let $echo="no"
+write "Image xxA:"
+write "numpix = &numpix   numzero = &numzero  numpos = &numpos  numneg = &numneg"
+write "sumall = &sumall   sumpos = &sumpos    sumneg = &sumneg"
+
+write "******************"
+write "** WITH CATALOG **"
+write "******************"
+
+let $echo="yes"
+!
+!  TEST 2 - 
+!
+imgsum xxA out=xxA.cat numpix=numpix numzero=numzero numpos=numpos +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+
+ibis-li xxA.cat 'groups screen=132
+
+gen xxB nl=10 ns=10 ival=0 linc=1 sinc=1 format=byte
+list xxB 'nousrtim
+!
+!  TEST 3  -
+!
+imgsum xxB numpix=numpix numzero=numzero numpos=numpos +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+
+let $echo="no"
+write "Image xxB:"
+write "numpix = &numpix   numzero = &numzero  numpos = &numpos  numneg = &numneg"
+write "sumall = &sumall   sumpos = &sumpos    sumneg = &sumneg"
+write "******************"
+write "** WITH CATALOG **"
+write "******************"
+
+let $echo="yes"
+!
+!  TEST 4 -
+!
+imgsum xxB out=xxB.cat numpix=numpix numzero=numzero numpos=numpos +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+
+ibis-li xxB.cat 'groups screen=132
+
+gen xxC nl=10 ns=10 ival=-5 linc=1 sinc=1 modulo=11 format=byte
+list xxC 'nousrtim
+!
+!  TEST 5 -
+!
+imgsum xxC numpix=numpix numzero=numzero numpos=numpos +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+
+let $echo="no"
+write "Image xxC:"
+write "numpix = &numpix   numzero = &numzero  numpos = &numpos  numneg = &numneg"
+write "sumall = &sumall   sumpos = &sumpos    sumneg = &sumneg"
+write "******************"
+write "** WITH CATALOG **"
+write "******************"
+
+let $echo="yes"
+!
+! TEST 6 -
+!
+imgsum xxC out=xxC.cat numpix=numpix numzero=numzero numpos=numpos +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+
+ibis-li xxC.cat 'groups screen=132
+
+let $echo="no"
+write ""
+write "*****************"
+write "** HALF IMAGES **"
+write "*****************"
+
+
+let $echo="yes"
+
+gen yyA nl=10 ns=10 ival=1 linc=1 sinc=1 format=half
+list yyA 'nousrtim
+!
+!  TEST 7 -
+!
+imgsum yyA numpix=numpix numzero=numzero numpos=numpos +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+
+let $echo="no"
+write "Image yyA:"
+write "numpix = &numpix   numzero = &numzero  numpos = &numpos  numneg = &numneg"
+write "sumall = &sumall   sumpos = &sumpos    sumneg = &sumneg"
+write "******************"
+write "** WITH CATALOG **"
+write "******************"
+
+let $echo="yes"
+! 
+!  TEST 8 -
+!
+imgsum yyA out=yyA.cat numpix=numpix numzero=numzero numpos=numpos +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+
+ibis-li yyA.cat 'groups
+
+
+gen yyB nl=10 ns=10 ival=1000 linc=1 sinc=1 format=half
+list yyB 'nousrtim
+!
+!  TEST 9 -
+!
+imgsum yyB numpix=numpix numzero=numzero numpos=numpos +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+
+let $echo="no"
+write "Image yyB:"
+write "numpix = &numpix   numzero = &numzero  numpos = &numpos  numneg = &numneg"
+write "sumall = &sumall   sumpos = &sumpos    sumneg = &sumneg"
+write "******************"
+write "** WITH CATALOG **"
+write "******************"
+
+let $echo="yes"
+!
+!  TEST 10 - 
+!
+imgsum yyB out=yyB.cat numpix=numpix numzero=numzero numpos=numpos +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+
+ibis-li yyB.cat 'groups screen=132
+
+
+gen yyC nl=10 ns=10 ival=1000 linc=1 sinc=1 modulo=1005 format=half
+list yyC 'nousrtim
+!
+!  TEST 11 - 
+! 
+imgsum yyC numpix=numpix numzero=numzero numpos=numpos +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+
+let $echo="no"
+write "Image yyC:"
+write "numpix = &numpix   numzero = &numzero  numpos = &numpos  numneg = &numneg"
+write "sumall = &sumall   sumpos = &sumpos    sumneg = &sumneg"
+write "******************"
+write "** WITH CATALOG **"
+write "******************"
+
+let $echo="yes"
+!
+!  TEST 12
+!
+imgsum yyC out=yyC.cat numpix=numpix numzero=numzero numpos=numpos +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+
+ibis-li yyC.cat 'groups screen=132
+
+
+gen yyD nl=10 ns=10 ival=-50 linc=10 sinc=20  format=half
+list yyD  'nousrtim
+!
+!  TEST 13 -
+!
+imgsum yyD numpix=numpix numzero=numzero numpos=numpos +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+
+let $echo="no"
+write "Image yyD:"
+write "numpix = &numpix   numzero = &numzero  numpos = &numpos  numneg = &numneg"
+write "sumall = &sumall   sumpos = &sumpos    sumneg = &sumneg"
+write ""
+write "******************"
+write "** WITH CATALOG **"
+write "******************"
+
+let $echo="yes"
+!
+!  TEST 14 -
+!
+imgsum yyD out=yyD.cat numpix=numpix numzero=numzero numpos=numpos +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+
+ibis-li yyD.cat 'groups screen=132
+
+let $echo="no"
+write "**************************"
+write "** WINDOWED HALF IMAGES **"
+write "**************************"
+let $echo="yes"
+list yyD size=(1,1,4,4) 'nousrtim
+!
+!  TEST 15 -
+!
+imgsum yyD size=(1,1,4,4) numpix=numpix numzero=numzero numpos=numpos +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+let $echo="no"
+write "WINDOW (1,1,4,4) Image yyD:"
+write "numpix = &numpix   numzero = &numzero  numpos = &numpos  numneg = &numneg"
+write "sumall = &sumall   sumpos = &sumpos    sumneg = &sumneg"
+write "******************"
+write "** WITH CATALOG **"
+write "******************"
+
+let $echo="yes"
+!
+!  TEST 16 -
+!
+imgsum yyD out=yyD.cat numpix=numpix numzero=numzero numpos=numpos +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+
+ibis-li yyD.cat 'groups screen=132
+
+
+list yyD size=(5,5,4,4) 'nousrtim
+!
+!  TEST 17 - 
+!
+imgsum yyD size=(5,5,4,4) numpix=numpix numzero=numzero numpos=numpos +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+let $echo="no"
+write "WINDOW (5,5,4,4) Image yyD:"
+write "numpix = &numpix   numzero = &numzero  numpos = &numpos  numneg = &numneg"
+write "sumall = &sumall   sumpos = &sumpos    sumneg = &sumneg"
+write "******************"
+write "** WITH CATALOG **"
+write "******************"
+
+let $echo="yes"
+!
+!  TEST 18 -
+!
+imgsum yyD out=yyD.cat numpix=numpix numzero=numzero numpos=numpos +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+
+ibis-li yyD.cat 'groups screen=132
+
+
+let $echo="no"
+write ""
+write "*****************"
+write "** FULL IMAGES **"
+write "*****************"
+
+
+let $echo="yes"
+
+gen zzA nl=10 ns=10 ival=42000 linc=1 sinc=1 format=full
+list zzA 'nousrtim
+!
+!  TEST 19 -
+!
+imgsum zzA numpix=numpix numzero=numzero numpos=numpos +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+
+let $echo="no"
+write "Image zzA:"
+write "numpix = &numpix   numzero = &numzero  numpos = &numpos  numneg = &numneg"
+write "sumall = &sumall   sumpos = &sumpos    sumneg = &sumneg"
+write "******************"
+write "** WITH CATALOG **"
+write "******************"
+
+let $echo="yes"
+!
+!  TEST 20 -
+!
+imgsum zzA out=zzA.cat numpix=numpix numzero=numzero numpos=numpos +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+
+ibis-li zzA.cat 'groups screen=132
+
+
+let $echo="no"
+write ""
+write "*****************"
+write "** REAL IMAGES **"
+write "*****************"
+
+
+let $echo="yes"
+
+gen wwA nl=10 ns=10 ival=-520 linc=80 sinc=120 format=real
+list wwA 'nousrtim
+!
+!  TEST 21 -
+!
+imgsum wwA numpix=numpix numzero=numzero numpos=numpos +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+
+let $echo="no"
+write "Image wwA:"
+write "numpix = &numpix   numzero = &numzero  numpos = &numpos  numneg = &numneg"
+write "sumall = &sumall   sumpos = &sumpos    sumneg = &sumneg"
+write "******************"
+write "** WITH CATALOG **"
+write "******************"
+
+let $echo="yes"
+!
+!  TEST 22 - 
+!
+imgsum wwA out=wwA.cat numpix=numpix numzero=numzero numpos=numpos +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+
+ibis-li wwA.cat 'groups screen=132
+
+let $echo="no"
+write ""
+write "**************************"
+write "** WINDOWED REAL IMAGES **"
+write "**************************"
+let $echo="yes"
+list wwA size=(3,2,4,3) 'nousrtim
+!
+!  TEST 23 - 
+!
+imgsum wwA size=(3,2,4,3) numpix=numpix numzero=numzero numpos=numpos +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+let $echo="no"
+write "WINDOW (3,2,4,3) Image wwA:"
+write "numpix = &numpix   numzero = &numzero  numpos = &numpos  numneg = &numneg"
+write "sumall = &sumall   sumpos = &sumpos    sumneg = &sumneg"
+
+write "******************"
+write "** WITH CATALOG **"
+write "******************"
+
+let $echo="yes"
+!
+!  TEST 24 -
+!
+imgsum wwA out=wwA.cat numpix=numpix numzero=numzero numpos=numpos +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+
+ibis-li wwA.cat 'groups screen=132
+
+ush rm -f wwA wwA.cat xxA xxA.cat xxB xxB.cat xxC xxC.cat yyA yyA.cat yyB yyB.cat yyC yyC.cat yyD yyD.cat zzA zzA.cat
+
+let $echo="yes"
+disable-log
+end-proc

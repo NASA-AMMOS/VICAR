@@ -61,6 +61,7 @@
 #define SS_P2SUB
 #define EXT_MPI
 #define EXT_XERCES_CXX
+#define EXT_COIN
 #define EXT_INVENTOR
 #define EXT_CERES	/* for marsnav2 */
 #define	EXT_SIFT
@@ -70,7 +71,6 @@
 #define PROD_VICAR_EXEC
 #define SS_P2SUB
 #define EXT_XERCES_CXX
-#define EXT_MERIDD
 #endif
 
 #ifdef PROD_XVD
@@ -83,6 +83,7 @@
 #endif
 
 #ifdef SS_CRUMBS
+#define EXT_COIN
 #define EXT_INVENTOR
 #define EXT_OPENSCENEGRAPH
 #endif
@@ -135,6 +136,7 @@
 #define EXT_TIFF
 #define EXT_JPEG
 #define EXT_FFTW
+#define EXT_TINYGLTF
 #define EXT_GDAL
 #define EXT_GSL
 #endif

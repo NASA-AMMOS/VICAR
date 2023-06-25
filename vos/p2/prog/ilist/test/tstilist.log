@@ -1,0 +1,36 @@
+ibis-gen xx1 nr=2 nc=3 format=("A10","A12","DOUB")  +
+      data=(0.01,0.03) datacols=(3)  +
+      string=("aaaaabbbbb","cccddd","aaaaabbbbz","cccddx")  +
+      strcols=(1,2)
+Beginning VICAR task ibis
+ibis-l xx1
+Beginning VICAR task ibis
+ 
+Number of Rows:2  Number of Columns: 3       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:2
++-----------+-----------+-----------
+         C:1         C:2         C:3
++-----------+-----------+-----------
+  aaaaabbbbb      cccddd        0.01
+  aaaaabbbbz      cccddx        0.03
+ilist xx1 sr=2 cols=(2,3,1) labels=("col2","table col3","col1")
+Beginning VICAR task ilist
+ilist version 2016-05-16
+                col2 = cccddx
+          table col3 = 0.030000
+                col1 = aaaaabbbbz
+ilist xx1 sr=1 nr=2 cols=(2,3,1) 'prnt_rec  +
+   labels=("col2","table col3","col1")
+Beginning VICAR task ilist
+ilist version 2016-05-16
+       record number = 1
+                col2 = cccddd
+          table col3 = 0.010000
+                col1 = aaaaabbbbb
+       record number = 2
+                col2 = cccddx
+          table col3 = 0.030000
+                col1 = aaaaabbbbz
+disable-log

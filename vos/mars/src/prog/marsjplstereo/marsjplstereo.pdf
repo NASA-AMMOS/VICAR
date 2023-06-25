@@ -1,0 +1,615 @@
+process help=*
+PARM INP TYPE=STRING COUNT=(2:3)
+PARM OUT TYPE=STRING COUNT=(1:2)
+PARM NAVTABLE TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PYRLEVEL   TYPE = INTEGER COUNT = 1 DEFAULT = 0 valid = 0:16
+PARM WINDOWSIZE TYPE = INTEGER COUNT = 1 DEFAULT = 7 valid = 0:128
+PARM MINDISP    TYPE = INTEGER COUNT = 1 DEFAULT = 0
+PARM MAXDISP    TYPE = INTEGER COUNT = 1 DEFAULT = 127
+PARM BLOBSIZE   TYPE = INTEGER COUNT = 1 DEFAULT = -1
+PARM UNCERTAINTY TYPE= INTEGER COUNT = 0:1 DEFAULT=-- valid = 0:256
+PARM PERCENT    TYPE = REAL COUNT=1 DEFAULT=0.4 valid=0:100.0
+PARM SEPARATE	TYPE = KEYWORD COUNT=0:1 VALID="SEPARATE" DEFAULT=--
+PARM BAND TYPE=INTEGER COUNT=(0:1) DEFAULT=1
+
+PARM SEPARATION TYPE = REAL COUNT = 1 DEFAULT = 0.2 valid = 0:100000.0
+PARM THRESHOLD  TYPE = REAL COUNT = 1 DEFAULT = 1.0 valid = 0:1000.0
+
+PARM CONFIG_PATH STRING DEFAULT="$MARS_CONFIG_PATH"
+PARM MATCH_METHOD TYPE=STRING COUNT=(0:1) VALID=("LOOSE", "TIGHT") +
+        DEFAULT=LOOSE
+PARM MATCH_TOL TYPE=REAL COUNT=1 DEFAULT=.002
+PARM POINT_METHOD TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM NOSITE TYPE=KEYWORD COUNT=(0:1) VALID=NOSITE DEFAULT=--
+
+PARM DATA_SET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM DATA_SET_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM RELEASE_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCT_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_INST TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_TYPE TYPE=STRING COUNT=(0:1) DEFAULT=--
+
+PARM RSF TYPE=STRING COUNT=0:100 DEFAULT=--
+PARM DEBUG_RSF TYPE=KEYWORD COUNT=0:1 VALID=DEBUG_RSF DEFAULT=--
+PARM COORD TYPE=KEYWORD VALID=("FIXED", "INSTRUMENT", "SITE", "ROVER", +
+        "LOCAL_LEVEL") DEFAULT="INSTRUMENT"
+PARM COORD_INDEX TYPE=INTEGER COUNT=0:10 DEFAULT=--
+PARM FIXED_SITE TYPE=INTEGER COUNT=0:1 DEFAULT=--
+PARM SOLUTION_ID TYPE=STRING COUNT=0:1 DEFAULT=--
+
+END-PROC
+
+.TITLE
+VICAR program MARSJPLSTEREO.
+
+.HELP
+PURPOSE:
+This program computes disparity maps from a stereo pair. The images
+are assumed to be aligned (CAHV linearized), hence only the sample
+disparity map is computed. The line disparity map is output as 0
+disparity (i.e. DN matches line number).  In contrast to MARSCORR,
+this program relies on camera model to do the computations.  The
+camera model is derived from the PIG (Planetary Image Geometry)
+library in the standard way.
+
+The resulting line and sample disparity maps can be used as input to
+MARSXYZ routine to convert disparity maps to XYZ images.  That output
+can further be sent to MARSRANGE to generate range maps.  The disparity
+map file format is compatible with the output of MARSCORR; see the help
+for that program for file format details.
+
+This program is also in theory capable of performing trinocular stereo
+matching with left, right and bottom cameras.  However, THIS HAS NOT
+BEEN TESTED.
+
+The underlying correlation library works with 8-bit data only.  Since
+most mission data is 16 bits (really 12, in a 16-bit image), a percent
+linear stretch is done to convert to byte before sending the image into
+the correlator.  This results in some loss of precision but shouldn't
+cause too much trouble in practice.  Normally the histograms for all
+inputs are combined so a single stretch is performed, but if the cameras
+are of unequal brightness, the SEPARATE flag will cause the images to be
+stretched independently.  The correlator is rather sensitive to overall
+brightness levels.
+
+This routine is based on the JPL Stereo code developed in the JPL
+Robotics Division.  Great deal of help and explanation was provided by
+Mark Maimone <mwm@helios.jpl.nasa.gov>. 
+
+In this program, input images must be projected from CAHVOR/CAHVORE
+space to CAHV space, i.e. run MARSCAHV routine to remove distortion. 
+The underlying correlation library supports CAHVOR/CAHVORE models,
+but simply does an internal warp to CAHV before correlating.  It was
+thus decided that the complexity of supporting CAHVOR/CAHVORE directly
+was not worthwhile, since CAHV images are normally created anyway.
+
+If pyramid level is not zero, image dimensions are truncated(if necessary)
+to the max. multiple of pyramid level.  For example if pyramid=2 and image
+size is 258x258, the correlation will be done on 256x256 subframe and the 
+extra input pixels will be ignored.
+
+The underlying JPL Stereo code can only handle images up to 2048 x 2048.
+If the image is larger than that, it is automatically downsampled until it
+fits within 2048 x 2048.  The pyramid level is reduced as well, so that
+the effective result is identical to what would have happened if JPL Stereo
+could handle larger images (i.e. the downsizing is transparent).  However,
+the pyramid level must be big enough to accommodate this; if it goes negative
+the program will abend.
+
+EXECUTION:
+  
+  marsjplstereo inp=(left.img, right.img) out=disparity.img params
+or
+  marsjplstereo inp=(left.img, right.img, lower.img) out=disparity.img) params
+
+  left.img - left image of the stereo pair
+  right.img - right image of the stereo pair
+  lower.img - lower image for the trinocular stereo. Not used for binocular stereo
+  disparity.img - output disparity map.  Can be a single 2-band file or two
+      1-band files.
+  parameters : see below.
+
+NOTE. 
+  Parameter space for this routine has not been explored fully. Some
+comments on the default values and their ranges are given in the
+parameter section. 
+
+EXAMPLE
+
+Convert images from CAHVOR space to CAHV and update camera model
+information in the labels : 
+
+  marscahv left.img left_cahv
+  marscahv right.img right_cahv
+
+Run the JPL Stereo algorithm with window size 15 : 
+
+  marsjplstereo inp=(left_cahv, right_cahv) out=(disparity.img) window = 15
+
+Convert from disparity to XYZ maps
+
+  marsxyz inp=( left_cahv, right_cahv ) dispar=disparity.img out=xyz.img 
+
+.PAGE
+OPERATION :
+ 
+  This algorithm is descried in part in Matthies [1992]. Here's a quote
+from the abstract of this paper. 
+" .. The statistical and algorithmic aspects employ random field models 
+of the disparity map, Bayesian formulations of single-scale matching,
+and area-based image comparison. The implementation builds bandpass
+pyramids and produces disparity maps... ". 
+  
+
+REFERENCES : (kindly supplied by Mark Maimone)
+
+(in order of relevance) 
+
+L. H. Matthies, 1992 ,Stereo vision for planetary rovers: stochastic modeling
+to near real-time implementation, Int. Jour. of Computer Vision, 8(1), pp71-91
+
+L. Matthies, A. Kelly, T. Litwin, G. Tharp, 1996, Obstacle
+Detection for Unmanned Ground Vehicles: A Progress Report, in Robotics
+Research: the 7th International Symposium, Springer-Verlag
+
+Yalin Xiong, Larry Matthies, 1997, Error Analysis of a Real-Time
+Stereo System, in CVPR, pp. 1087-1093, 
+URL "http://www.cs.cmu.edu/~yx/papers/StereoError97.pdf"
+
+
+DEVELOPER NOTES
+
+All files in this package with the exception of marsjplstereo.* and
+cmod_fp_stubs.h, are part of the correlator package obtained from Mark
+Maimone.  Many have been modified to compile in the VICAR environment or
+to fix bugs (e.g. more blobs than a short can handle, changed to long;
+precision differences between Solaris and Linux).  However, an attempt has
+been made to keep the changes to a minimum.  The original delivery is in
+B. Deen's "mer" email folder if needed.
+
+
+FUTURE WORK
+
+- Loosen the ultra conservative approach to the Maximum
+  Disparity. Currently the left edge of valid dispairty map values
+  starts at the maximum disparity value.
+- Allow min/maxdisp to be expressed in meters of range (for user convenience)
+- Add parameter to turn off LRLOS (reverse correlation check) option.  That
+  would only be useful for investigation of problems.
+- Add ability to output disparity space for a given row, again to investigate
+  bad correlations (SetRowsToSearch() in the correlator code).
+- Separate horizontal/vertical window size parameters
+
+
+HISTORY:
+
+  2000-02        - Original version
+  2000-03-10 abi - Revision 1.1 Initial revision
+  2000-04-16 abi - Revision 1.2 Minor bugs eliminated 
+  2000-09-26 abi - Revision 1.3 Linux compatibility issue resolved
+  2003-01-16 rgd - Revision 1.4 Converted to use PIG library; cleaned up for MER;
+                                support for 16-bit input images.
+  2003-01-28 rgd - Revision 2.0 Installed new version of correlator from
+                                M. Maimone's group; added Uncertainty parameter
+  2016-05-31 rgd - Revision 2.1 Added automatic downsampling for large images.
+  2019-10-02 wlb - IDS-7926 - Initialized some variables;
+                   IDS-7928 - Corrected some printf formatting directives 
+                              (pointers should have been %lx, not %x);
+                   Commented some unused variables; Added explicit return types
+                   for some functions; Added includes for open and creat. Added
+                   tst.pdf and tst.log to test dir.
+  2019-12-23 wlb - IDS-7926 - Initialized a variable.
+  2020-03-24 wlb - IDS-7927 - Replaced sprintf() calls.
+
+COGNIZANT PROGRAMMER:  Bob Deen
+
+.LEVEL1
+
+.VARI INP
+Left/right stereo pair images
+
+.VARI OUT
+Output disparity map
+
+.VARI NAVTABLE
+Corrected navigation filename
+
+.VARI PYRLEVEL
+Pyramid level
+
+.VARI WINDOWSIZE
+Size of correlation window
+in pixels.  Default 7.
+
+.VARI MINDISP
+Minimum disparity value
+
+.VARI MAXDISP
+Maximum disparity value
+
+.VARI BLOBSIZE
+Minimum size of "blobs" (regions
+of connected pixels) to accept.
+
+.VARI UNCERTAINTY
+Enable and set value for
+uncertainty filtering.
+
+.VARI PERCENT
+Percent stretch limit for HALF->BYTE
+conversion.
+
+.VARI SEPARATE
+Specifies separate stretches for
+input images.
+
+.VARI BAND
+The vicar image
+band number.
+Defaults to 1
+
+.VARI SEPARATION
+Set maximum Euclidean separation
+for trinocular stereo only
+
+.VARI THRESHOLD
+Set uncertainty threshold for
+trinocular stereo only
+
+.VARI CONFIG_PATH
+Path used to find
+configuration/calibration
+files.
+
+.VARI MATCH_METHOD
+Specifies a method
+for pointing corrections.
+
+.VARI MATCH_TOL
+Tolerance value for
+matching pointing params
+in pointing corrections file.
+
+.VARI POINT_METHOD
+Specifies a mission-
+specific pointing
+method to use
+
+.VARI NOSITE
+Disables coordinate
+system sites.
+
+.VARI DATA_SET_NAME
+Specifies the full name given
+to a data set or a data product.
+
+.VARI DATA_SET_ID
+Specifies a unique alphanumeric
+identifier for a data set or data
+product.
+
+.VARI RELEASE_ID
+Specifies the unique identifier
+associated with the release to the
+public of all or part of a data set.
+The release number is associated with
+the data set, not the mission.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique
+identifier assigned to a data
+product by its producer.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier
+of an entity associated with the
+production a data set.
+
+.VARI PRODUCER_INST
+Specifies the full name of the
+identity of an entity associated
+with the production of a data set.
+
+.VARI TARGET_NAME
+Specifies a target.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target.
+
+.VARI RSF
+Rover State File(s) to use.
+
+.VARI DEBUG_RSF
+Turns on debugging of RSF
+parameter.
+
+.VARI COORD
+Coordinate system to use.
+
+.VARI COORD_INDEX
+Coordinate system index for
+some COORD/mission combos.
+
+.VARI FIXED_SITE
+Which site is FIXED for
+rover missions.
+
+.VARI SOLUTION_ID
+Solution ID to use for
+pointing correction.
+
+.LEVEL2
+
+.VARI INP
+Left and right images of the stereo pair. There must two images for
+input. Technically, the program does not care about the order of the
+images, but the convention places the left image first.  Whichever is
+first will be the reference image, i.e. the disparity map's geometry
+will match the first image, with the map giving coordinates in the second.
+
+A third input is possible for trinocular stereo but has not been tested.
+Use at your own risk.
+
+.VARI OUT
+Output disparity map.  If one filename is given, a single 2-band image
+will be created in REAL format, with the first band the Line disparity
+and the second band the Sample disparity.  If two files are given, they
+will both be single-band REAL images, where the first is Line disparity
+and the second is Sample.
+
+In all cases, the value of the pixel is the 1-based coordinate in the
+second input image that matches the location of the pixel in the first
+input image.  See MARSCORR for more file format details.
+
+.VARI NAVTABLE
+Corrected navigation filename.
+If marsnav was run on the input images it created a table of corrected
+pointing parameters. If you refer to this table using NAVTABLE it
+will override the pointing parameters (e.g. azimuth and elevation) in the
+picture labels, giving you a better registered mosaic.
+
+This parameter is usually not very useful for stereo pairs, but is
+included for completeness.
+
+.VARI PYRLEVEL
+Pyramid level. Compute disparity at given Pyramid Level. Defaults
+to 0.  The default will almost always be used in MIPL; low-resolution
+results are rarely called for.
+
+Comment from Mark Maimone:
+
+0 is full resolution, 1 is half resolution in each dimension, 2 is
+quarter, etc.  You typically get denser results at smaller resolution
+(since camera calibration issues are less significant), but of course
+the total number of range points typically drops. 
+
+.VARI WINDOWSIZE 
+Size of the correlation window in pixels. Default : 7. 
+
+Tuning this parameter is an art. Typically, larger values give smooth 
+maps at coarse resolution and not very sensitive to small
+objects. Small values give finer resultion of disparity maps, but may 
+not converge on some pixels. 
+
+Correlation is only attempted if both of the image dimensions are at 
+least 3 times as big as window size.  If that's not the case, the program
+just writes out dn=0.0 for all pixels.
+
+.VARI MINDISP
+Minimum allowed disparity value. Default : 0.
+
+Disparities less then MINDISP will be rejected.
+
+.VARI MAXDISP    
+Maximum disparity value. Default : 63
+
+Disparities larger then MAXDISP will be rejected.
+
+.VARI BLOBSIZE   
+Sets minimum Blob Size.  The blob filter removes correlations on noisy
+pixels, such as the sky in the image, by removing regions of connected
+pixels that are smaller than the blob size.  Disparity differences
+between adjacent pixels must be less than 1/4 pixel to be considered
+part of a blob region.
+
+Comment from Mark Maimone. 
+A sanity check is that we eliminate small, standalone blobs from the
+range image.  Leaving the size at -1 means it will be set to some
+fixed ratio of the image size (4%).  I.e., you will never see
+connected regions in the disparity image smaller than 4% of the image,
+unless you reset this value to some number of pixels.
+
+.VARI UNCERTAINTY
+Enables the Uncertainty filter, and sets its value.  Normally this filtering
+is not done.  If UNCERTAINTY is specified, the filter is enabled, with a
+value of the parameter value.
+
+The Uncertainty filter rejects points based on the slope of the correlation
+peak.  This is loosely related to correlation quality.
+
+A value of 256 corresponds to a 1.0 pixel uncertainty in disparity value.
+A value of 128 might be a place to start with this parameter, given some
+comments in the correlator code.  Lower values create a more stringent
+filter; i.e. fewer values survive, which should mean that the remaining
+values are of higher quality.
+
+.VARI PERCENT
+Since the underlying correlator accepts only byte data, halfword data
+must be scaled to byte internally before correlating.  This is done
+via a percent stretch (linear stretch based on histogram analysis).
+
+This parameter specifies the percent of pixels to be saturated at
+either end of the DN range.  It is a percentage, so the value ranges
+from 0 to 100 (not 0 to 1).  It defaults to 0.4%, which is very close
+to 1/256.  The binning process during byte conversion will ideally put
+1/256 of the pixels in each bin, so a value of 0.4% treats the end bins
+similar to all of the other bins.
+
+.VARI SEPARATE
+Normally all input images are lumped together into a single histogram
+for the percent stretch calculation (see PERCENT).  Specifying SEPARATE
+causes each image to be stretched independently, based on its own
+histogram only.  This is useful for camera pairs whose overall brightness
+levels aren't matched.  The correlator is rather sensitive to overall
+brightness levels.
+
+.VARI BAND
+The vicar image band number for the input images.  Defaults to 1. If the 
+specified band is bigger than the number of band in the image, the 1st band
+will be processed. 
+
+.VARI SEPARATION 
+Set maximum Euclidean separation for trinocular stereo. DEFAULT = 0.2
+
+Not used for binocular stereo. 
+
+.VARI THRESHOLD  
+Set uncertainty threshold. DEFAULT = 1.0; Range = [0:255]
+
+Set maximum Pixel Threshold for merge. 
+
+Not used for binocular stereo. 
+
+.VARI CONFIG_PATH
+A colon-separated list of directories in which to look for configuration
+and calibration files.  Environment variables are allowed in the list
+(and may themselves contain colon-separated lists).  The directories are
+searched in order for each config/cal file when it is loaded.  This allows
+multiple projectes to be supported simultaneously, and allows the user to
+override any given config/cal file.  Note that the directory structure below
+the directories specified in this path must match what the project expects.
+For example, Mars 98 expects flat fields to be in a subdirectory named
+"flat_fields" while Mars Pathfinder expects them to be directly in the
+directory specified by the path (i.e. no intermediate subdirectories).
+
+.VARI MATCH_METHOD
+Specifies a method for pointing corrections.
+
+Loose method matchs with pointing parameters of the image.
+Tight method matchs with unique id of the image.
+
+.VARI MATCH_TOL
+Tolerance value for matching pointing parameters in the pointing corrections file.
+Used if MATCH_METHOD=LOOSE
+Default value is pretty arbitrary, though seems to work well so far....
+
+.VARI POINT_METHOD
+Specifies a mission-specific pointing method to use.  Normally this
+parameter is not used, in which case the "default" pointing methods
+are used.  Some missions may have special, or alternate, pointing
+methods available, which are indicated by this string (for example,
+backlash models, using arm joint angles instead of x/y/z/az/el, etc).
+A substring search is used, so multiple methods (where that makes sense)
+can be specified by separating the keywords with commas.
+
+Note that nav files created using one pointing method will most likely
+not be compatible with a mosaic created using a different pointing method.
+
+The methods available vary per mission, but some methods available at
+the time of this writing are:
+
+BACKLASH : Mars 98 SSI only.  Selects a backlash pointing model,
+which adjusts the telemetered azimuth and elevation values based on
+knowledge of the camera's mechanical backlash and the direction the
+motor was travelling when the image was taken.
+
+.VARI NOSITE
+This parameter is not useful for MARSJPLSTEREO but is inherited with the
+PIG library.  See e.g. MARSMAP for a description if necessary.
+
+.VARI DATA_SET_NAME
+The DATA_SET_NAME typically identifies the instrument that acquired the
+data, the target of that instrument, and the processing level of the data.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_NAME.
+
+.VARI DATA_SET_ID
+The DATA_SET_ID value for a given data set or product is constructed
+according to flight project naming conventions.  In most cases the
+DATA_SET_ID is an abbreviation of the DATA_SET_NAME.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_ID.
+
+.VARI RELEASE_ID
+When a data set is released incrementally, such as every three months during
+a mission, the RELEASE_ID is updated each time part of the data set is released.
+For each mission(or host id if multiple spacecrafts), the first release of a data
+set should have a value of "0001".
+This value is copied to the output label, property IDENTIFICATION,
+keyword RELEASE_ID.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique identifier assigned to a data product by
+its producer. Most commonly, it is the filename minus the extension.
+This value is copied to the output label, property IDENTIFICATION,
+keyword PRODUCT_ID.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier of an entity associated with the
+production of a data set. This value is copied to the output label,
+property IDENTIFICATION, keyword PRODUCER_ID.
+
+.VARI PRODUCER_INST
+Specifies the identity of a university, research center, NASA center or other
+institution associated with the production of a data set.
+This value is copied to the output label, property IDENTIFICATION, keyword
+PRODUCER_INSTITUTION_NAME.
+
+.VARI TARGET_NAME
+Specifies a target.  The target may be a planet, satelite, ring, region, feature,
+asteroid or comet.  This value is copied to the output label, property
+IDENTIFICATION, keyword TARGET_NAME.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target. This value is copied to the output
+label, property IDENTIFICATION, keyword TARGET_NAME.
+
+.VARI RSF
+Rover State File.  This is a list of filenames to load containing
+Rover State information.  These files contain position and orientation
+information for a rover (or other mobile spacecraft) at various sites.
+They are in XML format.  See the "Rover Motion Counter (RMC) Master File SIS"
+for details on these files.
+
+Rover State Files have a priority order.  The files listed first have
+the highest priority.
+
+Environment variables may be used in the list.
+
+For MER, if a directory is specified, then that directory is searched for
+RMC Master files and any found are loaded.  The directory structure and
+filename convention is covered in the RMC SIS.  The directory specified
+is the one containing "master", so if <dir> is the name specified in the
+RSF parameter, the following files will be searched for:
+
+<dir>/master/<mission>_Master.svf
+<dir>/master/<mission>_Site_<n>_Master.rvf
+
+The name of each file loaded is printed to the stdout log for reference.
+
+.VARI DEBUG_RSF
+If enabled, this causes the internal database of RMC locations to be
+printed out to the stdout log.  This is after the RSF files have been
+loaded and the coordinate systems read from the input label(s).
+
+.VARI COORD
+This parameter is not useful for MARSJPLSTEREO but is inherited with the
+PIG library.  See e.g. MARSMAP for a description if necessary.
+
+.VARI COORD_INDEX
+This parameter is not useful for MARSJPLSTEREO but is inherited with the
+PIG library.  See e.g. MARSMAP for a description if necessary.
+
+.VARI FIXED_SITE
+This parameter is not useful for MARSJPLSTEREO but is inherited with the
+PIG library.  See e.g. MARSMAP for a description if necessary.
+
+.VARI SOLUTION_ID
+Specifies which solution ID to use for pointng corrections.
+
+There are potentially many different definitions for the same coordinate
+system.  These are identified via a unique Solution ID.  If this parameter
+is given, only the specified solution's definition is searched for.
+

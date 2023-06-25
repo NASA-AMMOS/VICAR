@@ -4,6 +4,7 @@ Beginning VICAR task starcat3
 *** Total of          0 stars found ***
 ibis-li s233m.cat units=units groups=groups formats=formats
 Beginning VICAR task ibis
+IBIS version 2019-07-31
  
 Number of Rows:0  Number of Columns: 21      
 File Version:IBIS-2  Organization:ROW  SubType:STARCAT TYPE   2
@@ -458,6 +459,7 @@ Beginning VICAR task starcat3
 *** Total of        417 stars found ***
 ibis-li s233m1.cat sr=1 nr=412 nc=14 cols=(1,2,3,4,5,6,7,8,9,10,11,12,13,21) screen=132
 Beginning VICAR task ibis
+IBIS version 2019-07-31
  
 Number of Rows:417  Number of Columns: 21      
 File Version:IBIS-2  Organization:ROW  SubType:STARCAT TYPE   2
@@ -1434,6 +1436,7 @@ Beginning VICAR task starcat3
 *** Total of        417 stars found ***
 ibis-li s233m2.cat sr=1 nr=20 nc=14 cols=(1,2,3,4,5,6,7,8,9,10,11,12,13,21) screen=132
 Beginning VICAR task ibis
+IBIS version 2019-07-31
  
 Number of Rows:417  Number of Columns: 21      
 File Version:IBIS-2  Organization:ROW  SubType:STARCAT TYPE   2
@@ -1497,6 +1500,7 @@ Beginning VICAR task starcat3
 *** Total of         45 stars found ***
 ibis-li s233m3.cat sr=1 nr=20 nc=14 cols=(1,2,3,4,5,6,7,8,9,10,11,12,13,21) screen=132
 Beginning VICAR task ibis
+IBIS version 2019-07-31
  
 Number of Rows:45  Number of Columns: 21      
 File Version:IBIS-2  Organization:ROW  SubType:STARCAT TYPE   2
@@ -1559,6 +1563,7 @@ Beginning VICAR task starcat3
 *** Total of          7 stars found ***
 ibis-li s233m4.cat  nc=14 cols=(1,2,3,4,5,6,7,8,9,10,11,12,13,21) screen=132
 Beginning VICAR task ibis
+IBIS version 2019-07-31
  
 Number of Rows:7  Number of Columns: 21      
 File Version:IBIS-2  Organization:ROW  SubType:STARCAT TYPE   2
@@ -1595,6 +1600,7 @@ Beginning VICAR task starcat3
 *** Total of          5 stars found ***
 ibis-li s233m4.cat  nc=14 cols=(1,2,3,4,5,6,7,8,9,10,11,12,13,21) screen=132
 Beginning VICAR task ibis
+IBIS version 2019-07-31
  
 Number of Rows:7  Number of Columns: 21      
 File Version:IBIS-2  Organization:ROW  SubType:STARCAT TYPE   2
@@ -1631,7 +1637,7 @@ Beginning VICAR task starcat3
               MAJ AXIS   MIN AXIS   RATIO  ROTANGLE
        1*********  1050624        1        1     1024     1026   514.23   512.43                295.98   295.00     1.00
 *** Total of          1 stars found ***
-starcat3 nt/1994se_1026b.corr out=(1994se_1026b1.cat,1994se_1026b1.out)  +
+starcat3 nt/1994se_1026b.corr.dat out=(1994se_1026b1.cat,1994se_1026b1.out)  +
     thre=221 back=176 list=list maxd=32767 mini=221 mins=2 minl=2  +
     maxs=100 maxl=100 objects=objs
 Beginning VICAR task starcat3
@@ -1707,7 +1713,7 @@ Beginning VICAR task starcat3
 *** Total of         66 stars found ***
 let $echo="no"
 TEST 8 - number of stars = 66
-starcat3 nt/1994se_1026b.corr out=(1994se_1026b2.cat,1994se_1026b2.out)  +
+starcat3 nt/1994se_1026b.corr.dat out=(1994se_1026b2.cat,1994se_1026b2.out)  +
 	thre=221 back=176 list=list1 maxd=32767 mini=221 mins=2 minl=2  +
 	maxs=100 maxl=100 objects=objs
 Beginning VICAR task starcat3
@@ -1717,7 +1723,7 @@ Line# =     500        #Objects =      43
 *** Total of         66 stars found ***
 let $echo="no"
 TEST 9 - number of stars = 66
-starcat3 nt/1994se_1026b.corr out=(1994se_1026b3.cat,1994se_1026b3.out)  +
+starcat3 nt/1994se_1026b.corr.dat out=(1994se_1026b3.cat,1994se_1026b3.out)  +
 	thre=221 back=176 list=list maxd=32767 mini=221 mins=2 minl=2  +
 	maxs=100 maxl=100 size=(1,1,150,150)
 Beginning VICAR task starcat3
@@ -1728,7 +1734,7 @@ Beginning VICAR task starcat3
 *** Total of          1 stars found ***
 let $echo="no"
 TEST 10 - number of stars = 66
-starcat3 nt/1994se_1026b.corr out=(1994se_1026b4.cat,1994se_1026b4.out)  +
+starcat3 nt/1994se_1026b.corr.dat out=(1994se_1026b4.cat,1994se_1026b4.out)  +
 	thre=221 back=176 list=list maxd=32767 mini=221 mins=2 minl=2  +
 	maxs=100 maxl=100 size=(1,1,150,700) objects=objs
 Beginning VICAR task starcat3

@@ -832,6 +832,24 @@ static LblApiElement_typ    LabelTbl[] = {
      LBL_OFFSET(LblIdentification_typ, CameraProductId.Valid),
      LBL_NO_RETURN, LBL_SIZE(CameraProductId.Value)},
 
+    {"MOVIE_PRODUCT_ID",                     "STRING",   LBL_OPTIONAL,
+     LBL_NO_CONT,   1,  1,  LBL_NULL,
+     LBL_OFFSET(LblIdentification_typ, MovieProductId.Value),
+     LBL_OFFSET(LblIdentification_typ, MovieProductId.Valid),
+     LBL_NO_RETURN, LBL_SIZE(MovieProductId.Value)},
+
+    {"MOVIE_FILE_NAME",                     "STRING",   LBL_OPTIONAL,
+     LBL_NO_CONT,   1,  1,  LBL_NULL,
+     LBL_OFFSET(LblIdentification_typ, MovieFilename.Value),
+     LBL_OFFSET(LblIdentification_typ, MovieFilename.Valid),
+     LBL_NO_RETURN, LBL_SIZE(MovieFilename.Value)},
+
+    {"TRACKING_ID",                         "STRING",   LBL_OPTIONAL,
+     LBL_NO_CONT,   1,  1,  LBL_NULL,
+     LBL_OFFSET(LblIdentification_typ, TrackingId.Value),
+     LBL_OFFSET(LblIdentification_typ, TrackingId.Valid),
+     LBL_NO_RETURN, LBL_SIZE(TrackingId.Value)},
+
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
 
 static LblApiProcess_typ    Label = {

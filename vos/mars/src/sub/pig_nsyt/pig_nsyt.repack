@@ -1,0 +1,7 @@
+$ vpack pig_nsyt.com -mixed -
+	-s PigNSYT.cc PigFileModelNSYT.cc PigSiteNSYT.cc -
+	   PigPointNSYTarmCamera.cc PigPointNSYTarmCamera6dof.cc -
+	   PigRoverStateManagerNSYT.cc PigLabelModelNSYT.cc -
+	   PigColorModelNSYT.cc -
+	-i pig_nsyt.imake
+$ Exit

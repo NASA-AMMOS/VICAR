@@ -1,37 +1,14 @@
-                Version 5C/16C
-
-      ***********************************************************
-      *                                                         *
-      * VICAR Supervisor version 5C, TAE V5.2                   *
-      *   Debugger is now supported on all platforms            *
-      *   USAGE command now implemented under Unix              *
-      *                                                         *
-      * VRDI and VIDS now support X-windows and Unix            *
-      * New X-windows display program: xvd (for all but VAX/VMS)*
-      *                                                         *
-      * VICAR Run-Time Library version 16C                      *
-      *   '+' form of temp filename now avail. on all platforms *
-      *   ANSI C now fully supported                            *
-      *                                                         *
-      * See B.Deen(RGD059) with problems                        *
-      *                                                         *
-      ***********************************************************
-
-  --- Type NUT for the New User Tutorial ---
-
-  --- Type MENU for a menu of available applications ---
-
 gen inp1 nl=20 ns=20
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen inp2 nl=20 ns=20 linc=10 sinc=10
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen inp3 nl=128 ns=128 linc=5 sinc=5
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 qplot (inp1,inp2,inp3) proc=(1,1,1,20,20, 2,1,1,20,20, 3,50,50,70,70)
 if (PLOTOUT = "YES")
@@ -44,12 +21,13 @@ LE=@YSCALE         NCHAN=@NCHAN PROCESS=@PROCESS SPROCESS+
 =@SPROCESS         XVALUES=@XVALUES YVALUES=@YVALUES +
 TICS=@TICS         PLOTOUT=@PLOTOUT PLOTFMT=GNUPLOT
 Beginning VICAR task QPLOT2
-qplot2 version 12-Jul-2013 (64-bit gnuplot) - rjb
+qplot2 version 2015-08-19
 if (PLOTOUT = "NONE")
   ush gnuplot qplot.gpi
-else-if (PLOTOUT = "YES" or PLOTOUT = "yes")
-end-if
-END-PROC
+[TAE-ABNSHELL] Abnormal shell termination.;
+ proc 'qplot', line 43
+RETURN
+continue
 qplot (inp1,inp2,inp3) 'norm proc=(1,1,1,20,20, 2,1,1,20,20, 3,1,1,128,128)
 if (PLOTOUT = "YES")
 end-if
@@ -61,12 +39,13 @@ LE=@YSCALE         NCHAN=@NCHAN PROCESS=@PROCESS SPROCESS+
 =@SPROCESS         XVALUES=@XVALUES YVALUES=@YVALUES +
 TICS=@TICS         PLOTOUT=@PLOTOUT PLOTFMT=GNUPLOT
 Beginning VICAR task QPLOT2
-qplot2 version 12-Jul-2013 (64-bit gnuplot) - rjb
+qplot2 version 2015-08-19
 if (PLOTOUT = "NONE")
   ush gnuplot qplot.gpi
-else-if (PLOTOUT = "YES" or PLOTOUT = "yes")
-end-if
-END-PROC
+[TAE-ABNSHELL] Abnormal shell termination.;
+ proc 'qplot', line 43
+RETURN
+continue
 qplot (inp1,inp2,inp3) title="MIPL test run for QPLOT"  +
       xtitle="This is the X axis" ytitle="This is the Y axis"  +
       proc=(3,1,1,64,64)
@@ -80,12 +59,13 @@ LE=@YSCALE         NCHAN=@NCHAN PROCESS=@PROCESS SPROCESS+
 =@SPROCESS         XVALUES=@XVALUES YVALUES=@YVALUES +
 TICS=@TICS         PLOTOUT=@PLOTOUT PLOTFMT=GNUPLOT
 Beginning VICAR task QPLOT2
-qplot2 version 12-Jul-2013 (64-bit gnuplot) - rjb
+qplot2 version 2015-08-19
 if (PLOTOUT = "NONE")
   ush gnuplot qplot.gpi
-else-if (PLOTOUT = "YES" or PLOTOUT = "yes")
-end-if
-END-PROC
+[TAE-ABNSHELL] Abnormal shell termination.;
+ proc 'qplot', line 43
+RETURN
+continue
 qplot inp1 yscale=(0,70) proc=(1,1,1,20,20) plotout="YES"
 if (PLOTOUT = "YES")
   let PLOTFMT = "eps"
@@ -98,11 +78,12 @@ QPLOT2 inp1 TITLE=@TITLE LOTITLE=@LOTITLE XTITLE=@XTITLE  +
        XVALUES=@XVALUES YVALUES=@YVALUES TICS=@TICS  +
        PLOTOUT=@PLOTOUT PLOTFMT=eps
 Beginning VICAR task QPLOT2
-qplot2 version 12-Jul-2013 (64-bit gnuplot) - rjb
+qplot2 version 2015-08-19
 if (PLOTOUT = "NONE")
 else-if (PLOTOUT = "YES" or PLOTOUT = "yes")
   ush gnuplot qplot.eps.gpi
-  ush lpr qplot.eps
+  write "ush lpr qplot.eps"
+ush lpr qplot.eps
 end-if
 END-PROC
 qplot inp1 yscale=(0,70) proc=(1,1,1,20,20) plotout="qplot1" plotfmt="eps"
@@ -116,9 +97,9 @@ QPLOT2 inp1 TITLE=@TITLE LOTITLE=@LOTITLE XTITLE=@XTITLE  +
        XVALUES=@XVALUES YVALUES=@YVALUES TICS=@TICS  +
        PLOTOUT=@PLOTOUT PLOTFMT=eps
 Beginning VICAR task QPLOT2
-qplot2 version 12-Jul-2013 (64-bit gnuplot) - rjb
+qplot2 version 2015-08-19
 if (PLOTOUT = "NONE")
 else-if (PLOTOUT = "YES" or PLOTOUT = "yes")
 end-if
 END-PROC
-end-proc
+disable-log

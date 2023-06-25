@@ -8,7 +8,10 @@
 #include "defines.h"
 #include "ibisfile.h"
 #include "ibiserrs.h"
+
 #include "zvprintf.h"
+#include "zifmessage.h"
+#include "zmabend.h"
 
 /*#include "cartoVicarProtos.h"*/
 #include "cartoStrUtils.h"

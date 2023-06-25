@@ -1,0 +1,723 @@
+Note To Testers: 
+   In order to execute this test pdf, successful compilation of both 
+   tzdate_check.c and tzdate_check.f are required.  To do so, you 
+   will need to execute tzdate_check.imake and tdate_check.imake 
+   individually.
+
+
+******** Testing C interfaces ********
+
+>>>>> Testing CHK_SCET_DATE subroutine <<<<<
+
+::: A non-leap year test 
+tzdate_check scet=(1998,82,10,59,40,68) 'DEBUG
+Beginning VICAR task tzdate_check
+zchk_scet_date: Valid date
+--- Check All Fields ---
+zchk_year: Valid year
+zchk_julian: Valid julian day
+zchk_hour: Valid hour number
+zchk_minute: Valid minute number
+zchk_second: Valid second number
+zchk_msec: Valid millisecond  number
+let $echo = "no"
+
+::: Another non-leap year test 
+tzdate_check scet=(1998,365,10,59,40,68)
+Beginning VICAR task tzdate_check
+zchk_scet_date: Valid date
+let $echo = "no"
+
+::: A leap year test 
+tzdate_check scet=(2000,83,10,59,40,68)
+Beginning VICAR task tzdate_check
+zchk_scet_date: Valid date
+let $echo = "no"
+
+::: Another leap year test 
+tzdate_check scet=(2000,366,10,59,40,68)
+Beginning VICAR task tzdate_check
+zchk_scet_date: Valid date
+let $echo = "no"
+
+::: Test for invalid date formats 
+
+::: Test for invalid year format 
+tzdate_check scet=(98,82,10,59,40,68) 'DEBUG
+Beginning VICAR task tzdate_check
+Warning::year number is not 4-digit.
+zchk_scet_date: Invalid date
+--- Check All Fields ---
+Warning::year number is not 4-digit.
+zchk_year: Invalid year
+Warning::year number is not 4-digit.
+zchk_julian: Invalid julian day
+zchk_hour: Valid hour number
+zchk_minute: Valid minute number
+zchk_second: Valid second number
+zchk_msec: Valid millisecond  number
+let $echo = "no"
+
+::: Another test for invalid year format 
+tzdate_check scet=(998,82,10,59,40,68)
+Beginning VICAR task tzdate_check
+Warning::year number is not 4-digit.
+zchk_scet_date: Invalid date
+let $echo = "no"
+
+::: Another test for invalid year format 
+tzdate_check scet=(-1998,82,10,59,40,68)
+Beginning VICAR task tzdate_check
+Warning::year number is negative.
+zchk_scet_date: Invalid date
+let $echo = "no"
+
+::: Test for invalid julian day for a non-leap year
+tzdate_check scet=(1998,366,10,59,40,68) 'DEBUG
+Beginning VICAR task tzdate_check
+Warning::Invalid Julian day for non-leap year, range 1-365.
+zchk_scet_date: Invalid date
+--- Check All Fields ---
+zchk_year: Valid year
+Warning::Invalid Julian day for non-leap year, range 1-365.
+zchk_julian: Invalid julian day
+zchk_hour: Valid hour number
+zchk_minute: Valid minute number
+zchk_second: Valid second number
+zchk_msec: Valid millisecond  number
+let $echo = "no"
+
+::: Test for invalid julian day for a leap year
+tzdate_check scet=(2000,367,10,59,40,68)
+Beginning VICAR task tzdate_check
+Warning::Invalid Julian day for leap year, range 1-366.
+zchk_scet_date: Invalid date
+let $echo = "no"
+
+::: Test for invalid julian day number
+tzdate_check scet=(1998,0,10,59,40,68)
+Beginning VICAR task tzdate_check
+Warning::Invalid Julian day for non-leap year, range 1-365.
+zchk_scet_date: Invalid date
+let $echo = "no"
+
+::: Test for invalid hour number
+tzdate_check scet=(1998,82,-1,59,40,68) 'DEBUG
+Beginning VICAR task tzdate_check
+Warning::hour number is not between 0-23.
+zchk_scet_date: Invalid date
+--- Check All Fields ---
+zchk_year: Valid year
+zchk_julian: Valid julian day
+Warning::hour number is not between 0-23.
+zchk_hour: Invalid hour number
+zchk_minute: Valid minute number
+zchk_second: Valid second number
+zchk_msec: Valid millisecond  number
+let $echo = "no"
+
+::: Another est for invalid hour number
+tzdate_check scet=(1998,82,24,59,40,68)
+Beginning VICAR task tzdate_check
+Warning::hour number is not between 0-23.
+zchk_scet_date: Invalid date
+let $echo = "no"
+
+::: Test for invalid minute number
+tzdate_check scet=(1998,82,10,-1,40,68) 'DEBUG
+Beginning VICAR task tzdate_check
+Warning::minute number is not between 0-59.
+zchk_scet_date: Invalid date
+--- Check All Fields ---
+zchk_year: Valid year
+zchk_julian: Valid julian day
+zchk_hour: Valid hour number
+Warning::minute number is not between 0-59.
+zchk_minute: Invalid minute number
+zchk_second: Valid second number
+zchk_msec: Valid millisecond  number
+let $echo = "no"
+
+::: Another test for invalid minute number
+tzdate_check scet=(1998,82,10,60,40,68)
+Beginning VICAR task tzdate_check
+Warning::minute number is not between 0-59.
+zchk_scet_date: Invalid date
+let $echo = "no"
+
+::: Test for invalid second number
+tzdate_check scet=(1998,82,10,59,-1,68) 'DEBUG
+Beginning VICAR task tzdate_check
+Warning::second number is not between 0-59.
+zchk_scet_date: Invalid date
+--- Check All Fields ---
+zchk_year: Valid year
+zchk_julian: Valid julian day
+zchk_hour: Valid hour number
+zchk_minute: Valid minute number
+Warning::second number is not between 0-59.
+zchk_second: Invalid second number
+zchk_msec: Valid millisecond  number
+let $echo = "no"
+
+::: Another test for invalid second number
+tzdate_check scet=(1998,82,10,59,60,68)
+Beginning VICAR task tzdate_check
+Warning::second number is not between 0-59.
+zchk_scet_date: Invalid date
+let $echo = "no"
+
+::: Test for invalid millisecond number
+tzdate_check scet=(1998,82,10,59,40,-1) 'DEBUG
+Beginning VICAR task tzdate_check
+Warning::millisecond number is not between 0-999.
+zchk_scet_date: Invalid date
+--- Check All Fields ---
+zchk_year: Valid year
+zchk_julian: Valid julian day
+zchk_hour: Valid hour number
+zchk_minute: Valid minute number
+zchk_second: Valid second number
+Warning::millisecond number is not between 0-999.
+zchk_msec: Invalid millisecond number
+let $echo = "no"
+
+::: Test for invalid millisecond number
+tzdate_check scet=(1998,82,10,59,40,1000)
+Beginning VICAR task tzdate_check
+Warning::millisecond number is not between 0-999.
+zchk_scet_date: Invalid date
+let $echo = "no"
+
+>>>>> Testing CHK_STD_DATE subroutine <<<<<
+
+::: A non-leap year test 
+tzdate_check std=(1998,3,23,10,59,40,68) 'DEBUG
+Beginning VICAR task tzdate_check
+zchk_std_date: Valid date
+--- Check All Fields ---
+zchk_year: Valid year
+zchk_month: Valid month
+zchk_day: Valid day
+zchk_hour: Valid hour number
+zchk_minute: Valid minute number
+zchk_second: Valid second number
+zchk_msec: Valid millisecond  number
+let $echo = "no"
+
+::: Another non-leap year test 
+tzdate_check std=(1998,12,31,10,59,40,68)
+Beginning VICAR task tzdate_check
+zchk_std_date: Valid date
+let $echo = "no"
+
+::: A leap year test 
+tzdate_check std =(2000,3,23,10,59,40,68)
+Beginning VICAR task tzdate_check
+zchk_std_date: Valid date
+let $echo = "no"
+
+::: Another leap year test 
+tzdate_check std=(2000,12,31,10,59,40,68)
+Beginning VICAR task tzdate_check
+zchk_std_date: Valid date
+let $echo = "no"
+
+::: Test for invalid date formats 
+
+::: Test for invalid year format 
+tzdate_check std=(98,3,23,10,59,40,68)
+Beginning VICAR task tzdate_check
+Warning::year number is not 4-digit.
+zchk_std_date: Invalid date
+let $echo = "no"
+
+::: Another test for invalid year format 
+tzdate_check std=(998,3,23,10,59,40,68)
+Beginning VICAR task tzdate_check
+Warning::year number is not 4-digit.
+zchk_std_date: Invalid date
+let $echo = "no"
+
+::: Another test for invalid year format 
+tzdate_check std=(-1998,3,23,10,59,40,68)
+Beginning VICAR task tzdate_check
+Warning::year number is negative.
+zchk_std_date: Invalid date
+let $echo = "no"
+
+::: Test for invalid date for a non-leap year
+tzdate_check std=(1998,2,29,10,59,40,68)
+Beginning VICAR task tzdate_check
+Warning::Invalid day number for the given year and month.
+zchk_std_date: Invalid date
+let $echo = "no"
+
+::: Test for invalid date for a leap year
+tzdate_check std=(2000,2,30,10,59,40,68)
+Beginning VICAR task tzdate_check
+Warning::Invalid day number for the given year and month.
+zchk_std_date: Invalid date
+let $echo = "no"
+
+::: Test for invalid month number
+tzdate_check std=(1998,0,23,10,59,40,68) 'DEBUG
+Beginning VICAR task tzdate_check
+Warning::month number is not between 1-12.
+zchk_std_date: Invalid date
+--- Check All Fields ---
+zchk_year: Valid year
+Warning::month number is not between 1-12.
+zchk_month: Invalid month
+Warning::month number is not between 1-12.
+zchk_day: Invalid day
+zchk_hour: Valid hour number
+zchk_minute: Valid minute number
+zchk_second: Valid second number
+zchk_msec: Valid millisecond  number
+let $echo = "no"
+
+::: Another test for invalid month number
+tzdate_check std=(1998,13,23,10,59,40,68)
+Beginning VICAR task tzdate_check
+Warning::month number is not between 1-12.
+zchk_std_date: Invalid date
+let $echo = "no"
+
+::: Test for invalid day number
+tzdate_check std=(1998,3,0,10,59,40,68) 'DEBUG
+Beginning VICAR task tzdate_check
+Warning::Invalid day number for the given year and month.
+zchk_std_date: Invalid date
+--- Check All Fields ---
+zchk_year: Valid year
+zchk_month: Valid month
+Warning::Invalid day number for the given year and month.
+zchk_day: Invalid day
+zchk_hour: Valid hour number
+zchk_minute: Valid minute number
+zchk_second: Valid second number
+zchk_msec: Valid millisecond  number
+let $echo = "no"
+
+::: Test for invalid day number
+tzdate_check std=(1998,3,32,10,59,40,68)
+Beginning VICAR task tzdate_check
+Warning::Invalid day number for the given year and month.
+zchk_std_date: Invalid date
+let $echo = "no"
+
+::: Test for invalid hour number
+tzdate_check std=(1998,3,23,-1,59,40,68)
+Beginning VICAR task tzdate_check
+Warning::hour number is not between 0-23.
+zchk_std_date: Invalid date
+let $echo = "no"
+
+::: Another test for invalid hour number
+tzdate_check std=(1998,3,23,24,59,40,68)
+Beginning VICAR task tzdate_check
+Warning::hour number is not between 0-23.
+zchk_std_date: Invalid date
+let $echo = "no"
+
+::: Test for invalid minute number
+tzdate_check std=(1998,3,23,10,-1,40,68)
+Beginning VICAR task tzdate_check
+Warning::minute number is not between 0-59.
+zchk_std_date: Invalid date
+let $echo = "no"
+
+::: Another test for invalid minute number
+tzdate_check std=(1998,3,23,10,60,40,68)
+Beginning VICAR task tzdate_check
+Warning::minute number is not between 0-59.
+zchk_std_date: Invalid date
+let $echo = "no"
+
+::: Test for invalid second number
+tzdate_check std=(1998,3,23,10,59,-1,68)
+Beginning VICAR task tzdate_check
+Warning::second number is not between 0-59.
+zchk_std_date: Invalid date
+let $echo = "no"
+
+::: Another test for invalid second number
+tzdate_check std=(1998,3,23,10,59,60,68)
+Beginning VICAR task tzdate_check
+Warning::second number is not between 0-59.
+zchk_std_date: Invalid date
+let $echo = "no"
+
+::: Test for invalid millisecond number
+tzdate_check std=(1998,3,23,10,59,40,-1)
+Beginning VICAR task tzdate_check
+Warning::millisecond number is not between 0-999.
+zchk_std_date: Invalid date
+let $echo = "no"
+
+::: Test for invalid millisecond number
+tzdate_check std=(1998,3,23,10,59,40,1000)
+Beginning VICAR task tzdate_check
+Warning::millisecond number is not between 0-999.
+zchk_std_date: Invalid date
+let $echo="no"
+
+
+******** Testing FORTRAN interfaces ********
+
+>>>>> Testing CHK_SCET_DATE subroutine <<<<<
+
+::: A non-leap year test 
+tdate_check scet=(1998,82,10,59,40,68) 'DEBUG
+Beginning VICAR task tdate_check
+CHK_SCET_DATE: Valid date
+--- Check All Fields ---
+CHK_YEAR: Valid year
+CHK_JULIAN: Valid julian day
+CHK_HOUR: Valid hour number
+CHK_MINUTE: Valid minute number
+CHK_SECOND: Valid second number
+CHK_MSEC: Valid millisecond number
+let $echo = "no"
+
+::: Another non-leap year test 
+tdate_check scet=(1998,365,10,59,40,68)
+Beginning VICAR task tdate_check
+CHK_SCET_DATE: Valid date
+let $echo = "no"
+
+::: A leap year test 
+tdate_check scet=(2000,83,10,59,40,68)
+Beginning VICAR task tdate_check
+CHK_SCET_DATE: Valid date
+let $echo = "no"
+
+::: Another leap year test 
+tdate_check scet=(2000,366,10,59,40,68)
+Beginning VICAR task tdate_check
+CHK_SCET_DATE: Valid date
+let $echo = "no"
+
+::: Test for invalid date formats 
+
+::: Test for invalid year format 
+tdate_check scet=(98,82,10,59,40,68) 'DEBUG
+Beginning VICAR task tdate_check
+Warning::year number is not 4-digit.
+CHK_SCET_DATE: Invalid date
+--- Check All Fields ---
+Warning::year number is not 4-digit.
+CHK_YEAR: Invalid year
+Warning::year number is not 4-digit.
+CHK_JULIAN: Invalid julian day
+CHK_HOUR: Valid hour number
+CHK_MINUTE: Valid minute number
+CHK_SECOND: Valid second number
+CHK_MSEC: Valid millisecond number
+let $echo = "no"
+
+::: Another test for invalid year format 
+tdate_check scet=(998,82,10,59,40,68)
+Beginning VICAR task tdate_check
+Warning::year number is not 4-digit.
+CHK_SCET_DATE: Invalid date
+let $echo = "no"
+
+::: Another test for invalid year format 
+tdate_check scet=(-1998,82,10,59,40,68)
+Beginning VICAR task tdate_check
+Warning::year number is negative.
+CHK_SCET_DATE: Invalid date
+let $echo = "no"
+
+::: Test for invalid julian day for a non-leap year
+tdate_check scet=(1998,366,10,59,40,68) 'DEBUG
+Beginning VICAR task tdate_check
+Warning::Invalid Julian day for non-leap year, range 1-365.
+CHK_SCET_DATE: Invalid date
+--- Check All Fields ---
+CHK_YEAR: Valid year
+Warning::Invalid Julian day for non-leap year, range 1-365.
+CHK_JULIAN: Invalid julian day
+CHK_HOUR: Valid hour number
+CHK_MINUTE: Valid minute number
+CHK_SECOND: Valid second number
+CHK_MSEC: Valid millisecond number
+let $echo = "no"
+
+::: Test for invalid julian day for a leap year
+tdate_check scet=(2000,367,10,59,40,68)
+Beginning VICAR task tdate_check
+Warning::Invalid Julian day for leap year, range 1-366.
+CHK_SCET_DATE: Invalid date
+let $echo = "no"
+
+::: Test for invalid julian day number
+tdate_check scet=(1998,0,10,59,40,68)
+Beginning VICAR task tdate_check
+Warning::Invalid Julian day for non-leap year, range 1-365.
+CHK_SCET_DATE: Invalid date
+let $echo = "no"
+
+::: Test for invalid hour number
+tdate_check scet=(1998,82,-1,59,40,68) 'DEBUG
+Beginning VICAR task tdate_check
+Warning::hour number is not between 0-23.
+CHK_SCET_DATE: Invalid date
+--- Check All Fields ---
+CHK_YEAR: Valid year
+CHK_JULIAN: Valid julian day
+Warning::hour number is not between 0-23.
+CHK_HOUR: Invalid hour number
+CHK_MINUTE: Valid minute number
+CHK_SECOND: Valid second number
+CHK_MSEC: Valid millisecond number
+let $echo = "no"
+
+::: Another est for invalid hour number
+tdate_check scet=(1998,82,24,59,40,68)
+Beginning VICAR task tdate_check
+Warning::hour number is not between 0-23.
+CHK_SCET_DATE: Invalid date
+let $echo = "no"
+
+::: Test for invalid minute number
+tdate_check scet=(1998,82,10,-1,40,68) 'DEBUG
+Beginning VICAR task tdate_check
+Warning::minute number is not between 0-59.
+CHK_SCET_DATE: Invalid date
+--- Check All Fields ---
+CHK_YEAR: Valid year
+CHK_JULIAN: Valid julian day
+CHK_HOUR: Valid hour number
+Warning::minute number is not between 0-59.
+CHK_MINUTE: Invalid minute number
+CHK_SECOND: Valid second number
+CHK_MSEC: Valid millisecond number
+let $echo = "no"
+
+::: Another test for invalid minute number
+tdate_check scet=(1998,82,10,60,40,68)
+Beginning VICAR task tdate_check
+Warning::minute number is not between 0-59.
+CHK_SCET_DATE: Invalid date
+let $echo = "no"
+
+::: Test for invalid second number
+tdate_check scet=(1998,82,10,59,-1,68) 'DEBUG
+Beginning VICAR task tdate_check
+Warning::second number is not between 0-59.
+CHK_SCET_DATE: Invalid date
+--- Check All Fields ---
+CHK_YEAR: Valid year
+CHK_JULIAN: Valid julian day
+CHK_HOUR: Valid hour number
+CHK_MINUTE: Valid minute number
+Warning::minute number is not between 0-59.
+CHK_SECOND: Invalid second number
+CHK_MSEC: Valid millisecond number
+let $echo = "no"
+
+::: Another test for invalid second number
+tdate_check scet=(1998,82,10,59,60,68)
+Beginning VICAR task tdate_check
+Warning::second number is not between 0-59.
+CHK_SCET_DATE: Invalid date
+let $echo = "no"
+
+::: Test for invalid millisecond number
+tdate_check scet=(1998,82,10,59,40,-1) 'DEBUG
+Beginning VICAR task tdate_check
+Warning::millisecond number is not between 0-999.
+CHK_SCET_DATE: Invalid date
+--- Check All Fields ---
+CHK_YEAR: Valid year
+CHK_JULIAN: Valid julian day
+CHK_HOUR: Valid hour number
+CHK_MINUTE: Valid minute number
+CHK_SECOND: Valid second number
+Warning::millisecond number is not between 0-999.
+CHK_MSEC: Invalid millisecond number
+let $echo = "no"
+
+::: Test for invalid millisecond number
+tdate_check scet=(1998,82,10,59,40,1000)
+Beginning VICAR task tdate_check
+Warning::millisecond number is not between 0-999.
+CHK_SCET_DATE: Invalid date
+let $echo = "no"
+
+>>>>> Testing CHK_STD_DATE subroutine <<<<<
+
+::: A non-leap year test 
+tdate_check std=(1998,3,23,10,59,40,68) 'DEBUG
+Beginning VICAR task tdate_check
+CHK_STD_DATE: Valid date
+--- Check All Fields ---
+CHK_YEAR: Valid year
+CHK_MONTH: Valid month
+CHK_DAY: Valid day
+CHK_HOUR: Valid hour number
+CHK_MINUTE: Valid minute number
+CHK_SECOND: Valid second number
+CHK_MSEC: Valid millisecond number
+let $echo = "no"
+
+::: Another non-leap year test 
+tdate_check std=(1998,12,31,10,59,40,68)
+Beginning VICAR task tdate_check
+CHK_STD_DATE: Valid date
+let $echo = "no"
+
+::: A leap year test 
+tdate_check std =(2000,3,23,10,59,40,68)
+Beginning VICAR task tdate_check
+CHK_STD_DATE: Valid date
+let $echo = "no"
+
+::: Another leap year test 
+tdate_check std=(2000,12,31,10,59,40,68)
+Beginning VICAR task tdate_check
+CHK_STD_DATE: Valid date
+let $echo = "no"
+
+::: Test for invalid date formats 
+
+::: Test for invalid year format 
+tdate_check std=(98,3,23,10,59,40,68)
+Beginning VICAR task tdate_check
+Warning::year number is not 4-digit.
+CHK_STD_DATE: Invalid date
+let $echo = "no"
+
+::: Another test for invalid year format 
+tdate_check std=(998,3,23,10,59,40,68)
+Beginning VICAR task tdate_check
+Warning::year number is not 4-digit.
+CHK_STD_DATE: Invalid date
+let $echo = "no"
+
+::: Another test for invalid year format 
+tdate_check std=(-1998,3,23,10,59,40,68)
+Beginning VICAR task tdate_check
+Warning::year number is negative.
+CHK_STD_DATE: Invalid date
+let $echo = "no"
+
+::: Test for invalid date for a non-leap year
+tdate_check std=(1998,2,29,10,59,40,68)
+Beginning VICAR task tdate_check
+Warning::Invalid day number for the given year and month.
+CHK_STD_DATE: Invalid date
+let $echo = "no"
+
+::: Test for invalid date for a leap year
+tdate_check std=(2000,2,30,10,59,40,68)
+Beginning VICAR task tdate_check
+Warning::Invalid day number for the given year and month.
+CHK_STD_DATE: Invalid date
+let $echo = "no"
+
+::: Test for invalid month number
+tdate_check std=(1998,0,23,10,59,40,68) 'DEBUG
+Beginning VICAR task tdate_check
+Warning::month number is not between 1-12.
+CHK_STD_DATE: Invalid date
+--- Check All Fields ---
+CHK_YEAR: Valid year
+Warning::month number is not between 1-12.
+CHK_MONTH: Invalid month
+Warning::month number is not between 1-12.
+CHK_DAY: Invalid day
+CHK_HOUR: Valid hour number
+CHK_MINUTE: Valid minute number
+CHK_SECOND: Valid second number
+CHK_MSEC: Valid millisecond number
+let $echo = "no"
+
+::: Another test for invalid month number
+tdate_check std=(1998,13,23,10,59,40,68)
+Beginning VICAR task tdate_check
+Warning::month number is not between 1-12.
+CHK_STD_DATE: Invalid date
+let $echo = "no"
+
+::: Test for invalid day number
+tdate_check std=(1998,3,0,10,59,40,68) 'DEBUG
+Beginning VICAR task tdate_check
+Warning::Invalid day number for the given year and month.
+CHK_STD_DATE: Invalid date
+--- Check All Fields ---
+CHK_YEAR: Valid year
+CHK_MONTH: Valid month
+Warning::Invalid day number for the given year and month.
+CHK_DAY: Invalid day
+CHK_HOUR: Valid hour number
+CHK_MINUTE: Valid minute number
+CHK_SECOND: Valid second number
+CHK_MSEC: Valid millisecond number
+let $echo = "no"
+
+::: Test for invalid day number
+tdate_check std=(1998,3,32,10,59,40,68)
+Beginning VICAR task tdate_check
+Warning::Invalid day number for the given year and month.
+CHK_STD_DATE: Invalid date
+let $echo = "no"
+
+::: Test for invalid hour number
+tdate_check std=(1998,3,23,-1,59,40,68)
+Beginning VICAR task tdate_check
+Warning::hour number is not between 0-23.
+CHK_STD_DATE: Invalid date
+let $echo = "no"
+
+::: Another test for invalid hour number
+tdate_check std=(1998,3,23,24,59,40,68)
+Beginning VICAR task tdate_check
+Warning::hour number is not between 0-23.
+CHK_STD_DATE: Invalid date
+let $echo = "no"
+
+::: Test for invalid minute number
+tdate_check std=(1998,3,23,10,-1,40,68)
+Beginning VICAR task tdate_check
+Warning::minute number is not between 0-59.
+CHK_STD_DATE: Invalid date
+let $echo = "no"
+
+::: Another test for invalid minute number
+tdate_check std=(1998,3,23,10,60,40,68)
+Beginning VICAR task tdate_check
+Warning::minute number is not between 0-59.
+CHK_STD_DATE: Invalid date
+let $echo = "no"
+
+::: Test for invalid second number
+tdate_check std=(1998,3,23,10,59,-1,68)
+Beginning VICAR task tdate_check
+Warning::second number is not between 0-59.
+CHK_STD_DATE: Invalid date
+let $echo = "no"
+
+::: Another test for invalid second number
+tdate_check std=(1998,3,23,10,59,60,68)
+Beginning VICAR task tdate_check
+Warning::second number is not between 0-59.
+CHK_STD_DATE: Invalid date
+let $echo = "no"
+
+::: Test for invalid millisecond number
+tdate_check std=(1998,3,23,10,59,40,-1)
+Beginning VICAR task tdate_check
+Warning::millisecond number is not between 0-999.
+CHK_STD_DATE: Invalid date
+let $echo = "no"
+
+::: Test for invalid millisecond number
+tdate_check std=(1998,3,23,10,59,40,1000)
+Beginning VICAR task tdate_check
+Warning::millisecond number is not between 0-999.
+CHK_STD_DATE: Invalid date
+disable-log

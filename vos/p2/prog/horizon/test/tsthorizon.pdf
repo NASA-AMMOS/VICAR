@@ -2,12 +2,12 @@ procedure
 refgbl $echo
 body
 
-local wh_1 string init="/project/test_work/testdata/mer/1N491020376ILFCNY9P0706L0M1.IMG"
-local wh_2 string init="/project/test_work/testdata/mer/1N491020519ILFCNY9P0706L0M1.IMG"
-local ph_1 string init="/project/test_work/testdata/mer/1N491020834ILFCNY9P0706L0M1.IMG"
-local nh_1 string init="/project/test_work/testdata/mer/1N491020993ILFCNY9P0706L0M1.IMG"
-local nh_2 string init="/project/test_work/testdata/mer/1N491021154ILFCNY9P0706L0M1.IMG"
-local nh_3 string init="/project/test_work/testdata/mer/1P491287702ILFCNY9P2584L2M1.IMG"
+local wh_1 string init="data/1N491020376ILFCNY9P0706L0M1.IMG"
+local wh_2 string init="data/1N491020519ILFCNY9P0706L0M1.IMG"
+local ph_1 string init="data/1N491020834ILFCNY9P0706L0M1.IMG"
+local nh_1 string init="data/1N491020993ILFCNY9P0706L0M1.IMG"
+local nh_2 string init="data/1N491021154ILFCNY9P0706L0M1.IMG"
+local nh_3 string init="data/1P491287702ILFCNY9P2584L2M1.IMG"
 local nh_1_csv string init="1N491020993ILFCNY9P0706L0M1.CSV"
 local nh_1_gm string init="1N491020993ILFCNY9P0706L0M1.GM"
 local nh_1_gd string init="1N491020993ILFCNY9P0706L0M1.GD"
@@ -44,7 +44,7 @@ horizon inp=&nh_2 out=&nh_2_csv gm_img=&nh_2_gm gd_img=&nh_2_gd ql_img=&nh_2_ql
 ! This test case verifies that the salt-and-pepper noise can be significantly
 ! reduced using the FILTER_TYPE and FILTER_SIZE.
 horizon inp=&wh_1 out=&wh_1_csv smooth_img=&wh_1_smh filter_size=3 filter_type=min
-horizon inp=&wh_1 out=$wh_1_csv smooth_img=&wh_1_smh filter_size=5 filter_type=median
+horizon inp=&wh_1 out=&wh_1_csv smooth_img=&wh_1_smh filter_size=5 filter_type=median
 horizon inp=&wh_1 out=&wh_1_csv smooth_img=&wh_1_smh filter_size=7 filter_type=max
 horizon inp=&wh_2 out=&wh_2_csv smooth_img=&wh_2_smh filter_size=3 filter_type=min
 horizon inp=&wh_2 out=&wh_2_csv smooth_img=&wh_2_smh filter_size=5 filter_type=median
@@ -61,5 +61,26 @@ horizon inp=&nh_2 out=&nh_2_csv ql_img=&nh_2_ql gm_img=&nh_2_gm gd_img=&nh_2_gd
 horizon inp=&nh_3 out=&nh_3_csv ql_img=&nh_3_ql gm_img=&nh_3_gm gd_img=&nh_3_gd
 
 disable-log
+
+ush rm 1N491020376ILFCNY9P0706L0M1.CSV
+ush rm 1N491020376ILFCNY9P0706L0M1.QL
+ush rm 1N491020376ILFCNY9P0706L0M1.SMOOTH
+ush rm 1N491020519ILFCNY9P0706L0M1.CSV
+ush rm 1N491020519ILFCNY9P0706L0M1.QL
+ush rm 1N491020519ILFCNY9P0706L0M1.SMOOTH
+ush rm 1N491020834ILFCNY9P0706L0M1.CSV
+ush rm 1N491020834ILFCNY9P0706L0M1.QL
+ush rm 1N491020993ILFCNY9P0706L0M1.CSV
+ush rm 1N491020993ILFCNY9P0706L0M1.GD
+ush rm 1N491020993ILFCNY9P0706L0M1.GM
+ush rm 1N491020993ILFCNY9P0706L0M1.QL
+ush rm 1N491021154ILFCNY9P0706L0M1.CSV
+ush rm 1N491021154ILFCNY9P0706L0M1.GD
+ush rm 1N491021154ILFCNY9P0706L0M1.GM
+ush rm 1N491021154ILFCNY9P0706L0M1.QL
+ush rm 1P491287702ILFCNY9P2584L2M1.CSV
+ush rm 1P491287702ILFCNY9P2584L2M1.GD
+ush rm 1P491287702ILFCNY9P2584L2M1.GM
+ush rm 1P491287702ILFCNY9P2584L2M1.QL
 
 End-proc

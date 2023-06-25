@@ -1,6 +1,8 @@
 procedure
 refgbl $echo
 body
+enable-log
+
 let _onfail="continue"
 let $echo="yes"
 
@@ -54,4 +56,5 @@ difpic (03b00235zpds.msk, 03b00235zvic.msk)
 
 difpic (03b00235zapds.msk, 03b00235zavic.msk)
 
+disable-log
 end-proc

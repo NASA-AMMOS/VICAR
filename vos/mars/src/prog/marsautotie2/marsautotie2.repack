@@ -1,0 +1,5 @@
+$ vpack marsautotie2.com -mixed -
+	-s marsautotie2.cc compute_asift_keypoints.h compute_asift_keypoints.cc compute_asift_matches.h compute_asift_matches.cc gtm_filter.h gtm_filter.cc -
+        -i marsautotie2.imake -
+	-p marsautotie2.pdf
+$ Exit

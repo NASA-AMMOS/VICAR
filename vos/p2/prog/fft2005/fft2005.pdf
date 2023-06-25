@@ -1,0 +1,128 @@
+process help=*
+PARM INP TYPE=STRING count=1
+PARM OUT TYPE=STRING count=1
+PARM SIZE TYPE=INTEGER COUNT=4 DEFAULT=(1,1,0,0)
+PARM SL TYPE=INTEGER DEFAULT=1
+PARM SS TYPE=INTEGER DEFAULT=1
+PARM NL TYPE=INTEGER DEFAULT=0
+PARM NS TYPE=INTEGER DEFAULT=0
+PARM MODE TYPE=KEYWORD VALID=(FORWARD,INVERSE) COUNT=(0:1) DEFAULT=--
+PARM FORMAT KEYWORD VALID=(BYTE,HALF,FULL,REAL,COMP) DEFAULT=BYTE
+PARM QUADSWAP TYPE=KEYWORD VALID=QUADSWAP COUNT=(0:1) DEFAULT=--
+PARM INSECT TYPE=INT COUNT=(0:2) DEFAULT=(0,0)
+PARM PREQSWAP TYPE=KEYWORD VALID=PREQSWAP COUNT=(0:1) DEFAULT=--
+PARM NORM     TYPE=KEYWORD VALID=NORM     COUNT=(0,1) DEFAULT=--
+END-PROC
+.TITLE
+fft2005 - fft for images utilizing fftw
+.HELP
+PURPOSE:
+Works similar to fft22, except as noted below.
+
+The fftw package updates the old rcsfft package, removing
+restrictions on the numeric factors of nl and ns:
+
+1.  There can be a prime factor greater than 23
+2.  The product of square-free factors can be larger
+    than 210.
+3.  In other words, the image can be any size, including
+    odd numbers.
+    
+The whole image is read into memory (which is virtual
+memory for most machines).  This should handle just about
+anything that one would normally want.
+
+Also, the ordering of the terms in the Fourier domain is different
+for the new package.  But the ordering is more logical and is
+self-consistent (applying the forward and then the inverse gives
+the same image back).
+
+The keyword QUADSWAP has been added so the inverse
+transform after application of WIENER can have the four quadrants
+moved back to picture position (including odd nl and/or ns cases).
+
+The keyword INSECT has been added to allow a small point
+spread function to be added into the center of a larger
+image.  The parameter gives the size of the larger image
+which will be zero filled except for the point spread function.
+The center of the point spread function is aligned with the center
+of the generated image input.  The definition of "center" for an
+even sized image or point spread image is the n/2+1 pixel (i.e. the
+lower right of the center four pixels.
+
+The Keyword PREQSWAP performs a quadrant swap After the INSECT 
+step but Before the FFTW processing step.
+
+The Keyword NORM normalizes the psf Before the INSECT step.
+Each pixel is divided by the sum of all pixels.
+
+EXECUTION:
+
+Example
+
+fft2005 a b
+fft2005 a b size=(2,1,4,4)
+fft2005 b c 'inverse
+
+see tstfft2005.pdf for examples of wiener filtering applications
+
+OPERATION:
+fft2005 reads in the whole image and applies fftw.
+TIMING: 
+
+O(line*samp*log(line*samp))
+
+ ORIGINAL PROGRAMMER:    A. Zobrist          21 Sep 2005
+ COGNIZANT PROGRAMMER:   A. Zobrist          21 Sep 2005
+ CURRENT COGNIZANT PROGRAMMER: P. Kim        15 Nov 2007
+ 
+ REVISION HISTORY
+  2005-09-21 AZ - Initial version
+  2007-11-29 PK - Added 'PREQSWAP option
+  2007-12-29 WLB - Switched to USES_ANSI_C AND LIB_CARTO; misc cleanup
+  2012-12-18 RJB - Fixes for 64-bit  
+  2015-11-24 WLB - Migrated to MIPL
+  2022-07-14 B. Crocco afids to opensource
+  
+.LEVEL1
+.VARIABLE INP
+STRING - Input image file
+.VARIABLE OUT
+STRING - Output image file
+.VARIABLE SIZE
+INTEGER - Region of input files
+to be tansformed
+.VARIABLE SL
+INTEGER - Starting line
+.VARIABLE SS
+INTEGER - Starting sample
+.VARIABLE NL
+INTEGER - Number of lines
+.VARIABLE NS
+INTEGER - Number of samples
+.VAR MODE
+Keyword: Transform mode.
+Valid: FORWARD, INVERSE.
+.VARI FORMAT
+Ouput image data format.
+Valid: BYTE, HALF, FULL,
+REAL, COMP
+.VAR QUADSWAP
+Keyword: Swap 4 quadrants
+when finished (for example
+after Wiener filter)
+.VAR INSECT
+insert the input image
+the center of a larger
+image where (nl,ns) is
+given by this parameter
+.VAR PREQSWAP
+Performs a quadrant swap
+After the INSECT step, but
+Before the FFTW processing step.
+.VAR NORM
+Normalizes the psf Before
+the INSECT step. Each pixel
+is divided by the sum of
+all pixels
+.END

@@ -1,0 +1,125 @@
+procedure
+refgbl $echo
+
+local localdir string
+local localtime string
+local localcolor string
+
+local message string
+local colors string
+local color string
+local script string
+local result string
+local intresult integer
+local strresult string
+local realresult real
+local strval string
+local intval integer
+
+body
+
+enable-log
+
+let $echo="no"
+
+goto therest
+
+! Get the local time
+tcl2tcl script="clock format [clock seconds] -format %c" strvar=localtime
+let message = "The local time is " // "&localtime" // "."
+write "&message"
+
+write " "
+
+! Get string from keyboard
+write "Enter a decimal number:"
+tcl2tcl script="gets stdin" intvar=intval
+let message = "You entered: " // "&intval" // "."
+tcl2tcl script="format %x &intval" strvar=strresult
+let message = "Hex representation: " // "&strresult" // "."
+write "&message"
+
+write " "
+
+! Get string from keyboard
+write "Enter a hex number:"
+tcl2tcl script="gets stdin" strvar=strval
+let message = "You entered: " // "&strval" // "."
+tcl2tcl script="scan &strval %x" intvar=intresult
+let message = "Decimal representation: " // "&intresult" // "."
+write "&message"
+
+write " "
+
+! Get string from keyboard
+write "Enter a string:"
+tcl2tcl script="gets stdin" strvar=result
+let message = "You entered: " // "&result" // "."
+write "&message"
+
+write " "
+
+therest>
+
+write " "
+
+! Get the local directory
+tcl2tcl script="lindex [split [pwd] '/'] end" strvar=localdir
+let message = "The current directory is " // "&localdir" // "."
+write "&message"
+
+write " "
+
+! Get the third resistor code color
+let colors = "{black brown red orange yellow green blue violet grey white}"
+let script = "lindex " // "&colors" // " 3"
+tcl2tcl script="&script" strvar=color
+let message = "The resistor color band for 3 is: " // "&color" // "."
+write "&message"
+
+write " "
+
+! Print "Hello world!"
+tcl2tcl script="puts {Hello world!}"
+
+write " "
+
+! Run simple TCL/Tk script
+tcl2tcl script="source simple.tcl" strvar=result
+let message = "The value returned from simple.tcl is " // "&result" // "."
+write "&message"
+
+write " "
+
+! Test returned integer values
+tcl2tcl script="expr 6 * 7" intvar=intresult
+let message = "The answer to the question of life, the universe, and everthing is " // "&intresult" // "."
+write "&message"
+
+write " "
+
+! Test returned real values
+tcl2tcl script="expr 1.0 / 3.0" realvar=realresult
+let message = "One third is aproximately " // "&realresult" // "."
+write "&message"
+
+write " "
+
+! Convert a string to an int
+local aString string
+let aString = "42"
+tcl2tcl script="expr &aString" intvar=intresult
+let message = "The answer to the question of life, the universe, and everthing (as an integer) is " // "&intresult" // "."
+write "&message"
+
+write " "
+
+! Execute multi-string script
+tcl2tcl script=("concat", " alpha", " beta", " gamma") strvar=result
+write "&result"
+
+theend>
+
+disable-log
+
+end-proc

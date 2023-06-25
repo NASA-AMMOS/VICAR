@@ -1,0 +1,8 @@
+let $autousage="none"
+tbigmalloc
+Beginning VICAR task tbigmalloc
+Test of size 1024 succeeded
+Test of size 1048576 succeeded
+Test of size 4194304 succeeded
+Test of size 1024 succeeded
+disable-log

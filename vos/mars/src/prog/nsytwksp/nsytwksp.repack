@@ -1,0 +1,5 @@
+$ vpack nsytwksp.com -mixed -
+	-s nsytwksp.cc -
+	-i nsytwksp.imake -
+	-p nsytwksp.pdf
+$ Exit

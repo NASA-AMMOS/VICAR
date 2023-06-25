@@ -2,8 +2,10 @@ ush cp ct/tstnxt.dat ./
 ush cp ct/file_list.list ./
 reset tstnxt.dat 3
 Beginning VICAR task reset
+RESET version 2019-06-14
 reset file_list.list 1
 Beginning VICAR task reset
+RESET version 2019-06-14
 loop
   nxt tstnxt.dat filnam istape tapos filenum
 Beginning VICAR task nxt
@@ -60,5 +62,5 @@ end-loop
 Beginning VICAR task nxt
 NXT version 2019-06-13
  Output 1 is 0400r.spk
-ush rm ct
+ush rm ct tstnxt.dat file_list.list
 disable-log

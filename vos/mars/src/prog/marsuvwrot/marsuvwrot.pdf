@@ -1,0 +1,629 @@
+process help=*
+PARM INP TYPE=STRING COUNT=(1:3)
+PARM OUT TYPE=STRING COUNT=(1:3)
+
+PARM NAVTABLE TYPE=STRING COUNT=(0:1) DEFAULT=--
+
+PARM USE_CURRENT TYPE=KEYWORD COUNT=(0:1) VALID=USE_CURRENT DEFAULT=--
+PARM NOMINAL_UVW TYPE=REAL COUNT=0:3 DEFAULT=--
+! site frame
+
+PARM AXIS TYPE=REAL COUNT=0:3 DEFAULT=--
+PARM ANGLE TYPE=REAL COUNT=0:1 DEFAULT=--
+! rot frame
+
+PARM ROLL TYPE=REAL COUNT=1 DEFAULT=0.0
+PARM PITCH TYPE=REAL COUNT=1 DEFAULT=0.0
+PARM YAW TYPE=REAL COUNT=1 DEFAULT=0.0
+! rot frame
+
+PARM VECTOR1 TYPE=REAL COUNT=0:3 DEFAULT=--
+PARM VECTOR2 TYPE=REAL COUNT=0:3 DEFAULT=--
+! rot frame
+
+PARM QUAT TYPE=REAL COUNT=0:4 DEFAULT=--
+! rot frame
+
+PARM ROT_COORD TYPE=STRING COUNT=1 DEFAULT="ROVER"
+
+PARM KIND TYPE=KEYWORD VALID=("UVW","XYZ") DEFAULT="UVW"
+PARM ROT_ORIGIN TYPE=REAL COUNT=3 DEFAULT=(0.0, 0.0, 0.0)
+
+PARM CONFIG_PATH STRING DEFAULT="$MARS_CONFIG_PATH"
+PARM POINT_METHOD TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM NOSITE TYPE=KEYWORD COUNT=(0:1) VALID=NOSITE DEFAULT=--
+
+PARM DATA_SET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM DATA_SET_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM RELEASE_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCT_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_INST TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_TYPE TYPE=STRING COUNT=(0:1) DEFAULT=--
+
+PARM RSF TYPE=STRING COUNT=0:100 DEFAULT=--
+PARM DEBUG_RSF TYPE=KEYWORD COUNT=0:1 VALID=DEBUG_RSF DEFAULT=--
+PARM COORD TYPE=KEYWORD VALID=("FIXED", "INSTRUMENT", "SITE", "ROVER", +
+        "LOCAL_LEVEL") DEFAULT="INSTRUMENT"
+PARM COORD_INDEX TYPE=INTEGER COUNT=0:10 DEFAULT=--
+PARM FIXED_SITE TYPE=INTEGER COUNT=0:1 DEFAULT=--
+PARM SOLUTION_ID TYPE=STRING COUNT=0:1 DEFAULT=--
+
+END-PROC
+
+.TITLE
+VICAR program MARSUVWROT.
+
+.HELP
+PURPOSE:
+
+MARSUVWROT rotates the vectors in a surface normal (or xyz) file, generating
+a new surface normal (or xyz) file.  It can also be used to change coordinate
+systems for a surface normal (or xyz) file without rotating it.
+
+The original intent of this program was to assist with effort to find a
+winter haven for Spirit in Jan. 2010.  The rotation simulated the effect
+of having some of the wheels under the nominal ground surface (as the rover
+dug itself in).  Having wheels dug in creates a rotational offset between
+the true solar panel orientation and the nominal orientation assuming the
+rover is on the surface.  It is assumed that as the rover makes progress,
+the wheels stay submerged.
+
+However, the program is more general purpose than that.  The USE_CURRENT
+and NOMINAL_UVW parameters are somewhat tailored for this scenario, but
+the other parameters are general-purpose.
+
+The input for MARSUVWROT is a UVW image such as that created by the MARSUVW
+program (typically with the -slope option, for the Sprit usage), and a set
+of parameters to specify the rotation (see below).  The UVW file can be a
+single 3-band file or three 1-band files; see MARSUVW for details.
+
+The output of MARSUVWROT is a single 3-band file of type REAL (a surface
+normal, like the input).  It should support outputting 3 1-band files as
+well, but this has not been implemented.
+
+Note, with the -XYZ option this program will work with XYZ inputs instead
+of UVW.  The only difference is in how coordinate system transforms are done
+(if needed), the use of ROT_ORIGIN, and in the output label.  Thus an XYZ
+image can be rotated as well.  The rotation happens around the origin unless
+ROT_ORIGIN is specified.
+
+EXECUTION:
+
+marsuvwrot inp=data.uvw out=rot.uvw axis=\(0, 0, -1\) angle=20.0
+where:
+data.uvw is an input 3-band image of type REAL with the U, V, and W components
+of the unit vector for each pixel.
+
+.PAGE
+METHOD:
+
+The algorithm to compute the projection is as follows:
+
+* Convert UVW (or XYZ) to the frame specified by COORD et al, if necessary.
+This should be the site frame for the Spirit case.
+
+* Compute a composite quaternion combining all three rotation options (see
+below).
+
+* Rotate the UVW vectors by the rotation quaternion.  For XYZ, the origin is
+subtracted off before the rotation and added again afterwards.
+
+* Normalize the result to make sure it's still a unit vector.
+
+.PAGE
+SPECIFYING ROTATIONS:
+
+There are five methods by which rotations can be specified: Current,
+Axis-angle, Euler angles, Vector Difference, and Quaternion.  These are
+applied in order, so the Current rotation is first, followed by Axis-angle,
+then Euler, then Vector Difference, and finally Quaternion.  Any number of
+these may be specified (including none); they are composited to get the final
+rotation.
+
+Be careful which coordinate system you specify things in!  The Current
+method is hard-coded to use Site and Rover.  All the others are specified
+using the frame named in ROT_COORD.
+
+.PAGE
+Current
+
+This method is tailored to the Spirit case.  Turn this on via -USE_CURRENT.
+The NOMINAL_UVW parameter must also be specified.
+
+The nominal uvw (in Site frame) is compared to the current rover orientation
+(derived from the Rover frame of the label).  The difference between the two
+represents the off-nominal tilt, i.e. how far under ground the rover is.  This
+difference is the rotation to be used.  The theory is, if the current sinkage
+is maintained, this represents the appropriate rotation.
+
+The nominal uvw ideally is derived from a slope UVW file taken before the
+rover got to its current spot.  Where the rover now is in that image, is the
+appropriate surface normal to use.  Be careful of coordinate systems:  it must
+be Site frame (slope normals are generated in Site).
+
+.PAGE
+Axis-Angle
+
+This allows you to specify an arbitrary rotation.  Provide an axis (a unit
+vector) around which the rotation is to happen, and an amount of rotation
+(the angle, in degrees).  These are all specified using the ROT_COORD frame
+(typically Rover).
+
+Euler Angles
+
+This allows you to specify roll, pitch, and yaw values (in degrees).  The
+values are expressed in the ROT_COORD frame.  This should normally be Rover.
+Using Site frame to specify these will result in yaw becoming azimuth and
+pitch becoming elevation (potentially useful), but roll is simply defined
+as a rotation around +X, which points north (not so useful).
+
+Vector Difference
+
+This allows you to specify two vectors, with the rotation computed as necessary
+to transform the first into the second.  This rotation is computed as an
+axis-angle where the axis is defined by the cross product between the vectors
+and the angle is defined by the dot product between them.
+
+Quaternion
+
+This allows you to directly specify a rotation quaternion.  The quaternion
+should be expressed in the ROT_COORD frame.  Note that the quaternion is
+specified in Ground order (scalar first).
+
+.PAGE
+USING MULTIPLE COORDINATE FRAMES
+
+It is important to realize that the Rover coordinate frame, if in use, is
+the Rover frame associated with the input image.  There is no way to specify
+a rover frame at a different RMC (perhaps an item for future enhancement).
+Similarly, the current position for -USE_CURRENT is derived using the given
+input image.
+
+It is possible though to use a different location.  Take for example the
+Spirit case.  You may want to use the rover's current position as of tosol,
+but apply that to images taken by the navcam before the rover got stuck.
+Doing this is a two-step process.
+
+1) Use an image from the current location, and specify the rotation as you
+wish.  Make sure to specify -site so the output will be in Site frame.  It
+will report the final quaternion, including the axis-angle breakdown, to the
+terminal output.  Discard the output file.
+
+2) Run the program a second time.  Use the earlier image (the one you want
+to make a map from) as the input image.  For the rotation, use the axis-angle
+or quaternion methods and provide the values obtained from step 1.  Make sure
+to say ROT_COORD=SITE.  The output will then contain the desired result.
+
+A future enhancement would obviously be to support multiple frames, or
+multiple input images (one for current and one for the actual surface normal).
+That may be considered if this program sees a lot of use.  For now, this seems
+actually less confusing.
+
+COGNIZANT PROGRAMMER: B. Deen
+HISTORY:
+  2010-01-08 B. Deen - Initial version.
+  2013-01-10 B. Deen - Added XYZ and support for vector-diff and quaternion input.
+  2020-05-26 W. Bunch - Replaced sprintf calls. Added unit test. Removed unused variables.
+
+.LEVEL1
+.VARI INP
+Input UVW (or XYZ) images.
+Must be 1 3-band file
+or (u,v,w) or (x,y,z)
+triplet.
+
+.VARI OUT
+Output file.
+Mast be 1 filename.
+
+.VARI NAVTABLE
+Corrected navigation
+filename.
+
+.VARI USE_CURRENT
+Turn on "current" rotation.
+
+.VARI NOMINAL_UVW
+Nominal surface normal for
+"current" rotation.
+
+.VARI AXIS
+Unit vector specifying axis
+for rotation (ROT_COORD frame)
+
+.VARI ANGLE
+Amount of rotation around AXIS
+(degress)
+
+.VARI ROLL
+Roll rotation in degrees
+(ROT_COORD frame)
+
+.VARI PITCH
+Pitch rotation in degrees
+(ROT_COORD frame)
+
+.VARI YAW
+Yaw rotation in degrees
+(ROT_COORD frame)
+
+.VARI VECTOR1
+Initial vector for
+vector-difference rotation
+
+.VARI VECTOR2
+Final vector for
+vector-difference rotation
+
+.VAR QUAT
+Quaternion rotation
+(ROT_COORD frame)
+
+.VARI ROT_COORD
+Frame to use for rotations
+(except for "current")
+
+.VARI KIND
+Rotate UVW (default)
+or XYZ files.
+
+.VARI ROT_ORIGIN
+For XYZ only, the
+center of rotation.
+
+.VARI CONFIG_PATH
+Path used to find
+configuration/calibration
+files.
+
+.VARI POINT_METHOD
+Specifies a mission-
+specific pointing
+method to use
+
+.VARI NOSITE
+Disables coordinate
+system sites.
+
+.VARI RSF
+Rover State File(s) to use.
+
+.VARI DEBUG_RSF
+Turns on debugging of RSF
+parameter.
+
+.VARI COORD
+Coordinate system to use
+for output.
+
+.VARI COORD_INDEX
+Coordinate system index for
+some COORD/mission combos.
+
+.VARI FIXED_SITE
+Which site is FIXED for
+rover missions.
+
+.VARI SOLUTION_ID
+Solution ID to use for
+COORD_INDEX
+
+.VARI DATA_SET_NAME
+Specifies the full name given
+to a data set or a data product.
+
+.VARI DATA_SET_ID
+Specifies a unique alphanumeric
+identifier for a data set or data
+product.
+
+.VARI RELEASE_ID
+Specifies the unique identifier
+associated with the release to the
+public of all or part of a data set.
+The release number is associated with
+the data set, not the mission.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique
+identifier assigned to a data
+product by its producer.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier
+of an entity associated with the
+production a data set.
+
+.VARI PRODUCER_INST
+Specifies the full name of the
+identity of an entity associated
+with the production of a data set.
+
+.VARI TARGET_NAME
+Specifies a target.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target.
+
+.LEVEL2
+.VARI INP
+Input files contain the UVW (or XYZ) coordinates. If three filenames are given,
+they all should be single band files each containing U, V and W (or X, Y,
+and Z) values in that order.  If only one filename is given, it should be a
+3-band file with bands in (U,V,W) (or X,Y,Z) order.
+
+The input files are in REAL (float) format.
+
+.VARI OUT
+Output file containing the projected UVW unit vector components, or XYZ values.
+
+Currently only a single 3-band output file is supported.  It should support
+three 1-band outputs as well, but that is not yet implemented.
+
+The output files are in REAL (float) format.
+
+.VARI USE_CURRENT
+
+Turns on the "current tilt" rotation.  If specified, NOMINAL_UVW must
+also be given.  See the description in the main help.
+
+.VARI NOMINAL_UVW
+
+Specifies the "nominal" surface normal of the ground before being disturbed
+by the rover.  This must be specified in the Site frame.  See the description
+in the main help.
+
+.VARI AXIS
+
+Specifies the axis, as a 3-D unit vector expressed in the ROT_COORD frame,
+around which the second rotation is to happen.
+
+.VARI ANGLE
+
+Specifies the angle in degrees to rotate around AXIS.
+
+.VARI ROLL
+
+Specifies the amount of Roll for the third rotation in degrees (expressed
+in the ROT_COORD frame).
+
+.VARI PITCH
+
+Specifies the amount of Pitch for the third rotation in degrees (expressed
+in the ROT_COORD frame).
+
+.VARI YAW
+
+Specifies the amount of Yaw for the third rotation in degrees (expressed
+in the ROT_COORD frame).
+
+.VARI VECTOR1
+
+Specifies the initial vector for vector-difference rotations.  The rotation
+will be such that anything matching vector1 will match vector2 after the
+rotation.
+
+.VARI VECTOR2
+
+Specifies the final vector for vector-difference rotations.  The rotation
+will be such that anything matching vector1 will match vector2 after the
+rotation.
+
+.VARI QUAT
+Specifies the rotation as a quaternion (expressed in the ROT_COORD frame).
+The quaternion should be expressed in "Ground" order (scalar first).
+
+.VARI ROT_COORD
+
+Specifies the frame in which the AXIS, ANGLE, ROLL, PITCH, YAW, QUAT, and
+ROT_ORIGIN parameters are interpreted.
+
+Note that it is not currently possible to specify a specific instance of a
+frame (i.e. which RMC for a Rover frame); the instance is tied to the input
+image.  See the discussion in the main help.
+
+.VARI KIND
+Specifies whether a UVW or XYZ file is being rotated.  The differences are
+in how coordinate transforms are done, the use of ROT_ORIGIN for XYZ, and
+in the output label.
+
+.VARI CONFIG_PATH
+A colon-separated list of directories in which to look for configuration
+and calibration files.  Environment variables are allowed in the list
+(and may themselves contain colon-separated lists).  The directories are
+searched in order for each config/cal file when it is loaded.  This allows
+multiple projects to be supported simultaneously, and allows the user to
+override any given config/cal file.  Note that the directory structure below
+the directories specified in this path must match what the project expects.
+For example, Mars 98 expects flat fields to be in a subdirectory named
+"flat_fields" while Mars Pathfinder expects them to be directly in the
+directory specified by the path (i.e. no intermediate subdirectories).
+
+.VARI POINT_METHOD
+Specifies a mission-specific pointing method to use.  Normally this
+parameter is not used, in which case the "default" pointing methods
+are used.  Some missions may have special, or alternate, pointing
+methods available, which are indicated by this string (for example,
+backlash models, using arm joint angles instead of x/y/z/az/el, etc).
+A substring search is used, so multiple methods (where that makes sense)
+can be specified by separating the keywords with commas.
+
+Note that nav files created using one pointing method will most likely
+not be compatible with a mosaic created using a different pointing method.
+
+The methods available vary per mission, but some methods available at
+the time of this writing are:
+
+BACKLASH : Mars 98 SSI only.  Selects a backlash pointing model,
+which adjusts the telemetered azimuth and elevation values based on
+knowledge of the camera's mechanical backlash and the direction the
+motor was travelling when the image was taken.
+
+.VARI NOSITE
+Disables all label-derived parameters to the Site mechanism which underlies
+coordinate systems.  This forces all sites to be identical, with all rotations
+and offsets set the same.  In the case of MPF or Mars 98, this disables
+the lander quaternion and offset (sets them to identity and 0, respectively).
+This option should not be used with images taken from different vantage
+points (e.g. the spacecraft moved, or mixing a lander and a rover) or
+invalid results will be obtained.  The use of this option invalidates the
+Fixed coordinate frame; any values reported in the Fixed frame will not
+correctly reflect the orientation of the lander/rover.
+
+Obviously, this option should be rarely used; it is intended for when the
+image labels defining the site are invalid or inconsistent.
+
+.VARI DATA_SET_NAME
+The DATA_SET_NAME typically identifies the instrument that acquired the
+data, the target of that instrument, and the processing level of the data.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_NAME.
+
+.VARI DATA_SET_ID
+The DATA_SET_ID value for a given data set or product is constructed
+according to flight project naming conventions.  In most cases the
+DATA_SET_ID is an abbreviation of the DATA_SET_NAME.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_ID.
+
+.VARI RELEASE_ID
+When a data set is released incrementally, such as every three months during
+a mission, the RELEASE_ID is updated each time part of the data set is released.
+For each mission(or host id if multiple spacecrafts), the first release of a data
+set should have a value of "0001".
+This value is copied to the output label, property IDENTIFICATION,
+keyword RELEASE_ID.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique identifier assigned to a data product by
+its producer. Most commonly, it is the filename minus the extension.
+This value is copied to the output label, property IDENTIFICATION,
+keyword PRODUCT_ID.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier of an entity associated with the
+production of a data set. This value is copied to the output label,
+property IDENTIFICATION, keyword PRODUCER_ID.
+
+.VARI PRODUCER_INST
+Specifies the identity of a university, research center, NASA center or other
+institution associated with the production of a data set.
+This value is copied to the output label, property IDENTIFICATION, keyword
+PRODUCER_INSTITUTION_NAME.
+
+.VARI TARGET_NAME
+Specifies a target.  The target may be a planet, satelite, ring, region, feature,
+asteroid or comet.  This value is copied to the output label, property
+IDENTIFICATION, keyword TARGET_NAME.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target. This value is copied to the output
+label, property IDENTIFICATION, keyword TARGET_NAME.
+
+.VARI RSF
+Rover State File.  This is a list of filenames to load containing
+Rover State information.  These files contain position and orientation
+information for a rover (or other mobile spacecraft) at various sites.
+They are in XML format.  See the "Rover Motion Counter (RMC) Master File SIS"
+for details on these files.
+
+Rover State Files have a priority order.  The files listed first have
+the highest priority.
+
+Environment variables may be used in the list.
+
+For MER, if a directory is specified, then that directory is searched for
+RMC Master files and any found are loaded.  The directory structure and
+filename convention is covered in the RMC SIS.  The directory specified
+is the one containing "master", so if <dir> is the name specified in the
+RSF parameter, the following files will be searched for:
+
+<dir>/master/<mission>_Master.svf
+<dir>/master/<mission>_Site_<n>_Master.rvf
+
+The name of each file loaded is printed to the stdout log for reference.
+
+.VARI DEBUG_RSF
+If enabled, this causes the internal database of RMC locations to be
+printed out to the stdout log.  This is after the RSF files have been
+loaded and the coordinate systems read from the input label(s).
+
+.VARI COORD
+The coordinate system to use for the output surface normal.
+The interpretation of the values is dependent on the mission.  Some
+representative missions are listed here:
+
+Fixed - The Fixed frame.  This is the ultimate reference frame
+    (see also FIXED_SITE for rover missions).
+Instrument - (default) The "natural" frame for the instrument 
+    (of the first input image).  MPF: Lander or Rover; M98: MVACS; MER: Rover.
+Site - A major Site frame.  For rover missions, COORD_INDEX specifies which
+    Site frame to use.  Non-rover missions treat this as Fixed.
+Rover - An instance of the Rover frame.  For rover missions, COORD_INDEX
+    specifies which instance of the rover frame to use.  Non-rover mission
+    use the spacecraft frame (e.g. Lander for M98).
+Local_Level - An instance of a Local Level frame.  This is typically
+    coincident with the Rover frame (in XYZ) but oriented toward North
+    like the Site and Fixed frames.  For MER, this is an instance of a
+    Drive index move.
+
+.VARI COORD_INDEX
+The index specifies which instance of a coordinate system to use.  It is
+currently applicable only to rover-based missions, but could have other
+uses.  The index is equivalent to the Rover Motion Counter (RMC) for MER
+and FIDO.
+
+For MER/FIDO, there are many Site frames.  Each is numbered with a single
+index.  For Site Frames, coord_index specifies which to use.  Likewise,
+there are many Local_Level and Rover frames, corresponding to values of
+the RMC.  The multiple instances of this frame are selected by COORD_INDEX.
+
+Generally COORD_INDEX defaults sensibly so you don't usually need to
+specify it.  It will default to the instance used by the first input.
+
+.VARI FIXED_SITE
+Specifies which major Site is the "Fixed" Site for this run.
+
+Historically, MPF and M98 had a single "Surface Fixed" frame which never
+moved, and which all other coordinate system frames were referenced to.
+With the advent of long-range rovers (such as MER and FIDO), that became
+insufficient.  The rover traverses far enough that errors in knowledge of
+coordinate system offset and orientation become unacceptable.
+
+For this reason, a system of major Sites was introduced.  Periodically
+during the mission, a Site frame is declared.  This then becomes the
+reference frame for all activities until the next Site is declared.
+References are kept local, and errors don't propogate across Sites.
+
+However, if images from more than one Site are combined together, the
+Site's must be placed relative to each other.  Therefore a single reference
+frame is still needed to combine different sites.
+
+The FIXED_SITE parameter controls which of the major Site frames is
+the reference ("fixed") site for this program run.  This fixed frame
+can vary in different program runs, but is constant throughout one
+execution.
+
+If not specified, FIXED_SITE defaults to the minimum Site number (i.e.
+lowest numbered, or earliest chronologically) used in all input images.
+Normally this default is sufficient; rarely must FIXED_SITE be specified.
+
+One or more Rover State Files must usually be specified in order to combine
+image from more than one Site.  These describe the relationship between
+sites.  See the RSF parameter.
+
+.VARI SOLUTION_ID
+Specifies which solution ID to use when specifying the coordinate system.
+
+There are potentially many different definitions for the same coordinate
+system.  These are identified via a unique Solution ID.  If this parameter
+is given, only the specified solution's definition is searched for.  Without
+it, the "best" available solution is chosen.
+
+It is extremely rare that this parameter should be needed.  The default
+will be sufficient in almost every case.
+
+Note that the current MER implementation requires that a value for COORD_INDEX
+also be provided, in order for this parameter to take effect.

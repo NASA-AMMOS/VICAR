@@ -983,7 +983,7 @@ JNIEXPORT jint JNICALL Java_jpl_mipl_spice_jni_SpiceLib_n_1psel
    memset(s_queryItemTypes, -1, sizeof(s_queryItemTypes));
    memset(s_queryItemClasses, -1, sizeof(s_queryItemClasses));
    memset(s_queryItemTableNames, '\0', sizeof(s_queryItemTableNames));
-   memset(s_queryItemColumnNames, '\0', sizeof(s_queryItemTableNames));
+   memset(s_queryItemColumnNames, '\0', sizeof(s_queryItemColumnNames));
    s_wasError = SPICEFALSE;
    memset(s_errorMsg, '\0', sizeof(s_errorMsg));
 

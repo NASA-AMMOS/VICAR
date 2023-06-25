@@ -1,0 +1,12 @@
+refgbl $syschar
+write "Expect warning regarding NUMBER of values for ITEM = RECORD_TYPE"
+Expect warning regarding NUMBER of values for ITEM = RECORD_TYPE
+tgpdslabel out=pds.file
+Beginning VICAR task tgpdslabel
+*** WARNING: NUMBER of values negative or zero. 
+***          NUMBER of values set to one (1) for ITEM = RECORD_TYPE.
+if ($syschar(1) = "VAX_VMS")
+else
+ush more  pds.file
+end-if
+disable-log

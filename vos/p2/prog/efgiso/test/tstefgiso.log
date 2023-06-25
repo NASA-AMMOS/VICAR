@@ -1,11 +1,11 @@
-efgiso out=(E.img,F.img,G.img,R.img) planet=phobos nl=180 ns=360
+efgiso out=(E.img,F.img,G.img,R.img) planet=phobos nl=180 ns=360 path=data
 Beginning VICAR task efgiso
 EFGISO version 2019-07-18
-/project/test_work/testdata/general/phobos.model
+data/phobos.model
 Model file: #rows= 39, #cols=75
 list E.img sl=70 nl=40 ss=160 ns=40 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    REAL     samples are interpreted as  REAL*4  data
  Task:EFGISO    User:          Date_Time:                        
@@ -188,7 +188,7 @@ list version 2017-03-29
     109       1.651E+02   1.652E+02   1.647E+02   1.639E+02   1.629E+02   1.619E+02   1.610E+02   1.601E+02   1.592E+02   1.581E+02
 list F.img sl=70 nl=40 ss=160 ns=40 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    REAL     samples are interpreted as  REAL*4  data
  Task:EFGISO    User:          Date_Time:                        
@@ -371,7 +371,7 @@ list version 2017-03-29
     109      -1.283E+00  -1.279E-01   8.143E-01   1.371E+00   1.589E+00   1.577E+00   1.497E+00   1.576E+00   1.816E+00   2.202E+00
 list G.img sl=70 nl=40 ss=160 ns=40 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    REAL     samples are interpreted as  REAL*4  data
  Task:EFGISO    User:          Date_Time:                        
@@ -554,7 +554,7 @@ list version 2017-03-29
     109       1.466E+02   1.461E+02   1.463E+02   1.468E+02   1.471E+02   1.472E+02   1.468E+02   1.468E+02   1.474E+02   1.487E+02
 list R.img sl=70 nl=40 ss=160 ns=40 'nousrtim
 Beginning VICAR task list
-list version 2017-03-29
+LIST version 2019-09-06
 
    REAL     samples are interpreted as  REAL*4  data
  Task:EFGISO    User:          Date_Time:                        
@@ -735,4 +735,5 @@ list version 2017-03-29
     107       1.269E+01   1.269E+01   1.269E+01   1.268E+01   1.267E+01   1.264E+01   1.261E+01   1.258E+01   1.254E+01   1.249E+01
     108       1.272E+01   1.273E+01   1.272E+01   1.271E+01   1.269E+01   1.267E+01   1.264E+01   1.261E+01   1.257E+01   1.253E+01
     109       1.275E+01   1.275E+01   1.275E+01   1.274E+01   1.271E+01   1.269E+01   1.266E+01   1.263E+01   1.259E+01   1.255E+01
+ush rm E.img F.img G.img R.img
 disable-log

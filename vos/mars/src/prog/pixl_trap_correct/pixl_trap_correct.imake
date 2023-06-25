@@ -1,0 +1,5 @@
+#define PROCEDURE pixl_trap_correct
+#define MODULE_LIST pixl_trap_correct.csh
+
+#define USES_CSH
+

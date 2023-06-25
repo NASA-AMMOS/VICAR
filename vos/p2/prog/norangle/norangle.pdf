@@ -1,0 +1,91 @@
+process help=*
+parm    linesamp   type=integer count=(0:4) default=--
+local   out       type=real   count=(0:1) 
+parm    degrees    type=name   default=out
+parm    radians    type=name   default=out
+local   iout      type=integer count=(0:1) 
+parm    height     type=name   default=iout
+parm    width      type=name   default=iout
+
+end-proc
+
+.title
+ norangle - routine to compute the angle from the top of the picture clockwise
+
+.help
+PURPOSE
+    A routine to compute the angular rotation from the line,sample termini
+of a line within an image and return the angle in degrees and radians from
+the top of the picture clockwise. If the rotation is anticlockwise the
+values are returned as a negative number. 
+
+    Note that this angle is a vector and the angle's sign is dependent
+on the line origin and its terminus.
+
+
+OPERATION
+
+Internally, the program computes the arctangent of the height and width of
+a triangle described by the line,sample coordinates of the straight line.
+
+A transformation of raster coordinates to cartesian coordinates has to
+be performed according to:
+
+       raster (1,1) -> Cartesian ((-w/2)+1,(h/2)+1)
+       raster (w,1) -> Cartesian ((w/2)+1,(h/2)+1)
+       raster (1,h) -> Cartesian ((-w/2)+1,(-h/2)+1)
+       raster (w,h) -> Cartesian ((w/2)+1,(-h/2)+1)
+
+       Based on that, the formula 
+       x = rasterX - (w/2) + 1
+       y = (h/2) + 1 - rasterY
+
+       where w is width of triange and h is its height
+
+       Thus, you obtain x1,y1 and x2,y2
+
+       the angle (in radians) is computed from
+
+        arctangent (y1-y2/x1-x2) 
+
+
+OUTPUT
+
+    Four parameters are output in TCL variables
+    DEGREES = Angle, in degrees
+    RADIANS = Angle, in radians
+    HEIGHT  = Height, in pixels of the inscribed triangle
+    WIDTH   = Width, in pixels of the inscribed triangle
+
+
+
+HISTORY
+
+  2012-10-25 R.J. Bambery - Initial Release  
+  2012-11-16 R.J. Bambery - Change name to norangle            
+  2015-12-10 W.L. Bunch - Migrated to MIPL
+  2022-07-26 B. Crocco - afids to opensource
+
+.level1     
+.variable linesamp 
+  integer values of line,sample
+  in two pairs
+  INPUT, integers
+.variable degrees
+  Angle (in degrees) from top 
+  of image in clockwise direction
+  OUTPUT, Real
+.variable radians
+  Angle (in radians) from top 
+  of image in clockwise direction
+  OUTPUT, Real
+.variable height
+  Height of the embedded triangle
+  in pixels
+  OUTPUT, Integer
+.variable width
+  Width of the embedded triangle
+  in pixels
+  OUTPUT, Integer
+.end
+

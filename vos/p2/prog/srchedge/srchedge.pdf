@@ -95,6 +95,7 @@ HISTORY:
                    Commented out returning sigma value that is not
                    calculated.
                    Cleaned up misc. warnings.
+  2021-11-12 WLB - Initialized more variables.
 
 COGNIZANT PROGRAMMER:  Young Kwon
 

@@ -1,0 +1,13 @@
+#define SUBROUTINE pig_generic
+
+#define MODULE_LIST PigGenericImage.cc PigPointGenericCamera_AzEl.cc \
+	PigPointGenericCamera_6dof.cc PigPointGenericCamera_7dof.cc \
+        PigFileModelGeneric.cc PigRoverStateManagerGeneric.cc
+
+#define MARS_SUBLIB
+
+#define USES_C_PLUS_PLUS
+
+#define LIB_P2SUB
+#define LIB_XERCES
+

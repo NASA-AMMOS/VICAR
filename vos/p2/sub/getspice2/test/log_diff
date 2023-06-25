@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+
+# The "Postprocessor" line displays processing time -- see the log
+sed '/version/Id' $1 | sed '/Month_day/d' | sed '/Hour_min/d' > tmplog1
+sed '/version/Id' $2 | sed '/Month_day/d' | sed '/Hour_min/d' > tmplog2
+
+diff tmplog1 tmplog2
+retval=$?
+
+rm tmplog1 tmplog2
+
+echo "log_diff returning $retval"
+
+exit $retval

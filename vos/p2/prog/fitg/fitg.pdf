@@ -1,0 +1,133 @@
+process help=*
+parm inp     type=(string,99) count=1
+parm out     type=(string,99) count=1
+parm percent type=real default=0.0
+parm left    type=real default=0.0
+parm right   type=real default=0.0
+parm outmin  type=int default=999999
+parm outmax  type=int default=999999
+parm mean    type=real default=127.5
+parm sigma   type=real default=2.5
+parm byte    type=keyword count=(0:1) valid=byte default=--
+parm swap    type=keyword count=(0:1) valid=swap default=--
+parm gauss   type=keyword count=(0:1) valid=gauss default=--
+parm verbose type=keyword count=(0:1) valid=verbose default=--
+parm debug   type=keyword count=(0:1) valid=debug default=--
+end-proc
+
+.title
+VICAR Program fitg - performs linear and gaussian stretches
+.help
+PURPOSE
+
+     FITG performs linear and gaussian stretches
+
+.PAGE
+COMMAND LINE FORMAT
+
+    fitg can be built to be called from either TAE or the shell
+    command line (no TAE interface).
+
+STANDALONE USAGE: 
+    fitg [-p percent] [-l leftPercent] [-r rightPercent] 
+         [-n outMin] [-x outMax] [-m mean] [-S sigma] 
+         [-HVvhbsg] lines samples infile outfile
+
+       Don't use -p with either -l or -r
+       -h processes half-word input
+       -b converts half-word input to byte output (forces -h)
+       -s byte swaps half-word input before stretching (forces -h)
+       -g adds a Gaussian stretch following the linear stretch (with -h forces -b)
+       -m sets Gaussian mean, defaults to 127.5 (forces -g)
+       -S sets Gaussian sigma, defaults to 2.5 (forces -g)
+       -v is verbose, -V is very verbose
+
+TAE USAGE:
+
+     fitg INP=infile OUT=outfile PARMS KEYWORDS
+     
+     where
+
+     I is a byte or half-word VICAR input image
+     O is a byte or half-word VICAR output image
+
+     PARMS	
+	PERCENT linear stretch left and right percent crop limit
+	LEFT    linear stretch left percent crop limit (don't use with PERCENT)
+	RIGHT   linear stretch right percent crop limit (don't use with PERCENT)
+	OUTMIN  lower pixel value limit
+	OUTMAX  upper pixel value limit
+	MEAN    Gaussian mean, defaults to 127.5 (forces Gaussian stretch)
+	SIGMA   Gaussian sigma, defaults to 2.5 (forces Gaussian stretch)
+	
+     KEYWORDS
+	BYTE  converts half-word input to byte output (ignored for byte input)
+	SWAP  byte-swaps half-word input before stretching (ignored for byte input)
+        GAUSS adds a Gaussian stretch following the linear stretch, forces byte output
+	VERBOSE
+
+     Note: the lines, samples and -h parameters are provided by the
+     input VICAR label, rather than specified by the user.
+
+     Examples
+
+     fitg INP=in.hlf OUT=out.byte 'BYTE
+
+.PAGE
+OPERATION
+
+     FITG performs a linear stretch, optionally followed by a gaussian stretch.
+   
+.PAGE
+
+RESTRICTIONS
+
+     None known.
+
+.PAGE
+WRITTEN BY:            W. L. Bunch
+
+COGNIZANT PROGRAMMER:  W. L. Bunch
+
+REVISIONS: 
+  2006-11-09 WLB Initial version
+  2008-02-04 WLB Ported to ANSI_C
+  2008-02-13 WLB Fixed bug originating in vids jstretch.c
+  2016-02-29 WLB Migrated to MIPL.
+  2017-07-13 WLB Added support for images with NL*NS > 2^31.
+  2019-06-11 WLB Fixed verbose mode infinite loop.
+  2022-07-14 B. Crocco afids to opensource
+  
+.level1
+.var inp
+VICAR input file
+.var out
+VICAR output file
+.var percent
+Integer left and right percent
+crop value.
+.var left
+Integer left crop value.
+.var right
+Integer right crop value.
+.var outmin
+Integer minimum pixel value
+.var outmax
+Integer maximum pixel value
+.var mean
+Real gaussian mean value, 
+forces gaussian stretch.
+.var sigma
+Real gaussian sigma value, 
+forces gaussian stretch.
+.var byte
+Generate byte output; ignored 
+for byte input.
+.var swap
+Swap half-word bytes before 
+stretching; ignored for byte 
+input.
+.var gauss
+Follow linear stretch with a 
+gaussian stretch.
+.end

@@ -1,0 +1,13 @@
+/*
+*****************************************************************************
+*  MARS RMC PROCESSING SCRIPTS
+*****************************************************************************
+*/
+#define PROCEDURE edr_lbl_get_value
+
+#define MODULE_LIST edr_lbl_get_value.sh
+
+#define USES_SH
+
+#define MARSLIB
+

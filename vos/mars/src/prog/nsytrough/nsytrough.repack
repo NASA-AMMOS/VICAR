@@ -1,0 +1,5 @@
+$ vpack nsytrough.com -mixed -
+	-s nsytrough.cc nsyt_roughness.cc nsyt_roughness.h -
+	-i nsytrough.imake -
+	-p nsytrough.pdf
+$ Exit

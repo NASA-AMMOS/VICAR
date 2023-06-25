@@ -1,0 +1,100 @@
+process help=*
+PARM INP TYPE=STRING count=2
+
+PARM ACS_time TYPE=REAL default=0.0
+parm leapfile type=(string,99) default="leapsecond.dat" ! Full path/name
+
+PARM COLS TYPE=INT COUNT=4 DEFAULT=(1,2,3,4)
+PARM urange type=real count=3
+PARM vrange type=real count=3
+
+PARM TOD_t_SV type=real count=3
+PARM TOD_q_SV type=real count=4
+PARM SV_t_C type=real count=3
+PARM SV_q_C type=real count=4
+
+PARM fu type=real count=1
+PARM fv type=real count=1
+PARM q type=real count=1
+PARM u0 type=real count=1
+PARM v0 type=real count=1
+PARM kappa type=real count=5
+
+
+END-PROC
+.TITLE
+astroref - compute astronomical reference from spacecraft ephem, camera model
+.HELP
+PURPOSE:
+
+
+
+EXECUTION:
+
+Example
+
+
+
+OPERATION:
+
+TIMING: 
+
+about a second
+
+ ORIGINAL PROGRAMMER:    A. Zobrist          11 NOV 2005
+ COGNIZANT PROGRAMMER:   A. Zobrist          11 NOV 2005
+ 
+ Spacecraft and camera code from M. BURL (georeference_camera)
+ 
+ REVISION HISTORY
+  2005-11-11 AZ  Initial version
+  2008-01-03 WLB switched to USES_ANSI_C AND LIB_CARTO; misc cleanup  
+  2008-07-22 WLB Added leapfile parm for M Burl's code
+  2016-01-13 WLB Migrated to MIPL; replaced printf with zifmessage
+  2022-07-14 B. Crocco afids to opensource
+  
+.LEVEL1
+.VARIABLE INP
+Image with ephemeris, 2d file
+  is IBIS file, 5+ cols
+.VARIABLE ACS_time
+ACS time in seconds 
+since 2000-01-01T12:00:00 UTC.
+.VARIABLE COLS
+Columns to receive the
+(samp,line,RA,DEC) 
+RA and DEC in decimal degrees
+.VARIABLE URANGE
+Start_samp, step, end_samp
+.VARIABLE VRANGE
+Start_line, step, end_line
+.VARIABLE TOD_T_SV
+Position vector of s/c
+with respect to True-of-Date 
+(TOD) coordinate frame
+.VARIABLE TOD_Q_SV
+Orientation quaternion for s/c
+with respect to True-of-Date
+(TOD) coordinate frame
+.VARIABLE SV_T_C
+Position vector of camera
+with respect to s/c 
+(SV) coordinate frame
+.VARIABLE SV_Q_C
+Orientation quaternion for 
+camera with respect to s/c
+(SV) coordinate frame
+.VARIABLE FU
+Focal param in sample dir
+.VARIABLE FV
+Focal param in line dir
+.VARIABLE Q
+Pixel skew
+.VARIABLE U0
+Sample coord of principal
+point
+.VARIABLE V0
+Line coord of principal
+.VARIABLE KAPPA
+Lens distortion params
+.END

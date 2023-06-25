@@ -355,17 +355,17 @@ GEN Version 2019-05-28
 GEN task completed
 stretch a.dat b.dat linear=(0,255)
 Beginning VICAR task stretch
-STRETCH version 11 Jan 2013
+STRETCH version 2021-07-14
 *** LINEAR CONTRAST STRETCH MODE ***
 Linear Stretch:      0 to      0 and    255 to    255
 stretch b.dat a.dat linear=(0,255)
 Beginning VICAR task stretch
-STRETCH version 11 Jan 2013
+STRETCH version 2021-07-14
 *** LINEAR CONTRAST STRETCH MODE ***
 Linear Stretch:      0 to      0 and    255 to    255
 label-list a.dat 'NOUSRTIM
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File a.dat ************
@@ -2036,12 +2036,12 @@ gen c.dat nb=10 nl=5 binc=100 linc=10 'REAL8 'BIP
 Beginning VICAR task gen
 GEN Version 2019-05-28
 GEN task completed
-list c.dat
+list c.dat 'NOUSRTIM
 Beginning VICAR task list
 LIST version 2019-09-06
 
    DOUB     samples are interpreted as  REAL*8  data
- Task:GEN       User:wlb       Date_Time:Fri Sep  6 11:53:36 2019
+ Task:GEN       User:          Date_Time:                        
  ***********
  Line =     1
  ***********
@@ -2059,7 +2059,7 @@ LIST version 2019-09-06
      10       9.000E+00   1.090E+02   2.090E+02   3.090E+02   4.090E+02   5.090E+02   6.090E+02   7.090E+02   8.090E+02   9.090E+02
 
 
- Task:GEN       User:wlb       Date_Time:Fri Sep  6 11:53:36 2019
+ Task:GEN       User:          Date_Time:                        
  ***********
  Line =     2
  ***********
@@ -2077,7 +2077,7 @@ LIST version 2019-09-06
      10       1.900E+01   1.190E+02   2.190E+02   3.190E+02   4.190E+02   5.190E+02   6.190E+02   7.190E+02   8.190E+02   9.190E+02
 
 
- Task:GEN       User:wlb       Date_Time:Fri Sep  6 11:53:36 2019
+ Task:GEN       User:          Date_Time:                        
  ***********
  Line =     3
  ***********
@@ -2095,7 +2095,7 @@ LIST version 2019-09-06
      10       2.900E+01   1.290E+02   2.290E+02   3.290E+02   4.290E+02   5.290E+02   6.290E+02   7.290E+02   8.290E+02   9.290E+02
 
 
- Task:GEN       User:wlb       Date_Time:Fri Sep  6 11:53:36 2019
+ Task:GEN       User:          Date_Time:                        
  ***********
  Line =     4
  ***********
@@ -2113,7 +2113,7 @@ LIST version 2019-09-06
      10       3.900E+01   1.390E+02   2.390E+02   3.390E+02   4.390E+02   5.390E+02   6.390E+02   7.390E+02   8.390E+02   9.390E+02
 
 
- Task:GEN       User:wlb       Date_Time:Fri Sep  6 11:53:36 2019
+ Task:GEN       User:          Date_Time:                        
  ***********
  Line =     5
  ***********
@@ -2676,7 +2676,7 @@ GEN Version 2019-05-28
 GEN task completed
 label-remove a.dat b.dat
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 list b.dat 'NOUSRTIM
 Beginning VICAR task list
 LIST version 2019-09-06
@@ -2689,7 +2689,7 @@ GEN Version 2019-05-28
 GEN task completed
 label-remove a.dat b.dat
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 list b.dat insize=(50,10,2) 'NOUSRTIM
 Beginning VICAR task list
 LIST version 2019-09-06

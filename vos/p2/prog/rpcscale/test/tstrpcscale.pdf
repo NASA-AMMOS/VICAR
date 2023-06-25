@@ -1,0 +1,48 @@
+procedure
+refgbl $echo
+refgbl $autousage
+body
+enable-log
+let $autousage="none"
+let $echo="yes"
+
+! TEST SCRIPT FOR RPCFWD
+
+ibis-gen xxxb nc=5 nr=4 format=(DOUB,DOUB,DOUB,DOUB,DOUB) +
+  datacol=(1,2) data=(44.825279,35.881943,45.080002,35.87611, +
+  45.075832,35.84,44.825832,35.845833)
+pixmap (xxxb,/export/data4/tll/gui_test/dtedmos/qb1_iraq_dem.hlf) +
+    mapcol=(1,2) pixcol=(4,5) 'maptopix
+getzval (/export/data4/tll/gui_test/dtedmos/qb1_iraq_dem.hlf, +
+    xxxb) cols=(4,5,3) win=2
+label-list /home/alz/ikapp/xxchip3.img
+
+rpcfwd (xxxb,/home/alz/ikapp/xxchip2.img)
+ibis-l xxxb csiz=(15,15,12,12,12) +
+  cfor="%15.10f %15.10f %12.6f %12.6f %12.6f" 'format
+
+rpcscale (/home/alz/ikapp/xxchip2.img,xxxb)
+ibis-l xxxb csiz=(15,15,12,12,12) +
+  cfor="%15.10f %15.10f %12.6f %12.6f %12.6f" 'format
+
+rpcscale (/home/alz/ikapp/xxchip2.img,xxxb) 'unscale
+ibis-l xxxb csiz=(15,15,12,12,12) +
+  cfor="%15.10f %15.10f %12.6f %12.6f %12.6f" 'format
+
+! NOW TEST THE IBIS FORMATTED CASE
+
+ibis-gen xxxa nr=80 nc=2 format=("DOUB","DOUB")
+rpc2ibis (/home/alz/ikapp/xxchip2.img,xxxa)
+ibis-l xxxa  csiz=(18,18) cfor="%16.14 f%16.9f" nr=15
+
+rpcscale (xxxa,xxxb) rpccol=2 'scale
+ibis-l xxxb csiz=(15,15,12,12,12) +
+  cfor="%15.10f %15.10f %12.6f %12.6f %12.6f" 'format
+
+rpcscale (xxxa,xxxb) rpccol=2 'unscale
+ibis-l xxxb csiz=(15,15,12,12,12) +
+  cfor="%15.10f %15.10f %12.6f %12.6f %12.6f" 'format
+
+theend>
+disable-log
+end-proc

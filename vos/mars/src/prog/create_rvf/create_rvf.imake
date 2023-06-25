@@ -1,0 +1,13 @@
+/*
+*****************************************************************************
+*  MARS RMC PROCESSING SCRIPTS
+*****************************************************************************
+*/
+#define PROCEDURE create_rvf
+
+#define MODULE_LIST create_rvf.sh
+
+#define USES_SH
+
+#define MARSLIB
+

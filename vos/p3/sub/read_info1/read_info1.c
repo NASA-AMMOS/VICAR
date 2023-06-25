@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 
+//defined in vicar_subs.c
+void l_message();
 
 int read_info1 (label)
    char  *label;

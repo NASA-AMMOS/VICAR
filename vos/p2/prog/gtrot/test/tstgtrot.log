@@ -1,0 +1,3298 @@
+gen xxxim1 nl=5 ns=3 ival=1 linc=3 sinc=1
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+gtgen inp=xxxim1 out=xxxim2 'tiecnvrt  +
+   geotiff=("ModelTiePointTag=(2,3,0,30000.,17000.,0.0)",  +
+          "ModelTiePointTag=(202,103,0,31000.,16000.,0.0)",  +
+          "ModelTiePointTag=(202,3,0,31000.,17000.,0.0)",  +
+          "GTRasterTypeGeoKey=1(RasterPixelIsArea)")
+Beginning VICAR task gtgen
+GTGEN version 2019-09-05
+gtlist xxxim2
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(2,3,0,30000.,17000.,0.0)
+MODELPIXELSCALETAG=(5.0,10.0,0.0)
+GTRASTERTYPEGEOKEY=1(RasterPixelIsArea)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  29992.50000000  17025.00000000
+       1.0      3.0          2.5      0.5  30002.50000000  17025.00000000
+       5.0      1.0          0.5      4.5  29992.50000000  16985.00000000
+       5.0      3.0          2.5      4.5  30002.50000000  16985.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  29990.00000000  17030.00000000
+       0.5      3.5          3.0      0.0  30005.00000000  17030.00000000
+       5.5      0.5          0.0      5.0  29990.00000000  16980.00000000
+       5.5      3.5          3.0      5.0  30005.00000000  16980.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 1
+123
+456
+789
+The scale units of the image are (ignoring sign):
+1 sample = 5.0000000000000 map units east
+1 line   = 10.0000000000000 map units north
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim2 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTGEN     User:          Date_Time:                        
+     Samp     1       3
+   Line
+      1       1   2   3
+      2       4   5   6
+      3       7   8   9
+      4      10  11  12
+      5      13  14  15
+write "*********************************** 101"
+*********************************** 101
+gtrot inp=xxxim2 out=xxxim3 rot=0
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 1 to rotation 0
+gtlist xxxim3
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(2.0,2.0,0,30000.,17000.,0.0)
+MODELTRANSFORMATIONTAG=(0.0,5.0,0,29990.0,10.0,0.0,0,16980.0,0,0,0,0,0,0,0,1)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  29992.50000000  16985.00000000
+       1.0      5.0          4.5      0.5  29992.50000000  17025.00000000
+       3.0      1.0          0.5      2.5  30002.50000000  16985.00000000
+       3.0      5.0          4.5      2.5  30002.50000000  17025.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  29990.00000000  16980.00000000
+       0.5      5.5          5.0      0.0  29990.00000000  17030.00000000
+       3.5      0.5          0.0      3.0  30005.00000000  16980.00000000
+       3.5      5.5          5.0      3.0  30005.00000000  17030.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 0
+369
+258
+147
+The scale units of the image are (ignoring sign):
+1 sample = 10.000000000000 map units north
+1 line   =  5.000000000000 map units east
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim3 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1      13  10   7   4   1
+      2      14  11   8   5   2
+      3      15  12   9   6   3
+gtrot inp=xxxim3 out=xxxim4
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 0 to rotation 1
+ (the standard VICAR rotation)
+gtlist xxxim4
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(2.0,3.0,0,30000.,17000.,0.0)
+MODELTIEPOINTTAG=(0.0,5.0,0.0,29990.0,16980.0,0.0)
+MODELPIXELSCALETAG=(5.0,10.0,0.0)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  29992.50000000  17025.00000000
+       1.0      3.0          2.5      0.5  30002.50000000  17025.00000000
+       5.0      1.0          0.5      4.5  29992.50000000  16985.00000000
+       5.0      3.0          2.5      4.5  30002.50000000  16985.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  29990.00000000  17030.00000000
+       0.5      3.5          3.0      0.0  30005.00000000  17030.00000000
+       5.5      0.5          0.0      5.0  29990.00000000  16980.00000000
+       5.5      3.5          3.0      5.0  30005.00000000  16980.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 1
+123
+456
+789
+The scale units of the image are (ignoring sign):
+1 sample = 5.0000000000000 map units east
+1 line   = 10.0000000000000 map units north
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim4 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3
+   Line
+      1       1   2   3
+      2       4   5   6
+      3       7   8   9
+      4      10  11  12
+      5      13  14  15
+write "*********************************** 121"
+*********************************** 121
+gtrot inp=xxxim2 out=xxxim3 rot=2
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 1 to rotation 2
+gtlist xxxim3
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(3.0,1.0,0,30000.,17000.,0.0)
+MODELTRANSFORMATIONTAG=(0.0,-5.0,0,30005.0,-10.0,0.0,0,17030.0,0,0,0,0,0,0,0,1)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  30002.50000000  17025.00000000
+       1.0      5.0          4.5      0.5  30002.50000000  16985.00000000
+       3.0      1.0          0.5      2.5  29992.50000000  17025.00000000
+       3.0      5.0          4.5      2.5  29992.50000000  16985.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  30005.00000000  17030.00000000
+       0.5      5.5          5.0      0.0  30005.00000000  16980.00000000
+       3.5      0.5          0.0      3.0  29990.00000000  17030.00000000
+       3.5      5.5          5.0      3.0  29990.00000000  16980.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 2
+741
+852
+963
+The scale units of the image are (ignoring sign):
+1 sample = 10.000000000000 map units north
+1 line   =  5.000000000000 map units east
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim3 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1       3   6   9  12  15
+      2       2   5   8  11  14
+      3       1   4   7  10  13
+gtrot inp=xxxim3 out=xxxim4
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 2 to rotation 1
+ (the standard VICAR rotation)
+gtlist xxxim4
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(2.0,3.0,0,30000.,17000.,0.0)
+MODELTIEPOINTTAG=(3.0,0.0,0.0,30005.0,17030.0,0.0)
+MODELPIXELSCALETAG=(5.0,10.0,0.0)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  29992.50000000  17025.00000000
+       1.0      3.0          2.5      0.5  30002.50000000  17025.00000000
+       5.0      1.0          0.5      4.5  29992.50000000  16985.00000000
+       5.0      3.0          2.5      4.5  30002.50000000  16985.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  29990.00000000  17030.00000000
+       0.5      3.5          3.0      0.0  30005.00000000  17030.00000000
+       5.5      0.5          0.0      5.0  29990.00000000  16980.00000000
+       5.5      3.5          3.0      5.0  30005.00000000  16980.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 1
+123
+456
+789
+The scale units of the image are (ignoring sign):
+1 sample = 5.0000000000000 map units east
+1 line   = 10.0000000000000 map units north
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim4 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3
+   Line
+      1       1   2   3
+      2       4   5   6
+      3       7   8   9
+      4      10  11  12
+      5      13  14  15
+write "*********************************** 141"
+*********************************** 141
+gtrot inp=xxxim2 out=xxxim3 rot=4
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 1 to rotation 4
+gtlist xxxim3
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(2.0,1.0,0,30000.,17000.,0.0)
+MODELTRANSFORMATIONTAG=(0.0,-5.0,0,30005.0,10.0,0.0,0,16980.0,0,0,0,0,0,0,0,1)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  30002.50000000  16985.00000000
+       1.0      5.0          4.5      0.5  30002.50000000  17025.00000000
+       3.0      1.0          0.5      2.5  29992.50000000  16985.00000000
+       3.0      5.0          4.5      2.5  29992.50000000  17025.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  30005.00000000  16980.00000000
+       0.5      5.5          5.0      0.0  30005.00000000  17030.00000000
+       3.5      0.5          0.0      3.0  29990.00000000  16980.00000000
+       3.5      5.5          5.0      3.0  29990.00000000  17030.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 4
+963
+852
+741
+The scale units of the image are (ignoring sign):
+1 sample = 10.000000000000 map units north
+1 line   =  5.000000000000 map units east
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim3 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1      15  12   9   6   3
+      2      14  11   8   5   2
+      3      13  10   7   4   1
+gtrot inp=xxxim3 out=xxxim4
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 4 to rotation 1
+ (the standard VICAR rotation)
+gtlist xxxim4
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(2.0,3.0,0,30000.,17000.,0.0)
+MODELTIEPOINTTAG=(3.0,5.0,0.0,30005.0,16980.0,0.0)
+MODELPIXELSCALETAG=(5.0,10.0,0.0)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  29992.50000000  17025.00000000
+       1.0      3.0          2.5      0.5  30002.50000000  17025.00000000
+       5.0      1.0          0.5      4.5  29992.50000000  16985.00000000
+       5.0      3.0          2.5      4.5  30002.50000000  16985.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  29990.00000000  17030.00000000
+       0.5      3.5          3.0      0.0  30005.00000000  17030.00000000
+       5.5      0.5          0.0      5.0  29990.00000000  16980.00000000
+       5.5      3.5          3.0      5.0  30005.00000000  16980.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 1
+123
+456
+789
+The scale units of the image are (ignoring sign):
+1 sample = 5.0000000000000 map units east
+1 line   = 10.0000000000000 map units north
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim4 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3
+   Line
+      1       1   2   3
+      2       4   5   6
+      3       7   8   9
+      4      10  11  12
+      5      13  14  15
+write "*********************************** 161"
+*********************************** 161
+gtrot inp=xxxim2 out=xxxim3 rot=6
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 1 to rotation 6
+gtlist xxxim3
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(3.0,2.0,0,30000.,17000.,0.0)
+MODELTRANSFORMATIONTAG=(0.0,5.0,0,29990.0,-10.0,0.0,0,17030.0,0,0,0,0,0,0,0,1)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  29992.50000000  17025.00000000
+       1.0      5.0          4.5      0.5  29992.50000000  16985.00000000
+       3.0      1.0          0.5      2.5  30002.50000000  17025.00000000
+       3.0      5.0          4.5      2.5  30002.50000000  16985.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  29990.00000000  17030.00000000
+       0.5      5.5          5.0      0.0  29990.00000000  16980.00000000
+       3.5      0.5          0.0      3.0  30005.00000000  17030.00000000
+       3.5      5.5          5.0      3.0  30005.00000000  16980.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 6
+147
+258
+369
+The scale units of the image are (ignoring sign):
+1 sample = 10.000000000000 map units north
+1 line   =  5.000000000000 map units east
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim3 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1       1   4   7  10  13
+      2       2   5   8  11  14
+      3       3   6   9  12  15
+gtrot inp=xxxim3 out=xxxim4
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 6 to rotation 1
+ (the standard VICAR rotation)
+gtlist xxxim4
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(2.0,3.0,0,30000.,17000.,0.0)
+MODELTIEPOINTTAG=(0.0,0.0,0.0,29990.0,17030.0,0.0)
+MODELPIXELSCALETAG=(5.0,10.0,0.0)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  29992.50000000  17025.00000000
+       1.0      3.0          2.5      0.5  30002.50000000  17025.00000000
+       5.0      1.0          0.5      4.5  29992.50000000  16985.00000000
+       5.0      3.0          2.5      4.5  30002.50000000  16985.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  29990.00000000  17030.00000000
+       0.5      3.5          3.0      0.0  30005.00000000  17030.00000000
+       5.5      0.5          0.0      5.0  29990.00000000  16980.00000000
+       5.5      3.5          3.0      5.0  30005.00000000  16980.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 1
+123
+456
+789
+The scale units of the image are (ignoring sign):
+1 sample = 5.0000000000000 map units east
+1 line   = 10.0000000000000 map units north
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim4 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3
+   Line
+      1       1   2   3
+      2       4   5   6
+      3       7   8   9
+      4      10  11  12
+      5      13  14  15
+write "*********************************** 111"
+*********************************** 111
+gtrot inp=xxxim2 out=xxxim3 rot=1
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 1 to rotation 1
+ (the standard VICAR rotation)
+gtlist xxxim3
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(2.0,3.0,0,30000.,17000.,0.0)
+MODELPIXELSCALETAG=(5.0,10.0,0.0)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  29992.50000000  17025.00000000
+       1.0      3.0          2.5      0.5  30002.50000000  17025.00000000
+       5.0      1.0          0.5      4.5  29992.50000000  16985.00000000
+       5.0      3.0          2.5      4.5  30002.50000000  16985.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  29990.00000000  17030.00000000
+       0.5      3.5          3.0      0.0  30005.00000000  17030.00000000
+       5.5      0.5          0.0      5.0  29990.00000000  16980.00000000
+       5.5      3.5          3.0      5.0  30005.00000000  16980.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 1
+123
+456
+789
+The scale units of the image are (ignoring sign):
+1 sample = 5.0000000000000 map units east
+1 line   = 10.0000000000000 map units north
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim3 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3
+   Line
+      1       1   2   3
+      2       4   5   6
+      3       7   8   9
+      4      10  11  12
+      5      13  14  15
+gtrot inp=xxxim3 out=xxxim4
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 1 to rotation 1
+ (the standard VICAR rotation)
+gtlist xxxim4
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(2.0,3.0,0,30000.,17000.,0.0)
+MODELPIXELSCALETAG=(5.0,10.0,0.0)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  29992.50000000  17025.00000000
+       1.0      3.0          2.5      0.5  30002.50000000  17025.00000000
+       5.0      1.0          0.5      4.5  29992.50000000  16985.00000000
+       5.0      3.0          2.5      4.5  30002.50000000  16985.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  29990.00000000  17030.00000000
+       0.5      3.5          3.0      0.0  30005.00000000  17030.00000000
+       5.5      0.5          0.0      5.0  29990.00000000  16980.00000000
+       5.5      3.5          3.0      5.0  30005.00000000  16980.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 1
+123
+456
+789
+The scale units of the image are (ignoring sign):
+1 sample = 5.0000000000000 map units east
+1 line   = 10.0000000000000 map units north
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim4 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3
+   Line
+      1       1   2   3
+      2       4   5   6
+      3       7   8   9
+      4      10  11  12
+      5      13  14  15
+write "*********************************** 131"
+*********************************** 131
+gtrot inp=xxxim2 out=xxxim3 rot=3
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 1 to rotation 3
+gtlist xxxim3
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(1.0,2.0,0,30000.,17000.,0.0)
+MODELPIXELSCALETAG=(-5.0,-10.0,0.0)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  30002.50000000  16985.00000000
+       1.0      3.0          2.5      0.5  29992.50000000  16985.00000000
+       5.0      1.0          0.5      4.5  30002.50000000  17025.00000000
+       5.0      3.0          2.5      4.5  29992.50000000  17025.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  30005.00000000  16980.00000000
+       0.5      3.5          3.0      0.0  29990.00000000  16980.00000000
+       5.5      0.5          0.0      5.0  30005.00000000  17030.00000000
+       5.5      3.5          3.0      5.0  29990.00000000  17030.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 3
+987
+654
+321
+The scale units of the image are (ignoring sign):
+1 sample = 5.0000000000000 map units east
+1 line   = 10.0000000000000 map units north
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim3 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3
+   Line
+      1      15  14  13
+      2      12  11  10
+      3       9   8   7
+      4       6   5   4
+      5       3   2   1
+gtrot inp=xxxim3 out=xxxim4
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 3 to rotation 1
+ (the standard VICAR rotation)
+gtlist xxxim4
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(2.0,3.0,0,30000.,17000.,0.0)
+MODELPIXELSCALETAG=(5.0,10.0,0.0)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  29992.50000000  17025.00000000
+       1.0      3.0          2.5      0.5  30002.50000000  17025.00000000
+       5.0      1.0          0.5      4.5  29992.50000000  16985.00000000
+       5.0      3.0          2.5      4.5  30002.50000000  16985.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  29990.00000000  17030.00000000
+       0.5      3.5          3.0      0.0  30005.00000000  17030.00000000
+       5.5      0.5          0.0      5.0  29990.00000000  16980.00000000
+       5.5      3.5          3.0      5.0  30005.00000000  16980.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 1
+123
+456
+789
+The scale units of the image are (ignoring sign):
+1 sample = 5.0000000000000 map units east
+1 line   = 10.0000000000000 map units north
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim4 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3
+   Line
+      1       1   2   3
+      2       4   5   6
+      3       7   8   9
+      4      10  11  12
+      5      13  14  15
+write "*********************************** 151"
+*********************************** 151
+gtrot inp=xxxim2 out=xxxim3 rot=5
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 1 to rotation 5
+gtlist xxxim3
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(2.0,2.0,0,30000.,17000.,0.0)
+MODELPIXELSCALETAG=(5.0,-10.0,0.0)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  29992.50000000  16985.00000000
+       1.0      3.0          2.5      0.5  30002.50000000  16985.00000000
+       5.0      1.0          0.5      4.5  29992.50000000  17025.00000000
+       5.0      3.0          2.5      4.5  30002.50000000  17025.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  29990.00000000  16980.00000000
+       0.5      3.5          3.0      0.0  30005.00000000  16980.00000000
+       5.5      0.5          0.0      5.0  29990.00000000  17030.00000000
+       5.5      3.5          3.0      5.0  30005.00000000  17030.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 5
+789
+456
+123
+The scale units of the image are (ignoring sign):
+1 sample = 5.0000000000000 map units east
+1 line   = 10.0000000000000 map units north
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim3 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3
+   Line
+      1      13  14  15
+      2      10  11  12
+      3       7   8   9
+      4       4   5   6
+      5       1   2   3
+gtrot inp=xxxim3 out=xxxim4
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 5 to rotation 1
+ (the standard VICAR rotation)
+gtlist xxxim4
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(2.0,3.0,0,30000.,17000.,0.0)
+MODELPIXELSCALETAG=(5.0,10.0,0.0)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  29992.50000000  17025.00000000
+       1.0      3.0          2.5      0.5  30002.50000000  17025.00000000
+       5.0      1.0          0.5      4.5  29992.50000000  16985.00000000
+       5.0      3.0          2.5      4.5  30002.50000000  16985.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  29990.00000000  17030.00000000
+       0.5      3.5          3.0      0.0  30005.00000000  17030.00000000
+       5.5      0.5          0.0      5.0  29990.00000000  16980.00000000
+       5.5      3.5          3.0      5.0  30005.00000000  16980.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 1
+123
+456
+789
+The scale units of the image are (ignoring sign):
+1 sample = 5.0000000000000 map units east
+1 line   = 10.0000000000000 map units north
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim4 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3
+   Line
+      1       1   2   3
+      2       4   5   6
+      3       7   8   9
+      4      10  11  12
+      5      13  14  15
+write "*********************************** 171"
+*********************************** 171
+gtrot inp=xxxim2 out=xxxim3 rot=7
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 1 to rotation 7
+gtlist xxxim3
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(1.0,3.0,0,30000.,17000.,0.0)
+MODELPIXELSCALETAG=(-5.0,10.0,0.0)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  30002.50000000  17025.00000000
+       1.0      3.0          2.5      0.5  29992.50000000  17025.00000000
+       5.0      1.0          0.5      4.5  30002.50000000  16985.00000000
+       5.0      3.0          2.5      4.5  29992.50000000  16985.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  30005.00000000  17030.00000000
+       0.5      3.5          3.0      0.0  29990.00000000  17030.00000000
+       5.5      0.5          0.0      5.0  30005.00000000  16980.00000000
+       5.5      3.5          3.0      5.0  29990.00000000  16980.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 7
+321
+654
+987
+The scale units of the image are (ignoring sign):
+1 sample = 5.0000000000000 map units east
+1 line   = 10.0000000000000 map units north
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim3 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3
+   Line
+      1       3   2   1
+      2       6   5   4
+      3       9   8   7
+      4      12  11  10
+      5      15  14  13
+gtrot inp=xxxim3 out=xxxim4
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 7 to rotation 1
+ (the standard VICAR rotation)
+gtlist xxxim4
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(2.0,3.0,0,30000.,17000.,0.0)
+MODELPIXELSCALETAG=(5.0,10.0,0.0)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  29992.50000000  17025.00000000
+       1.0      3.0          2.5      0.5  30002.50000000  17025.00000000
+       5.0      1.0          0.5      4.5  29992.50000000  16985.00000000
+       5.0      3.0          2.5      4.5  30002.50000000  16985.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  29990.00000000  17030.00000000
+       0.5      3.5          3.0      0.0  30005.00000000  17030.00000000
+       5.5      0.5          0.0      5.0  29990.00000000  16980.00000000
+       5.5      3.5          3.0      5.0  30005.00000000  16980.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 1
+123
+456
+789
+The scale units of the image are (ignoring sign):
+1 sample = 5.0000000000000 map units east
+1 line   = 10.0000000000000 map units north
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim4 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3
+   Line
+      1       1   2   3
+      2       4   5   6
+      3       7   8   9
+      4      10  11  12
+      5      13  14  15
+gen xxxim0 nl=5 ns=3 ival=1 linc=3 sinc=1
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+gtgen inp=xxxim0 out=xxxim1 'tiecnvrt  +
+   geotiff=("ModelTiePointTag=(2,3,0,30000.,17000.,0.0)",  +
+          "ModelTiePointTag=(202,103,0,31000.,16000.,0.0)",  +
+          "ModelTiePointTag=(202,3,0,31000.,17000.,0.0)",  +
+          "GTRasterTypeGeoKey=1(RasterPixelIsArea)")
+Beginning VICAR task gtgen
+GTGEN version 2019-09-05
+gtrot inp=xxxim1 out=xxxim2 rot=0
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 1 to rotation 0
+write "*********************************** 020"
+*********************************** 020
+gtrot inp=xxxim2 out=xxxim3 rot=2
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 0 to rotation 2
+gtlist xxxim3
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(3.0,1.0,0,30000.,17000.,0.0)
+MODELTRANSFORMATIONTAG=(0.0,-5.0,0,30005.0,-10.0,0.0,0,17030.0,0,0,0,0,0,0,0,1)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  30002.50000000  17025.00000000
+       1.0      5.0          4.5      0.5  30002.50000000  16985.00000000
+       3.0      1.0          0.5      2.5  29992.50000000  17025.00000000
+       3.0      5.0          4.5      2.5  29992.50000000  16985.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  30005.00000000  17030.00000000
+       0.5      5.5          5.0      0.0  30005.00000000  16980.00000000
+       3.5      0.5          0.0      3.0  29990.00000000  17030.00000000
+       3.5      5.5          5.0      3.0  29990.00000000  16980.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 2
+741
+852
+963
+The scale units of the image are (ignoring sign):
+1 sample = 10.000000000000 map units north
+1 line   =  5.000000000000 map units east
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim3 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1       3   6   9  12  15
+      2       2   5   8  11  14
+      3       1   4   7  10  13
+gtrot inp=xxxim3 out=xxxim4 rot=0
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 2 to rotation 0
+gtlist xxxim4
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(2.0,2.0,0,30000.,17000.,0.0)
+MODELTRANSFORMATIONTAG=(0.0,5.0,0,29990.0,10.0,0.0,0,16980.0,0,0,0,0,0,0,0,1)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  29992.50000000  16985.00000000
+       1.0      5.0          4.5      0.5  29992.50000000  17025.00000000
+       3.0      1.0          0.5      2.5  30002.50000000  16985.00000000
+       3.0      5.0          4.5      2.5  30002.50000000  17025.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  29990.00000000  16980.00000000
+       0.5      5.5          5.0      0.0  29990.00000000  17030.00000000
+       3.5      0.5          0.0      3.0  30005.00000000  16980.00000000
+       3.5      5.5          5.0      3.0  30005.00000000  17030.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 0
+369
+258
+147
+The scale units of the image are (ignoring sign):
+1 sample = 10.000000000000 map units north
+1 line   =  5.000000000000 map units east
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim4 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1      13  10   7   4   1
+      2      14  11   8   5   2
+      3      15  12   9   6   3
+write "*********************************** 040"
+*********************************** 040
+gtrot inp=xxxim2 out=xxxim3 rot=4
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 0 to rotation 4
+gtlist xxxim3
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(2.0,1.0,0,30000.,17000.,0.0)
+MODELTRANSFORMATIONTAG=(0.0,-5.0,0,30005.0,10.0,0.0,0,16980.0,0,0,0,0,0,0,0,1)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  30002.50000000  16985.00000000
+       1.0      5.0          4.5      0.5  30002.50000000  17025.00000000
+       3.0      1.0          0.5      2.5  29992.50000000  16985.00000000
+       3.0      5.0          4.5      2.5  29992.50000000  17025.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  30005.00000000  16980.00000000
+       0.5      5.5          5.0      0.0  30005.00000000  17030.00000000
+       3.5      0.5          0.0      3.0  29990.00000000  16980.00000000
+       3.5      5.5          5.0      3.0  29990.00000000  17030.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 4
+963
+852
+741
+The scale units of the image are (ignoring sign):
+1 sample = 10.000000000000 map units north
+1 line   =  5.000000000000 map units east
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim3 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1      15  12   9   6   3
+      2      14  11   8   5   2
+      3      13  10   7   4   1
+gtrot inp=xxxim3 out=xxxim4 rot=0
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 4 to rotation 0
+gtlist xxxim4
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(2.0,2.0,0,30000.,17000.,0.0)
+MODELTRANSFORMATIONTAG=(0.0,5.0,0,29990.0,10.0,0.0,0,16980.0,0,0,0,0,0,0,0,1)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  29992.50000000  16985.00000000
+       1.0      5.0          4.5      0.5  29992.50000000  17025.00000000
+       3.0      1.0          0.5      2.5  30002.50000000  16985.00000000
+       3.0      5.0          4.5      2.5  30002.50000000  17025.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  29990.00000000  16980.00000000
+       0.5      5.5          5.0      0.0  29990.00000000  17030.00000000
+       3.5      0.5          0.0      3.0  30005.00000000  16980.00000000
+       3.5      5.5          5.0      3.0  30005.00000000  17030.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 0
+369
+258
+147
+The scale units of the image are (ignoring sign):
+1 sample = 10.000000000000 map units north
+1 line   =  5.000000000000 map units east
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim4 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1      13  10   7   4   1
+      2      14  11   8   5   2
+      3      15  12   9   6   3
+write "*********************************** 060"
+*********************************** 060
+gtrot inp=xxxim2 out=xxxim3 rot=6
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 0 to rotation 6
+gtlist xxxim3
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(3.0,2.0,0,30000.,17000.,0.0)
+MODELTRANSFORMATIONTAG=(0.0,5.0,0,29990.0,-10.0,0.0,0,17030.0,0,0,0,0,0,0,0,1)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  29992.50000000  17025.00000000
+       1.0      5.0          4.5      0.5  29992.50000000  16985.00000000
+       3.0      1.0          0.5      2.5  30002.50000000  17025.00000000
+       3.0      5.0          4.5      2.5  30002.50000000  16985.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  29990.00000000  17030.00000000
+       0.5      5.5          5.0      0.0  29990.00000000  16980.00000000
+       3.5      0.5          0.0      3.0  30005.00000000  17030.00000000
+       3.5      5.5          5.0      3.0  30005.00000000  16980.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 6
+147
+258
+369
+The scale units of the image are (ignoring sign):
+1 sample = 10.000000000000 map units north
+1 line   =  5.000000000000 map units east
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim3 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1       1   4   7  10  13
+      2       2   5   8  11  14
+      3       3   6   9  12  15
+gtrot inp=xxxim3 out=xxxim4 rot=0
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 6 to rotation 0
+gtlist xxxim4
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(2.0,2.0,0,30000.,17000.,0.0)
+MODELTRANSFORMATIONTAG=(0.0,5.0,0,29990.0,10.0,0.0,0,16980.0,0,0,0,0,0,0,0,1)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  29992.50000000  16985.00000000
+       1.0      5.0          4.5      0.5  29992.50000000  17025.00000000
+       3.0      1.0          0.5      2.5  30002.50000000  16985.00000000
+       3.0      5.0          4.5      2.5  30002.50000000  17025.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  29990.00000000  16980.00000000
+       0.5      5.5          5.0      0.0  29990.00000000  17030.00000000
+       3.5      0.5          0.0      3.0  30005.00000000  16980.00000000
+       3.5      5.5          5.0      3.0  30005.00000000  17030.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 0
+369
+258
+147
+The scale units of the image are (ignoring sign):
+1 sample = 10.000000000000 map units north
+1 line   =  5.000000000000 map units east
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim4 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1      13  10   7   4   1
+      2      14  11   8   5   2
+      3      15  12   9   6   3
+write "*********************************** 030"
+*********************************** 030
+gtrot inp=xxxim2 out=xxxim3 rot=3
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 0 to rotation 3
+gtlist xxxim3
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(1.0,2.0,0,30000.,17000.,0.0)
+MODELTIEPOINTTAG=(3.0,-0.0,0.0,29990.0,16980.0,0.0)
+MODELPIXELSCALETAG=(-5.0,-10.0,0.0)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  30002.50000000  16985.00000000
+       1.0      3.0          2.5      0.5  29992.50000000  16985.00000000
+       5.0      1.0          0.5      4.5  30002.50000000  17025.00000000
+       5.0      3.0          2.5      4.5  29992.50000000  17025.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  30005.00000000  16980.00000000
+       0.5      3.5          3.0      0.0  29990.00000000  16980.00000000
+       5.5      0.5          0.0      5.0  30005.00000000  17030.00000000
+       5.5      3.5          3.0      5.0  29990.00000000  17030.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 3
+987
+654
+321
+The scale units of the image are (ignoring sign):
+1 sample = 5.0000000000000 map units east
+1 line   = 10.0000000000000 map units north
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim3 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3
+   Line
+      1      15  14  13
+      2      12  11  10
+      3       9   8   7
+      4       6   5   4
+      5       3   2   1
+gtrot inp=xxxim3 out=xxxim4 rot=0
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 3 to rotation 0
+gtlist xxxim4
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(2.0,2.0,0,30000.,17000.,0.0)
+MODELTIEPOINTTAG=(0.0,0.0,0.0,29990.0,16980.0,0.0)
+MODELTRANSFORMATIONTAG=(0.0,5.0,0,29990.0,10.0,0.0,0,16980.0,0,0,0,0,0,0,0,1)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  29992.50000000  16985.00000000
+       1.0      5.0          4.5      0.5  29992.50000000  17025.00000000
+       3.0      1.0          0.5      2.5  30002.50000000  16985.00000000
+       3.0      5.0          4.5      2.5  30002.50000000  17025.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  29990.00000000  16980.00000000
+       0.5      5.5          5.0      0.0  29990.00000000  17030.00000000
+       3.5      0.5          0.0      3.0  30005.00000000  16980.00000000
+       3.5      5.5          5.0      3.0  30005.00000000  17030.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 0
+369
+258
+147
+The scale units of the image are (ignoring sign):
+1 sample = 10.000000000000 map units north
+1 line   =  5.000000000000 map units east
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim4 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1      13  10   7   4   1
+      2      14  11   8   5   2
+      3      15  12   9   6   3
+write "*********************************** 050"
+*********************************** 050
+gtrot inp=xxxim2 out=xxxim3 rot=5
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 0 to rotation 5
+gtlist xxxim3
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(2.0,2.0,0,30000.,17000.,0.0)
+MODELTIEPOINTTAG=(0.0,0.0,0.0,29990.0,16980.0,0.0)
+MODELPIXELSCALETAG=(5.0,-10.0,0.0)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  29992.50000000  16985.00000000
+       1.0      3.0          2.5      0.5  30002.50000000  16985.00000000
+       5.0      1.0          0.5      4.5  29992.50000000  17025.00000000
+       5.0      3.0          2.5      4.5  30002.50000000  17025.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  29990.00000000  16980.00000000
+       0.5      3.5          3.0      0.0  30005.00000000  16980.00000000
+       5.5      0.5          0.0      5.0  29990.00000000  17030.00000000
+       5.5      3.5          3.0      5.0  30005.00000000  17030.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 5
+789
+456
+123
+The scale units of the image are (ignoring sign):
+1 sample = 5.0000000000000 map units east
+1 line   = 10.0000000000000 map units north
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim3 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3
+   Line
+      1      13  14  15
+      2      10  11  12
+      3       7   8   9
+      4       4   5   6
+      5       1   2   3
+gtrot inp=xxxim3 out=xxxim4 rot=0
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 5 to rotation 0
+gtlist xxxim4
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(2.0,2.0,0,30000.,17000.,0.0)
+MODELTIEPOINTTAG=(0.0,0.0,0.0,29990.0,16980.0,0.0)
+MODELTRANSFORMATIONTAG=(0.0,5.0,0,29990.0,10.0,0.0,0,16980.0,0,0,0,0,0,0,0,1)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  29992.50000000  16985.00000000
+       1.0      5.0          4.5      0.5  29992.50000000  17025.00000000
+       3.0      1.0          0.5      2.5  30002.50000000  16985.00000000
+       3.0      5.0          4.5      2.5  30002.50000000  17025.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  29990.00000000  16980.00000000
+       0.5      5.5          5.0      0.0  29990.00000000  17030.00000000
+       3.5      0.5          0.0      3.0  30005.00000000  16980.00000000
+       3.5      5.5          5.0      3.0  30005.00000000  17030.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 0
+369
+258
+147
+The scale units of the image are (ignoring sign):
+1 sample = 10.000000000000 map units north
+1 line   =  5.000000000000 map units east
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim4 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1      13  10   7   4   1
+      2      14  11   8   5   2
+      3      15  12   9   6   3
+write "*********************************** 070"
+*********************************** 070
+gtrot inp=xxxim2 out=xxxim3 rot=7
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 0 to rotation 7
+gtlist xxxim3
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(1.0,3.0,0,30000.,17000.,0.0)
+MODELTIEPOINTTAG=(3.0,5.0,0.0,29990.0,16980.0,0.0)
+MODELPIXELSCALETAG=(-5.0,10.0,0.0)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  30002.50000000  17025.00000000
+       1.0      3.0          2.5      0.5  29992.50000000  17025.00000000
+       5.0      1.0          0.5      4.5  30002.50000000  16985.00000000
+       5.0      3.0          2.5      4.5  29992.50000000  16985.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  30005.00000000  17030.00000000
+       0.5      3.5          3.0      0.0  29990.00000000  17030.00000000
+       5.5      0.5          0.0      5.0  30005.00000000  16980.00000000
+       5.5      3.5          3.0      5.0  29990.00000000  16980.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 7
+321
+654
+987
+The scale units of the image are (ignoring sign):
+1 sample = 5.0000000000000 map units east
+1 line   = 10.0000000000000 map units north
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim3 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3
+   Line
+      1       3   2   1
+      2       6   5   4
+      3       9   8   7
+      4      12  11  10
+      5      15  14  13
+gtrot inp=xxxim3 out=xxxim4 rot=0
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 7 to rotation 0
+gtlist xxxim4
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(2.0,2.0,0,30000.,17000.,0.0)
+MODELTIEPOINTTAG=(0.0,0.0,0.0,29990.0,16980.0,0.0)
+MODELTRANSFORMATIONTAG=(0.0,5.0,0,29990.0,10.0,0.0,0,16980.0,0,0,0,0,0,0,0,1)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  29992.50000000  16985.00000000
+       1.0      5.0          4.5      0.5  29992.50000000  17025.00000000
+       3.0      1.0          0.5      2.5  30002.50000000  16985.00000000
+       3.0      5.0          4.5      2.5  30002.50000000  17025.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  29990.00000000  16980.00000000
+       0.5      5.5          5.0      0.0  29990.00000000  17030.00000000
+       3.5      0.5          0.0      3.0  30005.00000000  16980.00000000
+       3.5      5.5          5.0      3.0  30005.00000000  17030.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 0
+369
+258
+147
+The scale units of the image are (ignoring sign):
+1 sample = 10.000000000000 map units north
+1 line   =  5.000000000000 map units east
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim4 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1      13  10   7   4   1
+      2      14  11   8   5   2
+      3      15  12   9   6   3
+gen xxxim0 nl=5 ns=3 ival=1 linc=3 sinc=1
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+gtgen inp=xxxim0 out=xxxim1 'tiecnvrt  +
+   geotiff=("ModelTiePointTag=(2,3,0,30000.,17000.,0.0)",  +
+          "ModelTiePointTag=(202,103,0,31000.,16000.,0.0)",  +
+          "ModelTiePointTag=(202,3,0,31000.,17000.,0.0)",  +
+          "GTRasterTypeGeoKey=1(RasterPixelIsArea)")
+Beginning VICAR task gtgen
+GTGEN version 2019-09-05
+gtrot inp=xxxim1 out=xxxim2 rot=2
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 1 to rotation 2
+gtlist xxxim2
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(3.0,1.0,0,30000.,17000.,0.0)
+MODELTRANSFORMATIONTAG=(0.0,-5.0,0,30005.0,-10.0,0.0,0,17030.0,0,0,0,0,0,0,0,1)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  30002.50000000  17025.00000000
+       1.0      5.0          4.5      0.5  30002.50000000  16985.00000000
+       3.0      1.0          0.5      2.5  29992.50000000  17025.00000000
+       3.0      5.0          4.5      2.5  29992.50000000  16985.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  30005.00000000  17030.00000000
+       0.5      5.5          5.0      0.0  30005.00000000  16980.00000000
+       3.5      0.5          0.0      3.0  29990.00000000  17030.00000000
+       3.5      5.5          5.0      3.0  29990.00000000  16980.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 2
+741
+852
+963
+The scale units of the image are (ignoring sign):
+1 sample = 10.000000000000 map units north
+1 line   =  5.000000000000 map units east
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim2 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1       3   6   9  12  15
+      2       2   5   8  11  14
+      3       1   4   7  10  13
+write "*********************************** 242"
+*********************************** 242
+gtrot inp=xxxim2 out=xxxim3 rot=4
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 2 to rotation 4
+gtlist xxxim3
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(2.0,1.0,0,30000.,17000.,0.0)
+MODELTRANSFORMATIONTAG=(0.0,-5.0,0,30005.0,10.0,0.0,0,16980.0,0,0,0,0,0,0,0,1)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  30002.50000000  16985.00000000
+       1.0      5.0          4.5      0.5  30002.50000000  17025.00000000
+       3.0      1.0          0.5      2.5  29992.50000000  16985.00000000
+       3.0      5.0          4.5      2.5  29992.50000000  17025.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  30005.00000000  16980.00000000
+       0.5      5.5          5.0      0.0  30005.00000000  17030.00000000
+       3.5      0.5          0.0      3.0  29990.00000000  16980.00000000
+       3.5      5.5          5.0      3.0  29990.00000000  17030.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 4
+963
+852
+741
+The scale units of the image are (ignoring sign):
+1 sample = 10.000000000000 map units north
+1 line   =  5.000000000000 map units east
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim3 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1      15  12   9   6   3
+      2      14  11   8   5   2
+      3      13  10   7   4   1
+gtrot inp=xxxim3 out=xxxim4 rot=2
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 4 to rotation 2
+gtlist xxxim4
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(3.0,1.0,0,30000.,17000.,0.0)
+MODELTRANSFORMATIONTAG=(0.0,-5.0,0,30005.0,-10.0,0.0,0,17030.0,0,0,0,0,0,0,0,1)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  30002.50000000  17025.00000000
+       1.0      5.0          4.5      0.5  30002.50000000  16985.00000000
+       3.0      1.0          0.5      2.5  29992.50000000  17025.00000000
+       3.0      5.0          4.5      2.5  29992.50000000  16985.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  30005.00000000  17030.00000000
+       0.5      5.5          5.0      0.0  30005.00000000  16980.00000000
+       3.5      0.5          0.0      3.0  29990.00000000  17030.00000000
+       3.5      5.5          5.0      3.0  29990.00000000  16980.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 2
+741
+852
+963
+The scale units of the image are (ignoring sign):
+1 sample = 10.000000000000 map units north
+1 line   =  5.000000000000 map units east
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim4 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1       3   6   9  12  15
+      2       2   5   8  11  14
+      3       1   4   7  10  13
+write "*********************************** 262"
+*********************************** 262
+gtrot inp=xxxim2 out=xxxim3 rot=6
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 2 to rotation 6
+gtlist xxxim3
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(3.0,2.0,0,30000.,17000.,0.0)
+MODELTRANSFORMATIONTAG=(0.0,5.0,0,29990.0,-10.0,0.0,0,17030.0,0,0,0,0,0,0,0,1)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  29992.50000000  17025.00000000
+       1.0      5.0          4.5      0.5  29992.50000000  16985.00000000
+       3.0      1.0          0.5      2.5  30002.50000000  17025.00000000
+       3.0      5.0          4.5      2.5  30002.50000000  16985.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  29990.00000000  17030.00000000
+       0.5      5.5          5.0      0.0  29990.00000000  16980.00000000
+       3.5      0.5          0.0      3.0  30005.00000000  17030.00000000
+       3.5      5.5          5.0      3.0  30005.00000000  16980.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 6
+147
+258
+369
+The scale units of the image are (ignoring sign):
+1 sample = 10.000000000000 map units north
+1 line   =  5.000000000000 map units east
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim3 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1       1   4   7  10  13
+      2       2   5   8  11  14
+      3       3   6   9  12  15
+gtrot inp=xxxim3 out=xxxim4 rot=2
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 6 to rotation 2
+gtlist xxxim4
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(3.0,1.0,0,30000.,17000.,0.0)
+MODELTRANSFORMATIONTAG=(0.0,-5.0,0,30005.0,-10.0,0.0,0,17030.0,0,0,0,0,0,0,0,1)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  30002.50000000  17025.00000000
+       1.0      5.0          4.5      0.5  30002.50000000  16985.00000000
+       3.0      1.0          0.5      2.5  29992.50000000  17025.00000000
+       3.0      5.0          4.5      2.5  29992.50000000  16985.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  30005.00000000  17030.00000000
+       0.5      5.5          5.0      0.0  30005.00000000  16980.00000000
+       3.5      0.5          0.0      3.0  29990.00000000  17030.00000000
+       3.5      5.5          5.0      3.0  29990.00000000  16980.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 2
+741
+852
+963
+The scale units of the image are (ignoring sign):
+1 sample = 10.000000000000 map units north
+1 line   =  5.000000000000 map units east
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim4 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1       3   6   9  12  15
+      2       2   5   8  11  14
+      3       1   4   7  10  13
+write "*********************************** 232"
+*********************************** 232
+gtrot inp=xxxim2 out=xxxim3 rot=3
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 2 to rotation 3
+gtlist xxxim3
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(1.0,2.0,0,30000.,17000.,0.0)
+MODELTIEPOINTTAG=(0.0,5.0,0.0,30005.0,17030.0,0.0)
+MODELPIXELSCALETAG=(-5.0,-10.0,0.0)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  30002.50000000  16985.00000000
+       1.0      3.0          2.5      0.5  29992.50000000  16985.00000000
+       5.0      1.0          0.5      4.5  30002.50000000  17025.00000000
+       5.0      3.0          2.5      4.5  29992.50000000  17025.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  30005.00000000  16980.00000000
+       0.5      3.5          3.0      0.0  29990.00000000  16980.00000000
+       5.5      0.5          0.0      5.0  30005.00000000  17030.00000000
+       5.5      3.5          3.0      5.0  29990.00000000  17030.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 3
+987
+654
+321
+The scale units of the image are (ignoring sign):
+1 sample = 5.0000000000000 map units east
+1 line   = 10.0000000000000 map units north
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim3 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3
+   Line
+      1      15  14  13
+      2      12  11  10
+      3       9   8   7
+      4       6   5   4
+      5       3   2   1
+gtrot inp=xxxim3 out=xxxim4 rot=2
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 3 to rotation 2
+gtlist xxxim4
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(3.0,1.0,0,30000.,17000.,0.0)
+MODELTIEPOINTTAG=(0.0,0.0,0.0,30005.0,17030.0,0.0)
+MODELTRANSFORMATIONTAG=(0.0,-5.0,0,30005.0,-10.0,0.0,0,17030.0,0,0,0,0,0,0,0,1)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  30002.50000000  17025.00000000
+       1.0      5.0          4.5      0.5  30002.50000000  16985.00000000
+       3.0      1.0          0.5      2.5  29992.50000000  17025.00000000
+       3.0      5.0          4.5      2.5  29992.50000000  16985.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  30005.00000000  17030.00000000
+       0.5      5.5          5.0      0.0  30005.00000000  16980.00000000
+       3.5      0.5          0.0      3.0  29990.00000000  17030.00000000
+       3.5      5.5          5.0      3.0  29990.00000000  16980.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 2
+741
+852
+963
+The scale units of the image are (ignoring sign):
+1 sample = 10.000000000000 map units north
+1 line   =  5.000000000000 map units east
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim4 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1       3   6   9  12  15
+      2       2   5   8  11  14
+      3       1   4   7  10  13
+write "*********************************** 252"
+*********************************** 252
+gtrot inp=xxxim2 out=xxxim3 rot=5
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 2 to rotation 5
+gtlist xxxim3
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(2.0,2.0,0,30000.,17000.,0.0)
+MODELTIEPOINTTAG=(3.0,5.0,0.0,30005.0,17030.0,0.0)
+MODELPIXELSCALETAG=(5.0,-10.0,0.0)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  29992.50000000  16985.00000000
+       1.0      3.0          2.5      0.5  30002.50000000  16985.00000000
+       5.0      1.0          0.5      4.5  29992.50000000  17025.00000000
+       5.0      3.0          2.5      4.5  30002.50000000  17025.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  29990.00000000  16980.00000000
+       0.5      3.5          3.0      0.0  30005.00000000  16980.00000000
+       5.5      0.5          0.0      5.0  29990.00000000  17030.00000000
+       5.5      3.5          3.0      5.0  30005.00000000  17030.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 5
+789
+456
+123
+The scale units of the image are (ignoring sign):
+1 sample = 5.0000000000000 map units east
+1 line   = 10.0000000000000 map units north
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim3 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3
+   Line
+      1      13  14  15
+      2      10  11  12
+      3       7   8   9
+      4       4   5   6
+      5       1   2   3
+gtrot inp=xxxim3 out=xxxim4 rot=2
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 5 to rotation 2
+gtlist xxxim4
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(3.0,1.0,0,30000.,17000.,0.0)
+MODELTIEPOINTTAG=(0.0,0.0,0.0,30005.0,17030.0,0.0)
+MODELTRANSFORMATIONTAG=(0.0,-5.0,0,30005.0,-10.0,0.0,0,17030.0,0,0,0,0,0,0,0,1)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  30002.50000000  17025.00000000
+       1.0      5.0          4.5      0.5  30002.50000000  16985.00000000
+       3.0      1.0          0.5      2.5  29992.50000000  17025.00000000
+       3.0      5.0          4.5      2.5  29992.50000000  16985.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  30005.00000000  17030.00000000
+       0.5      5.5          5.0      0.0  30005.00000000  16980.00000000
+       3.5      0.5          0.0      3.0  29990.00000000  17030.00000000
+       3.5      5.5          5.0      3.0  29990.00000000  16980.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 2
+741
+852
+963
+The scale units of the image are (ignoring sign):
+1 sample = 10.000000000000 map units north
+1 line   =  5.000000000000 map units east
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim4 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1       3   6   9  12  15
+      2       2   5   8  11  14
+      3       1   4   7  10  13
+write "*********************************** 272"
+*********************************** 272
+gtrot inp=xxxim2 out=xxxim3 rot=7
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 2 to rotation 7
+gtlist xxxim3
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(1.0,3.0,0,30000.,17000.,0.0)
+MODELTIEPOINTTAG=(0.0,0.0,0.0,30005.0,17030.0,0.0)
+MODELPIXELSCALETAG=(-5.0,10.0,0.0)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  30002.50000000  17025.00000000
+       1.0      3.0          2.5      0.5  29992.50000000  17025.00000000
+       5.0      1.0          0.5      4.5  30002.50000000  16985.00000000
+       5.0      3.0          2.5      4.5  29992.50000000  16985.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  30005.00000000  17030.00000000
+       0.5      3.5          3.0      0.0  29990.00000000  17030.00000000
+       5.5      0.5          0.0      5.0  30005.00000000  16980.00000000
+       5.5      3.5          3.0      5.0  29990.00000000  16980.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 7
+321
+654
+987
+The scale units of the image are (ignoring sign):
+1 sample = 5.0000000000000 map units east
+1 line   = 10.0000000000000 map units north
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim3 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3
+   Line
+      1       3   2   1
+      2       6   5   4
+      3       9   8   7
+      4      12  11  10
+      5      15  14  13
+gtrot inp=xxxim3 out=xxxim4 rot=2
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 7 to rotation 2
+gtlist xxxim4
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(3.0,1.0,0,30000.,17000.,0.0)
+MODELTIEPOINTTAG=(0.0,0.0,0.0,30005.0,17030.0,0.0)
+MODELTRANSFORMATIONTAG=(0.0,-5.0,0,30005.0,-10.0,0.0,0,17030.0,0,0,0,0,0,0,0,1)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  30002.50000000  17025.00000000
+       1.0      5.0          4.5      0.5  30002.50000000  16985.00000000
+       3.0      1.0          0.5      2.5  29992.50000000  17025.00000000
+       3.0      5.0          4.5      2.5  29992.50000000  16985.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  30005.00000000  17030.00000000
+       0.5      5.5          5.0      0.0  30005.00000000  16980.00000000
+       3.5      0.5          0.0      3.0  29990.00000000  17030.00000000
+       3.5      5.5          5.0      3.0  29990.00000000  16980.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 2
+741
+852
+963
+The scale units of the image are (ignoring sign):
+1 sample = 10.000000000000 map units north
+1 line   =  5.000000000000 map units east
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim4 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1       3   6   9  12  15
+      2       2   5   8  11  14
+      3       1   4   7  10  13
+gen xxxim0 nl=5 ns=3 ival=1 linc=3 sinc=1
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+gtgen inp=xxxim0 out=xxxim1 'tiecnvrt  +
+   geotiff=("ModelTiePointTag=(2,3,0,30000.,17000.,0.0)",  +
+          "ModelTiePointTag=(202,103,0,31000.,16000.,0.0)",  +
+          "ModelTiePointTag=(202,3,0,31000.,17000.,0.0)",  +
+          "GTRasterTypeGeoKey=1(RasterPixelIsArea)")
+Beginning VICAR task gtgen
+GTGEN version 2019-09-05
+gtrot inp=xxxim1 out=xxxim2 rot=3
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 1 to rotation 3
+gtlist xxxim2
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(1.0,2.0,0,30000.,17000.,0.0)
+MODELPIXELSCALETAG=(-5.0,-10.0,0.0)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  30002.50000000  16985.00000000
+       1.0      3.0          2.5      0.5  29992.50000000  16985.00000000
+       5.0      1.0          0.5      4.5  30002.50000000  17025.00000000
+       5.0      3.0          2.5      4.5  29992.50000000  17025.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  30005.00000000  16980.00000000
+       0.5      3.5          3.0      0.0  29990.00000000  16980.00000000
+       5.5      0.5          0.0      5.0  30005.00000000  17030.00000000
+       5.5      3.5          3.0      5.0  29990.00000000  17030.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 3
+987
+654
+321
+The scale units of the image are (ignoring sign):
+1 sample = 5.0000000000000 map units east
+1 line   = 10.0000000000000 map units north
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim2 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3
+   Line
+      1      15  14  13
+      2      12  11  10
+      3       9   8   7
+      4       6   5   4
+      5       3   2   1
+write "*********************************** 343"
+*********************************** 343
+gtrot inp=xxxim2 out=xxxim3 rot=4
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 3 to rotation 4
+gtlist xxxim3
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(2.0,1.0,0,30000.,17000.,0.0)
+MODELTRANSFORMATIONTAG=(0.0,-5.0,0,30005.0,10.0,0.0,0,16980.0,0,0,0,0,0,0,0,1)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  30002.50000000  16985.00000000
+       1.0      5.0          4.5      0.5  30002.50000000  17025.00000000
+       3.0      1.0          0.5      2.5  29992.50000000  16985.00000000
+       3.0      5.0          4.5      2.5  29992.50000000  17025.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  30005.00000000  16980.00000000
+       0.5      5.5          5.0      0.0  30005.00000000  17030.00000000
+       3.5      0.5          0.0      3.0  29990.00000000  16980.00000000
+       3.5      5.5          5.0      3.0  29990.00000000  17030.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 4
+963
+852
+741
+The scale units of the image are (ignoring sign):
+1 sample = 10.000000000000 map units north
+1 line   =  5.000000000000 map units east
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim3 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1      15  12   9   6   3
+      2      14  11   8   5   2
+      3      13  10   7   4   1
+gtrot inp=xxxim3 out=xxxim4 rot=3
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 4 to rotation 3
+gtlist xxxim4
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(1.0,2.0,0,30000.,17000.,0.0)
+MODELTIEPOINTTAG=(0.0,-0.0,0.0,30005.0,16980.0,0.0)
+MODELPIXELSCALETAG=(-5.0,-10.0,0.0)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  30002.50000000  16985.00000000
+       1.0      3.0          2.5      0.5  29992.50000000  16985.00000000
+       5.0      1.0          0.5      4.5  30002.50000000  17025.00000000
+       5.0      3.0          2.5      4.5  29992.50000000  17025.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  30005.00000000  16980.00000000
+       0.5      3.5          3.0      0.0  29990.00000000  16980.00000000
+       5.5      0.5          0.0      5.0  30005.00000000  17030.00000000
+       5.5      3.5          3.0      5.0  29990.00000000  17030.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 3
+987
+654
+321
+The scale units of the image are (ignoring sign):
+1 sample = 5.0000000000000 map units east
+1 line   = 10.0000000000000 map units north
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim4 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3
+   Line
+      1      15  14  13
+      2      12  11  10
+      3       9   8   7
+      4       6   5   4
+      5       3   2   1
+write "*********************************** 363"
+*********************************** 363
+gtrot inp=xxxim2 out=xxxim3 rot=6
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 3 to rotation 6
+gtlist xxxim3
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(3.0,2.0,0,30000.,17000.,0.0)
+MODELTRANSFORMATIONTAG=(0.0,5.0,0,29990.0,-10.0,0.0,0,17030.0,0,0,0,0,0,0,0,1)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  29992.50000000  17025.00000000
+       1.0      5.0          4.5      0.5  29992.50000000  16985.00000000
+       3.0      1.0          0.5      2.5  30002.50000000  17025.00000000
+       3.0      5.0          4.5      2.5  30002.50000000  16985.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  29990.00000000  17030.00000000
+       0.5      5.5          5.0      0.0  29990.00000000  16980.00000000
+       3.5      0.5          0.0      3.0  30005.00000000  17030.00000000
+       3.5      5.5          5.0      3.0  30005.00000000  16980.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 6
+147
+258
+369
+The scale units of the image are (ignoring sign):
+1 sample = 10.000000000000 map units north
+1 line   =  5.000000000000 map units east
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim3 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1       1   4   7  10  13
+      2       2   5   8  11  14
+      3       3   6   9  12  15
+gtrot inp=xxxim3 out=xxxim4 rot=3
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 6 to rotation 3
+gtlist xxxim4
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(1.0,2.0,0,30000.,17000.,0.0)
+MODELTIEPOINTTAG=(3.0,5.0,0.0,29990.0,17030.0,0.0)
+MODELPIXELSCALETAG=(-5.0,-10.0,0.0)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  30002.50000000  16985.00000000
+       1.0      3.0          2.5      0.5  29992.50000000  16985.00000000
+       5.0      1.0          0.5      4.5  30002.50000000  17025.00000000
+       5.0      3.0          2.5      4.5  29992.50000000  17025.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  30005.00000000  16980.00000000
+       0.5      3.5          3.0      0.0  29990.00000000  16980.00000000
+       5.5      0.5          0.0      5.0  30005.00000000  17030.00000000
+       5.5      3.5          3.0      5.0  29990.00000000  17030.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 3
+987
+654
+321
+The scale units of the image are (ignoring sign):
+1 sample = 5.0000000000000 map units east
+1 line   = 10.0000000000000 map units north
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim4 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3
+   Line
+      1      15  14  13
+      2      12  11  10
+      3       9   8   7
+      4       6   5   4
+      5       3   2   1
+write "*********************************** 353"
+*********************************** 353
+gtrot inp=xxxim2 out=xxxim3 rot=5
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 3 to rotation 5
+gtlist xxxim3
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(2.0,2.0,0,30000.,17000.,0.0)
+MODELPIXELSCALETAG=(5.0,-10.0,0.0)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  29992.50000000  16985.00000000
+       1.0      3.0          2.5      0.5  30002.50000000  16985.00000000
+       5.0      1.0          0.5      4.5  29992.50000000  17025.00000000
+       5.0      3.0          2.5      4.5  30002.50000000  17025.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  29990.00000000  16980.00000000
+       0.5      3.5          3.0      0.0  30005.00000000  16980.00000000
+       5.5      0.5          0.0      5.0  29990.00000000  17030.00000000
+       5.5      3.5          3.0      5.0  30005.00000000  17030.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 5
+789
+456
+123
+The scale units of the image are (ignoring sign):
+1 sample = 5.0000000000000 map units east
+1 line   = 10.0000000000000 map units north
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim3 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3
+   Line
+      1      13  14  15
+      2      10  11  12
+      3       7   8   9
+      4       4   5   6
+      5       1   2   3
+gtrot inp=xxxim3 out=xxxim4 rot=3
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 5 to rotation 3
+gtlist xxxim4
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(1.0,2.0,0,30000.,17000.,0.0)
+MODELPIXELSCALETAG=(-5.0,-10.0,0.0)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  30002.50000000  16985.00000000
+       1.0      3.0          2.5      0.5  29992.50000000  16985.00000000
+       5.0      1.0          0.5      4.5  30002.50000000  17025.00000000
+       5.0      3.0          2.5      4.5  29992.50000000  17025.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  30005.00000000  16980.00000000
+       0.5      3.5          3.0      0.0  29990.00000000  16980.00000000
+       5.5      0.5          0.0      5.0  30005.00000000  17030.00000000
+       5.5      3.5          3.0      5.0  29990.00000000  17030.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 3
+987
+654
+321
+The scale units of the image are (ignoring sign):
+1 sample = 5.0000000000000 map units east
+1 line   = 10.0000000000000 map units north
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim4 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3
+   Line
+      1      15  14  13
+      2      12  11  10
+      3       9   8   7
+      4       6   5   4
+      5       3   2   1
+write "*********************************** 373"
+*********************************** 373
+gtrot inp=xxxim2 out=xxxim3 rot=7
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 3 to rotation 7
+gtlist xxxim3
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(1.0,3.0,0,30000.,17000.,0.0)
+MODELPIXELSCALETAG=(-5.0,10.0,0.0)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  30002.50000000  17025.00000000
+       1.0      3.0          2.5      0.5  29992.50000000  17025.00000000
+       5.0      1.0          0.5      4.5  30002.50000000  16985.00000000
+       5.0      3.0          2.5      4.5  29992.50000000  16985.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  30005.00000000  17030.00000000
+       0.5      3.5          3.0      0.0  29990.00000000  17030.00000000
+       5.5      0.5          0.0      5.0  30005.00000000  16980.00000000
+       5.5      3.5          3.0      5.0  29990.00000000  16980.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 7
+321
+654
+987
+The scale units of the image are (ignoring sign):
+1 sample = 5.0000000000000 map units east
+1 line   = 10.0000000000000 map units north
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim3 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3
+   Line
+      1       3   2   1
+      2       6   5   4
+      3       9   8   7
+      4      12  11  10
+      5      15  14  13
+gtrot inp=xxxim3 out=xxxim4 rot=3
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 7 to rotation 3
+gtlist xxxim4
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(1.0,2.0,0,30000.,17000.,0.0)
+MODELPIXELSCALETAG=(-5.0,-10.0,0.0)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  30002.50000000  16985.00000000
+       1.0      3.0          2.5      0.5  29992.50000000  16985.00000000
+       5.0      1.0          0.5      4.5  30002.50000000  17025.00000000
+       5.0      3.0          2.5      4.5  29992.50000000  17025.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  30005.00000000  16980.00000000
+       0.5      3.5          3.0      0.0  29990.00000000  16980.00000000
+       5.5      0.5          0.0      5.0  30005.00000000  17030.00000000
+       5.5      3.5          3.0      5.0  29990.00000000  17030.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 3
+987
+654
+321
+The scale units of the image are (ignoring sign):
+1 sample = 5.0000000000000 map units east
+1 line   = 10.0000000000000 map units north
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim4 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3
+   Line
+      1      15  14  13
+      2      12  11  10
+      3       9   8   7
+      4       6   5   4
+      5       3   2   1
+gen xxxim0 nl=5 ns=3 ival=1 linc=3 sinc=1
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+gtgen inp=xxxim0 out=xxxim1 'tiecnvrt  +
+   geotiff=("ModelTiePointTag=(2,3,0,30000.,17000.,0.0)",  +
+          "ModelTiePointTag=(202,103,0,31000.,16000.,0.0)",  +
+          "ModelTiePointTag=(202,3,0,31000.,17000.,0.0)",  +
+          "GTRasterTypeGeoKey=1(RasterPixelIsArea)")
+Beginning VICAR task gtgen
+GTGEN version 2019-09-05
+gtrot inp=xxxim1 out=xxxim2 rot=4
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 1 to rotation 4
+gtlist xxxim2
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(2.0,1.0,0,30000.,17000.,0.0)
+MODELTRANSFORMATIONTAG=(0.0,-5.0,0,30005.0,10.0,0.0,0,16980.0,0,0,0,0,0,0,0,1)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  30002.50000000  16985.00000000
+       1.0      5.0          4.5      0.5  30002.50000000  17025.00000000
+       3.0      1.0          0.5      2.5  29992.50000000  16985.00000000
+       3.0      5.0          4.5      2.5  29992.50000000  17025.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  30005.00000000  16980.00000000
+       0.5      5.5          5.0      0.0  30005.00000000  17030.00000000
+       3.5      0.5          0.0      3.0  29990.00000000  16980.00000000
+       3.5      5.5          5.0      3.0  29990.00000000  17030.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 4
+963
+852
+741
+The scale units of the image are (ignoring sign):
+1 sample = 10.000000000000 map units north
+1 line   =  5.000000000000 map units east
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim2 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1      15  12   9   6   3
+      2      14  11   8   5   2
+      3      13  10   7   4   1
+write "*********************************** 464"
+*********************************** 464
+gtrot inp=xxxim2 out=xxxim3 rot=6
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 4 to rotation 6
+gtlist xxxim3
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(3.0,2.0,0,30000.,17000.,0.0)
+MODELTRANSFORMATIONTAG=(0.0,5.0,0,29990.0,-10.0,0.0,0,17030.0,0,0,0,0,0,0,0,1)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  29992.50000000  17025.00000000
+       1.0      5.0          4.5      0.5  29992.50000000  16985.00000000
+       3.0      1.0          0.5      2.5  30002.50000000  17025.00000000
+       3.0      5.0          4.5      2.5  30002.50000000  16985.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  29990.00000000  17030.00000000
+       0.5      5.5          5.0      0.0  29990.00000000  16980.00000000
+       3.5      0.5          0.0      3.0  30005.00000000  17030.00000000
+       3.5      5.5          5.0      3.0  30005.00000000  16980.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 6
+147
+258
+369
+The scale units of the image are (ignoring sign):
+1 sample = 10.000000000000 map units north
+1 line   =  5.000000000000 map units east
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim3 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1       1   4   7  10  13
+      2       2   5   8  11  14
+      3       3   6   9  12  15
+gtrot inp=xxxim3 out=xxxim4 rot=4
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 6 to rotation 4
+gtlist xxxim4
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(2.0,1.0,0,30000.,17000.,0.0)
+MODELTRANSFORMATIONTAG=(0.0,-5.0,0,30005.0,10.0,0.0,0,16980.0,0,0,0,0,0,0,0,1)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  30002.50000000  16985.00000000
+       1.0      5.0          4.5      0.5  30002.50000000  17025.00000000
+       3.0      1.0          0.5      2.5  29992.50000000  16985.00000000
+       3.0      5.0          4.5      2.5  29992.50000000  17025.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  30005.00000000  16980.00000000
+       0.5      5.5          5.0      0.0  30005.00000000  17030.00000000
+       3.5      0.5          0.0      3.0  29990.00000000  16980.00000000
+       3.5      5.5          5.0      3.0  29990.00000000  17030.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 4
+963
+852
+741
+The scale units of the image are (ignoring sign):
+1 sample = 10.000000000000 map units north
+1 line   =  5.000000000000 map units east
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim4 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1      15  12   9   6   3
+      2      14  11   8   5   2
+      3      13  10   7   4   1
+write "*********************************** 454"
+*********************************** 454
+gtrot inp=xxxim2 out=xxxim3 rot=5
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 4 to rotation 5
+gtlist xxxim3
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(2.0,2.0,0,30000.,17000.,0.0)
+MODELTIEPOINTTAG=(3.0,0.0,0.0,30005.0,16980.0,0.0)
+MODELPIXELSCALETAG=(5.0,-10.0,0.0)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  29992.50000000  16985.00000000
+       1.0      3.0          2.5      0.5  30002.50000000  16985.00000000
+       5.0      1.0          0.5      4.5  29992.50000000  17025.00000000
+       5.0      3.0          2.5      4.5  30002.50000000  17025.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  29990.00000000  16980.00000000
+       0.5      3.5          3.0      0.0  30005.00000000  16980.00000000
+       5.5      0.5          0.0      5.0  29990.00000000  17030.00000000
+       5.5      3.5          3.0      5.0  30005.00000000  17030.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 5
+789
+456
+123
+The scale units of the image are (ignoring sign):
+1 sample = 5.0000000000000 map units east
+1 line   = 10.0000000000000 map units north
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim3 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3
+   Line
+      1      13  14  15
+      2      10  11  12
+      3       7   8   9
+      4       4   5   6
+      5       1   2   3
+gtrot inp=xxxim3 out=xxxim4 rot=4
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 5 to rotation 4
+gtlist xxxim4
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(2.0,1.0,0,30000.,17000.,0.0)
+MODELTIEPOINTTAG=(-0.0,0.0,0.0,30005.0,16980.0,0.0)
+MODELTRANSFORMATIONTAG=(0.0,-5.0,0,30005.0,10.0,0.0,0,16980.0,0,0,0,0,0,0,0,1)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  30002.50000000  16985.00000000
+       1.0      5.0          4.5      0.5  30002.50000000  17025.00000000
+       3.0      1.0          0.5      2.5  29992.50000000  16985.00000000
+       3.0      5.0          4.5      2.5  29992.50000000  17025.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  30005.00000000  16980.00000000
+       0.5      5.5          5.0      0.0  30005.00000000  17030.00000000
+       3.5      0.5          0.0      3.0  29990.00000000  16980.00000000
+       3.5      5.5          5.0      3.0  29990.00000000  17030.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 4
+963
+852
+741
+The scale units of the image are (ignoring sign):
+1 sample = 10.000000000000 map units north
+1 line   =  5.000000000000 map units east
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim4 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1      15  12   9   6   3
+      2      14  11   8   5   2
+      3      13  10   7   4   1
+write "*********************************** 474"
+*********************************** 474
+gtrot inp=xxxim2 out=xxxim3 rot=7
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 4 to rotation 7
+gtlist xxxim3
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(1.0,3.0,0,30000.,17000.,0.0)
+MODELTIEPOINTTAG=(0.0,5.0,0.0,30005.0,16980.0,0.0)
+MODELPIXELSCALETAG=(-5.0,10.0,0.0)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  30002.50000000  17025.00000000
+       1.0      3.0          2.5      0.5  29992.50000000  17025.00000000
+       5.0      1.0          0.5      4.5  30002.50000000  16985.00000000
+       5.0      3.0          2.5      4.5  29992.50000000  16985.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  30005.00000000  17030.00000000
+       0.5      3.5          3.0      0.0  29990.00000000  17030.00000000
+       5.5      0.5          0.0      5.0  30005.00000000  16980.00000000
+       5.5      3.5          3.0      5.0  29990.00000000  16980.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 7
+321
+654
+987
+The scale units of the image are (ignoring sign):
+1 sample = 5.0000000000000 map units east
+1 line   = 10.0000000000000 map units north
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim3 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3
+   Line
+      1       3   2   1
+      2       6   5   4
+      3       9   8   7
+      4      12  11  10
+      5      15  14  13
+gtrot inp=xxxim3 out=xxxim4 rot=4
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 7 to rotation 4
+gtlist xxxim4
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(2.0,1.0,0,30000.,17000.,0.0)
+MODELTIEPOINTTAG=(-0.0,0.0,0.0,30005.0,16980.0,0.0)
+MODELTRANSFORMATIONTAG=(0.0,-5.0,0,30005.0,10.0,0.0,0,16980.0,0,0,0,0,0,0,0,1)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  30002.50000000  16985.00000000
+       1.0      5.0          4.5      0.5  30002.50000000  17025.00000000
+       3.0      1.0          0.5      2.5  29992.50000000  16985.00000000
+       3.0      5.0          4.5      2.5  29992.50000000  17025.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  30005.00000000  16980.00000000
+       0.5      5.5          5.0      0.0  30005.00000000  17030.00000000
+       3.5      0.5          0.0      3.0  29990.00000000  16980.00000000
+       3.5      5.5          5.0      3.0  29990.00000000  17030.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 4
+963
+852
+741
+The scale units of the image are (ignoring sign):
+1 sample = 10.000000000000 map units north
+1 line   =  5.000000000000 map units east
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim4 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1      15  12   9   6   3
+      2      14  11   8   5   2
+      3      13  10   7   4   1
+gen xxxim0 nl=5 ns=3 ival=1 linc=3 sinc=1
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+gtgen inp=xxxim0 out=xxxim1 'tiecnvrt  +
+   geotiff=("ModelTiePointTag=(2,3,0,30000.,17000.,0.0)",  +
+          "ModelTiePointTag=(202,103,0,31000.,16000.,0.0)",  +
+          "ModelTiePointTag=(202,3,0,31000.,17000.,0.0)",  +
+          "GTRasterTypeGeoKey=1(RasterPixelIsArea)")
+Beginning VICAR task gtgen
+GTGEN version 2019-09-05
+gtrot inp=xxxim1 out=xxxim2 rot=5
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 1 to rotation 5
+gtlist xxxim2
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(2.0,2.0,0,30000.,17000.,0.0)
+MODELPIXELSCALETAG=(5.0,-10.0,0.0)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  29992.50000000  16985.00000000
+       1.0      3.0          2.5      0.5  30002.50000000  16985.00000000
+       5.0      1.0          0.5      4.5  29992.50000000  17025.00000000
+       5.0      3.0          2.5      4.5  30002.50000000  17025.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  29990.00000000  16980.00000000
+       0.5      3.5          3.0      0.0  30005.00000000  16980.00000000
+       5.5      0.5          0.0      5.0  29990.00000000  17030.00000000
+       5.5      3.5          3.0      5.0  30005.00000000  17030.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 5
+789
+456
+123
+The scale units of the image are (ignoring sign):
+1 sample = 5.0000000000000 map units east
+1 line   = 10.0000000000000 map units north
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim2 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3
+   Line
+      1      13  14  15
+      2      10  11  12
+      3       7   8   9
+      4       4   5   6
+      5       1   2   3
+write "*********************************** 565"
+*********************************** 565
+gtrot inp=xxxim2 out=xxxim3 rot=6
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 5 to rotation 6
+gtlist xxxim3
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(3.0,2.0,0,30000.,17000.,0.0)
+MODELTRANSFORMATIONTAG=(0.0,5.0,0,29990.0,-10.0,0.0,0,17030.0,0,0,0,0,0,0,0,1)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  29992.50000000  17025.00000000
+       1.0      5.0          4.5      0.5  29992.50000000  16985.00000000
+       3.0      1.0          0.5      2.5  30002.50000000  17025.00000000
+       3.0      5.0          4.5      2.5  30002.50000000  16985.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  29990.00000000  17030.00000000
+       0.5      5.5          5.0      0.0  29990.00000000  16980.00000000
+       3.5      0.5          0.0      3.0  30005.00000000  17030.00000000
+       3.5      5.5          5.0      3.0  30005.00000000  16980.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 6
+147
+258
+369
+The scale units of the image are (ignoring sign):
+1 sample = 10.000000000000 map units north
+1 line   =  5.000000000000 map units east
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim3 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1       1   4   7  10  13
+      2       2   5   8  11  14
+      3       3   6   9  12  15
+gtrot inp=xxxim3 out=xxxim4 rot=5
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 6 to rotation 5
+gtlist xxxim4
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(2.0,2.0,0,30000.,17000.,0.0)
+MODELTIEPOINTTAG=(0.0,5.0,0.0,29990.0,17030.0,0.0)
+MODELPIXELSCALETAG=(5.0,-10.0,0.0)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  29992.50000000  16985.00000000
+       1.0      3.0          2.5      0.5  30002.50000000  16985.00000000
+       5.0      1.0          0.5      4.5  29992.50000000  17025.00000000
+       5.0      3.0          2.5      4.5  30002.50000000  17025.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  29990.00000000  16980.00000000
+       0.5      3.5          3.0      0.0  30005.00000000  16980.00000000
+       5.5      0.5          0.0      5.0  29990.00000000  17030.00000000
+       5.5      3.5          3.0      5.0  30005.00000000  17030.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 5
+789
+456
+123
+The scale units of the image are (ignoring sign):
+1 sample = 5.0000000000000 map units east
+1 line   = 10.0000000000000 map units north
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim4 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3
+   Line
+      1      13  14  15
+      2      10  11  12
+      3       7   8   9
+      4       4   5   6
+      5       1   2   3
+write "*********************************** 575"
+*********************************** 575
+gtrot inp=xxxim2 out=xxxim3 rot=7
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 5 to rotation 7
+gtlist xxxim3
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(1.0,3.0,0,30000.,17000.,0.0)
+MODELPIXELSCALETAG=(-5.0,10.0,0.0)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  30002.50000000  17025.00000000
+       1.0      3.0          2.5      0.5  29992.50000000  17025.00000000
+       5.0      1.0          0.5      4.5  30002.50000000  16985.00000000
+       5.0      3.0          2.5      4.5  29992.50000000  16985.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  30005.00000000  17030.00000000
+       0.5      3.5          3.0      0.0  29990.00000000  17030.00000000
+       5.5      0.5          0.0      5.0  30005.00000000  16980.00000000
+       5.5      3.5          3.0      5.0  29990.00000000  16980.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 7
+321
+654
+987
+The scale units of the image are (ignoring sign):
+1 sample = 5.0000000000000 map units east
+1 line   = 10.0000000000000 map units north
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim3 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3
+   Line
+      1       3   2   1
+      2       6   5   4
+      3       9   8   7
+      4      12  11  10
+      5      15  14  13
+gtrot inp=xxxim3 out=xxxim4 rot=5
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 7 to rotation 5
+gtlist xxxim4
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(2.0,2.0,0,30000.,17000.,0.0)
+MODELPIXELSCALETAG=(5.0,-10.0,0.0)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  29992.50000000  16985.00000000
+       1.0      3.0          2.5      0.5  30002.50000000  16985.00000000
+       5.0      1.0          0.5      4.5  29992.50000000  17025.00000000
+       5.0      3.0          2.5      4.5  30002.50000000  17025.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  29990.00000000  16980.00000000
+       0.5      3.5          3.0      0.0  30005.00000000  16980.00000000
+       5.5      0.5          0.0      5.0  29990.00000000  17030.00000000
+       5.5      3.5          3.0      5.0  30005.00000000  17030.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 5
+789
+456
+123
+The scale units of the image are (ignoring sign):
+1 sample = 5.0000000000000 map units east
+1 line   = 10.0000000000000 map units north
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim4 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3
+   Line
+      1      13  14  15
+      2      10  11  12
+      3       7   8   9
+      4       4   5   6
+      5       1   2   3
+write "*********************************** 5676"
+*********************************** 5676
+gtrot inp=xxxim2 out=xxxim3 rot=6
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 5 to rotation 6
+gtlist xxxim3
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(3.0,2.0,0,30000.,17000.,0.0)
+MODELTRANSFORMATIONTAG=(0.0,5.0,0,29990.0,-10.0,0.0,0,17030.0,0,0,0,0,0,0,0,1)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  29992.50000000  17025.00000000
+       1.0      5.0          4.5      0.5  29992.50000000  16985.00000000
+       3.0      1.0          0.5      2.5  30002.50000000  17025.00000000
+       3.0      5.0          4.5      2.5  30002.50000000  16985.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  29990.00000000  17030.00000000
+       0.5      5.5          5.0      0.0  29990.00000000  16980.00000000
+       3.5      0.5          0.0      3.0  30005.00000000  17030.00000000
+       3.5      5.5          5.0      3.0  30005.00000000  16980.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 6
+147
+258
+369
+The scale units of the image are (ignoring sign):
+1 sample = 10.000000000000 map units north
+1 line   =  5.000000000000 map units east
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim3 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1       1   4   7  10  13
+      2       2   5   8  11  14
+      3       3   6   9  12  15
+gtrot inp=xxxim3 out=xxxim4 rot=7
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 6 to rotation 7
+gtlist xxxim4
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(1.0,3.0,0,30000.,17000.,0.0)
+MODELTIEPOINTTAG=(3.0,0.0,0.0,29990.0,17030.0,0.0)
+MODELPIXELSCALETAG=(-5.0,10.0,0.0)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  30002.50000000  17025.00000000
+       1.0      3.0          2.5      0.5  29992.50000000  17025.00000000
+       5.0      1.0          0.5      4.5  30002.50000000  16985.00000000
+       5.0      3.0          2.5      4.5  29992.50000000  16985.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  30005.00000000  17030.00000000
+       0.5      3.5          3.0      0.0  29990.00000000  17030.00000000
+       5.5      0.5          0.0      5.0  30005.00000000  16980.00000000
+       5.5      3.5          3.0      5.0  29990.00000000  16980.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 7
+321
+654
+987
+The scale units of the image are (ignoring sign):
+1 sample = 5.0000000000000 map units east
+1 line   = 10.0000000000000 map units north
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim4 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3
+   Line
+      1       3   2   1
+      2       6   5   4
+      3       9   8   7
+      4      12  11  10
+      5      15  14  13
+gtrot inp=xxxim4 out=xxxim5 rot=6
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 7 to rotation 6
+gtlist xxxim5
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(3.0,2.0,0,30000.,17000.,0.0)
+MODELTIEPOINTTAG=(0.0,0.0,0.0,29990.0,17030.0,0.0)
+MODELTRANSFORMATIONTAG=(0.0,5.0,0,29990.0,-10.0,0.0,0,17030.0,0,0,0,0,0,0,0,1)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  29992.50000000  17025.00000000
+       1.0      5.0          4.5      0.5  29992.50000000  16985.00000000
+       3.0      1.0          0.5      2.5  30002.50000000  17025.00000000
+       3.0      5.0          4.5      2.5  30002.50000000  16985.00000000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  29990.00000000  17030.00000000
+       0.5      5.5          5.0      0.0  29990.00000000  16980.00000000
+       3.5      0.5          0.0      3.0  30005.00000000  17030.00000000
+       3.5      5.5          5.0      3.0  30005.00000000  16980.00000000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 6
+147
+258
+369
+The scale units of the image are (ignoring sign):
+1 sample = 10.000000000000 map units north
+1 line   =  5.000000000000 map units east
+The scale fraction is 1 /     58.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+list xxxim5 'zeroes 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTROT     User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1       1   4   7  10  13
+      2       2   5   8  11  14
+      3       3   6   9  12  15
+ush rm -f xxxim0  xxxim1  xxxim2  xxxim3  xxxim4  xxxim5
+disable-log

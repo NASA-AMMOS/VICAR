@@ -1,0 +1,16 @@
+#define SUBROUTINE pig_mer
+
+#define MODULE_LIST  PigFileModelMER.cc PigPointMERpmaCamera.cc \
+PigPointMERpmaCamera3dof.cc PigPointMERiddCamera.cc PigMER.cc \
+PigRoverStateManagerMER.cc PigLabelModelMER.cc mer_idd_kinematic.c
+
+#define INCLUDE_LIST mer_idd_kinematic.h
+
+#define MARS_SUBLIB
+
+#define USES_C_PLUS_PLUS
+#define USES_ANSI_C
+
+#define LIB_P2SUB
+#define LIB_XERCES
+

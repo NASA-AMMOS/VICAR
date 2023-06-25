@@ -94,6 +94,12 @@ then
          echo "x86_macosx"
          exit
       fi
+      if [ "`uname -p`" == "arm" ]
+      then
+#### TEMPORARY until we support arm
+         echo "mac64_osx"
+         exit
+      fi
    fi
 fi
 

@@ -1,0 +1,212 @@
+procedure
+refgbl $echo
+refgbl $autousage
+parm mean real def=0.0
+parm sdev real def=1.0
+parm seed real def=9.0
+body
+enable-log
+let $autousage="none"
+!let _onfail="continue"
+let $echo="yes"
+
+! general case with different window sizes and 'noin in different
+! columns
+
+gen xim0 nl=100 ns=200 linc=1 sinc=3
+ibis-gen xxa nc=6 nr=20 deffmt=DOUB
+mf3 xxa func="c1=@rand*100$c2=@rand*200"
+getzval (xim0,xxa) cols=(1,2,3) win=2
+getzval (xim0,xxa) cols=(1,2,4) win=11
+getzval (xim0,xxa) cols=(1,2,6) 'noin
+mf3 xxa func="c5=c4-c3"
+ibis-list xxa 'format
+
+! testing the out of bounds and on boundary case
+
+gen xim0 nl=100 ns=200 linc=1 sinc=3
+ibis-gen xxa nc=6 nr=20  deffmt=DOUB
+mf3 xxa func="c1=@rand*150-25$c2=@rand*300-50"
+getzval (xim0,xxa) cols=(1,2,3) win=2
+getzval (xim0,xxa) cols=(1,2,4) win=11
+getzval (xim0,xxa) cols=(1,2,6) 'noin
+mf3 xxa func="c5=c4-c3"
+ibis-list xxa 'format
+
+!testing the reject keyword
+
+gen xim0 nl=100 ns=200 linc=1 sinc=3
+ibis-gen xxa nc=4 nr=20 deffmt=DOUB
+mf3 xxa func="c1=@rand*100$c2=@rand*200"
+getzval (xim0,xxa) cols=(1,2,3) win=2 reject=1
+getzval (xim0,xxa) cols=(1,2,4) win=11 reject=3
+ibis-list xxa 'format
+
+! sensitive test near pixel center
+
+gen xim0 nl=10 ns=10 linc=1 sinc=3
+ibis-gen xxa nc=7 nr=9 deffmt=DOUB
+mf3 xxa func=("c1=(@int((@index-1)/3))*0.01+3.99$", +
+            "c2=(@mod(@index-1,3))*0.01+4.99")
+getzval (xim0,xxa) cols=(1,2,3) win=2
+getzval (xim0,xxa) cols=(1,2,4) win=3
+getzval (xim0,xxa) cols=(1,2,5) win=4
+mf3 xxa func="c6=c4-c3$c7=c5-c3"
+ibis-list xxa 'format cfor="%9.5f %9.5f %9.5f %9.5f %9.5f %9.5f %9.5f"
+
+! sensitive test near pixel center, INTEGRAL keyword
+
+gen xim0 nl=10 ns=10 linc=1 sinc=3
+ibis-gen xxa nc=7 nr=9 deffmt=DOUB
+mf3 xxa func=("c1=(@int((@index-1)/3))*0.01+3.99$", +
+            "c2=(@mod(@index-1,3))*0.01+4.99")
+getzval (xim0,xxa) cols=(1,2,3) win=3 'integral
+getzval (xim0,xxa) cols=(1,2,4) win=5 'integral
+getzval (xim0,xxa) cols=(1,2,5) win=7 'integral
+mf3 xxa func="c6=c4-c3$c7=c5-c3"
+ibis-list xxa 'format cfor="%9.5f %9.5f %9.5f %9.5f %9.5f %9.5f %9.5f"
+
+
+! test offset of .6 near pixel center, INTEGRAL keyword
+
+gen xim0 nl=10 ns=10 linc=1 sinc=3
+ibis-gen xxa nc=7 nr=9 deffmt=DOUB
+mf3 xxa func=("c1=(@int((@index-1)/3))*0.6+3.4$", +
+            "c2=(@mod(@index-1,3))*0.6+4.4")
+getzval (xim0,xxa) cols=(1,2,3) win=3 'integral
+getzval (xim0,xxa) cols=(1,2,4) win=5 'integral
+getzval (xim0,xxa) cols=(1,2,5) win=7 'integral
+mf3 xxa func="c6=c4-c3$c7=c5-c3"
+ibis-list xxa 'format cfor="%9.5f %9.5f %9.5f %9.5f %9.5f %9.5f %9.5f"
+
+! sensitive test near pixel center, SPOT keyword
+
+gen xim0 nl=10 ns=10 linc=1 sinc=3
+ibis-gen xxa nc=7 nr=9 deffmt=DOUB
+mf3 xxa func=("c1=(@int((@index-1)/3))*0.01+3.99$", +
+            "c2=(@mod(@index-1,3))*0.01+4.99")
+getzval (xim0,xxa) cols=(1,2,3) win=3 'spot
+getzval (xim0,xxa) cols=(1,2,4) win=5 'spot
+getzval (xim0,xxa) cols=(1,2,5) win=7 'spot
+mf3 xxa func="c6=c4-c3$c7=c5-c3"
+ibis-list xxa 'format cfor="%9.5f %9.5f %9.5f %9.5f %9.5f %9.5f %9.5f"
+
+! sensitive test near pixel center, SPOT_R keyword
+
+gen xim0 nl=10 ns=10 linc=1 sinc=3
+ibis-gen xxa nc=7 nr=9 deffmt=DOUB
+mf3 xxa func=("c1=(@int((@index-1)/3))*0.01+3.99$", +
+            "c2=(@mod(@index-1,3))*0.01+4.99")
+getzval (xim0,xxa) cols=(1,2,3) win=3 'spot_r
+getzval (xim0,xxa) cols=(1,2,4) win=5 'spot_r
+getzval (xim0,xxa) cols=(1,2,5) win=7 'spot_r
+mf3 xxa func="c6=c4-c3$c7=c5-c3"
+ibis-list xxa 'format cfor="%9.5f %9.5f %9.5f %9.5f %9.5f %9.5f %9.5f"
+
+! sensitive test near pixel center, SPOT_R keyword, spotfac lgr
+
+gen xim0 nl=10 ns=10 linc=1 sinc=3
+ibis-gen xxa nc=7 nr=9 deffmt=DOUB
+mf3 xxa func=("c1=(@int((@index-1)/3))*0.01+3.99$", +
+            "c2=(@mod(@index-1,3))*0.01+4.99")
+getzval (xim0,xxa) cols=(1,2,3) win=3 'spot_r spotfac=6.0
+getzval (xim0,xxa) cols=(1,2,4) win=5 'spot_r spotfac=6.0
+getzval (xim0,xxa) cols=(1,2,5) win=7 'spot_r spotfac=6.0
+mf3 xxa func="c6=c4-c3$c7=c5-c3"
+ibis-list xxa 'format cfor="%9.5f %9.5f %9.5f %9.5f %9.5f %9.5f %9.5f"
+
+
+!  THE FOLLOWING CASES ALL TEST THE SIGMA
+
+! general case , sigma
+
+gen xim0 nl=100 ns=200 linc=1 sinc=3
+ibis-gen xxa nc=5 nr=20  deffmt=DOUB
+mf3 xxa func="c1=@rand*100$c2=@rand*200"
+getzval (xim0,xxa) win=2
+getzval (xim0,xxa) cols=(1,2,3,4) win=2
+getzval (xim0,xxa) cols=(1,2,3,5) win=11
+ibis-list xxa 'format
+
+! sensitive test near pixel center, INTEGRAL keyword, sigma
+
+gen xim0 nl=10 ns=10 linc=1 sinc=3
+ibis-gen xxa nc=6 nr=9 deffmt=DOUB
+mf3 xxa func=("c1=(@int((@index-1)/3))*0.01+3.99$", +
+            "c2=(@mod(@index-1,3))*0.01+4.99")
+getzval (xim0,xxa) cols=(1,2,3,4) win=3 'integral
+getzval (xim0,xxa) cols=(1,2,3,5) win=5 'integral
+getzval (xim0,xxa) cols=(1,2,3,6) win=7 'integral
+ibis-list xxa
+
+
+! test offset of .6 near pixel center, INTEGRAL keyword, sigma
+
+gen xim0 nl=10 ns=10 linc=1 sinc=3
+ibis-gen xxa nc=6 nr=9 deffmt=DOUB
+mf3 xxa func=("c1=(@int((@index-1)/3))*0.6+3.4$", +
+            "c2=(@mod(@index-1,3))*0.6+4.4")
+getzval (xim0,xxa) cols=(1,2,3,4) win=3 'integral
+getzval (xim0,xxa) cols=(1,2,3,5) win=5 'integral
+getzval (xim0,xxa) cols=(1,2,3,6) win=7 'integral
+ibis-list xxa
+
+! sensitive test near pixel center, SPOT keyword, sigma
+
+gen xim0 nl=10 ns=10 linc=1 sinc=3
+ibis-gen xxa nc=6 nr=9 deffmt=DOUB
+mf3 xxa func=("c1=(@int((@index-1)/3))*0.01+3.99$", +
+            "c2=(@mod(@index-1,3))*0.01+4.99")
+getzval (xim0,xxa) cols=(1,2,3,4) win=3 'spot
+getzval (xim0,xxa) cols=(1,2,3,5) win=5 'spot
+getzval (xim0,xxa) cols=(1,2,3,6) win=7 'spot
+ibis-list xxa
+
+! sensitive test near pixel center, SPOT_R keyword, sigma
+
+gen xim0 nl=10 ns=10 linc=1 sinc=3
+ibis-gen xxa nc=6 nr=9 deffmt=DOUB
+mf3 xxa func=("c1=(@int((@index-1)/3))*0.01+3.99$", +
+            "c2=(@mod(@index-1,3))*0.01+4.99")
+getzval (xim0,xxa) cols=(1,2,3,4) win=3 'spot_r
+getzval (xim0,xxa) cols=(1,2,3,5) win=5 'spot_r
+getzval (xim0,xxa) cols=(1,2,3,6) win=7 'spot_r
+ibis-list xxa
+
+! sensitive test near pixel center, SPOT_R keyword, spotfac lgr, sigma
+
+gen xim0 nl=10 ns=10 linc=1 sinc=3
+ibis-gen xxa nc=6 nr=9 deffmt=DOUB
+mf3 xxa func=("c1=(@int((@index-1)/3))*0.01+3.99$", +
+            "c2=(@mod(@index-1,3))*0.01+4.99")
+getzval (xim0,xxa) cols=(1,2,3,4) win=3 'spot_r spotfac=6.0
+getzval (xim0,xxa) cols=(1,2,3,5) win=5 'spot_r spotfac=6.0
+getzval (xim0,xxa) cols=(1,2,3,6) win=7 'spot_r spotfac=6.0
+ibis-list xxa
+
+
+! BACK TO GENERAL CASES
+
+! trying to see effect of igzero, expect bigger mean, smaller sigma
+
+gen xim0 nl=100 ns=200 linc=32 sinc=16
+ibis-gen xxa nc=8 nr=20 deffmt=DOUB
+mf3 xxa func="c1=@rand*100$c2=@rand*200"
+getzval (xim0,xxa) cols=(1,2,3,4) win=11
+getzval (xim0,xxa) cols=(1,2,5,6) win=11 'igzero
+mf3 xxa func="c7=c5-c3$c8=c6-c4"
+ibis-list xxa cols=(1,2,3,4,7,8)
+
+! spot_r vs spot_r2
+
+gen xim0 nl=10 ns=10 linc=1 sinc=3
+ibis-gen xxa nc=5 nr=9 deffmt=DOUB
+mf3 xxa func=("c1=(@int((@index-1)/3))*0.03+3.99$", +
+            "c2=(@mod(@index-1,3))*0.04+4.99")
+getzval (xim0,xxa) cols=(1,2,3) win=7 'spot_r
+getzval (xim0,xxa) cols=(1,2,4) win=7 'spot_r2
+mf3 xxa func="c5=c4-c3"
+ibis-list xxa 'format cfor="%9.5f %9.5f %9.5f %9.5f %9.5f"
+
+disable-log
+end-proc

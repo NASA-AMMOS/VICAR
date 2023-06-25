@@ -1,0 +1,14 @@
+$ vpack rng.com -mixed -
+	-s rng.f get_params.f rmain.f read_inp.f horizon.f compute_avg.f -
+	   compute_sig.f find_horizon.f clean_patches.f clean_map.f -
+	   spider_cage.f spider.f spider_inv.f sort_vertices.f ranger0.f -
+	   cross_sums.f correlate.f max_corr.f ranger1.f get_match.f -
+	   correlate1.f fill_map.f fill_map1.f rdespike.f regions.f -
+	   delete_regions.f astats.f fill_buf.f interp_max.f interp_max2.f -
+	   hcheck.f update_hsearch.f update_lr.f open_inp.f zoomout.f rcopy.f -
+	   compute_pl.f write_out.f write_mask.f write_pl.f write_diff.f -
+	   write_horizon.f write_regions.f write_merout.f output_image.f -
+	-i rng.imake -
+	-p rng.pdf -
+	-t tstrng.pdf rngtest.pdf rng.hlp
+$ Exit

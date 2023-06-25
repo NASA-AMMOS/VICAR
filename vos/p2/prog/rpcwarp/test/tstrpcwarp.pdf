@@ -1,0 +1,56 @@
+\procedure
+refgbl $echo
+parm version string def="ibis-2" 
+parm org string def="column"
+body
+enable-log
+
+!let _onfail="continue"
+let $echo="yes"
+
+
+!   TEST RPCWARP HANDYPROC
+
+goto curr
+
+utilf inp=../test_data/03MAY05072951-P1BS-000000050393_01_P005.NTF +
+   out= xxchip1.tif scr_key=xxqq xvd=n
+
+
+vtiff3-tovic xxchip1.tif /home/alz/ikapp/xxchip1.img
+label-list /home/alz/ikapp/xxchip1.img
+
+gtcopy /home/alz/ikapp/xxchip1.img +
+   /home/alz/ikapp/xxchip2.img size=(1,1,5764,5000)
+
+rpccorn in=(/home/alz/ikapp/xxchip2.img, +
+     /export/data4/tll/gui_test/dtedmos/qb1_iraq_dem.hlf)
+
+curr>
+
+rpcwarp inp=(/home/alz/ikapp/xxchip2.img, +
+   /export/data4/tll/gui_test/dtedmos/qb1_iraq_dem.hlf) +
+   out=xxxmap nah=500 nav=500 'coverinp +
+   ref=/export/data4/tll/gui_test/basemos/qb1_cib.img
+
+util6 xxxmap /export/data4/tll/gui_test/basemos/qb1_cib.img
+xvd xxxmap
+xvd /export/data4/tll/gui_test/basemos/qb1_cib.img
+
+goto theend
+
+curr2>
+
+ibis-gen xxxb nc=5 nr=1 deffmt=DOUB +
+  datacol=(4,5) data=(0.5,0.5)
+
+rpcinv (xxxb,/home/alz/ikapp/xxchip2.img, +
+   /export/data4/tll/gui_test/dtedmos/qb1_iraq_dem.hlf) +
+   thresh=0.0000000001
+ibis-l xxxb  csiz=(16,16,16,16,16) +
+       cfor="%16.12f %16.12f %16.12f %16.12f %16.12f"
+
+
+theend>
+disable-log
+end-proc

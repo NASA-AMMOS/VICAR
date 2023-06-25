@@ -1,0 +1,231 @@
+procedure help=*
+parm inp type=(string,99) count=2
+parm out type=(string,99) count=1
+parm ncol type=int default=8
+parm nah type=int count=1 default=1000
+parm nav type=int count=1 default=1000
+parm lon1 type=real default=-999.0
+parm lat1 type=real default=-999.0
+parm lon2 type=real default=-999.0
+parm lat2 type=real default=-999.0
+parm lon3 type=real default=-999.0
+parm lat3 type=real default=-999.0
+parm lon4 type=real default=-999.0
+parm lat4 type=real default=-999.0
+
+local rpcimg type=(string,99)
+local dted type=(string,99)
+
+local clon1 type=real
+local clat1 type=real
+local clon2 type=real
+local clat2 type=real
+local clon3 type=real
+local clat3 type=real
+local clon4 type=real
+local clat4 type=real
+local ctemp type=real
+
+local angle34 type=real
+local angle34abs type=real
+
+refgbl $echo
+body
+let $echo="yes"
+
+
+!  RPC2GRID HANDYPROC
+
+write "rpc2grid 02/01/19"
+
+if (ncol<8)
+   write "ncol must be at least 8"
+   goto theend
+end-if
+
+let rpcimg = inp(1)
+let dted = inp(2)
+
+if (lon1>-200.0)
+   let clon1 = lon1
+   let clat1 = lat1
+   let clon2 = lon2
+   let clat2 = lat2
+   let clon3 = lon3
+   let clat3 = lat3
+   let clon4 = lon4
+   let clat4 = lat4
+else
+   gt2tcl &rpcimg val=clon1 keyword=NITF_CORNERLON1 vtype=8
+   gt2tcl &rpcimg val=clat1 keyword=NITF_CORNERLAT1 vtype=8
+   gt2tcl &rpcimg val=clon2 keyword=NITF_CORNERLON2 vtype=8
+   gt2tcl &rpcimg val=clat2 keyword=NITF_CORNERLAT2 vtype=8
+   gt2tcl &rpcimg val=clon3 keyword=NITF_CORNERLON3 vtype=8
+   gt2tcl &rpcimg val=clat3 keyword=NITF_CORNERLAT3 vtype=8
+   gt2tcl &rpcimg val=clon4 keyword=NITF_CORNERLON4 vtype=8
+   gt2tcl &rpcimg val=clat4 keyword=NITF_CORNERLAT4 vtype=8
+end-if
+
+! this section in case points 3 and 4 not in clockwise order
+
+ibis-gen xxxrpc2grid78 nc=11 nr=4 deffmt=DOUB datacols=(1,2) +
+   data=(&clon1,&clat1,&clon2,&clat2,&clon3,&clat3,&clon4,&clat4)
+mf3 xxxrpc2grid78 f="c3=c1$c4=c2$@average(c3)$@average(c4)"
+mf3 xxxrpc2grid78 f="c5=c3-c1$c6=c4-c2$c7=@atan2(c5,c6)+3.14159265"
+mf3 xxxrpc2grid78 f="c8=c7$@diff(c8)$c8=c8*180.0/3.14159265$c9=@abs(c8)"
+mf3 xxxrpc2grid78 f="c10=c1+0.04*(c1-c3)$c11=c2+0.04*(c2-c4)"
+
+!ibis-l xxxrpc2grid78
+
+ibis2tcl xxxrpc2grid78 v1=angle34 v2=angle34abs +
+   vartype=(-1,-1) ibisloc=(4,8,4,9)
+!write "angle34 angle34abs &angle34 &angle34abs"
+
+if ((angle34abs<180.0 and angle34<0.0) or (angle34abs>180.0 and angle34>0.0))
+   write "reversing the third and fourth points to get clockwise"
+   ibis2tcl xxxrpc2grid78 v1=clon1 v2=clat1 v3=clon2 v4=clat2 +
+      v5=clon3 v6=clat3 v7=clon4 v8=clat4 +
+      vartype=(-1,-1,-1,-1,-1,-1,-1,-1) +
+      ibisloc=(1,10,1,11,2,10,2,11,4,10,4,11,3,10,3,11)
+else
+   ibis2tcl xxxrpc2grid78 v1=clon1 v2=clat1 v3=clon2 v4=clat2 +
+      v5=clon3 v6=clat3 v7=clon4 v8=clat4 +
+      vartype=(-1,-1,-1,-1,-1,-1,-1,-1) +
+      ibisloc=(1,10,1,11,2,10,2,11,3,10,3,11,4,10,4,11)
+end-if
+
+!write "clon1 clat1 &clon1 &clat1"
+!write "clon2 clat2 &clon2 &clat2"
+!write "clon3 clat3 &clon3 &clat3"
+!write "clon4 clat4 &clon4 &clat4"
+!ibis-l xxxrpc2grid78 cols=(1,2,10,11) cfor="%12.7f %12.7f %12.7f %12.7f"
+! goto theend
+
+
+gengrid2 out=&out ncol=&ncol nah=&nah nav=&nav +
+  l1=&clon1 s1=&clat1 l2=&clon2 s2=&clat2 +
+  l3=&clon4 s3=&clat4 l4=&clon3 s4=&clat3
+pixmap (&out,&dted) mapcols=(1,2) pixcols=(4,5) 'maptopix
+getzval (&dted,&out) cols=(4,5,3) win=2
+rpcorrsmfwd (&out,&rpcimg)
+
+theend>
+end-proc
+.TITLE
+RPC2GRID - Convert RPC or RSM in image label to a warp grid of image to geographic.
+.HELP
+PURPOSE
+     The RPC or RSM in a label give the transformation of a
+     non-orthorectified image (line,sample) to rectified (lon,lat)
+     coordinates.  Mathematically, the equations (RPF's) are reversed
+     from lon-lat to line-sample.  This routine creates an ultrafine
+     grid (should be finer than the underlying DTED used) that is
+     equivalent to the transformations.
+
+     The user can use tieconv to invert the ultrafine grid to apply to the
+     raw image to get a mapped, orthocorrected image.  This process has been
+     codified in the procedure RPCWARP.  Most users should use RPCWARP.
+	   
+CALL
+
+There are two modes
+
+     rpc2grid INP=(rpcim,dted) OUT=outgrid NAH=nah NAV=nav
+  WHERE:
+     rpcim          is the input data set (must have a GeoTIFF label with RPC's)
+     dted           is a dted data set (must have a GeoTIFF label, lon-lat)
+     outgrid        is the output ultrafine grid cols=(lon,lat,elv,line,samp)
+     nah            is the number of areas horizontally in the grid (points-1)
+     nav            is the number of areas vertically in the grid (points-1)
+
+and
+
+     rpc2grid INP=(rpcim,dted) OUT=outgrid NAH=nah NAV=nav LON1=lon1 +
+               LAT1=lat1 LON2=lon2 ...etc
+  WHERE:
+     rpcim          is the input data set (must have a GeoTIFF label with RPC's)
+     dted           is a dted data set (must have a GeoTIFF label, lon-lat)
+     outgrid        is the output ultrafine grid cols=(lon,lat,elv,line,samp)
+     nah            is the number of areas horizontally in the grid (points-1)
+     nav            is the number of areas vertically in the grid (points-1)
+     lon1,lat1      is the first corner in clockwise order
+     lon2,lat2      is the second corner in clockwise order
+     lon3,lat3      is the third corner in clockwise order
+     lon4,lat4      is the fourth corner in clockwise order
+  
+OPERATION
+
+In mode one, the corner (lon,lat) points are obtained from the label (these should
+always be present for RPC labels).  The corners are enlarged outward by 4% relative
+to the middle so the generated quadrangle will cover the image data better.
+
+In mode two, the (lon,lat) points are given by the user.  The user should take care
+to cover data.
+
+Then the dted us used to look up elevation for each point using bilinear interp-
+olation.  Then the RPCORRSMFWD routine is used to calculate (line,sample) for each
+point.
+
+The columns are always in that order.  The ncols parameter can add extra columns to
+the file.
+
+There is an unusual fix for bad data.   If the corner points are not in clockwise
+order (points 3 and 4), then they are moved to a correct order so that the program will produce the desired grid output.
+
+PERFORMANCE
+
+The file is (nah+1)*(NAV+1) in length.  Almost all of the time will be spent in
+rpcorrsmfwd.
+
+.PAGE
+Restrictions
+------------
+
+The ibis file must have at least 8 columns.
+
+.PAGE
+Original Programmer: A. L. Zobrist, 16 Mar, 2005
+Current Cognizant Programmer: A. L. Zobrist
+
+REVISIONS: 
+  Fri Feb 1 2019 smyth switched to using rpcorrsmfwd to support RSM
+
+.LEVEL1
+.VARI INP
+Input file with GeoTIFF, RPC's
+and a DTED file
+.VARI OUT
+Output file name, ultra-fine
+grid for image warping
+.VARI NCOL
+Number of columns to put in
+grid
+.VARI NAH
+Number of areas horizontally
+.VARI NAV
+Number of areas vertically
+.VARI LON1
+Longitude of 1st corner point
+clockwise
+.VARI LAT1
+Latitude of 1st corner point
+clockwise
+.VARI LON2
+Longitude of 2d corner point
+clockwise
+.VARI LAT2
+Latitude of 2d corner point
+clockwise
+.VARI LON3
+Longitude of 3d corner point
+clockwise
+.VARI LAT3
+Latitude of 3d corner point
+clockwise
+.VARI LON4
+Longitude of 4th corner point
+clockwise
+.VARI LAT4
+Latitude of 4th corner point
+clockwise
+.END

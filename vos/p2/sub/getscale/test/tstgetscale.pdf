@@ -1,16 +1,15 @@
 procedure
 refgbl $echo
 body
+enable-log
+
 let _onfail="continue"
 let $echo="yes"
 WRITE "This is a test of subroutine getscale"
-
-write " In order to test this subroutine, the test data"
-write " MIPL:[MIPL.VGR]F1636832.FIC has to be copied(or FTPed)"
-write " to your personal directory, and name it as f1636832.fic"
-
 WRITE "Test on Voyager halfword flight image"
-tgetscale f1636832.fic  'IOF 
-tgetscale f1636832.fic  'RADIANCE 
 
+tgetscale f1636832.vic  'IOF 
+tgetscale f1636832.vic  'RADIANCE 
+
+disable-log
 end-proc

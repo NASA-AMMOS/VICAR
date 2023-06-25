@@ -9,7 +9,7 @@ GEN Version 2019-05-28
 GEN task completed
 label-add a.img ITEMS="TEST1='FIRST TEST STRING' TEST2=123 TEST3=4.56"
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 Keyword TEST1 added
 Keyword TEST2 added
 Keyword TEST3 added
@@ -20,7 +20,7 @@ F2 using byte table lookup
 FUNCTION EVALUATED 256 TIMES
 label-add a.img ITEMS="TEST1='MIDDLE TEST STRING'"
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 Keyword TEST1 added
 f2 a.img a.img func="in1"
 Beginning VICAR task f2
@@ -29,11 +29,11 @@ F2 using byte table lookup
 FUNCTION EVALUATED 256 TIMES
 label-add a.img ITEMS="TEST1='LAST TEST STRING'"
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 Keyword TEST1 added
 label-list a.img 'nousrtim
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File a.img ************
@@ -68,70 +68,56 @@ Beginning VICAR task getlab
 GETLAB version 2019-06-13
 write "'T1' should equal 'LAST TEST STRING'"
 'T1' should equal 'LAST TEST STRING'
-disp T1
-
-T1="LAST TEST STRING"
-
+write "T1: LAST TEST STRING"
+T1: LAST TEST STRING
 getlab inp=a.img lab_item=TEST2 itm_name=T2 itm_type=INT  +
    lab_type=HISTORY mode=LATEST
 Beginning VICAR task getlab
 GETLAB version 2019-06-13
 write "'T2' should equal '123'"
 'T2' should equal '123'
-disp T2
-
-T2=123
-
+write "T2: 123"
+T2: 123
 getlab inp=a.img lab_item=TEST3 itm_name=T3 itm_type=REAL  +
    lab_type=HISTORY mode=LATEST
 Beginning VICAR task getlab
 GETLAB version 2019-06-13
 write "'T3' should equal '4.56'"
 'T3' should equal '4.56'
-disp T3
-
-T3=4.55999994278
-
+write "T3: 4.559999942780e+00"
+T3: 4.559999942780e+00
 getlab inp=a.img lab_item=FORMAT itm_name=T1 itm_type=STRING  +
    lab_type=SYSTEM mode=LATEST
 Beginning VICAR task getlab
 GETLAB version 2019-06-13
 write "'T1' should equal 'BYTE'"
 'T1' should equal 'BYTE'
-disp T1
-
-T1="BYTE"
-
+write "T1: BYTE"
+T1: BYTE
 getlab inp=a.img lab_item=NL itm_name=T2 itm_type=INT  +
    lab_type=SYSTEM mode=LATEST
 Beginning VICAR task getlab
 GETLAB version 2019-06-13
 write "'T2' should equal '10'"
 'T2' should equal '10'
-disp T2
-
-T2=10
-
+write "T2: 10"
+T2: 10
 getlab inp=a.img lab_item=TEST1 itm_name=T1 itm_type=STRING  +
    lab_type=HISTORY mode=EARLIEST
 Beginning VICAR task getlab
 GETLAB version 2019-06-13
 write "'T1' should equal 'FIRST TEST STRING'"
 'T1' should equal 'FIRST TEST STRING'
-disp T1
-
-T1="FIRST TEST STRING"
-
+write "T1: FIRST TEST STRING"
+T1: FIRST TEST STRING
 getlab inp=a.img lab_item=TEST1 itm_name=T1 itm_type=STRING  +
    itm_task=F2 itm_inst=1 lab_type=HISTORY mode=INSTANCE
 Beginning VICAR task getlab
 GETLAB version 2019-06-13
 write "'T1' should equal 'MIDDLE TEST STRING'"
 'T1' should equal 'MIDDLE TEST STRING'
-disp T1
-
-T1="MIDDLE TEST STRING"
-
+write "T1: MIDDLE TEST STRING"
+T1: MIDDLE TEST STRING
 write "Test correct handling of nonexistent label item."
 Test correct handling of nonexistent label item.
 write "This case should generate an ABEND."
@@ -148,26 +134,20 @@ getlab inp=a.img lab_item=TEST1 itm_name=T1 itm_type=STRING  +
    lab_type=HISTORY mode=LATEST
 Beginning VICAR task getlab
 GETLAB version 2019-06-13
-disp T1
-
-T1="LAST TEST STRING"
-
-if ($syschar(1)="UNIX")
-   let dir = "/project/test_work/testdata/cassini/iss/"
-else
-end-if
-f2 inp=/project/test_work/testdata/cassini/iss/sum2.1 out=l1.a func=10
+write "T1: LAST TEST STRING"
+T1: LAST TEST STRING
+f2 inp=data/sum2.1 out=l1.a func=10
 Beginning VICAR task f2
 F2 version 98-Aug-2015
 F2 using hash table lookup
 FUNCTION EVALUATED 26 TIMES
 label-rep l1.a 'PROP property="CASSINI-ISS" item="EXPOSURE_DURATION=0"
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 Keyword EXPOSURE_DURATION replaced
 label-list l1.a 'nousrtim
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File l1.a ************
@@ -216,17 +196,15 @@ getlab inp=l1.a lab_item="EXPOSURE_DURATION" itm_name=EXP lab_type=PROPERTY  +
        itm_type=REAL itm_task="CASSINI-ISS"
 Beginning VICAR task getlab
 GETLAB version 2019-06-13
-disp EXP
-
-EXP=0.0
-
+write "EXP: 0.000000000000e+00"
+EXP: 0.000000000000e+00
 label-add l1.a 'prop property="CASSINI-ISS" item="MULTIVAL=(AA,BB,CC)"
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 Keyword MULTIVAL added
 label-list l1.a 'nousrtim
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File l1.a ************
@@ -275,32 +253,26 @@ FUNCTION='10'
 getlab inp=l1.a lab_item="MULTIVAL" itm_name=T1 lab_type=PROPERTY itm_type=STRING itm_task="CASSINI-ISS" element=2
 Beginning VICAR task getlab
 GETLAB version 2019-06-13
-disp T1
-
-T1="BB"
-
+write "T1: BB"
+T1: BB
 gen a.img
 Beginning VICAR task gen
 GEN Version 2019-05-28
 GEN task completed
 label-add a.img item="key=(abc,defgh)"
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 Keyword key added
 getlab a.img key itm_name=T1 element=1 itm_type=string
 Beginning VICAR task getlab
 GETLAB version 2019-06-13
-disp T1
-
-T1="abc"
-
+write "T1: abc"
+T1: abc
 getlab a.img key itm_name=T1 element=2 itm_type=string
 Beginning VICAR task getlab
 GETLAB version 2019-06-13
-disp T1
-
-T1="defgh"
-
+write "T1: defgh"
+T1: defgh
 if ($syschar(1)="UNIX")
    ush rm a.img
 else

@@ -1,0 +1,5 @@
+$ vpack marsinterp.com -mixed -
+	-s marsinterp.cc -
+	-i marsinterp.imake -
+	-p marsinterp.pdf
+$ Exit

@@ -102,11 +102,11 @@ extern "C" {
 /***  Constant Label Values  ***/
 /* Generic string lengths */
 #define  LBL_FLAG_LTH		  8	/* Max value length for a '_FLAG' keyword	*/
-#define  LBL_ID_LTH		 48	/* Max value length for an '_ID' keyword	*/
+#define  LBL_ID_LTH		 75	/* Max value length for an '_ID' keyword	*/
 #define  LBL_TYPE_LTH		 32	/* Max value length for a '_TYPE' keyword	*/
 #define  LBL_TIME_LTH		 32	/* Max value length for a '_TIME' keyword	*/
-#define  LBL_NAME_LTH		 64	/* Max value length for some '_NAME' keywords	*/
-#define  LBL_LONG_NAME_LTH	128	/* Max value length for some '_NAME' keywords	*/
+#define  LBL_NAME_LTH		120	/* Max value length for some '_NAME' keywords	*/
+#define  LBL_LONG_NAME_LTH	240	/* Max value length for some '_NAME' keywords	*/
 #define  LBL_DESC_LTH		256	/* Max value length for a '_DESC' keyword	*/
 
 /* Generic array sizes */

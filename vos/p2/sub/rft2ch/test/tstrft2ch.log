@@ -1,4 +1,3 @@
-tstrft2ch
 trft2ch
 Beginning VICAR task trft2ch
 *******FORTRAN-CALLABLE RFT2CH******
@@ -403,16 +402,4 @@ Beginning VICAR task trft2ch
  INVRS XFORM
             2.100E+01  2.200E+01  2.300E+01  2.400E+01  2.500E+01  2.600E+01  2.700E+01  2.800E+01  2.900E+01  3.000E+01
             3.100E+01  3.200E+01  3.300E+01  3.400E+01  3.500E+01  3.600E+01  3.700E+01  3.800E+01  3.900E+01  4.000E+01
-end-proc
-exit
-slogoff
-if ($RUNTYPE = "INTERACTIVE")
-  if ($syschar(1) = "VAX_VMS")
-  end-if
-else
-  if ($syschar(1) = "VAX_VMS")
-  end-if
-end-if
-ulogoff
-END-PROC
-END-PROC
+disable-log

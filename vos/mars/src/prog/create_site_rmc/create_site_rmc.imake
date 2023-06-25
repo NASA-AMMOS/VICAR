@@ -1,0 +1,13 @@
+/*
+*****************************************************************************
+*  MARS RMC PROCESSING SCRIPTS
+*****************************************************************************
+*/
+#define PROCEDURE create_site_rmc
+
+#define MODULE_LIST create_site_rmc.sh
+
+#define USES_SH
+
+#define MARSLIB
+

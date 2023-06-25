@@ -1,0 +1,1429 @@
+process help=*
+PARM INP TYPE=STRING COUNT=(1:100)
+PARM OUT TYPE=STRING COUNT=1 
+
+! Outputs for coordinate index output files
+PARM IDX_OUT TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM ICM_OUT TYPE=STRING COUNT=(0:1) DEFAULT=--
+
+PARM NAVTABLE TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM RINP TYPE=STRING COUNT=(0:100) DEFAULT=--
+PARM BAND    TYPE=INTEGER COUNT=(0:1) DEFAULT=--
+PARM WHICH TYPE=KEYWORD COUNT=1 VALID=("LEFT", "RIGHT") DEFAULT="LEFT"
+PARM USE_POINTING TYPE=KEYWORD COUNT=(0:1) VALID="USE_POINTING" DEFAULT=--
+PARM MASTER_RIGHT TYPE=KEYWORD COUNT=(0:1) VALID="MASTER_RIGHT" DEFAULT=--
+PARM INPUT_RANGE TYPE=INTEGER COUNT=(0:2) DEFAULT=--
+PARM NORMAL  TYPE=REAL COUNT=(0:3) DEFAULT=--
+PARM GROUND  TYPE=REAL COUNT=(0:3) DEFAULT=--
+PARM SURF_COORD TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM SURF_MESH TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM SURF_CSFILE TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM SURFACE TYPE=KEYWORD COUNT=(0:1) +
+  VALID=("INFINITY","PLANE", "SPHERE1", "SPHERE2", "MESH") DEFAULT=--
+PARM BIAS  TYPE=REAL COUNT=(0:200) DEFAULT=--
+PARM BRTCORR TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM BORDER TYPE=INTEGER COUNT=(0:1) VALID=(0:1000) DEFAULT=100
+PARM FULL_FRM TYPE=KEYWORD VALID=("FULL_FRAME", "PARTIAL_FRAME") +
+			DEFAULT="PARTIAL_FRAME"
+PARM START_AZ TYPE=REAL COUNT=0:1 DEFAULT=--
+PARM PROJ_EL TYPE=REAL COUNT=0:1 DEFAULT=--
+PARM PROJ_LINE TYPE=REAL COUNT=0:1 DEFAULT=--
+PARM OUTSIZE TYPE=INTEGER COUNT=(0:2) DEFAULT=--
+PARM ZOOM TYPE=REAL COUNT=0:1 DEFAULT=--
+PARM SCALE TYPE=REAL COUNT=0:1 DEFAULT=--
+PARM MINSAMP TYPE=INTEGER COUNT=(0:1) DEFAULT=--
+PARM MAXSAMP TYPE=INTEGER COUNT=(0:1) DEFAULT=--
+PARM LIMIT_TOPEL TYPE=REAL COUNT=(0:1) DEFAULT=--
+PARM LIMIT_BOTTOMEL TYPE=REAL COUNT=(0:1) DEFAULT=--
+PARM TOPEL TYPE=REAL COUNT=(0:1) DEFAULT=--
+PARM BOTTOMEL TYPE=REAL COUNT=(0:1) DEFAULT=--
+PARM BASELINE TYPE=REAL COUNT=(0:1) DEFAULT=--
+PARM RING_AXIS TYPE=REAL COUNT=(0:3) DEFAULT=--
+PARM RING_CENTER TYPE=REAL COUNT=(0:3) DEFAULT=--
+PARM UNTILT TYPE=KEYWORD VALID=("UNTILT","NOUNTILT") DEFAULT="NOUNTILT"
+PARM DISP_PIX TYPE=INTEGER COUNT=1 DEFAULT=0
+PARM WRAP_AZ  TYPE=REAL COUNT=(0:1) DEFAULT=--
+PARM WRAP_EL  TYPE=REAL COUNT=1 DEFAULT=0
+PARM WRAP_COORD TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM NUMBER TYPE=KEYWORD VALID=("NUMBER","NONUMBER") DEFAULT="NONUMBER"
+PARM NUMBER_DN TYPE=REAL DEFAULT=4096 COUNT=(1:32)
+PARM NUMBER_ZOOM TYPE=INTEGER DEFAULT=1
+PARM NUMBER_START TYPE=INTEGER DEFAULT=1
+PARM FOOTPRT TYPE=KEYWORD VALID=("NOFOOTPRINT", "FOOTPRINT", "OVERLAP") +
+        DEFAULT=NOFOOTPRINT
+PARM FOOT_DN TYPE=REAL DEFAULT=4096 COUNT=(1:32)
+PARM FOOT_RANGE TYPE=INTEGER COUNT=0:2 DEFAULT=--
+PARM FOOT_COLOR TYPE=STRING COUNT=0:1 DEFAULT=--
+
+PARM RAD TYPE=KEYWORD VALID=("RAD", "ZENITH_SCALED_RAD",  "NORAD") DEFAULT=RAD
+PARM DNSCALE TYPE=REAL DEFAULT=100.0
+PARM DNSCALE_IN TYPE=KEYWORD COUNT=1 VALID=("AUTOSCALE", "RESCALE", "NOSCALE") DEFAULT=AUTOSCALE
+PARM DNSCALE_OUT TYPE=KEYWORD COUNT=1 VALID=("STATIC", "DYNAMIC", "IDENTITY") DEFAULT=STATIC
+PARM TAU TYPE=REAL DEFAULT=0.6
+PARM CONFIG_PATH STRING DEFAULT="$MARS_CONFIG_PATH"
+PARM MATCH_METHOD TYPE=STRING COUNT=(0:1) VALID=("LOOSE", "TIGHT") +
+        DEFAULT=LOOSE
+PARM MATCH_TOL TYPE=REAL COUNT=1 DEFAULT=.002
+PARM POINT_METHOD TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM NOSITE TYPE=KEYWORD COUNT=(0:1) VALID=NOSITE DEFAULT=--
+PARM FOV_LIMIT TYPE=REAL COUNT=0:2 DEFAULT=--
+
+PARM INTERP TYPE=KEYWORD VALID=("INTERP", "NOINTERP") DEFAULT=INTERP
+
+PARM L_PROTO TYPE=INTEGER COUNT=1 DEFAULT=1
+PARM R_PROTO TYPE=INTEGER COUNT=1 DEFAULT=1
+
+PARM DATA_SET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM DATA_SET_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM RELEASE_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCT_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_INST TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_TYPE TYPE=STRING COUNT=(0:1) DEFAULT=--
+
+PARM RSF TYPE=STRING COUNT=0:100 DEFAULT=--
+PARM DEBUG_RSF TYPE=KEYWORD COUNT=0:1 VALID=DEBUG_RSF DEFAULT=--
+PARM COORD TYPE=KEYWORD VALID=("FIXED", "INSTRUMENT", "SITE", "ROVER", +
+	"LOCAL_LEVEL") DEFAULT="FIXED"
+PARM COORD_INDEX TYPE=INTEGER COUNT=0:10 DEFAULT=--
+PARM FIXED_SITE TYPE=INTEGER COUNT=0:1 DEFAULT=--
+PARM SOLUTION_ID TYPE=STRING COUNT=0:1 DEFAULT=--
+
+PARM BBOX TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM BBOX_COUNT TYPE=INTEGER COUNT=1 DEFAULT=3
+
+!# parm inp(2-20) hints=default
+
+END-PROC
+
+.TITLE
+VICAR program MARSMCAULEY.
+
+.HELP
+PURPOSE:
+To generate a Mcauley projection.
+This is a hybrid cylindrical-perspective projection made by pointing the
+output camera at the center of each vertical column of pixels, and projecting
+that column only.  Each output pixel column thus represents the center column
+(only) of a camera pointed in exactly that direction.  This has the advantage
+of allowing stereo viewing (epipolar lines are preserved) in a panoramic
+format, without the extreme distortion seen on the edges of a perspective
+mosaic.  Stereo separation is maintained because the output cameras describe
+a ring in space, which mimics the input camera baseline and preserves the
+stereo disparity.
+
+The purpose of this program is to make stereo panoramas.  In order to do this
+without vertical disparity or distortion, spacecraft tilt must be maintained,
+meaning that the horizon will not be level if the spacecraft is not level.
+Basically the baseline between the eyes is horizontal in the output, meaning
+that the horizon is tilted.
+
+It is also possible to flatten the horizon via the "untilt" keyword.  This
+works by rotating the ring of output cameras so they are parallel to the
+horizon.  This has the effect of removing tilt without introducing vertical
+disparity.   However, it is not perfect; to the extent the terrain does not
+match the surface model, parallax effects will cause some distortions while
+untilting.  But it works well in many cases.
+
+Unlike previous versions of marsmcauley, only the natural instrument frame
+("ROVER" for MER/MSL) can be used as a projection frame.  However, the untilt
+option (or direct control via the ring_axis parameter) provides similar
+functionality to the old "site frame" mosaics, while also reducing vertical
+disparity.
+
+As a result, all parameters are interpreted in the instrument ("rover") frame
+except for START_AZ.  START_AZ is interpreted in the frame specfied by COORD
+(defaults to SITE).  This allows the mosaic to be easily oriented in the
+most common cases (e.g.  start_az=0 means North is on the edge of the image).
+This is the only use of the COORD frame in this program.
+
+The old untilt method (via point_method=untilt) is no longer supported and
+should not be used.
+
+Complete control over the ring described by the output cameras is now available
+via the BASELINE, RING_AXIS, and RING_CENTER parameters.  Of these, only
+BASELINE is particularly useful.  It allows the baseline between the output
+cameras to be changed, which effectively changes the overall disparity.
+This allows the apparent depth of the foreground to be changed without
+affecting the background (contrast with DISP_PIX, which changes the
+disparity a constant amount everywhere, moving everything in or out -
+BASELINE changes apparent depths via a ratio, with close-in things changing
+a lot and distant things very little)).  This can be used for example
+to tone down the 30cm disparty of the MER pancam, which is too large for
+comfortable viewing close-up.  Baseline adjustment is not perfect and can
+introduce parallax distorions a la the untilt mode if the actual surface does
+not match the surface model.
+
+The others should rarely be used.  RING_AXIS is what the UNTILT parameter
+actually changes, setting it appropriately based on the spacecraft tilt.  It
+could be used to change the tilt in other ways.  RING_CENTER changes the
+center of the ring (and also the center of RING_AXIS rotation); changes in
+this are unlikely to be useful.
+
+Note that the projection elevation and projection line apply *before* any
+untilt (ring_axis) rotation.  After rotation, they are sinusoids across the
+mosaic.
+
+Marsmcauley supports any mission, instrument, and camera model supported by
+the Planetary Image Geometry (Pig) software suite.
+
+Best results are obtained if the images are all taken from the same camera
+at approximately the same position.  The extent to which images from different
+points of view work together depends in large part on how close the actual
+surface is to the surface model.  Variations will introduce parallax errors,
+which become extreme at very different points of view.  A perfect match of
+surface to surface model (not achievable in reality) should allow combination
+of images from any location.
+
+The program will optionally place an image number at the center of each
+image in the output, to aid in identification of the images.  See NUMBER,
+NUMBER_DN, NUMBER_ZOOM, and NUMBER_START.  It will also optionally draw a
+"footprint" border around each image.  See FOOTPRT and FOOT_DN.
+
+The program can accept a navigation file written by marsnav, which will
+improve the accuracy of the mosaic.
+
+Radiometric correction is performed on the inputs by default; this may be
+turned off via the RAD keyword parameter.
+
+Marsmcauley will handle color images automatically if the BAND parameter is not
+specified. For mixed color and black-and-white inputs, the number of output
+bands will equal the maximum number of bands across all inputs. Images with
+less than that number of bands will simply repeat the last available band i.e.,
+black-and-white images can be mixed with color images. If BAND is specified,
+only that single band (in the multi-banded images) is processed, and black-and-
+white images remain unaffected.
+
+EXECUTION:
+There are two ways to present input images:
+ 
+marsmcauley inp=(a.img,b.img,c.img,...) out=mos.img
+or
+marsmcauley  inp=ascii_listoffiles out=mos.img
+
+where ascii_listoffiles is a text file containing the list of filenames to
+include in the mosaic, one per record.  Up to 1000 input images can be listed.
+
+Additionally, marsnav may be used:
+
+marsnav inp=ascii_listoffiles out=navtab ...
+marsmcauley inp=ascii_listoffiles out=mos.img navtable=navtab
+
+A new mode allows both left and right list files (or individual images) to be
+provided at runtime, with a flag to select which to use.  See below for
+details.
+
+marsmcauley inp=left.lis out=left.out rinp=right.lis -left
+marsmcauley inp=left.lis out=right.out rinp=right.lis -right
+
+USAGE:
+
+Labels will be written to the output image specifying all parameters
+needed in order to reproject the image, and to convert pixel coordinates
+into XYZ view rays in the output coordinate system.  See the MSL SIS for
+details on what the label items mean.
+
+.PAGE
+OPERATION:
+The program uses the appropriate camera model for each input image and
+outputs a mosaic using camera models derived from the first input (aligned
+for stereo viewing) (note: L/R_PROTO can change the image used for this).
+Each pixel in the output is transformed from output
+to input camera models in the following steps:
+1. Each output column causes the output camera model to be recomputed,
+   pointing to this azimuth.
+2. Each output pixel defines a unit vector.
+3. We compute the intersection of this vector with a surface model.  This is
+   normally a tilted plane, possibly with an offset from the origin of the
+   spacecraft coordinate system (so the "ground" can be above or below the
+   origin).
+4. Then this ground point is ray traced back into the input camera images.
+   We take the input images in order of input.
+5. The first image is selected which can see the ground point.
+6. The DN value in the selected input image is bilinearly interpolated
+   and placed into the output location
+Input images are loaded into memory 20 at a time.
+
+See the MSL SIS for a full writeup of how to interpret the images.
+
+.page
+LEFT AND RIGHT IMAGE LISTS:
+
+Historically, left and right images (to make stereo) had to be run
+independently.  This required the user to obtain the geometry parameters
+from the first (usually, left) run and supply them to the right run, so the
+geometries would match for stereo viewing.  Needless to say, this was
+difficult... and broke down entirely when dealing with disparate inputs (see
+next section).
+
+Although it can still be used in this mode, the preferred method is to supply
+both left and right list files when the program is run, with a -left or -right
+option saying which will actually be mosaicked.  This way, the program has
+access to the entire set of files and can thus more accurately set the geometry
+(this also fixes problems where the mosaic image would be shifted, often to
+the right, in the output).
+
+It is important to note that "left" and "right" here are completely arbitrary.
+The -LEFT flag simply says to mosaic what's in INP, while the -RIGHT flag
+says to mosaic what's in RINP.  You can in fact supply the right eye to INP
+and the left eye to RINP.  There's rarely a need to do this, but it is
+possible.
+
+There's one way in which the "left" image list is special - the first item
+(but see L_PROTO) from the left list is used to define the natural size of
+the output pixels.  If you wish to use the first item from the right list (but
+see R_PROTO) instead, use -MASTER_RIGHT.  For example, when doing MSL Mastcam
+mosaics, the left camera is about 1/3 the resolution of the right.  By default
+(with no zooming), the output mosaic will be rendered at the left Mastcam
+resolution.  If you use -MASTER_RIGHT, it will be rendered at the right
+Mastcam resolution.  Note that in order to use -MASTER_RIGHT, you have to
+supply both lists.
+
+.page
+DISPARATE INPUTS:
+
+The traditional (single-list) mode of marsmcauley implicitly assumes that
+the left and right eye cameras are stereo pairs - it uses the PIG library
+to create the alternate-eye camera model, which is necessary for epipolar
+alignment of the mosaic.  This is similar to "nominal" linearization (marscahv)
+in which the stereo partner is predicted from the input.
+
+However, that does not work if the cameras are dissimilar.  Importantly, it
+also does not work for the MSL Mastcam case with focus-adjusted camera models.
+This is because it is impossible to predict what the "partner"s focus will be,
+so the partner model cannot be created.  (this is the same reason ACTUAL
+linearization is required with focus-interpolated camera models).
+
+This was the motivation behind adding the RINP mechanism.  With both actual
+lists of input images, the output camera model can be constructed the same
+way for both the left and right mosaics.  Furthermore, the entire extent of
+*both* eyes is considered when laying out the geometry of the mosaic - meaning
+the mosaic should no longer be cropped in nominal use.
+
+It should be noted that the first image of each list is special; those are
+the ones used to create the output camera model.  The rest of the images are
+ignored for this purpose.  L/R_PROTO can change this to an arbitrary image
+in the list.
+
+Even with the RINP parameter, however, there is an assumption that the
+cameras share a calibration geometry.  Normally, the program throws away
+pointing information for these prototype cameras, going back to the calibration
+camera model, for simplicity.  But, this only works if the calibration models
+share the same pointing - for example, both cameras are mast-mounted cameras.
+If one is an arm camera and the other a mast camera, this assumption is
+violated, and you may get strange results.  In this case, the -USE_POINTING
+option can be tried.  This option causes it to use the actual pointed camera
+models, rather than the calibration ones.  Note that this has not been well
+tested, and may or may not work - and in any case, trying to make a stereo
+mosaic from an arm and mast camera is dicey at best.  But, at least the option
+is there.
+
+.page
+Bounding Boxes
+--------------
+Marsmcauley will optionally output a file containing bounding boxes for all of
+the inputs.  This can be used to (approximately) see where each image is in
+the mosaic.
+
+Bounding boxes are created by taking the corners of each input, and some
+number of points along the sides, and projecting them into the mosaic.  The
+line and sample coordinates trace out a polygon on the mosaic.
+
+Importantly, the bounding boxes are NOT min/max extents.
+
+The number of points on each side is controlled by BBOX_COUNT.  The default
+of 3 means that 3 points are projected along each side... 1/4, halfway, and
+3/4 between the corners (the corners are always projected).  A BBOX_COUNT of
+0 would project only the corners.  Points are evenly spread along the side.
+
+The bounding box file (BBOX parameter) is the name to use for an output
+comma-separated value (CSV) file.  The first column is the filename (minus
+pathnames) of the input.  The second column is a WKT (Well-Known-Text) string
+containing a polygon defining the (sample line) coordinates of the points going
+around the edge.
+
+Coordinates are 1-based, per standard VICAR convention (1,1 is the center
+of the upper-left pixel).  The bounding box coordinates could well go
+negative, or larger than the mosaic size, if the point is off the edge of the
+mosaic.  Clipping is left to the user (it can be useful to know the actual
+bounds irrespective of clipping).
+
+There are two special cases to consider:
+
+Wrapped polygons.  The cyl, cylper, and sinusoidal projections can wrap around
+in azimuth, with the left edge continuing on the right.  If a bounding box
+polygon straddles the wrap point, then two lines are created in the bbox file
+(with the same filename).  One has the polygon on the left side of the image,
+the other has the equivalent polygon on the right.  They are identical, except
+the sample values have been translated by the full 360-degree width of the
+mosaic at that point (note, for sinusoidal projection this value varies per
+line).  The second polygon is provided as a convenience to avoid users having
+to figure out the wrapping.
+
+Zenith/nadir polygons.  For the same projections (cyl/cylper/sin), if the
+polygon encompasses the zenith or nadir, the polygon does not "close" normally.
+In these situations, three extra points are added to the polygon to close it,
+going vertically up or down to the mosaic edge.  This happens on both wraps
+(zenith/nadir can only occur for wrapped polygons).  The end result is that
+both wrapped polygons together encompass the area above or below the line of
+edge points, depending on whether it's zenith or nadir.
+
+.page
+
+HISTORY:
+  1994-04-30  jjl	Initial mcauley, based on inspiration from Myche McAuley. 
+  1998-09     rgd	Multimission conversion
+  2011-02     rgd	Major revision for untilt,ring control,remove site frame
+  2017-04     jryan	Revised to process color imagery with a single call
+  2019-09-06  rgd	Added RINP et al, zoom, fixed centering
+  2020-04-30  wlb       Replaced sprintf calls
+  2020-05-04  youlu     Added -zenith_scaled_rad capabilities
+                        Added DNSCALE_IN, DNSCALE_OUT, and TAU parameters
+  2020-11-17  esarkiss  Added ICM_OUT and IDX_OUT parameters
+  2023-02-07  rgd	Add bounding boxes,FOOT_RANGE/_COLOR,SCALE,TOP/BOTTOMEL
+
+COGNIZANT PROGRAMMER:  Bob Deen
+
+.LEVEL1
+.VARI INP
+input image(s).
+
+.VARI OUT
+Output image.
+
+.VARI IDX_OUT
+Optional output
+index filename.
+
+.VARI ICM_OUT
+Optional output
+coregistration coordinate
+filename.
+
+.VARI NAVTABLE
+Corrected navigation
+filename.
+
+.VARI RINP
+Optional right-side
+image(s)
+
+.VARI BAND
+The BSQ band number.
+
+.vari WHICH
+Specifies making left
+or right mosaic
+
+.vari USE_POINTING
+Use pointed instead of
+calibration models
+
+.vari MASTER_RIGHT
+Use right side to set
+output geometry
+
+.VARI INPUT_RANGE
+The range of inputs to
+actually mosaic.
+
+.VARI NORMAL
+Surface normal vector.
+
+.VARI GROUND
+Surface ground point.
+
+.VARI SURF_COORD
+Coordinate system used to define
+surface parameters.
+
+.VARI SURFACE
+The type of mars
+surface to use INFINITY, PLANE, 
+SPHERE1, SPHERE2, MESH.
+
+.VARI SURF_MESH 
+Mesh file for surface model
+
+VARI SURF_CSFILE 
+File containing CS for surface
+model
+
+.VARI BIAS
+Set of values to bias
+each tile in the mosiac.
+
+.VARI BRTCORR
+Input file containing
+brightness corrections.
+
+.VARI BORDER
+Additional border to
+add to output image height.
+
+.VARI FULL_FRM
+Selects full panorama
+(FULL_FRAME) or output
+sized to input
+(PARTIAL_FRAME).
+
+.VARI START_AZ
+Azimuth of left edge
+of output, expressed in
+the COORD coordinate frame.
+
+.VARI PROJ_EL
+Center of projection
+vertically, in instrument
+coords, before rotation.
+
+.VARI PROJ_LINE
+Line in image which
+matches PROJ_EL, before
+rotation.
+
+.VARI OUTSIZE
+Overrides size of
+output image.
+
+.VARI ZOOM
+Sets the mosaic zoom factor.
+
+.VARI SCALE
+Sets mosaic scale in deg/pix.
+
+.VARI MINSAMP
+Minimum sample # (azimuth
+column) to be projected.
+
+.VARI MAXSAMP
+Maximum sample # (azimuth
+column) to be projected.
+
+.VARI LIMIT_TOPEL
+Limit to top elevation.
+Not to exceed value.
+
+.VARI LIMIT_BOTTOMEL
+Limit to bottom elevation.
+Not to exceed value.
+
+.VARI TOPEL
+Actual top elevation override.
+
+.VARI BOTTOMEL
+Actual bottom elevation override.
+
+.VARI BASELINE
+Override for output
+camera baseline.
+
+.VARI RING_AXIS
+Override for output
+camera ring axis (see
+also UNTILT).
+
+.VARI RING_CENTER
+Override for output
+camera ring center.
+
+.VARI UNTILT
+Sets RING_AXIS to untilt
+the spacecraft and produce
+a flat horizon.
+
+.VARI DISP_PIX
+Shifts the overall image
+left or right (by changing
+START_AZ) to control overall
+disparity.
+
+.VARI WRAP_AZ
+Azimuth to wrap a complete
+mosaic.
+
+.VARI WRAP_EL
+Elevation to wrap a complete
+mosaic.
+
+.VARI WRAP_COORD
+Coordinate system of the
+associated WRAP_AZ and WRAP_EL.
+
+.VARI NUMBER
+Numbers the center of
+each input.
+
+.VARI NUMBER_DN
+DN to use for the
+input numbers.
+
+.VARI NUMBER_ZOOM
+Zoom factor for the
+input numbers.
+
+.VARI NUMBER_START
+Where to start counting
+the input numbers.
+
+.VARI FOOTPRT
+Draws footprints around
+each image.
+
+.VARI FOOT_DN
+DN to use for the
+footprint numbers.
+
+.VARI FOOT_RANGE
+Min and max image number in which
+to draw footprints and numbers.
+
+.VARI FOOT_COLOR
+Text file indicating color to
+use for footprints and numbers.
+
+.VARI RAD
+Turns on or off
+radiometric correction.
+
+.VARI TAU
+atmospheric opacity
+
+.VARI DNSCALE
+DN scaling factor.
+
+.VARI DNSCALE_IN
+Selects the mode for
+applying scaling parameters
+
+.VARI DNSCALE_OUT
+Selects the mode for
+scaling outputs
+
+.VARI DNSCALE
+DN scaling factor.
+
+.VARI CONFIG_PATH
+Path used to find
+configuration/calibration
+files.
+
+.VARI MATCH_METHOD
+Specifies a method
+for pointing corrections.
+
+.VARI MATCH_TOL
+Tolerance value for
+matching pointing params
+in pointing corrections file.
+
+.VARI POINT_METHOD
+Specifies a mission-
+specific pointing
+method to use
+
+.VARI NOSITE
+Disables coordinate
+system sites.
+
+.VARI FOV_LIMIT
+Overrides limits on
+input image FOV
+
+.VARI INTERP
+Turns on or off
+the interpolation.
+
+.VARI L_PROTO
+Left prototype image
+
+.VARI R_PROTO
+Right prototype image
+
+.VARI BBOX
+Bounding box filename
+
+.VARI BBOX_COUNT
+Number of points per edge
+for a bounding box
+
+.VARI DATA_SET_NAME
+Specifies the full name given
+to a data set or a data product.
+
+.VARI DATA_SET_ID
+Specifies a unique alphanumeric
+identifier for a data set or data
+product.
+
+.VARI RELEASE_ID
+Specifies the unique identifier
+associated with the release to the
+public of all or part of a data set.
+The release number is associated with
+the data set, not the mission.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique
+identifier assigned to a data
+product by its producer.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier
+of an entity associated with the
+production a data set.
+
+.VARI PRODUCER_INST
+Specifies the full name of the
+identity of an entity associated
+with the production of a data set.
+
+.VARI TARGET_NAME
+Specifies a target.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target.
+
+.VARI RSF
+Rover State File(s) to use.
+
+.VARI DEBUG_RSF
+Turns on debugging of RSF
+parameter.
+
+.VARI COORD
+Coordinate system to use
+(for START_AZ only).
+
+.VARI COORD_INDEX
+Coordinate system index for
+some COORD/mission combos.
+
+.VARI FIXED_SITE
+Which site is FIXED for
+rover missions.
+
+.VARI SOLUTION_ID
+Solution ID to use for
+pointing correction.
+
+.LEVEL2
+.VARI INP
+There are two options for describing input images.
+ 
+Either:
+List the image file names
+ 
+Or:
+provide an ascii file with the file names listed, one per record.
+
+If RINP is used, INP contains the "left" set of images to mosaic.
+
+.VARI OUT
+Output image containing the mosaic.
+
+By default, the output will have the same number of bands
+as the input with the most bands, and all bands will be processed.  Inputs
+with fewer than that many bands repeat their last band, so bw and color images
+can be mixed.  If BAND is specified, the output will have a single band.
+
+.VARI IDX_OUT
+Specifies the (optional) output filename for the index file.
+
+The index file contains, for each pixel, a halfword integer (16 bit signed)
+identifying which image the pixel came from.  0 indicates no value (black
+in the mosaic).  Numbers from 1-n match the order of files in the input list
+file (or INP parameter, if a list file isn't given).  For most mosaics, the
+file could be converted to byte using CFORM (half is used to support more
+than 255 input files).
+
+.VARI ICM_OUT
+Specifies the (optional) output filename for the ICM file.
+
+The ICM file is an Image Coregistration Map.  It is a two-band float file
+containing the line, sample coordinate of the input pixel used for the point.
+This is the same basic format as correlation maps such as MARSCOR3 produces,
+except that multiple images are involved (thus the need for the index file,
+in IDX_OUT).
+
+.VARI NAVTABLE
+Corrected navigation filename.
+If marsnav was run on the input images it created a table of corrected
+pointing parameters. If you refer to this table using NAVTABLE it
+will override the pointing parameters (e.g. azimuth and elevation) in the
+picture labels, giving you a better registered mosaic.
+
+.VARI RINP
+Similar to INP, but contains the "right" set of images to mosaic.
+
+This is optional; if not provided then the input should be in INP and
+consist of just one eye (either one).  However, it is highly recommended
+to use the new RINP mode.  See the main help.
+
+.VARI BAND
+The BSQ input file band number. Defaults to all bands in image, but will use
+a value of 1 if an invalid band is specified. Providing a value will cause
+only that band to be processed.
+
+.VARI WHICH
+Specifies whether a Left or Right mosaic is to be produced.  This is only
+relevant when RINP is provided.  Both INP and RINP participate in setting
+the geometry; only INP is used for mosaicking with -LEFT, and only RINP is
+used for mosaicking with -RIGHT.
+
+.VARI USE_POINTING
+Specifies using pointed camera models rather than calibration ones.  See
+the main help.
+
+.VARI MASTER_RIGHT
+Specifies that the first image from RINP should be used to set the size of
+pixels in the output mosaic, rather than the first image from INP.
+
+.VARI INPUT_RANGE
+The range of inputs to actually mosaic.  Normally all inputs are mosaicked.
+However, if this parameter is specified, all inputs will be used to calculate
+the output projection, but only the inputs in the specified range will be
+mosaicked.  This allows the generation of a large mosaic to be spread out
+over several nodes on a network, with a program like FASTMOS used to combine
+all the outputs together.  Note that any underlays (annotation that goes
+under the image) should be put on the *last* mosaic only for FASTMOS;
+overlays (that show on top of everything) should be on all images (or at
+least the first).
+
+The input numbers are 1-based.  If only one number is specified, it is the
+starting number; the end defaults to the # of inputs.
+
+.VARI NORMAL
+The local mars surface normal vector coordinate system specified by SURF_COORD 
+parameter (defaults to surface fixed).
+For most pan/tilt cameras, if the lander is not tilted this vector
+would be: normal=(0,0,-1).  ie: x_component=0, y_component=0, z_component=-1.
+This need not be a unit vector.  This vector is used to define the
+surface plane to which image points are projected in order to minimize
+parallax.
+For SPHERE1/2 surface models, normal's first parameter is used to
+denote sphere's radius.  Thus to describe sphere of radius R, user
+would specify normal=(R, 0, 0).
+
+.VARI GROUND
+Any point on the surface, in coordinate system specified by SURF_COORD parameter
+(defaults to surface fixed).  This defines where the tilted plane is in space.  
+Although any point may be used, normally the point just "under" the origin is
+selected.
+Defaults:
+Mars Pathfinder:  (0.0, 0.0, 0.0)       (lander zero point is on the ground)
+Mars 98 Lander:   (0.0, 0.0, 1.64)      (lander zero point is on top of deck)
+MER           :   (0.0, 0.0, 0.294)
+For MER images taken on top of the lander, the ground is roughly at (0, 0, 0.7)
+For SPHERE1/2 surface models, GROUND parameter is used to denote sphere's
+center.  
+    
+.VARI SURF_COORD
+The coordinate system in which surface parameters like GROUND and NORMAL
+are defined.
+For valid values refer to COORD parameter description.  The interpretation of
+the values is dependent on the mission. Defaults to surface fixed coordinate
+system.  Note that no validation is done for input strings because COORD is
+using the same values.  So user needs to be extra careful in specifying
+SURF_COORD value.  For example COORD=local would be correctly interpreted to
+mean LOCAL_LEVEL because of validation process.  On the other hand specifying
+SURF_COORD=local would lead to underlying code treating the input value as
+invalid and reverting to default which is FIXED frame.  So the values for
+SURF_COORD should be spelled exactly as found in the list of valid values
+for COORD parameter.
+
+.VARI SURFACE
+The type of mars surface to use. The surface is used to intercept view rays
+emanating from the cameras in order to model out parallax between the
+stereo cameras. The options are surface=INFINITY which means no surface
+is used, surface=PLANE (the default case). If surface = PLANE then the plane
+is defined by the NORMAL and GROUND parameters.  For the cases when PLANE 
+doesn't match local topography sufficiently well, here are two sphere surface
+models: surface=SPHERE1 and surface=SPHERE2.  SPHERE1 is useful to model
+convex surfaces like hills, it returns closest(first) ray-surface intersection 
+point.  SPHERE2 is useful to model concave surfaces, like crater when the
+camera point is outside looking in, it returns farthest(second) ray-surface 
+intersection point.  For the case when camera is inside the sphere surface, 
+like rover sitting in the crater, there is only a single intersection point
+and SPHERE1 and SPHERE2 behave exactly the same. Last, MESH is a surface
+model defined by a mesh file (.obj) which path is given with SURF_MESH.
+
+.VARI SURF_MESH 
+Mesh OBJ file to use as the surface model. For the mesh to be used,
+SURFACE must be set to MESH. The coordinates of the mesh vertices can be 
+expressed in any CS. However the mesh CS must be supplied via SURF_CSFILE.
+If SURF_CSFILE is not used, then the mesh is assumed to be to the CS that
+results from COORD or SURF_COORD
+
+VARI SURF_CSFILE 
+File name of a vicar file whose CS (contained in the labels) will be read and
+assigned to the SURFACE model. The type of image and its content are of no
+interest, we are just reading the CS. That CS will supersede any other surface 
+CS definition (COORD or SURF_COORD). Its typical use is to supply a CS to a
+given mesh file (expectedly the XYZ from which the mesh is computed from, but
+doesn't have to). But SURF_CSFILE could be use to define a CS in which NORMAL 
+and GROUND for a PLANE surface are expressed in.
+
+.VARI BIAS
+Specifies values to multiply DN values of each input
+picture. Defaults to 1.0 for each picture. For example, 
+if there are five input images, then try
+BIAS=(1.0, 1.33, 0.8, 1.90, 1.0)
+
+BIAS is obsolete now; it has been replaced by BRTCORR.
+
+.VARI BRTCORR
+Specifies an input file containing brightness corrections.  This is an
+XML file that comes from a program like marsbrt which contains correction
+factors for each image.  These factors may be additive or multiplicative
+constants to be applied to the image, or other corrections that may be
+implemented in the future.
+
+The BRTCORR mechanism is intended to replace BIAS.  Using them together
+should be avoided because the labels will not reflect both (the BIAS
+overrides).  If you do, however, the BRTCORR corrections are applied to
+the data first, before BIAS.
+
+.VARI BORDER
+Additional border to add to output image height.  The height calculation is
+approximate; this provides some padding.  Note that half the specified border
+is added to each of the top and bottom.
+
+.VARI FULL_FRM
+Selects full panorama (FULL_FRAME) or output sized to input (PARTIAL_FRAME)
+in the azimuth (sample) direction.  Normally (PARTIAL_FRAME), the output
+size is shrunk (in azimuth) to just fit the input images.  If FULL_FRAME
+is specified, the output will be a full 360-degree panorama (whether or not
+there is data to go in the extra space).
+
+.VARI START_AZ
+Override for azimuth of left edge of output.  Normally this is derived as
+the minimum azimuth in the inputs (adjusted for 360-0 wraparound).
+This value is specified using the coordinate frame in COORD (default is
+Fixed, or Site).  This allows control over the mosaic framing in terms
+of north, i.e. start_az=0 puts North at the edge of the mosaic.  START_AZ
+can also be specified in instrument (Rover) frame, which frames the mosaic
+relative to the spacecraft.
+
+.VARI PROJ_EL
+Overrides the elevation of the vertical center of projection (defaults to
+half the image height).  The center of each column's output camera is defined
+by the column in the azimuth direction, and by this value in the elevation
+direction.  Note that PROJ_EL applies before the untilt (ring_axis) rotation
+is done.  This value is always specfied in instrument (Rover) coodinates.
+
+.VARI PROJ_LINE
+Overrides the line number in the image that matches PROJ_EL.  This has the
+effect of shifting the entire mosaic up or down in the frame, without
+changing the projection.  This value is normally calculated such that the
+minimum and maximum elevations are at the top and bottom of the image,
+respectively.
+
+The actual formula is:
+    tan(max_elev - PROJ_EL) / camera_pixel_angle + BORDER/2
+where camera_pixel_angle is the number of radians per pixel in the vertical
+direction for the first image's camera.
+
+Note that PROJ_LINE applies before the untilt (ring_axis) rotation is done.
+After this rotation, PROJ_LINE actually follows a sinusoidal path across the
+mosaic.
+
+.VARI OUTSIZE
+Overrides size of the output image.  If specified, the setting of FULL_FRM
+is ignored.
+
+.VARI ZOOM
+Sets the zoom factor for the output mosaic.  The default 1.0 uses the size
+as determined from the inputs (see -MASTER_RIGHT).  A value of 2.0 would create
+a mosaic 2x larger in each dimension, while 0.25 would create a mosaic 4x
+smaller in each dimension.
+
+.VARI SCALE
+Sets the scale factor of the output in degrees/pixel.  This is just like ZOOM
+except you can set an absolute size regardless of the input camera models.
+The value is somewhat approximate due to the way the projections work.
+
+.VARI MINSAMP
+Minimum sample number (azimuth column) to be projected.  Anything to the
+left of this column is unprojected and will be black in the output, regardless
+of the input images.  This is intended to speed up the program when doing
+repetitive adjustments over a small area.  (Overlap footprints and image
+numbers are written over the entire output, however).
+
+.VARI MAXSAMP
+Maximum sample number (azimuth column) to be projected.  Anything to the
+right of this column is unprojected and will be black in the output, regardless
+of the input images.  This is intended to speed up the program when doing
+repetitive adjustments over a small area.  (Overlap footprints and image
+numbers are written over the entire output, however).
+
+.VARI LIMIT_TOPEL
+Limit to top elevation.  If specified, the top elevation will not
+go over this value - but could be under this value if the data doesn't
+go that high.
+
+.VARI LIMIT_BOTTOMEL
+Limit to bottom elevation.  If specified, the bottom elevation will not
+go under this value - but could be over this value if the data doesn't
+go that low.
+
+.VARI TOPEL
+Actual top elevation to use.  If specified, will override the top elevation
+that's automatically determined from the data.  Also overrides LIMIT_TOPEL.
+
+.VARI BOTTOMEL
+Actual bottom elevation to use.  If specified, will override the bottom
+elevation that's automatically determined from the data.  Also overrides
+LIMIT_BOTTOMEL.
+
+.VARI BASELINE
+This parameter allows the baseline between the virtual output cameras to be
+adjusted.  It is the same as the diameter of the ring (or 2x the radius)
+that is described by the output cameras as they move in azimuth.  Adjusting
+this changes the separation between the eyes, which results in more (larger
+baseline) or less (smaller baseline) depth between the foreground and
+background.  It can be used to compensate for the large baseline of the MER
+pancams (30cm), making it smaller and thus easier to view.
+
+Note that this is specified as a diameter for convenience.  The image labels
+contain the ring radius, which is half this value.
+
+Baseline adjustment works well when the actual surface matches the surface
+model.  Any deviation from the surface model can result in distortions due
+to parallax effects.
+
+.VARI RING_AXIS
+This parameter allows adjustment of the axis of the ring described by the
+output cameras.  The effect is to "tilt" the mosaic in some direction.  The
+value should be a unit vector, expressed in the Instrument (Rover) frame.
+
+This parameter should rarely be used directly; the UNTILT parameter sets it
+to an appropriate value.
+
+.VARI RING_CENTER
+This parameter allows adjustment of the center point of the ring described
+by the output cameras.  This is also the pivot point for RING_AXIS rotation.
+The effect of changing this is unclear and it should rarely if ever be used.
+
+.VARI UNTILT
+This flag, if set, adjusts RING_AXIS to "level" or untilt the spacecraft,
+making the horizon level while retaining proper disparity.
+
+Untilting works well when the actual surface matches the surface model.
+Any deviation from the surface model can result in distortions due to
+parallax effects.
+
+.PARM DISP_PIX
+This parameter shifts the mosaic left or right by the specified number of
+pixels.  It is used to control overall disparity (moving the entire mosaic
+in or out in depth) by changing the value between the left and right eyes.
+Internally, this just adjusts the value of START_AZ; this parameter is more
+convenient to use however as you don't need to know what START_AZ would
+otherwise be and do the math to adjust it.  Also, since it is measured in
+pixels instead of degrees, it is easier to use for disparity adjustment.
+
+.VARI WRAP_AZ
+WRAP_AZ is an optional argument used to define a specific wrapping location
+for a mosaic.  It is only used for a complete 360 mosaic, if the mosaic
+is not full the wrap should occur where the data is missing.  Can be defined
+in any coordiante system with WRAP_CS. Input in degrees.
+
+.VARI WRAP_EL
+Needed for supporting the functionality of WRAP_AZ in converting coordinate systems.
+The default value of 0 is sufficient for the vast majority of use cases.
+
+.VARI WRAP_COORD
+Coordinate system of the WRAP_AZ input. This is helpful if you would like to define
+a wrapping location in a coordinate system different than your other mosaic parameters.
+An example of this functionality would be wrapping in the rover frame at WRAP_AZ=180      
+(back of the rover) to move the rover hardware to the edges of the mosaic.
+
+.VARI NUMBER
+Causes the program to place an ASCII number into the mosaic at the center of
+where each input picture falls.  Numbers begin at 1 and increase in the
+order of the filenames in the input.  This permits one to determine which
+picture populated which part of the mosaic.  Defaults to NONUMBER.
+
+The DN to use for the numbers is set by NUMBER_DN, and the zoom factor for
+the numbers by NUMBER_ZOOM.
+
+.VARI NUMBER_DN
+The DN to use for the image numbers.  See NUMBER keyword.  Note, a
+NUMBER_DN of 0 is transparent (i.e. ignored).
+
+See also FOOT_COLOR.
+
+.VARI NUMBER_ZOOM
+The zoom factor to use for the image numbers (i.e. how big the numbers are).
+Must be a positive integer, 1 is the smallest possible.  See NUMBER keyword.
+
+.VARI NUMBER_START
+Specifies the starting point for the image numbers (i.e. the first input is
+assigned this number for the image number overlays, and they increment from
+there).  Normally this will be 1, but could be set differently if only part
+of a larger mosaic is being generated.
+
+.VARI FOOTPRT
+Causes "footprints" to be drawn around each input image in the output
+mosaic.  This is useful to show overlap of the images, and is often used
+in conjunction with NUMBER.
+
+There are three values:
+
+NOFOOTPRINT - No footprint is displayed.  This is the default.
+FOOTPRINT - Shows the footprint only where the edge of the image is "on top".
+    Useful to see which image is laid down first.  If the DN (FOOT_DN) has
+    insufficient contrast, the footprint may not be very visible, since it
+    is interpolated like normal pixels.
+OVERLAP - shows the entire footprints of all images, even if another image
+    overlaps the edge of the input.  Useful to see how much overlap there is
+    between images.  OVERLAP mode will slow down the program down somewhat,
+    since the borders are drawn in after the mosaic is created (to ensure that
+    all borders are drawn).
+
+The DN to use for the footprints is set by FOOT_DN.  Note that the footprint
+replaces (hides) the outer row of pixels in the image.
+
+.VARI FOOT_DN
+The DN to use for the footprints.  See FOOTPRT keyword.
+
+FOOT_DN is an array, allowing color footprints to be created.  Each element
+in FOOT_DN is used in sequence for the corresponding band.  If not enough
+elements are present in FOOT_DN, the last value is repeated.  A value of 0
+is treated as transparent, i.e. that band is not touched by the footprint.
+
+So for a color mosaic with range 0-4095, FOOT_DN=4095 will plot footprints in
+white, FOOT_DN=\(1,4095,4095\) will plot them in cyan, and
+FOOT_DN=\(0,4095,4095\) will plot them in something between cyan and white,
+dependeing on the image content of the first band.  Note that FOOT_DN is a
+floating point number, so FOOT_DN=\(0.1,4095,4095\) on an integer image will
+put a true 0 out for the red band without triggering the transparency check.
+
+See also FOOT_COLOR.
+
+.VARI FOOT_RANGE
+Specifies the range over which footprints and numbers will be plotted.
+
+.VARI FOOT_COLOR
+The name of a text file that provides colors for the footprints and image
+numbers.  The text file contains a dash-separated range of inputs (1-based),
+a space, and then the three R,G,B components (comma-separated, no spaces) to
+use for that number range.  If a certain image number is not found in this
+file, it defaults to FOOT_DN or NUMBER_DN.
+
+The file format must be exact (the parser is not robust).  Three components
+are required at all times, regardless of the number of bands in the mosaic.
+
+Example:
+
+1-21 4095,1,1
+22-31 4095,1,4095
+32-108 2816,3136,3552
+109-110 1,4095,4095
+111-111 480,2304,4080
+112-137 1,4095,1
+138-139 1,1,4095
+140-140 1,1,4095
+
+.VARI TAU
+Tau is a measure of atmospheric opacity.  The default for normal Mars conditions
+is 0.6. Higher tau means more dust in the atmosphere.
+
+.VARI RAD
+Keyword paramter that selects radiometric correction mode of the input images.
+RAD (the default) enables the correction (for missions/instruments which support
+it); NORAD disables it; ZENITH_SCALED_RAD the radiometry you'd get if the sun
+were at zenith on a clear day.  The scaling factor is a combination of solar
+elevation and tau, and will have the effect of brightening up images that
+were taken near sunset.
+
+.VARI DNSCALE
+DN scaling factor.  This factor is used to convert between physical
+radiometric units (watts/(meter**2, steradian, micron)) and DN's for the
+output mosaic.  The formula is:
+
+true_radiance = offset + (factor * DN)
+
+where "offset" is 0.0 in the current implementation, and "factor" is
+1.0 / DNSCALE (making the formula equivalently:  offset + (DN / DNSCALE)).
+The offset and factor (1.0/DNSCALE) are written to the output mosaic label.
+
+.VARI CONFIG_PATH
+A colon-separated list of directories in which to look for configuration
+and calibration files.  Environment variables are allowed in the list
+(and may themselves contain colon-separated lists).  The directories are
+searched in order for each config/cal file when it is loaded.  This allows
+multiple projectes to be supported simultaneously, and allows the user to
+override any given config/cal file.  Note that the directory structure below
+the directories specified in this path must match what the project expects.
+For example, Mars 98 expects flat fields to be in a subdirectory named
+"flat_fields" while Mars Pathfinder expects them to be directly in the
+directory specified by the path (i.e. no intermediate subdirectories).
+
+.VARI DNSCALE_IN
+Three-state keyword parameter to control whether or not to apply scaling
+parameters to reconstruct floating point values.
+
+RESCALE says to do the conversion, and reconstitute the float based on the
+RADIANCE_* keywords.  Note that if there are no RADIANCE_* keywords,
+this is a no-op, so it doesn't hurt to turn this on for non-scaled images.
+
+NOSCALE says to not to the conversion.  This is what we do now.  If your
+inputs are dynamically scaled, you'll probably get surprising results.
+
+AUTOSCALE says to figure it out based on the DNSCALE_OUT parameter (see
+DNSCALE_OUT for details) and -ZENITH_SCALED_RAD flag. If DNSCALE_OUT is STATIC,
+then it is NOSCALE; if DNSCALE_OUT is DYNAMIC/IDENTIT or RAD=ZENITH_SCALED_RAD,
+then it is RESCALE.
+
+.VARI DNSCALE_OUT
+Three-state keywork parameter to scale output DN values.
+
+If -STATIC is enabled, then the value specified by DNSCALE will be used
+as the DN scaling factor (note the unit scaling factor as well) for all
+radiometric models supplied.
+
+If -DYNAMIC is enabled, then the maximum responsivity value across all
+radiometric models will be used as the DN scaling factor (note the unit
+scaling factor as well).
+
+If -IDENTITY is enabled, then no scaling will be applied.
+
+.VARI MATCH_METHOD
+Specifies a method for pointing corrections.
+
+Loose method matches with pointing parameters of the image.
+Tight method matches with unique id of the image.
+
+.VARI MATCH_TOL
+Tolerance value for matching pointing parameters in the pointing corrections
+file.
+Used if MATCH_METHOD=LOOSE
+Default value is pretty arbitrary, though seems to work well so far....
+
+.VARI POINT_METHOD
+Specifies a mission-specific pointing method to use.  Normally this
+parameter is not used, in which case the "default" pointing methods
+are used.  Some missions may have special, or alternate, pointing
+methods available, which are indicated by this string (for example,
+backlash models, using arm joint angles instead of x/y/z/az/el, etc).
+A substring search is used, so multiple methods (where that makes sense)
+can be specified by separating the keywords with commas.
+
+Note that nav files created using one pointing method will most likely
+not be compatible with a mosaic created using a different pointing method.
+
+The methods available vary per mission, but some methods available at
+the time of this writing are:
+
+BACKLASH : Mars 98 SSI only.  Selects a backlash pointing model,
+which adjusts the telemetered azimuth and elevation values based on
+knowledge of the camera's mechanical backlash and the direction the
+motor was travelling when the image was taken.
+
+.VARI NOSITE
+Disables all label-derived parameters to the Site mechanism which underlies
+coordinate systems.  This forces all sites to be identical, with all rotations
+and offsets set the same.  In the case of MPF or Mars 98, this disables
+the lander quaternion and offset (sets them to identity and 0, respectively).
+This option should not be used with images taken from different vantage
+points (e.g. the spacecraft moved, or mixing a lander and a rover) or
+invalid results will be obtained.  The use of this option invalidates the
+Fixed coordinate frame; any values reported in the Fixed frame will not
+correctly reflect the orientation of the lander/rover.
+
+Obviously, this option should be rarely used; it is intended for when the
+image labels defining the site are invalid or inconsistent.
+
+.VARI FOV_LIMIT
+Overrides the default limits (89.4, 30) on size of the FOV for the input
+image.  The FOV really affects how far away from the pointing vector we can
+be before we say nope, this image doesn't apply.  The actual FOV is calculated,
+but these limits exist as sanity checks.  Note that the limit is input in
+degrees, with the larger value first.  If either limit is specified, both
+must be.
+
+.VARI INTERP
+Keyword parameter that turns on or off interpolation of the output
+images pixel values.  INTERP (the default) enables the interpolation, 
+while NOINTERP disables it.
+
+.VARI L_PROTO
+Normally the first input on the left side is used to determine things like
+the output camera geometry.  L_PROTO allows you to override this and choose
+a different image.  The value is the (1-based) index into the input list of
+the image to use as the prototype.
+
+This is sometimes needed because the first input may be unsuitable, for example
+the M20 RMI has a very odd camera model that does not work well with this
+program (and it is not a stereo camera either).  This parameter allows you
+to select an alternate without disturbing the list file or using INPUT_RANGE.
+
+.VARI R_PROTO
+Normally the first input on the right side is used to determine things like
+the output camera geometry.  R_PROTO allows you to override this and choose
+a different image.  The value is the (1-based) index into the input list of
+the image to use as the prototype.
+
+This is sometimes needed because the first input may be unsuitable, for example
+the M20 RMI has a very odd camera model that does not work well with this
+program (and it is not a stereo camera either).  This parameter allows you
+to select an alternate without disturbing the list file or using INPUT_RANGE.
+
+.VARI BBOX
+Specifies the filename to which the bounding box is written (see main help
+text).  If this parameter is not supplied, no bounding box file is written.
+
+.VARI BBOX_COUNT
+Specifies how many points along each edge of the input file are projected for
+the bounding box.  The corners are always projected; if BBOX_COUNT=0 that's
+all you get.  The default of 3 projects 3 points along each edge (center, 1/4,
+and 3/4 along the edge).
+
+.VARI DATA_SET_NAME
+The DATA_SET_NAME typically identifies the instrument that acquired the
+data, the target of that instrument, and the processing level of the data.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_NAME.
+
+.VARI DATA_SET_ID
+The DATA_SET_ID value for a given data set or product is constructed
+according to flight project naming conventions.  In most cases the
+DATA_SET_ID is an abbreviation of the DATA_SET_NAME.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_ID.
+
+.VARI RELEASE_ID
+When a data set is released incrementally, such as every three months during
+a mission, the RELEASE_ID is updated each time part of the data set is released.
+For each mission (or host id if multiple spacecraft), the first release of a
+data set should have a value of "0001".
+This value is copied to the output label, property IDENTIFICATION,
+keyword RELEASE_ID.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique identifier assigned to a data product by
+its producer. Most commonly, it is the filename minus the extension.
+This value is copied to the output label, property IDENTIFICATION,
+keyword PRODUCT_ID.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier of an entity associated with the
+production of a data set. This value is copied to the output label,
+property IDENTIFICATION, keyword PRODUCER_ID.
+
+.VARI PRODUCER_INST
+Specifies the identity of a university, research center, NASA center or other
+institution associated with the production of a data set.
+This value is copied to the output label, property IDENTIFICATION, keyword
+PRODUCER_INSTITUTION_NAME.
+
+.VARI TARGET_NAME
+Specifies a target.  The target may be a planet, satelite, ring, region,
+feature, asteroid or comet.  This value is copied to the output label, property
+IDENTIFICATION, keyword TARGET_NAME.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target. This value is copied to the output
+label, property IDENTIFICATION, keyword TARGET_NAME.
+
+.VARI RSF
+Rover State File.  This is a list of filenames to load containing
+Rover State information.  These files contain position and orientation
+information for a rover (or other mobile spacecraft) at various sites.
+They are in XML format.  See the "Rover Motion Counter (RMC) Master File SIS"
+for details on these files.
+
+Rover State Files have a priority order.  The files listed first have
+the highest priority.
+
+Environment variables may be used in the list.
+
+For MER, if a directory is specified, then that directory is searched for
+RMC Master files and any found are loaded.  The directory structure and
+filename convention is covered in the RMC SIS.  The directory specified
+is the one containing "master", so if <dir> is the name specified in the
+RSF parameter, the following files will be searched for:
+
+<dir>/master/<mission>_Master.svf
+<dir>/master/<mission>_Site_<n>_Master.rvf
+
+The name of each file loaded is printed to the stdout log for reference.
+
+.VARI DEBUG_RSF
+If enabled, this causes the internal database of RMC locations to be
+printed out to the stdout log.  This is after the RSF files have been
+loaded and the coordinate systems read from the input label(s).
+
+.VARI COORD
+The coordinate system to use for START_AZ only.
+The interpretation of the values is dependent on the mission.  Some
+representative missions are listed here:
+
+Fixed - The Fixed frame (default).  This is the ultimate reference frame
+    (see also FIXED_SITE for rover missions).
+Instrument - The "natural" frame for the instrument (of the first input
+    image).  MPF: Lander or Rover; M98: MVACS; MER: Rover.
+Site - A major Site frame.  For rover missions, COORD_INDEX specifies which
+    Site frame to use.  Non-rover missions treat this as Fixed.
+Rover - An instance of the Rover frame.  For rover missions, COORD_INDEX
+    specifies which instance of the rover frame to use.  Non-rover mission
+    use the spacecraft frame (e.g. Lander for M98).
+Local_Level - An instance of a Local Level frame.  This is typically
+    coincident with the Rover frame (in XYZ) but oriented toward North
+    like the Site and Fixed frames.  For MER, this is an instance of a
+    Drive index move.
+
+.VARI COORD_INDEX
+The index specifies which instance of a coordinate system to use.  It is
+currently applicable only to rover-based missions, but could have other
+uses.  The index is equivalent to the Rover Motion Counter (RMC) for MER
+and FIDO.
+
+For MER/FIDO, there are many Site frames.  Each is numbered with a single
+index.  For Site Frames, coord_index specifies which to use.  Likewise,
+there are many Local_Level and Rover frames, corresponding to values of
+the RMC.  The multiple instances of this frame are selected by COORD_INDEX.
+
+Generally COORD_INDEX defaults sensibly so you don't usually need to
+specify it.  It will default to the instance used by the first input.
+
+.VARI FIXED_SITE
+Specifies which major Site is the "Fixed" Site for this run.
+
+Historically, MPF and M98 had a single "Surface Fixed" frame which never
+moved, and which all other coordinate system frames were referenced to.
+With the advent of long-range rovers (such as MER and FIDO), that became
+insufficient.  The rover traverses far enough that errors in knowledge of
+coordinate system offset and orientation become unacceptable.
+
+For this reason, a system of major Sites was introduced.  Periodically
+during the mission, a Site frame is declared.  This then becomes the
+reference frame for all activities until the next Site is declared.
+References are kept local, and errors don't propogate across Sites.
+
+However, if images from more than one Site are combined together, the
+Site's must be placed relative to each other.  Therefore a single reference
+frame is still needed to combine different sites.
+
+The FIXED_SITE parameter controls which of the major Site frames is
+the reference ("fixed") site for this program run.  This fixed frame
+can vary in different program runs, but is constant throughout one
+execution.
+
+If not specified, FIXED_SITE defaults to the minimum Site number (i.e.
+lowest numbered, or earliest chronologically) used in all input images.
+Normally this default is sufficient; rarely must FIXED_SITE be specified.
+
+One or more Rover State Files must usually be specified in order to combine
+image from more than one Site.  These describe the relationship between
+sites.  See the RSF parameter.
+
+.VARI SOLUTION_ID
+Specifies which solution ID to use for pointng corrections.
+
+There are potentially many different definitions for the same coordinate
+system.  These are identified via a unique Solution ID.  If this parameter
+is given, only the specified solution's definition is searched for.
+

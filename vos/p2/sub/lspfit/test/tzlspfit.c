@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "xvmaininc.h"
 #include "zlspfit.h"
 #include "ftnbridge.h"

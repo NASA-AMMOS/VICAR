@@ -1,7 +1,13 @@
 procedure
 refgbl $echo
 body
+enable-log
+
 let _onfail="continue"
 let $echo="yes"
-TDGELG
+
+tdgelg
+
+disable-log
 end-proc
+

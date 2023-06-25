@@ -1,0 +1,16 @@
+$ vpack marsjplstereo.com -mixed -
+	-s marsjplstereo.cc ErrHandle.c JPLStereo.cc Camera.cc JPLPic.cc -
+	   FloatMatrix.cc good_fopen.c ErrHandle.h JPLStereo.h Camera.h -
+	   JPLPic.h FloatMatrix.h good_fopen.h stereo.h MDTypes.h -
+	   nav_memory.h real_helpers.h range.h range.c list_type.h -
+	   list_type.c mwm.h float_matrix.h st_warp.h st_warp.c viscommon.h -
+	   errors.h errors.c cmod_fp_stubs.h StackMemory.c must_malloc.c -
+	   cistr.c fmultout.c itoa.c c2s.c NamedCaches.h NamedCaches.cc -
+	   JPLStereo_Obstacle.cc pic_cmap.cc pic_draw.cc pic_filter.cc -
+	   pic_filter_mem.cc pic_io.cc pic_poly.cc pic_stats.cc pic_units.cc -
+	   stereo_filter.cc stereo_inner_loop.cc stereo_interface.cc -
+	   stereo_io.cc stereo_less_memory.cc stereo_show.cc -
+	   stereo_statics.cc stereo_trinocular.cc stereo_vis.cc Timing.h -
+	-i marsjplstereo.imake -
+	-p marsjplstereo.pdf
+$ Exit

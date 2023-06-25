@@ -1,0 +1,679 @@
+process help=*
+PARM INP TYPE=STRING COUNT=1
+PARM OUT TYPE=STRING COUNT=(1:3)
+PARM NAVTABLE TYPE=STRING COUNT=(0:1) DEFAULT=--
+
+PARM ZOOM_MODE TYPE=KEYWORD VALID=("NORMAL","HALF_SCALE","UPPER", "LOWER", "TALL","AVERAGE","NONE") DEFAULT="NORMAL"
+PARM SS TYPE=INTEGER COUNT=1 DEFAULT=1
+PARM SL TYPE=INTEGER COUNT=1 DEFAULT=1
+PARM NS TYPE=INTEGER COUNT=1 DEFAULT=0
+PARM NL TYPE=INTEGER COUNT=1 DEFAULT=0
+PARM INTERP TYPE=KEYWORD VALID=("REPLICATE","BILINEAR","MALVAR") DEFAULT="BILINEAR"
+PARM MIN_DN TYPE=REAL COUNT=1 DEFAULT=1
+PARM MAX_DN TYPE=REAL COUNT=1 DEFAULT=255
+PARM MULT TYPE=REAL COUNT=(0:3) DEFAULT=--
+PARM ROTATE TYPE=KEYWORD COUNT=(0:1) VALID=("ROT0","ROT90","ROT180","ROT270") DEFAULT=--
+PARM OFFSET TYPE=KEYWORD COUNT=(0:1) VALID=("LINE_OFFSET","SAMPLE_OFFSET","BOTH_OFFSET") DEFAULT=--
+PARM ONLY_BAND TYPE=KEYWORD COUNT=(0:1) VALID=("RED","GREEN","BLUE") DEFAULT=--
+PARM CONFIG_PATH STRING DEFAULT="$MARS_CONFIG_PATH"
+PARM POINT_METHOD TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM NOSITE TYPE=KEYWORD COUNT=(0:1) VALID=NOSITE DEFAULT=--
+
+PARM DATA_SET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM DATA_SET_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM RELEASE_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCT_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_INST TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_TYPE TYPE=STRING COUNT=(0:1) DEFAULT=--
+
+PARM RSF TYPE=STRING COUNT=0:100 DEFAULT=--
+PARM DEBUG_RSF TYPE=KEYWORD COUNT=0:1 VALID=DEBUG_RSF DEFAULT=--
+PARM COORD TYPE=KEYWORD VALID=("FIXED", "INSTRUMENT", "SITE", "ROVER", +
+        "LOCAL_LEVEL", "RMECH") DEFAULT="INSTRUMENT"
+PARM COORD_INDEX TYPE=INTEGER COUNT=0:10 DEFAULT=--
+PARM FIXED_SITE TYPE=INTEGER COUNT=0:1 DEFAULT=--
+PARM SOLUTION_ID TYPE=STRING COUNT=0:1 DEFAULT=--
+
+END-PROC
+
+.TITLE
+VICAR program MARSDEBAYER.
+
+.HELP
+PURPOSE:
+
+MARSDEBAYER removes the Bayer pattern from a color CCD image, such as
+used with the MSL cameras Mastcam, MAHLI, and MARDI.  The result is a
+three-band color image.
+
+The Bayer pattern is a method of making a color CCD where each pixel is
+supplied with an individual red, green, or blue filter.  These filters are
+arranged in a 2x2 pattern that repeats across the image:
+
+   R  G
+   G  B
+
+making a larger image look like:
+
+   R  G  R  G  R  G
+   G  B  G  B  G  B
+   R  G  R  G  R  G
+   G  B  G  B  G  B
+   R  G  R  G  R  G
+   G  B  G  B  G  B
+
+Thus each 2x2 cell has one red, one blue, and two green pixels.
+
+The output can be a single 3-band image, or three individual 1-band images.
+What's in the output is determined by the ZOOM_MODE parameter.  The possible
+values are:
+
+* NORMAL - No zooming; the output is the same size as the input.  For Red
+  and Blue, there is only one-quarter of the data necessary; for Green there
+  is only half the data.  The rest is filled in according to the INTERP keyword.
+  This is the mode that is used onboard by the MSL MMM cameras.
+
+* HALF_SCALE - The output is half the size of the input.  Each Bayer cell
+  this corresponds to a single pixel in the output.  The Green cells are
+  oversampled by 2x; they are averaged to produce the output value.
+
+* UPPER - Like HALF_SCALE, but only the "upper" of the two Green pixels is used
+  in each Bayer cell, with no averaging.
+
+* LOWER - Like HALF_SCALE, but only the "lower" of the two Green pixels is used
+  in each Bayer cell, with no averaging.
+
+* TALL - The result has the same vertical size as the input, but half the
+  horizontal size.  This changes the aspect ratio by a factor of 2.  This
+  preserves all the Green pixel data without replication.  The Red and Blue
+  pixels are doubled per the INTERP parameter.
+
+* AVERAGE - No de-Bayering is done, but the 4 pixels in each Bayer cell are
+  averaged together.  The output is thus a single one-band file at half scale
+  compared to the input.
+
+* NONE - No de-Bayering is done; the output is a single one-band file looking
+  the same as the input.  This mode could be useful to extract a subframe from
+  an image (potentially not even a Bayer pattern image) while keeping the
+  camera model correct.  It is also useful to process images from filters
+  where the Bayer pattern effectively disappears (e.g. the MSL Mastcam infrared
+  filters).  In this mode, the new-style labels write "IDENTITY" as the
+  Bayer method, indicating the image no longer has the Bayer pattern (even
+  though the operation was a no-op).
+
+For 3-band output modes, a single band can be selected for output if desired.
+
+In addition, the SL/SS/NL/NS parameters can be used to subframe the image,
+pulling out only the selected section.  Note: the subframe parameters apply
+to the coordinates of the original image, before any resizing is done.
+
+In all cases, the camera model in the label is updated to reflect the new
+geometry.
+
+EXECUTION:
+
+marsdebayer inp=bayer.vic out=color.vic
+
+where:
+bayer.vic is the input 1-band image with the Bayer pattern
+color.vic is the output 3-band color image (of the same size, in this example)
+
+.PAGE
+METHOD:
+
+The algorithm itself is trivial.  If the geometry changes, either due to a
+zoom or subframe, then the PIG library is used to adjust the camera model
+in the label and rewrite it.  In addition, the downsample and/or subframe
+parameters in the label are updated, so that future reconstructions of the
+camera model from kinematics (e.g. for mosaic pointing correction) will still
+work properly.
+
+The MALVAR interpolation algorithm demosaics the image based on convolution
+matrices developed by Malvar, He, and Cutler at Microsoft.  The advantage
+of using the MALVAR bilinear interpolation method is that for every pixel, 
+the neighboring known color pixels are used in the interpolation estimate 
+instead of being discarded.  The interpolation is corrected by measuring
+the gradient for the known color at the pixel location.  A gain factor is 
+then used to control how much of the measured gradient correction is applied.
+The algorithm and matrices are described in detail in their paper:  
+
+H.S. Malvar, Lei-Wei He, R. Culter, "High-Quality Linear Interpolation for 
+Demosaicing of Bayer-Patterned Color Images", IEEE International Conference on
+Acoustics, Speech, and Signal Processing Volume 3. (2004)
+
+http://ieeexplore.ieee.org/xpl/articleDetails.jsp?arnumber=1326587
+
+.PAGE
+Output Labels
+
+Two label modes are supported: old-style and new-style.
+
+If BAYER_MODE is in the input file, old-style is used.  This replaces the
+BAYER_MODE value with one of the following:
+
+MIPL_REPLICATED
+MIPL_AVERAGED_COLOR
+MIPL_UPPER
+MIPL_LOWER
+MIPL_TALL_REPLICATED
+MIPL_AVERAGED_MONO
+MIPL_INTERPOLATED
+MIPL_MALVAR_INTERPOLATED
+
+BAYER_MODE is used in MSL (MMM cameras) but has been deprecated in newer
+missions (InSight, 2020, MSAM).  If BAYER_MODE is not in the input file,
+new-style is used.  This sets CFA_VENUE to GROUND, and sets BAYER_METHOD
+to one of the following:
+
+MALVAR
+BILINEAR
+RED_BILINEAR
+GREEN_BILINEAR
+BLUE_BILINEAR
+AVERAGED
+RED_AVERAGED
+GREEN_AVERAGED
+BLUE_AVERAGED
+PANCHROMATIC
+IDENTITY
+OTHER
+
+If one were to replicate what the MSL Mastcam camera does onboard, the
+parameters to use depend on the filter:
+
+L0: -malver
+L1: -green
+L2: -blue
+L3: -red
+L4: -red
+L5: -none
+L6: -none
+L7: -none
+R0: -malvar
+R1: -green
+R2: -blue
+R3: -red
+R4: -none
+R5: -none
+R6 :-none
+R7: -blue
+
+.PAGE
+
+HISTORY:
+  2011-10-06 rgd - Initial version
+  2014-10-02 nar - Added MALVAR demosaicking algorithm
+  2015-05-18 nar - Bug fix
+  2015-08-11 nar - Added multiplicative factor, rotation, and offset parameters
+  2016-03-14 nar - Bug fix
+  2018-01-25 rgd - Added BAYER_METHOD support, fix downsample bug, add ONLY_BAND
+  2019-10-02 Walt Bunch - IDS-7926 - Initialized some variables.
+             Commented unused variables. Added test script and log.
+
+COGNIZANT PROGRAMMER: B. Deen
+
+.LEVEL1
+.VARI INP
+Input image, single-band.
+
+.VARI OUT
+Output files.
+Must be 1 or 3
+filenames (with
+3 or 1 bands each).
+
+.VARI NAVTABLE
+Corrected navigation
+filename.
+
+.VARI ZOOM_MODE
+Specifies the geometry of
+the output
+
+.VARI SS
+Starting sample for subframing
+
+.VARI SL
+Starting line for subframing
+
+.VARI NS
+Number of samples for subframing
+
+.VARI NL
+Number of lines for subframing
+
+.VARI INTERP
+Specifies interpolation mode
+
+.VARI MIN_DN
+Specfies minimum dn value
+to use for valid data
+
+.VARI MAX_DN
+Specifies the maximum dn value
+to use for valid data
+
+.VARI MULT
+Specifies the mulitpicative
+factors to use on RGB bands
+(3 values)
+
+.VARI ROTATE
+Specifies clockwise rotation to be
+applied to image before debayering
+occurs.
+
+.VARI OFFSET
+Specifies Bayer pattern starting
+offset of 1. (line, sample, or both)
+
+.VARI ONLY_BAND
+Specifies a single band to
+write instead of color.
+
+.VARI CONFIG_PATH
+Path used to find
+configuration/calibration
+files.
+
+.VARI POINT_METHOD
+Specifies a mission-
+specific pointing
+method to use
+
+.VARI NOSITE
+Disables coordinate
+system sites.
+
+.VARI RSF
+Rover State File(s) to use.
+
+.VARI DEBUG_RSF
+Turns on debugging of RSF
+parameter.
+
+.VARI COORD
+Coordinate system to use.
+
+.VARI COORD_INDEX
+Coordinate system index for
+some COORD/mission combos.
+
+.VARI FIXED_SITE
+Which site is FIXED for
+rover missions.
+
+.VARI SOLUTION_ID
+Solution ID to use for
+COORD_INDEX
+
+.VARI DATA_SET_NAME
+Specifies the full name given
+to a data set or a data product.
+
+.VARI DATA_SET_ID
+Specifies a unique alphanumeric
+identifier for a data set or data
+product.
+
+.VARI RELEASE_ID
+Specifies the unique identifier
+associated with the release to the
+public of all or part of a data set.
+The release number is associated with
+the data set, not the mission.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique
+identifier assigned to a data
+product by its producer.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier
+of an entity associated with the
+production a data set.
+
+.VARI PRODUCER_INST
+Specifies the full name of the
+identity of an entity associated
+with the production of a data set.
+
+.VARI TARGET_NAME
+Specifies a target.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target.
+
+.LEVEL2
+.VARI INP
+Single-band input file containing the Bayer pattern.  Must be byte or
+halfword format.  In the case of ZOOM_MODE of NONE, the input need not
+have the Bayer pattern, although it must still be a single band of byte
+or halfword data.
+
+.VARI OUT
+Output files containing the color image.
+
+If three filenames are given, three separate 1-band files will be created,
+in R,G,B order.  If only one filename is given, a single 3-band file will be
+created.  The data type will be the same as the input file.
+
+In the case of ZOOM_MODE of NONE or AVERAGE, the output must be a single
+file, which will contain only one band.
+
+.VARI NAVTABLE
+Corrected navigation filename.
+If marsnav was run on the input images it created a table of corrected
+pointing parameters. If you refer to this table using NAVTABLE it
+will override the pointing parameters (e.g. azimuth and elevation) in the
+picture labels, giving different (and presumably better) output coordinates.
+
+This parameter is unlikely to be useful for this program; it is included
+because it is standard for the PIG suite.
+
+.VARI ZOOM_MODE
+Specifies the geometry of the output file(s).  Possible values are:
+
+* NORMAL - No zooming; the output is the same size as the input.  For Red
+  and Blue, there is only one-quarter of the data necessary; for Green there
+  is only half the data.  The rest is filled in according to the INTERP keyword.
+  This is the mode that is used onboard by the MSL MMM cameras.
+
+* HALF_SCALE - The output is half the size of the input.  Each Bayer cell
+  this corresponds to a single pixel in the output.  The Green cells are
+  oversampled by 2x; they are averaged to produce the output value.
+
+* UPPER - Like HALF_SCALE, but only the "upper" of the two Green pixels is used
+  in each Bayer cell, with no averaging.
+
+* LOWER - Like HALF_SCALE, but only the "lower" of the two Green pixels is used
+  in each Bayer cell, with no averaging.
+
+* TALL - The result has the same vertical size as the input, but half the
+  horizontal size.  This changes the aspect ratio by a factor of 2.  This
+  preserves all the Green pixel data without replication.  The Red and Blue
+  pixels are doubled per the INTERP parameter.
+
+* AVERAGE - No de-Bayering is done, but the 4 pixels in each Bayer cell are
+  averaged together.  The output is thus a single one-band file at half scale
+  compared to the input.
+
+* NONE - No de-Bayering is done; the output is a single one-band file looking
+  the same as the input.  This mode could be useful to extract a subframe from
+  an image (potentially not even a Bayer pattern image) while keeping the
+  camera model correct.
+
+.VARI SS
+Starting sample in the input image for subframing (starting at 1).  This
+value must be odd, i.e. you cannot split a Bayer cell by subframing.
+If omitted, defaults to 1.
+
+.VARI SL
+Starting line in the input image for subframing (starting at 1).  This
+value must be odd, i.e. you cannot split a Bayer cell by subframing.
+If omitted, defaults to 1.
+
+.VARI NS
+Number of samples from the input image for subframing.  If omitted, defaults
+to the size of the input.  Note that this value must be even, i.e. you cannot
+split a Bayer cell by subframing.
+
+.VARI NL
+Number of lines from the input image for subframing.  If omitted, defaults
+to the size of the input.  Note that this value must be even, i.e. you cannot
+split a Bayer cell by subframing.
+
+.VARI INTERP
+Specifies the interpolation mode when sizing up (NORMAL mode, or TALL mode
+for red and blue pixels).  Ignored in the other modes.
+
+* REPLICATE - Pixel replication.  The output cell is filled with the value
+from the input cell, with no interpolation.  Produces a very blocky image.
+
+* BILINEAR - Bilinear interpolation.
+
+* MALVAR - image is demosaicked based on convolution matrices developed by
+  Malvar, He, and Cutler at Microsoft.  See METHOD.
+
+The default is BILINEAR.
+
+.VARI MIN_DN
+Specifies the minimum dn value to use on valid data when using the malvar
+interpolation mode.  The malvar algorithm can result in an underflow
+(values < 0).  The minumum dn value sets what the undeflow value will
+be interpreted as.  Default is 1 since 0 typically means no data.
+
+.VARI MAX_DN
+Specifies the minimum dn value to use on valid data when using the malvar
+interpolation mode.  The malvar algorithm can result in an overflow
+(values > 2^n -1, where n = number of bits).  
+The maximum dn value sets the overflow value.  Default 255 (8-bit data).
+
+.VARI MULT
+Specifies the multiplicative factors to use on red, green, and blue
+bands respectively.  The factors are applied before demosaicing is
+performed.
+
+.VARI ROTATE
+Specifies the clockwise rotation to apply to the input image before
+demosaicing is performed.  Rotate should be used to align the bayer
+patterned cells to the correct orientation specified above. Rotations
+will always be performed prior to any other image processing. (e.g. MULT,
+OFFSET, etc.)  The output image is rotated back to the original orientation.
+
+.VARI OFFSET
+Specifies a Bayer pattern starting offset of 1 in line, sample, or both.
+The offset is applied to the mutiplicative factoring of bands and to
+demosaicing.  For simplicity, the offset is handled by shifting the image
+1 pixel, truncating the first line or sample (or both). The last line and
+sample in the image are then set to 0 DN value.
+
+.VARI ONLY_BAND
+Specifies which band to write, if only one color output is desired.  The
+result will be a single-band file.  It cannot be used in the -none or -average
+modes (which are already single-band).
+
+.VARI CONFIG_PATH
+A colon-separated list of directories in which to look for configuration
+and calibration files.  Environment variables are allowed in the list
+(and may themselves contain colon-separated lists).  The directories are
+searched in order for each config/cal file when it is loaded.  This allows
+multiple projects to be supported simultaneously, and allows the user to
+override any given config/cal file.  Note that the directory structure below
+the directories specified in this path must match what the project expects.
+For example, Mars 98 expects flat fields to be in a subdirectory named
+"flat_fields" while Mars Pathfinder expects them to be directly in the
+directory specified by the path (i.e. no intermediate subdirectories).
+
+.VARI POINT_METHOD
+Specifies a mission-specific pointing method to use.  Normally this
+parameter is not used, in which case the "default" pointing methods
+are used.  Some missions may have special, or alternate, pointing
+methods available, which are indicated by this string (for example,
+backlash models, using arm joint angles instead of x/y/z/az/el, etc).
+A substring search is used, so multiple methods (where that makes sense)
+can be specified by separating the keywords with commas.
+
+Note that nav files created using one pointing method will most likely
+not be compatible with a mosaic created using a different pointing method.
+
+The methods available vary per mission, but some methods available at
+the time of this writing are:
+
+BACKLASH : Mars 98 SSI only.  Selects a backlash pointing model,
+which adjusts the telemetered azimuth and elevation values based on
+knowledge of the camera's mechanical backlash and the direction the
+motor was travelling when the image was taken.
+
+.VARI NOSITE
+Disables all label-derived parameters to the Site mechanism which underlies
+coordinate systems.  This forces all sites to be identical, with all rotations
+and offsets set the same.  In the case of MPF or Mars 98, this disables
+the lander quaternion and offset (sets them to identity and 0, respectively).
+This option should not be used with images taken from different vantage
+points (e.g. the spacecraft moved, or mixing a lander and a rover) or
+invalid results will be obtained.  The use of this option invalidates the
+Fixed coordinate frame; any values reported in the Fixed frame will not
+correctly reflect the orientation of the lander/rover.
+
+Obviously, this option should be rarely used; it is intended for when the
+image labels defining the site are invalid or inconsistent.
+
+.VARI DATA_SET_NAME
+The DATA_SET_NAME typically identifies the instrument that acquired the
+data, the target of that instrument, and the processing level of the data.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_NAME.
+
+.VARI DATA_SET_ID
+The DATA_SET_ID value for a given data set or product is constructed
+according to flight project naming conventions.  In most cases the
+DATA_SET_ID is an abbreviation of the DATA_SET_NAME.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_ID.
+
+.VARI RELEASE_ID
+When a data set is released incrementally, such as every three months during
+a mission, the RELEASE_ID is updated each time part of the data set is released.
+For each mission(or host id if multiple spacecrafts), the first release of a data
+set should have a value of "0001".
+This value is copied to the output label, property IDENTIFICATION,
+keyword RELEASE_ID.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique identifier assigned to a data product by
+its producer. Most commonly, it is the filename minus the extension.
+This value is copied to the output label, property IDENTIFICATION,
+keyword PRODUCT_ID.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier of an entity associated with the
+production of a data set. This value is copied to the output label,
+property IDENTIFICATION, keyword PRODUCER_ID.
+
+.VARI PRODUCER_INST
+Specifies the identity of a university, research center, NASA center or other
+institution associated with the production of a data set.
+This value is copied to the output label, property IDENTIFICATION, keyword
+PRODUCER_INSTITUTION_NAME.
+
+.VARI TARGET_NAME
+Specifies a target.  The target may be a planet, satelite, ring, region, feature,
+asteroid or comet.  This value is copied to the output label, property
+IDENTIFICATION, keyword TARGET_NAME.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target. This value is copied to the output
+label, property IDENTIFICATION, keyword TARGET_NAME.
+
+.VARI RSF
+Rover State File.  This is a list of filenames to load containing
+Rover State information.  These files contain position and orientation
+information for a rover (or other mobile spacecraft) at various sites.
+They are in XML format.  See the "Rover Motion Counter (RMC) Master File SIS"
+for details on these files.
+
+Rover State Files have a priority order.  The files listed first have
+the highest priority.
+
+Environment variables may be used in the list.
+
+For MER, if a directory is specified, then that directory is searched for
+RMC Master files and any found are loaded.  The directory structure and
+filename convention is covered in the RMC SIS.  The directory specified
+is the one containing "master", so if <dir> is the name specified in the
+RSF parameter, the following files will be searched for:
+
+<dir>/master/<mission>_Master.svf
+<dir>/master/<mission>_Site_<n>_Master.rvf
+
+The name of each file loaded is printed to the stdout log for reference.
+
+.VARI DEBUG_RSF
+If enabled, this causes the internal database of RMC locations to be
+printed out to the stdout log.  This is after the RSF files have been
+loaded and the coordinate systems read from the input label(s).
+
+.VARI COORD
+The coordinate system to use for the output UVW vectors.  The interpretation
+of the values is dependent on the mission.  Some representative missions are
+listed here:
+
+Fixed - The Fixed frame.  This is the ultimate reference frame
+    (see also FIXED_SITE for rover missions).
+Instrument - (default) The "natural" frame for the instrument 
+    (of the first input image).  MPF: Lander or Rover; M98: MVACS; MER: Rover.
+Site - A major Site frame.  For rover missions, COORD_INDEX specifies which
+    Site frame to use.  Non-rover missions treat this as Fixed.
+Rover - An instance of the Rover frame.  For rover missions, COORD_INDEX
+    specifies which instance of the rover frame to use.  Non-rover mission
+    use the spacecraft frame (e.g. Lander for M98).  For MSL, this is the
+    Rover Nav frame.
+Local_Level - An instance of a Local Level frame.  This is typically
+    coincident with the Rover frame (in XYZ) but oriented toward North
+    like the Site and Fixed frames.  For MER, this is an instance of a
+    Drive index move.
+RMECH - for MSL, this is the Rover Mechanical frame.  It should not normally
+    be used except for testing.
+
+.VARI COORD_INDEX
+The index specifies which instance of a coordinate system to use.  It is
+currently applicable only to rover-based missions, but could have other
+uses.  The index is equivalent to the Rover Motion Counter (RMC) for MER
+and FIDO.
+
+For MER/FIDO, there are many Site frames.  Each is numbered with a single
+index.  For Site Frames, coord_index specifies which to use.  Likewise,
+there are many Local_Level and Rover frames, corresponding to values of
+the RMC.  The multiple instances of this frame are selected by COORD_INDEX.
+
+Generally COORD_INDEX defaults sensibly so you don't usually need to
+specify it.  It will default to the instance used by the first input.
+
+.VARI FIXED_SITE
+Specifies which major Site is the "Fixed" Site for this run.
+
+Historically, MPF and M98 had a single "Surface Fixed" frame which never
+moved, and which all other coordinate system frames were referenced to.
+With the advent of long-range rovers (such as MER and FIDO), that became
+insufficient.  The rover traverses far enough that errors in knowledge of
+coordinate system offset and orientation become unacceptable.
+
+For this reason, a system of major Sites was introduced.  Periodically
+during the mission, a Site frame is declared.  This then becomes the
+reference frame for all activities until the next Site is declared.
+References are kept local, and errors don't propogate across Sites.
+
+However, if images from more than one Site are combined together, the
+Site's must be placed relative to each other.  Therefore a single reference
+frame is still needed to combine different sites.
+
+The FIXED_SITE parameter controls which of the major Site frames is
+the reference ("fixed") site for this program run.  This fixed frame
+can vary in different program runs, but is constant throughout one
+execution.
+
+If not specified, FIXED_SITE defaults to the minimum Site number (i.e.
+lowest numbered, or earliest chronologically) used in all input images.
+Normally this default is sufficient; rarely must FIXED_SITE be specified.
+
+One or more Rover State Files must usually be specified in order to combine
+image from more than one Site.  These describe the relationship between
+sites.  See the RSF parameter.
+
+.VARI SOLUTION_ID
+Specifies which solution ID to use when specifying the coordinate system.
+
+There are potentially many different definitions for the same coordinate
+system.  These are identified via a unique Solution ID.  If this parameter
+is given, only the specified solution's definition is searched for.  Without
+it, the "best" available solution is chosen.
+
+It is extremely rare that this parameter should be needed.  The default
+will be sufficient in almost every case.
+
+Note that the current MER implementation requires that a value for COORD_INDEX
+also be provided, in order for this parameter to take effect.
+

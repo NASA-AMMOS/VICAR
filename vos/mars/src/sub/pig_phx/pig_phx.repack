@@ -1,0 +1,7 @@
+$ vpack pig_phx.com -mixed -
+	-s PigPHX.cc PigFileModelPHX.cc PigPointPHXssiCamera.cc -
+	   PigPointPHXssiCamera3dof.cc PigSitePHX.cc PigPointPHXracCamera.cc -
+	   PigPointPHXracCamera6dof.cc PigRoverStateManagerPHX.cc -
+	   PigLabelModelPHX.cc PigConfigMgrTempPHX.cc -
+	-i pig_phx.imake
+$ Exit

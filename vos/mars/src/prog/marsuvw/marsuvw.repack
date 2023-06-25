@@ -1,0 +1,5 @@
+$ vpack marsuvw.com -mixed -
+	-s marsuvw.cc xyz_to_uvw.h xyz_to_uvw.cc -
+	-i marsuvw.imake -
+	-p marsuvw.pdf
+$ Exit

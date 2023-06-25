@@ -1,0 +1,78 @@
+process help=*
+ PARM INP         TYPE=STRING COUNT=(1:2) DEFAULT=""
+ PARM GEOTIFF     TYPE=STRING COUNT=(0:100) DEFAULT=--
+ PARM PROPERTY    TYPE=STRING DEFAULT="GEOTIFF"
+ PARM PARMFILE    TYPE=STRING DEFAULT=""
+ END-PROC
+
+! HELP TEXT FOR GTGENUP
+.TITLE
+GTGENUP - Program for updating a VICAR GeoTIFF label file.
+.HELP
+PURPOSE
+     GTGENUP is a VICAR applications program which updates a GeoTIFF
+     label.  The new values can be specified in one of three methods:
+     (1) In another VICAR image (GeoTIFF label is copied/replaced).
+     (2) In parameter GEOTIFF using the same format as is used in
+     the VICAR application GTGEN.
+     (3) In an ASCII file named by parameter PARMFILE.
+
+     Specify the PROPERTY parameter to use a property label other then
+     the default GEOTIFF.
+     
+CALL
+     gtgenup (INP1,INP2)
+  WHERE:
+     INP1           is the input VICARGT image file to be updated.
+     INP2           is the input VICARGT image file used as a source
+                    of update values.
+OR
+     gtgenup INP GEOTIFF
+  WHERE:
+     INP            is the input VICARGT image file to be updated.
+     GEOTIFF        are tag-value pairs that replace geotiff parms in
+                    the label; each is formatted tag=value.
+OR
+     gtgenup INP GTFILE
+  WHERE:
+     INP            is the input VICARGT image file to be updated.
+     PARMFILE       is a text file containing a string formatted as the
+                    GEOTIFF parameter is formatted.
+     
+For more information on the GEOTIFF parameter format, see GTGEN.
+
+.PAGE
+RESTRICTIONS
+------------
+
+Only 100 parameter pairs can be input in GEOTIFF.  For more, use repeated
+calls to GTGENUP, or use the GTFILE parameter.
+
+REFERENCES
+
+     Ritter, N., Ruth, M. "GeoTIFF Format Specification, Revision 1.0",
+     JPL Cartographic Applications Group.
+     
+.PAGE
+WRITTEN BY:            W. L. Bunch
+
+COGNIZANT PROGRAMMER:  W. L. Bunch
+
+REVISIONS: 
+  2005-03-07 WLB Initial version
+  2005-03-07 WLB Added support for VICAR file as source of replacement label values
+  2005-04-11 WLB Added check for INP2 values being FORMAT STRING
+  2005-07-13 WLB Added support for arbitrary property label (not just GEOTIFF).
+  2008-01-02 WLB Switched to USES_ANSI_C AND LIB_CARTO; misc cleanup  
+  2015-10-15 WLB Migrated to mipl
+
+.LEVEL1
+.VARI INP
+Input file to be modified.
+.VARI GEOTIFF
+Key-value pairs expressed as one string per pair. See GTGEN for details.
+See tstgtgenup.pdf for example call.
+.VARI GTFILE
+Name of file containing key-value pairs used instead of GEOTIFF parameter.
+See gtgenup.tstdat for example file.
+.END

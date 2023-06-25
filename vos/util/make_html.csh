@@ -9,7 +9,7 @@
 # arg 1 = the directory to find PDF's in (e.g. $R2LIB)
 # arg 2 = the name of the index file to create (e.g. index_p2.html)
 
-if ("$VICCPU" == "x86-linux") then
+if ("$VICCPU" == "x86-64-linx") then
    echo "*********************"
    echo "* Building HTML files for $1"
    echo "*********************"
@@ -17,6 +17,6 @@ if ("$VICCPU" == "x86-linux") then
    cd $V2TOP/html/vichelp
    $V2UTIL/pdf2html.perl $1 $2
 else
-   echo "HTML files are built on linux 32-bit only"
+   echo "HTML files are built on linux 64-bit only"
 endif
 

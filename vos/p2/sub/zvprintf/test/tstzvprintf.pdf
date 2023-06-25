@@ -1,0 +1,6 @@
+procedure
+body
+enable-log
+ush ./tzvprintf
+disable-log
+end-proc

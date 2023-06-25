@@ -1,0 +1,26 @@
+/***********************************************************************
+
+                     IMAKE FILE FOR PROGRAM rngerrs
+
+   To Create the build file give the command:
+		$ vimake rngerrs		(VMS)
+   or
+		% vimake rngerrs		(Unix)
+
+************************************************************************/
+
+#define PROGRAM	rngerrs
+#define R2LIB
+
+#define MODULE_LIST rngerrs.f open_inp.f rmain.f \
+		read_inp.f read_disparity.f read_image.f compute_z.f \
+                compute_q.f window_size.f print_stats.f \
+		write_image.f write_nq.f write_diff.f
+#define MAIN_LANG_FORTRAN
+#define USES_FORTRAN
+#define FTNINC_LIST fortport
+#define LIB_RTL
+#define LIB_TAE
+#define LIB_P2SUB
+/* #define DEBUG */
+/************************* End of Imake file ***************************/

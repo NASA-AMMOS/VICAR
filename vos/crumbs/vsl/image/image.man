@@ -1,0 +1,508 @@
+\^IMAGE(XX)\^
+
+\^NAME\^
+	image - C++ class library for working with images (vesa/vsl)
+
+\^SYNOPSIS\^
+	\^#include "/ware/proj/development/include/image/image.h"\^
+	\^#include "/ware/proj/development/include/image/geoimage.h"\^
+		or
+	#include "image/geoimage.h"
+		with
+	cc -I../../$LIB_DIR/include
+
+\^DESCRIPTION\^
+	\^image\^ provides a C++ library of routines to work with various types
+	of images.  The classes handle image file I/O, internal memory
+	formats and conversions, display, and georeferencing.  This 
+	library is a component of the vsl and is developed and utilized
+	within the proj hierarchy.  See vsl and proj man pages for more
+	information on general usage of the various libraries within the
+	development environment.
+
+	The Image class represents a 2D, rectangular set of data which
+	may be viewed as an image.  Data types supported include char,
+	unsigned char, short, unsigned short, int, unsigned int, long,
+	float, double, and complex.  There may be any number of bands in
+	a hyperspectral application but often three or four are used for
+	RGB and optionally alpha.  Multiple bands are logically contained 
+	within the image.  All bands must be of the same type in the
+	current implementation.  Images may be psuedocolor in that a
+	color lookup table, or color map, is attached and is used to
+	transform color values prior to display.  The color map is indexed
+	by band 0 and other bands are ignored for display purposes.
+
+	Because the Image class represents any data structure which is
+	logically 2D and rectangular, it can be used for images which are
+	actually the results of various operations.  These include
+	combinations of other images or images which are purely described
+	as mathematical functions.  A mod file type is defined to allow
+	definition of some of these image operators.
+
+	A derived class of Image, called GeoImage, may be used for
+	applications which require georeferencing of the image data such
+	as for maps.  The GeoImage class may be used for any application
+	which uses Image and it is preferable in general to do so.
+
+\^NOTES\^
+	The image library contains a base class image which contains three
+	data objects.  These objects are also classes and include ImageData,
+	ImageFile, and ImageDisp pointers.  These pointers reference the
+	internal data in memory, the image file information, and the image
+	display information respectively.  Any of these pointers may be NULL
+	during a given operation.  For example, an image file could be read
+	in, operated upon, and written out without ever displaying the image.
+	Also, an image could be created in memory and displayed without ever
+	having an ImageFile object.
+
+	The derived class, GeoImage, contains a fourth pointer to a GeoData
+	object.  The GeoData object is used to convert from lat/long to x/y
+	and vice versa to provide georeferencing of the image data (see
+	geodata for more information).  All functionality described hereafter
+	applies to both the Image class and GeoImage class unless referring
+	specifically to georeferencing.  It is recommended that the GeoImage
+	class be used for all applications where there is a possibility of
+	using georeferenced data as several of the gui components and other
+	libraries check for georeferencing.  It will not cause an error to
+	use Image but any georeferencing data will be unavailable.
+
+
+	virtual	int	\^image_class_type\^(void) 
+		returns BASEIMAGE or GEOIMAGE depending on which class was
+		instantiated.  To check for available georeferencing data,
+		first check image_class_type for GEOIMAGE, then cast the
+		object as a GeoImage and check for a GeoData pointer.
+
+	**** Functions to work with the member objects:
+
+	// Return the pointers to the objects:
+	ImageData	*\^get_data\^() { return data; }
+	ImageFile	*\^get_file\^() { return file; }
+	ImageDisp	*\^get_disp\^() { return disp; }
+
+	// Set the pointers to the objects, and set back-pointers if appropriate:
+	void	\^set_data\^(ImageData *d) { data=d; }
+	void	\^set_file\^(ImageFile *f) { file=f; if(f) f->set_image(this); }
+	void	\^set_disp\^(ImageDisp *id) { disp=id; if(id) id->set_image(this); }
+
+	// Delete the objects:
+	void	\^free_data\^() { if(data) delete data; data=NULL; }
+	void	\^free_file\^() { if(file) delete file; file=NULL; }
+	void	\^free_disp\^() { if(disp) delete disp; disp=NULL; }
+
+	// Typecast operators to return pointers to the objects:
+	operator \^ImageData\^*() { return data; }
+	operator \^ImageFile\^*() { return file; }
+	operator \^ImageDisp\^*() { return disp; }
+
+	// Overloaded assignment operators to set the pointers to the objects:
+	void	operator=(ImageData *d) { set_data(d); }
+	void	operator=(ImageFile *f) { set_file(f); }
+	void	operator=(ImageDisp *id) { set_disp(id); }
+
+	**** Functions for accessing data resident in memory (or memory mapped)
+
+	// ImageData object operations: (See ImageData class)
+	Not sure what this one does
+	ImageData	&operator()(int x, int y=0, int b=DEFAULT_BAND) {
+				data->cx=x; data->cy=y; data->cband=b;
+				return *data; }
+
+	Allocate the memory for the image data, returns 0 (FALSE) on failure
+	int	\^allocate\^(int x=0, int y=1, int b=1) { if(!data) return 0;
+					else return data->allocate(x,y,b); }
+
+	Free the allocated memory
+	void	\^free\^() { if(data) data->free(); }
+
+	Set all data to 0
+	int	\^clear\^(int b=ALL_BANDS) { if(!data) return 0;
+					 else return data->clear(b); }
+
+	Get the image resolution (X, Y, and number of bands), returns
+	the X resolution or -1 if error
+	// made get_res virtual so derived classes may do other things
+	virtual int	\^get_res\^(int *x=NULL, int *y=NULL, int *b=NULL) {
+				if(data) return data->get_res(x,y,b);
+				else if(file) return file->get_res(x,y,b);
+				else return -1;
+		}
+
+	For these note that -1 typically means no such band.  For multi/hyper-
+	spectral applications, any band may be assigned any way as the developer
+	decides.  These are convenience functions for working with RGBA data.
+	int	\^get_bands\^() { if(!data) return -1; else return data->get_bands(); }
+	void	\^set_default_band\^(int b=0) { if(data) data->set_default_band(b); }
+	void	\^set_red_band\^(int b=0) { if(data) data->set_red_band(b); }
+	void	\^set_green_band\^(int b=1) { if(data) data->set_green_band(b); }
+	void	\^set_blue_band\^(int b=2) { if(data) data->set_blue_band(b); }
+	void	\^set_alpha_band\^(int b=-1) { if(data) data->set_alpha_band(b); }
+	void	\^set_rgb_bands\^(int r=0, int g=1, int b=2) {
+				if(data) data->set_rgb_bands(r,g,b); }
+	int	\^get_default_band\^() { if(!data) return -1;
+					else return data->get_default_band(); }
+	int	\^get_red_band\^() { if(!data) return -1;
+					else return data->get_red_band(); }
+	int	\^get_green_band\^() { if(!data) return -1;
+					else return data->get_green_band(); }
+	int	\^get_blue_band\^() { if(!data) return -1;
+					else return data->get_blue_band(); }
+	int	\^get_alpha_band\^() { if(!data) return -1;
+					else return data->get_alpha_band(); }
+
+	Get and Set the default alpha value.  This value is returned as the alpha
+	value when queried and no alpha band is present.
+	void	\^set_default_alpha\^(uchar a=255) { if(data) data->set_default_alpha(a); }
+	uchar	\^get_default_alpha\^() { if(!data) return 0;
+					else return data->get_default_alpha(); }
+
+	These have something to do with pyramid levels but not sure what.
+	void	\^set_level\^(double l) { if(data) data->set_level(l); }
+	void	\^set_spacing\^(double s) { if(data) data->set_spacing(s); }
+	double	\^get_level\^() { if(!data) return 0.0;
+				else return data->get_level(); }
+	Image	*\^get_map\^() { if(!data) return NULL; else return data->get_map(); }
+	void	\^set_map\^(Image *m) { if(data) data->set_map(m); }
+	int	\^access\^() { if(!data) return 0; else return data->access(); }
+	int	\^get_data_type\^() { if(!data) return 0; else return data->type(); }
+	char	*\^data_type_name\^() { if(!data) return "None";
+				    else return data->type_name(); }
+	int	\^preferred_data_type\^() { if(!data) return NO_DATA;
+					else return data->preferred_data_type(); }
+	int	\^preferred_file_type\^() { if(!data) return 0;
+					else return data->preferred_file_type(); }
+	void	\^get_color\^(int x, int y, uchar *r, uchar *g, uchar *b,
+				  uchar *a=NULL) { data->get_color(x,y,r,g,b,a); }
+	void	\^set_color\^(int x, int y, uchar r, uchar g, uchar b,
+				  uchar a=255) { data->set_color(x,y,r,g,b,a); }
+	uchar	\^get_alpha\^(int x, int y) { return data->get_alpha(x,y); }
+	void	\^set_alpha\^(int x, int y, uchar a=255) { data->set_alpha(x,y,a); }
+	ushort	\^get_red16\^(int x, int y=0) { return data->get_red16(x,y); }
+	ushort	\^get_green16\^(int x, int y=0) { return data->get_green16(x,y); }
+	ushort	\^get_blue16\^(int x, int y=0) { return data->get_blue16(x,y); }
+	void	\^set_red16\^(ushort c, int x, int y=0) { data->set_red16(c,x,y); }
+	void	\^set_green16\^(ushort c, int x, int y=0) { data->set_green16(c,x,y); }
+	void	\^set_blue16\^(ushort c, int x, int y=0) { data->set_blue16(c,x,y); }
+
+	// Create a new ImageData object by type number, return status:
+	int	\^create_data_type\^(int t) { if(clean) free_data();
+			set_data(new_data_by_type(t));
+			if(data) return 1; else return 0; }
+
+	// ImageFile object operations: (See ImageFile class)
+	void	\^set_filename\^(char *fname) { if(file) file->set_filename(fname); }
+	int	\^get_file_type\^() { if(!file) return 0; else return file->type(); }
+	char	*\^file_type_name\^() { if(!file) return "None";
+				    else return file->type_name(); }
+	char	*\^get_filename\^(char *fname=NULL) { if(!file) return NULL;
+					else return file->get_filename(fname); }
+	char	*\^get_comments\^() { if(!file) return NULL;
+				  else return file->get_comments(); }
+	char	*\^get_flags\^() { if(!file) return NULL;
+			       else return file->get_flags(); }
+	int	\^set_comments\^(char *str=NULL) { if(!file) return 0;
+					else return file->set_comments(str); }
+	int	\^set_flags\^(char *str=NULL) { if(!file) return 0;
+					else return file->set_flags(str); }
+
+	// Read file fname (of type t) from disk, return status:
+	// This is for quickly reading a disk file to get
+	// info about it without reading the entire image
+	// No ImageData is created
+	// Corresponding ImageFile functions must be created
+	int	\^read_header\^(char *fname=NULL, int t=0);
+
+	// Read file fname (of type t) from disk, return status:
+	int	\^read\^(char *fname=NULL, int t=0);
+
+	// Write image to file fname (of type t), return status:
+	int	\^write\^(char *fname=NULL, int t=0);
+
+	// Find the file type of file fname, but do not load, return status:
+	int	\^find_file_type\^(char *fname);
+
+	// Create an ImageFile object of type t (with name fname), return status:
+	int	\^create_file_type\^(int t=0, char *fname=NULL);
+
+
+	// ImageDisp operations: (See ImageDisp class)
+#ifndef _NO_IMAGEDISP_
+	Display		*\^get_display\^() { if(!disp) return NULL;
+					 else return disp->get_display(); }
+	Visual		*\^get_visual\^() { if(!disp) return NULL;
+					else return disp->get_visual(); }
+	Colormap	\^get_colormap\^() { if(!disp) return 0;
+					 else return disp->get_colormap(); }
+#endif // _NO_IMAGEDISP_
+	int		\^get_depth\^() { if(!disp) return 0;
+					 else return disp->get_depth(); }
+#ifndef _NO_IMAGEDISP_
+	void	\^set_display\^(Display *d) { if(disp) disp->set_display(d); }
+	void	\^set_visual\^(Visual *v) { if(disp) disp->set_visual(v); }
+	void	\^set_colormap\^(Colormap c) { if(disp) disp->set_colormap(c); }
+	int	\^set_window_colormap\^(Window w=0) { if(!disp) return 0;
+				else return disp->set_window_colormap(w); }
+	int	\^disp_initialize\^() { if(!disp) return 0;
+				    else return disp->initialize(); }
+	int	\^disp_setup\^(Display *d, Visual *v=NULL, Colormap c=0) {
+				if(!disp) return create_disp(d,v,c);
+				else return disp->setup(d,v,c); }
+	int	\^disp_setup\^(Display *d, Colormap c) {
+				if(!disp) return create_disp(d,c);
+				else return disp->setup(d,c); }
+	Pixel	\^pixel\^(int x, int y=0) { if(!disp) return 0;
+					else return disp->pixel(x,y); }
+	int	\^fill_ximage\^(XImage *ximg, int xx=0, int xy=0, int ix=0, int iy=0,
+			    int w=0, int h=0) { if(!disp) return 0;
+			else return disp->fill_ximage(ximg,xx,xy,ix,iy,w,h); }
+	XImage	*\^create_ximage\^(int ix=0, int iy=0, int w=0, int h=0) {
+				if(!disp) return NULL;
+				else return disp->create_ximage(ix,iy,w,h); }
+	int	\^fill_drawable\^(Drawable draw=0, int dx=0, int dy=0, int ix=0,
+			      int iy=0, int w=0, int h=0) { if(!disp) return 0;
+			else return disp->fill_drawable(draw,dx,dy,ix,iy,w,h); }
+	Pixmap	\^create_pixmap\^(Drawable draw=0, int ix=0, int iy=0, int w=0, int h=0) {
+				if(!disp) return (Pixmap)0;
+				else return disp->create_pixmap(draw,ix,iy,w,h); }
+
+	// Create an appropriate ImageDisp object given the display, and
+	// optional visual and/or colormap, return status:
+	int	\^create_disp\^(Display *d, Visual *v=NULL, Colormap c=0);
+	int	\^create_disp\^(Display *d, Colormap c) {
+				return create_disp(d,(Visual *)NULL,c); }
+
+	// Same as above, but do not initialize:
+	int	\^create_disp_noinit\^(Display *d, Visual *v=NULL, Colormap c=0);
+	int	\^create_disp_noinit\^(Display *d, Colormap c) {
+				return create_disp_noinit(d,(Visual *)NULL,c); }
+#endif // _NO_IMAGEDISP_
+
+	// Constructors:
+	\^Image\^() { init(); }
+	\^Image\^(char *fname, int t=0) { init(); read(fname,t); }
+#ifndef _NO_IMAGEDISP_
+	\^Image\^(char *fname, Display *d) { init(); read(fname); create_disp(d); }
+#endif // _NO_IMAGEDISP_
+	\^Image\^(ImageData *d, ImageFile *f=NULL, ImageDisp *id=NULL) { init();
+		set_data(d); set_file(f); set_disp(id); }
+	\^Image\^(ImageFile *f, ImageDisp *id=NULL) { init(); set_file(f);
+		set_disp(id); }
+	\^Image\^(ImageData *d, ImageDisp *id) { init(); set_data(d);
+		set_disp(id); }
+	\^Image\^(ImageDisp *id) { init(); set_disp(id); }
+
+	virtual ~\^Image\^() { if(clean) { free_data(); free_file(); free_disp(); } }
+	};
+
+\^GEOREFERENCING\^
+	Georeferencing, in this application, refers specifically to the
+	ability to map back and forth from lat/long to x/y, such that an
+	image pixel can be tied to a geolocation on Earth or some other
+	planet.  Many methods exist to do this and the GeoData is a base
+	class for derived classes implementing specific methods.  In
+	addition to latitude and longitude, an additional method of
+	referring to a location on the Earth as available.  This is called
+	UTM (Universal Transverse Mercator) which utilizes easting and 
+	northing values.  Easting is distance east (+) or west (-) from
+	the center of a quadrant on the Earth, in meters, and northing is
+	distance north(+) or south(-) from the equator.  These units are
+	only valid for the Earth, or at least the mapping from lat/long
+	to UTM and back is unique for each planet or body.  \_NOTE: due to\_
+	\_lack of a requirement for this, the UTM methods have not been\_
+	\_implemented and always return 0.0.  If a requirement arises for\_
+	\_this type of data, the stubs are present to implement them.\_  The
+	GeoImage class contains a GeoData pointer and the following
+	methods:
+
+	virtual	int	\^image_class_type\^(void) { return(GEOIMAGE); }
+
+	void	\^free_geo_data\^(void) {
+			if(geo_data) delete geo_data; geo_data = NULL;
+		}
+
+	void	\^set_geo_data\^(GeoData *gd) {
+			if(geo_data) delete geo_data; geo_data = gd;
+		}
+	GeoData	*\^get_geo_data\^(void) { 
+			if(geo_data) {
+				return(geo_data); 
+			} else if(data) {
+				return(data->get_geo_data());
+			} else return(NULL); 
+		}
+	operator \^GeoData\^*() { return(get_geo_data()); }
+	void	operator=(GeoData *d) { set_geo_data(d); }
+
+	// coordinate space converters (virtuals)
+	virtual	double	\^lltox\^(double lat, double lng) { 
+			if(get_geo_data()) {
+				return(get_geo_data()->lltox(lat, lng));
+			} else {
+				return(0.0);
+			}
+		}
+	virtual	double	\^lltoy\^(double lat, double lng) { 
+			if(get_geo_data()) {
+				return(get_geo_data()->lltoy(lat, lng));
+			} else {
+				return(0.0);
+			}
+		}
+	virtual	void	\^lltoxy\^(double latitude, double longitude, double &x, double&y) {
+			x = lltox(latitude, longitude);
+			y = lltoy(latitude, longitude);
+		}
+	virtual	double	\^utmtox\^(double easting, double northing) {
+			if(get_geo_data()) {
+				return(get_geo_data()->utmtox(easting, northing));
+			} else {
+				return(0.0);
+			}
+		}
+	virtual	double	\^utmtoy\^(double easting, double northing) {
+			if(get_geo_data()) {
+				return(get_geo_data()->utmtoy(easting, northing));
+			} else {
+				return(0.0);
+			}
+		}
+	virtual	void	\^utmtoxy\^(double easting, double northing, double &x, double&y) {
+			x = utmtox(easting, northing);
+			y = utmtoy(easting, northing);
+		}
+	virtual	double	\^utmtolat\^(double easting, double northing) { 
+			if(get_geo_data()) {
+				return(get_geo_data()->utmtolat(easting, northing));
+			} else {
+				return(0.0);
+			}
+		}
+	virtual	double	\^utmtolong\^(double easting, double northing) { 
+			if(get_geo_data()) {
+				return(get_geo_data()->utmtolong(easting, northing));
+			} else {
+				return(0.0);
+			}
+		}
+			
+	virtual	void	\^utmtoll\^(double easting, double northing, double &latitude, double &longitude) {
+			latitude = utmtolat(easting, northing);
+			longitude = utmtolong(easting, northing);
+		}
+	virtual	double	\^lltoe\^(double lat, double lng) { 
+			if(get_geo_data()) {
+				return(get_geo_data()->lltoe(lat, lng));
+			} else {
+				return(0.0);
+			}
+		}
+	virtual	double	\^llton\^(double lat, double lng) { 
+			if(get_geo_data()) {
+				return(get_geo_data()->llton(lat, lng));
+			} else {
+				return(0.0);
+			}
+		}
+	virtual	void	\^lltoutm\^(double latitude, double longitude, double &easting, double &northing) {
+			easting = lltoe(latitude, longitude);
+			northing = llton(latitude, longitude);
+		}
+
+	virtual	double	\^xytolat\^(double x, double y) { 
+			if(get_geo_data()) {
+				return(get_geo_data()->xytolat(x, y));
+			} else {
+				return(0.0);
+			}
+		}
+	virtual	double	\^xytolong\^(double x, double y) { 
+			if(get_geo_data()) {
+				return(get_geo_data()->xytolong(x, y));
+			} else {
+				return(0.0);
+			}
+		}
+	virtual	void	\^xytoll\^(double x, double y, double &latitude, double &longitude) {
+			latitude = xytolat(x, y);
+			longitude = xytolong(x, y);
+		}
+			
+	virtual	double	\^xytoe\^(double x, double y) { 
+			if(get_geo_data()) {
+				return(get_geo_data()->xytoe(x, y));
+			} else {
+				return(0.0);
+			}
+		}
+	virtual	double	\^xyton\^(double x, double y) { 
+			if(get_geo_data()) {
+				return(get_geo_data()->xyton(x, y));
+			} else {
+				return(0.0);
+			}
+		}
+	virtual	void	\^xytoutm\^(double x, double y, double &e, double &n) {
+			e = xytoe(x, y);
+			n = xyton(x, y);
+		}
+	// projection and datum types - danp
+	virtual ProjectionType \^get_projection\^(void) { 
+		if (get_geo_data()) return get_geo_data()->get_projection();
+		else return(UNKNOWN);
+	}
+
+	virtual DatumType \^get_datum\^(void) { 
+		if (get_geo_data()) return get_geo_data()->get_datum();
+		else return(UNKNOWN);
+	}
+			
+	// Constructors:
+	\^GeoImage\^() : Image() { init(); }
+	\^GeoImage\^(char *fname, int t=0) : Image(fname, t)
+		{ init(); read(fname,t); }
+#ifndef _NO_IMAGEDISP_
+	\^GeoImage\^(char *fname, Display *d) : Image(fname, d)
+		{ init(); read(fname); create_disp(d); }
+#endif // _NO_IMAGEDISP_
+	\^GeoImage\^(ImageData *d, ImageFile *f=NULL, ImageDisp *id=NULL) 
+		: Image(d, f, id) 
+		{ init(); set_data(d); set_file(f); set_disp(id); }
+	\^GeoImage\^(ImageData *d, ImageFile *f, ImageDisp *id, GeoData *gd) 
+		: Image(d, f, id) 
+		{ init(); set_data(d); set_file(f); set_disp(id); set_geo_data(gd);}
+	\^GeoImage\^(ImageFile *f, ImageDisp *id=NULL) : Image(f, id)
+		{ init(); set_file(f); set_disp(id); }
+	\^GeoImage\^(ImageData *d, ImageDisp *id) : Image(d, id) 
+		{ init(); set_data(d); set_disp(id); }
+	\^GeoImage\^(ImageDisp *id) : Image (id) { init(); set_disp(id); }
+	\^GeoImage\^(GeoData *gd) : Image () { init(); set_geo_data(gd); }
+
+	\^~GeoImage\^() { if(clean) { free_geo_data(); } }
+	};
+
+
+
+\^ENVIRONMENT VARIABLES\^
+	ARCH		local machine architecture
+		may be sun4, sgi, cray, etc. as set by ourgetarch
+	LIB_DIR		release level (almost always development)
+		may be development, beta, or release
+
+\^BUGS\^
+	The UTM handling methods in GeoImage and in the existing GeoData
+	classes are not functional and always return 0.0.
+
+\^FILES\^
+	/ware/proj/development/include/image/image.h	include file
+	/ware/proj/development/include/image/geoimage.h	include file
+	/ware/proj/development/lib/sgi/libimage.a	sgi library
+	/ware/proj/development/lib/sun4/libimage.a	sun4 library
+
+\^SEE ALSO\^
+	proj, vsl, geodata
+
+\^AUTHOR\^
+	John Wright (john.r.wright@jpl.nasa.gov)
+
+
+

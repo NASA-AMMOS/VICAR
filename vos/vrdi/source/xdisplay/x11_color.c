@@ -73,6 +73,8 @@ extern XColor fg_rgb, default_colors[];
 extern unsigned long Base_Pixel, Plane_Mask[], Overlay_Pixels[];
 XColor x_colors[X_LUT_SIZE];
 
+void set_colormap(Display* dpy, int mode);
+
 
 init_luts(dpy)
 Display *dpy;
@@ -173,7 +175,7 @@ Display *dpy;
 }
 
 
-set_colormap(dpy, mode)
+void set_colormap(dpy, mode)
 Display *dpy;
 int mode;
 {
@@ -342,7 +344,7 @@ Display *dpy;
 }
 
 
-lock_colormap(dpy, win)
+void lock_colormap(dpy, win)
 Display *dpy;
 MAIN_WINDOW *win;
 {
@@ -404,7 +406,7 @@ MAIN_WINDOW *win;
 }
 
 
-unlock_colormap(dpy, win)
+void unlock_colormap(dpy, win)
 Display *dpy;
 MAIN_WINDOW *win;
 {

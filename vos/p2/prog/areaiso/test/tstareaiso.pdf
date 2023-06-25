@@ -9,7 +9,7 @@ let $echo="yes"
 areaiso out= +
  (area_lat.img,area_lon.img,area_map.img,angle_map.img,del_area_lat.img, +
  del_area_lon.img) +
- planet=phobos 'north
+ planet=phobos 'north path=.
 
 list area_lat.img     'nousrtim 
 list area_lon.img     'nousrtim 
@@ -53,6 +53,13 @@ list del_area_lon.img 'nousrtim
 !xvd a.img
 !barne_r inp=a.img miplbox=21 primary=42057
 !
+
+ush rm angle_map.img
+ush rm area_lat.img
+ush rm area_lon.img
+ush rm area_map.img
+ush rm del_area_lat.img
+ush rm del_area_lon.img
 
 disable-log
 end-proc

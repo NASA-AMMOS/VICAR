@@ -1,0 +1,491 @@
+process help=*
+PARM INP TYPE=STRING COUNT=(1:1)
+PARM OUT TYPE=STRING COUNT=(1:1)
+
+PARM BAND    TYPE=INTEGER COUNT=(0:1) DEFAULT=1
+PARM CONFIG_PATH STRING DEFAULT="$MARS_CONFIG_PATH"
+PARM POINT_METHOD TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM NOSITE TYPE=KEYWORD COUNT=(0:1) VALID=NOSITE DEFAULT=--
+
+PARM DATA_SET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM DATA_SET_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM RELEASE_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCT_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_INST TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_TYPE TYPE=STRING COUNT=(0:1) DEFAULT=--
+
+PARM RSF TYPE=STRING COUNT=0:100 DEFAULT=--
+PARM DEBUG_RSF TYPE=KEYWORD COUNT=0:1 VALID=DEBUG_RSF DEFAULT=--
+PARM COORD TYPE=KEYWORD VALID=("FIXED", "INSTRUMENT", "SITE", "ROVER", +
+        "LOCAL_LEVEL", "RMECH") DEFAULT="LOCAL_LEVEL"
+PARM COORD_INDEX TYPE=INTEGER COUNT=0:10 DEFAULT=--
+PARM FIXED_SITE TYPE=INTEGER COUNT=0:1 DEFAULT=--
+PARM SOLUTION_ID TYPE=STRING COUNT=0:1 DEFAULT=--
+
+PARM METHOD TYPE=KEYWORD VALID=("LINEAR", "NATGRID") DEFAULT="LINEAR"
+PARM EXTRAPOLATE TYPE=KEYWORD VALID=("EXTRAPOLATE", "NOEXTRAPOLATE") DEFAULT="NOEXTRAPOLATE"
+
+END-PROC
+
+.TITLE
+VICAR program MARSINTERP.
+
+.HELP
+PURPOSE:
+
+MARSINTERP interpolates and extrapolates holes in the Digital Elevation Models(DEM)
+Based on John Wright's flood fill code.
+
+EXECUTION:
+
+marsuvw inp=data.dem out=data.interp
+where:
+data.xyz is an input 3-band image of type REAL with the X, Y and Z values
+at that pixel in meters (the unit is actually irrelevant).
+data.uvw is an output 3-band image of type REAL the U, V, and W components
+of the unit vector for each pixel.
+
+
+.PAGE
+METHOD:
+
+.PAGE
+
+HISTORY:
+  2013-10-20 O. Pariser - Initial version based on John Wright's flood fill code.
+  2014-05-12 Lala P. - Implemented Natgrid into the program
+  2019-10-17 W. Bunch - IDS-7926 - initialized some variables; cleaned up -Wall warnings.
+
+COGNIZANT PROGRAMMER: Lala P.
+
+.LEVEL1
+.VARI INP
+Input images.
+Must be 1 3-band file
+or (x,y,z) triplet.
+
+.VARI OUT
+Output files.
+Mast be 1 or 3
+filenames (with
+3 or 1 bands each).
+
+.VARI NAVTABLE
+Corrected navigation
+filename.
+
+.VARI SEPARATION
+Max distance for points
+to use in plane fit.
+
+.VARI ERROR
+Max plane fit error.
+
+.VARI MIN_POINTS
+Min # of points in
+the plane fit.
+
+.VARI RADIUS
+Number of pixels to
+consider around the
+pixel of interest.
+
+.VARI REJECT
+Sets ratio for rejecting
+points.
+
+.VARI X_CENTER
+Center of bounding box.
+
+.VARI Y_CENTER
+Center of bounding box.
+
+.VARI BOX_RADIUS
+Half-width of bounding box.
+
+.VARI FLIP_THRESH
+Threshold for flipping the
+normal.
+
+.VARI FLIP_DIST
+Minimum distance for sign
+flipping.
+
+.VARI CONFIG_PATH
+Path used to find
+configuration/calibration
+files.
+
+.VARI POINT_METHOD
+Specifies a mission-
+specific pointing
+method to use
+
+.VARI NOSITE
+Disables coordinate
+system sites.
+
+.VARI RSF
+Rover State File(s) to use.
+
+.VARI DEBUG_RSF
+Turns on debugging of RSF
+parameter.
+
+.VARI COORD
+Coordinate system to use.
+
+.VARI COORD_INDEX
+Coordinate system index for
+some COORD/mission combos.
+
+.VARI FIXED_SITE
+Which site is FIXED for
+rover missions.
+
+.VARI SOLUTION_ID
+Solution ID to use for
+COORD_INDEX
+
+.VARI DATA_SET_NAME
+Specifies the full name given
+to a data set or a data product.
+
+.VARI DATA_SET_ID
+Specifies a unique alphanumeric
+identifier for a data set or data
+product.
+
+.VARI RELEASE_ID
+Specifies the unique identifier
+associated with the release to the
+public of all or part of a data set.
+The release number is associated with
+the data set, not the mission.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique
+identifier assigned to a data
+product by its producer.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier
+of an entity associated with the
+production a data set.
+
+.VARI PRODUCER_INST
+Specifies the full name of the
+identity of an entity associated
+with the production of a data set.
+
+.VARI TARGET_NAME
+Specifies a target.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target.
+
+.VARI METHOD
+Method used to interpolate the image.
+
+.VARI EXTRAPOLATE
+Specifies if extrapolation needs to be done.
+
+.LEVEL2
+.VARI INP
+Input files contain the XYZ coordinates. If three filenames are given,
+they all should be single band files each containing X, Y and Z values
+in that order.  If only one filename is given, it should be a 3-band
+file with bands in (X,Y,Z) order.
+
+The input files are in REAL (float) format.
+
+.VARI OUT
+Output files containing the UVW unit vector components.
+
+If three filenames are given, three separate 1-band files will be created,
+one each for U (X), V (Y), and W (Z) components.  If only one filename is
+given, a single 3-band file will be created, with bands in (U,V,W) order.
+
+The output files are in REAL (float) format.
+
+.VARI SEPARATION
+Specifies the maximum distance in meters between the point of interest
+and the points to use in the plane fit.  This can be useful e.g. to reject
+points in the background at the edge of an object.
+
+A negative value indicates no limit.
+
+.VARI ERROR
+Specifies the maximum plane fit error in meters.  If the error is bigger
+than this, points are rejected (see the REJECT parameter) until the error
+is acceptable, or too few points are left.  The plane fit error is the
+average distance from the points to the computed plane.
+
+A negative value indicates no limit.
+
+.VARI MIN_POINTS
+Specifies the minimum number of points to be used in the plane fit.
+If not enough points can be found, no normal is computed for the point.
+At least 3 points are required, but 6 or more is recommended.
+
+.VARI RADIUS
+The number of pixels to consider around the pixel of interest.  Despite
+the name, this is a square area (not circular).  For example, a radius
+of 2 would yield a 5x5 window.
+
+.VARI REJECT
+If the plane fit error exceeds ERROR, then individual points with a plane
+fit error greater than the REJECT ratio times the average error are rejected.
+This continues until the average error meets the ERROR criteria, or until
+too few points are left to do a fit.
+
+.VARI X_CENTER
+Center of bounding box (in XYZ space).  Points lying outside the box will not
+have normals computed for them.  This is used to limit computation to e.g.
+the IDD workspace for MER.
+
+.VARI Y_CENTER
+Center of bounding box (in XYZ space).  Points lying outside the box will not
+have normals computed for them.  This is used to limit computation to e.g.
+the IDD workspace for MER.
+
+.VARI BOX_RADIUS
+Half-width of bounding box.  Points more than this distance away from
+X/Y_CENTER in either height or width will not be computed (note, it is a
+square box, not a circle).
+
+.VARI FLIP_THRESH
+A threshold to apply to the W (Z) component of the normal.  If the component
+is larger than the threshold, then the negation of the vector is returned.
+This reduces the flipping problem at the expense of not being able to properly
+detect nearly horizontal overhangs.  Since such overhangs are exceedingly
+rare, the threshold test is usually a good thing.  Note that any value > 1.0
+will disable the threshold (this is the default).  A reasonable value might
+be 0.8, which corresponds to arccos(.8) ~= 37 degrees.  Thus, overhangs less
+than 37 degrees from horizontal will be reported inverted.
+
+See also FLIP_DIST.
+
+.VARI FLIP_DIST
+Specifies the minimum distance at which to flip signs.  Any pixel closer
+to the camera than this will not be inverted.  This is because the flipping
+problem usually happens in the distance, and having a cutoff allows for
+nearby overhangs.
+
+.VARI CONFIG_PATH
+A colon-separated list of directories in which to look for configuration
+and calibration files.  Environment variables are allowed in the list
+(and may themselves contain colon-separated lists).  The directories are
+searched in order for each config/cal file when it is loaded.  This allows
+multiple projects to be supported simultaneously, and allows the user to
+override any given config/cal file.  Note that the directory structure below
+the directories specified in this path must match what the project expects.
+For example, Mars 98 expects flat fields to be in a subdirectory named
+"flat_fields" while Mars Pathfinder expects them to be directly in the
+directory specified by the path (i.e. no intermediate subdirectories).
+
+.VARI POINT_METHOD
+Specifies a mission-specific pointing method to use.  Normally this
+parameter is not used, in which case the "default" pointing methods
+are used.  Some missions may have special, or alternate, pointing
+methods available, which are indicated by this string (for example,
+backlash models, using arm joint angles instead of x/y/z/az/el, etc).
+A substring search is used, so multiple methods (where that makes sense)
+can be specified by separating the keywords with commas.
+
+Note that nav files created using one pointing method will most likely
+not be compatible with a mosaic created using a different pointing method.
+
+The methods available vary per mission, but some methods available at
+the time of this writing are:
+
+BACKLASH : Mars 98 SSI only.  Selects a backlash pointing model,
+which adjusts the telemetered azimuth and elevation values based on
+knowledge of the camera's mechanical backlash and the direction the
+motor was travelling when the image was taken.
+
+.VARI NOSITE
+Disables all label-derived parameters to the Site mechanism which underlies
+coordinate systems.  This forces all sites to be identical, with all rotations
+and offsets set the same.  In the case of MPF or Mars 98, this disables
+the lander quaternion and offset (sets them to identity and 0, respectively).
+This option should not be used with images taken from different vantage
+points (e.g. the spacecraft moved, or mixing a lander and a rover) or
+invalid results will be obtained.  The use of this option invalidates the
+Fixed coordinate frame; any values reported in the Fixed frame will not
+correctly reflect the orientation of the lander/rover.
+
+Obviously, this option should be rarely used; it is intended for when the
+image labels defining the site are invalid or inconsistent.
+
+.VARI DATA_SET_NAME
+The DATA_SET_NAME typically identifies the instrument that acquired the
+data, the target of that instrument, and the processing level of the data.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_NAME.
+
+.VARI DATA_SET_ID
+The DATA_SET_ID value for a given data set or product is constructed
+according to flight project naming conventions.  In most cases the
+DATA_SET_ID is an abbreviation of the DATA_SET_NAME.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_ID.
+
+.VARI RELEASE_ID
+When a data set is released incrementally, such as every three months during
+a mission, the RELEASE_ID is updated each time part of the data set is released.
+For each mission(or host id if multiple spacecrafts), the first release of a data
+set should have a value of "0001".
+This value is copied to the output label, property IDENTIFICATION,
+keyword RELEASE_ID.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique identifier assigned to a data product by
+its producer. Most commonly, it is the filename minus the extension.
+This value is copied to the output label, property IDENTIFICATION,
+keyword PRODUCT_ID.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier of an entity associated with the
+production of a data set. This value is copied to the output label,
+property IDENTIFICATION, keyword PRODUCER_ID.
+
+.VARI PRODUCER_INST
+Specifies the identity of a university, research center, NASA center or other
+institution associated with the production of a data set.
+This value is copied to the output label, property IDENTIFICATION, keyword
+PRODUCER_INSTITUTION_NAME.
+
+.VARI TARGET_NAME
+Specifies a target.  The target may be a planet, satelite, ring, region, feature,
+asteroid or comet.  This value is copied to the output label, property
+IDENTIFICATION, keyword TARGET_NAME.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target. This value is copied to the output
+label, property IDENTIFICATION, keyword TARGET_NAME.
+
+.VARI RSF
+Rover State File.  This is a list of filenames to load containing
+Rover State information.  These files contain position and orientation
+information for a rover (or other mobile spacecraft) at various sites.
+They are in XML format.  See the "Rover Motion Counter (RMC) Master File SIS"
+for details on these files.
+
+Rover State Files have a priority order.  The files listed first have
+the highest priority.
+
+Environment variables may be used in the list.
+
+For MER, if a directory is specified, then that directory is searched for
+RMC Master files and any found are loaded.  The directory structure and
+filename convention is covered in the RMC SIS.  The directory specified
+is the one containing "master", so if <dir> is the name specified in the
+RSF parameter, the following files will be searched for:
+
+<dir>/master/<mission>_Master.svf
+<dir>/master/<mission>_Site_<n>_Master.rvf
+
+The name of each file loaded is printed to the stdout log for reference.
+
+.VARI DEBUG_RSF
+If enabled, this causes the internal database of RMC locations to be
+printed out to the stdout log.  This is after the RSF files have been
+loaded and the coordinate systems read from the input label(s).
+
+.VARI COORD
+The coordinate system to use for the output UVW vectors.  The interpretation
+of the values is dependent on the mission.  Some representative missions are
+listed here:
+
+Fixed - The Fixed frame.  This is the ultimate reference frame
+    (see also FIXED_SITE for rover missions).
+Instrument - (default) The "natural" frame for the instrument 
+    (of the first input image).  MPF: Lander or Rover; M98: MVACS; MER: Rover.
+Site - A major Site frame.  For rover missions, COORD_INDEX specifies which
+    Site frame to use.  Non-rover missions treat this as Fixed.
+Rover - An instance of the Rover frame.  For rover missions, COORD_INDEX
+    specifies which instance of the rover frame to use.  Non-rover mission
+    use the spacecraft frame (e.g. Lander for M98).  For MSL, this is the
+    Rover Nav frame.
+Local_Level - An instance of a Local Level frame.  This is typically
+    coincident with the Rover frame (in XYZ) but oriented toward North
+    like the Site and Fixed frames.  For MER, this is an instance of a
+    Drive index move.
+RMECH - for MSL, this is the Rover Mechanical frame.  It should not normally
+    be used except for testing.
+
+.VARI COORD_INDEX
+The index specifies which instance of a coordinate system to use.  It is
+currently applicable only to rover-based missions, but could have other
+uses.  The index is equivalent to the Rover Motion Counter (RMC) for MER
+and FIDO.
+
+For MER/FIDO, there are many Site frames.  Each is numbered with a single
+index.  For Site Frames, coord_index specifies which to use.  Likewise,
+there are many Local_Level and Rover frames, corresponding to values of
+the RMC.  The multiple instances of this frame are selected by COORD_INDEX.
+
+Generally COORD_INDEX defaults sensibly so you don't usually need to
+specify it.  It will default to the instance used by the first input.
+
+.VARI FIXED_SITE
+Specifies which major Site is the "Fixed" Site for this run.
+
+Historically, MPF and M98 had a single "Surface Fixed" frame which never
+moved, and which all other coordinate system frames were referenced to.
+With the advent of long-range rovers (such as MER and FIDO), that became
+insufficient.  The rover traverses far enough that errors in knowledge of
+coordinate system offset and orientation become unacceptable.
+
+For this reason, a system of major Sites was introduced.  Periodically
+during the mission, a Site frame is declared.  This then becomes the
+reference frame for all activities until the next Site is declared.
+References are kept local, and errors don't propogate across Sites.
+
+However, if images from more than one Site are combined together, the
+Site's must be placed relative to each other.  Therefore a single reference
+frame is still needed to combine different sites.
+
+The FIXED_SITE parameter controls which of the major Site frames is
+the reference ("fixed") site for this program run.  This fixed frame
+can vary in different program runs, but is constant throughout one
+execution.
+
+If not specified, FIXED_SITE defaults to the minimum Site number (i.e.
+lowest numbered, or earliest chronologically) used in all input images.
+Normally this default is sufficient; rarely must FIXED_SITE be specified.
+
+One or more Rover State Files must usually be specified in order to combine
+image from more than one Site.  These describe the relationship between
+sites.  See the RSF parameter.
+
+.VARI SOLUTION_ID
+Specifies which solution ID to use when specifying the coordinate system.
+
+There are potentially many different definitions for the same coordinate
+system.  These are identified via a unique Solution ID.  If this parameter
+is given, only the specified solution's definition is searched for.  Without
+it, the "best" available solution is chosen.
+
+It is extremely rare that this parameter should be needed.  The default
+will be sufficient in almost every case.
+
+Note that the current MER implementation requires that a value for COORD_INDEX
+also be provided, in order for this parameter to take effect.
+
+.VARI METHOD
+The method to use for interpolation. Some available methods are listed here:
+
+LINEAR - (default) The interpolation will be linear.
+NATGRID - Interpolation using NCAR Graphics NATGRID function. 
+    This performs natural neighboring interpolation.
+
+.VARI EXTRAPOLATE
+Specifies if extrapolation should be done.
+
+NOEXTRAPOLATE - (default)Extrapolation will not be performed.
+EXTRAPOLATE - Extrapolation will be performed.
+

@@ -1,0 +1,692 @@
+*****************
+** BYTE IMAGES **
+*****************
+gen xxA nl=10 ns=10 ival=1 linc=0 sinc=1 format=byte
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+list xxA 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+     Samp     1       3       5       7       9
+   Line
+      1       1   2   3   4   5   6   7   8   9  10
+      2       1   2   3   4   5   6   7   8   9  10
+      3       1   2   3   4   5   6   7   8   9  10
+      4       1   2   3   4   5   6   7   8   9  10
+      5       1   2   3   4   5   6   7   8   9  10
+      6       1   2   3   4   5   6   7   8   9  10
+      7       1   2   3   4   5   6   7   8   9  10
+      8       1   2   3   4   5   6   7   8   9  10
+      9       1   2   3   4   5   6   7   8   9  10
+     10       1   2   3   4   5   6   7   8   9  10
+imgsum xxA numpix=numpix numzero=numzero numpos=numpos  +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+Beginning VICAR task imgsum
+IMGSUM version 2015-11-05
+let $echo="no"
+Image xxA:
+numpix = 100   numzero = 0  numpos = 100  numneg = 0
+sumall = 5.500000000000e+02   sumpos = 5.500000000000e+02    sumneg = 0.000000000000e+00
+******************
+** WITH CATALOG **
+******************
+imgsum xxA out=xxA.cat numpix=numpix numzero=numzero numpos=numpos  +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+Beginning VICAR task imgsum
+IMGSUM version 2015-11-05
+ibis-li xxA.cat 'groups screen=132
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:1  Number of Columns: 7       
+File Version:IBIS-2  Organization:ROW  SubType:IMGSUM CATALOG
+Group 'ROW': 1
+Group 'NUMPIX': 2
+Group 'NUMPOS': 3
+Group 'SUMPOS': 4
+Group 'NUMNEG': 5
+Group 'SUMNEG': 6
+Group 'NUMZERO': 7
+ 
+Rows: 1:1
++-----------+-----------+-----------+-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4         C:5         C:6         C:7
+ROW         NUMPIX      NUMPOS      SUMPOS      NUMNEG      SUMNEG      NUMZERO 
++-----------+-----------+-----------+-----------+-----------+-----------+-----------
+        1.00      100.00      100.00      550.00        0.00        0.00        0.00
+gen xxB nl=10 ns=10 ival=0 linc=1 sinc=1 format=byte
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+list xxB 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+     Samp     1       3       5       7       9
+   Line
+      1       0   1   2   3   4   5   6   7   8   9
+      2       1   2   3   4   5   6   7   8   9  10
+      3       2   3   4   5   6   7   8   9  10  11
+      4       3   4   5   6   7   8   9  10  11  12
+      5       4   5   6   7   8   9  10  11  12  13
+      6       5   6   7   8   9  10  11  12  13  14
+      7       6   7   8   9  10  11  12  13  14  15
+      8       7   8   9  10  11  12  13  14  15  16
+      9       8   9  10  11  12  13  14  15  16  17
+     10       9  10  11  12  13  14  15  16  17  18
+imgsum xxB numpix=numpix numzero=numzero numpos=numpos  +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+Beginning VICAR task imgsum
+IMGSUM version 2015-11-05
+let $echo="no"
+Image xxB:
+numpix = 100   numzero = 1  numpos = 99  numneg = 0
+sumall = 9.000000000000e+02   sumpos = 9.000000000000e+02    sumneg = 0.000000000000e+00
+******************
+** WITH CATALOG **
+******************
+imgsum xxB out=xxB.cat numpix=numpix numzero=numzero numpos=numpos  +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+Beginning VICAR task imgsum
+IMGSUM version 2015-11-05
+ibis-li xxB.cat 'groups screen=132
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:1  Number of Columns: 7       
+File Version:IBIS-2  Organization:ROW  SubType:IMGSUM CATALOG
+Group 'ROW': 1
+Group 'NUMPIX': 2
+Group 'NUMPOS': 3
+Group 'SUMPOS': 4
+Group 'NUMNEG': 5
+Group 'SUMNEG': 6
+Group 'NUMZERO': 7
+ 
+Rows: 1:1
++-----------+-----------+-----------+-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4         C:5         C:6         C:7
+ROW         NUMPIX      NUMPOS      SUMPOS      NUMNEG      SUMNEG      NUMZERO 
++-----------+-----------+-----------+-----------+-----------+-----------+-----------
+        1.00      100.00       99.00      900.00        0.00        0.00        1.00
+gen xxC nl=10 ns=10 ival=-5 linc=1 sinc=1 modulo=11 format=byte
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+list xxC 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+     Samp     1       3       5       7       9
+   Line
+      1     251 252 253 254 255   0   1   2   3   4
+      2     252 253 254 255   0   1   2   3   4   5
+      3     253 254 255   0   1   2   3   4   5   6
+      4     254 255   0   1   2   3   4   5   6   7
+      5     255   0   1   2   3   4   5   6   7   8
+      6       0   1   2   3   4   5   6   7   8   9
+      7       1   2   3   4   5   6   7   8   9  10
+      8       2   3   4   5   6   7   8   9  10   0
+      9       3   4   5   6   7   8   9  10   0   1
+     10       4   5   6   7   8   9  10   0   1   2
+imgsum xxC numpix=numpix numzero=numzero numpos=numpos  +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+Beginning VICAR task imgsum
+IMGSUM version 2015-11-05
+let $echo="no"
+Image xxC:
+numpix = 100   numzero = 9  numpos = 91  numneg = 0
+sumall = 4.174000000000e+03   sumpos = 4.174000000000e+03    sumneg = 0.000000000000e+00
+******************
+** WITH CATALOG **
+******************
+imgsum xxC out=xxC.cat numpix=numpix numzero=numzero numpos=numpos  +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+Beginning VICAR task imgsum
+IMGSUM version 2015-11-05
+ibis-li xxC.cat 'groups screen=132
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:1  Number of Columns: 7       
+File Version:IBIS-2  Organization:ROW  SubType:IMGSUM CATALOG
+Group 'ROW': 1
+Group 'NUMPIX': 2
+Group 'NUMPOS': 3
+Group 'SUMPOS': 4
+Group 'NUMNEG': 5
+Group 'SUMNEG': 6
+Group 'NUMZERO': 7
+ 
+Rows: 1:1
++-----------+-----------+-----------+-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4         C:5         C:6         C:7
+ROW         NUMPIX      NUMPOS      SUMPOS      NUMNEG      SUMNEG      NUMZERO 
++-----------+-----------+-----------+-----------+-----------+-----------+-----------
+        1.00      100.00       91.00     4174.00        0.00        0.00        9.00
+let $echo="no"
+
+*****************
+** HALF IMAGES **
+*****************
+gen yyA nl=10 ns=10 ival=1 linc=1 sinc=1 format=half
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+list yyA 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   HALF     samples are interpreted as HALFWORD data
+ Task:GEN       User:          Date_Time:                        
+     Samp       1     2     3     4     5     6     7     8     9    10
+   Line
+      1         1     2     3     4     5     6     7     8     9    10
+      2         2     3     4     5     6     7     8     9    10    11
+      3         3     4     5     6     7     8     9    10    11    12
+      4         4     5     6     7     8     9    10    11    12    13
+      5         5     6     7     8     9    10    11    12    13    14
+      6         6     7     8     9    10    11    12    13    14    15
+      7         7     8     9    10    11    12    13    14    15    16
+      8         8     9    10    11    12    13    14    15    16    17
+      9         9    10    11    12    13    14    15    16    17    18
+     10        10    11    12    13    14    15    16    17    18    19
+imgsum yyA numpix=numpix numzero=numzero numpos=numpos  +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+Beginning VICAR task imgsum
+IMGSUM version 2015-11-05
+let $echo="no"
+Image yyA:
+numpix = 100   numzero = 0  numpos = 100  numneg = 0
+sumall = 1.000000000000e+03   sumpos = 1.000000000000e+03    sumneg = 0.000000000000e+00
+******************
+** WITH CATALOG **
+******************
+imgsum yyA out=yyA.cat numpix=numpix numzero=numzero numpos=numpos  +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+Beginning VICAR task imgsum
+IMGSUM version 2015-11-05
+ibis-li yyA.cat 'groups
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:1  Number of Columns: 7       
+File Version:IBIS-2  Organization:ROW  SubType:IMGSUM CATALOG
+Group 'ROW': 1
+Group 'NUMPIX': 2
+Group 'NUMPOS': 3
+Group 'SUMPOS': 4
+Group 'NUMNEG': 5
+Group 'SUMNEG': 6
+Group 'NUMZERO': 7
+ 
+Rows: 1:1
++-----------+-----------+-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4         C:5         C:6
+ROW         NUMPIX      NUMPOS      SUMPOS      NUMNEG      SUMNEG      
++-----------+-----------+-----------+-----------+-----------+-----------
+        1.00      100.00      100.00     1000.00        0.00        0.00
+ 
+Rows: 1:1
++-----------
+         C:7
+NUMZERO     
++-----------
+        0.00
+gen yyB nl=10 ns=10 ival=1000 linc=1 sinc=1 format=half
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+list yyB 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   HALF     samples are interpreted as HALFWORD data
+ Task:GEN       User:          Date_Time:                        
+     Samp       1     2     3     4     5     6     7     8     9    10
+   Line
+      1      1000  1001  1002  1003  1004  1005  1006  1007  1008  1009
+      2      1001  1002  1003  1004  1005  1006  1007  1008  1009  1010
+      3      1002  1003  1004  1005  1006  1007  1008  1009  1010  1011
+      4      1003  1004  1005  1006  1007  1008  1009  1010  1011  1012
+      5      1004  1005  1006  1007  1008  1009  1010  1011  1012  1013
+      6      1005  1006  1007  1008  1009  1010  1011  1012  1013  1014
+      7      1006  1007  1008  1009  1010  1011  1012  1013  1014  1015
+      8      1007  1008  1009  1010  1011  1012  1013  1014  1015  1016
+      9      1008  1009  1010  1011  1012  1013  1014  1015  1016  1017
+     10      1009  1010  1011  1012  1013  1014  1015  1016  1017  1018
+imgsum yyB numpix=numpix numzero=numzero numpos=numpos  +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+Beginning VICAR task imgsum
+IMGSUM version 2015-11-05
+let $echo="no"
+Image yyB:
+numpix = 100   numzero = 0  numpos = 100  numneg = 0
+sumall = 1.009000000000e+05   sumpos = 1.009000000000e+05    sumneg = 0.000000000000e+00
+******************
+** WITH CATALOG **
+******************
+imgsum yyB out=yyB.cat numpix=numpix numzero=numzero numpos=numpos  +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+Beginning VICAR task imgsum
+IMGSUM version 2015-11-05
+ibis-li yyB.cat 'groups screen=132
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:1  Number of Columns: 7       
+File Version:IBIS-2  Organization:ROW  SubType:IMGSUM CATALOG
+Group 'ROW': 1
+Group 'NUMPIX': 2
+Group 'NUMPOS': 3
+Group 'SUMPOS': 4
+Group 'NUMNEG': 5
+Group 'SUMNEG': 6
+Group 'NUMZERO': 7
+ 
+Rows: 1:1
++-----------+-----------+-----------+-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4         C:5         C:6         C:7
+ROW         NUMPIX      NUMPOS      SUMPOS      NUMNEG      SUMNEG      NUMZERO 
++-----------+-----------+-----------+-----------+-----------+-----------+-----------
+        1.00      100.00      100.00   100900.00        0.00        0.00        0.00
+gen yyC nl=10 ns=10 ival=1000 linc=1 sinc=1 modulo=1005 format=half
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+list yyC 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   HALF     samples are interpreted as HALFWORD data
+ Task:GEN       User:          Date_Time:                        
+     Samp       1     2     3     4     5     6     7     8     9    10
+   Line
+      1      1000  1001  1002  1003  1004     0     1     2     3     4
+      2      1001  1002  1003  1004     0     1     2     3     4     5
+      3      1002  1003  1004     0     1     2     3     4     5     6
+      4      1003  1004     0     1     2     3     4     5     6     7
+      5      1004     0     1     2     3     4     5     6     7     8
+      6         0     1     2     3     4     5     6     7     8     9
+      7         1     2     3     4     5     6     7     8     9    10
+      8         2     3     4     5     6     7     8     9    10    11
+      9         3     4     5     6     7     8     9    10    11    12
+     10         4     5     6     7     8     9    10    11    12    13
+imgsum yyC numpix=numpix numzero=numzero numpos=numpos  +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+Beginning VICAR task imgsum
+IMGSUM version 2015-11-05
+let $echo="no"
+Image yyC:
+numpix = 100   numzero = 6  numpos = 94  numneg = 0
+sumall = 1.547500000000e+04   sumpos = 1.547500000000e+04    sumneg = 0.000000000000e+00
+******************
+** WITH CATALOG **
+******************
+imgsum yyC out=yyC.cat numpix=numpix numzero=numzero numpos=numpos  +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+Beginning VICAR task imgsum
+IMGSUM version 2015-11-05
+ibis-li yyC.cat 'groups screen=132
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:1  Number of Columns: 7       
+File Version:IBIS-2  Organization:ROW  SubType:IMGSUM CATALOG
+Group 'ROW': 1
+Group 'NUMPIX': 2
+Group 'NUMPOS': 3
+Group 'SUMPOS': 4
+Group 'NUMNEG': 5
+Group 'SUMNEG': 6
+Group 'NUMZERO': 7
+ 
+Rows: 1:1
++-----------+-----------+-----------+-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4         C:5         C:6         C:7
+ROW         NUMPIX      NUMPOS      SUMPOS      NUMNEG      SUMNEG      NUMZERO 
++-----------+-----------+-----------+-----------+-----------+-----------+-----------
+        1.00      100.00       94.00    15475.00        0.00        0.00        6.00
+gen yyD nl=10 ns=10 ival=-50 linc=10 sinc=20  format=half
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+list yyD  'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   HALF     samples are interpreted as HALFWORD data
+ Task:GEN       User:          Date_Time:                        
+     Samp       1     2     3     4     5     6     7     8     9    10
+   Line
+      1       -50   -30   -10    10    30    50    70    90   110   130
+      2       -40   -20     0    20    40    60    80   100   120   140
+      3       -30   -10    10    30    50    70    90   110   130   150
+      4       -20     0    20    40    60    80   100   120   140   160
+      5       -10    10    30    50    70    90   110   130   150   170
+      6         0    20    40    60    80   100   120   140   160   180
+      7        10    30    50    70    90   110   130   150   170   190
+      8        20    40    60    80   100   120   140   160   180   200
+      9        30    50    70    90   110   130   150   170   190   210
+     10        40    60    80   100   120   140   160   180   200   220
+imgsum yyD numpix=numpix numzero=numzero numpos=numpos  +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+Beginning VICAR task imgsum
+IMGSUM version 2015-11-05
+let $echo="no"
+Image yyD:
+numpix = 100   numzero = 3  numpos = 88  numneg = 9
+sumall = 8.500000000000e+03   sumpos = 8.720000000000e+03    sumneg = -2.200000000000e+02
+
+******************
+** WITH CATALOG **
+******************
+imgsum yyD out=yyD.cat numpix=numpix numzero=numzero numpos=numpos  +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+Beginning VICAR task imgsum
+IMGSUM version 2015-11-05
+ibis-li yyD.cat 'groups screen=132
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:1  Number of Columns: 7       
+File Version:IBIS-2  Organization:ROW  SubType:IMGSUM CATALOG
+Group 'ROW': 1
+Group 'NUMPIX': 2
+Group 'NUMPOS': 3
+Group 'SUMPOS': 4
+Group 'NUMNEG': 5
+Group 'SUMNEG': 6
+Group 'NUMZERO': 7
+ 
+Rows: 1:1
++-----------+-----------+-----------+-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4         C:5         C:6         C:7
+ROW         NUMPIX      NUMPOS      SUMPOS      NUMNEG      SUMNEG      NUMZERO 
++-----------+-----------+-----------+-----------+-----------+-----------+-----------
+        1.00      100.00       88.00     8720.00        9.00     -220.00        3.00
+let $echo="no"
+**************************
+** WINDOWED HALF IMAGES **
+**************************
+list yyD size=(1,1,4,4) 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   HALF     samples are interpreted as HALFWORD data
+ Task:GEN       User:          Date_Time:                        
+     Samp       1     2     3     4
+   Line
+      1       -50   -30   -10    10
+      2       -40   -20     0    20
+      3       -30   -10    10    30
+      4       -20     0    20    40
+imgsum yyD size=(1,1,4,4) numpix=numpix numzero=numzero numpos=numpos  +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+Beginning VICAR task imgsum
+IMGSUM version 2015-11-05
+let $echo="no"
+WINDOW (1,1,4,4) Image yyD:
+numpix = 16   numzero = 2  numpos = 6  numneg = 8
+sumall = -8.000000000000e+01   sumpos = 1.300000000000e+02    sumneg = -2.100000000000e+02
+******************
+** WITH CATALOG **
+******************
+imgsum yyD out=yyD.cat numpix=numpix numzero=numzero numpos=numpos  +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+Beginning VICAR task imgsum
+IMGSUM version 2015-11-05
+ibis-li yyD.cat 'groups screen=132
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:1  Number of Columns: 7       
+File Version:IBIS-2  Organization:ROW  SubType:IMGSUM CATALOG
+Group 'ROW': 1
+Group 'NUMPIX': 2
+Group 'NUMPOS': 3
+Group 'SUMPOS': 4
+Group 'NUMNEG': 5
+Group 'SUMNEG': 6
+Group 'NUMZERO': 7
+ 
+Rows: 1:1
++-----------+-----------+-----------+-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4         C:5         C:6         C:7
+ROW         NUMPIX      NUMPOS      SUMPOS      NUMNEG      SUMNEG      NUMZERO 
++-----------+-----------+-----------+-----------+-----------+-----------+-----------
+        1.00      100.00       88.00     8720.00        9.00     -220.00        3.00
+list yyD size=(5,5,4,4) 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   HALF     samples are interpreted as HALFWORD data
+ Task:GEN       User:          Date_Time:                        
+     Samp       5     6     7     8
+   Line
+      5        70    90   110   130
+      6        80   100   120   140
+      7        90   110   130   150
+      8       100   120   140   160
+imgsum yyD size=(5,5,4,4) numpix=numpix numzero=numzero numpos=numpos  +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+Beginning VICAR task imgsum
+IMGSUM version 2015-11-05
+let $echo="no"
+WINDOW (5,5,4,4) Image yyD:
+numpix = 16   numzero = 0  numpos = 16  numneg = 0
+sumall = 1.840000000000e+03   sumpos = 1.840000000000e+03    sumneg = 0.000000000000e+00
+******************
+** WITH CATALOG **
+******************
+imgsum yyD out=yyD.cat numpix=numpix numzero=numzero numpos=numpos  +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+Beginning VICAR task imgsum
+IMGSUM version 2015-11-05
+ibis-li yyD.cat 'groups screen=132
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:1  Number of Columns: 7       
+File Version:IBIS-2  Organization:ROW  SubType:IMGSUM CATALOG
+Group 'ROW': 1
+Group 'NUMPIX': 2
+Group 'NUMPOS': 3
+Group 'SUMPOS': 4
+Group 'NUMNEG': 5
+Group 'SUMNEG': 6
+Group 'NUMZERO': 7
+ 
+Rows: 1:1
++-----------+-----------+-----------+-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4         C:5         C:6         C:7
+ROW         NUMPIX      NUMPOS      SUMPOS      NUMNEG      SUMNEG      NUMZERO 
++-----------+-----------+-----------+-----------+-----------+-----------+-----------
+        1.00      100.00       88.00     8720.00        9.00     -220.00        3.00
+let $echo="no"
+
+*****************
+** FULL IMAGES **
+*****************
+gen zzA nl=10 ns=10 ival=42000 linc=1 sinc=1 format=full
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+list zzA 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   FULL     samples are interpreted as FULLWORD data
+ Task:GEN       User:          Date_Time:                        
+     Samp            1          2          3          4          5          6          7          8          9         10
+   Line
+      1          42000      42001      42002      42003      42004      42005      42006      42007      42008      42009
+      2          42001      42002      42003      42004      42005      42006      42007      42008      42009      42010
+      3          42002      42003      42004      42005      42006      42007      42008      42009      42010      42011
+      4          42003      42004      42005      42006      42007      42008      42009      42010      42011      42012
+      5          42004      42005      42006      42007      42008      42009      42010      42011      42012      42013
+      6          42005      42006      42007      42008      42009      42010      42011      42012      42013      42014
+      7          42006      42007      42008      42009      42010      42011      42012      42013      42014      42015
+      8          42007      42008      42009      42010      42011      42012      42013      42014      42015      42016
+      9          42008      42009      42010      42011      42012      42013      42014      42015      42016      42017
+     10          42009      42010      42011      42012      42013      42014      42015      42016      42017      42018
+imgsum zzA numpix=numpix numzero=numzero numpos=numpos  +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+Beginning VICAR task imgsum
+IMGSUM version 2015-11-05
+let $echo="no"
+Image zzA:
+numpix = 100   numzero = 0  numpos = 100  numneg = 0
+sumall = 4.200900000000e+06   sumpos = 4.200900000000e+06    sumneg = 0.000000000000e+00
+******************
+** WITH CATALOG **
+******************
+imgsum zzA out=zzA.cat numpix=numpix numzero=numzero numpos=numpos  +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+Beginning VICAR task imgsum
+IMGSUM version 2015-11-05
+ibis-li zzA.cat 'groups screen=132
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:1  Number of Columns: 7       
+File Version:IBIS-2  Organization:ROW  SubType:IMGSUM CATALOG
+Group 'ROW': 1
+Group 'NUMPIX': 2
+Group 'NUMPOS': 3
+Group 'SUMPOS': 4
+Group 'NUMNEG': 5
+Group 'SUMNEG': 6
+Group 'NUMZERO': 7
+ 
+Rows: 1:1
++-----------+-----------+-----------+-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4         C:5         C:6         C:7
+ROW         NUMPIX      NUMPOS      SUMPOS      NUMNEG      SUMNEG      NUMZERO 
++-----------+-----------+-----------+-----------+-----------+-----------+-----------
+        1.00      100.00      100.00  4200900.00        0.00        0.00        0.00
+let $echo="no"
+
+*****************
+** REAL IMAGES **
+*****************
+gen wwA nl=10 ns=10 ival=-520 linc=80 sinc=120 format=real
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+list wwA 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+     Samp             1           2           3           4           5           6           7           8           9          10
+   Line
+      1      -5.200E+02  -4.000E+02  -2.800E+02  -1.600E+02  -4.000E+01   8.000E+01   2.000E+02   3.200E+02   4.400E+02   5.600E+02
+      2      -4.400E+02  -3.200E+02  -2.000E+02  -8.000E+01   4.000E+01   1.600E+02   2.800E+02   4.000E+02   5.200E+02   6.400E+02
+      3      -3.600E+02  -2.400E+02  -1.200E+02   0.000E+00   1.200E+02   2.400E+02   3.600E+02   4.800E+02   6.000E+02   7.200E+02
+      4      -2.800E+02  -1.600E+02  -4.000E+01   8.000E+01   2.000E+02   3.200E+02   4.400E+02   5.600E+02   6.800E+02   8.000E+02
+      5      -2.000E+02  -8.000E+01   4.000E+01   1.600E+02   2.800E+02   4.000E+02   5.200E+02   6.400E+02   7.600E+02   8.800E+02
+      6      -1.200E+02   0.000E+00   1.200E+02   2.400E+02   3.600E+02   4.800E+02   6.000E+02   7.200E+02   8.400E+02   9.600E+02
+      7      -4.000E+01   8.000E+01   2.000E+02   3.200E+02   4.400E+02   5.600E+02   6.800E+02   8.000E+02   9.200E+02   1.040E+03
+      8       4.000E+01   1.600E+02   2.800E+02   4.000E+02   5.200E+02   6.400E+02   7.600E+02   8.800E+02   1.000E+03   1.120E+03
+      9       1.200E+02   2.400E+02   3.600E+02   4.800E+02   6.000E+02   7.200E+02   8.400E+02   9.600E+02   1.080E+03   1.200E+03
+     10       2.000E+02   3.200E+02   4.400E+02   5.600E+02   6.800E+02   8.000E+02   9.200E+02   1.040E+03   1.160E+03   1.280E+03
+imgsum wwA numpix=numpix numzero=numzero numpos=numpos  +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+Beginning VICAR task imgsum
+IMGSUM version 2015-11-05
+let $echo="no"
+Image wwA:
+numpix = 100   numzero = 2  numpos = 79  numneg = 19
+sumall = 3.800000000000e+04   sumpos = 4.208000000000e+04    sumneg = -4.080000000000e+03
+******************
+** WITH CATALOG **
+******************
+imgsum wwA out=wwA.cat numpix=numpix numzero=numzero numpos=numpos  +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+Beginning VICAR task imgsum
+IMGSUM version 2015-11-05
+ibis-li wwA.cat 'groups screen=132
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:1  Number of Columns: 7       
+File Version:IBIS-2  Organization:ROW  SubType:IMGSUM CATALOG
+Group 'ROW': 1
+Group 'NUMPIX': 2
+Group 'NUMPOS': 3
+Group 'SUMPOS': 4
+Group 'NUMNEG': 5
+Group 'SUMNEG': 6
+Group 'NUMZERO': 7
+ 
+Rows: 1:1
++-----------+-----------+-----------+-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4         C:5         C:6         C:7
+ROW         NUMPIX      NUMPOS      SUMPOS      NUMNEG      SUMNEG      NUMZERO 
++-----------+-----------+-----------+-----------+-----------+-----------+-----------
+        1.00      100.00       79.00    42080.00       19.00    -4080.00        2.00
+let $echo="no"
+
+**************************
+** WINDOWED REAL IMAGES **
+**************************
+list wwA size=(3,2,4,3) 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+     Samp             2           3           4
+   Line
+      3      -2.400E+02  -1.200E+02   0.000E+00
+      4      -1.600E+02  -4.000E+01   8.000E+01
+      5      -8.000E+01   4.000E+01   1.600E+02
+      6       0.000E+00   1.200E+02   2.400E+02
+imgsum wwA size=(3,2,4,3) numpix=numpix numzero=numzero numpos=numpos  +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+Beginning VICAR task imgsum
+IMGSUM version 2015-11-05
+let $echo="no"
+WINDOW (3,2,4,3) Image wwA:
+numpix = 12   numzero = 2  numpos = 5  numneg = 5
+sumall = 0.000000000000e+00   sumpos = 6.400000000000e+02    sumneg = -6.400000000000e+02
+******************
+** WITH CATALOG **
+******************
+imgsum wwA out=wwA.cat numpix=numpix numzero=numzero numpos=numpos  +
+    numneg=numneg sum=sumall sumpos=sumpos sumneg=sumneg
+Beginning VICAR task imgsum
+IMGSUM version 2015-11-05
+ibis-li wwA.cat 'groups screen=132
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:1  Number of Columns: 7       
+File Version:IBIS-2  Organization:ROW  SubType:IMGSUM CATALOG
+Group 'ROW': 1
+Group 'NUMPIX': 2
+Group 'NUMPOS': 3
+Group 'SUMPOS': 4
+Group 'NUMNEG': 5
+Group 'SUMNEG': 6
+Group 'NUMZERO': 7
+ 
+Rows: 1:1
++-----------+-----------+-----------+-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4         C:5         C:6         C:7
+ROW         NUMPIX      NUMPOS      SUMPOS      NUMNEG      SUMNEG      NUMZERO 
++-----------+-----------+-----------+-----------+-----------+-----------+-----------
+        1.00      100.00       79.00    42080.00       19.00    -4080.00        2.00
+ush rm -f wwA wwA.cat xxA xxA.cat xxB xxB.cat xxC xxC.cat yyA yyA.cat yyB yyB.cat yyC yyC.cat yyD yyD.cat zzA zzA.cat
+let $echo="yes"
+disable-log

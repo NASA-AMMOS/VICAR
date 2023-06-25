@@ -1,0 +1,115 @@
+PROCESS       HELP=*
+LOCAL DUMREAL TYPE=REAL
+LOCAL DUMINT  TYPE=INT
+PARM INP      TYPE=(STRING,99) COUNT=1
+PARM COLS     TYPE=INT COUNT=(0:4) DEFAULT=(1,2,3,4)
+PARM V11   TYPE=NAME default=DUMREAL
+PARM V21   TYPE=NAME default=DUMREAL
+PARM V31   TYPE=NAME default=DUMREAL
+PARM V41   TYPE=NAME default=DUMREAL
+PARM V12   TYPE=NAME default=DUMREAL
+PARM V22   TYPE=NAME default=DUMREAL
+PARM V32   TYPE=NAME default=DUMREAL
+PARM V42   TYPE=NAME default=DUMREAL
+PARM V13   TYPE=NAME default=DUMREAL
+PARM V23   TYPE=NAME default=DUMREAL
+PARM V33   TYPE=NAME default=DUMREAL
+PARM V43   TYPE=NAME default=DUMREAL
+PARM IX1   TYPE=NAME default=DUMINT
+PARM IX2   TYPE=NAME default=DUMINT
+PARM IX3   TYPE=NAME default=DUMINT
+
+END-PROC
+.TITLE
+VICAR Program grid3pt - get 3 non-collinear points from any set of points
+.HELP
+PURPOSE
+
+     GRID3PT finds 3 good non-collinear points from a grid or a non-grid
+     of points.  The points are assumed to be tiepoints, hence occupy
+     four columns of an IBIS file.
+     
+     The IBIS file indices of the three selected points are also
+     returned if desired
+     
+
+TAE COMMAND LINE FORMAT
+
+     grid3pt INP=A COLS=(1,2,4,3) v11=rv11 etc
+     
+     where
+
+     A                   is the input dataset (IBIS file).
+     rv11                is a TCL integer variable to get col 1 of 1st point
+     rv21                is a TCL integer variable to get col 2 of 1st point
+     etc
+
+OPERATION
+
+     The selected columns of the grid are read into an array.
+     The center point is calculated, then the furthest point from
+     the center becomes point 1.  The second point subtends the largest
+     area with the first point and the center.  The third point
+     subtends the largest area with the other two.
+
+
+TIMING
+
+     Dominated by the time to read the array in.
+     
+RESTRICTIONS
+
+     The input array is mallocked.  Compare the size of the input
+     IBIS file with system parameters.  
+
+WRITTEN BY:            A. L. Zobrist, 31 March 2003
+
+COGNIZANT PROGRAMMER:  A. L. Zobrist
+
+REVISIONS:
+  2007-12-29 wlb switched to USES_ANSI_C AND LIB_CARTO; misc cleanup
+  2022-06-27 B. Crocco afids to opensource
+
+.LEVEL1
+.VARIABLE INP
+Input IBIS tabular file;
+Contains tiepoints, possibly
+a grid
+.VARIABLE COLS
+The columns containing the
+grid
+.variable v11
+TAE TCL name without &;
+gets column 1 of point 1
+.variable v21
+gets column 2 of point 1
+.variable v31
+gets column 3 of point 1
+.variable v41
+gets column 4 of point 1
+.variable v12
+gets column 1 of point 2
+.variable v22
+gets column 2 of point 2
+.variable v32
+gets column 3 of point 2
+.variable v42
+gets column 4 of point 2
+.variable v13
+gets column 1 of point 3
+.variable v23
+gets column 2 of point 3
+.variable v33
+gets column 3 of point 3
+.variable v43
+gets column 4 of point 3
+.variable ix1
+ibis index of point 1
+.variable ix2
+ibis index of point 2
+.variable ix3
+ibis index of point 3
+.level2
+.variable v11
+all of these return real TCL variables regardless of the IBIS column type
+.END

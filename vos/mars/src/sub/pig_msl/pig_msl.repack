@@ -1,0 +1,8 @@
+$ vpack pig_msl.com -mixed -
+	-s PigMSL.cc PigFileModelMSL.cc PigPointMSLmastCamera.cc -
+	   PigPointMSLmastCamera3dof.cc PigSiteMSL.cc -
+	   PigPointMSLmahliCamera.cc PigPointMSLmahliCamera6dof.cc -
+	   PigRoverStateManagerMSL.cc PigLabelModelMSL.cc -
+	   PigPointMSLmastCameraScale.cc -
+	-i pig_msl.imake
+$ Exit

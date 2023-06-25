@@ -5,7 +5,7 @@
 all: make_sub make_prog 
 
 make_sub:
-	($(CD) sub; $(V2UTIL)/bldcomfiles_nounpack.csh $(R2LIB)) 
+	(export FORCE_FPIC=1; $(CD) sub; $(V2UTIL)/bldcomfiles_nounpack.csh $(R2LIB)) 
 
 make_prog: 
 	-($(CD) prog; $(V2UTIL)/bldcomfiles_nounpack.csh $(R2LIB)) 

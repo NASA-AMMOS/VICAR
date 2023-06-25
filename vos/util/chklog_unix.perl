@@ -140,11 +140,26 @@ $errmsg = " ";
 # 30) Added marsrefmesh per Francois Ayoub. 1/30/19
 # 31) Added mars python scripts, m2020_scam_fitsgen, m2020_update_scam_odl 11/13/19
 # 32) Removed meshman, marsecorr due to tps embree not available for Linux-32. 2/20/20
+# 33) Removed m2020_scam_gitsgen,m2020_updat_scam_odl.  1/6/21
+# 34) Removed cat_gen_util,rts_cat_util,cas_cat,cas_sybase_util,mpl_cat_util,isslab,
+#     vimslab as they have been obsolete due to Sybase being no longer used. (1/11/21)
+# 35) Removed suffix2core. Suffix2core has been modified to not use Sybase. (1/11/21)
+# 36) Added tcl2tcl. p2/prog/tcl2tcl builds only on 64-bit. (5/24/21)
+# 37) Added p3/ztimsfilt. Actually,ztimsfilt builds on 32-bit however crumbs does not and
+#     because of the way crumbs builds,it shows the previous item that was built
+#     as the build error. (2/15/22)
+# 38) Added mars/src/prog/posegraph.Build only on 64-bit RH8 and 64 & 32-bit RH7. (10/3/22)
+# 39) Added these AFIDS routines recently added to Vicar. At this time they do not build on either
+#     RH8 32 or 64-bit:acca,alilog,fytpe2tcl,hyperionlog,ibislsq9,modislog_mod021km,paintc,roc_fit,
+#     shp2vic,vic2shp,vtiff3 (10/4/22) per Bob Crocco.
+# 40) Added marsnav2. TPS not rebuilt for 32-bit RH8. 10/5/22
+#
 ########################################################################################
 
-@exceptlinux32=("marsrefmesh","meshman","marsecorr","tcal2","temis","vic2srf",
-"cat_gen_util","rts_cat_util","cas_cat","cas_sybase_util","mpl_cat_util",
-"v2param","isslab","suffix2core","vimslab","m2020_scam_fitsgen","m2020_update_scam_odl");
+@exceptlinux32=("marsrefmesh","meshman","marsecorr","tcal2","temis","vic2srf","v2param","tcl2tcl","ztimsfilt",
+"posegraph","acca","alilog","ftype2tcl","hyperionlog","ibislsq9","modislog_mod021km","paintc",
+"rpc_fit","shp2vic","vic2shp","vtiff3","marsnav2");
+
 #
 #######################################################################################
 #
@@ -264,28 +279,38 @@ $errmsg = " ";
 # 27) Added cat_gen_util, rts_cat_util, cas_cat, cas_sybase_util,mpl_cat_util after mdms code obsoleted. 9/24/18
 # 28) Added mars python scripts, m2020_scam_fitsgen, m2020_update_scam_odl 11/13/19
 # 29) Added mars/src/prog/m20filter 2/12/20
-# 
+# 30) Removed m2020_scam_fitsgen,m2020_update_scam_odl. 1/7/21
+# 31) Removed cat_gen_util,rts_cat_util,cas_cat,cas_sybase_util,mpl_cat_util,isslab,
+#     vimslab as they have been obsolete due to Sybase being no longer used. (1/11/21)
+# 32) Removed suffix2core. Suffix2core has been modified to not use Sybase. (1/11/21) 
+# 33) Added these AFIDS routines recently added to Vicar. At this time they do not build on either
+#     RH8 32 or 64-bit:acca,alilog,fytpe2tcl,hyperionlog,ibislsq9,modislog_mod021km,paintc,roc_fit,
+#     shp2vic,vic2shp,vtiff3 (10/4/22) per Bob Crocco.
+#
 #######################################################################################
 #
 @exceptlinux64=("tcal2","temis","vic2srf","mslreach","libpig_native","libdivl1b_a",
-"libdivl1b_so","isslab","suffix2core","vimslab","divl1b",
-"mslfilter","cat_gen_util","rts_cat_util","cas_cat","cas_sybase_util","mpl_cat_util",
-"m2020_scam_fitsgen","m2020_update_scam_odl","m20filter");
-
+"libdivl1b_so","divl1b","mslfilter","m20filter",
+"posegraph","acca","alilog","ftype2tcl","hyperionlog","ibislsq9","modislog_mod021km","paintc",
+"rpc_fit","shp2vic","vic2shp","vtiff3");
 #
 #######################################################################################
 #
 # MSL Linux-32 Build Exception Reasons:
 #
 # Added m2020 and nsyt code. 6/12/20
+# Removed m2020_scam_gitsgen,m2020_updat_scam_odl. 1/7/21
+# Added marsnav2. 10/5/22
 #
 #######################################################################################
 @exceptlinux32msl=("marsrefmesh","meshman","marsecorr","tcal2","temis","vic2srf",
 "cat_gen_util","rts_cat_util","cas_cat","cas_sybase_util","mpl_cat_util",
-"v2param","isslab","suffix2core","vimslab","m2020_scam_fitsgen","m2020_update_scam_odl","m2020edrgenlib",
+"v2param","isslab","suffix2core","vimslab","m2020edrgenlib",
 "m2020engcamedrgenlib","m2020edrgen","m2020moxieedrgenlib","m2020pixledrgenlib","m2020rimfaxedrgenlib",
 "m2020srlcedrgenlib","m2020supercamedrgenlib","m20filter","nsyt_ida_science_telemproc","nsyt_ida_telemproc",
-"m2020medaedrgenlib","m2020mmmcamedrgenlib","nsyt_twins_telemproc","phxreach","phxtelemproc");
+"m2020medaedrgenlib","m2020mmmcamedrgenlib","nsyt_twins_telemproc","phxreach","phxtelemproc",
+"posegraph","acca","alilog","ftype2tcl","hyperionlog","ibislsq9","modislog_mod021km","paintc",
+"rpc_fit","shp2vic","vic2shp","vtiff3","marsnav2");
 #
 #######################################################################################
 #
@@ -296,34 +321,40 @@ $errmsg = " ";
 #
 ################################################################################
 @exceptlinux64msl=("tcal2","temis","vic2srf","mslreach","libpig_native","libdivl1b_a",
-"libdivl1b_so","isslab","suffix2core","vimslab","divl1b",
-"mslfilter","cat_gen_util","rts_cat_util","cas_cat","cas_sybase_util","mpl_cat_util",
+"libdivl1b_so","divl1b",
+"mslfilter",
 "m2020_scam_fitsgen","m2020_update_scam_odl","m20filter","m2020edrgenlib","m2020engcamedrgenlib",
 "m2020medaedrgenlib","m2020mmmcamedrgenlib","m2020moxieedrgenlib","m2020pixledrgenlib",
-"m2020rimfaxedrgenlib","m2020srlcedrgenlib","m2020supercamedrgenlib","m2020edrgen");
+"m2020rimfaxedrgenlib","m2020srlcedrgenlib","m2020supercamedrgenlib","m2020edrgen",
+"posegraph","acca","alilog","ftype2tcl","hyperionlog","ibislsq9","modislog_mod021km","paintc",
+"rpc_fit","shp2vic","vic2shp","vtiff3");
 #
 ################################################################################
 #
 # NSYT Linux-32 Build Exception Reasons:
 #
 # Added m2020 code. 6/12/20
+# Added marsnav2. 10/5/22
 #
 ################################################################################
 @exceptlinux32nsyt=("marsrefmesh","meshman","marsecorr","tcal2","temis","vic2srf",
-"cat_gen_util","rts_cat_util","cas_cat","cas_sybase_util","mpl_cat_util",
-"v2param","isslab","suffix2core","vimslab","m2020_scam_fitsgen","m2020_update_scam_odl","m2020edrgenlib",
+"v2param","m2020_scam_fitsgen","m2020_update_scam_odl","m2020edrgenlib",
 "m2020engcamedrgenlib","m2020edrgen","m2020moxieedrgenlib","m2020pixledrgenlib","m2020rimfaxedrgenlib",
 "m2020srlcedrgenlib","m2020supercamedrgenlib","m20filter",
-"m2020medaedrgenlib","m2020mmmcamedrgenlib","mslfilter","mslreach");
+"m2020medaedrgenlib","m2020mmmcamedrgenlib","mslfilter","mslreach",
+"posegraph","acca","alilog","ftype2tcl","hyperionlog","ibislsq9","modislog_mod021km","paintc",
+"rpc_fit","shp2vic","vic2shp","vtiff3","marsnav2");
 #
 ################################################################################
 #
 @exceptlinux64nsyt=("tcal2","temis","vic2srf","mslreach","libpig_native","libdivl1b_a",
-"libdivl1b_so","isslab","suffix2core","vimslab","divl1b",
-"mslfilter","cat_gen_util","rts_cat_util","cas_cat","cas_sybase_util","mpl_cat_util",
+"libdivl1b_so","divl1b",
+"mslfilter",
 "m2020_scam_fitsgen","m2020_update_scam_odl","m20filter","m2020edrgenlib","m2020engcamedrgenlib",
 "m2020medaedrgenlib","m2020mmmcamedrgenlib","m2020moxieedrgenlib","m2020pixledrgenlib",
-"m2020rimfaxedrgenlib","m2020srlcedrgenlib","m2020supercamedrgenlib","m2020edrgen");
+"m2020rimfaxedrgenlib","m2020srlcedrgenlib","m2020supercamedrgenlib","m2020edrgen",
+"posegraph","acca","alilog","ftype2tcl","hyperionlog","ibislsq9","modislog_mod021km","paintc",
+"rpc_fit","shp2vic","vic2shp","vtiff3");
 #
 ###############################################################################
 

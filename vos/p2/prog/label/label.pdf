@@ -18,6 +18,7 @@ SUBCMD CONCAT
     PARM TASK TYPE=STRING COUNT=0:1 DEFAULT=--
     PARM PROPERTY TYPE=STRING COUNT=0:1 DEFAULT=--
     PARM INSTANCE TYPE=INTEGER COUNT=1 DEFAULT=1
+    PARM OUT_NAME TYPE=STRING COUNT=0:1 DEFAULT=--
 END-SUBCMD
 
 SUBCMD CREATE	! CREATE A SYSTEM LABEL
@@ -134,7 +135,10 @@ warn users if the maximum string length is exceeded.
    2010       R. G. Deen - Added UPDATE keyword to ADD, and ANSI-fied prototypes.
    2017-03-29 W. L. Bunch - Added NOUSRTIM param to help automated regression testing.
    2019-05-28 W. L. Bunch - Cleaned up type conversion compiler warnings.
-   2019-09-06 W. L. Bunch - IDS-7922 - Initialized some variables.
+   2019-09-06 W. L. Bunch - Initialized some variables.
+   2021-11-12 W. L. Bunch - Replaced my_abort_foo functions with zvnabend calls.
+   2021-11-12.2 W. L. Bunch - Initialized some more variables.
+   2022-04-05 R. G. Deen - Added OUT_NAME to -concat
 
 .LEVEL1
 !
@@ -186,6 +190,8 @@ if only one
 .VAR INSTANCE -CONCAT
 Instance number, goes
 with SET_NAME
+.VAR OUT_NAME -CONCAT
+Output task/set name
 !
 !=======================================================================
 !
@@ -587,6 +593,12 @@ facility to add sets into the middle or the beginning.  To simulate adding
 sets to the beginning, add them in the other order, then use LABEL-SWITCH.
 (e.g. instead of adding A before B, add B's labels after A, then switch the
 data back).
+
+If transferring only a single set, the OUT_NAME parameter can be optionally
+used to change the name of the set (task/property) in the output label.  If
+not specified, the same name is used as the input.  This allows for renaming
+property sets or history tasks.
+
 .page
 Examples:
 
@@ -598,6 +610,10 @@ history and property sections of file_2.
 LABEL-CONCAT (file_1,file_2) property="CAMERA_MODEL"
 
 would transfer the CAMERA_MODEL property (instance 1) to file_2.
+
+LABEL-CONCAT (file_1,file_2) property="CAMERA_MODEL" out_name="GEOMETRIC_CAMERA_MODEL"
+
+will do the same as above, except change the property name in the output.
 
 LABEL-CONCAT (file_1,file_2) outfile task="GEN" instance=1
 
@@ -647,6 +663,9 @@ to transfer (relative to input 1).  It is only used if TASK or PROPERTY is
 active.
 
 The default is 1.
+.VAR OUT_NAME -CONCAT
+Overrides the name of the output set (task or property name) when transferring
+a single set.  This allows for renaming of property sets.
 !
 !=======================================================================
 !

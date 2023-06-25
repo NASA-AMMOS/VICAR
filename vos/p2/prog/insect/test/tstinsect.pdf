@@ -18,6 +18,7 @@ procedure
 refgbl $echo
 refgbl $autousage
 body
+enable-log 
 let $autousage = "none"
 let _onfail="stop"
 !
@@ -32,7 +33,7 @@ insect (A,B) C insect=(1,1,5,5,5,5)
 let $echo="no"
 write "LIST RESULTING IMAGE"
 let $echo="yes"
-list C 'zero
+list C 'zero 'nousrtim
 let $echo="no"
 write "PUT B INTO A STARTING AT (15,15)"
 let $echo="yes"
@@ -40,7 +41,7 @@ insect (A,B) C sl=1  ss=1 nl=20 ns=20  insect=(1,1,5,5,15,15)
 let $echo="no"
 write "LIST RESULTING IMAGE"
 let $echo="yes"
-list C 'zero
+list C 'zero 'nousrtim
 let $echo="no"
 write " "
 write "TEST HALF IMAGES"
@@ -54,7 +55,7 @@ insect (A1,B1) C1 insect=(1,1,5,5,5,5)
 let $echo="no"
 write "LIST RESULTING IMAGE"
 let $echo="yes"
-list C1 'zero
+list C1 'zero 'nousrtim
 let $echo="no"
 write "PUT B1 INTO A1 STARTING AT (15,15)"
 let $echo="yes"
@@ -62,7 +63,7 @@ insect (A1,B1) C1 sl=1  ss=1 nl=20 ns=20  insect=(1,1,5,5,15,15)
 let $echo="no"
 write "LIST RESULTING IMAGE"
 let $echo="yes"
-list C1 'zero
+list C1 'zero 'nousrtim
 let $echo="no"
 write " "
 write "TEST FULL IMAGES"
@@ -76,7 +77,7 @@ insect (A2,B2) C2 insect=(1,1,5,5,5,5)
 let $echo="no"
 write "LIST RESULTING IMAGE"
 let $echo="yes"
-list C2 'zero
+list C2 'zero 'nousrtim
 let $echo="no"
 write "PUT B2 INTO A2 STARTING AT (15,15)"
 let $echo="yes"
@@ -84,7 +85,7 @@ insect (A2,B2) C2 sl=1  ss=1 nl=20 ns=20  insect=(1,1,5,5,15,15)
 let $echo="no"
 write "LIST RESULTING IMAGE"
 let $echo="yes"
-list C2 'zero
+list C2 'zero 'nousrtim
 let $echo="no"
 write " "
 write "TEST REAL IMAGES"
@@ -98,7 +99,7 @@ insect (A3,B3) C3 insect=(1,1,5,5,5,5)
 let $echo="no"
 write "LIST RESULTING IMAGE"
 let $echo="yes"
-list C3 'zero
+list C3 'zero 'nousrtim
 let $echo="no"
 write "PUT B2 INTO A2 STARTING AT (15,15)"
 let $echo="yes"
@@ -106,12 +107,11 @@ insect (A3,B3) C3 sl=1  ss=1 nl=20 ns=20  insect=(1,1,5,5,15,15)
 let $echo="no"
 write "LIST RESULTING IMAGE"
 let $echo="yes"
-list C3 'zero
+list C3 'zero 'nousrtim
 let $echo="no"
 
+disable-log
 
-
-
-
+ush rm A A1 A2 A3 B B1 B2 B3 C C1 C2 C3
 
 end-proc

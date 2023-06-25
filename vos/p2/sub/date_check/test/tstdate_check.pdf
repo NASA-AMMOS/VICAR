@@ -2,6 +2,8 @@ procedure
 refgbl $echo
 
 body
+enable-log
+
 let _onfail="continue"
 let $echo="no"
 
@@ -505,5 +507,5 @@ write "::: Test for invalid millisecond number"
 let $echo = "yes"
 tdate_check std=(1998,3,23,10,59,40,1000)
  
+disable-log
 end-proc
-

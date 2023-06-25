@@ -2,6 +2,8 @@ procedure
 refgbl $autousage
 refgbl $echo
 body
+enable-log
+
 let _onfail="continue"
 let $autousage="none"
 let $echo="yes"
@@ -11,4 +13,6 @@ let $echo="yes"
 ! precision). The sum of each index point of the 
 ! two arrays is placed in the second array at that point.
 taddv
+
+disable-log
 end-proc

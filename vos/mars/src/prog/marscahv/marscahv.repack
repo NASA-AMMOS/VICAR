@@ -1,0 +1,5 @@
+$ vpack marscahv.com -mixed -
+	-s marscahv.cc -
+	-i marscahv.imake -
+	-p marscahv.pdf
+$ Exit

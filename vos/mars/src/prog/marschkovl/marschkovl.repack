@@ -1,0 +1,5 @@
+$ vpack marschkovl.com -mixed -
+	-s marschkovl.cc -
+	-i marschkovl.imake -
+	-p marschkovl.pdf
+$ Exit

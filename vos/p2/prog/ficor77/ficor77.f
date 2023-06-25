@@ -22,8 +22,10 @@ C      COMMON/C1/WORK(10000)		!A large work area
       INTEGER*4 IPIC(39),IDARK(10)	!Camera params for PIC,DC
       INTEGER*4 MODE, MODEDC            !Camera mode and dark-current camera mode
       INTEGER*4 SLO,SSO,IBUG,IUNIT,NLO,NSO,NSI,IPLAN,OUNIT,MAXDN
-      INTEGER*4 NONEGS,ICAM,IUNITC,IFLT,IUNITD,IGAIN,IDCGAIN
+      INTEGER*4 NONEGS,ICAM,IUNITC,IUNITD,IGAIN,IDCGAIN
       INTEGER*4 IND,NLC,NSC,ISPEED,IFILT
+      REAL*4 RSPEED
+      EQUIVALENCE (ISPEED,RSPEED)
       LOGICAL BADSCALE
       INTEGER*4 MSP,MUP,NSP,NNP,ITOT,IFDS,L,FILTEQ
       REAL*4 A1,A2,FSCALE,DIV,DCSCALE
@@ -31,7 +33,7 @@ C      COMMON/C1/WORK(10000)		!A large work area
       CHARACTER*8 DATE			!Version date of SCF
       LOGICAL XVPTST
 C
-      CALL IFMESSAGE('FICOR77 version 2020-04-02')
+      CALL IFMESSAGE('FICOR77 version 2021-11-02')
 C
       IBUG = 0
       IF (XVPTST('DBUG')) IBUG=1	!Set flag for diagnostic messages
@@ -93,7 +95,7 @@ C
 C
 C     ...Scale DNs of output image
       ISPEED = IPIC(3)		!Shutter speed (msec,REAL*4)
-      CALL OPSCALE(ICAM,IFILT,IPLAN,ISPEED,MAXDN,NC,IBUG,
+      CALL OPSCALE(ICAM,IFILT,IPLAN,RSPEED,MAXDN,NC,IBUG,
      &       ltbl,dtbl,emax,a1,a2,badscale,fscale,date,*999)
 C
       CALL FCOSET2(LTBL,DTBL,NC,CNS,MAXDN,EMAX,NONEGS) !Set LCOR constants
@@ -128,7 +130,7 @@ C
       IMPLICIT NONE
 
       INTEGER*4 ipic(39),slo,sso,iunit,mode,nlo,nso,nsi
-      INTEGER*4 ind,nlabs,nli,icam,a2,icnt,idef
+      INTEGER*4 ind,nlabs,nli
 
       COMMON/C3/LAB		!Picture label of input image
       CHARACTER*7200 LAB
@@ -225,7 +227,7 @@ C
       IMPLICIT NONE
 
       CHARACTER*4 OFORMAT(3)
-      INTEGER*4 OCODE,OUNIT,MAXDN,NONEGS,ICNT,IND,NSO,N,IDEF,ICAM
+      INTEGER*4 OCODE,OUNIT,MAXDN,NONEGS,ICNT,IND,NSO
       LOGICAL XVPTST
 C
       DATA OFORMAT/'BYTE','HALF','REAL'/
@@ -360,6 +362,8 @@ C
 
       INTEGER*4 ITEST(10),ICAL(10),DARK(10),PCDF,DC
       LOGICAL XVPTST
+
+      MODEDCX = 0
 C
 C     ...Input picture camera parameters
       IFILT = IPIC(4)
@@ -502,8 +506,8 @@ C
 
       INTEGER*4 IPIC(8),ICAL(8),IDARK(8),MAXC,MAXC0,MAXD,MAXD0,IUNITD
       INTEGER*4 NLABX,N,I,MAX,IUNITC,ICNT,IDEF,IMOD,J,NCHAR,MODE
-      INTEGER*4 MODEDC,IGAIN
-      REAL*4 DIV,SCALE,DCSCALE
+      INTEGER*4 MODEDC
+      REAL*4 DIV
 
       COMMON/C5/LABEL,PBUF 	!Temporary storage for labels
       CHARACTER*7200 LABEL
@@ -721,6 +725,7 @@ C     ...Fix output DN scale a la FIXVGR
       ELSE
           CALL FIXSCALE(A1,ICAM,IFILT,IPLAN,fscale,date,*999)
       ENDIF
+
 C
 C     ...Scale the luminances to units of output DN
       SCALE = EADJ/OSCALE
@@ -754,8 +759,8 @@ C
       SUBROUTINE FTLAMBERT(ICAM,IFILT,coniof,conx,badscale)
       IMPLICIT NONE
 
-      REAL*4 CONX,CONIOF,VERSION
-      INTEGER*4 IFILT,ICAM,ICNT,IND
+      REAL*4 CONX,CONIOF
+      INTEGER*4 IFILT,ICAM
       LOGICAL badscale,XVPTST
 C
 C    ...SUN(ifilt,icam)=solar irradiance in nanowatts/steradian*cm**2/nm
@@ -979,9 +984,9 @@ C
       IMPLICIT NONE
 
       BYTE BUF(*)
-      REAL*4 RMAXDN,EMAX,RMSP,RMUP,RS,DCSCALE,EMAX1,A1,A2,FDSDC,FSCALE
+      REAL*4 RMAXDN,EMAX,RMSP,RMUP,RS,DCSCALE,EMAX1
       INTEGER*4 NC,NONEGS,NSP,NNP,ITOT,J,I,NS,MAXDN,NONEGS1,MSP,MUP,INSP
-      INTEGER*4 INNP,IITOT,NC1,IND,IFDS
+      INTEGER*4 INNP,IITOT,NC1
       INTEGER*2 DBUF(*),D(NC,*)
       REAL*4 LUT(*),LTBL(10),DTBL(9),LTBL1(*),DTBL1(*),LUM
       REAL*4 OBUF(*)
@@ -1225,23 +1230,52 @@ C
       CHARACTER*8 TASKS(100)
       CHARACTER*5 IBM_LABEL
       BYTE A,B
+      INTEGER use_property
+      INTEGER CANNOT_FIND_KEY
+      INTEGER NO_SUCH_PROPERTY
+
+C     From rtl/errors.dat
+      CANNOT_FIND_KEY = -38
+      NO_SUCH_PROPERTY = -90
+
+      use_property = 0
 
       CNT=100
       CALL XLHINFO(IUNIT,TASKS,INSTANCES,CNT,IND,' ')
 C     ...Get number of 72-byte labels (NLABS)
-      CALL XLGET(IUNIT,'HISTORY','NLABS',NLABS,IND,'HIST',TASKS(1),
-     &           'INSTANCE',INSTANCES(1),'FORMAT','INT',' ')
-      IF (IND.EQ.-38) THEN
+      CALL XLGET(IUNIT,'PROPERTY',
+     &           'NLABS',NLABS,IND,'FORMAT','INT',
+     &           'PROPERTY','LEGACY_LABEL',' ')
+      IF (IND.EQ.NO_SUCH_PROPERTY .OR. IND.EQ.CANNOT_FIND_KEY) THEN
+         use_property = 0
+      ELSE
+         use_property = 1
+      ENDIF
+
+      IF (use_property .eq. 0) THEN
+         CALL XLGET(IUNIT,'HISTORY','NLABS',NLABS,IND,'HIST',TASKS(1),
+     &              'INSTANCE',INSTANCES(1),'FORMAT','INT',' ')
+      ENDIF
+
+      IF (IND.EQ.CANNOT_FIND_KEY) THEN
          CALL XVMESSAGE
      &        ('***Truncated input label, may cause problems',' ')
          NLABS = 7		!Let's hope there are at least 7 labels...
       ENDIF
+
       IBM_LABEL='LAB01'
 
       DO I=1,NLABS
-         CALL XLGET(IUNIT,'HISTORY',IBM_LABEL,LAB(I),IND,
+         IF (use_property .EQ. 0) THEN
+           CALL XLGET(IUNIT,'HISTORY',IBM_LABEL,LAB(I),IND,
      &             'HIST', TASKS(1),'INSTANCE',INSTANCES(1),
      &             'FORMAT','STRING',' ')
+         ELSE
+           CALL XLGET(IUNIT,'PROPERTY',
+     &             IBM_LABEL,LAB(I),IND,
+     &             'FORMAT','STRING',
+     &             'PROPERTY','LEGACY_LABEL',' ')
+         ENDIF
          A=ICHAR(IBM_LABEL(5:5))+1       !replaces keyinc
          IF (A.GT.ICHAR('9')) THEN
             A=ICHAR('0')

@@ -2,10 +2,14 @@ procedure
 refgbl $echo
 refgbl $autousage
 body
+enable-log
+
 let $autousage="none"
 let _onfail="continue"
 let $echo="yes"
 write "four tests will be run which will each print"
 write "results based on the same input data"
 tcmul
+
+disable-log
 end-proc

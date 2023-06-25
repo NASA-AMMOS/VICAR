@@ -1,0 +1,4 @@
+$ vpack xmln.com -mixed -
+	-s xmln.c -
+	-i xmln.imake
+$ Exit

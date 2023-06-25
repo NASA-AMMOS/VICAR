@@ -7,7 +7,7 @@
         write(msg,100) time_sec
         call xvmessage(msg,' ') 
 
- 100    format(' The GMT time in seconds since 1-JAN-1970 is: ', I)
+ 100    format(' The GMT time in seconds since 1-JAN-1970 is: ', I10)
 
 	return
 	end

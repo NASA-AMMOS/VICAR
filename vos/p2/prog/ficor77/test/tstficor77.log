@@ -1,12 +1,9 @@
-local path type=string init="wms_test_work:[testdata.mipl.vgr]"
-let path="/project/test_work/testdata/mipl/vgr/"
 write "***** Test nanowatts scale *****"
 ***** Test nanowatts scale *****
-ficor77 (/project/test_work/testdata/mipl/vgr/f1636832.raw,/proj+
-ect/test_work/testdata/mipl/vgr/ficor77.cal,/project/test_work/testdata/mipl/vgr/dc.cal)                  A (500,500,10,10) 'NOCO C+
-ONV=1.
+ficor77 (data/f1636832.raw,data/ficor77.cal,data/dc.cal)  +
+                A (500,500,10,10) 'NOCO CONV=1.
 Beginning VICAR task ficor77
-FICOR77 version 2020-04-02
+FICOR77 version 2021-11-02
 Dark-Current File input=          3
 Calibration File input=          2
 DARK-CURRENT LABEL...
@@ -71,7 +68,7 @@ Maximum value of an unsaturated pixel=        793
 Total number of saturated pixels=          0
 Total number of negative pixels=          0
 FICOR task completed
-fixvgr A B scf=/project/test_work/testdata/mipl/vgr/vgrscf.dat
+fixvgr A B scf=data/vgrscf.dat
 Beginning VICAR task fixvgr
 FIXVGR Version 31-OCT-94
  Camera=          7
@@ -127,11 +124,10 @@ COMMENT=' PICTURE MULTIPLIED BY    4.60      FIXVGR     8/06/90 VERSION'
 SCALE='JUPITER'
  
 ************************************************************
-ficor77 (/project/test_work/testdata/mipl/vgr/f1636832.raw,/proj+
-ect/test_work/testdata/mipl/vgr/ficor77.cal,/project/test_work/testdata/mipl/vgr/dc.cal)          C (500,500,10,10) CONV=1. scf=/pr+
-oject/test_work/testdata/mipl/vgr/vgrscf.dat
+ficor77 (data/f1636832.raw,data/ficor77.cal,data/dc.cal)  +
+        C (500,500,10,10) CONV=1. scf=data/vgrscf.dat
 Beginning VICAR task ficor77
-FICOR77 version 2020-04-02
+FICOR77 version 2021-11-02
 Dark-Current File input=          3
 Calibration File input=          2
 DARK-CURRENT LABEL...
@@ -256,11 +252,10 @@ LIST version 2019-09-06
      10       705   711   722   720   714   718   707   713   710   715
 write "***** Test I/F scale *****"
 ***** Test I/F scale *****
-ficor77 (/project/test_work/testdata/mipl/vgr/f1636832.raw,/proj+
-ect/test_work/testdata/mipl/vgr/ficor77.cal,/project/test_work/testdata/mipl/vgr/dc.cal)                  A (500,500,10,10) IOF=.5 +
-'NOCO
+ficor77 (data/f1636832.raw,data/ficor77.cal,data/dc.cal)  +
+                A (500,500,10,10) IOF=.5 'NOCO
 Beginning VICAR task ficor77
-FICOR77 version 2020-04-02
+FICOR77 version 2021-11-02
 Dark-Current File input=          3
 Calibration File input=          2
 DARK-CURRENT LABEL...
@@ -324,7 +319,7 @@ Maximum value of an unsaturated pixel=       7845
 Total number of saturated pixels=          0
 Total number of negative pixels=          0
 FICOR task completed
-fixvgr A B scf=/project/test_work/testdata/mipl/vgr/vgrscf.dat
+fixvgr A B scf=data/vgrscf.dat
 Beginning VICAR task fixvgr
 FIXVGR Version 31-OCT-94
  Camera=          7
@@ -380,11 +375,10 @@ COMMENT=' PICTURE MULTIPLIED BY    0.47      FIXVGR     8/06/90 VERSION'
 SCALE='JUPITER'
  
 ************************************************************
-ficor77 (/project/test_work/testdata/mipl/vgr/f1636832.raw,/proj+
-ect/test_work/testdata/mipl/vgr/ficor77.cal,/project/test_work/testdata/mipl/vgr/dc.cal)               C (500,500,10,10)scf=/projec+
-t/test_work/testdata/mipl/vgr/vgrscf.dat
+ficor77 (data/f1636832.raw,data/ficor77.cal,data/dc.cal)  +
+             C (500,500,10,10)scf=data/vgrscf.dat
 Beginning VICAR task ficor77
-FICOR77 version 2020-04-02
+FICOR77 version 2021-11-02
 Dark-Current File input=          3
 Calibration File input=          2
 DARK-CURRENT LABEL...
@@ -555,29 +549,27 @@ LIST version 2019-09-06
      10      3488  3519  3572  3561  3533  3553  3498  3526  3514  3540
 write "***** Test channel equivalence *****"
 ***** Test channel equivalence *****
-let path="/project/test_work/testdata/p2/ficor77/"
 write "*** With no flag - THIS SHOULD ABEND - filter pos does not match !!! ***"
 *** With no flag - THIS SHOULD ABEND - filter pos does not match !!! ***
-ficor77 inp=(V1NA_0947106_RAW.vic,FICOR77_VG1_NA_CLEAR.DAT,V1NA_0946940_CLEAN.vic.ressar77,V1NA_0947132_CLEAN.vic.ressar77,V1NA_0947134_CLEAN.vic.ressar77)  +
-        out=V1NA_0231550_FICOR77_noflag.vic 'nocorrec
+ficor77 inp=(data/V1NA_0947106_RAW.vic,data/FICOR77_VG1_NA_CLEAR.DAT,data/dark_06_late.vic) out=V1NA_0231550_FICOR77_noflag.vic 'no+
+correc
 Beginning VICAR task ficor77
-FICOR77 version 2020-04-02
-***Truncated input label, may cause problems
-***Truncated input label, may cause problems
-***Truncated input label, may cause problems
-***Truncated input label, may cause problems
+FICOR77 version 2021-11-02
 Dark-Current File input=          3
 Calibration File input=          2
-***Truncated input label, may cause problems
 DARK-CURRENT LABEL...
 
-          
-          
-          
-          
-          
-          
-          
+                               800     800 800 800 L 1
+          VGR-1   FDS 17720.01   PICNO              SCET 00.000 00:00:00
+          NA CAMERA  EXP       5.0 MSEC FILT 0(CLEAR )  LO GAIN  SCAN RATE  1:1
+          ERT 85.178 18:53:47   1/ 1 FULL    RES   VIDICON TEMP  -80.00 DEG C
+          IN/055300/08 OUT/xxxxxx/xx                 DSS #**   BIT SNR  511.305
+           xxxxx A/xxxxxxxx B/xxxx C/xxxx D/xxxxxxxx ETLM/xxxxxxxxxxxxxxxxxxxxS
+          NA OPCAL xx(0000005.0MSEC)PIXAVG 248/1 OPERATIONAL MODE 6(BODARK)
+          CAM ECAL CYCLE BEAM  RESET OPEN  CLOSE FLOOD AEXPM  FIL G1 SHUT MODE
+          NA   NO   READ  YES   NO    NO    NO    NO    NO    0 S  7 NORMAL
+          WA   NO   PREP  YES   YES   NO    NO    YES   NO    0 S  * NORMAL
+          LSB_TRUNC=OFF  TLM_MODE=IM-2  COMPRESSION=OFF
 CALIBRATION FILE LABEL...
 
           77                  2001    640020016400 I 2
@@ -599,33 +591,33 @@ DIV=  9.0000000
      FILTER       4       0       0    ***PARAMETERS DO NOT MATCH***
      SCANRATE     1       1       1
      GAIN         0       0       0
-     MODE       XXXXXXX  XXXXXXX
+     MODE       XXXXXXX  BODARK
 ***No acceptable calibration file found
 ***FICOR task cancelled
-***Line=      32765
  ** ABEND called **
 continue
 write "*** with filter=0 - this should work **"
 *** with filter=0 - this should work **
-ficor77 inp=(V1NA_0947106_RAW.vic,FICOR77_VG1_NA_CLEAR.DAT,V1NA_0946940_CLEAN.vic.ressar77,V1NA_0947132_CLEAN.vic.ressar77,V1NA_0947134_CLEAN.vic.ressar77)  +
-        out=V1NA_0231550_FICOR77_filter0.vic filter=0 'nocorrec
+ficor77 inp=(data/V1NA_0947106_RAW.vic,data/FICOR77_VG1_NA_CLEAR.DAT,data/dark_06_late.vic) out=V1NA_0231550_FICOR77_noflag.vic 'no+
+correc filter=0
 Beginning VICAR task ficor77
-FICOR77 version 2020-04-02
-***Truncated input label, may cause problems
+FICOR77 version 2021-11-02
 Filter position overridden.
-***Truncated input label, may cause problems
 Dark-Current File input=          3
 Calibration File input=          2
-***Truncated input label, may cause problems
 DARK-CURRENT LABEL...
 
-          
-          
-          
-          
-          
-          
-          
+                               800     800 800 800 L 1
+          VGR-1   FDS 17720.01   PICNO              SCET 00.000 00:00:00
+          NA CAMERA  EXP       5.0 MSEC FILT 0(CLEAR )  LO GAIN  SCAN RATE  1:1
+          ERT 85.178 18:53:47   1/ 1 FULL    RES   VIDICON TEMP  -80.00 DEG C
+          IN/055300/08 OUT/xxxxxx/xx                 DSS #**   BIT SNR  511.305
+           xxxxx A/xxxxxxxx B/xxxx C/xxxx D/xxxxxxxx ETLM/xxxxxxxxxxxxxxxxxxxxS
+          NA OPCAL xx(0000005.0MSEC)PIXAVG 248/1 OPERATIONAL MODE 6(BODARK)
+          CAM ECAL CYCLE BEAM  RESET OPEN  CLOSE FLOOD AEXPM  FIL G1 SHUT MODE
+          NA   NO   READ  YES   NO    NO    NO    NO    NO    0 S  7 NORMAL
+          WA   NO   PREP  YES   YES   NO    NO    YES   NO    0 S  * NORMAL
+          LSB_TRUNC=OFF  TLM_MODE=IM-2  COMPRESSION=OFF
 CALIBRATION FILE LABEL...
 
           77                  2001    640020016400 I 2
@@ -646,7 +638,7 @@ DIV=  9.0000000
      FILTER       0       0       0
      SCANRATE     1       1       1
      GAIN         0       0       0
-     MODE       XXXXXXX  XXXXXXX
+     MODE       XXXXXXX  BODARK
 MAXL and luminances of calibration frames--
 
     120.00      0.00      1.44      3.08      6.16     12.30     24.60     37.00     49.30     74.00     98.00
@@ -654,33 +646,34 @@ Exposure time=  15360.000
 Radiance refers to solar spectrum
 FtL-sec to nanowatt conv factor=  3.3390000
 Ft-L to I/F conv factor=  16.510000
-Mean DN of DC=  6.3396420
+Mean DN of DC=  6.0163751
 Minimum value of a saturated pixel=      32767
-Maximum value of an unsaturated pixel=         96
+Maximum value of an unsaturated pixel=         97
 Total number of saturated pixels=          0
-Total number of negative pixels=       2504
+Total number of negative pixels=       8599
 FICOR task completed
 write "*** filteq - this should work, too ***"
 *** filteq - this should work, too ***
-ficor77 inp=(V1NA_0947106_RAW.vic,FICOR77_VG1_NA_CLEAR.DAT,V1NA_0946940_CLEAN.vic.ressar77,V1NA_0947132_CLEAN.vic.ressar77,V1NA_0947134_CLEAN.vic.ressar77)  +
-        out=V1NA_0231550_FICOR77_filteq.vic 'filteq 'nocorrec
+ficor77 inp=(data/V1NA_0947106_RAW.vic,data/FICOR77_VG1_NA_CLEAR.DAT,data/dark_06_late.vic) out=V1NA_0231550_FICOR77_noflag.vic 'no+
+correc 'filteq
 Beginning VICAR task ficor77
-FICOR77 version 2020-04-02
+FICOR77 version 2021-11-02
 Equating NA filter 0 with 4, and 5 with 6
-***Truncated input label, may cause problems
-***Truncated input label, may cause problems
 Dark-Current File input=          3
 Calibration File input=          2
-***Truncated input label, may cause problems
 DARK-CURRENT LABEL...
 
-          
-          
-          
-          
-          
-          
-          
+                               800     800 800 800 L 1
+          VGR-1   FDS 17720.01   PICNO              SCET 00.000 00:00:00
+          NA CAMERA  EXP       5.0 MSEC FILT 0(CLEAR )  LO GAIN  SCAN RATE  1:1
+          ERT 85.178 18:53:47   1/ 1 FULL    RES   VIDICON TEMP  -80.00 DEG C
+          IN/055300/08 OUT/xxxxxx/xx                 DSS #**   BIT SNR  511.305
+           xxxxx A/xxxxxxxx B/xxxx C/xxxx D/xxxxxxxx ETLM/xxxxxxxxxxxxxxxxxxxxS
+          NA OPCAL xx(0000005.0MSEC)PIXAVG 248/1 OPERATIONAL MODE 6(BODARK)
+          CAM ECAL CYCLE BEAM  RESET OPEN  CLOSE FLOOD AEXPM  FIL G1 SHUT MODE
+          NA   NO   READ  YES   NO    NO    NO    NO    NO    0 S  7 NORMAL
+          WA   NO   PREP  YES   YES   NO    NO    YES   NO    0 S  * NORMAL
+          LSB_TRUNC=OFF  TLM_MODE=IM-2  COMPRESSION=OFF
 CALIBRATION FILE LABEL...
 
           77                  2001    640020016400 I 2
@@ -701,7 +694,7 @@ DIV=  9.0000000
      FILTER       0       0       0
      SCANRATE     1       1       1
      GAIN         0       0       0
-     MODE       XXXXXXX  XXXXXXX
+     MODE       XXXXXXX  BODARK
 MAXL and luminances of calibration frames--
 
     120.00      0.00      1.44      3.08      6.16     12.30     24.60     37.00     49.30     74.00     98.00
@@ -709,10 +702,10 @@ Exposure time=  15360.000
 Radiance refers to solar spectrum
 FtL-sec to nanowatt conv factor=  3.3390000
 Ft-L to I/F conv factor=  16.510000
-Mean DN of DC=  6.3396420
+Mean DN of DC=  6.0163751
 Minimum value of a saturated pixel=      32767
-Maximum value of an unsaturated pixel=         96
+Maximum value of an unsaturated pixel=         97
 Total number of saturated pixels=          0
-Total number of negative pixels=       2504
+Total number of negative pixels=       8599
 FICOR task completed
 disable-log

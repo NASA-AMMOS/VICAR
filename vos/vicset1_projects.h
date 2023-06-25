@@ -184,6 +184,7 @@
 #define EXT_MYSQL
 #define EXT_DOXYGEN
 #define EXT_MSLMMMDecomp
+#define EXT_COIN
 #define EXT_INVENTOR
 #define EXT_CPPUNIT
 #define EXT_JS
@@ -291,6 +292,7 @@
 * Python Externals
 *--------
 #define PYEXT_VIRTUALENV
+#define PYEXT_GEOCAL
 #endif
 *
 ************************************************************************
@@ -455,6 +457,7 @@
 #define JEXT_JAF
 #define PROD_MATIS_MER
 #define JEXT_PDS_IMG_ATLAS
+#define EXT_MERIDD
 #endif
 *
 *** PHX only
@@ -480,6 +483,7 @@
 #define EXT_MSLMMMDecomp
 #define JEXT_PDS_IMG_ATLAS
 #define PROD_APPS
+#define EXT_MERIDD
 #endif
 *
 *** NSYT only
@@ -506,6 +510,7 @@
 #define PROD_APPS
 #define PROD_TLM_2020
 #define EXT_REACH
+#define EXT_MERIDD
 #endif
 *
 ************************************************************************
@@ -763,36 +768,24 @@
 #define SS_VRDI
 #define SS_VIDS
 #define SS_JAVA
+#define SS_MARS
+#define SS_CRUMBS
 *
 *--------
 * Non-Java Externals
 *--------
 #define EXT_SPICE
-*#define EXT_SYBASE
 #define EXT_JNI
-*#define EXT_CALLABLE_JDK
-*#define EXT_GEOTRANS
 #define EXT_PDS
-*#define EXT_ISIS
 #define EXT_PDS_LABEL
-*#define EXT_SIMBAD
-*#define EXT_PVM
-*#define EXT_PGPLOT
-*#define EXT_KERBEROS5
-*#define EXT_KERBEROS4
-*#define EXT_ACE_TAO
 #define EXT_XERCES_CXX
-*#define EXT_ROGUEWAVE
-*#define EXT_CANDELA
 #define EXT_MATH77
-*#define EXT_MPI
-*#define EXT_HDF
-*#define EXT_EXPAT
-*#define EXT_SUMMITT
-*#define EXT_MYSQL
-*#define EXT_CPPUNIT
-*#define EXT_JS
 #define EXT_BOOST
+#define EXT_CERES
+#define EXT_TINYOBJLOADER
+#define EXT_EMBREE
+#define EXT_MPI
+#define EXT_SIFT
 *--------
 * Java Externals
 *--------

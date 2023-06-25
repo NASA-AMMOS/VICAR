@@ -8,7 +8,7 @@ GEN Version 2019-05-28
 GEN task completed
 difpic (difpica,difpicb) difpicc 'mod
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  NUMBER OF POS DIFF=   0
  AVE VAL OF NEG DIFFS= -5.00000
  NUMBER OF NEG DIFFS=      10000
@@ -36,7 +36,7 @@ LIST version 2019-09-06
      10     251 251 251 251 251 251 251 251 251 251 251 251 251 251 251 251 251 251 251 251
 difpic (difpicb,difpica) difpicc
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  AVE VAL OF POS DIFFS=  5.00000
  NUMBER OF POS DIFF=      10000
  NUMBER OF NEG DIFFS=   0
@@ -64,7 +64,7 @@ LIST version 2019-09-06
      10       5   5   5   5   5   5   5   5   5   5   5   5   5   5   5   5   5   5   5   5
 difpic (difpicb,difpica) size=(2,2,9,9)
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  NUMBER OF DIFFERENT PIXELS =  81
 gen difpica 100 100 'half
 Beginning VICAR task gen
@@ -76,7 +76,7 @@ GEN Version 2019-05-28
 GEN task completed
 difpic (difpica,difpicb) difpicc
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  NUMBER OF POS DIFF=   0
  AVE VAL OF NEG DIFFS= -5.00000
  NUMBER OF NEG DIFFS=      10000
@@ -120,7 +120,7 @@ LIST version 2019-09-06
      10        -5    -5    -5    -5    -5
 difpic (difpicb,difpica) difpicc
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  AVE VAL OF POS DIFFS=  5.00000
  NUMBER OF POS DIFF=      10000
  NUMBER OF NEG DIFFS=   0
@@ -167,7 +167,7 @@ Beginning VICAR task copy
  COPY VERSION 12-JUL-1993
 difpic (difpica,difpicd) size=(2,2,9,9)
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  NUMBER OF DIFFERENCES =   0
 gen difpica 10 10 linc=2 sinc=2
 Beginning VICAR task gen
@@ -179,7 +179,7 @@ GEN Version 2019-05-28
 GEN task completed
 difpic (difpica,difpicb) difpicc size=(2,3,8,6) 'mod
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  AVE VAL OF POS DIFFS=  4.05263
  NUMBER OF POS DIFF=  38
  AVE VAL OF NEG DIFFS= -1.66667
@@ -206,7 +206,7 @@ LIST version 2019-09-06
       8       4   5   6   7   8   9
 difpic (difpica,difpicb) size=(2,3,8,6)
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  NUMBER OF DIFFERENT PIXELS =  44
 gen difpica 100 100 'full
 Beginning VICAR task gen
@@ -218,7 +218,7 @@ GEN Version 2019-05-28
 GEN task completed
 difpic (difpica,difpicb) difpicc
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  NUMBER OF POS DIFF=   0
  AVE VAL OF NEG DIFFS= -5.00000
  NUMBER OF NEG DIFFS=      10000
@@ -246,7 +246,7 @@ LIST version 2019-09-06
      10             -5         -5         -5         -5         -5
 difpic (difpicb,difpica) difpicc size=(2,2,9,9)
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  AVE VAL OF POS DIFFS=  5.00000
  NUMBER OF POS DIFF=  81
  NUMBER OF NEG DIFFS=   0
@@ -276,7 +276,7 @@ Beginning VICAR task copy
  COPY VERSION 12-JUL-1993
 difpic (difpica,difpicd)
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  NUMBER OF DIFFERENCES =   0
 gen difpica 100 100 'real4
 Beginning VICAR task gen
@@ -288,7 +288,7 @@ GEN Version 2019-05-28
 GEN task completed
 difpic (difpica,difpicb) difpicc
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  NUMBER OF POS DIFF=   0
  AVE VAL OF NEG DIFFS= -5.00000
  NUMBER OF NEG DIFFS=      10000
@@ -316,7 +316,7 @@ LIST version 2019-09-06
      10      -5.000E+00  -5.000E+00  -5.000E+00  -5.000E+00  -5.000E+00
 difpic (difpicb,difpica) difpicc size=(2,2,9,9)
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  AVE VAL OF POS DIFFS=  5.00000
  NUMBER OF POS DIFF=  81
  NUMBER OF NEG DIFFS=   0
@@ -346,7 +346,7 @@ Beginning VICAR task copy
  COPY VERSION 12-JUL-1993
 difpic (difpica,difpicd)
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  NUMBER OF DIFFERENCES =   0
 gen difpica 100 100 'real8
 Beginning VICAR task gen
@@ -358,7 +358,7 @@ GEN Version 2019-05-28
 GEN task completed
 difpic (difpica,difpicb) difpicc
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  NUMBER OF POS DIFF=   0
  AVE VAL OF NEG DIFFS= -5.00000
  NUMBER OF NEG DIFFS=      10000
@@ -386,7 +386,7 @@ LIST version 2019-09-06
      10      -5.000E+00  -5.000E+00  -5.000E+00  -5.000E+00  -5.000E+00
 difpic (difpicb,difpica) difpicc size=(2,2,9,9)
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  AVE VAL OF POS DIFFS=  5.00000
  NUMBER OF POS DIFF=  81
  NUMBER OF NEG DIFFS=   0
@@ -416,7 +416,7 @@ Beginning VICAR task copy
  COPY VERSION 12-JUL-1993
 difpic (difpica,difpicd)
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  NUMBER OF DIFFERENCES =   0
 gen difpica 100 100 'comp
 Beginning VICAR task gen
@@ -428,7 +428,7 @@ GEN Version 2019-05-28
 GEN task completed
 difpic (difpica,difpicb) difpicc
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  NUMBER OF POS DIFF=   0
  AVE VAL OF NEG DIFFS= -5.000E+00  0.000E+00
  NUMBER OF NEG DIFFS=      10000
@@ -456,7 +456,7 @@ LIST version 2019-09-06
      10      -5.000E+00   0.000E+00  -5.000E+00   0.000E+00  -5.000E+00   0.000E+00  -5.000E+00   0.000E+00  -5.000E+00   0.000E+00
 difpic (difpicb,difpica) difpicc size=(2,2,9,9)
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  AVE VAL OF POS DIFFS=  5.000E+00  0.000E+00
  NUMBER OF POS DIFF=  81
  NUMBER OF NEG DIFFS=   0
@@ -486,7 +486,7 @@ Beginning VICAR task copy
  COPY VERSION 12-JUL-1993
 difpic (difpica,difpicd)
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  NUMBER OF DIFFERENCES =   0
 gen difpica 100 100 ival=0 linc=0 sinc=0 'byte
 Beginning VICAR task gen
@@ -498,7 +498,7 @@ GEN Version 2019-05-28
 GEN task completed
 difpic (difpica,difpicb) difpicc
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  NUMBER OF POS DIFF=   0
  AVE VAL OF NEG DIFFS= -255.000
  NUMBER OF NEG DIFFS=      10000
@@ -526,7 +526,7 @@ LIST version 2019-09-06
      10       0   0   0   0   0
 difpic (difpicb,difpica) difpicc size=(2,2,9,9)
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  AVE VAL OF POS DIFFS=  255.000
  NUMBER OF POS DIFF=  81
  NUMBER OF NEG DIFFS=   0
@@ -561,7 +561,7 @@ GEN Version 2019-05-28
 GEN task completed
 difpic (difpica,difpicb) difpicc
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  NUMBER OF POS DIFF=   0
  AVE VAL OF NEG DIFFS= -65273.8
  NUMBER OF NEG DIFFS=      10000
@@ -589,7 +589,7 @@ LIST version 2019-09-06
      10    -32768-32768-32768-32768-32768
 difpic (difpicb,difpica) difpicc size=(2,2,9,9)
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  AVE VAL OF POS DIFFS=  65268.0
  NUMBER OF POS DIFF=  81
  NUMBER OF NEG DIFFS=   0
@@ -624,7 +624,7 @@ GEN Version 2019-05-28
 GEN task completed
 difpic (difpica,difpicb) difpicc
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  NUMBER OF POS DIFF=   0
  AVE VAL OF NEG DIFFS=-0.429497E+10
  NUMBER OF NEG DIFFS=      10000
@@ -652,7 +652,7 @@ LIST version 2019-09-06
      10    -2147483648-2147483648-2147483648-2147483648-2147483648
 difpic (difpicb,difpica) difpicc size=(2,2,9,9)
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  AVE VAL OF POS DIFFS= 0.429497E+10
  NUMBER OF POS DIFF=  81
  NUMBER OF NEG DIFFS=   0
@@ -691,7 +691,7 @@ write "Should get 6000 differences."
 Should get 6000 differences.
 difpic (a b)
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  NUMBER OF DIFFERENT PIXELS =6000
 gen a 10 20 30 ORG="BIL" 'HALF
 Beginning VICAR task gen
@@ -705,7 +705,7 @@ write "Should get 3000 differences."
 Should get 3000 differences.
 difpic (a b) NB=15
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  Warning: BIL format may cause performance degradation
  NUMBER OF DIFFERENCES =3000
 gen a 10 20 30 ORG="BIP" 'REAL
@@ -720,7 +720,7 @@ write "Should get error message about BIP files"
 Should get error message about BIP files
 difpic (a b) NB=15
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  BIP files not supported, use program TRAN to convert to BSQ
 write "Test difpic on multiband images with output file"
 Test difpic on multiband images with output file
@@ -734,7 +734,7 @@ GEN Version 2019-05-28
 GEN task completed
 difpic (difpica,difpicb) difpicc 'mod
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  NUMBER OF POS DIFF=   0
  AVE VAL OF NEG DIFFS= -5.00000
  NUMBER OF NEG DIFFS=      16000
@@ -792,7 +792,7 @@ GEN Version 2019-05-28
 GEN task completed
 difpic (difpicb,difpica) difpicc
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  AVE VAL OF POS DIFFS=  5.00000
  NUMBER OF POS DIFF=      16000
  NUMBER OF NEG DIFFS=   0
@@ -888,7 +888,7 @@ GEN Version 2019-05-28
 GEN task completed
 difpic (difpica,difpicb) difpicc
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  NUMBER OF POS DIFF=   0
  AVE VAL OF NEG DIFFS= -5.00000
  NUMBER OF NEG DIFFS=      16000
@@ -946,7 +946,7 @@ GEN Version 2019-05-28
 GEN task completed
 difpic (difpica,difpicb) difpicc nb=4 sb=3
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  NUMBER OF POS DIFF=   0
  AVE VAL OF NEG DIFFS= -5.00000
  NUMBER OF NEG DIFFS=6400
@@ -1004,7 +1004,7 @@ GEN Version 2019-05-28
 GEN task completed
 difpic (difpica,difpicb) difpicc
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  NUMBER OF POS DIFF=   0
  AVE VAL OF NEG DIFFS= -5.00000
  NUMBER OF NEG DIFFS=      16000
@@ -1062,7 +1062,7 @@ GEN Version 2019-05-28
 GEN task completed
 difpic (difpica,difpicb) difpicc
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  NUMBER OF POS DIFF=   0
  AVE VAL OF NEG DIFFS= -5.000E+00  0.000E+00
  NUMBER OF NEG DIFFS=      16000
@@ -1172,7 +1172,7 @@ MODULO=(0.0, 0.0)
 ************************************************************
 difpic (difpica,difpicb) difpicc
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  NUMBER OF POS DIFF=   0
  NUMBER OF NEG DIFFS=   0
  TOTAL NUMBER OF DIFFERENT PIXELS=   0
@@ -1188,7 +1188,7 @@ GEN Version 2019-05-28
 GEN task completed
 difpic (difpica,difpicb) difpicc
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  NS too large, reduced to fit input
  NL too large, reduced to fit input
  NUMBER OF POS DIFF=   0
@@ -1206,25 +1206,21 @@ let $echo="no"
 ******************************************************
 
 ***************** Compare same labels ****************
-difpic inp=(/project/test_work/testdata/cassini/casIss/N1488210398_2.IMG,/project/test_work/testdata/cassini/casIss/N1488210398_2.I+
-MG) pixcmp=nopixcmp lblcmp=lblcmp retval=retval
+difpic inp=(data/N1488210398_2.IMG,data/N1488210398_2.IMG) pixcmp=nopixcmp lblcmp=lblcmp retval=retval
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
 ------- Vicar label comparison passed. -------
 
 
 
-disp retval
-
-retval=0
-
+write "retval: 0"
+retval: 0
 let $echo="no"
 
 ***************** Compare only labels **************
-difpic inp=(/project/test_work/testdata/cassini/casIss/N1488210398_2.IMG,/project/test_work/testdata/cassini/casIss/N1629509454_1.I+
-MG) pixcmp=nopixcmp lblcmp=lblcmp retval=retval
+difpic inp=(data/N1488210398_2.IMG,data/N1629509454_1.IMG) pixcmp=nopixcmp lblcmp=lblcmp retval=retval
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
 Found following label differences between given images:
 
 
@@ -1332,28 +1328,23 @@ RECEIVED_PACKETS : 90 <> 325
 
 
 
-disp retval
-
-retval=1
-
+write "retval: 1"
+retval: 1
 let $echo="no"
 
 ***************** Compare only labels but don't print any differences **************
-difpic inp=(/project/test_work/testdata/cassini/casIss/N1488210398_2.IMG,/project/test_work/testdata/cassini/casIss/N1629509454_1.I+
-MG) pixcmp=nopixcmp lblcmp=lblcmp verbose=silent retval=retval
+difpic inp=(data/N1488210398_2.IMG,data/N1629509454_1.IMG) pixcmp=nopixcmp lblcmp=lblcmp verbose=silent retval=retval
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
-disp retval
-
-retval=1
-
+DIFPIC version 2021-03-09
+write "retval: 1"
+retval: 1
 let $echo="no"
 
 ***************** Let's ignore some labels **************
-difpic inp=(/project/test_work/testdata/cassini/casIss/N1488210398_2.IMG,/project/test_work/testdata/cassini/casIss/N1629509454_1.I+
-MG) pixcmp=nopixcmp lblcmp=lblcmp lbl_ignore=(IMAGE_MID_TIME,IMAGE_TIME) retval=retval
+difpic inp=(data/N1488210398_2.IMG,data/N1629509454_1.IMG) pixcmp=nopixcmp lblcmp=lblcmp lbl_ignore=(IMAGE_MID_TIME,IMAGE_TIME) ret+
+val=retval
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
 Found following label differences between given images:
 
 
@@ -1457,17 +1448,15 @@ RECEIVED_PACKETS : 90 <> 325
 
 
 
-disp retval
-
-retval=1
-
+write "retval: 1"
+retval: 1
 let $echo="no"
 
 ***************** Let's ignore some properties **************
-difpic inp=(/project/test_work/testdata/cassini/casIss/N1488210398_2.IMG,/project/test_work/testdata/cassini/casIss/N1629509454_1.I+
-MG) pixcmp=nopixcmp lblcmp=lblcmp prop_ignore=(COMMAND,TELEMETRY) retval=retval
+difpic inp=(data/N1488210398_2.IMG,data/N1629509454_1.IMG) pixcmp=nopixcmp lblcmp=lblcmp prop_ignore=(COMMAND,TELEMETRY) retval=ret+
+val
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
 Found following label differences between given images:
 
 
@@ -1553,10 +1542,8 @@ SHUTTER_MODE_ID : BOTSIM <> NACONLY
 
 
 
-disp retval
-
-retval=1
-
+write "retval: 1"
+retval: 1
 let $echo="no"
 ******************************************************
 ********** Test binary header diffing ****************
@@ -1564,27 +1551,23 @@ let $echo="no"
 
 ************* Compare same binary header *************
 ********** while using specified FMT files ***********
-difpic inp=(/project/test_work/testdata/cassini/casIss/N1488210398_2.IMG,/project/test_work/testdata/cassini/casIss/N1488210398_2.I+
-MG) pixcmp=nopixcmp bincmp=bincmp bhfmtfiles=(/project/test_work/testdata/cassini/fmt/cas_tlmtab.fmt,/project/test_work/testdata/ca+
-ssini/fmt/cas_tlmtab.fmt) retval=retval
+difpic inp=(data/N1488210398_2.IMG,data/N1488210398_2.IMG) pixcmp=nopixcmp bincmp=bincmp bhfmtfiles=(data/cas_tlmtab.fmt,data/cas_t+
+lmtab.fmt) retval=retval
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
 ----------- Binary header comparison passed. ----------
 
 
 
-disp retval
-
-retval=0
-
+write "retval: 0"
+retval: 0
 let $echo="no"
 
 ************* Compare only binary header *************
 ***** while using default BHFMTMAP and BLTYPE ********
-difpic inp=(/project/test_work/testdata/cassini/casIss/N1488210398_2.IMG,/project/test_work/testdata/cassini/casIss/N1629509454_1.I+
-MG) pixcmp=nopixcmp bincmp=bincmp retval=retval
+difpic inp=(data/N1488210398_2.IMG,data/N1629509454_1.IMG) pixcmp=nopixcmp bincmp=bincmp retval=retval
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
 Found following binary header differences between given images:
 
 Field EXTENDED_ISS_SCIENCE_HEADER differs.
@@ -1646,21 +1629,18 @@ Field EXTENDED_ISS_SCIENCE_HEADER.SPARE differs.
 
 
 
-disp retval
-
-retval=2
-
+write "retval: 2"
+retval: 2
 let $echo="no"
 
 ************** Let's ignore some fields **************
 ************* and overwrite BHFMTMAP file ************
 All fields named 'EXTENDED_ISS_SCIENCE_HEADER.SPARE' will be ignored; you won't see them listed as differences.
 
-difpic inp=(/project/test_work/testdata/cassini/casIss/N1488210398_2.IMG,/project/test_work/testdata/cassini/casIss/N1629509454_1.I+
-MG) pixcmp=nopixcmp bincmp=bincmp bhfmtmap=/project/test_work/testdata/p2/balm/bhfmt_mapping.txt bhk_ignore=(EXTENDED_ISS_SCIENCE_H+
-EADER.SPARE) retval=retval
+difpic inp=(data/N1488210398_2.IMG,data/N1629509454_1.IMG) pixcmp=nopixcmp bincmp=bincmp bhfmtmap=data/bhfmt_mapping.txt bhk_ignore+
+=(EXTENDED_ISS_SCIENCE_HEADER.SPARE) retval=retval
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
 Found following binary header differences between given images:
 
 Field EXTENDED_ISS_SCIENCE_HEADER differs.
@@ -1718,17 +1698,14 @@ Field EXTENDED_ISS_SCIENCE_HEADER.VOLTAGE_8 differs.
 
 
 
-disp retval
-
-retval=2
-
+write "retval: 2"
+retval: 2
 let $echo="no"
 
 ***** Compare binary headers of different BLTYPE *****
-difpic inp=(/project/test_work/testdata/cassini/casIss/N1488210398_2.IMG,/project/test_work/testdata/cassini/casIss/N1638304759_2.I+
-MG) pixcmp=nopixcmp bincmp=bincmp retval=retval
+difpic inp=(data/N1488210398_2.IMG,data/N1638304759_2.IMG) pixcmp=nopixcmp bincmp=bincmp retval=retval
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
 Found following binary header differences between given images:
 
 Field EXTENDED_ISS_SCIENCE_HEADER differs.
@@ -1796,17 +1773,14 @@ Field EXTENDED_ISS_SCIENCE_HEADER.SPARE differs.
 
 
 
-disp retval
-
-retval=2
-
+write "retval: 2"
+retval: 2
 let $echo="no"
 
 ***** Compare binary headers while overriding BLTYPE *****
-difpic inp=(/project/test_work/testdata/cassini/casIss/N1488210398_2.IMG,/project/test_work/testdata/cassini/casIss/N1638304759_2.I+
-MG) pixcmp=nopixcmp bincmp=bincmp BLTYPES=(CAS-ISS3,CAS-ISS3) retval=retval
+difpic inp=(data/N1488210398_2.IMG,data/N1638304759_2.IMG) pixcmp=nopixcmp bincmp=bincmp BLTYPES=(CAS-ISS3,CAS-ISS3) retval=retval
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
 Found following binary header differences between given images:
 
 Field EXTENDED_ISS_SCIENCE_HEADER differs.
@@ -1874,48 +1848,39 @@ Field EXTENDED_ISS_SCIENCE_HEADER.SPARE differs.
 
 
 
-disp retval
-
-retval=2
-
+write "retval: 2"
+retval: 2
 let $echo="no"
 
 ***** Compare binary headers in SILENT mode *****
-difpic inp=(/project/test_work/testdata/cassini/casIss/N1488210398_2.IMG,/project/test_work/testdata/cassini/casIss/N1629509454_1.I+
-MG) pixcmp=nopixcmp bincmp=bincmp verbose=silent retval=retval
+difpic inp=(data/N1488210398_2.IMG,data/N1629509454_1.IMG) pixcmp=nopixcmp bincmp=bincmp verbose=silent retval=retval
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
-disp retval
-
-retval=2
-
+DIFPIC version 2021-03-09
+write "retval: 2"
+retval: 2
 let $echo="no"
 ******************************************************
 ************ Test line prefix diffing ****************
 ******************************************************
 
 ************* Compare same line prefix ***************
-difpic inp=(/project/test_work/testdata/cassini/casIss/N1488210398_2.IMG,/project/test_work/testdata/cassini/casIss/N1488210398_2.I+
-MG) pixcmp=nopixcmp lprcmp=lprcmp lpfmtfiles=(/project/test_work/testdata/cassini/fmt/cas_prefix2.fmt,/project/test_work/testdata/c+
-assini/fmt/cas_prefix2.fmt) retval=retval
+difpic inp=(data/N1488210398_2.IMG,data/N1488210398_2.IMG) pixcmp=nopixcmp lprcmp=lprcmp lpfmtfiles=(data/cas_prefix2.fmt,data/cas_+
+prefix2.fmt) retval=retval
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
 ----------- Line prefix comparison passed. ----------
 
 
 
-disp retval
-
-retval=0
-
+write "retval: 0"
+retval: 0
 let $echo="no"
 
 ************* Compare only line prefix ***************
 ******** while using default LPFMTMAP and BLTYPE *****
-difpic inp=(/project/test_work/testdata/cassini/casIss/N1488210398_2.IMG,/project/test_work/testdata/cassini/casIss/N1629509454_1.I+
-MG) pixcmp=nopixcmp lprcmp=lprcmp retval=retval
+difpic inp=(data/N1488210398_2.IMG,data/N1629509454_1.IMG) pixcmp=nopixcmp lprcmp=lprcmp retval=retval
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
 Found following line prefix differences between given images:
 
 Files have different number of lines.
@@ -1925,21 +1890,18 @@ Files have different number of lines.
 
 
 
-disp retval
-
-retval=8
-
+write "retval: 8"
+retval: 8
 let $echo="no"
 
 ************** Let's ignore some fields **************
 ************* while overriding LPFMTMAP **************
 Field 'EXTENDED_PIXEL' will be ignored; you won't see the field listed as a difference.
 
-difpic inp=(/project/test_work/testdata/cassini/casIss/N1488210398_2.IMG,/project/test_work/testdata/cassini/casIss/N1638304759_2.I+
-MG) pixcmp=nopixcmp lprcmp=lprcmp lpfmtmap=(/project/test_work/testdata/p2/balm/lpfmt_mapping.txt) lpk_ignore=(EXTENDED_PIXEL) BLTY+
-PES=(CAS-ISS3,CAS-ISS3) retval=retval
+difpic inp=(data/N1488210398_2.IMG,data/N1638304759_2.IMG) pixcmp=nopixcmp lprcmp=lprcmp lpfmtmap=(data/lpfmt_mapping.txt) lpk_igno+
+re=(EXTENDED_PIXEL) BLTYPES=(CAS-ISS3,CAS-ISS3) retval=retval
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
 Found following line prefix differences between given images:
 
 Line 1 differs at fields: FIRST_OVERCLOCKED_PIXEL_SUM LAST_OVERCLOCKED_PIXEL_SUM.
@@ -2971,22 +2933,19 @@ Line 512 differs at fields: FIRST_OVERCLOCKED_PIXEL_SUM LAST_OVERCLOCKED_PIXEL_S
 
 
 
-disp retval
-
-retval=8
-
+write "retval: 8"
+retval: 8
 let $echo="no"
 
 ****** Compare line prefix of different BLTYPE ******
-difpic inp=(/project/test_work/testdata/cassini/casIss/N1488210398_2.IMG,/project/test_work/testdata/cassini/casIss/N1638304759_2.I+
-MG) pixcmp=nopixcmp lprcmp=lprcmp retval=retval
+difpic inp=(data/N1488210398_2.IMG,data/N1638304759_2.IMG) pixcmp=nopixcmp lprcmp=lprcmp retval=retval
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
 Found following line prefix differences between given images:
 
-Field EXTENDED_PIXEL doesn't exist in file /project/test_work/testdata/cassini/casIss/N1638304759_2.IMG.
+Field EXTENDED_PIXEL doesn't exist in file data/N1638304759_2.IMG.
 
-Field EXTENDED_PIXEL_SUM doesn't exist in file /project/test_work/testdata/cassini/casIss/N1488210398_2.IMG.
+Field EXTENDED_PIXEL_SUM doesn't exist in file data/N1488210398_2.IMG.
 
 Line 1 differs at fields: FIRST_OVERCLOCKED_PIXEL_SUM LAST_OVERCLOCKED_PIXEL_SUM.
 
@@ -4017,17 +3976,14 @@ Line 512 differs at fields: FIRST_OVERCLOCKED_PIXEL_SUM LAST_OVERCLOCKED_PIXEL_S
 
 
 
-disp retval
-
-retval=8
-
+write "retval: 8"
+retval: 8
 let $echo="no"
 
 ***** Compare line prefix while overriding BLTYPE *****
-difpic inp=(/project/test_work/testdata/cassini/casIss/N1488210398_2.IMG,/project/test_work/testdata/cassini/casIss/N1638304759_2.I+
-MG) pixcmp=nopixcmp lprcmp=lprcmp BLTYPES=(CAS-ISS3,CAS-ISS3) retval=retval
+difpic inp=(data/N1488210398_2.IMG,data/N1638304759_2.IMG) pixcmp=nopixcmp lprcmp=lprcmp BLTYPES=(CAS-ISS3,CAS-ISS3) retval=retval
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
 Found following line prefix differences between given images:
 
 Line 1 differs at fields: FIRST_OVERCLOCKED_PIXEL_SUM EXTENDED_PIXEL LAST_OVERCLOCKED_PIXEL_SUM.
@@ -5059,28 +5015,22 @@ Line 512 differs at fields: FIRST_OVERCLOCKED_PIXEL_SUM EXTENDED_PIXEL LAST_OVER
 
 
 
-disp retval
-
-retval=8
-
+write "retval: 8"
+retval: 8
 let $echo="no"
 
 ******** Compare line prefix in SILENT mode **********
-difpic inp=(/project/test_work/testdata/cassini/casIss/N1488210398_2.IMG,/project/test_work/testdata/cassini/casIss/N1629509454_1.I+
-MG) pixcmp=nopixcmp lprcmp=lprcmp verbose=silent retval=retval
+difpic inp=(data/N1488210398_2.IMG,data/N1629509454_1.IMG) pixcmp=nopixcmp lprcmp=lprcmp verbose=silent retval=retval
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
-disp retval
-
-retval=8
-
+DIFPIC version 2021-03-09
+write "retval: 8"
+retval: 8
 let $echo="no"
 
 *************** Compare everything *******************
-difpic inp=(/project/test_work/testdata/cassini/casIss/N1488210398_2.IMG,/project/test_work/testdata/cassini/casIss/N1629509454_1.I+
-MG) 'ALL retval=retval
+difpic inp=(data/N1488210398_2.IMG,data/N1629509454_1.IMG) 'ALL retval=retval
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
 Found following label differences between given images:
 
 
@@ -5261,8 +5211,83 @@ Files have different number of lines.
 [ERROR] ***** History label comparision not implemented yet. *****
 
  NUMBER OF DIFFERENT PIXELS =     261445
-disp retval
+write "retval: 31"
+retval: 31
+let $echo="no"
 
-retval=31
+*************** Checking for missing values ***********
+gen a
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+label-add a items="name='value_a'" property=myprop
+Beginning VICAR task label
+LABEL version 2019-09-06
+Keyword name added
+label-add a items="name_a='value_a'" property=myprop
+Beginning VICAR task label
+LABEL version 2019-09-06
+Keyword name_a added
+gen b
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+label-add b items="name='value_b'" property=myprop
+Beginning VICAR task label
+LABEL version 2019-09-06
+Keyword name added
+label-add b items="name_b='value_b'" property=myprop
+Beginning VICAR task label
+LABEL version 2019-09-06
+Keyword name_b added
+difpic (a b) 'lblcmp
+Beginning VICAR task difpic
+DIFPIC version 2021-03-09
+Found following label differences between given images:
 
+
+
+                           ------- MYPROP -------
+
+NAME : value_a <> value_b
+
+NAME_A : value_a <> <LABEL MISSING>
+
+
+
+                           ------- MYPROP -------
+
+NAME_B : <LABEL MISSING> <> value_b
+
+
+------------ Vicar label differs. ------------
+
+
+
+ NUMBER OF DIFFERENT PIXELS =   0
+difpic (b a) 'lblcmp
+Beginning VICAR task difpic
+DIFPIC version 2021-03-09
+Found following label differences between given images:
+
+
+
+                           ------- MYPROP -------
+
+NAME : value_b <> value_a
+
+NAME_B : value_b <> <LABEL MISSING>
+
+
+
+                           ------- MYPROP -------
+
+NAME_A : <LABEL MISSING> <> value_a
+
+
+------------ Vicar label differs. ------------
+
+
+
+ NUMBER OF DIFFERENT PIXELS =   0
 disable-log

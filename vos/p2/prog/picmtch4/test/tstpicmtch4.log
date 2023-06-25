@@ -1,0 +1,569 @@
+gen xxim0 nl=300 ns=310
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+f2 inp=xxim0 out=xxim1 func="(line*327+samp*193+line*samp)%256"
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 93000 TIMES
+gtgen inp=xxim1 'tiecnvrt  +
+   geotiff=("ModelTiePointTag=(0,0,0,.3,.3,0.0)",  +
+          "ModelTiePointTag=(300,0,0,.5,.3,0.0)",  +
+          "ModelTiePointTag=(0,300,0,.3,.5,0.0)",  +
+          "ProjectionGeoKey=20(CT_MillerCylindrical)",  +
+          "GTRasterTypeGeoKey=2(RasterPixelIsPoint)",  +
+          "GeogEllipsoidGeoKey=7030(Ellipse_WGS84)")
+Beginning VICAR task gtgen
+gtgen version Fri Jan 11 2008
+gtcopy xxim1 xxim2 size=(5,6,295,304)
+Beginning VICAR task gtcopy
+gtcopy version 2017-08-03
+list xxim2 nl=15 ns=15 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTCOPY    User:          Date_Time:                        
+     Samp     1       3       5       7       9      11      13      15
+   Line
+      1       7 205 147  89  31 229 171 113  55 253 195 137  79  21 219
+      2      84  27 226 169 112  55 254 197 140  83  26 225 168 111  54
+      3     161 105  49 249 193 137  81  25 225 169 113  57   1 201 145
+      4     238 183 128  73  18 219 164 109  54 255 200 145  90  35 236
+      5      59   5 207 153  99  45 247 193 139  85  31 233 179 125  71
+      6     136  83  30 233 180 127  74  21 224 171 118  65  12 215 162
+      7     213 161 109  57   5 209 157 105  53   1 205 153 101  49 253
+      8      34 239 188 137  86  35 240 189 138  87  36 241 190 139  88
+      9     111  61  11 217 167 117  67  17 223 173 123  73  23 229 179
+     10     188 139  90  41 248 199 150 101  52   3 210 161 112  63  14
+     11       9 217 169 121  73  25 233 185 137  89  41 249 201 153 105
+     12      86  39 248 201 154 107  60  13 222 175 128  81  34 243 196
+     13     163 117  71  25 235 189 143  97  51   5 215 169 123  77  31
+     14     240 195 150 105  60  15 226 181 136  91  46   1 212 167 122
+     15      61  17 229 185 141  97  53   9 221 177 133  89  45   1 213
+ibis-gen out=xxa version="ibis-2" org="column" NC=11 NR=1  +
+       deffmt=DOUB datacol=(1,2)  +
+       data=(150,150)
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+picmtch4 (xxim1,xxim2,xxa)  +
+  ITIE=(5,6,5,306,305,6)  +
+  OTIE=(1,1,1,301,301,1) SEARCH=32 fftsize=32 redo=0
+Beginning VICAR task picmtch4
+PICMTCH4 version 2019-09-06
+ibis-list xxa  +
+   cfor="%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f"  +
+   csiz=(9,9,9,9,9,9,9,9,9,9,9)
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:1  Number of Columns: 11      
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:1
++--------+--------+--------+--------+--------+--------+--------+--------
+      C:1      C:2      C:3      C:4      C:5      C:6      C:7      C:8
++--------+--------+--------+--------+--------+--------+--------+--------
+ 150.0000 150.0000 150.0000 150.0000 124.4722 146.0000 145.0000 124.4722
+ 
+Rows: 1:1
++--------+--------+--------
+      C:9     C:10     C:11
++--------+--------+--------
+   0.4805   0.0000   0.0000
+ibis-gen out=xxa version="ibis-2" org="column" NC=11 NR=1  +
+       deffmt=DOUB datacol=(1,2)  +
+       data=(150,150)
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+picmtch4 (xxim1,xxim2,xxa)  +
+  ITIE=(1,1,1,301,301,1)  +
+  OTIE=(1,1,1,301,301,1) SEARCH=96 fftsize=32 redo=0
+Beginning VICAR task picmtch4
+PICMTCH4 version 2019-09-06
+ibis-list xxa  +
+   cfor="%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f"  +
+   csiz=(9,9,9,9,9,9,9,9,9,9,9)
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:1  Number of Columns: 11      
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:1
++--------+--------+--------+--------+--------+--------+--------+--------
+      C:1      C:2      C:3      C:4      C:5      C:6      C:7      C:8
++--------+--------+--------+--------+--------+--------+--------+--------
+ 150.0000 150.0000 150.0000 150.0000 124.4722 146.0146 144.9828 124.3479
+ 
+Rows: 1:1
++--------+--------+--------
+      C:9     C:10     C:11
++--------+--------+--------
+   0.1282  -3.9854  -5.0172
+ibis-gen out=xxa version="ibis-2" org="column" NC=11 NR=1  +
+       deffmt=DOUB datacol=(1,2)  +
+       data=(150,150)
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+picmtch4 (xxim1,xxim2,xxa)  +
+  ITIE=(1,2,1,310,309,2)  +
+  OTIE=(1,1,1,301,301,1) SEARCH=96 fftsize=32 redo=0
+Beginning VICAR task picmtch4
+PICMTCH4 version 2019-09-06
+ibis-list xxa  +
+   cfor="%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f"  +
+   csiz=(9,9,9,9,9,9,9,9,9,9,9)
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:1  Number of Columns: 11      
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:1
++--------+--------+--------+--------+--------+--------+--------+--------
+      C:1      C:2      C:3      C:4      C:5      C:6      C:7      C:8
++--------+--------+--------+--------+--------+--------+--------+--------
+ 150.0000 150.0000 150.0000 150.0000 124.4722 146.1013 145.1749 124.2038
+ 
+Rows: 1:1
++--------+--------+--------
+      C:9     C:10     C:11
++--------+--------+--------
+   0.1073  -0.0286   0.0191
+ibis-gen out=xxa version="ibis-2" org="column" NC=11 NR=1  +
+       deffmt=DOUB datacol=(1,2)  +
+       data=(0.45,0.44)
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+picmtch4 (xxim1,xxim2,xxa) 'geocord1 'geocord2  +
+  ITIE=(0.31,0.31,0.31,0.49,0.49,0.31)  +
+  OTIE=(0.31,0.31,0.31,0.49,0.49,0.31) SEARCH=32  fftsize=32 redo=0
+Beginning VICAR task picmtch4
+PICMTCH4 version 2019-09-06
+ibis-list xxa  +
+   cfor="%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f"  +
+   csiz=(9,9,9,9,9,9,9,9,9,9,9)
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:1  Number of Columns: 11      
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:1
++--------+--------+--------+--------+--------+--------+--------+--------
+      C:1      C:2      C:3      C:4      C:5      C:6      C:7      C:8
++--------+--------+--------+--------+--------+--------+--------+--------
+   0.4500   0.4400 211.0000 226.0000 125.5278 207.0000 221.0000 125.5278
+ 
+Rows: 1:1
++--------+--------+--------
+      C:9     C:10     C:11
++--------+--------+--------
+   0.4805  -0.0000   0.0000
+ibis-gen out=xxa version="ibis-2" org="column" NC=11 NR=1  +
+       deffmt=DOUB datacol=(1,2)  +
+       data=(150,150)
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+picmtch4 (xxim1,xxim2,xxa)  +
+  ITIE=(5,6,5,306,305,6)  +
+  OTIE=(1,1,1,301,301,1) SEARCH=32 magnify=(7.0,7.0) fftsize=32 redo=0
+Beginning VICAR task picmtch4
+PICMTCH4 version 2019-09-06
+ibis-list xxa  +
+   cfor="%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f"  +
+   csiz=(9,9,9,9,9,9,9,9,9,9,9)
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:1  Number of Columns: 11      
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:1
++--------+--------+--------+--------+--------+--------+--------+--------
+      C:1      C:2      C:3      C:4      C:5      C:6      C:7      C:8
++--------+--------+--------+--------+--------+--------+--------+--------
+ 150.0000 150.0000 150.0000 150.0000 136.0278 146.0000 145.0000 136.0278
+ 
+Rows: 1:1
++--------+--------+--------
+      C:9     C:10     C:11
++--------+--------+--------
+   0.4805   0.0000   0.0000
+ibis-gen out=xxa version="ibis-2" org="column" NC=11 NR=1  +
+       deffmt=DOUB datacol=(1,2)  +
+       data=(150,150)
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+picmtch4 (xxim1,xxim2,xxa)  +
+  ITIE=(5,6,5,306,305,6)  +
+  OTIE=(1,1,1,301,302,1) SEARCH=64 fftsize=64 minsrch=64 redo=0
+Beginning VICAR task picmtch4
+PICMTCH4 version 2019-09-06
+ibis-list xxa  +
+   cfor="%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f"  +
+   csiz=(9,9,9,9,9,9,9,9,9,9,9)
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:1  Number of Columns: 11      
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:1
++--------+--------+--------+--------+--------+--------+--------+--------
+      C:1      C:2      C:3      C:4      C:5      C:6      C:7      C:8
++--------+--------+--------+--------+--------+--------+--------+--------
+ 150.0000 150.0000 150.0000 150.0000 124.4722 145.9786 144.9949 124.6039
+ 
+Rows: 1:1
++--------+--------+--------
+      C:9     C:10     C:11
++--------+--------+--------
+   0.3153  -0.5047  -0.0051
+ibis-gen out=xxa version="ibis-2" org="column" NC=11 NR=1  +
+       deffmt=DOUB datacol=(1,2)  +
+       data=(150,150)
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+picmtch4 (xxim1,xxim2,xxa) SEARCH=96 fftsize=64 minsrch=96 redo=0
+Beginning VICAR task picmtch4
+PICMTCH4 version 2019-09-06
+ibis-list xxa  +
+   cfor="%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f"  +
+   csiz=(9,9,9,9,9,9,9,9,9,9,9)
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:1  Number of Columns: 11      
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:1
++--------+--------+--------+--------+--------+--------+--------+--------
+      C:1      C:2      C:3      C:4      C:5      C:6      C:7      C:8
++--------+--------+--------+--------+--------+--------+--------+--------
+ 150.0000 150.0000 150.0000 150.0000 124.4722 145.9910 144.9979 124.5224
+ 
+Rows: 1:1
++--------+--------+--------
+      C:9     C:10     C:11
++--------+--------+--------
+   0.2862  -0.0090  -0.0021
+ibis-gen out=xxa version="ibis-2" org="column" NC=11 NR=1  +
+       deffmt=DOUB datacol=(1,2)  +
+       data=(0.45,0.44)
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+picmtch4 (xxim1,xxim2,xxa) SEARCH=64 fftsize=64 minsrch=64  +
+       'geocord1 'geocord2 redo=0
+Beginning VICAR task picmtch4
+PICMTCH4 version 2019-09-06
+ibis-list xxa  +
+   cfor="%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f"  +
+   csiz=(9,9,9,9,9,9,9,9,9,9,9)
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:1  Number of Columns: 11      
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:1
++--------+--------+--------+--------+--------+--------+--------+--------
+      C:1      C:2      C:3      C:4      C:5      C:6      C:7      C:8
++--------+--------+--------+--------+--------+--------+--------+--------
+   0.4500   0.4400 211.0000 226.0000 125.5278 207.0000 221.0000 125.5278
+ 
+Rows: 1:1
++--------+--------+--------
+      C:9     C:10     C:11
++--------+--------+--------
+   0.4785  -0.0000   0.0000
+gtrot xxim2 xxim3 rot=2
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 5 to rotation 2
+ibis-gen out=xxa version="ibis-2" org="column" NC=11 NR=1  +
+       deffmt=DOUB datacol=(1,2)  +
+       data=(0.45,0.44)
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+picmtch4 (xxim1,xxim3,xxa) SEARCH=64 fftsize=64 minsrch=64  +
+       'geocord1 'geocord2 redo=0
+Beginning VICAR task picmtch4
+PICMTCH4 version 2019-09-06
+ibis-list xxa  +
+   cfor="%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f"  +
+   csiz=(9,9,9,9,9,9,9,9,9,9,9)
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:1  Number of Columns: 11      
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:1
++--------+--------+--------+--------+--------+--------+--------+--------
+      C:1      C:2      C:3      C:4      C:5      C:6      C:7      C:8
++--------+--------+--------+--------+--------+--------+--------+--------
+   0.4500   0.4400 211.0000 226.0000 125.5278  84.0000  89.0000 125.5278
+ 
+Rows: 1:1
++--------+--------+--------
+      C:9     C:10     C:11
++--------+--------+--------
+   0.4785   0.0000   0.0000
+gtrot xxim2 xxim3 rot=2
+Beginning VICAR task gtrot
+gtrot version 2016-01-08
+Changing rotation 5 to rotation 2
+ibis-gen out=xxa version="ibis-2" org="column" NC=11 NR=1  +
+       deffmt=DOUB datacol=(1,2)  +
+       data=(140,130)
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+picmtch4 (xxim1,xxim3,xxa) SEARCH=64 fftsize=64 minsrch=64 redo=1
+Beginning VICAR task picmtch4
+PICMTCH4 version 2019-09-06
+ibis-list xxa  +
+   cfor="%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f"  +
+   csiz=(9,9,9,9,9,9,9,9,9,9,9)
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:1  Number of Columns: 11      
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:1
++--------+--------+--------+--------+--------+--------+--------+--------
+      C:1      C:2      C:3      C:4      C:5      C:6      C:7      C:8
++--------+--------+--------+--------+--------+--------+--------+--------
+ 140.0000 130.0000 140.0000 130.0000 128.3611 180.0000 160.0000 128.3611
+ 
+Rows: 1:1
++--------+--------+--------
+      C:9     C:10     C:11
++--------+--------+--------
+   0.4785   0.0000   0.0000
+gen xxim0 nl=300 ns=310
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+f2 inp=xxim0 out=xxim1 func="(line*327+samp*193+line*samp)%256"
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 93000 TIMES
+gtgen inp=xxim1 'tiecnvrt  +
+   geotiff=("ModelTiePointTag=(0,0,0,.3,.3,0.0)",  +
+          "ModelTiePointTag=(300,0,0,.5,.3,0.0)",  +
+          "ModelTiePointTag=(0,300,0,.3,.5,0.0)",  +
+          "ProjectionGeoKey=20(CT_MillerCylindrical)",  +
+          "GTRasterTypeGeoKey=2(RasterPixelIsPoint)",  +
+          "GeogEllipsoidGeoKey=7030(Ellipse_WGS84)")
+Beginning VICAR task gtgen
+gtgen version Fri Jan 11 2008
+gtcopy xxim1 xxim2 size=(5,6,295,304)
+Beginning VICAR task gtcopy
+gtcopy version 2017-08-03
+ibis-gen out=xxa version="ibis-2" org="column" NC=11 NR=5  +
+       deffmt=DOUB datacol=(1,2)  +
+       data=(240,238,30,30,270,270,20,20,100,100)
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+picmtch4 (xxim1,xxim2,xxa)  +
+  ITIE=(5,6,5,306,305,6)  +
+  OTIE=(1,1,1,301,301,1) SEARCH=64 fftsize=64 ffthalf=1 redo=0
+Beginning VICAR task picmtch4
+PICMTCH4 version 2019-09-06
+ibis-list xxa  +
+   cfor="%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f"  +
+   csiz=(9,9,9,9,9,9,9,9,9,9,9)
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:5  Number of Columns: 11      
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:5
++--------+--------+--------+--------+--------+--------+--------+--------
+      C:1      C:2      C:3      C:4      C:5      C:6      C:7      C:8
++--------+--------+--------+--------+--------+--------+--------+--------
+ 240.0000 238.0000 240.0000 238.0000 123.9167 236.0000 233.0000 123.9167
+  30.0000  30.0000  30.0000  30.0000 128.9167  26.0000  25.0000 128.9167
+ 270.0000 270.0000 270.0000 270.0000 127.1389 266.0000 265.0000 127.1389
+  20.0000  20.0000  20.0000  20.0000-9999.000   0.0000   0.0000-9999.000
+ 100.0000 100.0000 100.0000 100.0000 130.9167  96.0000  95.0000 130.9167
+ 
+Rows: 1:5
++--------+--------+--------
+      C:9     C:10     C:11
++--------+--------+--------
+   0.4785   0.0000   0.0000
+   0.4805   0.0000  -0.0000
+   0.4805   0.0000   0.0000
+-9999.000-9999.000-9999.000
+   0.4785   0.0000   0.0000
+gengrid2 out=xxa ncol=11 nah=5 nav=7  +
+     l1=145 s1=145 l2=145 s2=155 l3=155 s3=145 l4=155 s4=155
+let nahp1=nah+1
+let navp1=nav+1
+let nahxnav=nahp1*navp1
+ibis-gen xxa version="ibis-2" org="column" nc=11      +
+ nr=48 deffmt=DOUB
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+mf3 xxa func="c3=@int((@index-1)/6)/7"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+mf3 xxa func="c4=@mod(@index+5,6)/5"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+mf3 xxa func="c5=c3*(1.550000000000e+02-(1.450000000000e+02))+(1.450000000000e+02)$c6=c3*(1.550000000000e+02-(1.450000000000e+02))++
+(1.450000000000e+02)"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+mf3 xxa func="c1=c4*(c6-c5)+c5"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+mf3 xxa func="c7=c4*(1.550000000000e+02-(1.450000000000e+02))+(1.450000000000e+02)$c8=c4*(1.550000000000e+02-(1.450000000000e+02))++
+(1.450000000000e+02)"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+mf3 xxa func="c2=c3*(c8-c7)+c7"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+mf3 xxa func="c3=0$c4=0$c5=0$c6=0$c7=0$c8=0$"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+end-proc
+picmtch4 (xxim1,xxim2,xxa)  +
+  ITIE=(5,6,5,306,305,6)  +
+  OTIE=(1,1,1,301,301,1) SEARCH=64 fftsize=32 redo=0 autofit=12
+Beginning VICAR task picmtch4
+PICMTCH4 version 2019-09-06
+ibis-list xxa  +
+   cfor="%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f%9.4f"  +
+   csiz=(9,9,9,9,9,9,9,9,9,9,9)
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:48  Number of Columns: 11      
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:30
++--------+--------+--------+--------+--------+--------+--------+--------
+      C:1      C:2      C:3      C:4      C:5      C:6      C:7      C:8
++--------+--------+--------+--------+--------+--------+--------+--------
+ 145.0000 145.0000 145.0000 145.0000 126.2500 140.9957 140.0060 126.2621
+ 145.0000 147.0000 145.0000 147.0000 134.8056 140.9932 141.9679 134.6332
+ 145.0000 149.0000 145.0000 149.0000 129.1389 140.9853 144.0128 129.1926
+ 145.0000 151.0000 145.0000 151.0000 130.5833 140.9916 146.0003 130.6274
+ 145.0000 153.0000 145.0000 153.0000 132.0278 140.9937 147.9985 132.0515
+ 145.0000 155.0000 145.0000 155.0000 133.4722 140.9958 149.9979 133.4678
+ 146.4286 145.0000 146.4286 145.0000 116.5516 142.4307 139.9985 115.2041
+ 146.4286 147.0000 146.4286 147.0000 127.9643 142.4310 141.9750 125.6305
+ 146.4286 149.0000 146.4286 149.0000 125.1548 142.4119 144.0111 122.2592
+ 146.4286 151.0000 146.4286 151.0000 129.4564 142.4203 146.0064 125.6031
+ 146.4286 153.0000 146.4286 153.0000 130.7103 142.4137 148.0152 128.9895
+ 146.4286 155.0000 146.4286 155.0000 131.9643 142.4308 149.9968 132.3974
+ 147.8571 145.0000 147.8571 145.0000 114.9801 143.8513 140.0160 114.4430
+ 147.8571 147.0000 147.8571 147.0000 123.1547 143.8351 142.0007 122.0612
+ 147.8571 149.0000 147.8571 149.0000 123.2023 143.8500 143.9892 122.2432
+ 147.8571 151.0000 147.8571 151.0000 130.3611 143.8315 146.0110 129.7700
+ 147.8571 153.0000 147.8571 153.0000 130.4087 143.8294 148.0126 130.0588
+ 147.8571 155.0000 147.8571 155.0000 130.4563 143.8424 150.0126 130.3231
+ 149.2857 145.0000 149.2857 145.0000 118.4881 145.2943 140.0142 117.6273
+ 149.2857 147.0000 149.2857 147.0000 126.4722 145.2933 141.9697 126.7637
+ 149.2857 149.0000 149.2857 149.0000 122.2659 145.2942 143.9853 122.3375
+ 149.2857 151.0000 149.2857 151.0000 130.2500 145.2790 146.0140 131.5981
+ 149.2857 153.0000 149.2857 153.0000 126.0436 145.2722 148.0073 126.9663
+ 149.2857 155.0000 149.2857 155.0000 128.9484 145.2802 150.0087 129.2659
+ 150.7143 145.0000 150.7143 145.0000 123.0119 146.7289 140.0004 123.9641
+ 150.7143 147.0000 150.7143 147.0000 123.6945 146.7123 141.9770 123.2334
+ 150.7143 149.0000 150.7143 149.0000 122.3452 146.7160 143.9696 122.4931
+ 150.7143 151.0000 150.7143 151.0000 123.0278 146.7065 145.9966 121.6120
+ 150.7143 153.0000 150.7143 153.0000 121.6786 146.7173 148.0061 120.8370
+ 150.7143 155.0000 150.7143 155.0000 127.4405 146.7085 150.0124 127.1841
+ 
+Rows: 31:48
++--------+--------+--------+--------+--------+--------+--------+--------
+      C:1      C:2      C:3      C:4      C:5      C:6      C:7      C:8
++--------+--------+--------+--------+--------+--------+--------+--------
+ 152.1429 145.0000 152.1429 145.0000 126.5199 148.1386 140.0060 127.0893
+ 152.1429 147.0000 152.1429 147.0000 128.0278 148.1252 142.0293 128.3450
+ 152.1429 149.0000 152.1429 149.0000 128.5199 148.1491 144.0076 129.3466
+ 152.1429 151.0000 152.1429 151.0000 130.0278 148.1405 146.0167 130.6086
+ 152.1429 153.0000 152.1429 153.0000 124.4246 148.1356 148.0522 125.0400
+ 152.1429 155.0000 152.1429 155.0000 133.0437 148.1486 150.0469 132.9677
+ 153.5714 145.0000 153.5714 145.0000 124.9484 149.5783 139.9492 126.4831
+ 153.5714 147.0000 153.5714 147.0000 129.3135 149.5660 141.9747 131.4940
+ 153.5714 149.0000 153.5714 149.0000 126.5675 149.5791 143.9772 129.6912
+ 153.5714 151.0000 153.5714 151.0000 126.8690 149.5702 146.0029 127.8400
+ 153.5714 153.0000 153.5714 153.0000 124.1230 149.5565 148.0097 125.7759
+ 153.5714 155.0000 153.5714 155.0000 131.5357 149.5616 149.9996 130.7647
+ 155.0000 145.0000 155.0000 145.0000 122.3611 150.9735 139.9922 122.4433
+ 155.0000 147.0000 155.0000 147.0000 122.4722 150.9738 141.9913 122.7239
+ 155.0000 149.0000 155.0000 149.0000 129.6944 150.9665 143.9650 129.4581
+ 155.0000 151.0000 155.0000 151.0000 129.8056 150.9820 145.9706 129.8255
+ 155.0000 153.0000 155.0000 153.0000 137.0278 150.9743 147.9845 136.6910
+ 155.0000 155.0000 155.0000 155.0000-9999.000   0.0000   0.0000-9999.000
+ 
+Rows: 1:30
++--------+--------+--------
+      C:9     C:10     C:11
++--------+--------+--------
+   0.1797  -0.0021   0.0045
+   0.1699  -0.0055  -0.0363
+   0.1795  -0.0144   0.0060
+   0.1787  -0.0090  -0.0090
+   0.1811  -0.0079  -0.0135
+   0.1860  -0.0067  -0.0167
+   0.1757   0.0064  -0.0015
+   0.1689   0.0057  -0.0276
+   0.1752  -0.0143   0.0059
+   0.1728  -0.0068  -0.0015
+   0.1798  -0.0144   0.0047
+   0.1842   0.0017  -0.0164
+   0.1686   0.0004   0.0175
+   0.1712  -0.0167  -0.0005
+   0.1701  -0.0028  -0.0145
+   0.1740  -0.0222   0.0046
+   0.1790  -0.0253   0.0035
+   0.1869  -0.0133   0.0010
+   0.1610   0.0170   0.0172
+   0.1642   0.0149  -0.0299
+   0.1741   0.0149  -0.0169
+   0.1793  -0.0013   0.0091
+   0.1827  -0.0090  -0.0002
+   0.1939  -0.0019  -0.0015
+   0.1693   0.0249   0.0049
+   0.1751   0.0074  -0.0212
+   0.1749   0.0102  -0.0311
+   0.1791  -0.0003  -0.0067
+   0.1824   0.0095   0.0000
+   0.1868  -0.0002   0.0037
+ 
+Rows: 31:48
++--------+--------+--------
+      C:9     C:10     C:11
++--------+--------+--------
+   0.1904   0.0081   0.0120
+   0.1840  -0.0062   0.0327
+   0.1884   0.0167   0.0084
+   0.1990   0.0071   0.0148
+   0.2197   0.0013   0.0477
+   0.2423   0.0133   0.0397
+   0.2529   0.0213  -0.0433
+   0.2795   0.0081  -0.0204
+   0.2863   0.0202  -0.0206
+   0.2999   0.0103   0.0025
+   0.3329  -0.0043   0.0067
+   0.3236  -0.0002  -0.0060
+   0.3248  -0.0101   0.0012
+   0.3194  -0.0107  -0.0023
+   0.3316  -0.0190  -0.0313
+   0.3360  -0.0044  -0.0283
+   0.3261  -0.0131  -0.0170
+-9999.000-9999.000-9999.000
+disable-log

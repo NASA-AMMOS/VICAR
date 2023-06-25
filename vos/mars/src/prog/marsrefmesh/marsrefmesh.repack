@@ -1,0 +1,5 @@
+$ vpack marsrefmesh.com -mixed -
+	-s marsrefmesh.cc tiny_obj_loader.h -
+	-i marsrefmesh.imake -
+	-p marsrefmesh.pdf
+$ Exit

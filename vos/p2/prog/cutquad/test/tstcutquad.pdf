@@ -1,0 +1,42 @@
+procedure
+refgbl $echo
+body
+!let _onfail="continue"
+let $echo="yes"
+
+enable-log
+!   TEST CUTQUAD HANDYPROC
+
+gen xxxxxtsta nl=100 ns=100 linc=1 sinc=2
+
+gtgen inp=xxxxxtsta out=xxxxxtstb 'tiecnvrt 'rectfit +
+      geotiff=("GTModelTypeGeoKey=2(ModelTypeGeographic)", +
+        "GeogEllipsoidGeoKey=7030(Ellipse_WGS84)", +
+        "ModelTiePointTag=(4,6,0,120,34,0.0)", +
+        "ModelTiePointTag=(4,78,0,120,33,0.0)", +
+        "ModelTiePointTag=(76,6,0,121,34,0.0)", +
+        "GTRasterTypeGeoKey=2(RasterPixelIsPoint)")
+gtlist xxxxxtstb
+
+cutquad xxxxxtstb xxxxxtstc lon=120 lat=34 nlon=2 nlat=1 pixdeg=72
+gtlist xxxxxtstc
+list xxxxxtstc nl=3 ns=3
+
+!   TEST CUTQUAD HANDYPROC FOR AREA CASE
+
+gen xxxxxtsta nl=100 ns=100 linc=1 sinc=2
+
+gtgen inp=xxxxxtsta out=xxxxxtstb 'tiecnvrt 'rectfit +
+      geotiff=("GTModelTypeGeoKey=2(ModelTypeGeographic)", +
+        "GeogEllipsoidGeoKey=7030(Ellipse_WGS84)", +
+        "ModelTiePointTag=(4,6,0,120,34,0.0)", +
+        "ModelTiePointTag=(4,78,0,120,33,0.0)", +
+        "ModelTiePointTag=(76,6,0,121,34,0.0)", +
+        "GTRasterTypeGeoKey=1(RasterPixelIsArea)")
+gtlist xxxxxtstb
+
+cutquad xxxxxtstb xxxxxtstc lon=120 lat=34 nlon=2 nlat=1 pixdeg=72
+gtlist xxxxxtstc
+list xxxxxtstc nl=3 ns=3
+disable-log
+end-proc

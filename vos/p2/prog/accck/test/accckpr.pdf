@@ -1,0 +1,11 @@
+procedure
+parm inp type=(string,99)
+local rms type=real
+body
+
+plab2tcl &inp property=COREG_META_DATA val=rms +
+   keyword=ACCURACY vtype=7
+
+write "file: &inp        accuracy: &rms"
+
+end-proc

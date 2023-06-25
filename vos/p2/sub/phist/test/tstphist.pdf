@@ -19,7 +19,8 @@ let $echo="no"
 write "ENTROPY test with Cassini input"
 write ""
 if ($syschar(1)="UNIX")
-   let dir = "/project/test_work/testdata/cassini/iss/"
+!   let dir = "/project/test_work/testdata/cassini/iss/"
+   let dir = "./"
 else
    let dir = "wms_test_work:[testdata.cassini.iss]"
 end-if

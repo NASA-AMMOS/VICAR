@@ -1,0 +1,362 @@
+copyright = "(C) COPYRIGHT GeoEye, 2011 All Rights Reserved";
+companyName = "GeoEye Inc.";
+companyAddress = "2325 Dulles Corner Blvd., Herndon, VA 20171";
+companyWebAddress = "www.geoeye.com";
+companyPhoneNumber = "1-800-232-9037";
+companyEmail = "info@geoeye.com";
+companyHoursOfOperation = "Sunday 8PM ET - Friday 8PM ET (Excluding Holidays)";
+BEGIN_GROUP = productOrderInfo;
+  projectName = "0041105485-0071104008-00001";
+  workOrderNumber = "0041105485";
+  orderId = "01000SG00051298";
+  lineItemId = 1;
+  opsOrderNumber = "OPS000709199";
+  numberOfAOICoordinates = 4;
+  BEGIN_GROUP = aoiGeoCoordinate;
+    coordinateNumber = 1;
+    latitude = -19.4043555830;
+    longitude = -59.8558330530;
+  END_GROUP = aoiGeoCoordinate;
+  BEGIN_GROUP = aoiGeoCoordinate;
+    coordinateNumber = 2;
+    latitude = -19.4040273350;
+    longitude = -60.0961112949;
+  END_GROUP = aoiGeoCoordinate;
+  BEGIN_GROUP = aoiGeoCoordinate;
+    coordinateNumber = 3;
+    latitude = -19.2579118417;
+    longitude = -60.0961112912;
+  END_GROUP = aoiGeoCoordinate;
+  BEGIN_GROUP = aoiGeoCoordinate;
+    coordinateNumber = 4;
+    latitude = -19.2573657133;
+    longitude = -59.8558330535;
+  END_GROUP = aoiGeoCoordinate;
+  productMapUnits = "meters";
+  BEGIN_GROUP = aoiMapCoordinate;
+    coordinateNumber = 1;
+    y = 7851945.6028370550;
+    x = 200059.9228228178;
+  END_GROUP = aoiMapCoordinate;
+  BEGIN_GROUP = aoiMapCoordinate;
+    coordinateNumber = 2;
+    y = 7851545.7697130116;
+    x = 174804.9924087390;
+  END_GROUP = aoiMapCoordinate;
+  BEGIN_GROUP = aoiMapCoordinate;
+    coordinateNumber = 3;
+    y = 7867732.2800338212;
+    x = 174515.1670291717;
+  END_GROUP = aoiMapCoordinate;
+  BEGIN_GROUP = aoiMapCoordinate;
+    coordinateNumber = 4;
+    y = 7868226.1865572296;
+    x = 199791.0768428483;
+  END_GROUP = aoiMapCoordinate;
+  BEGIN_GROUP = numberOfSegments;
+    totalNumberOfImageSegments = 2;
+    numberOfSegmentsInX = 1;
+    numberOfSegmentsInY = 1;
+  END_GROUP = numberOfSegments;
+END_GROUP = productOrderInfo;
+BEGIN_GROUP = productInfo;
+  geImageIdentifier = "5V111018P0011008004B222000100562M_000709199";
+  geProcessingDateTime = 2011-10-18T15:45:33.000000Z;
+  inputProductId = "IMG_SC_CO_BPM_0082822_52146_CPS_0";
+  processingDateTime = 2011-10-18T15:45:33.000000Z;
+  jpegOverviewFileName = "5V111018P0011008004B222000100562M_000709199.jpg";
+  imageFileName = "5V111018P0011008004B222000100562M_000709199.ntf";
+  outputFormat = "NCD";
+  productType = "GEO";
+  productSubType = "N/A";
+  productSpectralType = "PAN";
+  productSpecificationVersion = "1.4.3";
+  licenseLevel = "NEXTVIEW";
+  groundStationID = "Thornton";
+  distributionMediaType = "Electronic";
+  productCloudCoverPercentage = 000;
+  countryCode = "BL";
+  WACNumber = 1192;
+  geoPositioningAccuracyClass = "High";
+  attitudeAccuracyClass = "Onboard";
+  ephemerisAccuracyClass = "Onboard/Low";
+  earthRotationCorrectionParameters = "Measured";
+  gpsEphemeridesDateTime = 2011-10-18T15:45:33.000000Z;
+  earthObservationParametersDateTime = 2011-10-18T15:45:33.000000Z;
+  numberOfSpectralBands = 1;
+  spectralBands = (5);
+  spectralBandNames = (pan);
+  bytesPerPixel = 2;
+  bitsPerPixel = 11;
+  spacingUnits = "meters";
+  numScanLines = 41704;
+  pixelsPerScanLine = 63864;
+  lineSpacing = 4.0000000000e-01;
+  pixelSpacing = 4.0000000000e-01;
+  BEGIN_GROUP = geodeticCorners;
+    BEGIN_GROUP = upperLeftCorner;
+      latitude = -19.2534473762;
+      longitude = -60.0960290258;
+      height = 253.0740814209;
+    END_GROUP = upperLeftCorner;
+    BEGIN_GROUP = upperRightCorner;
+      latitude = -19.2573983197;
+      longitude = -59.8532751656;
+      height = 253.0740814209;
+    END_GROUP = upperRightCorner;
+    BEGIN_GROUP = lowerRightCorner;
+      latitude = -19.4079642456;
+      longitude = -59.8558934553;
+      height = 253.0740814209;
+    END_GROUP = lowerRightCorner;
+    BEGIN_GROUP = lowerLeftCorner;
+      latitude = -19.4039800139;
+      longitude = -60.0988692422;
+      height = 253.0740814209;
+    END_GROUP = lowerLeftCorner;
+  END_GROUP = geodeticCorners;
+  BEGIN_GROUP = referencePointMap;
+    y = 7868227.0000000000;
+    x = 174515.0000000000;
+  END_GROUP = referencePointMap;
+  BEGIN_GROUP = referencePointImage;
+    line = 1.0000000000;
+    pixel = 1.0000000000;
+  END_GROUP = referencePointImage;
+  BEGIN_GROUP = rationalFunctions;
+    errorBias = 1.3415544350;
+    errorRand = 0.2000000174;
+    lineFitQuality = 0.0002838257;
+    pixelFitQuality = 0.0000795414;
+    lineOffset = 20852;
+    pixelOffset = 31932;
+    latitudeOffset = -19.3307000000;
+    longitudeOffset = -59.9761000000;
+    heightOffset = 253;
+    lineScale = 20852;
+    pixelScale = 31932.0000000000;
+    latitudeScale = 0.0773000000;
+    longitudeScale = 0.1229000000;
+    heightScale = 50;
+    lineNumeratorCoefficients = 
+    (
+      -4.7710018021e+05,
+      -2.5962806633e+07,
+      -9.9999990000e+08,
+      -1.3148257833e+05,
+      2.5695897276e+07,
+      1.5690343020e+05,
+      -1.0893440460e+06,
+      1.1945953536e+06,
+      1.3362517140e+07,
+      9.9053125321e+01,
+      -2.2375496113e+04,
+      -1.3561702074e+04,
+      5.4385706384e+04,
+      2.8805552374e+02,
+      -4.8823828743e+03,
+      2.1120270839e+04,
+      3.5208094232e+03,
+      -5.3472446980e+03,
+      3.2254441462e+03,
+      7.5225826183e-01
+    );
+    lineDenominatorCoefficients = 
+    (
+      9.7411885060e+08,
+      -2.4607305361e+07,
+      -1.3013579175e+07,
+      9.8314296776e+05,
+      -5.3566307338e+04,
+      2.2803501187e+04,
+      -2.1046734889e+03,
+      -4.7824109375e+03,
+      -2.0617058023e+04,
+      -3.5172096235e+03,
+      -3.0734878759e+00,
+      1.5786253601e+01,
+      -1.2470160095e+00,
+      -1.4562020017e+00,
+      3.5670786508e+00,
+      -4.6343636495e-01,
+      1.2611865805e+00,
+      -2.5256938243e+00,
+      1.3661672910e+00,
+      2.3052046708e-01
+    );
+    pixelNumeratorCoefficients = 
+    (
+      -6.5036052734e+05,
+      9.9999990000e+08,
+      -1.1393795448e+07,
+      1.3137165853e+06,
+      -1.2598304480e+07,
+      1.0353644778e+06,
+      -2.9883517535e+04,
+      -2.5304477370e+07,
+      1.7430362386e+05,
+      1.3961677764e+03,
+      -2.9726866128e+03,
+      -3.1983487476e+03,
+      -2.8316975704e+04,
+      -3.5181357335e+03,
+      -6.6404661035e+04,
+      -4.8693257474e+01,
+      3.6298341702e+01,
+      2.2049739297e+04,
+      4.9903901292e+01,
+      -4.6755879843e+00
+    );
+    pixelDenominatorCoefficients = 
+    (
+      9.8835001702e+08,
+      -2.4966800158e+07,
+      -1.3203698082e+07,
+      9.9750596996e+05,
+      -5.4348872047e+04,
+      2.3136643719e+04,
+      -2.1354212346e+03,
+      -4.8522784756e+03,
+      -2.0918258214e+04,
+      -3.5685934926e+03,
+      -3.1183892937e+00,
+      1.6016879261e+01,
+      -1.2652340045e+00,
+      -1.4774760516e+00,
+      3.6191910701e+00,
+      -4.7020683247e-01,
+      1.2796115973e+00,
+      -2.5625923703e+00,
+      1.3861259994e+00,
+      2.3388820309e-01
+    );
+  END_GROUP = rationalFunctions;
+END_GROUP = productInfo;
+BEGIN_GROUP = sensorInfo;
+  satelliteName = "OV-5";
+  sensorName = "PAN_MS_HR";
+END_GROUP = sensorInfo;
+BEGIN_GROUP = inputImageInfo;
+  uniqueImageId = "IMG_SC_CO_BPM_0082822_52146_CPS_0";
+  archiveId = "1100800";
+  firstLineAcquisitionDateTime = 2011-10-18T14:22:14.285344Z;
+  circularError = 2.8789758176;
+  percentCloudCover = 0.5000000000;
+  percentRejectedEphemerisSamples = 0.0000000000;
+  percentRejectedAttitudeSamples = 0.0000000000;
+  starTrackersLocked = -1;
+  originalFirstLineAcquisitionDateTime = 2011-10-18T14:22:14.285344Z;
+  acquisitionOrbitNumber = 16639;
+  lineSampleTime = 0.0001000000;
+  lineRate = 10000;
+  firstLineRollAngle = 16.3933965397;
+  firstLineElevationAngle = 71.5739985287;
+  firstLineAzimuthAngle = 270.6852026181;
+  firstLineSunElevationAngle = 67.7871282842;
+  firstLineSunAzimuthAngle = 67.2314472804;
+  scanAzimuth = 269.8133204264;
+  geoPositioningModelId = "630319";
+  cameraCalCreationDateTime = 2011-06-23T12:20:30.000000Z;
+  ancillaryCalCreationDateTime = 2011-04-29T21:39:10.000000Z;
+  gainCalCreationDateTime = 2009-09-18T21:10:04.000000Z;
+  darkOffsetCalCreationDateTime = 2009-09-18T21:10:04.000000Z;
+  cloudGridSpectralBands = (5);
+  cameraCalEffectiveDateTime = 1913-10-24T17:31:44.000000Z;
+  ancillaryCalEffectiveDateTime = 2011-03-26T00:00:00.000000Z;
+  gainCalEffectiveDateTime = 2009-07-29T00:00:00.000000Z;
+  darkOffsetCalEffectiveDateTime = 2009-07-29T00:00:00.000000Z;
+  scanDirection = "Reverse";
+  idsNumberScanLines = 63864;
+  idsPixelsPerScanLine = 41704;
+  idsLineSpacing = 0.4000000000;
+  idsPixelSpacing = 0.4000000000;
+END_GROUP = inputImageInfo;
+BEGIN_GROUP = correctionParams;
+  mtfCorrection = "Yes";
+  mtfCorrectionPan = "On";
+  mtfCorrectionMSI = "Off";
+  dynamicRangeAdjust = "Off";
+  referenceElevation = 253.0740814209;
+  resamplingKernel = "Cubic Convolution";
+  mapProjection = "UTM";
+  mapProjectionUsgsParameters = 
+  (
+    6.3781370000e+06,
+    6.6943799893e-03,
+    9.9960000000e-01,
+    0.0000000000e+00,
+    -9.3000000000e+01,
+    0.0000000000e+00,
+    0.0000000000e+00,
+    5.0000000000e+05,
+    1.0000000000e+07,
+    0.0000000000e+00,
+    0.0000000000e+00,
+    0.0000000000e+00,
+    0.0000000000e+00,
+    0.0000000000e+00,
+    0.0000000000e+00
+  );
+  mapProjectionUsgsCode = 1;
+  mapZone = 21;
+  hemisphere = "South";
+  datum = "WGS_84";
+  BEGIN_GROUP = ellipsoid;
+    semiMajorAxis = 6.3781370000e+06;
+    eccentricitySquared = 6.6943799901e-03;
+    xOffset = 0.0000000000e+00;
+    yOffset = 0.0000000000e+00;
+    zOffset = 0.0000000000e+00;
+  END_GROUP = ellipsoid;
+END_GROUP = correctionParams;
+BEGIN_GROUP = bandSpecificInformation;
+  bandNumber = 1;
+  tdiMode = 10;
+  percentBadData = 0.0000000000;
+  percentSaturatedPixels = 0.0003386045;
+  BEGIN_GROUP = radiometry;
+    gain = 0.0148650000;
+    offset = 0.0000000000;
+  END_GROUP = radiometry;
+END_GROUP = bandSpecificInformation;
+BEGIN_GROUP = bandSpecificInformation;
+  bandNumber = 2;
+  tdiMode = 6;
+  percentBadData = 0.0000000000;
+  percentSaturatedPixels = 0.0002078543;
+  BEGIN_GROUP = radiometry;
+    gain = 0.0171830000;
+    offset = 0.0000000000;
+  END_GROUP = radiometry;
+END_GROUP = bandSpecificInformation;
+BEGIN_GROUP = bandSpecificInformation;
+  bandNumber = 3;
+  tdiMode = 10;
+  percentBadData = 0.0000000000;
+  percentSaturatedPixels = 0.0001315633;
+  BEGIN_GROUP = radiometry;
+    gain = 0.0161940000;
+    offset = 0.0000000000;
+  END_GROUP = radiometry;
+END_GROUP = bandSpecificInformation;
+BEGIN_GROUP = bandSpecificInformation;
+  bandNumber = 4;
+  tdiMode = 6;
+  percentBadData = 0.0000000000;
+  percentSaturatedPixels = 0.0002541683;
+  BEGIN_GROUP = radiometry;
+    gain = 0.0095930000;
+    offset = 0.0000000000;
+  END_GROUP = radiometry;
+END_GROUP = bandSpecificInformation;
+BEGIN_GROUP = bandSpecificInformation;
+  bandNumber = 5;
+  tdiMode = 16;
+  percentBadData = 0.0000000000;
+  percentSaturatedPixels = 0.0000717229;
+  BEGIN_GROUP = radiometry;
+    gain = 0.0177860000;
+    offset = 0.0000000000;
+  END_GROUP = radiometry;
+END_GROUP = bandSpecificInformation;
+END;

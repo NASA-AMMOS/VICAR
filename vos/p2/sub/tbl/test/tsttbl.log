@@ -1,0 +1,7 @@
+ttbl
+Beginning VICAR task ttbl
+Test the C interface
+  19  32  14  64  32  96  AF  C8  E1  5A
+Test the FORTRAN interface
+  19  32  14  64  32  96  AF  C8  E1  5A
+disable-log

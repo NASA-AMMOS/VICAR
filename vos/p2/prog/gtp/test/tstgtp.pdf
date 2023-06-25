@@ -1,0 +1,19 @@
+procedure
+body
+enable-log
+!   TEST GTP HANDYPROC
+
+gen xxim1 nl=10 ns=10
+gtgen inp=xxim1 out=xxim2 'tiecnvrt +
+   geotiff=("ModelTiePointTag=(0,0,0,.3,.3,0.0)", +
+          "ModelTiePointTag=(10,0,0,.5,.3,0.0)", +
+          "ModelTiePointTag=(0,10,0,.3,.5,0.0)", +
+          "ProjectionGeoKey=20(CT_MillerCylindrical)", +
+          "GTRasterTypeGeoKey=2(RasterPixelIsPoint)", +
+          "GeogEllipsoidGeoKey=7030(Ellipse_WGS84)")
+
+gtp xxim2 3 5
+
+gtp xxim2 .38 .34 i
+disable-log
+end-proc

@@ -3,5 +3,7 @@ refgbl $echo
 body
 let _onfail="continue"
 let $echo="yes"
+enable-log
 tsumv
+disable-log
 end-proc

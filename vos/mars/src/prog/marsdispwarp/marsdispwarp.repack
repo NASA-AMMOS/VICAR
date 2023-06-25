@@ -1,0 +1,5 @@
+$ vpack marsdispwarp.com -mixed -
+	-s marsdispwarp.cc -
+	-i marsdispwarp.imake -
+	-p marsdispwarp.pdf
+$ Exit

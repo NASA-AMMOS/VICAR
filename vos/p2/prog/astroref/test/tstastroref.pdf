@@ -1,0 +1,41 @@
+procedure
+refgbl $echo
+refgbl $autousage
+refgbl $syschar
+body
+enable-log
+
+let $autousage = "none"
+let _onfail="continue"
+let $echo="yes"
+
+! TEST SCRIPT FOR astroref
+
+gen xxxa nl=3 ns=3
+ibis-gen xxxb nc=4 nr=9 deffmt=DOUB
+astroref (xxxa,xxxb) urange=(1.0,1823.5,3648.0) +
+  vrange=(1.0,1687.0,3375.0) +
+  ACS_time=215076679.47174 +
+  TOD_t_SV=(6852365.174,240762.2817,-1542082.687) +
+  TOD_q_SV=(1.0,0.0,0.0,0.0)  +
+  SV_t_C=(0.0,0.0,0.0) +
+  SV_q_C=(1.0,0.0,0.0,0.0)  +
+  fu=2500000   +
+  fv=2500000  +
+  q=0.0 +
+  u0=1824.5 +
+  v0=1688 +
+  kappa=(0.0,0.0,0.0,0.0,0.0)
+
+
+ibis-l xxxb nr=9 csiz=(12,12,12,12,12) +
+   cfor="%12.7f %12.7f %12.7f %12.7f %12.7f"
+
+! 6378137.0 erad
+! 704000.0 lsat
+
+ush rm xxxa xxxb
+
+disable-log
+
+end-proc

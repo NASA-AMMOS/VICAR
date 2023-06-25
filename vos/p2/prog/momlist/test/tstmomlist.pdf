@@ -43,7 +43,7 @@ write ">>> CASSINI TEST <<<"
 write " "
 let $echo="yes"
 
-let dir = "/project/test_work/testdata/cassini/iss/"
+let dir = "data/"
  
 !---------------------------
 ! Make a test light transfer file which has exposure levels of
@@ -137,5 +137,7 @@ ush rm m1.list
 ush rm *.out
 
 disable-log
+
+ush rm ltf1.tbl ltf2.tbl ltf3.tbl ltf4.tbl ltf5.tbl
 
 end-proc

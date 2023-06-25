@@ -1,0 +1,5 @@
+$ vpack marsmos.com -mixed -
+	-s marsmos.cc -
+	-i marsmos.imake -
+	-p marsmos.pdf
+$ Exit

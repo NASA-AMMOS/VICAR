@@ -1,0 +1,7 @@
+$ vpack mars_radiometry.com -mixed -
+	-s RadiometryModel.cc RadiometryMpfImp.cc RadiometryM98SSI.cc -
+	   RadiometryM98RAC.cc RadiometryFIDO.cc RadiometryMER.cc -
+	   RadiometryPHX.cc RadiometryCalImage.cc RadiometryMSL.cc -
+	   RadiometryNSYT.cc -
+	-i mars_radiometry.imake
+$ Exit

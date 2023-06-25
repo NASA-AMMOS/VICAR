@@ -1,0 +1,59 @@
+process help=*
+PARM INP TYPE=STRING COUNT=1
+PARM OUT TYPE=STRING COUNT=1
+PARM MTLDIR TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM FLIPTEX TYPE=KEYWORD COUNT=(0:1) VALID=FLIPTEX DEFAULT=--
+END-PROC
+
+.TITLE
+VICAR program OBJ2GLTF
+
+.HELP
+PURPOSE:
+Convert a .obj mesh file to a .gltf/.glb (GL Transmission Format) file.
+
+EXECUTION:
+
+   obj2gltf INP=mesh.obj OUT=mesh.gltf
+
+   or 
+
+   obj2gltf INP=mesh.obj OUT=mesh.glb
+
+.PAGE
+METHOD:
+
+This program takes an .obj mesh file, and optional material .mtl file, 
+and converts them to a GLTF or GLB an opensource mesh file format 
+(https://www.khronos.org/gltf/).
+
+The full feature set here is narrowly implemented for the use case at a hand: a mesh
+with 3D vertex positions and a single texture coordinate. Intended to be paired with 
+a single unlit textured material. It can be extended to support more of the full spec
+as needed.
+      
+.PAGE:
+HISTORY:
+2021-04-05  Initial delivery
+COGNIZANT PROGRAMMER: Bob Crocco
+
+.LEVEL1
+.VARI INP
+Input mesh (.obj)
+
+.VARI OUT
+Output mesh file (.gltf or .glb)
+
+.VARI MTLDIR
+The directory containing the material file (.mtl)
+
+.VARI FLIPTEX
+Whether to invert the vertical texture coordinates.
+
+.LEVEL2
+
+.VARI FLIPTEX
+If defined it will invert the vertical texture coordinates. GLTF expects texture 
+coordinates with an upper left corner origin. OpenGL expects texture coordinates
+with a lower right corner origin. If your data was generated expecting the latter
+you will need to set this flag.

@@ -2,13 +2,17 @@ procedure
 refgbl $echo
 refgbl $autousage
 body
+enable-log
+
 let _onfail = "continue"
 let $echo = "yes"
 let $autousage = "none"
 GEN A LINC = 0
 GEN B SINC = 0
-LIST A
-LIST B
+LIST A 'nousrtim
+LIST B 'nousrtim
 multovly (A,B) C
 ibis-list C
+
+disable-log
 end-proc

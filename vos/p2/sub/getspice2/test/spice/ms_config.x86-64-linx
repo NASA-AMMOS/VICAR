@@ -1,0 +1,143 @@
+//////////////////////////////////////////////////////////////////////////////
+//
+// Lines started with the '//' sequence are treated as comments.
+//
+// We no longer need to have MIPSKER, SPICEKER, etc. environment variables
+// for SPICE to work. Make sure that SPICE_CONFIG_FILE is set before running
+// any of these SPICE APIs. When setting up the new SPICE on a new machine,
+// just set SPICE_CONFIG_FILE, and edit the entries below to point to
+// appropriate directory.
+//
+// configuration file for MipsSpice application. This file is read by
+// MsEnv class to retrieve information (such as KDB, SPICE kernels
+// directories, SCLK, LEAPSECONDS, CONSTANTS, etc.
+//
+// Entries in the file follow simple Keyword-value format. For a typical
+// entry:
+//
+//      SPICEKER /home/sle/rt/ds1/dev (anything out here is ignore)
+//      ^        ^
+//      |        |
+//      key     value
+//
+//
+// Up to this point, the following keys are defined:
+//
+//      CAS_KDB, CAS_SPICEKER, CAS_MIPSKER,
+//              CAS_SCLK, CAS_LEAPSECONDS,
+//              CAS_CONSTANTS, CAS_BODY_IDS.
+//
+//      SIM_KDB, SIM_SPICEKER, SIM_MIPSKER,
+//              SIM_SCLK, SIM_LEAPSECONDS,
+//              SIM_CONSTANTS, SIM_BODY_IDS
+//
+//      GLL_KDB, GLL_SPICEKER, GLL_MIPSKER,
+//              GLL_SCLK, GLL_LEAPSECONDS,
+//              GLL_CONSTANTS, GLL_BODY_IDS
+//
+//      VGR1_KDB, VGR1_SPICEKER, VGR1_MIPSKER,
+//              VGR1_SCLK, VGR1_LEAPSECONDS,
+//              VGR1_CONSTANTS, VGR1_BODY_IDS
+//
+//      VGR2_KDB, VGR2_SPICEKER, VGR2_MIPSKER
+//              VGR2_SCLK, VGR2_LEAPSECONDS,
+//              VGR2_CONSTANTS, VGR2_BODY_IDS
+//
+//      VKG_KDB, VKG_SPICEKER, VKG_MIPSKER,
+//              VKG_SCLK, VKG_LEAPSECONDS,
+//              VKG_CONSTANTS, VKG_BODY_IDS
+//
+// Keyword name: xxx_KDB, xxx_SPICEKER, xxx_MIPSKER, etc.
+// Where xxx are mission names (CAS, SIM, GLL, VGR1, VGR2, VKG), etc.
+//
+// Entries with invalid keywords are ignored.
+//
+// xxx_KDB: file name of kernel db table. Entries in this table determine
+//	where MS software should look & what file to search to retrieve
+//	SPICE data
+// xxx_SPICEKER: Directory where NAIF (or non-update-able SPICEKER are
+//	stored)
+// xxx_MIPSKER: Directory where updated SPICE kernels are stored
+// xxx_SCLK: name of sclk file
+// xxx_LEAPSECONDS: name of leapseconds file
+// xxx_CONSTANTS: name of constant file
+// xxx_BODY_IDS: name of body ids file
+//
+//
+// **** You can have more (or less, but at least 1) SERVER_HOST entry,
+//	so your client will know where to go to connect to msserver.
+//	There is no limitation on how many SERVER_HOST to choose from.
+//	But notice that the more host entry you have the slower the
+//	parsing of this file will be......There is the standard server
+//	host count.
+//
+//	Current supported projects are: GLL, VGR1, VGR2, VKG.
+//	Possible new project SIM, CAS.
+//
+// created	: Fri Mar  7 11:27:32 PST 1997
+// programmer	: Sam Le
+//
+//////////////////////////////////////////////////////////////////////////////
+SPICE_TCP_PORT	2500
+
+SERVER_HOST     mipldevlinux7.jpl.nasa.gov
+
+SPICE_LOG	/project/spice/dev/logs/msserver_x86_64_linx.log
+
+GLL_KDB         /project/spice/ops/kdb.gll
+GLL_SPICEKER    /project/spice/ops/sun-solr/
+GLL_MIPSKER     /project/spice/dev/kernels/gll/x86-linux/
+GLL_SCLK        spice/sclk.ker
+GLL_CONSTANTS   /project/spice/ops/p_constants.ker
+GLL_BODY_IDS    /project/spice/ops/bodid.dat
+GLL_LEAPSECONDS	/project/spice/ops/leapseconds.ker
+
+VGR1_KDB         /project/spice/dev/kernels/newvgr1/kdb.vgr1
+VGR1_SPICEKER    /project/spice/dev/kernels/newvgr1/sun-solr/
+VGR1_MIPSKER     /project/spice/dev/kernels/newvgr1/x86-linux/
+VGR1_SCLK        spice/vg100008.tsc
+VGR1_CONSTANTS   /project/spice/ops/p_constants.ker
+VGR1_BODY_IDS    /project/spice/ops/bodid.dat
+VGR1_LEAPSECONDS /project/spice/ops/leapseconds.ker
+
+VGR2_KDB         /project/spice/dev/kernels/newvgr2/kdb.vgr2
+VGR2_SPICEKER    /project/spice/dev/kernels/newvgr2/sun-solr/
+VGR2_MIPSKER     /project/spice/dev/kernels/newvgr2/sun-solr/
+VGR2_SCLK        /project/spice/dev/kernels/newvgr2/vg200008.tsc
+VGR2_CONSTANTS   /project/spice/ops/p_constants.ker
+VGR2_BODY_IDS    /project/spice/ops/bodid.dat
+VGR2_LEAPSECONDS /project/spice/ops/leapseconds.ker
+
+CAS_KDB		/project/spice/ops/cassini/kdb.cas
+CAS_SPICEKER	/project/spice/ops/cassini/sun-solr/
+CAS_MIPSKER	/project/spice/dev/kernels/cas/x86-linux/
+CAS_SCLK	/project/spice/ops/cassini/sclk.ker
+CAS_CONSTANTS	/project/spice/ops/cassini/p_constants.ker
+CAS_BODY_IDS	/project/spice/ops/bodid.dat
+CAS_LEAPSECONDS	/project/spice/ops/leapseconds.ker
+CAS_FRAMES      /project/spice/ops/cassini/frame.ker
+
+VO1_KDB		/project/spice/ops/kdb.vo1
+VO1_SPICEKER    /project/spice/ops/viking/sun-solr/
+VO1_MIPSKER     /project/spice/dev/kernels/viking/x86-linux/
+VO1_SCLK        /project/spice/ops/viking/vo1_fict.tsc
+VO1_CONSTANTS   /project/spice/ops/p_constants.ker 
+VO1_BODY_IDS    /project/spice/ops/bodid.dat 
+VO1_LEAPSECONDS /project/spice/ops/leapseconds.ker 
+
+VO2_KDB         /project/spice/ops/kdb.vo2
+VO2_SPICEKER    /project/spice/ops/viking/sun-solr/
+VO2_MIPSKER     /project/spice/dev/kernels/viking/x86-linux/
+VO2_SCLK        /project/spice/ops/viking/vo2_fict.tsc 
+VO2_CONSTANTS   /project/spice/ops/p_constants.ker 
+VO2_BODY_IDS    /project/spice/ops/bodid.dat 
+VO2_LEAPSECONDS /project/spice/ops/leapseconds.ker 
+
+//SIM_KDB		/home/sle/ms/lcl/data/sim/kdb.sim
+//SIM_SPICEKER	/home/sle/ms/lcl/data/sim/spiceker/x86-linux/
+//SIM_MIPSKER	/home/sle/ms/lcl/data/sim/mipsker/x86-linux/
+//SIM_SCLK	/home/sle/ms/lcl/data/sim/sim_sclk.ker
+//SIM_CONSTANTS	/project/spice/ops/p_constants.ker
+//SIM_BODY_IDS	/project/spice/ops/bodid.dat
+//SIM_LEAPSECONDS	/project/spice/ops/leapseconds.ker
+

@@ -1,0 +1,263 @@
+process help=*
+PARM INP TYPE=STRING COUNT=1
+PARM OUT TYPE=STRING COUNT=1
+PARM BAND TYPE=INTEGER COUNT=1 VALID=(0:100) DEFAULT=0
+PARM CP_OUT TYPE=STRING COUNT=(0:1)
+
+PARM INTERP_FUNC TYPE=KEYWORD COUNT=1 VALID=("RBF") DEFAULT="RBF"
+PARM SMOOTHING TYPE=REAL COUNT=1 DEFAULT=0
+PARM NUM_CONTROL TYPE=INTEGER COUNT=1 DEFAULT=2000
+PARM DENSITY TYPE=INTEGER COUNT=1 DEFAULT=0
+PARM SKIP TYPE=INTEGER COUNT=1 DEFAULT=0
+PARM NOVAL TYPE=REAL COUNT=1 DEFAULT=0.0
+
+PARM RBF TYPE=KEYWORD COUNT=1 VALID=("REGULAR","CUBIC","QUINTIC", "THIN_PLATE") DEFAULT="THIN_PLATE"
+
+PARM APPLY TYPE=KEYWORD COUNT=1 VALID=("FILL", "FULL") DEFAULT="FILL"
+PARM INDEPENDENT TYPE=KEYWORD COUNT=(0:1) VALID=INDEPENDENT DEFAULT=--
+
+PARM OMP_ON TYPE=KEYWORD VALID=(OMP_ON,OMP_OFF) DEFAULT=OMP_ON
+
+END-PROC
+
+.TITLE
+VICAR program surffit
+
+.HELP
+PURPOSE:
+This program interpolate or approximate a 3D surface to a raster (i.e., an 
+image). The main objective is to "fill" the image holes (missing values) with a
+best estimate of what the values should be based on the valid values in the 
+input images.
+The program is composed of 2 main steps:
+[1] - Definition of the interpolant
+This is where the function to compute the value of the surface at any arbitrary
+location is defined. This interpolating function is defined from a list of
+"control points", which are a subset of the valid pixels in the input image.
+The interpolant function can be a true interpolant (i.e., the surface will go 
+exactly through the control points) or an approximation (i.e., the surface will
+deviate from the control points to minimize the surface curvature).
+The user parameters for that steps are:
+- NUM_CONTROL, SKIP, DENSITY, INDEPENDENT: Defines how to select the control 
+  points.
+  The interpolant is defined based on a list of control points. These control
+  points are usually a subset of the valid pixels of the images. The size of 
+  that subset is a critical tradeoff between processing speed and surface 
+  matching fidelity. The more control points, the more closely the reconstructed
+  surface is going to match the input image, but the longer (and possibly memory
+  crash) the  process is goint to take. This is due to the construction and 
+  inversion of a matrix, whose size is directly related to the number of control
+  points.
+  The increase in processing speed is not linear with the number of control 
+  points. For instance, using RBF function, the time needed to compute the
+  interpolation function from ~2000, ~4000, ~6000 control points takes ~2, ~35,
+  ~145 seconds, respectively, on MIPL machine. 
+- INTERP_FUNC, RBF: Defines the type of interpolation function to use. Currently
+  only RBF function are supported.
+- SMOOTHING: Knob that will move the processing from pure interpolation where 
+  the reconstructed surface goes through the control points exactly, to an
+  approximation where the reconstructed surface will deviate from the control 
+  points to minimize the surface curvature. SMOOTHING=0 means exact 
+  interpolation, while SMOOTHING="infinity" means the reconstructed surface will
+  be a plane (by "infinity" is meant a large number, and not "infinity" 
+  verbatim). Setting the proper SMOOTHING value is case dependent, and depends
+  on the input data noise and expected surface smoothness. A trial-and-error 
+  approach is necessary. However, setting SMOOTHING=0.5 is a good starting 
+  point.
+
+[2] - Application of the interpolant
+This is where the actual output is constructed. The interpolant function defined
+in the previous step is applied to all concerned locations. There are two 
+options available to the user currently. Either apply the interpolation to all 
+the pixels of the images, or only to the pixels which have an invalid value in 
+the input images (holes), keeping the valid original pixel unmodified.
+The user parameter related to that step are:
+- APPLY: Fill only holes or all pixels
+
+
+
+Interpolation function type: 
+
+RBF
+The RBF interpolant defines the "surface" value (Z) at a given 2D location (X,Y),
+solely based on the distances between that location and a set of other locations
+(controls points). 
+It is of the form:
+Z = f(X,Y) = a1 + a2*X + a3*Y + SUM(W_i * RBF(distance((X,Y),(Xc_i,Yc_i))))
+with:
+(X,Y): planar location of the point
+(Xc_i,Yc_i): planar location of the i-th control point
+SUM: sum over all the control points
+W_i: scalar weight of the i-th control point.
+RBF: Radial basis function (e.g., linear, thin plate, cubic,...)
+
+The first stage of the program will defines the interpolant weights, that is, 
+define the W_i from a set of control points and user parameter (RBF and 
+SMOOTHING). 
+
+
+TODO //////////////////////////////////////////////////////////////////////////
+Possible other Parameters:
+- INTERP_FUNC: polynomial surface, inverse distance
+- RANDOM_SAMPLING of N numbers of control points from the pool of valid pixels.
+
+- MASK: area of interest where to select control points and interpolate. Either
+  user supplied or automatic (e.g., convex hull)
+TODO //////////////////////////////////////////////////////////////////////////
+
+
+
+EXECUTION:
+surffit inp=disp.vic out=filled_disp.vic 
+
+HISTORY:
+01-17-23  Initial version - F. Ayoub 
+COGNIZANT PROGRAMMER:  F. Ayoub
+
+.LEVEL1
+.VARI INP
+Input image
+
+.VARI OUT
+Output image
+
+.VARI BAND
+Band to detrend
+
+.VARI INTERP_FUNC
+Type of interpolant
+
+.VARI RBF
+Type of RBF to apply
+
+.VARI SMOOTHING
+Surface fit curvature 
+smoothing
+
+.VARI NUM_CONTROL
+How many control points to
+use
+
+.VARI DENSITY
+Ratio valid pixel vs
+control points
+
+.VARI SKIP
+How many pixels to skip 
+between input
+
+.VARI NOVAL
+Pixel value to ignore
+
+.VARI APPLY
+Fill holes only or
+full surface
+
+.VARI INDEPENDENT
+Process band 
+independently
+
+.VARI CP_OUT
+save display of
+control points
+
+.VARI OMP_ON
+Use of open mp
+
+
+.LEVEL2
+.VARI INP
+Input image. Can be multi-band.
+
+.VARI OUT
+Output image. Will contain either 1 band if BAND is used to specify a specific
+band to process or the same number of bands as the input image.
+
+.VARI BAND
+Band of input image to process. 1-based.
+If set to 0, all bands are processed and the output image will have the same
+number of bands as the input image.
+
+.VARI INTERP_FUNC
+Type of interpolant to use. RBF only currently.
+
+.VARI RBF
+Radial Basis Function (RBF) to be used for the interpolant.
+See online for more information on RBF (e.g., https://en.wikipedia.org/wiki/
+Radial_basis_function). Basically, the interpolation at each pixel is defined
+from the weighted sum of the RBF values, which only depends on the distance 
+between the pixel and a control pixel.
+Currently four functions are available in the RBF subroutine:
+- REGULAR: d
+- CUBIC: d^3 
+- QUINTIC: d^5
+- THIN PLATE SPLINE: d^2 * log(d)
+with d: distance between a pixel and a control pixel
+
+
+.VARI SMOOTHING
+Knob that will move the processing from pure interpolation where the 
+reconstructed surface goes through the control points exactly, to an
+approximation where the reconstructed surface will deviate from the control 
+points to minimize the surface curvature. SMOOTHING=0 means exact interpolation,
+while SMOOTHING="infinity" means the reconstructed surface will be a plane (by
+"infinity" is meant a large number, and not "infinity" verbatim). 
+Setting the proper SMOOTHING value is case dependent, and depends on the input
+data noise and expected surface smoothness. A trial-and-error approach is 
+necessary. However, setting SMOOTHING=0.5 is a good starting point.
+
+.VARI NUM_CONTROL
+A maximum of NUM_CONTROL points are taken from the input images to define the
+interpolation function. A regular grid of NUM_CONTROL points is defined based on
+the input image size. The control points are then extracted according to the
+grid defined. Invalid points (NOVAL) are discarded. Because of invalid points, 
+the actual number of control points can be (much) less than NUM_CONTROL. In that
+case, the process is iterated with a shifted (half a cell) denser grid (factor 
+of 2), and a new set of control points are extracted accordingly. This
+new set is added to the main set of control points and so on until NUM_CONTROL
+control points have been extracted. In the case where a newly extracted set is 
+larger than the number to reach NUM_CONTROL control points, the complement is
+randomly selected from the set. 
+If SKIP is used jointly with NUM_CONTROL, the starting grid is defined by SKIP.
+
+.VARI DENSITY
+If not null, DENSITY defines the maximum number of control points to use. It
+represents the ratio between the number of valid measurements and the number of
+control points. For instance if DENSITY=25, then the maximum number of control
+points extracted will be the number of valid measurements / 25. If NUM_CONTROL
+is not 0, then the actual number of control points is the smaller between 
+the one defined by DENSITY and NUM_CONTROL. 
+
+
+.VARI SKIP
+Similar to NUM_CONTROL, this parameter defines the strategy for the control 
+points definition. The image is subset by taking every other SKIP pixels (in X 
+and Y directions). Invalid pixel are discarded. If NUM_CONTROL is 0, then the 
+selection stops here, otherwise it iterates according the description above (
+NUM_CONTROL) and stops once NUM_CONTROL control points have been extracted or
+if there's no more valid pixels to extract from.
+
+.VARI NOVAL
+All pixels which have a value equals to NOVAL are not considered. They are not
+part of the interpolation function definition. Default is 0.0, which is the 
+sort-of-assumed missing value in vicar images.
+
+.VARI APPLY
+Defines to which pixels the interpolation shoud be applied. If FILL is set, only
+the pixels with no value (defined by NOVAL) will be replaced by an interpolated
+value. The original valid pixels will be kept in the output image. If FULL is 
+set, then all the pixels will be replaced by interpolated values.
+
+.VARI INDEPENDENT
+If set, and if several bands are to be processed, they will be processed
+completely independendly from the other bands. Because of possible randomness
+in the control points selection (see NUM_CONTROL) independently processed bands
+might use slightly different control points. Otherwise, the same set of control
+points will be used to process each bands. It is assumed when not using 
+independent bands that there is a 1-to-1 correspondance of invalid pixels 
+between bands.
+
+.VARI CP_OUT
+This output filename will optionally save the input image overlaid with the 
+control points that were used to compute the surface interpolant. This is
+not compatible if the bands are to be processed independently (INDEPENDENT).

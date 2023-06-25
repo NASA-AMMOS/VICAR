@@ -4,53 +4,56 @@ refgbl $syschar
 body
 enable-log
 
-local PATH1 TYPE=STRING init="wms_test_work:[testdata.sitod1.test_data.images]"
-local PATH2 TYPE=STRING init="wms_test_work:[testdata.mipl.gll]"
-local PATH3 TYPE=STRING init="wms_test_work:[testdata.gll]"
-local PATH4 TYPE=STRING init="wms_test_work:[testdata.mipl.vgr]"
-local PATH5 TYPE=STRING init="wms_test_worK:[ssi.udr]"
-local PATH6 TYPE=STRING init="wms_test_work:[stream.udr]"
-local PATH7 TYPE=STRING Init="wms_test_work:[testdata.y2k]"
-if ($syschar(1) = "UNIX")
-    let PATH1 ="/project/test_work/testdata/sitod1/test_data/images/"
-    let PATH2 ="/project/test_work/testdata/mipl/gll/"
-    let PATH3 ="/project/test_work/testdata/gll/"
-    let PATH4 ="/project/test_work/testdata/mipl/vgr/"
-    let PATH5 ="/project/test_work/ssi/udr/"
-    let PATH6 ="/project/test_work/stream/udr/"
-    let PATH7 ="/project/test_work/testdata/y2k/"
-end-if
 let _onfail="continue"
 let $echo="yes"
 !
 Write " The Test Data are handled for both VMS and UNIX in this PDF. "
 
-tflight_label  &"path2"venus.img
-LABEL-LIST  &"path2"venus.img     'nousrtim
-tflight_label  &"path2"venus2.img    
-LABEL-LIST  &"path2"venus2.img    'nousrtim
-tflight_label  &"path2"venus3.img    
-LABEL-LIST  &"path2"venus3.img     'nousrtim
-tflight_label  &"path1"s0061498500.1    
-LABEL-LIST  &"path1"s0061498500.1    'nousrtim
-tflight_label  &"path1"s0061510200.1    
-LABEL-LIST  &"path1"s0061510200.1     'nousrtim
-tflight_label  &"path1"s0061512000.1    
-LABEL-LIST  &"path1"s0061512000.1     'nousrtim
-tflight_label  &"path3"test_image_ict.udr	   
-LABEL-LIST  &"path3"test_image_ict.udr	    'nousrtim
-tflight_label  &"path3"test_image_barc.udr	   
-LABEL-LIST  &"path3"test_image_barc.udr	    'nousrtim
-tflight_label  &"path3"test_image_lossless.udr   
-LABEL-LIST  &"path3"test_image_lossless.udr   'nousrtim
+! From /project/test_work/testdata/mipl/gll/venus.img
+tflight_label  venus.img.vic
+LABEL-LIST  venus.img.vic     'nousrtim
+
+! From /project/test_work/testdata/mipl/gll/venus2.img    
+tflight_label  venus2.img.vic    
+LABEL-LIST  venus2.img.vic    'nousrtim
+
+! From /project/test_work/testdata/mipl/gll/venus3.img    
+tflight_label  venus3.img.vic    
+LABEL-LIST  venus3.img.vic     'nousrtim
+
+! From /project/test_work/testdata/sitod1/test_data/images/s0061498500.1    
+tflight_label  s0061498500.1.vic    
+LABEL-LIST  s0061498500.1.vic    'nousrtim
+
+! From /project/test_work/testdata/sitod1/test_data/images/s0061510200.1    
+tflight_label  s0061510200.1.vic    
+LABEL-LIST  s0061510200.1.vic     'nousrtim
+
+! From /project/test_work/testdata/sitod1/test_data/images/s0061512000.1    
+tflight_label  s0061512000.1.vic    
+LABEL-LIST  s0061512000.1.vic     'nousrtim
+
+! From /project/test_work/testdata/gll/test_image_ict.udr	   
+tflight_label  test_image_ict.udr.vic	   
+LABEL-LIST  test_image_ict.udr.vic	    'nousrtim
+
+! From /project/test_work/testdata/gll/test_image_barc.udr	   
+tflight_label  test_image_barc.udr.vic	   
+LABEL-LIST  test_image_barc.udr.vic	    'nousrtim
+
+! From /project/test_work/testdata/gll/test_image_lossless.udr   
+tflight_label  test_image_lossless.udr.vic   
+LABEL-LIST  test_image_lossless.udr.vic   'nousrtim
 
 !(FR 89354)
-label-list &"path5"s0165200300.20 'nousrtim
-tflight_label  &"path5"s0165200300.20
+! From /project/test_work/ssi/udr/s0165200300.20
+tflight_label  s0165200300.20.vic
+label-list s0165200300.20.vic 'nousrtim
 
 !placing a valid value for filter
-label-list &"path3"s1677721400.3 'nousrtim
-label-replace &"path3"s1677721400.3 star.out "FILTER=3" TASK="TASK"
+! From /project/test_work/testdata/gll/s1677721400.3
+label-list s1677721400.3.vic 'nousrtim
+label-replace s1677721400.3.vic star.out "FILTER=3" TASK="TASK"
 tflight_label star.out
 
 !adding stars
@@ -81,37 +84,40 @@ label-add    star.out  stars.out "MISSION=GLL PARTITION=1,+
                NSTARS=2 SENSOR=SSI SUB_SOLAR_LATITUDE=9.0" TASK="TASK"
 tflight_label stars.out
 Write  "The file should not have an output: NON-SSI image "
-tflight_label INP= &"path4"mirandab.vio
+! From /project/test_work/testdata/mipl/vgr/mirandab.vio
+tflight_label INP= mirandab.vio.vic
 
-label-list &"path6"s0351305813.galsos 'nousrtim
-tflight_label &"path6"s0351305813.galsos
+! From /project/test_work/stream/udr/s0351305813.galsos
+tflight_label s0351305813.galsos.vic
+label-list s0351305813.galsos.vic 'nousrtim
 
 ! Y2K tests.  Check SCET value
-label-list &"PATH7"scet_jan_01_2000.img 'nousrtim
-tflight_label &"PATH7"scet_jan_01_2000.img
+! From /project/test_work/testdata/y2k/scet_jan_01_2000.img
+tflight_label scet_jan_01_2000.img.vic
+label-list scet_jan_01_2000.img.vic 'nousrtim
 
-label-list &"PATH7"scet_mar_01_2000.img 'nousrtim
-tflight_label &"PATH7"scet_mar_01_2000.img
+! From /project/test_work/testdata/y2k/scet_mar_01_2000.img
+tflight_label scet_mar_01_2000.img.vic
+label-list scet_mar_01_2000.img.vic 'nousrtim
 
-label-list &"PATH7"scet_dec_31_2000.img 'nousrtim
-tflight_label &"PATH7"scet_dec_31_2000.img
+! From /project/test_work/testdata/y2k/scet_dec_31_2000.img
+tflight_label scet_dec_31_2000.img.vic
+label-list scet_dec_31_2000.img.vic 'nousrtim
 
-label-list &"PATH7"scet_jan_01_2001.img 'nousrtim
-tflight_label &"PATH7"scet_jan_01_2001.img
+! From /project/test_work/testdata/y2k/scet_jan_01_2001.img
+tflight_label scet_jan_01_2001.img.vic
+label-list scet_jan_01_2001.img.vic 'nousrtim
 
-label-list &"PATH7"scet_mar_01_2001.img 'nousrtim
-tflight_label &"PATH7"scet_mar_01_2001.img
+! From /project/test_work/testdata/y2k/scet_mar_01_2001.img
+tflight_label scet_mar_01_2001.img.vic
+label-list scet_mar_01_2001.img.vic 'nousrtim
 
-label-list &"PATH7"scet_dec_31_2001.img 'nousrtim
-tflight_label &"PATH7"scet_dec_31_2001.img
+! From /project/test_work/testdata/y2k/scet_dec_31_2001.img
+tflight_label scet_dec_31_2001.img.vic
+label-list scet_dec_31_2001.img.vic 'nousrtim
 
-if ($syschar(1)="UNIX")
-	ush rm stars.out
-        ush rm star.out
-else
-        dcl del stars.out;*
-        dcl del star.out;*
-end-if
+ush rm stars.out
+ush rm star.out
 
 disable-log
 end-proc

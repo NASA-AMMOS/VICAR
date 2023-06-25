@@ -1,0 +1,638 @@
+process help=*
+PARM INP TYPE=STRING COUNT=1
+PARM OUT TYPE=STRING COUNT=1
+PARM NAVTABLE TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM UNLIN_PAIR TYPE=STRING COUNT=2 DEFAULT=-- 
+PARM LIN_RIGHT TYPE=STRING COUNT=1 DEFAULT=--
+PARM OUTSIZE TYPE=INTEGER COUNT=(0:2) DEFAULT=--
+PARM OUTOFF TYPE=REAL COUNT=(0:2) DEFAULT=--
+PARM BAND    TYPE=INTEGER COUNT=(0:1) DEFAULT=1
+PARM NORMAL  TYPE=REAL COUNT=(0:3) DEFAULT=--
+PARM GROUND  TYPE=REAL COUNT=(0:3) DEFAULT=--
+PARM RADIUS  TYPE=REAL COUNT=(0:1) DEFAULT=1.0
+PARM SURF_MESH TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM SURF_CSFILE TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM SURFACE TYPE=KEYWORD COUNT=(0:1) +
+  VALID=("INFINITY","PLANE", "SPHERE", "MESH") DEFAULT=SPHERE
+PARM RAD TYPE=KEYWORD VALID=("RAD", "NORAD") DEFAULT=NORAD
+PARM DNSCALE TYPE=REAL DEFAULT=100.0
+PARM CONFIG_PATH STRING DEFAULT="$MARS_CONFIG_PATH"
+PARM MATCH_METHOD TYPE=STRING COUNT=(0:1) VALID=("LOOSE", "TIGHT") +
+        DEFAULT=LOOSE
+PARM POINT_METHOD TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM NOSITE TYPE=KEYWORD COUNT=(0:1) VALID=NOSITE DEFAULT=--
+PARM INTERP TYPE=KEYWORD VALID=("INTERP", "NOINTERP") DEFAULT=INTERP 
+
+PARM DATA_SET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM DATA_SET_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM RELEASE_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCT_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_INST TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_TYPE TYPE=STRING COUNT=(0:1) DEFAULT=--
+
+PARM RSF TYPE=STRING COUNT=0:100 DEFAULT=--
+PARM DEBUG_RSF TYPE=KEYWORD COUNT=0:1 VALID=DEBUG_RSF DEFAULT=--
+PARM COORD TYPE=KEYWORD VALID=("FIXED", "INSTRUMENT", "SITE", "ROVER", +
+	"LOCAL_LEVEL") DEFAULT="INSTRUMENT"
+PARM COORD_INDEX TYPE=INTEGER COUNT=0:10 DEFAULT=--
+PARM FIXED_SITE TYPE=INTEGER COUNT=0:1 DEFAULT=--
+PARM SOLUTION_ID TYPE=STRING COUNT=0:1 DEFAULT=--
+
+END-PROC
+
+.TITLE
+VICAR program MARSUNLINEARIZE.
+
+.HELP
+PURPOSE:
+
+Very hacky program, help needs writing.
+
+Converts a linearized Disparity (DIL) into an equivalent unlinearized
+disparity (DIS).  Only 2-band disparity files are supported at the moment.
+This happens by back-projecting the pixels from the linear into the raw
+camera model (the inverse of marscahv), and then taking the pixel *value*,
+and back-projecting that through the right-side (non-reference) camera models
+in the same way.  Thus both the left (geometric) and right (pixel value)
+coordinates get transformed.
+
+See rgd for questions.
+
+Based on marscahv.
+
+Always use -nointerp and point=cm=label with this program.
+
+
+THE REST OF THIS HELP IS BOGUS AND APPLIES TO THE SOURCE MARSCAHV PROGRAM!
+Needs to be fixed up....  rgd 2006-10-07
+
+--
+
+To convert images from distorted (CAHVOR/CAHVORE) to linear (CAHV) coordinates.
+
+This is a multimission program derived from marsmos.
+It supports any mission, instrument, and camera model supported by the
+Planetary Image Geometry (Pig) software suite.
+
+The program can accept a navigation file written by marsnav(for example).
+This will cause the output camera model to include the updated pointing,
+but in most cases will have no effect on the output pixels. Only CAHVORE
+input images using a surface model other than the default SPHERE may show
+differences in pixels due to the presence of a nav file.
+
+Radiometric correction is turned off by default; this may be turned on via 
+the RAD keyword parameter.
+
+EXECUTION:
+
+marscahv inp=input.img out=output.img
+where input.img is a VICAR file and output.img is the resulting VICAR
+output file.
+
+marscahv inp=left.img out=output.img stereo_partner=right.img
+If stereo_partner is not present, the program tries to find stereo partner
+of the input image based on mission, instrument etc. info of the input image.
+The presence of stereo_partner input parameter is an unconditional overwrite of
+that process.
+Note that for a generic camera, there is absolutely no way to tell what the
+stereo partner might be, or even if there is one.  Thus using stereo_partner
+input parameter is the ONLY way to specify stereo pair for generic image.
+
+marscahv inp=sub.img out=output.img fullsize='('1024, 1024')'
+The presence of the fullsize input parameter tells marscahv that the input
+image is the subframe and the full frame size is specified by "fullsize".  
+This parameter is only necessary if the camera model specified in subframe is
+for a full frame image.
+Note that for MER this parameter is not necessary, since every subframe has
+it's own camera model, specific to it's size and location within full frame.
+
+
+USAGE:
+The purpose of marscahv is to remove geometric distortion inherent in the 
+camera instruments, or "linearize" image data. This is usually necessary to 
+facilitate correlation process, to line up stereo pair for viewing etc.
+
+In order to linearize an image, the 2D image coordinate must be projected
+into 3D space using the non-linear model, then projected back into 2D space
+using the linear model(and interpolated from there).  For CAHVOR-based 
+cameras(MER:pancam, navcam, MI), this process creates a linearized(CAHV-based)
+image which is mathematically perfect according to the camera models(with 
+the exception of interpolation noise). It is perfect since any point in 
+CAHVOR image along the 3D projected line will back-project to the same point
+on the CAHV image since they both project through the same C point. 
+For CAHVORE-based cameras(MER: hazcams), however, that is not the case.  The
+moving entrance pupil means that the program has to pick a specific point
+along the projected ray, and which point is picked will make a difference in
+the output.
+The only way to pick that specific point is to use some kind of 
+"surface model".  For example, sphere, picking the point at some radius
+(default is 1unit = 1 meter) from the camera center.  So, depending on what
+surface model program uses, the linearization process will provide different
+results, and will always be an approximation.  The only "exact" solution is
+to model the actual surface.  But we generate approximation of the actual 
+surface using linearized images obtained by marscahv, thus we don't have
+actual surface.
+For MER hazcams, the entrance pupil moves only about 1mm over the usable
+range of hazcams, which is not very much.  And, the effect decreases toward 
+the center of the image, becoming 0 at the axis.  But, since the ground is
+only ~0.5 meters away at the closest point, the "moving entrance pupil" effect
+could be noticeable.
+
+Labels will be written to the output image specifying all parameters
+needed in order to reproject the image, and to convert pixel coordinates
+into XYZ view rays in the output coordinate system.  See ???? for
+details on what the label items mean.
+
+
+.PAGE
+OPERATION:
+The program uses the appropriate camera model for input image and
+outputs an image using a camera model aligned for stereo viewing.  
+Each pixel in the output is transformed from output to input camera models 
+in the following steps:
+1. Each output pixel defines a unit vector.
+2. We compute the intersection of this vector with a surface model.  This is
+   by default a unit sphere(not exactly, see notes below) with the center 
+   at unit vector's origin.
+Note that in CAHVORE case the process doesn't actually project the rays out
+to a sphere.  It projects them from the ray's origin which could not coinside
+with the location of C-vector.  As a result, we are actually projecting onto a
+sort of ovoid-shaped surface, slightly elongated in the direction the entrance
+pupil moves.
+3. Then this ground point is ray traced back into the input camera images.
+4. The DN value in the selected input image is bilinearly interpolated
+   and placed into the output location
+
+HISTORY:
+  1994-04-30 J Lorre - Initial mpfmos, mpfcahv
+  1998-08    B. Deen - Multimission conversion of mpfmos to marsmos
+  2002-09    O. Pariser - Adaptation to marscahv
+  2017-08-15 W. Bunch - Removed DEBUG from imake
+
+COGNIZANT PROGRAMMER:  O. Pariser
+
+.LEVEL1
+.VARI INP
+Input image.
+
+.VARI OUT
+Output image.
+
+.VARI NAVTABLE
+Corrected navigation
+filename.
+
+.VARI STEREO_PARTNER
+Left/right partner of input image.
+
+.VARI FULLSIZE
+Full frame size of
+input image.
+
+.VARI OUTSIZE
+Overrides size of
+output image.
+
+.VARI OUTOFF
+Overrides x/y offset
+values for output.
+
+.VARI BAND
+The BSQ band number.
+
+.VARI NORMAL
+Surface normal vector.
+
+.VARI GROUND
+Surface ground point.
+
+.VARI RADIUS
+Radius of a surface sphere.
+
+.VARI SURFACE
+The type of mars
+surface to use INFINITY, PLANE, 
+SPHERE, MESH.
+
+.VARI RAD
+Turns on or off
+radiometric correction.
+
+.VARI DNSCALE
+DN scaling factor.
+
+.VARI CONFIG_PATH
+Path used to find
+configuration/calibration
+files.
+
+.VARI MATCH_METHOD
+Specifies a method
+for pointing corrections.
+
+.VARI POINT_METHOD
+Specifies a mission-
+specific pointing
+method to use
+
+.VARI NOSITE
+Disables coordinate
+system sites.
+
+.VARI INTERP
+Turns on or off
+the interpolation.
+
+.VARI DATA_SET_NAME
+Specifies the full name given
+to a data set or a data product.
+
+.VARI DATA_SET_ID
+Specifies a unique alphanumeric
+identifier for a data set or data
+product.
+
+.VARI RELEASE_ID
+Specifies the unique identifier
+associated with the release to the
+public of all or part of a data set.
+The release number is associated with
+the data set, not the mission.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique
+identifier assigned to a data
+product by its producer.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier
+of an entity associated with the
+production a data set.
+
+.VARI PRODUCER_INST
+Specifies the full name of the
+identity of an entity associated
+with the production of a data set.
+
+.VARI TARGET_NAME
+Specifies a target.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target.
+
+.VARI RSF
+Rover State File(s) to use.
+
+.VARI DEBUG_RSF
+Turns on debugging of RSF
+parameter.
+
+.VARI COORD
+Coordinate system to use
+
+.VARI COORD_INDEX
+Coordinate system index for
+some COORD/mission combos.
+
+.VARI FIXED_SITE
+Which site is FIXED for
+rover missions.
+
+.VARI SOLUTION_ID
+Solution ID to use for
+pointing correction.
+
+.LEVEL2
+.VARI INP
+Input image.
+
+.VARI OUT
+Output image.
+
+.VARI NAVTABLE
+Corrected navigation filename.
+If marsnav was run on the input images it created a table of corrected
+pointing parameters. If you refer to this table using NAVTABLE it
+will override the pointing parameters (e.g. azimuth and elevation) in the
+picture labels, giving you a better registered output.
+
+.VARI STEREO_PARTNER
+VICAR image which camera model forms a pair of almost aligned camera models 
+with input image's camera model.  If stereo_partner is not present, the 
+program tries to find stereo partner of the input image based on mission, 
+instrument etc. info of the input image.  The presence of stereo_partner 
+input parameter is an unconditional overwrite of that process.
+Note that for a generic camera, there is absolutely no way to tell what the
+stereo partner might be, or even if there is one.  Thus using stereo_partner
+input parameter is the ONLY way to specify stereo pair for generic image.
+
+.VARI FULLSIZE
+Overrides size of the input image.  If the input image is a subframe and the 
+camera model in the label corresponds to the fullframe image, FULLSIZE would
+specify the size of the fullframe.  Moreover, the presence of this input 
+parameter would tell us that we are in the situation described above and need
+to deal with it accordingly.
+
+.VARI OUTSIZE
+Overrides size of the output image. 
+
+.VARI OUTOFF
+Overrides x/y offset values for output.  This offset is the distance from the
+camera coordinate origin to the image origin (0-based) and affects where the
+center of the projection falls in the output.
+.VARI BAND
+The BSQ input file band number. Defaults to 1
+
+.VARI NORMAL
+The local surface normal vector in surface fixed coordinates. 
+For most pan/tilt cameras, if the lander is not tilted this vector
+would be: normal=(0,0,-1).  ie: x_component=0, y_component=0, z_component=-1.
+This need not be a unit vector.  This vector is used to define the
+surface plane to which image points are projected in order to minimize
+parallax.
+
+.VARI GROUND
+Any point on the surface, in surface fixed coordinates.  This defines
+where the tilted plane is in space.  Although any point may be used,
+normally the point just "under" the origin is selected.
+Defaults:
+Mars Pathfinder:  (0.0, 0.0, 0.0)       (lander zero point is on the ground)
+Mars 98 Lander:   (0.0, 0.0, 1.64)      (lander zero point is on top of deck)
+
+.VARI RADIUS
+Radius of surface sphere.
+
+.VARI SURFACE
+The type of mars surface to use. The surface is used to intercept view rays
+emanating from the cameras in order to model out parallax between the
+stereo cameras. The two options are surface=INFINITY which means no surface
+is used or surface=PLANE (the default case). If surface =PLANE then the plane
+is defined by the NORMAL parameters. If surface = SPHERE then the sphere is 
+defined by radius and center. Last, MESH is a surface model defined by a mesh 
+file (.obj) which path is given with SURF_MESH.
+
+.VARI SURF_MESH 
+Mesh OBJ file to use as the surface model. For the mesh to be used,
+SURFACE must be set to MESH. The coordinates of the mesh vertices can be 
+expressed in any CS. However the mesh CS must be supplied via SURF_CSFILE.
+If SURF_CSFILE is not used, then the mesh is assumed to be to the CS that
+results from COORD or SURF_COORD
+
+VARI SURF_CSFILE 
+File name of a vicar file whose CS (contained in the labels) will be read and
+assigned to the SURFACE model. The type of image and its content are of no
+interest, we are just reading the CS. That CS will supersede any other surface 
+CS definition (COORD or SURF_COORD). Its typical use is to supply a CS to a
+given mesh file (expectedly the XYZ from which the mesh is computed from, but
+doesn't have to). But SURF_CSFILE could be use to define a CS in which NORMAL 
+and GROUND for a PLANE surface are expressed in.
+
+.VARI RAD
+Keyword parameter that turns on or off radiometric correction of the input
+images.  RAD (the default) enables the correction (for missions/instruments
+which support it), while NORAD disables it.
+
+.VARI DNSCALE
+DN scaling factor.  This factor is used to convert between physical
+radiometric units (watts/(meter**2, steradian, micron)) and DN's for the
+output.  The formula is:
+
+true_radiance = offset + (factor * DN)
+
+where "offset" is 0.0 in the current implementation, and "factor" is
+1.0 / DNSCALE (making the formula equivalently:  offset + (DN / DNSCALE)).
+The offset and factor (1.0/DNSCALE) are written to the output label.
+ 
+.VARI CONFIG_PATH
+A colon-separated list of directories in which to look for configuration
+and calibration files.  Environment variables are allowed in the list
+(and may themselves contain colon-separated lists).  The directories are
+searched in order for each config/cal file when it is loaded.  This allows
+multiple projectes to be supported simultaneously, and allows the user to
+override any given config/cal file.  Note that the directory structure below
+the directories specified in this path must match what the project expects.
+For example, Mars 98 expects flat fields to be in a subdirectory named
+"flat_fields" while Mars Pathfinder expects them to be directly in the
+directory specified by the path (i.e. no intermediate subdirectories).
+
+.VARI MATCH_METHOD
+Specifies a method for pointing corrections.
+
+Loose method matchs with pointing parameters of the image.
+Tight method matchs with unique id of the image.
+
+.VARI POINT_METHOD
+Specifies a mission-specific pointing method to use.  Normally this
+parameter is not used, in which case the "default" pointing methods
+are used.  Some missions may have special, or alternate, pointing
+methods available, which are indicated by this string (for example,
+backlash models, using arm joint angles instead of x/y/z/az/el, etc).
+A substring search is used, so multiple methods (where that makes sense)
+can be specified by separating the keywords with commas.
+
+Note that nav files created using one pointing method will most likely
+not be compatible with a mosaic created using a different pointing method.
+
+The methods available vary per mission, but some methods available at
+the time of this writing are:
+
+CAHV_FOV: All Missions using CAHV-based camera models.  Valid values are:
+* MIN or INTERSECT:    Aligning stereo-pair cameras produces virtual camera 
+                       with FOV equal to INTERSECTION area of two input 
+	               cameras. (default) As a result, the output image is 
+                       missing,sometimes a significant, (depending on camera 
+                       geometry) part of overlap area between two cameras but 
+                       there are no black areas on the side.  The image data
+	               is stretched in horizontal direction.
+
+* MAX or UNION:        Aligning stereo-pair cameras produces virtual camera 
+                       with FOV equal to UNION area of two input cameras.
+         	       The result is the opposite of the MIN option: 
+                       wide black areas on the side, but the stereo-pair's 
+	               intersection area is preserved.  The image data
+	               is squeezed in horizontal direction.
+
+Note that the above two entries have two names each, which are equivalent
+and it's up to the user to decide which one is more intuitive to him/her.
+
+* LINEAR:              Uses only CAHV vectors and ignores higher order terms 
+                       OR(E) while aligning the cameras.  As a result, this
+                       mode has advantage of best preserving horizontal
+	               aspect ratio.  The features in the image look
+                       similar, scale-wise, to the original.
+
+BACKLASH : Mars 98 SSI only.  Selects a backlash pointing model,
+which adjusts the telemetered azimuth and elevation values based on
+knowledge of the camera's mechanical backlash and the direction the
+motor was travelling when the image was taken.
+
+.VARI NOSITE
+Disables all label-derived parameters to the Site mechanism which underlies
+coordinate systems.  This forces all sites to be identical, with all rotations
+and offsets set the same.  In the case of MPF or Mars 98, this disables
+the lander quaternion and offset (sets them to identity and 0, respectively).
+This option should not be used with images taken from different vantage
+points (e.g. the spacecraft moved, or mixing a lander and a rover) or
+invalid results will be obtained.  The use of this option invalidates the
+Fixed coordinate frame; any values reported in the Fixed frame will not
+correctly reflect the orientation of the lander/rover.
+
+Obviously, this option should be rarely used; it is intended for when the
+image labels defining the site are invalid or inconsistent.
+
+.VARI INTERP
+Keyword parameter that turns on or off interpolation of the output
+images pixel values.  INTERP (the default) enables the interpolation, 
+while NOINTERP disables it.
+
+.VARI DATA_SET_NAME
+The DATA_SET_NAME typically identifies the instrument that acquired the
+data, the target of that instrument, and the processing level of the data.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_NAME.
+
+.VARI DATA_SET_ID
+The DATA_SET_ID value for a given data set or product is constructed
+according to flight project naming conventions.  In most cases the
+DATA_SET_ID is an abbreviation of the DATA_SET_NAME.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_ID.
+
+.VARI RELEASE_ID
+When a data set is released incrementally, such as every three months during
+a mission, the RELEASE_ID is updated each time part of the data set is released.
+For each mission(or host id if multiple spacecrafts), the first release of a data
+set should have a value of "0001".
+This value is copied to the output label, property IDENTIFICATION,
+keyword RELEASE_ID.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique identifier assigned to a data product by
+its producer. Most commonly, it is the filename minus the extension.
+This value is copied to the output label, property IDENTIFICATION,
+keyword PRODUCT_ID.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier of an entity associated with the
+production of a data set. This value is copied to the output label,
+property IDENTIFICATION, keyword PRODUCER_ID.
+
+.VARI PRODUCER_INST
+Specifies the identity of a university, research center, NASA center or other
+institution associated with the production of a data set.
+This value is copied to the output label, property IDENTIFICATION, keyword
+PRODUCER_INSTITUTION_NAME.
+
+.VARI TARGET_NAME
+Specifies a target.  The target may be a planet, satelite, ring, region, feature,
+asteroid or comet.  This value is copied to the output label, property
+IDENTIFICATION, keyword TARGET_NAME.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target. This value is copied to the output
+label, property IDENTIFICATION, keyword TARGET_NAME.
+
+.VARI RSF
+Rover State File.  This is a list of filenames to load containing
+Rover State information.  These files contain position and orientation
+information for a rover (or other mobile spacecraft) at various sites.
+They are in XML format.  See the "Rover Motion Counter (RMC) Master File SIS
+"
+for details on these files.
+
+Rover State Files have a priority order.  The files listed first have
+the highest priority.
+
+Environment variables may be used in the list.
+
+For MER, if a directory is specified, then that directory is searched for
+RMC Master files and any found are loaded.  The directory structure and
+filename convention is covered in the RMC SIS.  The directory specified
+is the one containing "master", so if <dir> is the name specified in the
+RSF parameter, the following files will be searched for:
+
+<dir>/master/<mission>_Master.svf
+<dir>/master/<mission>_Site_<n>_Master.rvf
+The name of each file loaded is printed to the stdout log for reference.
+
+.VARI DEBUG_RSF
+If enabled, this causes the internal database of RMC locations to be
+printed out to the stdout log.  This is after the RSF files have been
+loaded and the coordinate systems read from the input label(s).
+
+.VARI COORD
+The coordinate system to use for the output camera model.  Also the coordinate
+system used for the actual ray tracing.  Note that the surface model parameters
+are always expressed in the Fixed site, however.
+
+The interpretation of the values is dependent on the mission.  Some
+representative missions are listed here:
+
+Fixed - The Fixed frame (default).  This is the ultimate reference frame
+    (see also FIXED_SITE for rover missions).
+Instrument - The "natural" frame for the instrument (of the first input
+    image).  MPF: Lander or Rover; M98: MVACS; MER: Rover.
+Site - A major Site frame.  For rover missions, COORD_INDEX specifies which
+    Site frame to use.  Non-rover missions treat this as Fixed.
+Rover - An instance of the Rover frame.  For rover missions, COORD_INDEX
+    specifies which instance of the rover frame to use.  Non-rover mission
+    use the spacecraft frame (e.g. Lander for M98).
+Local_Level - An instance of a Local Level frame.  This is typically
+    coincident with the Rover frame (in XYZ) but oriented toward North
+    like the Site and Fixed frames.  For MER, this is an instance of a
+    Drive index move.
+
+.VARI COORD_INDEX
+The index specifies which instance of a coordinate system to use.  It is
+currently applicable only to rover-based missions, but could have other
+uses.  The index is equivalent to the Rover Motion Counter (RMC) for MER
+and FIDO.
+
+For MER/FIDO, there are many Site frames.  Each is numbered with a single
+index.  For Site Frames, coord_index specifies which to use.  Likewise,
+there are many Local_Level and Rover frames, corresponding to values of
+the RMC.  The multiple instances of this frame are selected by COORD_INDEX.
+
+Generally COORD_INDEX defaults sensibly so you don't usually need to
+specify it.  It will default to the instance used by the first input.
+
+.VARI FIXED_SITE
+Specifies which major Site is the "Fixed" Site for this run.
+
+Historically, MPF and M98 had a single "Surface Fixed" frame which never
+moved, and which all other coordinate system frames were referenced to.
+With the advent of long-range rovers (such as MER and FIDO), that became
+insufficient.  The rover traverses far enough that errors in knowledge of
+coordinate system offset and orientation become unacceptable.
+
+For this reason, a system of major Sites was introduced.  Periodically
+during the mission, a Site frame is declared.  This then becomes the
+reference frame for all activities until the next Site is declared.
+References are kept local, and errors don't propogate across Sites.
+
+However, if images from more than one Site are combined together, the
+Site's must be placed relative to each other.  Therefore a single reference
+frame is still needed to combine different sites.
+
+The FIXED_SITE parameter controls which of the major Site frames is
+the reference ("fixed") site for this program run.  This fixed frame
+can vary in different program runs, but is constant throughout one
+execution.
+
+If not specified, FIXED_SITE defaults to the minimum Site number (i.e.
+lowest numbered, or earliest chronologically) used in all input images.
+Normally this default is sufficient; rarely must FIXED_SITE be specified.
+
+One or more Rover State Files must usually be specified in order to combine
+image from more than one Site.  These describe the relationship between
+sites.  See the RSF parameter.
+
+.VARI SOLUTION_ID
+Specifies which solution ID to use for pointng corrections.
+
+There are potentially many different definitions for the same coordinate
+system.  These are identified via a unique Solution ID.  If this parameter
+is given, only the specified solution's definition is searched for.
+

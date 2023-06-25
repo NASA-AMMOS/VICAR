@@ -7,58 +7,64 @@ procedure help=*
   refgbl $syschar
   refgbl $autousage
 body
+enable-log
+
   let _onfail="continue"
   let $echo="yes"
   let  $autousage="none"
-  local path string
-  local path2 string
-  local path3 string
-
-  if ($syschar(1) = "VAX_VMS")
-    let path="WMS_TEST_WORK:[TESTDATA.MIPL.GLL]"
-    let path2="WMS_GLL:[SSI.UDR]"
-    let path3="WMS_TEST_WORK:[TESTDATA.MIPL.VGR]"
-  else
-    let path="/project/test_work/testdata/mipl/gll/"
-    let path2="/project/gll/ssi/udr/"
-    let path3="/project/test_work/testdata/mipl/vgr/"
-  end-if
 
   WRITE "***Please read attached help file for testing instructions"
   WRITE "Testing local mode"
- tputspice2 inp=&"path"venus.img  SPICEMODE=LOCAL CKNAME=NAIF +
+
+ ! venus.img.vic is from /project/test_work/testdata/mipl/gll/venus.img
+
+ tputspice2 inp=venus.img.vic  SPICEMODE=LOCAL CKNAME=NAIF +
             INSTITUTE=USC PURPOSE=COLO REQNUM=0123 CDATE=199603151213
- tputspice2 inp=&"path"venus.img  SPICEMODE=LOCAL CKNAME=NAIF +
+
+ tputspice2 inp=venus.img.vic  SPICEMODE=LOCAL CKNAME=NAIF +
             INSTITUTE=USC PURPOSE=MOSA REQNUM=0123 CDATE=199603151213
- tputspice2 inp=&"path"venus.img  SPICEMODE=LOCAL CKNAME=NAIF +
+
+ tputspice2 inp=venus.img.vic  SPICEMODE=LOCAL CKNAME=NAIF +
             INSTITUTE=USC PURPOSE=MOSA REQNUM=0456 CDATE=199603151213
- tputspice2 inp=&"path"venus.img  SPICEMODE=LOCAL CKNAME=NAIF +
+
+ tputspice2 inp=venus.img.vic  SPICEMODE=LOCAL CKNAME=NAIF +
             INSTITUTE=MIPS PURPOSE=MOSA REQNUM=0456 CDATE=199601221213
- tgetspice2 inp=&"path"venus.img SPICEMODE=LOCAL  CKNAME=NAIF +
+
+ tgetspice2 inp=venus.img.vic SPICEMODE=LOCAL  CKNAME=NAIF +
             INSTITUTE=USC PURPOSE=COLO REQNUM=0123 CDATE=199603151213
- tgetspice2 inp=&"path"venus.img SPICEMODE=LOCAL  CKNAME=NAIF +
+
+ tgetspice2 inp=venus.img.vic SPICEMODE=LOCAL  CKNAME=NAIF +
             INSTITUTE=USC PURPOSE=MOSA REQNUM=0123 CDATE=199603151213
- tgetspice2 inp=&"path"venus.img SPICEMODE=LOCAL  CKNAME=NAIF +
+
+ tgetspice2 inp=venus.img.vic SPICEMODE=LOCAL  CKNAME=NAIF +
             INSTITUTE=USC PURPOSE=MOSA REQNUM=0456 CDATE=199603151213
- tgetspice2 inp=&"path"venus.img SPICEMODE=LOCAL  CKNAME=NAIF +
+
+ tgetspice2 inp=venus.img.vic SPICEMODE=LOCAL  CKNAME=NAIF +
             INSTITUTE=MIPS PURPOSE=MOSA REQNUM=0456 CDATE=199601221213
 
   WRITE "Testing remote mode"
- tputspice2 inp=&"path"venus.img  SPICEMODE=REMOTE CKNAME=NAIF +
+
+ tputspice2 inp=venus.img.vic  SPICEMODE=REMOTE CKNAME=NAIF +
             INSTITUTE=USC PURPOSE=COLO REQNUM=0123 CDATE=199603151213
- tgetspice2 inp=&"path"venus.img SPICEMODE=REMOTE  CKNAME=NAIF +
+
+ tgetspice2 inp=venus.img.vic SPICEMODE=REMOTE  CKNAME=NAIF +
             INSTITUTE=USC PURPOSE=COLO REQNUM=0123 CDATE=199603151213
 
  WRITE "Testing VGR remote mode"
- tgetspice2 inp=&"path3"f1636832.geo spicemode=remote ckname=SEDR target=IO
 
- tputspice2 inp=&"path3"f1636832.geo spicemode=remote ckname=SEDR target=IO
+ ! f1636832.geo.vic is from /project/test_work/testdata/mipl/vgr/f1636832.geo
+
+ tgetspice2 inp=f1636832.geo.vic spicemode=remote ckname=SEDR target=IO
+
+ tputspice2 inp=f1636832.geo.vic spicemode=remote ckname=SEDR target=IO
 
  WRITE "Testing VGR local mode"
- tgetspice2 inp=&"path3"f1636832.geo spicemode=local ckname=SEDR target=IO
 
- tputspice2 inp=&"path3"f1636832.geo spicemode=local ckname=SEDR target=IO
+ tgetspice2 inp=f1636832.geo.vic spicemode=local ckname=SEDR target=IO
 
+ tputspice2 inp=f1636832.geo.vic spicemode=local ckname=SEDR target=IO
+
+disable-log
 end-proc
 .help
 PROCEDURE FOR TESTING GETSPICE2:

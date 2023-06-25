@@ -1,0 +1,13 @@
+/*
+*****************************************************************************
+*  MARS RMC PROCESSING SCRIPTS
+*****************************************************************************
+*/
+#define PROCEDURE edr_get_site
+
+#define MODULE_LIST edr_get_site.sh
+
+#define USES_SH
+
+#define MARSLIB
+

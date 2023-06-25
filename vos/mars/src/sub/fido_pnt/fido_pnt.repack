@@ -1,0 +1,5 @@
+$ vpack fido_pnt.com -mixed -
+	-s fido_kinem.c cmod_xform.c -
+	-i fido_pnt.imake -
+	-t cmod_xform_calib.c
+$ Exit

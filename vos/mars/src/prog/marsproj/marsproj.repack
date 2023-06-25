@@ -1,0 +1,5 @@
+$ vpack marsproj.com -mixed -
+	-s marsproj.cc -
+	-i marsproj.imake -
+	-p marsproj.pdf
+$ Exit

@@ -1,0 +1,588 @@
+process help=*
+PARM INP TYPE=STRING COUNT=2
+PARM OUT TYPE=STRING COUNT=1
+PARM NAVTABLE TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM ORIGIN TYPE=REAL COUNT=(0:3) DEFAULT=--
+
+PARM CAST TYPE=KEYWORD VALID=(CMOD,RAY) DEFAULT=CMOD
+
+PARM CONFIG_PATH STRING DEFAULT="$MARS_CONFIG_PATH"
+PARM POINT_METHOD TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM NOSITE TYPE=KEYWORD COUNT=(0:1) VALID=NOSITE DEFAULT=--
+
+PARM RSF TYPE=STRING COUNT=0:100 DEFAULT=--
+PARM DEBUG_RSF TYPE=KEYWORD COUNT=0:1 VALID=DEBUG_RSF DEFAULT=--
+PARM COORD TYPE=KEYWORD VALID=("FIXED", "INSTRUMENT", "SITE", "ROVER", +
+        "LOCAL_LEVEL") DEFAULT="FIXED"
+PARM COORD_INDEX TYPE=INTEGER COUNT=0:10 DEFAULT=--
+PARM FIXED_SITE TYPE=INTEGER COUNT=0:1 DEFAULT=--
+PARM SOLUTION_ID TYPE=STRING COUNT=0:1 DEFAULT=--
+
+PARM DATA_SET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM DATA_SET_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM RELEASE_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCT_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_INST TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_TYPE TYPE=STRING COUNT=(0:1) DEFAULT=--
+
+END-PROC
+
+
+.TITLE
+VICAR program PATCH
+
+.HELP
+PURPOSE:
+PATCH uses radiometric data to derive probable range in parts of an image 
+that lack good stereophotometric data ("holes"). It takes XYZ and RAD data,
+returning XYZ data with dense depth. Areas that previously had XYZ data are
+typically not changed much, if at all.
+
+EXECUTION:
+patch INP=\(xyz_data.IMG rad_data.IMG\) OUT=patched_xyz.IMG
+where:
+xyz_data.IMG is an input 3-band image of type REAL with the X,Y and Z values
+at that pixel in meters.  
+rad_data.IMG is an input 1 band image of type REAL with the radiometric 
+brightness at each pixel, ie, an image.
+patched_xyz.IMG is the output 3-band image in the same format.  
+
+.PAGE
+
+BACKGROUND:
+
+Stereophotoclinometry depends on there being sufficiently high contrast 
+between adjacent features at the local pixel scale. In practice this means that, 
+for an image with about 1 mrad per pixel, the landscape must have substantial
+entropy at the mm scale 1m away, and the 10cm scale 100m away. Fortunately,
+weathered rocks have fractal shape properties so this method is quite reliable
+on rocky surfaces. Unfortunately, sand is both low-entropy and self-similar
+across a wide range of scales. That is, the noise power spectrum is weighted
+towards low spatial frequencies, which is to say that stereo correlation is 
+noisy at best, erroneous at norm, and non-existent at worst. 
+
+Sand is also not always avoidable for rover navigation, so a method for patching
+the point cloud is desired.
+
+Photoclinometry steps up.
+
+Photoclinometry, or "shape from shading" is a way of recovering range information
+even (or especially) in the absense of stereo-correlatable features in the landscape.
+
+It must be emphasized that photoclinometric solutions are not "unique" in the 
+same sense that stereocorrelation solutions can be. The very existence of graphic 
+art and programmable computer displays demonstrate that the properties of matter
+permit infinite ways to create an illusion of depth. Even humans, with highly 
+developed stereo and image processing neural circuitry, can be predictably fooled
+by a wide variety of optical illusions, to say nothing of forced perspective,
+optical mirages, and featureless terrain. An extreme example can exist on the Antarctic
+ice sheet where fata morgana and a total lack of trees can lead to hilarious levels of
+disorientation, such as mistaking a pocket knife for a skidoo or a mountain,
+or vice versa.
+
+With this in mind, photoclinometric solutions represent a "best guess", as 
+encapsulated by a multivariate "energy function" to be minimized over a very
+high dimensionality parameter space. This energy function encodes our "prior" or
+innate knowledge about the environment, which fulfills the dual purpose of both
+drastically reducing the allowable space of solutions, and navigating that
+reduced space to a good local, if not global, optimum. 
+
+As an example, such prior assumptions could include:
+- Sand has a relatively uniform albedo, so radiance variations are due to angles.
+- A scene is lit by a combination of direct sunlight, sky glow, and surface scatter.
+- Sand's physical properties preclude slopes beyond a certain steepness, or tunnels.
+- The surface of a planet is at least C0 continuous.
+- The pixel-scale slope of a given surface is related to its position relative to
+  surrounding pixels.
+- Where it exists, stereo data will be pretty good, or at least have rigorously 
+  bounded error.
+
+The energy function is composed of a series of sub functions that measure
+fitness on these and potentially other priors, then combine them with respect to 
+carefully tuned weighting parameters.
+
+The relative value of the weights can alter the outcome, and this gives some measure 
+of how robust a given solution might be. 
+
+.page
+
+METHOD:
+
+The method is based loosely on Jiang et al. 2016. 
+http://dx.doi.org/10.1016/j.isprsjprs.2017.06.010
+
+Substantial modifications are made to account for the oblique nature of the 
+navcam images. A comprehensive discussion follows:
+
+Equations 1-3 discuss how Jiang et al. develop their radiance model to account for sky glow, 
+scattering, and other factors. PATCH greatly simplifies this radiance model but could,
+in principle, add the complexity back in later if it was desired. In my experiments
+it was not necessary to do so. Furthermore, while it is tempting to add complexity to the 
+radiance estimation system, such complexity more often delivers the capability to fool
+a human evaluator rather than actually delivering physical insight. Forcing the optimizer
+to work with an unphysically simple radiance model, in some sense, makes errors obvious
+enough to notice, understand, and account for.
+
+Equation 4 describes the "image irradiance equation" which is the basis of the method.
+The modeled reflectance has to match the observed image.
+
+Equation 5 is inconsistent with later expressions - it may be corrected by adding a
+square to the last parenthetical term, thus ensuring that this component of the energy
+function is also positive definite.
+
+Equation 6's method does not work in the oblique case as these discrete gradient 
+convolution kernels require an evenly spaced x-y grid to be valid. Instead, PATCH
+calculates the normal vector for each point using an inbuilt VICAR function. In 
+prototype (python) PATCH computed normals by taking cross products of pointcloud 
+translation vectors and combining them with weights equal to the inverse of their
+lengths to account for, and compensate for, much greater baselines and thus error in 
+the direction of depth.
+
+There is a compact analytic bijective function between representations of the surface 
+in terms of some Cartesian unit normal vector and discrete x and y gradients. This can 
+be used to convert a normal vector to a gradient and back, though in the final implementation
+all computations were expressed vectorially.
+
+Equations 7-10 give prescriptions for updating the independent slope functions (p and q) in 
+terms of derivatives. Jiang et al. was able to use a partly analytic expression due to the 
+compact representation of their energy function. In the oblique, 3D case, this is cumbersome 
+at best and is more vulnerable to certain forms of numerical instability due to the widely 
+varying ranges within one image. In PATCH, these derivatives are calculated by perturbing the 
+variable (such as one component of a normal vector field) and recalculating the energy function.
+
+Equations 11-12 exploits the Gauss-Seidel method to find the energy-minimizing range surface
+of Equation 5's associated Euler-Lagrange equation. I investigated PATCH/oblique variations of 
+this approach in exhaustive depth and found them to be both cumbersome and intractably prone
+to numerical instability. These instabilities typically manifest as the development of some 
+"spike" or line-of-sight oriented delta function that grows. PATCH incorporates an 
+energy-penalty term for this sort of unphysical noise, but there is no neat way to 
+add this to the Euler-Lagrange equation. Instead, PATCH uses the same perturbative approach 
+described above. Unlike the normal vector field, however, range is locally continuous and 
+thus a global perturbation in range does not result in useful gradients. That is, shifting 
+range by a few millimeters is equivalent to repositioning the camera by a few millimeters,
+resulting in no difference to the resulting image. I experimented with different approaches
+and patterns of perturbations, including using random noise and iterating a few times. 
+PATCH currently uses an alternating set of horizontal and vertical pixel-scale stripes as this
+approach gives predictable gradients and minimizes instability.
+
+Equation 13 solves beta (the global albedo parameter) in closed form. Herein lies a big hack
+in all photoclinometric solvers. As far as I know, there is no rigorous way to uniquely
+recover albedo information from a single image. There are, broadly, two approaches. 
+
+The first is to allow the albedo of each pixel to vary freely, or within certain bounds, 
+as yet another free parameter to be solved for globally. Very quickly one finds the 
+optimizer painting the landscape with the desired scene without deriving any depth information.
+This is unsatisfactory, though of course permitted by the laws of nature and exploited 
+in photography and LCD displays every day!
+
+The second is to process the image to "assign" an albedo to the various parts of the image
+to begin with, then use the beta parameter to globally tweak the overall level of lighting. 
+There are complex ways to guess the albedo of rocky surfaces, such as picking the brightest 
+pixel in a given region as representative of what other adjacent pixels would look like 
+under better light. Such approaches are both error prone, lossy, and not needed for PATCH.
+PATCH exists to solve depth for sand, and sand has a mostly uniform albedo. Therefore, PATCH
+simply segments the image by whether or not stereo correlation has failed. The albedo
+of the sand is statistically estimated and applied to the sand segment. Ditto the rocks.
+For particularly pathological images with the sky in the wrong place, this method may fail 
+but it doesn't matter all that much since the global beta parameter can tweak this value 
+for regions that the energy function is sensitive to. 
+
+At the end of the day, very few of Jiang et al.'s equations are used in any recognizable form.
+
+So...
+
+How does the algorithm work?
+
+1) Load the xyz point cloud, and the image, and geometric info.
+2) Produce the  mask, identifying which parts of the image lack stereo data. 
+   In general this also includes the margin where the stereo images don't overlap.
+3) Patch the patches by fitting the landscape to a plane.
+4) Segment the image into sand, rocks using the mask, and thus create an "albedo"
+   image.
+5) Initialize energy function parameters and history.
+6) Iterate initial patch by performing energy gradient descent for each parameter.
+7) Track and print progress.
+8) Return optimized patch.
+
+As implemented, PATCH has a couple of dozen helper functions called from within
+the main() routine.
+
+There are three substantial non-trivialities to the program.
+- Generate the initial condition.
+- Generate images from pointcloud data.
+- Optimize with stability and convergence.
+
+The initial condition is generated by fitting a plane to the inverse range array.
+Inverting the range removes the problem of overfitting to distant points with 
+high ranges and low relevance. It also turns a hyperbolic function into a 
+linear one. This plane fit is fully implemented in PATCH, using Kramer's method
+to solve the fit.
+
+Image generation is performed by combining the albedo prior with a radiance function.
+Radiance is calculated geometrically from surface normal vectors uvw, and 
+geometric information about the location of the sun and the camera. This is
+substantially less sophisticated than, say, the Unity graphics engine. 
+Normal vectors uvw are calculated from xyz using the xyz_to_uvw.h subroutine, 
+which may or may not work well for this purpose.
+
+Stability is highly non-trivial. Jiang et al.'s original method called for 
+simultaneous solving of range and gradient vectors using the Euler-Lagrange
+formalism. While non-trivial, it is possible to generalize this method for the 
+fully 3D case using normal vectors instead of gradients. It does, however, lead
+to insurmountable numerical instabilities due to occlusions and spikes, no matter
+how aggressively they are filtered. Therefore, I opted to include the dislocation
+between range and the surface normal vectors as part of the energy function to be 
+minimized, then vary each. Because these are all locally defined, a global delta
+range does not actually help find the local gradient. Therefore, a set of four 
+high spatial frequency (pin striped!) perturbations are used sequentially. This
+introduces noise but that noise converges away in the long run.
+
+The algorithm employs a number of parameters, not all of which are currently able
+to be set at the command line. A good number of these parameters are carefully
+tuned and probably shouldn't be changed.
+
+TESTING:
+
+Run ./patch INP=\(NLB_577089270XYZLF0691828NCAM00379M1.IMG NLB_577089270RADLF0691828NCAM00379M1.IMG\) OUT=patched_xyz.IMG
+
+Generating the initial condition takes about a minute while gaps are filled with a good surface guess.
+
+Then the "big loop" starts. Global energy starts at about 2.5 and reduces to about 
+0.02 after ~30 steps. As this optimization runs more and more detail is adduced by
+matching the radiance model to the actual image. For coarse accuracy, fewer steps 
+are needed.
+
+Suggestions for refinements are included in the .cc file. In particular, the radiance
+model is very very basic and could get additional bells and whistles. Image segmentation
+and albedo estimation can also be tweaked depending on requirements.
+
+After copious debugging etc it turns out the c++ version is no faster than the numpy-
+accelerated Python implementation. Shucks. 
+
+.PAGE
+
+HISTORY:
+2020-07-24 rgd	Initial version
+2020-09-24 Updated to include specific differences to prior implementation
+COGNIZANT PROGRAMMER: Casey Handmer
+
+.LEVEL1
+.VARI INP
+Input images.
+Must be 1 3-band file
+plus 1 1-band radiance file.
+
+.VARI OUT
+Output files
+Will be 1 3-band file.
+
+.VARI NAVTABLE
+Nav file for pointing
+correction.
+
+.VARI ORIGIN
+Override of 3D Point
+from which to compute 
+range.
+
+.VARI CAST
+How to reconstruct the XYZ.
+
+.VARI CONFIG_PATH
+Path used to find
+configuration/calibration
+files.
+
+.VARI POINT_METHOD
+Specifies a mission-
+specific pointing
+method to use
+
+.VARI NOSITE
+Disables coordinate
+system sites.
+
+.VARI RSF
+Rover State File(s) to use.
+
+.VARI DEBUG_RSF
+Turns on debugging of RSF
+parameter.
+
+.VARI COORD
+Coordinate system to use.
+
+.VARI COORD_INDEX
+Coordinate system index for
+some COORD/mission combos.
+
+.VARI FIXED_SITE
+Which site is FIXED for
+rover missions.
+
+.VARI SOLUTION_ID
+Solution ID to use for
+COORD_INDEX
+
+.VARI DATA_SET_NAME
+Specifies the full name given
+to a data set or a data product.
+
+.VARI DATA_SET_ID
+Specifies a unique alphanumeric
+identifier for a data set or data
+product.
+
+.VARI RELEASE_ID
+Specifies the unique identifier
+associated with the release to the
+public of all or part of a data set.
+The release number is associated with
+the data set, not the mission.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique
+identifier assigned to a data
+product by its producer.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier
+of an entity associated with the
+production a data set.
+
+.VARI PRODUCER_INST
+Specifies the full name of the
+identity of an entity associated
+with the production of a data set.
+
+.VARI TARGET_NAME
+Specifies a target.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target.
+
+.LEVEL2
+.VARI INP
+Input files contain the XYZ coordinates. Input 1 should be a 3-band
+file with bands in (X,Y,Z) order.
+Input 2 contains the radiance (image) data.
+
+.VARI OUT
+The output of PATCH is a single 3-band file of type REAL (float).
+
+.VARI NAVTABLE
+Corrected navigation filename.
+If marsnav was run on the input images it created a table of corrected
+pointing parameters. If you refer to this table using NAVTABLE it
+will override the pointing parameters (e.g. azimuth and elevation) in the
+picture labels.
+
+.VARI ORIGIN
+Specifies the 3D point to compute the range from.  By default it's set to
+camera location as specified by C-point for CAHV-based instruments.
+
+.VARI CAST
+Specifies how to reconstruct the XYZ point - casting either long the camera
+model (-CMOD) or along the original vector (-RAY).  See the main help for
+a more complete discussion.
+
+.VARI CONFIG_PATH
+A colon-separated list of directories in which to look for configuration
+and calibration files.  Environment variables are allowed in the list
+(and may themselves contain colon-separated lists).  The directories are
+searched in order for each config/cal file when it is loaded.  This allows
+multiple projectes to be supported simultaneously, and allows the user to
+override any given config/cal file.  Note that the directory structure below
+the directories specified in this path must match what the project expects.
+For example, Mars 98 expects flat fields to be in a subdirectory named
+"flat_fields" while Mars Pathfinder expects them to be directly in the
+directory specified by the path (i.e. no intermediate subdirectories).
+
+.VARI POINT_METHOD
+Specifies a mission-specific pointing method to use.  Normally this
+parameter is not used, in which case the "default" pointing methods
+are used.  Some missions may have special, or alternate, pointing
+methods available, which are indicated by this string (for example,
+backlash models, using arm joint angles instead of x/y/z/az/el, etc).
+A substring search is used, so multiple methods (where that makes sense)
+can be specified by separating the keywords with commas.
+
+Note that nav files created using one pointing method will most likely
+not be compatible with a mosaic created using a different pointing method.
+
+The methods available vary per mission, but some methods available at
+the time of this writing are:
+
+BACKLASH : Mars 98 SSI only.  Selects a backlash pointing model,
+which adjusts the telemetered azimuth and elevation values based on
+knowledge of the camera's mechanical backlash and the direction the
+motor was travelling when the image was taken.
+
+.VARI NOSITE
+Disables all label-derived parameters to the Site mechanism which underlies
+coordinate systems.  This forces all sites to be identical, with all rotations
+and offsets set the same.  In the case of MPF or Mars 98, this disables
+the lander quaternion and offset (sets them to identity and 0, respectively).
+This option should not be used with images taken from different vantage
+points (e.g. the spacecraft moved, or mixing a lander and a rover) or
+invalid results will be obtained.  The use of this option invalidates the
+Fixed coordinate frame; any values reported in the Fixed frame will not
+correctly reflect the orientation of the lander/rover.
+
+Obviously, this option should be rarely used; it is intended for when the
+image labels defining the site are invalid or inconsistent.
+
+.VARI RSF
+Rover State File.  This is a list of filenames to load containing
+Rover State information.  These files contain position and orientation
+information for a rover (or other mobile spacecraft) at various sites.
+They are in XML format.  See the "Rover Motion Counter (RMC) Master File SIS"
+for details on these files.
+
+Rover State Files have a priority order.  The files listed first have
+the highest priority.
+
+Environment variables may be used in the list.
+
+For MER, if a directory is specified, then that directory is searched for
+RMC Master files and any found are loaded.  The directory structure and
+filename convention is covered in the RMC SIS.  The directory specified
+is the one containing "master", so if <dir> is the name specified in the
+RSF parameter, the following files will be searched for:
+
+<dir>/master/<mission>_Master.svf
+<dir>/master/<mission>_Site_<n>_Master.rvf
+
+The name of each file loaded is printed to the stdout log for reference.
+
+.VARI DEBUG_RSF
+If enabled, this causes the internal database of RMC locations to be
+printed out to the stdout log.  This is after the RSF files have been
+loaded and the coordinate systems read from the input label(s).
+
+.VARI COORD
+The coordinate system to use for all input parameters and output values,
+and the XYZ points themselves.  The interpretation of the values is dependent
+on the mission.  Some representative missions are listed here:
+
+Fixed - The Fixed frame (default).  This is the ultimate reference frame
+    (see also FIXED_SITE for rover missions).
+Instrument - The "natural" frame for the instrument (of the first input
+    image).  MPF: Lander or Rover; M98: MVACS; MER: Rover.
+Site - A major Site frame.  For rover missions, COORD_INDEX specifies which
+    Site frame to use.  Non-rover missions treat this as Fixed.
+Rover - An instance of the Rover frame.  For rover missions, COORD_INDEX
+    specifies which instance of the rover frame to use.  Non-rover mission
+    use the spacecraft frame (e.g. Lander for M98).
+Local_Level - An instance of a Local Level frame.  This is typically
+    coincident with the Rover frame (in XYZ) but oriented toward North
+    like the Site and Fixed frames.  For MER, this is an instance of a
+    Drive index move.
+
+.VARI COORD_INDEX
+The index specifies which instance of a coordinate system to use.  It is
+currently applicable only to rover-based missions, but could have other
+uses.  The index is equivalent to the Rover Motion Counter (RMC) for MER
+and FIDO.
+
+For MER/FIDO, there are many Site frames.  Each is numbered with a single
+index.  For Site Frames, coord_index specifies which to use.  Likewise,
+there are many Local_Level and Rover frames, corresponding to values of
+the RMC.  The multiple instances of this frame are selected by COORD_INDEX.
+
+Generally COORD_INDEX defaults sensibly so you don't usually need to
+specify it.  It will default to the instance used by the first input.
+
+.VARI FIXED_SITE
+Specifies which major Site is the "Fixed" Site for this run.
+
+Historically, MPF and M98 had a single "Surface Fixed" frame which never
+moved, and which all other coordinate system frames were referenced to.
+With the advent of long-range rovers (such as MER and FIDO), that became
+insufficient.  The rover traverses far enough that errors in knowledge of
+coordinate system offset and orientation become unacceptable.
+
+For this reason, a system of major Sites was introduced.  Periodically
+during the mission, a Site frame is declared.  This then becomes the
+reference frame for all activities until the next Site is declared.
+References are kept local, and errors don't propogate across Sites.
+
+However, if images from more than one Site are combined together, the
+Site's must be placed relative to each other.  Therefore a single reference
+frame is still needed to combine different sites.
+
+The FIXED_SITE parameter controls which of the major Site frames is
+the reference ("fixed") site for this program run.  This fixed frame
+can vary in different program runs, but is constant throughout one
+execution.
+
+If not specified, FIXED_SITE defaults to the minimum Site number (i.e.
+lowest numbered, or earliest chronologically) used in all input images.
+Normally this default is sufficient; rarely must FIXED_SITE be specified.
+
+One or more Rover State Files must usually be specified in order to combine
+image from more than one Site.  These describe the relationship between
+sites.  See the RSF parameter.
+
+.VARI SOLUTION_ID
+Specifies which solution ID to use when specifying the coordinate system.
+
+There are potentially many different definitions for the same coordinate
+system.  These are identified via a unique Solution ID.  If this parameter
+is given, only the specified solution's definition is searched for.  Without
+it, the "best" available solution is chosen.
+
+It is extremely rare that this parameter should be needed.  The default
+will be sufficient in almost every case.
+
+Note that the current MER implementation requires that a value for COORD_INDEX
+also be provided, in order for this parameter to take effect.
+
+.VARI DATA_SET_NAME
+The DATA_SET_NAME typically identifies the instrument that acquired the
+data, the target of that instrument, and the processing level of the data.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_NAME.
+
+.VARI DATA_SET_ID
+The DATA_SET_ID value for a given data set or product is constructed
+according to flight project naming conventions.  In most cases the
+DATA_SET_ID is an abbreviation of the DATA_SET_NAME.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_ID.
+
+.VARI RELEASE_ID
+When a data set is released incrementally, such as every three months during
+a mission, the RELEASE_ID is updated each time part of the data set is released.
+For each mission(or host id if multiple spacecrafts), the first release of a data
+set should have a value of "0001".
+This value is copied to the output label, property IDENTIFICATION,
+keyword RELEASE_ID.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique identifier assigned to a data product by
+its producer. Most commonly, it is the filename minus the extension.
+This value is copied to the output label, property IDENTIFICATION,
+keyword PRODUCT_ID.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier of an entity associated with the
+production of a data set. This value is copied to the output label,
+property IDENTIFICATION, keyword PRODUCER_ID.
+
+.VARI PRODUCER_INST
+Specifies the identity of a university, research center, NASA center or other
+institution associated with the production of a data set.
+This value is copied to the output label, property IDENTIFICATION, keyword
+PRODUCER_INSTITUTION_NAME.
+
+.VARI TARGET_NAME
+Specifies a target.  The target may be a planet, satelite, ring, region, feature,
+asteroid or comet.  This value is copied to the output label, property
+IDENTIFICATION, keyword TARGET_NAME.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target. This value is copied to the output
+label, property IDENTIFICATION, keyword TARGET_NAME.

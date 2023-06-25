@@ -16,6 +16,7 @@ c	real*8 dval1, IncAng, EmAng, PhasAng, pval
 c	character*8 cval1
 c	character*(pho_max_key_length) keylist(4)
 	character*(pho_max_keywd_length) keylist(pho_max_param_func)
+        character*20 fmt
 
 	integer pho
 
@@ -51,8 +52,10 @@ c get the photometric function name :
 
 	do i=1,num
 	  call pho_get_val( pho, keylist(i), dval1, status)
-	  write( msg, 1010) keylist(i), dval1
-1010	  format( a<pho_max_keywd_length>, ' = ', 1pe10.3)
+c	  write( msg, 1010) keylist(i), dval1
+c1010	  format( a<pho_max_keywd_length>, ' = ', 1pe10.3)
+	  write(fmt, *) pho_max_keywd_length
+          write(msg, "(A" // adjustl(fmt) // ", ' = ', 1pe10.3)") keylist(i), dval1
 	  call xvmessage( msg, ' ')
 	enddo
 

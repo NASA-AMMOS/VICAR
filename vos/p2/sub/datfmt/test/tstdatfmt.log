@@ -1,0 +1,25 @@
+write "Results may differ from day to day because current date is printed"
+Results may differ from day to day because current date is printed
+tdatfmt
+Beginning VICAR task tdatfmt
+Test the FORTRAN interface
+
+*** Testing for flag = 1
+    -> The integer date is     2020344
+    -> The ASCII date is 2020344
+
+*** Testing for flag = 2
+    -> The integer date is           0
+    -> The ASCII date is  WED DEC  9, 2020
+
+Test the C interface
+ 
+*** Testing for flag = 1
+   -> The integer date is     2020344
+   -> The ASCII date is 2020344
+ 
+*** Testing for flag = 2
+   -> The integer date is           0
+   -> The ASCII date is  WED DEC  9, 2020
+ 
+disable-log

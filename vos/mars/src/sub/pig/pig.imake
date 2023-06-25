@@ -1,0 +1,20 @@
+#define SUBROUTINE pig
+
+#define MODULE_LIST PigModelBase.cc PigCameraModel.cc PigCAHVOR.cc PigCAHV.cc \
+ PigCAHVORE.cc PigPSPH.cc PigPointingModel.cc PigPointPanTiltCamera.cc \
+ PigPointBodyFixedCamera.cc PigPointTwoPivotCamera.cc \
+ PigSurfaceModel.cc PigSurfacePlane.cc PigSurfaceSphere.cc PigSurfaceSphere2.cc PigSurfaceMesh.cc\
+ PigFileModel.cc PigLabelModel.cc PigCSReference.cc PigCSDefinition.cc \
+ PigUtilities.cc PigCoordSystem.cc PigMission.cc \
+ PigBrtCorrModel.cc PigBrtCorrLinear.cc PigPointCamera6dof.cc \
+ PigPointCamera7dof.cc PigBrtCorrHsiLin.cc PigColorModel.cc \
+ PigColorConverter.cc PigColorConverterMatrix.cc PigColorConverterXYZtosRGB.cc \
+ PigColorConverterXYZtoxyY.cc PigColorConverterRADtoiRGB.cc
+
+#define STD_CPP_11
+#define MARS_SUBLIB
+
+#define USES_C_PLUS_PLUS
+
+#define LIB_P2SUB
+#define LIB_XERCES

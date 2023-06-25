@@ -1,0 +1,47 @@
+PROCESS		HELP=*
+PARM INP      TYPE=(STRING,99)
+PARM sr       TYPE=int
+PARM nr       TYPE=int valid=1:5000 default=1
+PARM cols     TYPE=int count=(1:99)
+parm labels   type=(string,50) count=(1:99)
+PARM prnt_rec TYPE=KEYWORD COUNT=(0:1) VALID=prnt_rec DEFAULT=--
+END-PROC
+.TITLE
+VICAR/IBIS Program ilist: list with labels from an ibis file
+.HELP
+PURPOSE
+
+Lists the values of selected columns for a selected row of an
+ibis file with ascii labels for each.
+
+TAE COMMAND LINE FORMAT
+
+	ilist inp=A row=n cols=(3,6,4) labels=("name","age","height")
+
+.PAGE
+OPERATION
+
+RESTRICTIONS
+
+	WRITTEN BY		A. L. Zobrist		15 Jul 2005
+	COGNIZANT PROGRAMMER	A. L. Zobrist
+
+REVISIONS
+  2008-01-02 WLB Switched to USES_ANSI_C AND LIB_CARTO; misc cleanup  
+  2016-05-16 WLB Migrated to MIPL; replaced printf with zifmessage
+  2022-07-14 B. Crocco afids to opensource
+  
+.LEVEL1
+.VARIABLE INP
+IBIS file name
+.VARIABLE sr
+The row to list values from
+.VARIABLE nr
+The number of rows to list
+.VARIABLE cols
+The columns to list
+.VARIABLE labels
+Labels for the columns
+.VARIABLE prnt_rec
+prints the record number
+.END

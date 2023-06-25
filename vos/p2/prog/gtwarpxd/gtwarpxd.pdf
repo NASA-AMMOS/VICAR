@@ -1,0 +1,563 @@
+procedure help=*
+
+!  coverref case with distort file not tested yet
+
+parm inp type=(string,99) count=1
+parm out type=(string,99) count=1
+parm seq type=(string,99) count=1 def="qq"
+parm ref type=(string,99) count=1
+parm typref type=keyword count=(0:1) valid=(coverref,coverinp) +
+     default=coverinp
+parm interp type=keyword count=(0:1) valid=(noin,bilin,"cubconv","cubsplin") +
+     default=bilin
+parm nah type=int count=1 default=100
+parm nav type=int count=1 default=100
+parm gorewid type=int count=1 default=2
+parm memsize type=int default=300000000
+parm distort type=(string,99) count=(5:5) +
+    default=("","","","","")
+parm polyfit type=(string,9) count=(5:5) +
+    default=("","","","","")
+parm dcols type=int count=(0:20)
+parm auxin type=(string,99) count=(15:15) +
+    default=("","","","","","","","","","","","","","","")
+parm auxout type=(string,99) count=(15:15) +
+    default=("","","","","","","","","","","","","","","")
+parm gridout type=(string,99) count=(0:1) def=""
+parm znoin type=keyword count=(0:1) valid=znoin default=--
+parm echo type=(string,4) count=1 valid=("no","yes") default="yes"
+
+local xxg1 string
+local xxg2 string
+local xxg3 string
+local xxg4 string
+local xxg5 string
+local xxg6 string
+local xxg7 string
+
+local gridin string
+local gridin1 string
+local gridin2 string
+local gridout1 string
+local gridout2 string
+local gridout3 string
+
+local tnl int
+local tns int
+local rminl real
+local rmaxl real
+local rmins real
+local rmaxs real
+local minl int
+local maxl int
+local mins int
+local maxs int
+local fsl real 
+local fss real
+local fnl real
+local fns real
+local sl int
+local ss int
+local nl int
+local ns int
+local nahp1 int
+local navp1 int
+local nahxnav int
+local loopcnt int
+local inpsize int
+local dcol1 int
+
+refgbl $echo
+local version (string,10)
+local org (string,10)
+local dfile (string,99)
+local ofile (string,99)
+local poly (string,9)
+body
+!let _onfail="continue"
+let version="ibis-2"
+let org="column"
+let $echo="&echo"
+
+let xxg1 = "xx" // "&seq" // "g1"
+let xxg2 = "xx" // "&seq" // "g2"
+let xxg7 = "xx" // "&seq" // "g7.par"
+
+lab2tcl &inp v1=tnl v2=tns keyword=(nl,ns) 'system
+let inpsize = tnl*tns
+   
+let dcol1 = dcols(1)
+if (dcol1=0) goto gridinloc
+
+!  GTWARPXD HANDYPROC
+
+!  for the 'coverinp case only, we need the corner points.
+!  map the input grid to the reference image space and get min-max
+!  (which are not necessarily at the corners for conics and stereogr.
+!  the grid is rectangular in the input space
+
+write "GTWARPXD version 2016-AUG-20"
+
+if ("&typref"="coverinp")
+   ibis-gen &xxg1 version=&version org=&org  nc=12 nr=961 deffmt=DOUB
+   mf3 &xxg1 func=("c1=(@int((@index-1)/31)/30)*&tnl+0.5$", +
+            "c2=(@mod(@index+30,31)/30)*&tns+0.5")
+   gtproj2 (&xxg1,&inp,&ref) incol=(1,2) outcol=(7,8) 'image
+   mf3 &xxg1 func=("c9=c7$@vmin(c9)$c10=c7$@vmax(c10)$", +
+            "c11=c8$@vmin(c11)$c12=c8$@vmax(c12)")
+   ibis2tcl &xxg1 v1=rminl v2=rmaxl v3=rmins v4=rmaxs vartype=(-1,-1,-1,-1) +
+    ibisloc=(1,9,1,10,1,11,1,12)
+   let rminl=rminl+0.5
+   let rmaxl=rmaxl+0.5
+   let rmins=rmins+0.5
+   let rmaxs=rmaxs+0.5
+   let minl=$fix(rminl)-gorewid
+   let maxl=$fix(rmaxl)+gorewid
+   let mins=$fix(rmins)-gorewid
+   let maxs=$fix(rmaxs)+gorewid
+   !ibis-list &xxg1 nr=32 'format
+   write "input covers (&minl,&mins,&maxl,&maxs) in reference pixel space"
+   let sl=minl
+   let ss=mins
+   let nl=maxl-minl+1
+   let ns=maxs-mins+1
+else
+   lab2tcl &ref v1=tnl v2=tns keyword=(nl,ns) 'system
+   let sl=1
+   let ss=1
+   let nl=tnl
+   let ns=tns
+end-if
+write "geomv parameter (sl,ss,nl,ns) = (&sl,&ss,&nl,&ns)"
+
+! now make the geomv grid, it is rectangular in the output space
+
+let nahp1=nah+1
+let navp1=nav+1
+let nahxnav=nahp1*navp1
+
+ibis-gen &xxg2 version=&version org=&org  nc=8 nr=&nahxnav deffmt=DOUB
+mf3 &xxg2 func=("c1=(@int((@index-1)/&nahp1)/&nav)*&nl+(&sl-0.5)$", +
+            "c2=(@mod(@index+&nah,&nahp1)/&nah)*&ns+(&ss-0.5)")
+gtproj2 (&xxg2,&ref,&inp) incol=(1,2) outcol=(3,4) 'image
+!ibis-list &xxg2 nr=32 'format
+
+!   perform the distortions in sequence, recalc sl,ss,nl,ns and grid
+!   these items are in files xxg2 and xxg7
+
+save-variable file=&xxg7 variable=(sl,ss,nl,ns)
+write "initial save sl,ss,nl,ns &sl,&ss,&nl,&ns"
+
+let dfile = distort(1)
+let poly = polyfit(1)
+if (dfile<>"") gtwrpsub seq=&seq typref=&typref dfile=&dfile +
+     dcols=&dcols dcolsix=1 nah=&nah nav=&nav poly="&poly"
+
+   goto skipgridin
+   gridinloc>
+   let gridin = distort(1)
+   let gridin1 = "&gridin" // "1"
+   let gridin2 = "&gridin" // "2"
+   ibis2tcl &gridin2 v1=fsl v2=fss v3=fnl v4=fns vartype=(-1,-1,-1,-1) +
+       ibisloc=(1,1,1,2,1,3,1,4)
+   let sl = $fix(fsl)
+   let ss = $fix(fss)
+   let nl = $fix(fnl)
+   let ns = $fix(fns)
+   save-variable file=&xxg7 variable=(sl,ss,nl,ns)
+   write "initial save sl,ss,nl,ns &sl,&ss,&nl,&ns"
+   ibis-copy &gridin1 &xxg2
+   skipgridin>
+
+let dfile = distort(2)
+let poly = polyfit(2)
+if (dfile<>"") gtwrpsub seq=&seq typref=&typref dfile=&dfile +
+     dcols=&dcols dcolsix=5 nah=&nah nav=&nav poly="&poly"
+
+let dfile = distort(3)
+let poly = polyfit(3)
+if (dfile<>"") gtwrpsub seq=&seq typref=&typref dfile=&dfile +
+     dcols=&dcols dcolsix=9 nah=&nah nav=&nav poly="&poly"
+
+let dfile = distort(4)
+let poly = polyfit(4)
+if (dfile<>"") gtwrpsub seq=&seq typref=&typref dfile=&dfile +
+     dcols=&dcols dcolsix=13 nah=&nah nav=&nav poly="&poly"
+
+let dfile = distort(5)
+let poly = polyfit(5)
+if (dfile<>"") gtwrpsub seq=&seq typref=&typref dfile=&dfile +
+     dcols=&dcols dcolsix=17 nah=&nah nav=&nav poly="&poly"
+
+if ("&typref"="coverinp")
+   restore-variable file=&xxg7 variable=(sl,ss,nl,ns)
+else
+   lab2tcl &ref v1=tnl v2=tns keyword=(nl,ns) 'system
+   let sl=1
+   let ss=1
+   let nl=tnl
+   let ns=tns
+end-if
+
+!   finally the geomv call, a SINGLE call for all distortions
+
+geomv INP=(&inp,&xxg2,&ref) OUT=&out size=(&sl,&ss,&nl,&ns) +
+       interp=&interp znoin="&znoin" vmemsize=&memsize
+
+!   save the final grid if there is a gridout param
+
+if (gridout<>"")
+   let gridout1 = "&gridout" // "1"
+   let gridout2 = "&gridout" // "2"
+   let gridout3 = "&gridout" // "3"
+   ibis-copy &xxg2 &gridout1
+   ibis-gen &gridout2 nc=4 nr=1 deffmt=DOUB
+   mf3 &gridout2 f="c1=(&sl)$c2=(&ss)$c3=(&nl)$c4=(&ns)"
+   gtcopy &ref &gridout3 nl=1 ns=1
+end-if
+
+!   the additional bands
+
+let loopcnt = 0
+loop
+   let loopcnt = loopcnt+1
+   if (loopcnt>15) goto loopdone
+   let dfile = auxin(loopcnt)
+   let ofile = auxout(loopcnt)
+   if (dfile="") goto loopdone
+   geomv INP=(&dfile,&xxg2,&ref) OUT=&ofile size=(&sl,&ss,&nl,&ns) +
+          interp="&interp" vmemsize=&memsize
+end-loop
+
+loopdone>
+
+
+end-proc
+.TITLE
+GTWARPXD - Warp an image to a new map projection using GeoTIFF labels.
+.HELP
+PURPOSE
+
+
+  coverref case with distort file not tested yet
+  
+     GTWARPXD reads the GeoTIFF label of a "master" or "reference" image,
+     then reads the GeoTIFF label of the input image.  It calculates
+     a set of GEOMV parameters from these and then calls GEOMV to warp
+     the input image to match the mapping of the "reference" image.
+     
+     1.  The keyword 'coverinp causes the procedure to map all of the
+     input image to an output image that will just contain it.   The
+     keyword gorewid allows the user to specify a zero-filled margin
+     to make the output a little larger (or negative trims smaller).
+	
+     2.  The keyword 'coverref causes the procedure to map the input
+     image to an output image that exactly matches the "reference" image.
+     Some parts of the input can be lost, or huge areas of zero-fill
+     could be added to make the images match.  The gorewid keyword has
+     no effect in this case.
+     
+     A sequence of post-mapping distortions can be added with the
+     parameter DISTORT.  These will be applied in sequence to the
+     warp grid developed from the mapping.  These distortions are
+     all given in pixel (newline,newsamp,oldline,oldsamp) point pairs
+     in the reference image coordinate space.  The points can be
+     irregular (tieconv is used).  THE NET RESULT IS THAT A SINGLE
+     IMAGE GEOMV WILL BE APPLIED TO AVOID MULTIPLE IMAGE RESAMPLINGS.
+     
+     See the help for the parameter DISTORT for special cases to
+     1.  save time when a sequence of calls is made
+     2.  to save the combined grid from a multi-distort call
+     3.  to do a map projection change at the end of processing
+
+CALL
+     gtwarpxd INPUT OUTPUT REF '(QUALIFIERS) PARAMS
+  WHERE:
+     INPUT          is the input data set (must have a GeoTIFF label).
+     OUTPUT         is the output data set (will have a GeoTIFF label).
+     REF            is the reference data set (must have a GeoTIFF label).
+     QUALIFIERS     consist of any of the following keywords:
+          COVERINP         smallest output that covers the input geographic area
+          COVERREF         output exactly matches the reference image.
+     PARAMS         interp,nah,nav,gorewid.
+
+  
+OPERATION
+
+First, for the 'coverinp case only, the procedure calculates the
+extrema of the input in the output pixel space.  For the 'coverref
+case, the extrema are the boundaries of the reference image.
+
+Then the procedure calculates (in an ibis file) a grid that is
+rectangular in the output space using the extrema calculated above.
+Then new columns are calculated using the GeoTIFF map projections
+in the labels of the input and reference images yielding the grid
+in the input image.  Then GEOMV is called to calculate the result.
+
+Each distortion is calculated by the following steps (coverinp case):
+
+1.  warp grid is calculated to (sl,ss,nl,ns).
+2.  tieconv is applied to the distortion points using (sl,ss,nl,ns)
+    as the bounding box.
+3.  adjustments are calculated for the four edges of the bounding box.
+4.  (newsl,newss,newnl,newns) are calculated by the adjustments.
+5.  tieconv is applied again to the distortion points using (newsl,
+    newss,newnl,newns) as the bounding box.
+6.  the warp grid from step 1 is composed with the grid from step 5
+    using the program gridcomp.
+7.  steps 2 through 6 are repeated for each distortion input with
+    the composed grid now replacing the grid started in step 1.
+8.  geomv is now applied with the composed grid and (newsl,newss,
+    newnl,newns).  The reference input is unchanged.
+
+
+PERFORMANCE
+
+The time will consist of the IBIS file grid generation and mapping
+which could be minutes for a 1000 x 1000 grid plus the GEOMV time.
+See the GEOMV document for GEOMV timing (a 4000 by 4000 image was
+transformed by a 500 x 500 grid in 99 seconds on a SPARCstation 20.
+Reducing the grid to 30 x 30 cut the time to 39 seconds.  This shows
+that the use of a large grid doesn't penalize the time too much, 1999).
+
+.PAGE
+Restrictions
+------------
+
+The input and reference images must have GeoTIFF labels.
+
+
+.PAGE
+Original Programmer: A. L. Zobrist, 25 Jun, 2000
+Current Cognizant Programmer: A. L. Zobrist
+
+HISTORY:
+2002-01-23 A. L. Zobrist
+2007-04-26 A. L. Zobrist - Got rid of geomv3x3 call, changed memsize use.
+2021-05-24 W. L. Bunch - migrated from AFIDS
+
+.LEVEL1
+.VARI INP
+Input file name with GeoTIFF
+label
+.VARI OUT
+Output file name
+.VARI REF
+Reference file name with GeoTIFF
+label
+.VARI TYPREF
+'COVERINP - output minimally
+   covers the input data
+'COVERREF - output matches the
+   ref image exactly
+.VARI NAH
+Number of grid cells horiz.
+.VARI NAV
+Number of grid cells vert.
+.VARI INTERP
+interpolation options
+Valid: NOIN,ZNOIN,BILIN
+.VARI GOREWID
+Added width of gores for
+'coverinp case only
+.VARI MEMSIZE
+passed to geomv vmemsize parm
+.VARI DISTORT
+IBIS files with distortions to
+be applied after map projection;
+use format (dis1,dis2,,,); dis1
+can be output from previous call
+of GTWARPXD (see help 2)
+.VARI DCOLS
+Columns in IBIS files with the
+distortion (newl,news,oldl,olds)
+.VARI gridout
+save the composed grid and other
+variables in 3 files with this 
+root
+.VARI auxin
+additional files or spectral
+bands to apply same distortion
+.VARI auxout
+output files for auxin files
+.LEVEL2
+.VARI INP
+Input file name.  This parameter is input as:
+     INP=innam
+where "innam" is the input file name.
+.VARI DISTORT
+The special case will be discussed first in this paragraph.
+A previous call to GTWARPXD can save its grids and related
+information with the gridout parameter... and that can be
+input as the first parameter to the next call of gtwarpxd
+to do an additional distortion correction.  The result is a
+huge savings of time, especially if the grids are 1000 x 1000.
+IF THIS OPTION IS USED, THE DCOLS(...) PARAMETER MUST START
+WITH FOUR ZEROS.  THIS TELLS THE PROGRAM THAT THE FIRST FILE
+IS NOT AN UNPROCESSED DISTORTION FILE, BUT A PROCESSED SET
+OF ONE OR MORE DISTORTION FILES.  Note that the first file
+in this case does not have to be processed so the two files
+run as fast as the single file case.  This file is the one
+created by the gridout parameter in a previous call (which
+had to have the same reference file).  A special case of this
+special case is discussed below under the title REMAPPING THE
+OUTPUT.
+
+This parameter must have five inputs, so use the format with
+parentheses and four commas.  For one input, this will look like
+
+    distort=(d1,,,,)
+    
+the maximum case is distort=(d1,d2,d3,d4,d5)
+
+more than 5 can obviously be handled with the gridout feature
+as discussed above.
+
+A sequence of post-mapping distortions can be added with the
+parameter DISTORT.  These will be applied in sequence to the
+warp grid developed from the mapping.  These distortions are
+all given in pixel (newline,newsamp,oldline,oldsamp) point pairs
+in the reference image coordinate space.  The points can be
+irregular (tieconv is used).  THE NET RESULT IS THAT A SINGLE
+IMAGE GEOMV WILL BE APPLIED TO AVOID MULTIPLE IMAGE RESAMPLINGS.
+
+Each distortion is calculated by the following steps (coverinp case):
+
+1.  warp grid is calculated to (sl,ss,nl,ns).
+2.  tieconv is applied to the distortion points using (sl,ss,nl,ns)
+    as the bounding box.
+3.  adjustments are calculated for the four edges of the bounding box.
+4.  (newsl,newss,newnl,newns) are calculated by the adjustments.
+5.  tieconv is applied again to the distortion points using (newsl,
+    newss,newnl,newns) as the bounding box.
+6.  the warp grid from step 1 is composed with the grid from step 5
+    using the program gridcomp.
+7.  steps 2 through 6 are repeated for each distortion input with
+    the composed grid now replacing the grid started in step 1.
+8.  geomv is now applied with the composed grid and (newsl,newss,
+    newnl,newns).  The reference input is unchanged.
+
+REMAPPING THE OUTPUT
+
+If the sequential processing of raw to final is desired to be recast
+at the end to a new map projection (e.g., see hywarp2.pdf), then that can be
+handled by the following steps:
+
+1.  first three or four calls to gtwarpxd use the processing map
+reference file.  Also note the the gridout file name can be reused
+at each step since it is read first, then written.
+2.  the final call to gtwarpxd use the desired map reference file
+in the reference parameter.  The gridout from the previous gtwarpxd
+call has to be reprocessed to this reference by steps 3, etc.
+3.  add four columns to the gridout file.
+4.  process the pixel coords in (1,2) to map coordinates in the 
+processing map reference (pixmap)
+5.  remap the coordinates to the desired map reference (gtproj2)
+6.  process the map coordinates to pixel coordinates using the 
+desired map reference (pixmap).
+7.  do steps 4-6 for columns (3,4) NOTE THEY ARE IN RAW INPUT REFERENCE SEE
+EXAMPLE IN HYWARP2.PDF
+8.  input this file to the final call of gtwarpxd.  set dcols to
+the first four columns (1,2,3,4) not (0,0,0,0) so it will be processed
+as a tiepoint data set (establishing (sl,ss,nl,ns))
+9.  the second dist() input also has to be remapped to the desired
+map reference.
+
+.VARI DCOLS
+Give four columns for each distortion file giving the columns
+in order (newline,newsamp,oldline,oldsamp) all in VICAR pixels in
+the reference image space.
+.VARI OUT
+Output file name. This parameter is input as:
+     OUT=outnam
+where:
+"outnam" is the output file name.VARI OUT
+.VARI REF
+reference file name. This parameter is input as:
+     REF=refnam
+where:
+"refnam" is the reference file name.
+
+This is a VICAR image that has a GeoTIFF label to specify a mapping.
+It could be an image of a geographic area, or it could be a single 
+pixel image that serves as the holder of the GeoTIFF mapping information
+only.  In the latter case only the 'coverinp case would make sense.
+.VARI INTERP
+This parameter has three valid keyword values: NOIN and BILIN.
+
+NOIN means no interpolation.   The default method (used when neither keyword 
+is specified) for computing the
+DN values of the output picture is to use a bi-linear interpolation
+on the four nearest neighbors in the input picture.  With NOIN, the
+value of the nearest point is simply used.
+For example, say a point in the output picture was determined
+to have come from point (R,P) in the input picture.  Since R and P
+are real values, we must somehow calculate a DN value for that
+point.  Take IR and IP as the truncated values.  We then have
+          VAL1                                 VAL2
+           *                                    *
+         (IR,IP)                              (IR,IP+1)
+                     POINT
+                       *
+                     (R,P)
+          VAL3                                 VAL4
+           *                                    *
+         (IR+1,IP)                           (IR+1,IP+1)
+Here, POINT is the result of a bilinear interpolation using
+VAL1, VAL2, VAL3, and VAL4.
+If NOIN is specified, then POINT would be VAL1, the nearest
+neighbor.
+
+ZNOIN specifies that a four-point interpolation is done except
+when one or more of the points used has a value equal to zero. 
+In that case the nearest method is used.
+This allows preparation of sharp edges (no interpolation rolloff)
+for mosaicking.
+.VARI gridout
+The first file is the composed grid ready to be used in geomv or
+as the first input to a subsequent call of gtwarpxd (can only be used
+as the first input).  
+
+The second file contains the geomv sl,ss,nl,ns in the first four 
+columns of an ibis file, double precision, 1 record.
+
+The third file is a copy of the ref file for the gtwarpxd and for the
+geomv.
+.VARI TYPREF
+     1.  The keyword 'coverinp causes the procedure to map all of the
+     input image to an output image that will just contain it.   The
+     keyword gorewid allows the user to specify a zero-filled margin
+     to make the output a little larger (or negative trims smaller).
+	
+     2.  The keyword 'coverref causes the procedure to map the input
+     image to an output image that exactly matches the "reference" image.
+     Some parts of the input can be lost, or huge areas of zero-fill
+     could be added to make the images match.  The gorewid keyword has
+     no effect in this case.
+	   
+.VARI GOREWID
+Added width of gores for 'coverinp case only.  This number of pixel
+columns or rows is added to all four sides.  Zero fill is used.
+.VARI MEMSIZE
+passed to geomv vmemsize parameter
+.VARI auxin
+Using this is much faster than calling gtwarpxd separately for each
+file with the same parameters.  If this parameter is used, all 9 commas
+may have to be used, e.g. for two files:
+      auxin=("file1","file2",,,,,,,,) +
+      auxout=("outfile1","outfile2",,,,,,,,)
+instead of:
+      auxin=("file1","file2") +
+      auxout=("outfile1","outfile2")
+This is a TAE "feature".
+.VARI auxout
+Using this is much faster than calling gtwarpxd separately for each
+file with the same parameters.  If this parameter is used, all 9 commas
+may have to be used, e.g. for two files:
+      auxin=("file1","file2",,,,,,,,) +
+      auxout=("outfile1","outfile2",,,,,,,,)
+instead of:
+      auxin=("file1","file2") +
+      auxout=("outfile1","outfile2")
+This is a TAE "feature".
+.END

@@ -1,0 +1,353 @@
+Beginning VICAR task GEN
+GEN Version 6
+GEN task completed
+Beginning VICAR task QSAR
+QSAR version 14 Feb 2010 (64-bit) - RJB
+Beginning VICAR task HIST
+*** HIST version 2017-08-08 ***
+
+Bin Width =        1.0
+          0     7571   **************************************************  1
+         40*      25
+        100*     800   ****************************
+        175*     200   *******
+        225*    1400   **************************************************  2
+        250*       4
+
+AVERAGE GRAY LEVEL=43.20000
+STANDARD DEVIATION=81.62573
+NUMBER ELEMENTS=     10000
+MIN. DN=         0
+MAX. DN=       250
+
+Beginning VICAR task RASTOVEC
+RASTOVEC version 2017-08-11
+Input image size is  100 X   100
+Ouput image size is  100 X   100
+MAXPOLY=       3000
+MAXVERT=      10000
+MAXSIZE=       6000
+Step 1: REGION LABELING
+Total bytes of memory requested=      48800
+Begin second pass of region labeling
+Writing polygon description file
+ Number of polygon regions=          7
+Step 2:  COMPUTE SEGMENTS
+Total bytes of memory requested=      40816
+ Number of segments=         33
+ Number of vertices=         32
+ Number of high order vertices=          2
+Step 3: POLYGON CYCLING
+Total bytes of memory requested=      73168
+MAX_IVCNT=         33
+Beginning VICAR task LABEL
+LABEL version 2017-03-30
+************************************************************
+ 
+        ************  File b.int ************
+                3 dimensional TABULAR file
+                File organization is BSQ
+                Pixels are in BYTE format from a X86-64-LIN host
+                1 bands
+                0 lines per band
+                512 samples per line
+                1 lines of binary header of type IBIS
+                0 bytes of binary prefix per line
+---- Property: IBIS ----
+NR=7
+NC=2
+ORG='ROW'
+FMT_DEFAULT='REAL'
+FMT_FULL=(1, 2)
+SEGMENT=8
+BLOCKSIZE=512
+COFFSET=(0, 4)
+---- Task: GEN -- User:  --  ----
+IVAL=0.0
+SINC=0.0
+LINC=0.0
+BINC=1.0
+MODULO=0.0
+---- Task: QSAR -- User:  --  ----
+---- Task: RASTOVEC -- User:  --  ----
+ 
+************************************************************
+Beginning VICAR task IBIS
+ 
+Number of Rows:7  Number of Columns: 2       
+File Version:IBIS-2  Organization:ROW  SubType:NONE
+ 
+Rows: 1:7
++-----------+-----------
+         C:1         C:2
++-----------+-----------
+           0        7471
+         250           4
+         100         800
+          40          25
+         175         200
+         225        1400
+           0         100
+Beginning VICAR task MF
+mf version 05-May-2011
+Beginning VICAR task IBIS
+ 
+Number of Rows:7  Number of Columns: 2       
+File Version:IBIS-2  Organization:ROW  SubType:NONE
+ 
+Rows: 1:7
++-----------+-----------
+         C:1         C:2
++-----------+-----------
+           0           0
+         250           1
+         100           2
+          40           3
+         175           4
+         225           5
+           0           6
+Beginning VICAR task LABEL
+LABEL version 2017-03-30
+************************************************************
+ 
+        ************  File e.gr1 ************
+                3 dimensional GRAPH1 file
+                File organization is BSQ
+                Pixels are in BYTE format from a VAX-VMS host
+                1 bands
+                1 lines per band
+                512 samples per line
+                0 lines of binary header
+                0 bytes of binary prefix per line
+---- Task: GEN -- User:  --  ----
+IVAL=0.0
+SINC=0.0
+LINC=0.0
+BINC=1.0
+MODULO=0.0
+---- Task: QSAR -- User:  --  ----
+---- Task: RASTOVEC -- User:  --  ----
+ 
+************************************************************
+Beginning VICAR task GRUTIL
+Beginning VICAR task MF
+mf version 05-May-2011
+Beginning VICAR task IBIS
+Beginning VICAR task IBIS
+ 
+Number of Rows:64  Number of Columns: 4       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:30
++-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4
++-----------+-----------+-----------+-----------
+      100.01        0.01        0.00        0.00
+      100.01      100.01        0.00        0.00
+        0.01      100.01        0.00        0.00
+        0.01        0.01        0.00        0.00
+      100.01        0.01        0.00        0.00
+        0.00        0.00        0.00        0.00
+       98.01        2.01        1.00        0.00
+       98.01        4.01        1.00        0.00
+       96.01        4.01        1.00        0.00
+       96.01        2.01        1.00        0.00
+       98.01        2.01        1.00        0.00
+        0.00        0.00        0.00        0.00
+       91.01       29.01        2.00        0.00
+       91.01       39.01        2.00        0.00
+       71.01       39.01        2.00        0.00
+       71.01       59.01        2.00        0.00
+       91.01       59.01        2.00        0.00
+       91.01       69.01        2.00        0.00
+       61.01       69.01        2.00        0.00
+       61.01       29.01        2.00        0.00
+       81.01       29.01        2.00        0.00
+       86.01       29.01        2.00        0.00
+       91.01       29.01        2.00        0.00
+        0.00        0.00        0.00        0.00
+       86.01       24.01        3.00        0.00
+       86.01       29.01        3.00        0.00
+       81.01       29.01        3.00        0.00
+       81.01       24.01        3.00        0.00
+       86.01       24.01        3.00        0.00
+        0.00        0.00        0.00        0.00
+ 
+Rows: 31:50
++-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4
++-----------+-----------+-----------+-----------
+       51.01        9.01        4.00        0.00
+       51.01       19.01        4.00        0.00
+       31.01       19.01        4.00        0.00
+       31.01        9.01        4.00        0.00
+       51.01        9.01        4.00        0.00
+        0.00        0.00        0.00        0.00
+       41.01       39.01        5.00        0.00
+       41.01       89.01        5.00        0.00
+       11.01       89.01        5.00        0.00
+       11.01       39.01        5.00        0.00
+       41.01       39.01        5.00        0.00
+        0.00        0.00        0.00        0.00
+       31.01       59.01        6.00        0.00
+       31.01       69.01        6.00        0.00
+       21.01       69.01        6.00        0.00
+       21.01       59.01        6.00        0.00
+       31.01       59.01        6.00        0.00
+        0.00        0.00        0.00        0.00
+        0.00        0.00        0.00        0.00
+        0.00        0.00        0.00        0.00
+Beginning VICAR task ZIPCOL
+ZIPCOL version 6-MAR-95
+UPDATE file is IBIS-2
+Reference  file is IBIS-2
+Beginning VICAR task IBIS
+ 
+Number of Rows:64  Number of Columns: 4       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:30
++-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4
++-----------+-----------+-----------+-----------
+      100.01        0.01        0.00        0.00
+      100.01      100.01        0.00        0.00
+        0.01      100.01        0.00        0.00
+        0.01        0.01        0.00        0.00
+      100.01        0.01        0.00        0.00
+        0.00        0.00        0.00        0.00
+       98.01        2.01        1.00      250.00
+       98.01        4.01        1.00      250.00
+       96.01        4.01        1.00      250.00
+       96.01        2.01        1.00      250.00
+       98.01        2.01        1.00      250.00
+        0.00        0.00        0.00        0.00
+       91.01       29.01        2.00      100.00
+       91.01       39.01        2.00      100.00
+       71.01       39.01        2.00      100.00
+       71.01       59.01        2.00      100.00
+       91.01       59.01        2.00      100.00
+       91.01       69.01        2.00      100.00
+       61.01       69.01        2.00      100.00
+       61.01       29.01        2.00      100.00
+       81.01       29.01        2.00      100.00
+       86.01       29.01        2.00      100.00
+       91.01       29.01        2.00      100.00
+        0.00        0.00        0.00        0.00
+       86.01       24.01        3.00       40.00
+       86.01       29.01        3.00       40.00
+       81.01       29.01        3.00       40.00
+       81.01       24.01        3.00       40.00
+       86.01       24.01        3.00       40.00
+        0.00        0.00        0.00        0.00
+ 
+Rows: 31:50
++-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4
++-----------+-----------+-----------+-----------
+       51.01        9.01        4.00      175.00
+       51.01       19.01        4.00      175.00
+       31.01       19.01        4.00      175.00
+       31.01        9.01        4.00      175.00
+       51.01        9.01        4.00      175.00
+        0.00        0.00        0.00        0.00
+       41.01       39.01        5.00      225.00
+       41.01       89.01        5.00      225.00
+       11.01       89.01        5.00      225.00
+       11.01       39.01        5.00      225.00
+       41.01       39.01        5.00      225.00
+        0.00        0.00        0.00        0.00
+       31.01       59.01        6.00        0.00
+       31.01       69.01        6.00        0.00
+       21.01       69.01        6.00        0.00
+       21.01       59.01        6.00        0.00
+       31.01       59.01        6.00        0.00
+        0.00        0.00        0.00        0.00
+        0.00        0.00        0.00        0.00
+        0.00        0.00        0.00        0.00
+Beginning VICAR task IBIS
+Beginning VICAR task POLYSCRB
+POLYSCRB version 2-JAN-95
+POLYSCRB NORMAL TERMINATION
+Beginning VICAR task FLOT
+FLOT version May 21 2015
+Beginning VICAR task HIST
+*** HIST version 2017-08-08 ***
+
+Bin Width =        1.0
+          0     9578   **************************************************  1
+         40*      20   *****
+        100*     174   **************************************************  2
+        175*      60   *****************
+        225*     160   *********************************************
+        250*       8   **
+
+AVERAGE GRAY LEVEL=6.670000
+STANDARD DEVIATION=34.29958
+NUMBER ELEMENTS=     10000
+MIN. DN=         0
+MAX. DN=       250
+
+Beginning VICAR task STRETCH
+STRETCH version 11 Jan 2013
+*** TABLE STRETCH MODE ***
+Beginning VICAR task PAINT
+PAINT version 6-MAR-10
+       7 PRELIMINARY REGIONS
+       6 REGIONS PAINTED
+Beginning VICAR task HIST
+*** HIST version 2017-08-08 ***
+
+Bin Width =        1.0
+          1*    7258   **************************************************  1
+          2        1
+          3      711   *************************
+          4       16
+          5      171   ******
+          6     1421   **************************************************  2
+        255*     422   **************
+
+AVERAGE GRAY LEVEL=12.64480
+STANDARD DEVIATION=50.90284
+NUMBER ELEMENTS=     10000
+MIN. DN=         1
+MAX. DN=       255
+
+Beginning VICAR task STRETCH
+STRETCH version 11 Jan 2013
+*** TABLE STRETCH MODE ***
+Beginning VICAR task HIST
+*** HIST version 2017-08-08 ***
+
+Bin Width =        1.0
+          0     7258   **************************************************  1
+         40*      16
+        100*     711   *************************
+        175*     171   ******
+        225*    1421   **************************************************  2
+        250*       1
+        255*     422   **************
+
+AVERAGE GRAY LEVEL=52.92500
+STANDARD DEVIATION=91.54403
+NUMBER ELEMENTS=     10000
+MIN. DN=         0
+MAX. DN=       255
+
+Beginning VICAR task HIST
+*** HIST version 2017-08-08 ***
+
+Bin Width =        1.0
+          0     7571   **************************************************  1
+         40*      25
+        100*     800   ****************************
+        175*     200   *******
+        225*    1400   **************************************************  2
+        250*       4
+
+AVERAGE GRAY LEVEL=43.20000
+STANDARD DEVIATION=81.62573
+NUMBER ELEMENTS=     10000
+MIN. DN=         0
+MAX. DN=       250
+

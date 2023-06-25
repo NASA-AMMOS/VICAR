@@ -1,0 +1,1469 @@
+process help=*
+PARM INP TYPE=STRING COUNT=2
+PARM OUT TYPE=STRING COUNT=1
+PARM IN_MESH TYPE=STRING COUNT=(0:2) DEFAULT=--
+PARM IN_NORMAL TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM IN_RANGE TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM OUT_COEFS TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM OUT_QUALITY TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM BANDS TYPE=INTEGER COUNT=(0:2) DEFAULT=1
+PARM PYRLEVEL TYPE=INTEGER COUNT=1 DEFAULT=0 VALID=0:16
+PARM MIN_RANGE TYPE=REAL COUNT=1 DEFAULT=0.1
+PARM MAX_RANGE TYPE=REAL COUNT=1 DEFAULT=100000
+PARM RIGHT_MAX_DIST TYPE=REAL COUNT=1 DEFAULT=0
+PARM SAMP_RANGE TYPE=KEYWORD COUNT=1 VALID=("LINEAR", "POWER") DEFAULT="POWER"
+PARM LINEAR_STEP TYPE=REAL DEFAULT=-50
+PARM POWER_STEP TYPE=INTEGER DEFAULT=1 
+PARM EPI_STEP TYPE=INTEGER DEFAULT=2 
+PARM TEMPLATE TYPE=INTEGER COUNT=(0:2) DEFAULT=11
+PARM SEARCH TYPE=INTEGER COUNT=1 DEFAULT=4
+PARM SCORE_MIN TYPE=REAL COUNT=(0:1) VALID=(0:1)
+PARM FILTER TYPE=KEYWORD COUNT=1 VALID=("nofilter", "filter") DEFAULT="nofilter"
+PARM FILTER_SIZE TYPE=REAL COUNT=(1:2) DEFAULT=1.1
+PARM SEP_ANGLE TYPE=REAL COUNT=(0:1) DEFAULT=-- VALID=(0:360)
+PARM PLANENORM TYPE=REAL COUNT=(0:3) DEFAULT=--
+PARM HIT_MIN_ANGLE TYPE=REAL COUNT=1 DEFAULT=10
+PARM GAP_INPUT TYPE=KEYWORD COUNT=1 VALID=("EMPTY", "FULL_SWEEP") DEFAULT="FULL_SWEEP" 
+PARM RUN_PYR TYPE=KEYWORD COUNT=1 VALID=("RUN_PYR","NORUN_PYR") DEFAULT="RUN_PYR"
+PARM MAX_PYR_SIZE TYPE=INTEGER COUNT=1 VALID=(128:10000) DEFAULT=500 
+PARM GRID_TILE TYPE=INTEGER COUNT=(0:2) DEFAULT=5
+PARM RES_RATIO_MAX TYPE=REAL COUNT=(0:1) DEFAULT=20
+PARM TILE_SIZE TYPE=INTEGER COUNT=(0:2) DEFAULT=--
+PARM CHECK TYPE=KEYWORD COUNT=1 VALID=("nocheck", "check") DEFAULT="nocheck"
+PARM OVERLAP_CHECK TYPE=NAME DEFAULT=DUMY
+
+PARM STAT_FILTER TYPE=KEYWORD COUNT=1 VALID=("STAT_FILTER","NOSTAT_FILTER") DEFAULT="NOSTAT_FILTER"
+PARM STAT_EXTENT TYPE=INTEGER COUNT=1 DEFAULT=2
+PARM STAT_STHRESHOLD TYPE=REAL COUNT=1 DEFAULT=1.2
+PARM STAT_NTHRESHOLD TYPE=INTEGER COUNT=1 DEFAULT=50 VALID=(0:100)
+
+PARM MASK_ON TYPE=KEYWORD COUNT=1 VALID=("MASK_ON", "MASK_OFF") DEFAULT="MASK_OFF"
+PARM MASK_DN TYPE=REAL COUNT=(1:200) DEFAULT=0
+PARM MASK_EXTENT TYPE=INTEGER COUNT=(0:2) DEFAULT=0 
+PARM MASK_TEMPLATE TYPE=KEYWORD COUNT=1 VALID=("MASK_TEMPLATE", "MASK_NOTEMPLATE") DEFAULT="MASK_NOTEMPLATE" 
+
+PARM OUT_DRAW TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM DRAW_COORD TYPE=INTEGER COUNT=(0:2) DEFAULT=-10
+
+PARM TILING TYPE=KEYWORD COUNT=1 VALID=("TILING", "NOTILING") DEFAULT="TILING"
+
+PARM MULTI_PLANE TYPE=KEYWORD COUNT=1 VALID=("MULTI_PLANE", "NOMULTI_PLANE") DEFAULT="NOMULTI_PLANE"
+PARM MULTI_NUM TYPE=INTEGER COUNT=1 VALID=(1:10) DEFAULT=3
+PARM LEVEL_PLANE TYPE=KEYWORD COUNT=1 VALID=("LEVEL_PLANE", "NOLEVEL_PLANE") DEFAULT="LEVEL_PLANE"      
+PARM ADJUST_PLANE TYPE=KEYWORD COUNT=1 VALID=("ADJUST_PLANE","NOADJUST_PLANE") DEFAULT="NOADJUST_PLANE"
+PARM SHIFT_EPI TYPE=KEYWORD COUNT=1 VALID=("SHIFT_EPI","NOSHIFT_EPI") DEFAULT="SHIFT_EPI"
+PARM EWA TYPE=KEYWORD COUNT=1 VALID=("EWA_BOTH","EWA_LEFT","EWA_RIGHT", "EWA_OFF") DEFAULT="EWA_BOTH"
+PARM EWA_THRESHOLD TYPE=REAL COUNT=1 VALID=(1:100) DEFAULT=1.2
+PARM KEWA_SIGMA TYPE=REAL COUNT=1 DEFAULT=0.5
+PARM KEWA_NSIGMA TYPE=INTEGER COUNT=1 DEFAULT=3
+PARM KEWA_NSAMPLES TYPE=INTEGER COUNT=1 DEFAULT=10000
+
+
+PARM NAVTABLE TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM CONFIG_PATH STRING DEFAULT="$MARS_CONFIG_PATH"
+PARM MATCH_METHOD TYPE=STRING COUNT=(0:1) VALID=("LOOSE", "TIGHT") +
+        DEFAULT=LOOSE
+PARM MATCH_TOL TYPE=REAL COUNT=1 DEFAULT=.002
+PARM POINT_METHOD TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM NOSITE TYPE=KEYWORD COUNT=(0:1) VALID=NOSITE DEFAULT=--
+
+PARM OMP_ON TYPE=KEYWORD VALID=(OMP_ON,OMP_OFF) DEFAULT=OMP_ON
+
+PARM DATA_SET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM DATA_SET_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM RELEASE_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCT_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_INST TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_TYPE TYPE=STRING COUNT=(0:1) DEFAULT=--
+
+PARM RSF TYPE=STRING COUNT=0:100 DEFAULT=--
+PARM DEBUG_RSF TYPE=KEYWORD COUNT=0:1 VALID=DEBUG_RSF DEFAULT=--
+PARM COORD TYPE=KEYWORD VALID=("FIXED", "INSTRUMENT", "SITE", "ROVER", +
+	"LOCAL_LEVEL") DEFAULT="INSTRUMENT"
+PARM COORD_INDEX TYPE=INTEGER COUNT=0:10 DEFAULT=--
+PARM FIXED_SITE TYPE=INTEGER COUNT=0:1 DEFAULT=--
+PARM SOLUTION_ID TYPE=STRING COUNT=0:1 DEFAULT=--
+
+END-PROC
+
+.TITLE
+VICAR program MARSECORR.
+
+
+
+
+.HELP
+PURPOSE:
+Marsecorr, which stands for Mars Epipolar Correlation, is a correlation 
+program that accounts for all camera types and acquisition geometries between 
+two images to perform first-stage disparity map computation. This program is 
+similar to the use of marsjplstereo prior to using affine correlator marscor3.
+One of the limitation of marsjplstereo is the linearization of the images prior
+to correlation which can be highly distorded if the epipoles are close or within
+the image frames. marsjplstereo also does not support of PSPH PIG format at the
+time of writing.
+
+Instead of a pre-linearization and looking for matching pixel along the line, 
+this program follows (for each left-image pixel) the corresponding epipolar 
+curve in the right image, and locally pseudo-linearize (homography transform) 
+w.r.t. the right image prior to correlation with the left image.
+
+
+
+EXECUTION:
+Here are the main expected calls:
+
+The simplest call:
+marsecorr inp=\(leftImage.img, rightImage\) out=disparity.img
+
+Adding a post-processing filter to remove outliers:
+marsecorr inp=\(leftImage.img, rightImage\) out=disparity.img -STAT_FILTER
+
+For non-standard stereo, long-baseline, gonio-type:
+marsecorr inp=\(leftImage.img, rightImage\) out=disparity.img -STAT_FILTER
+-MULTI_PLANE
+This will be a longer process, but more robust to complex topography.
+If topography is mostly flat, don't use this. It is meant for scene where an
+approximation of the topography by a single plane orientation would be highly 
+incorrect. 
+
+If a prior topography is available, a mesh for instance, it can be used to 
+narrow down the range bracket search and estimate the surface normal. A call
+with an input mesh would be:
+marsecorr inp=\(leftImage.img, rightImage\) out=disparity.img IN_MESH =
+\(mesh.obj,file.xy\)
+file.xyz is a standard vicar file whose CS corresponds to the CS of the mesh. 
+This is a (hopefully) temporary hack to provide the CS of the mesh as, as of 
+now, the mesh ancillary does not contain enough information to reconstruct a 
+full CS. 
+
+A busier call:
+marsecorr inp=\(leftImage.img, rightImage\) out=disparity.img out_coefs=coefs.vic
+out_quality=qual.vic PYRLEVEL=1 MAX_RANGE=50 -STAT_FILTER
+
+Default Options.
+Here are some of the most significant options that are activated by default:
+- Pyramidal approach:
+Images are downsampled to a small size and results are used to reduce range 
+search at next pyramid level. This improve speed and quality. See RUN_PYR
+- Perpendicular epipolar offset correction:
+At each pyramid level, the offset found between the match location and the
+epipolar curve (in theory should be 0, but is not because of imperfection and
+camera relative position error) is accounted for in the next pyramid level. 
+This improves speed by reducing the need for a large SEARCH. See SHIFT_EPI.
+- Horizontal plane:
+Because most in-situ images display level-ish flat ground, the level plane is
+automatically added to the list of planes used for projecting the images.
+See LEVEL_PLANE.
+
+
+
+
+PROCESSING:
+The goal is to get, for each pixel of the left image, the corresponding pixel
+in the right image.
+
+The idea is to project each pixel of the left image out to the 3D world at some
+given range and on a given surface (plane usually) and backproject them to the 
+right image. A matching score is computed for each range backprojection. The 
+best score indicates the matching between left and right pixels (winner-takes-all
+strategy). However, doing this on a pixel scale leads to very long processing 
+time. Instead, a plane-sweep + local "linearization" of the camera is used to 
+process the image by "tiles", i.e., by small chunk at the scale of which the 
+transform between L and R can reasonably be approximated by an homography.
+
+The basic approach is as follow:
+- The left image is sliced in tiles (TILE_SIZE) and each tile is processed 
+independently (multithreading over the tiles). At the tile level, the camera 
+model is assumed to be a linear (pinhole) model. This allows to use a 
+homography transform between L and R which speeds up the process.
+- For each tile:
+  -- A list of ranges is defined such that the tile corners, once projected out
+     to the 3D world at the range locations and backprojected to the right
+     image are spaced by about EPI_STEP pixels along the epipolar curve. There
+     are three ways to provide a range of "ranges" to consider (see 3D World 
+     Input Prior).
+     Along with the list of range, the projection plane orientation (or several
+     planes orientations - see MULTI_PLANE) is defined (see 3D World Input Prior). 
+  -- For each of the planes orientations in the list:
+     -- For each of the ranges in the list:
+        * A subgrid of pixels in the tile (see GRID) of the left image are 
+        projected on the current plane at the current range, and backprojected 
+        onto the right image. 
+        * An homography transform is defined from these "tiepoints" using a Least 
+        Square approach.
+        * The right image is then projected on the Left tile using the homography.
+        * The tiles are then correlated for each pixels, using the Pearson 
+        correlation coefficient. Pixel-wise, no subpixel precision.
+  -- For each pixel of the left tile, the best correlation score (for each range
+     location and plane orientation) is kept, along with the position in the 
+     right image (the disparity) and the corresponding affine transform. Note that
+     altough the process is done with an homography, an affine transform is also
+     defined from the same points and is saved instead. This is due to marscor3 
+     not supporting homography as of writing.
+
+Once all tiles are processed, the output is filtered out if SCORE_MIN is used
+and outlier filetered (STAT_FILTER) if used.
+
+
+
+
+3D WORLD INPUT PRIOR.
+In the process of scanning the epipolar line in the Right image to find a match
+with a given Left image pixel, the Right image pixels are projected out on a
+surface plane (plane defined by a range distance from the Left camera and an
+orientation) and back-projected to the left image for comparison using 
+correlation. Both the range bracket (the list of ranges) and the orientation(s) 
+are important to maximize the chance of finding the corresponding Right pixel. 
+Depending on the situation we might have a prior knowledge (or not) of the 
+surface which could be used to guide the projection plane definition to maximize
+the chance of finding the correct match and speed up the process: 
+
+The default situation assumes no prior knowledge of the surface. In that case,
+all the range between MIN_RANGE and MAX_RANGE are tested and the surface plane 
+orientations (its normal) default to the plane perpendicular to the look 
+direction of each tile center pixel (in addition to level plane LEVEL_PLANE
+which is activated by default), unless the user sets it with PLANENORM or uses
+MULTI_PLANE. The large number of ranges/planes needed to make sure the matching 
+pixel is not missed can lead to long processing time.
+
+There are situations where a prior knowledge of the topography, even if 
+low-resolution compared to the L/R images, could be used to "guide" the depth
+search and surface plane orientation. For instance, the topography has been
+estimated from a NavCam pair and it could be used to process some mastcam 
+images of the same area. In that case, instead of scanning the entire search 
+space between MIN_RANGE/MAX_RANGE, a smaller bracket centered around the 
+topography prior is scanned, which can dramatically speed up the process. The
+local surface plane normal can also be estimated from that topographic prior. 
+
+There are two formats available to supply topography priors:
+- IN_RANGE/IN_NORMAL: These files, which can be supplied independently of each
+other, are a range file and a surface normal file. They must be in the Left
+image frame, which means that it might require a pre-processing step, consisting
+in *projecting* the range and/or surface normal dataset into the Left image 
+frame. That is, same dimensions, expressed in the Left image camera CS. Pixels 
+for which the topography is unknown (gaps, out of fov, etc) should be set to 0.
+- IN_MESH: A mesh (.OBJ) of the topography, along with a vicar file whose CS 
+corresponds to the CS of the mesh. Usually is will be the XYZ vicar file from 
+which the mesh was computed, but it doesn't have to. The need of a vicar file
+comes from the unablility to construct a full CS from the limited CS information
+stored in the mesh ancillary. No other information is used from the XYZ vicar
+file. Just the CS. This might change in the futur. The advantage of IN_MESH over
+IN_RANGE/IN_NORMAL, is that there is no need to project the topo prior into the 
+Left image. One mesh can be used on several images directly.
+
+Note that the mesh input has priority over the IN_RANGE and IN_NORMAL. If all 
+are supplied, IN_RANGE/IN_NORMAL are not used.
+
+How does the topography prior is accounted for?
+For each tile, the min/max ranges and average surface normal are computed. The
+average surface normal defines the orientation of the projection plane for that
+tile. A small range of depths centered around the min/max ranges is defined, 
+which [min range - step, max range + step], with step defined from SAMP_RANGE, 
+LINEAR_STEP, POWER_STEP. That depth bracket will be the depth search space for 
+that tile. 
+Depending on the coverage of the topographic prior, some tiles might be not 
+covered at all by the topography prior (large gaps in the topography, part
+of the image out of FOV w.r.t the topography prior, etc). In that case, there
+are two strategies (GAP_INPUT) to fill in the range and surface normal 
+for these tiles:
+- EMPTY: don't do anything. Essentially these tiles won't be processed and the
+disparity output for all pixels of that tile will be 0 (no matching)
+- FULL_SWEEP: Run the full depth scan between MIN_RANGE/MAX_RANGE with the set
+number of plane orientation (PLANENORM, MULTI_PLANE, LEVEL_PLANE).
+
+
+PROCESSING TIME AND MULTI-THREADING
+The main process is multi-threaded using openMP. The parallelism is done on the
+tile list. The default tile size is defined from the TEMPLATE size and is
+3xTEMPLATE size. Tile size cannot be smaller than TEMPLATE. They can be larger, 
+but if one wants to have optimal processing time, the tiles have to be sized in
+such a way that all threads get involved. So setting a tile size of 512x512 on a
+1024x1024 image will only use 4 threads.
+
+
+
+ELLIPSOID WEIGHTED AVERAGE (EWA) resampler
+The combination of the two image geometries and projection plane result in 
+an affine transform between the left and right image that can have strong
+distortion. Such affine transform are the combination of a rotation, a shear
+in X and Y, and another rotation. The shear represents the minification or 
+magnification of one image w.r.t. the other in directions given by the 
+rotation. If one wants to use the affine tranform to project one image to the
+other without introducing distortion (aliasing), that directional shear must be
+accounted for. To do so, we use the EWA resampler, which is a Gaussian kernel
+based resampler that accounts for the affine directional shear. Essentially,
+a symetric gaussian kernel interpolator in the destination image is "deformed"
+according to the affine transform to define the kernel in the source image.
+Usually, the destination is the Left image and the source the Right image.
+The objective is to get the left image and the projected right image to have
+the same frequency content. For the right image, it is dealt with the EWA
+resampler which simultaneously low-pass the image in the necessary directions
+and interpolate the pixel values. The left image is the destination, so it
+doesn't need interpolation. However it might need a low pass filtering as some
+of the left frequencies may not be present in the right image. This is also 
+defined from the affine transform (its inverse actually). So, in practice, the 
+EWA resampler is used on both the left and right image.
+
+In a naive approach, one might uses a simple interpolator like the bicubic to
+reproject the right image and just take as-is the left image. This would 
+provide good results if the affine transform contains a negligible shear. Which
+is actually the case for a lot of situations (standard stereo). And a much
+faster approach to EWA.
+
+The two approaches are implemented in the program and can be combined/accessed
+by with EWA parameter. EWA activates the use of the EWA filter if it's needed 
+(depends on affine transform) on the Left image only, or the Right image only, 
+or both, or none (see EWA). If that filter is activated for a given image (left,
+righ or both) and it is not needed given the affine transform, then the bicubic 
+interpolator is used. If it is not activated for a given image, then the bicubic 
+(for right image) or as-is (for left image) are used no matter what the affine 
+transform is. If EWA is activated, the threshold at which EWA is used vs bicubic 
+is controlled by EWA_THRESHOLD. In theory EWA should be activated as soon as the 
+shear is > 1, but in practice, that threshold can go a bit higher without too
+much effect on the result, but with decreased processing time.  
+
+
+
+
+.page
+
+HISTORY:
+2018-12 ayoubfra  Initial implementation. 
+2019-05 ayoubfra  Use tiling and plane sweep for efficiency. 
+2019-09 ayoubfra  Add IN_NORMAL and IN_RANGE. 
+2019-10 ayoubfra  Add IN_MESH. 
+2020-02 ayoubfra  Add PROGRESSIVE
+2020-07 ayoubfra  remove PROGRESSIVE, add MULTI_PLANE, SHIFT_EPI, RUN_PYR
+
+COGNIZANT PROGRAMMER:  F. Ayoub
+
+.LEVEL1
+
+.VARI INP
+Input images.
+
+.VARI IN_NORMAL
+Input low-res surface normal
+
+.VARI IN_RANGE
+Input low-res surface range
+
+.VARI IN_MESH
+Input mesh file
+
+.VARI OUT
+Output disparity map.
+
+.VARI OUT_COEFS
+Output affine coefficients
+map.
+
+.VARI OUT_QUALITY
+Output pearson correlation
+coefficient map. 
+
+.VARI BANDS
+Band id to process
+
+.VARI PYRLEVEL
+Pyramid level.
+
+.VARI MIN_RANGE
+minimum range.
+
+.VARI MAX_RANGE
+maximum range.
+
+.VARI RIGHT_MAX_DIST
+plane minimum distance
+from Right camera
+
+.VARI SAMP_RANGE
+range sampling 
+strategy.
+
+.VARI LINEAR_STEP
+range sampling step
+with linear strategy.
+
+.VARI POWER_STEP
+range sampling step
+with power law  strategy.
+
+.VARI EPI_STEP
+stepping length -in pixel-
+along epipolar curve.
+
+.VARI TEMPLATE
+Correlation window 
+size.
+
+.VARI SEARCH
+Search range in epipolar
+perpendicular direction.
+
+.VARI SCORE_MIN
+Minimum correlation score
+acceptable.
+
+.VARI FILTER
+pre low-pass images.
+
+.VARI FILTER_SIZE
+Low-pass filter
+intensity.
+
+.VARI FILTER_CONST
+Scale low-pass filter
+intensity.
+
+.VARI SEP_ANGLE
+maximum relative angle between
+left and rigth cameras
+
+.VARI PLANENORM
+plane normal orientation
+
+.VARI HIT_MIN_ANGLE
+Minimum ray hit angle with
+the surface plane
+
+.VARI GAP_INPUT
+strategy for projection plane
+selection
+
+.VARI GRID_TILE
+subgrid to define homography
+
+.VARI RES_RATIO_MAX
+maximum allowed L/R resolution
+ratio
+
+.VARI TILE_SIZE
+Tile size for applying
+pinhole model
+
+.VARI CHECK
+whether or not run an overlap
+check only
+
+.VARI OVERLAP_CHECK
+output variable for potential
+overlap percentage
+
+.VARI STAT_FILTER
+Activate post-process outlier
+filteting
+
+.VARI STAT_EXTENT
+Number of pixel to extend the
+filter neighborood window
+
+.VARI STAT_STHRESHOLD
+Scaler for similarity threshold
+
+.VARI STAT_NTHRESHOLD
+percentage of similar pixel
+in neighborood to validate pixel
+
+.VARI MASK_ON 
+Activate mask filtering
+
+.VARI MASK_DN 
+DN values in image to mask
+
+.VARI MASK_EXTENT
+Extend mask in X and Y
+
+.VARI MASK_TEMPLATE
+Extend mask based on 
+template size
+
+.VARI OUT_DRAW
+Draw epipolar curve.
+
+.VARI DRAW_COORD
+pixel coordinates to
+draw epipolar curve.
+
+.VARI TILING
+Activate image tiling 
+considertion
+
+.VARI MULTI_PLANE
+Activate multi-plane
+orientations
+
+.VARI MULTI_NUM
+Control number of 
+planes
+
+.VARI LEVEL_PLANE
+Add horizontal plane
+
+.VARI ADJUST_PLANE
+adjust projection plane for
+proper incidence angle
+
+.VARI SHIFT_EPI
+Activate perp epipolar
+offset correction
+ 
+.VARI EWA
+Activate ewa resampler
+ 
+.VARI EWA_THRESHOLD 
+trigger ewa
+
+.VARI KEWA_SIGMA 
+ewa gauss kernel sigma
+
+.VARI KEWA_NSIGMA 
+ewa number of sigmas
+
+.VARI KEWA_NSAMPLES 
+ewa kernel number of
+samples
+
+.VARI NAVTABLE
+Corrected navigation filename
+
+.VARI CONFIG_PATH
+Path used to find
+configuration/calibration
+files.
+
+.VARI MATCH_METHOD
+Specifies a method
+for pointing corrections.
+
+.VARI MATCH_TOL
+Tolerance value for
+matching pointing params
+in pointing corrections file.
+
+.VARI POINT_METHOD
+Specifies a mission-
+specific pointing
+method to use
+
+.VARI NOSITE
+Disables coordinate
+system sites.
+
+.VARI OMP_ON
+Turns on or off parallel
+processing (default: on)
+
+.VARI DATA_SET_NAME
+Specifies the full name given
+to a data set or a data product.
+
+.VARI DATA_SET_ID
+Specifies a unique alphanumeric
+identifier for a data set or data
+product.
+
+.VARI RELEASE_ID
+Specifies the unique identifier
+associated with the release to the
+public of all or part of a data set.
+The release number is associated with
+the data set, not the mission.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique
+identifier assigned to a data
+product by its producer.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier
+of an entity associated with the
+production a data set.
+
+.VARI PRODUCER_INST
+Specifies the full name of the
+identity of an entity associated
+with the production of a data set.
+
+.VARI TARGET_NAME
+Specifies a target.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target.
+
+.VARI RSF
+Rover State File(s) to use.
+
+.VARI DEBUG_RSF
+Turns on debugging of RSF
+parameter.
+
+.VARI COORD
+Coordinate system to use
+
+.VARI COORD_INDEX
+Coordinate system index for
+some COORD/mission combos.
+
+.VARI FIXED_SITE
+Which site is FIXED for
+rover missions.
+
+.VARI SOLUTION_ID
+Solution ID to use for
+pointing correction.
+
+
+
+.LEVEL2
+.VARI INP
+Input images. Needs to be 2 images, the left and the right images of the 
+stereo pair.
+
+.VARI OUT
+Output disparity image. It's a two bands files containing the disparity
+in line and sample. It has the same size as the left image scaled with the
+pyramid level factor (left size / 2^(pyramid level)).
+
+.VARI IN_MESH
+This 2-elements parameter supplies a mesh (.OBJ) as a surface prior. The first
+element is the .OBJ file, while the second element is a vicar file whose 
+coordinate system (CS) corresponds to the CS of the mesh. Usually is will be the
+XYZ vicar file from which the mesh was computed, but it doesn't have to. The 
+need of that vicar file comes from the unablility to construct a full CS from 
+the limited CS information stored in the mesh ancillary. This might change in 
+the futur. 
+When processing a given tile of the Left image, all pixels of that tile are
+projected onto the mesh and the average range (distance Left camera to mesh
+surface) and average surface normal are computed. They will be used to define
+the plane onto which the Right image will be projected onto and back to the Left
+image for correlation.
+(Note for improvement: might be best to compute the min/max instead
+of the average and extend the search range from these min/max values. Could be
+usefull in case a tile contains a close range and far range feature due to 
+some occlusions).
+
+.VARI IN_NORMAL
+Surface normal file that will provide a local orientation of the plane to
+project onto. The file is expected to have a 1-to-1 relationship with the
+left imagei (i.e., same size). When processing a given tile of the Left image, 
+the average surface normal vector of the pixels in that tile is computed, which
+defines the surface plane normal onto which the Right image will be projected 
+and back to the left image for correlation. For instance, if Left is a navcam, 
+then IN_NORMAL could be the surface normal file obtained from nav stereo. 
+Otherwise, a corresponding surface normal file has to be generated, with 
+marsdispwarp for instance.
+This input can improve the result by providing a projecting surface more 
+closely matching the actual surface orientation.
+If IN_MESH is used, this parameter is ignored.
+
+.VARI IN_RANGE
+Similar to IN_NORMAL but for the range (i.e., distance) between the camera
+center and the surface. This will provide an initial guess for the range and
+will prevent scanning all the possible ranges (i.e., all along the epipolar 
+line). The average range is computed for each tile, similar to the IN_NORMAL
+case. The program will then use that initial range to set up a small search
+space around that range. The search space is [avg range - step: avg range + step]
+with *step* defined from SAMP_RANGE, LINEAR_STEP, POWER_STEP. 
+This input can significantly reduce the processing time. 
+If IN_MESH is used, this parameter is ignored.
+
+.VARI OUT_COEFS
+Output affine coefficients. It's a 6-bands files containing the local affine
+coefficients of the best matching pixel in the right image. It has the same
+size as the output disparity image.
+Xright = a*Xleft + b*Yleft + c
+Yright = d*Xleft + e*Yleft + f
+The file will contains the a, b, c, d, e, f coefficients. The offsets, i.e., 
+c and f, are set to 0 as that information is contained in the OUT file.
+The local affine transformation for a given pixel in the left image is obtained
+by projecting neighboor pixels onto a plane set at a given distance and whose 
+orientation is the average of the 2 cameras pointing directions, and 
+backprojecting these points in the right image. 
+This affine coefficients file is similar to the one used as input in marscor3
+and could be used along with the disparity map to refine the disparity.
+
+.VARI OUT_QUALITY
+Output Pearson correlation coefficient obtained for the best matching pixel.
+Same size as the output disparity image.
+
+.VARI BANDS
+Band index of the *left* and *right* images to process. Default is the first
+band for both image. If one number is entered, that band index is applied to 
+both image. If two numbers are entered, the first one applies to the first
+image and the second one to the second image. If the band number is larger 
+than the number of bands in the images, the last band is quietly selected.  
+
+.VARI PYRLEVEL
+Pyramid level of the output disparity. Default is 0. 0 is full resolution, 1 is 
+half resolution in each dimension, 2 is quarter, etc.  
+Pyramid level drastically reduces processing times as the number of pixels
+in the left image to match reduces, but also the length of the epipolar curves
+in the right image reduces.
+
+.VARI MIN_RANGE
+A given pixel in the left image is projected out in the 3D world at different
+ranges. The MIN_RANGE variable sets the starting range. Smaller range than 
+MIN_RANGE won't be considered. Default is 10 cm. Must be stricly greater than
+0. No matter the processing options and inputs, any ranges that are outside the
+bracket defined by MIN_RANGE and MAX_RANGE won't be considered.
+
+.VARI MAX_RANGE
+Similar to MIN_RANGE, but for a maximum range. Default is 100,000 m. 
+
+.VARI RIGHT_MAX_DIST
+Set the maximum closeness limit for the right image. 
+When sampling different ranges, the XYZ point is by construction in front and at
+a minimum distance of the left camera. However, the XYZ can end up being very 
+close to the Right camera center (even behind, but there is a check against 
+that). With some camera models (CAHVORE in particular), projection of a very 
+close XYZ to the image plane fails and diverges. This parameters sets that 
+maximum closeness limit to the right camera (optical center). The default one
+seems to work with CAHVORE camera tested. It is not expected to be a parameter
+oftenly modified. In fact, this should be a camera model parameter and not a 
+program parameter.   
+
+.VARI SAMP_RANGE
+There are two ways to sample the range. Linear or power law. A linear law will
+linearly sample the range from MIN_RANGE to MAX_RANGE with a LINEAR_STEP 
+increment (but see LINEAR_STEP for options). Depending on MIN/MAX_RANGE and 
+LINEAR_STEP, this could lead to a very large (and useless) number of range 
+samples. Adjust parameters with caution.
+With the power law approach the sampling range changes with the range. When the
+range is small, the samples are close to each other, and as the range increases,
+the samples are farther and farther appart. The sampling step for a given range
+is controlled by POWER_STEP.
+
+.VARI LINEAR_STEP
+Sets the distance between two consecutives range samples. Two options available:
+If LINEAR_STEP is negative, its (absolute) value indicates the number of samples
+between MIN_RANGE and MAX_RANGE. The step is defined as 
+(MAX_RANGE - MIN_RANGE) / abs(LINEAR_STEP).
+If LINEAR_STEP is positive, its value indicates the step length. From a given
+range to the next, the distance is LINEAR_STEP.
+Default is -50.
+
+.VARI POWER_STEP
+Defines the step between successive range. The value indicates the order of
+magnitude difference between the step and the range value.
+For instance:
+POWER_STEP=0, MIN_RANGE=0.1, MAX_RANGE=50
+ranges: 0.1, 0.2, ..., 0.9, 1, 2, 3,..., 10, 20, 30, 40, 50
+
+POWER_STEP=1, MIN_RANGE=0.1, MAX_RANGE=50
+ranges: 0.1, 0.11, 0.12, ..., 0.98, 0.99, 1, 1.1, 1.2..., 9.9, 10.0, 11, 12,..50
+
+POWER_STEP=2, MIN_RANGE=0.1, MAX_RANGE=50
+ranges: 0.1, 0.101, 0.102, ..., 0.999,  1, 1.01, 1.02..., 9.99, 10.0, 10.1,...50
+
+
+.VARI EPI_STEP
+When looking for a match in the right image of a given left image pixel, we want
+to search along the epipolar curve in the right image. That epipolar curve is 
+defined by projecting the left pixel out at some ranges and projecting them back
+to the right image. EPI_STEP defines the spacing in the right image between each
+successive backprojected points. If EPI_STEP=1, then the range list is defined 
+such that backprojected points are contiguous. If EPI_STEP=5, then the list of
+ranges will be smaller (i.e., less processing) and such that backprojected 
+points are more or less spaced by 5 pixels. Default EPI_STEP is 2.
+The larger EPI_STEP, the faster the process, but at the same time the higher the
+chance of missing the correct location. 
+
+.VARI TEMPLATE
+Size of the correlation window in pixels. Default : 11. 
+Tuning this parameter is an art. Typically, larger values give smooth maps at 
+coarse resolution and not very sensitive to small objects. Small values give 
+finer resolution of disparity maps, but may not converge on some pixels. 
+Correlation window can be rectangular using two parameters (line, sample).
+
+.VARI SEARCH
+Define the search area of the correlation between the left patch and the right 
+patch. It's the same value for x and y direction and the value is the search, 
+in pixel, to be done in left, right, up and down. This search is done for
+each backprojected location, that is for each tested range. At a given range, 
+the right image is projected out to the given range and backprojected to the
+left image. Then, a 2D correlation search is done.  
+
+
+.VARI SCORE_MIN
+For a given left image pixel, if the best correlation score is less than 
+SCORE_MIN, the corresponding disparity is set to 0.
+
+.VARI FILTER
+Activate a pre-processing gaussian low-pass filter applied to both input
+images. This is useful to reduce the noise of the input images.
+Note that this filter is not necessary if PYRLEVEL > 0, as the images are
+automatically filtered before downsampling.
+
+.VARI FILTER_SIZE.
+Scales the intensity of the gaussian low-pass filtering.
+If 1 or less, then no filtering.
+The value of FILTER_SIZE corresponds approximately to the low pass filtering
+that should be done to subsample the image with a factor of FILTER_SIZE. For
+instance, if set to 2, this corresponds to the low pass filtering that would 
+be done if we were to reduce the resolution by a factor of 2. 
+In the case for instance of MSL mastcam images (x3 difference resolution between
+left and right - right being higher resolution), a FILTER_SIZE of (1,3) should 
+be used. Or if one wants to also denoise a little the first image (the second
+image is automatically denoised due to the FILTER_SIZE=3), then (1.1, 3) could 
+be used. If left and right images have the same resolution, and only a small low
+pass filtering is needed to denoise, then a FILTER_SIZE of 1.1 to 1.4 depending
+on the noise level. 
+No effect if FILTER is off.
+
+.VARI FILTER_CONST
+Ultimately, when FILTER is on, the images are low pass filtered with a Gaussian
+kernel. The kernel support is sized to 3-sigmas and the sigma value is defined
+from FILTER_SIZE. However, FILTER_SIZE value is not equal to sigma. The latter 
+is derived from the former using this relation, which is generally accepted in
+the litterature:
+sigma = Cst * SQRT(filter_size ^2 -1) with Cst ~0.5 - 0.8
+FILTER_CONST controls this Cst. Default is 0.6.
+As one can see FILTER_CONST and FILTER_SIZE are related, so the overall low
+pass filtering can be tuned with both. However, FILTER_SIZE should be used
+primarily, with FILTER_CONST being rarely changed. It's actually a parameter
+mostly to avoid having a hard-coded value in the code. 
+No effect if FILTER is off.
+
+.VARI SEP_ANGLE
+If relative camera orientation between Left and Right camera is larger than
+SEP_ANGLE, exit. 
+
+.VARI PLANENORM
+This 3-elements parameter defines the orientation of the plane onto which the 
+image will be projected. PLANENORM defines the plane normal. This parameter will
+be overriden if MULTIPLANE is ON, or if a 3D prior is supplied with IN_NORMAL or
+IN_MESH. 
+
+.VARI HIT_MIN_ANGLE
+This parameter defines the minimium ray hit angle with the plane surface that is
+acceptable. The angle is expressed in degrees, in absolute value, w.r.t the 
+surface proper, not its normal. For instance, if plane and viewing angle are 
+parallel, the angle would be 0. Depending on the plane orientation, a pixel 
+projected on the plane might hit the plane with a very small incidence angle. In
+that case, the projected image will be highly distorted and the correlation has 
+high chances of failing. One option is to project these pixels to infinity. 
+However, the incidence angle limit at which the pixels are projected to infinity 
+will create a discontinuity between the pixels just above the limit and the ones 
+just below. If the incidence angle to the plane is less than the HIT_MIN_ANGLE, 
+the tile processing is skipped, unless ADJUST_PLANE is ON.
+
+.VARI GAP_INPUT
+A 3D prior can be used to refine the surface plane definition onto which the
+image tile will be projected, using IN_RANGE/IN_NORMAL or IN_MESH. Each pixel of
+a left image tile are projected on the 3D prior to retrieve the average range
+(distance between camera and surface) and average surface normal to define
+the projection suface plane. However, in some case, some tiles won't be 
+"covered" with the 3D prior (gap in the prior, prior out of FOV, etc), that is,
+no average range and normal can be defined. The question is how to define the 
+projection surface normal for these tiles. There are three options available 
+which are selected with this parameter:
+- EMPTY: Nothing to do, these tiles won't be processed and the output disparity
+map will be set to 0 for all the pixels of these tiles
+- FULL_SWEEP: The non "covered" tiles get to scan the full range bracket defined
+by MIN_RANGE/MAX_RANGE and use PLANENORM for the surface normal.
+ 
+
+.VARI RUN_PYR
+This parameter activates a pyramidal approach. This is mainly useful to speed
+up the process, although experience shows that it also help the general quality
+of the correlation resutl. When activated, the images are downsampled to a 
+critical size (controlled by MAX_PYR_SIZE). Then the images are correlated at 
+that size on full search range and/or ranges defined from a prior (IN_MESH,
+IN_RANGE). Results are passed on to the next level where the images are one size
+up and the range bracket is narrowed down around the range found in the previous 
+scale. This is reiterated until the final pyramid level of the output 
+correlation. Either full resolution or level given by PYR_LEVEL.
+
+.VARI MAX_PYR_SIZE
+This parameters controls the minimum size of the images allowable by the 
+pyramidal approach. This parameter is only relevant if RUN_PYR is used.
+When pyramical approach is used, the input images are downsampled by a 
+factor of 2, 4, 8, etc.. until one side (col or row) or either the Left or Right
+image is smaller than MAX_PYR_SIZE. When the side size is less than MAX_PYR_SIZE
+then the downsampling stops and the correlation process begins.
+
+
+.VARI GRID_TILE
+By default, to define the homography between the left and right image for a 
+given tiles, the four corners of the tile are projected to the right image
+(at a given range) and the homography is defined from these 4 tie points.
+GRID_TILE define a sub-grid of points in the left tiles to project to the right 
+image and define the homography from these tie-points. If GRID_TILE is set to 5,
+then a 5x5 subgrid of points equally spaced in the tile are projected in the 
+right image, to generate 25 tiepoints which are used to defined the homography 
+using the Direct Linear Transform (DLT) algorithm and Least square.
+Normally the use of GRID_TILE is not necessary. However, in some instances, the 
+camera model presented some instabilities on pixels at the corners/edges which 
+bias the homography when using only the four corners of the tiles, for tiles at 
+the edge of the image. This is mostly the case with non-linear camera such as 
+fisheye or camera with high distortion. The GRID_TILE allows to avoid that 
+problem. If correlation results appear weird/incorrect at the image corners, try
+rerun the process using GRID_TILE.
+
+.VARI RES_RATIO_MAX
+Normally, the difference of scaling between the L and R is automatically 
+accounted for by the algorithm. The difference of resolution could be due to the
+cameras themselves (e.g., the mast cam on MSL which have a resolution difference
+of 3), the geometry of acquisition (e.g., as you move away from one camera, you 
+get closer to the other camera), the projection plane orientation,... In some 
+case, the difference of resolution can be very high (in the hundreds).
+As the algorithm adapts the size of the correlation window based on the 
+scaling difference, the correlation window can grow very large, which will 
+dramatically increase processing time, for usually not much more results (most 
+likely useless part of the images anyway). This parameter allows to put a cap on
+the maximum resolution ratio allowed. If the parameter is activated and the 
+resolution ratio goes beyond the cap, the program will consider that the 
+point is unreliable and skip it.
+
+
+
+.VARI TILE_SIZE
+This defines the size (x and y, in pixels) of the tiles. To account for any
+camera model (linear and non-linear), the left image is sliced into tiles and
+each tile is processed independantly. At the tile level, the camera model is
+approximated by a linear model (pinhole). For linear model (e.g., CAHV) the 
+tile size doesn't have an influence on the accuracy of the approximation as the
+"approximation" is equal to the actual model (but it does in terms of speed
+processing - see below). For other camera model, the larger the size of the 
+tile, the less accurate becomes the approximation. This is mostly true for 
+strongly non-linear model (e.g., CAHVORE), especially at the edge of the image. 
+The goal of the tiling (and its linear model approximation) is to speed up the 
+processing. A linear model allows us to use the homography transform between
+the left and right image at the tile level which dramatically lowers processing
+time as opposed to pixel-wise processing. 
+There is a trade-off to find for the tile size, with three parameters to 
+balance:
+- A larger tiles means more of the left image is processed at once using a 
+homography transform. For non-linear camera, the approximation is less and less
+accurate with larger tiles
+- The multi-threading of the program is done on the tile list. If large tiles
+are used, then all the available threads might not be involved, which would
+cause a lost of processing speed.
+- Too small tile size will augment the number of tiles which will increase the
+number of pinhole model approximation to process, which will increase the 
+processing time.
+The minimum tile size is equal to the TEMPLATE size. If smaller values are
+entered, then they are enlarged to the TEMPLATE size. The default tile size
+is 3xTEMPLATE size which gives all-around good result. For faster processing, 
+a tile size between 50 and 200 are usually good compromise (as long as all
+threads are involved).
+NOTE: If the Right image has a small overlap with the Left image, it is 
+recommended to set not too large tile size. To get an initial estimate of the
+range space to process, the program uses the 4 corners of each tiles in a first
+pass which migh entirely miss the area of overalp and estimate that there is 
+none. Think of it as a too large mesh net for a too small fish to catch.
+
+.VARI_CHECK
+If activated, the program will just estimate the potential overlap between the
+images based on the other inputs (MIN/MAX_RANGE, IN_RANGE, IN_NORMAL, IN_MESH,
+GAP_INPUT) and return the percentage of possible coverage in the ouput 
+variable OVERLAP_CHECK. No actual computation of the disparity map is done. This
+is meant to be a quick fail test to see if it's worth trying computing the 
+disparity between two images.
+
+.VARI OVERLAP_CHECK
+output variable that will contain the percentage of the Left image area that 
+has an intersecting Field Of View (FOV) with the Right image for the range 
+bracket defined by user (either default or from 3D prior). A common FOV does not
+guarantee an actual surface overlap, it just says that given the range bracket 
+there is possibly one.
+The percentage represents the number of tiles with common FOV with the Right
+image over the total number of tiles. This means that the granularity of the
+percentage depends on the number of tiles. For instance, if the Left image
+is sliced into 4 tiles, then the coverage percentage will be either 0, 25, 50, 
+75 or 100 %.
+Note that it only takes one of the corner of a tile to be in the FOV of the 
+Right image to flag the whole tile as having an intersecting FOV.
+
+.VARI STAT_FILTER
+This parameter activate a median-of-sort filter applied to the disparity
+maps. This is meant to remove outliers, and *patch* of similarly-valued 
+outliers. 
+In a truly randomly-distributed outliers situation, a regular median filter 
+usually doesa good job at removing them. The problem with dense correlation, 
+i.e., correlation done for each pixel of the Left image with a TEMPLATE, is that
+a bogus value has high chances to be replicated in the neighbooring pixels. The
+reason is that the TEMPLATE content of a neighbooring pixel has more or
+less the same content that the content of the pixel. Hence, whatever in the
+TEMPLATE content caused a bogus measurement for a particular pixel is likely to
+be present in the TEMPLATE content of the neighboor pixel and cause a similar 
+bogus measurement. It's related to the fattening effect, a well known effect in
+correlation. As a consequence, the correlation map is polluted with *patches* of
+outliers that are hard to remove with a standard median filter.
+The STAT_FILTER is based on the assumption that disparity changes smoothly, so 
+we're checking that the neighborood of a given pixel has a disparity similar to 
+that given pixel. To overcome the fattening effect, the neighborood is defined 
+as the correlation template size (TEMPLATE) slightly augmented by a few pixels. 
+As explained above, the reason is that a salient feature will be seen in a 
+series of neighbooring correlation window (depends on the TEMPLATE size). This
+may cause a patch of uniform outliers which may satisfy the smoothness criteria.
+Therefore a neighborood slightly larger than the template size is taken. 
+Two thresholds are used to check the validity of a pixel:
+- the allowed disparity amplitude difference between the queried pixel and the
+  ones in the neighborood
+- the minimum number of pixels in the neighborood that need to satisfy the 
+  disparity amplitude criteria to deem the current pixel not an outlier
+
+The filter works like this (think of it as sort or median filter):
+For a given pixel:
+- Compute the disparity difference between the pixels of the neighborood and 
+  the disparity of that queried pixel ("remove" the line/samp offset before). 
+- Count the number of pixel whose difference is less than a threshold
+- If that number is larger than a threshold, the current pixel is valid.
+  Otherwise, it is deemed an outlier.
+
+.VARI STAT_EXTENT
+The number of pixels beyond the TEMPLATE size that will define the neighborood.
+Default is 2. So, for instance, if TEMPLATE=9 and STAT_EXTENT=2, then the
+neighborood will be a 13x13 patch.
+
+.VARI STAT_STHRESHOLD 
+This variable indicates the amount of variation in terms of disparity changes
+that is allowed in the neighborood. The default is 1.2. Note that the line/samp 
+disparity has been removed as well as the scale factor between the left and
+right image.
+
+.VARI STAT_NTHRESHOLD 
+Percentage (values between 0 and 100) of the required number of *smooth* pixels
+in the neighborood to validate the current pixel as a good one.
+Default is 50. A large value will force smoothness which will remove more 
+outliers but which may also remove good values that are in an area of strong
+disparity changes. A small value will have the opposite effect, that is keep as
+much inliers are possible but letting more outliers in.
+
+
+.VARI MASK_ON 
+If set, activates the removal of correlated pixels whose DN in the Left image 
+have specific values. This feature was first initiated for M2020 images, where
+black border and zipper effect from compression created fals matches that were
+not filtered out by standard filtering.
+The idea is to create a mask, based on the DN values in the Left image. These
+selected pixels will be removed from the displacement map (set to 0). The user
+sets the DN that he wants to be filtered out with MASK_DN. That mask can be 
+enlarged spatially in X and Y direction with MASK_EXTENT. This is to account for
+edge effect. Finally, the mask can be enlarged further based on the template
+size to account for the correlation window size.
+For instance if MASK_ON, MASK_DN=\0,-10\), MASK_EXTENT=\(10,5\), -MASK_TEMPLATE,
+the mask will be defined like this:
+- Select all pixels in the Left image whose DN values are within 0 and 10
+- For each selected pixels, extend the mask around the pixel by -10,+10 pixels
+in X and -5,+5 pixels in Y. 
+- For each newly selected pixels, extend the mask around each pixel by
+half the template size in both directions in both X and Y.
+All correlations that are part of the mask will have their values set to 0.
+
+.VARI MASK_DN 
+List of DN values to filter out.
+Can be multiple entries. If an entry is negative, all DN whose values are 
+between the previous entry and the current one (absolute val) are masked out.
+
+.VARI MASK_EXTENT
+Mask enlargement (in pixels) in X and Y directions. In both negative and positive
+directions
+
+.VARI MASK_TEMPLATE
+Mask enlargement by half the TEMPLATE size
+
+
+.VARI OUT_DRAW
+This parameter is for debugging or fun or curiosity. It displays the epipolar 
+curve corresponding to left pixels identified with DRAW_COORD. This parameter 
+contains the name of the image file to create that will show the right image
+with overlay of the epipolar curve corresponding to the left pixel(s) and within
+MIN/MAX_RANGE and EPI_STEP. 
+Note that the computation of the disparity map is not happening, only the
+drawing of the epipolar curve.
+
+.VARI DRAW_COORD
+Identify which pixel in left image does the epipolar curve in the right image
+is going to be drawn. There are two strategies based on the sign of the pixel
+coordinates.
+If positive, DRAW_COORD is the pixel coordinates (line, samp) of a given pixel.
+Only one specific pixel can be drawn. If only one value is given, then sample
+and line are set the same. For instance DRAW_COORD=(19,400) then left pixel: 
+line:19, sample:400. If DRAW_COORD=78, then left pixel: line:78, sample:78.
+If negative, it indicates a subgrid sampling in line and sample direction.
+For instance DRAW_COORD=(-10,-20) then every pixel whose line location is 
+multiple of 10 and sample location is multiple of 20 will be drawn. If 
+DRAW_COORD=-50, then every pixel whose line and sample directions is multiple
+of 50 will be drawn.
+
+.VARI TILING
+If ON, account for image tiling. TILING is not related to TILE_SIZE, and is
+just an unfortunate naming conflict. TILING refers to the M2020 image tiling
+process which downsample/upsample image onboard and on ground respectively.
+If ON, then tiling of the image (if any) will be accounted for in the process, 
+in a similar way as marscor3. That is, the size of the correlated patches will 
+be increased such that at least TEMPLATE "real" pixels are correlated. The
+tiling level is set and unique per tile (tile here refers to the slicing of the
+left image in smaller parts whose geometry is approximated by a pinhole) and
+defined by the tiling level of the center pixel of the tile. Other possible 
+approaches include the mode of the downsampling factor for all pixels of the
+tile.
+
+.VARI MULTI_PLANE
+If on, a multi-plane approach will be run. In a simple run of the program, the
+right image is projected on a plane in 3D and backprojected onto the left image.
+The assumption is that the plane approximates the topography sufficiently well.
+If it is not the case, correlation quality suffers. In situation were a single 
+plane is not enough, the multi-plane approach can be activated. In that case, 
+not one, but a series of planes covering the half-sphere, with more or less 
+density (see MULTI_NUM), will be used to successively project the image. A 
+winner-takes-all stategy (on correlation score) is used to get the best match. 
+The assumption is that for a given pixel, the correlation score will be the 
+best when the plane approximating the best the local topography is used.
+The main disadvantage of this approach is the steep increase in processing
+time. It is strongly recommended to use this with -RUN_PYR, as the full list
+of plane orientations will be run on the smallest image, and subsequent larger
+images in the pyramid process will only used a sublist of plane orientations
+defined from the previous pyramid level.
+
+.VARI MULTI_NUM
+This variable control the sampling of the plane orientations in the half-sphere
+that will be used in the MULTI_PLANE approach. It is NOT the actual number of 
+planes, but it defines the number of tilts (or latitude rotations) applied to 
+the default plane orientation (i.e., the plane perpendicular to the look angle 
+of the tile center pixel). And for each tilt, there is a number of longitude
+rotations. The sampling strategy follows the one used in Affine SIFT technique
+to simulate all affine transforms between two images:
+Guoshen Yu, and Jean-Michel Morel, ASIFT: An Algorithm for Fully Affine 
+Invariant Comparison, Image Processing On Line, 1 (2011), pp. 11-38. 
+https://doi.org/10.5201/ipol.2011.my-asift
+It is important to keep MULTI_NUM number as low as possible for two reasons:
+- Processing time will increase significantly with each increase of MULTI_NUM.
+MULTI_NUM=3 corresponds to 18 planes and MULTI_NUM=5 to 56 planes.
+- The more planes, the higher chance of approximating the surface correctly,
+but it also increases the possible solution space, and because of imperfect
+images, geometries, processing, etc, we augment the chance of wrong matches. 
+
+.VARI LEVEL_PLANE
+If ON, the level (horizontal) plane will be added to the list of planes used in
+the program. This is because for in-situ images, the horizontal plane is 
+frequently a very good approximation of part of the image topography. This 
+addition will be irrespective of the use of MULTI_PLANE. If MULTI-PLANE is not 
+activated, 2 planes will therefore be used. The plane defined by PLANENORM (if 
+defined, or the plane normal to the tile pixel center look otherwise) and the 
+horizontal plane. If user define PLANENORM as the horizontal plane, then it 
+won't be added as it is the same.
+WARNING: The horizontal plane is defined as the plane whose normal is (0,0,,-1).
+So, it is required that the CS used is compliant with this. This is not great,
+and it should be agnostic of the CS used. To be corrected eventually.
+
+.VARI ADJUST_PLANE
+There are situations where a given projection plane will be oriented such that
+a pixel will look at it with a very high "grazing" angle or even from "under".
+This could lead to malfunctionning projection. To avoid that case, if the
+viewing angle does not satisfy the HIT_MIN_ANGLE, the projection is skipped 
+altogether. If ADJUST_PLANE is ON, instead of skipping the projection, the
+plane is rotated such that the incidence angle is at HIT_MIN_ANGLE and the 
+projection can proceed. A typical example is when the horizon is seen in the
+image and the projection plane is level (i.e., its normal is ~ (0,0,-1)). 
+Some lines of the image will have strong grazing angle, while some will also
+"see" the projection plane from under. 
+The rotation of the plane occurs around the vector defined by:
+(viewing vector) X (plane normal)  with X:cross product
+
+.VARI SHIFT_EPI
+In theory, a pixel in the left image has its corresponding pixel in the right
+image on the epipolar curve corresponding to that left pixel. However, 
+imperfection in camera model and relative camera orientation accuracy,
+the corresponding pixel could be some pixels away from the epipolar curve
+(can be few tens of pixels in some situations). So, searching only along the
+epipolar curve is not enough and the search space must be enlarged to search
+the area around the epipolar curve (set with SEARCH). A large SEARCH is a 
+strong driver in the total processing time. In a normal process, the SEARCH
+must be sized to be at least a bit larger than the epipolar offset. However, 
+the pyramidal approach could be leveraged to reduce the search space. A given
+offset in the full resolution image is divided by 2 in the next pyramid level, 
+and by 4 for the next one and so forth. If SHIFT_PIXEL is activated, the average
+epipolar offset measured at a given pyramid level is accounted for in the
+next pyramid level. Doing so, the SEARCH now should be sized according to what
+the offset would be at the lowest pyramid level.
+This parameter has no effect if RUN_PYR is disabled.
+
+
+.VARI EWA
+Activate ewa resampler to be used if necessary on the left and right images, or
+on either one of them, or none.
+ 
+.VARI EWA_THRESHOLD 
+Set the threshold on the change of scale above which the EWA resampler will be
+used. The ewa resampler is a more complex and more time consuming process than 
+the standard bicubic interpolator. But it is more versatile. Mostly because it 
+accounts for any low-pass prefiltering that could be needed. For instance, if 
+the right image, once projected on the left, loose its native resolution by a
+factor of 2 (scale of 2), a sort of minification, then resampling the right 
+image to the left image requires a lowpass prefilter before interpolating the 
+value. The ewa does this automatically, but the bicubic don't. So ewa should be
+used. However, what if the scale is 1.1? In theory, ewa should be used, but in
+practice the scale amplitude is so small compared to 1 than a bicubic would 
+provide good result too without the time penalty of a ewa. EWA_THRESHOLD set 
+the scale limit at which the ewa kicks in. Default is set to 1.2. 
+
+.VARI KEWA_SIGMA 
+Definition of the Gaussian kernel profile lookup table for use in ewa resampler.
+Defines the sigma of the Gaussian profile. Should rarely, if any, be changed.
+Mostly here to avoid hard coded values.
+
+.VARI KEWA_NSIGMA 
+Definition of the Gaussian kernel profile lookup table for use in ewa resampler.
+Defines the number of sigmas of the Gaussian profile. Should rarely, if any, be
+changed. Mostly here to avoid hard coded values.
+
+.VARI KEWA_NSAMPLES 
+Definition of the Gaussian kernel profile lookup table for use in ewa resampler.
+Defines the number of samples per sigma.Should rarely, if any, be changed. Mostly 
+here to avoid hard coded values.
+
+
+.VARI NAVTABLE
+Corrected navigation filename.
+If marsnav was run on the input images it created a table of corrected
+pointing parameters. If you refer to this table using NAVTABLE it
+will override the pointing parameters (e.g. azimuth and elevation) in the
+picture labels, giving you a better registered output.
+
+ 
+.VARI CONFIG_PATH
+A colon-separated list of directories in which to look for configuration
+and calibration files.  Environment variables are allowed in the list
+(and may themselves contain colon-separated lists).  The directories are
+searched in order for each config/cal file when it is loaded.  This allows
+multiple projectes to be supported simultaneously, and allows the user to
+override any given config/cal file.  Note that the directory structure below
+the directories specified in this path must match what the project expects.
+For example, Mars 98 expects flat fields to be in a subdirectory named
+"flat_fields" while Mars Pathfinder expects them to be directly in the
+directory specified by the path (i.e. no intermediate subdirectories).
+
+.VARI MATCH_METHOD
+Specifies a method for pointing corrections.
+
+Loose method matchs with pointing parameters of the image.
+Tight method matchs with unique id of the image.
+
+.VARI MATCH_TOL
+Tolerance value for matching pointing parameters in the pointing corrections file.
+Used if MATCH_METHOD=LOOSE
+Default value is pretty arbitrary, though seems to work well so far....
+
+.VARI POINT_METHOD
+Specifies a mission-specific pointing method to use.  Normally this
+parameter is not used, in which case the "default" pointing methods
+are used.  Some missions may have special, or alternate, pointing
+methods available, which are indicated by this string (for example,
+backlash models, using arm joint angles instead of x/y/z/az/el, etc).
+A substring search is used, so multiple methods (where that makes sense)
+can be specified by separating the keywords with commas.
+
+Note that nav files created using one pointing method will most likely
+not be compatible with a mosaic created using a different pointing method.
+
+The methods available vary per mission, but some methods available at
+the time of this writing are:
+
+CAHV_FOV: All Missions using CAHV-based camera models.  Valid values are:
+* MIN or INTERSECT:    Aligning stereo-pair cameras produces virtual camera 
+                       with FOV equal to INTERSECTION area of two input 
+	               cameras. (default) As a result, the output image is 
+                       missing,sometimes a significant, (depending on camera 
+                       geometry) part of overlap area between two cameras but 
+                       there are no black areas on the side.  The image data
+	               is stretched in horizontal direction.
+
+* MAX or UNION:        Aligning stereo-pair cameras produces virtual camera 
+                       with FOV equal to UNION area of two input cameras.
+         	       The result is the opposite of the MIN option: 
+                       wide black areas on the side, but the stereo-pair's 
+	               intersection area is preserved.  The image data
+	               is squeezed in horizontal direction.
+
+Note that the above two entries have two names each, which are equivalent
+and it's up to the user to decide which one is more intuitive to him/her.
+
+* LINEAR:              Uses only CAHV vectors and ignores higher order terms 
+                       OR(E) while aligning the cameras.  As a result, this
+                       mode has advantage of best preserving horizontal
+	               aspect ratio.  The features in the image look
+                       similar, scale-wise, to the original.
+
+BACKLASH : Mars 98 SSI only.  Selects a backlash pointing model,
+which adjusts the telemetered azimuth and elevation values based on
+knowledge of the camera's mechanical backlash and the direction the
+motor was travelling when the image was taken.
+
+.VARI NOSITE
+Disables all label-derived parameters to the Site mechanism which underlies
+coordinate systems.  This forces all sites to be identical, with all rotations
+and offsets set the same.  In the case of MPF or Mars 98, this disables
+the lander quaternion and offset (sets them to identity and 0, respectively).
+This option should not be used with images taken from different vantage
+points (e.g. the spacecraft moved, or mixing a lander and a rover) or
+invalid results will be obtained.  The use of this option invalidates the
+Fixed coordinate frame; any values reported in the Fixed frame will not
+correctly reflect the orientation of the lander/rover.
+
+Obviously, this option should be rarely used; it is intended for when the
+image labels defining the site are invalid or inconsistent.
+
+.VARI OMP_ON
+Turns on or off parallel processing.  The default is on.  The main help
+describes some environment variables that can further control parallel
+processing.  Note that this program uses standard OpenMP (which is built in
+to the gcc/g++ compilers), so further details can be found in the OpenMP
+documentation.
+
+.VARI DATA_SET_NAME
+The DATA_SET_NAME typically identifies the instrument that acquired the
+data, the target of that instrument, and the processing level of the data.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_NAME.
+
+.VARI DATA_SET_ID
+The DATA_SET_ID value for a given data set or product is constructed
+according to flight project naming conventions.  In most cases the
+DATA_SET_ID is an abbreviation of the DATA_SET_NAME.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_ID.
+
+.VARI RELEASE_ID
+When a data set is released incrementally, such as every three months during
+a mission, the RELEASE_ID is updated each time part of the data set is released.
+For each mission(or host id if multiple spacecrafts), the first release of a data
+set should have a value of "0001".
+This value is copied to the output label, property IDENTIFICATION,
+keyword RELEASE_ID.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique identifier assigned to a data product by
+its producer. Most commonly, it is the filename minus the extension.
+This value is copied to the output label, property IDENTIFICATION,
+keyword PRODUCT_ID.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier of an entity associated with the
+production of a data set. This value is copied to the output label,
+property IDENTIFICATION, keyword PRODUCER_ID.
+
+.VARI PRODUCER_INST
+Specifies the identity of a university, research center, NASA center or other
+institution associated with the production of a data set.
+This value is copied to the output label, property IDENTIFICATION, keyword
+PRODUCER_INSTITUTION_NAME.
+
+.VARI TARGET_NAME
+Specifies a target.  The target may be a planet, satelite, ring, region, feature,
+asteroid or comet.  This value is copied to the output label, property
+IDENTIFICATION, keyword TARGET_NAME.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target. This value is copied to the output
+label, property IDENTIFICATION, keyword TARGET_NAME.
+
+.VARI RSF
+Rover State File.  This is a list of filenames to load containing
+Rover State information.  These files contain position and orientation
+information for a rover (or other mobile spacecraft) at various sites.
+They are in XML format.  See the "Rover Motion Counter (RMC) Master File SIS
+"
+for details on these files.
+
+Rover State Files have a priority order.  The files listed first have
+the highest priority.
+
+Environment variables may be used in the list.
+
+For MER, if a directory is specified, then that directory is searched for
+RMC Master files and any found are loaded.  The directory structure and
+filename convention is covered in the RMC SIS.  The directory specified
+is the one containing "master", so if <dir> is the name specified in the
+RSF parameter, the following files will be searched for:
+
+<dir>/master/<mission>_Master.svf
+<dir>/master/<mission>_Site_<n>_Master.rvf
+The name of each file loaded is printed to the stdout log for reference.
+
+.VARI DEBUG_RSF
+If enabled, this causes the internal database of RMC locations to be
+printed out to the stdout log.  This is after the RSF files have been
+loaded and the coordinate systems read from the input label(s).
+
+.VARI COORD
+The coordinate system to use for the output camera model.  Also the coordinate
+system used for the actual ray tracing.  Note that the surface model parameters
+are always expressed in the Fixed site, however.
+
+The interpretation of the values is dependent on the mission.  Some
+representative missions are listed here:
+
+Fixed - The Fixed frame (default).  This is the ultimate reference frame
+    (see also FIXED_SITE for rover missions).
+Instrument - The "natural" frame for the instrument (of the first input
+    image).  MPF: Lander or Rover; M98: MVACS; MER: Rover.
+Site - A major Site frame.  For rover missions, COORD_INDEX specifies which
+    Site frame to use.  Non-rover missions treat this as Fixed.
+Rover - An instance of the Rover frame.  For rover missions, COORD_INDEX
+    specifies which instance of the rover frame to use.  Non-rover mission
+    use the spacecraft frame (e.g. Lander for M98).
+Local_Level - An instance of a Local Level frame.  This is typically
+    coincident with the Rover frame (in XYZ) but oriented toward North
+    like the Site and Fixed frames.  For MER, this is an instance of a
+    Drive index move.
+
+.VARI COORD_INDEX
+The index specifies which instance of a coordinate system to use.  It is
+currently applicable only to rover-based missions, but could have other
+uses.  The index is equivalent to the Rover Motion Counter (RMC) for MER
+and FIDO.
+
+For MER/FIDO, there are many Site frames.  Each is numbered with a single
+index.  For Site Frames, coord_index specifies which to use.  Likewise,
+there are many Local_Level and Rover frames, corresponding to values of
+the RMC.  The multiple instances of this frame are selected by COORD_INDEX.
+
+Generally COORD_INDEX defaults sensibly so you don't usually need to
+specify it.  It will default to the instance used by the first input.
+
+.VARI FIXED_SITE
+Specifies which major Site is the "Fixed" Site for this run.
+
+Historically, MPF and M98 had a single "Surface Fixed" frame which never
+moved, and which all other coordinate system frames were referenced to.
+With the advent of long-range rovers (such as MER and FIDO), that became
+insufficient.  The rover traverses far enough that errors in knowledge of
+coordinate system offset and orientation become unacceptable.
+
+For this reason, a system of major Sites was introduced.  Periodically
+during the mission, a Site frame is declared.  This then becomes the
+reference frame for all activities until the next Site is declared.
+References are kept local, and errors don't propogate across Sites.
+
+However, if images from more than one Site are combined together, the
+Site's must be placed relative to each other.  Therefore a single reference
+frame is still needed to combine different sites.
+
+The FIXED_SITE parameter controls which of the major Site frames is
+the reference ("fixed") site for this program run.  This fixed frame
+can vary in different program runs, but is constant throughout one
+execution.
+
+If not specified, FIXED_SITE defaults to the minimum Site number (i.e.
+lowest numbered, or earliest chronologically) used in all input images.
+Normally this default is sufficient; rarely must FIXED_SITE be specified.
+
+One or more Rover State Files must usually be specified in order to combine
+image from more than one Site.  These describe the relationship between
+sites.  See the RSF parameter.
+
+.VARI SOLUTION_ID
+Specifies which solution ID to use for pointng corrections.
+
+There are potentially many different definitions for the same coordinate
+system.  These are identified via a unique Solution ID.  If this parameter
+is given, only the specified solution's definition is searched for.
+

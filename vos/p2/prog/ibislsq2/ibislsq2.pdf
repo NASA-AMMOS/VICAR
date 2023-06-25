@@ -1,0 +1,141 @@
+PROCESS       HELP=*
+PARM INP TYPE=(STRING)
+PARM INDCOL TYPE=INTEGER COUNT=1:20 
+PARM DEPCOL TYPE=INTEGER COUNT=1 
+PARM COEFFCOL TYPE=INTEGER COUNT=1:20 DEFAULT=0
+PARM RESCOL TYPE=INTEGER COUNT=1 DEFAULT=0
+PARM CONCOL TYPE=INTEGER DEFAULT=0
+PARM NOPRINT TYPE=KEYWORD COUNT=0:1 VALID=(--,NOPRINT) DEFAULT=--
+END-PROC
+.TITLE
+VICAR/IBIS Program "ibislsq2"
+.HELP
+PURPOSE
+
+   "ibislsq2" performs least squares fits on data in an IBIS interface
+(tabular) file.  The solutions and/or residuals can be placed in 
+specified columns of the file.  The solutions can also be output
+to the terminal.  Multiple fits can be done on different parts of
+one file.
+
+
+EXECUTION
+
+     ibislsq2 INP=DATA.INT  INDCOL=(1,2,3) DEPCOL=4 CONCOL=7 +
+	     RESCOL=8  COEFFCOL=(21,22,23) 'NOPRINT
+
+    This example shows the use of all of the parameters.  The input
+file, DATA.INT, is an IBIS interface file.  The data for the independent
+variables are in columns (1,2,3), and the data for the dependent 
+variables are in column 4.  The control column 7 is used for
+multiple fits to be done in one run.  The least square fits are done 
+on sets of rows; a new set is started whenever the value in the control 
+column changes.  If no control column is specified then one fit
+is done on the whole file.  The COEFFCOL and RESCOL parameters specify
+in which columns, of the input file, the results will be put.  If either
+or both are not specified then they will not be output.  There must be
+as many coefficient columns as there are independent columns and these
+match the sequence of the independent variable columns.  The
+coefficients of the solution are placed in columns 21,22,23.  The
+residual column can be used to easily calculate the deviation of the
+data points from the fitted line. Normally the solution for each set
+is printed to the terminal, but this can be turned off with the
+'NOPRINT keyword.  
+
+    The length of each set should, of course, be longer than the
+number of independent variables (columns).  If it is not then the
+least squares fit will not be called and values of -999.0 will be
+put out for the solution.  If some columns of the independent data
+are dependent then the error MATRIX RANK TOO SMALL be be printed,
+and -999.0's will be put out for the solution.  If there is no
+solution then zeros will be put out for the residuals.
+
+
+
+EXAMPLES
+
+   Suppose that columns 1 and 2 contain points (x,y) in a plane 
+   and  column  7 contains a function  f(x,y).   The  following 
+   sequence  will perform a quadratic least squares fit  h(x,y) 
+   and place the residuals in column 8.
+
+   mf INP=A FUNCTION=("C3=C1*C1","C4=C2*C2","C5=C1*C2","C6=1")
+   ibislsq2 INP=A INDCOL=(1,2,3,4,5,6) DEPCOL=7 RESCOL=8
+
+
+RESTRICTIONS
+
+The maximum number of independent columns (variables) is 20.
+
+Original Programmer: A. L. Zobrist, 11 Sep, 2001
+Current Cognizant Programmer: A. L. Zobrist
+
+REVISIONS
+  2002-08-27 A. L. Zobrist
+  2008-01-03 W. L. Bunch - Switched to USES_ANSI_C AND LIB_CARTO; misc cleanup
+  2015-11-02 W. L. Bunch - Migrated to MIPL
+  2019-09-05 W. L. Bunch - IDS-7922 - Initialized some variables; cleaned up -Wall warnings
+
+.LEVEL1
+.VARIABLE INP
+ Input IBIS interface file
+.VARIABLE INDCOL
+ Independent variable columns
+.VARIABLE DEPCOL
+ Dependent variable column
+.VARIABLE COEFFCOL
+ Optional columns to place
+ coefficients of the solution
+.VARIABLE RESCOL
+ Residuals column
+.VARIABLE CONCOL
+ Control column
+.VARIABLE NOPRINT
+Keyword to suppress printout
+
+.LEVEL2
+.VARIABLE INP
+   INP=file           Input IBIS interface file
+.VARIABLE INDCOL
+   INDCOL=(N1,...,Nk) The   integers   N1,...,Nk  specify   the 
+                      columns  which contain the data  for  the 
+                      independent variables.  Each row contains 
+                      one data point.
+
+.VARIABLE DEPCOL
+   DEPCOL=M1          The integer M1  specifies   the columns
+                      which contain the data  for  the 
+                      dependent variable.  Each row contains 
+                      one data point.
+
+.VARIABLE COEFFCOL
+   COEFFCOL=(N1,...,Nk) The   integers   N1,...,Nk  specify   the 
+                      columns  which will receive the coefficients
+                      of the solution for use in applying to
+                      other operations in the IBIS file (for example
+                      a slope or trend of some data points can be
+                      found and the slope can be applied to other
+                      data).  If this parameter is omitted,  
+		      then no residuals are stored.
+		      
+		      Note that there is a lot of repetition of the
+		      coefficients in the columns, but this allows
+		      the coefficients to be used in a row-oriented
+		      arithmetic operation by routine MF.
+
+.VARIABLE RESCOL
+   RESCOL=R1          The  integer R1 specifies the  column which 
+                      will  receive the residuals corresponding 
+		      to the dependent variables for each data
+		      point.  If this parameter is omitted,  
+		      then no residuals are stored.
+.VARIABLE CONCOL
+   CONCOL=C           The integer C specifies a control column 
+                      which produces a separate fit for each 
+                      group of identical numbers in the control 
+                      column.  If this keyword is omitted, then 
+                      the whole file is DGELGd in one least 
+                      squares fit.
+.VARIABLE NOPRINT
+    'NOPRINT	      Keyword to suppress printout of solution.
+.END

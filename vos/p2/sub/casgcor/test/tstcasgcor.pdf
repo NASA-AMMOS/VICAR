@@ -1,9 +1,12 @@
 procedure
 refgbl $echo
 body
+enable-log
+
 let _onfail="continue"
 let $echo="yes"
 
 TCASGCOR
 
+disable-log
 end-proc

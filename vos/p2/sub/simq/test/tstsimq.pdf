@@ -1,6 +1,7 @@
 procedure
 refgbl $echo
 body
+enable-log
 let _onfail="continue"
 let $echo="yes"
 !
@@ -8,4 +9,5 @@ let $echo="yes"
 !
 tsimq
 !
+disable-log
 end-proc

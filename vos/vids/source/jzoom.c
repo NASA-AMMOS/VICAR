@@ -8,6 +8,8 @@ enum ref {Home, Center};
  * zoom factor to the image file.  If possible, it will apply a hardware
  * zoom, otherwise it will set a software zoom and redisplay.
  */
+void SZoomRgn();
+void HZoomRgn();
 int jzoom_do(env)
   VIDSEnvironment	*env;	/* The VIDS environment			*/
 {
@@ -238,7 +240,7 @@ int GetZoomParms(env, zoom, loc, theMethod, imps, nimps, reference, raw, rgn)
 /* HZoomRgn calculates a zoom for a plane based on the specified region
  * filling the screen.
  */
-HZoomRgn(env, rgn, zoom, loc, reference)
+void HZoomRgn(env, rgn, zoom, loc, reference)
   VIDSEnvironment	*env;
   Region		*rgn;
   int			*zoom;
@@ -271,7 +273,7 @@ HZoomRgn(env, rgn, zoom, loc, reference)
 /* SZoomRgn calculates a zoom for a plane based on the contents of that
  * plane within the specified region filling the screen.
  */
-SZoomRgn(env, imp, rgn, zoom, loc, reference)
+void SZoomRgn(env, imp, rgn, zoom, loc, reference)
   VIDSEnvironment	*env;
   int			imp;
   Region		*rgn;

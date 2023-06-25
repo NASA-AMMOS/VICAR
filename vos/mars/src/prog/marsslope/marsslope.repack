@@ -1,0 +1,6 @@
+$ vpack marsslope.com -mixed -
+	-s marsslope.cc SlopeFunction.cc SlopeFunction.h Direction.h Heading.h -
+	   Magnitude.h Ntilt.h Slope.h Solar.h -
+	-i marsslope.imake -
+	-p marsslope.pdf
+$ Exit

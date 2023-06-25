@@ -1,0 +1,159 @@
+procedure
+refgbl $echo
+refgbl $autousage
+refgbl $syschar
+body
+let $autousage = "none"
+let _onfail="return"
+let $echo="yes"
+
+! first the space looking case
+
+gen xxxa nl=3 ns=3
+ibis-gen xxxb nc=5 nr=9 deffmt=DOUB
+ephref (xxxa,xxxb) urange=(1.0,1823.5,3648.0) +
+  vrange=(1.0,1687.0,3375.0) +
+  ACS_time=215076679.47174 +
+  TOD_t_SV=(6852365.174,240762.2817,-1542082.687) +
+  TOD_q_SV=(1.0,0.0,0.0,0.0)  +
+  SV_t_C=(0.0,0.0,0.0) +
+  SV_q_C=(1.0,0.0,0.0,0.0)  +
+  fu=2500000   +
+  fv=2500000  +
+  q=0.0 +
+  u0=1824.5 +
+  v0=1688 +
+  kappa=(0.0,0.0,0.0,0.0,0.0) +
+  calc_mode=2
+
+
+ibis-l xxxb nr=9 csiz=(12,12,12,12,12) +
+   cfor="%12.7f %12.7f %12.7f %12.7f %12.7f"
+
+! now try the earth first then space option
+
+gen xxxa nl=3 ns=3
+ibis-gen xxxb nc=5 nr=9 deffmt=DOUB
+ephref (xxxa,xxxb) urange=(1.0,1823.5,3648.0) +
+  vrange=(1.0,1687.0,3375.0) +
+  ACS_time=215076679.47174 +
+  TOD_t_SV=(6852365.174,240762.2817,-1542082.687) +
+  TOD_q_SV=(1.0,0.0,0.0,0.0)  +
+  SV_t_C=(0.0,0.0,0.0) +
+  SV_q_C=(1.0,0.0,0.0,0.0)  +
+  fu=2500000   +
+  fv=2500000  +
+  q=0.0 +
+  u0=1824.5 +
+  v0=1688 +
+  kappa=(0.0,0.0,0.0,0.0,0.0) +
+  calc_mode=0
+
+
+ibis-l xxxb nr=9 csiz=(12,12,12,12,12) +
+   cfor="%12.7f %12.7f %12.7f %12.7f %12.7f"
+
+! earth only case, looking at space, will fail
+
+gen xxxa nl=3 ns=3
+ibis-gen xxxb nc=5 nr=9 deffmt=DOUB
+ephref (xxxa,xxxb) urange=(1.0,1823.5,3648.0) +
+  vrange=(1.0,1687.0,3375.0) +
+  ACS_time=215076679.47174 +
+  TOD_t_SV=(6852365.174,240762.2817,-1542082.687) +
+  TOD_q_SV=(1.0,0.0,0.0,0.0)  +
+  SV_t_C=(0.0,0.0,0.0) +
+  SV_q_C=(1.0,0.0,0.0,0.0)  +
+  fu=2500000   +
+  fv=2500000  +
+  q=0.0 +
+  u0=1824.5 +
+  v0=1688 +
+  kappa=(0.0,0.0,0.0,0.0,0.0) +
+  calc_mode=1
+
+
+ibis-l xxxb nr=9 csiz=(12,12,12,12,12) +
+   cfor="%12.7f %12.7f %12.7f %12.7f %12.7f"
+
+! then a successful earth case
+
+gen xxxa nl=3 ns=3
+ibis-gen xxxb nc=5 nr=9 deffmt=DOUB
+ephref (xxxa,xxxb) urange=(1.0,1823.5,3648.0) +
+  vrange=(1.0,1687.0,3375.0) +
+  hrange=(0.0,50.0,200.0) +
+  ACS_time=215077459.471879 +
+  TOD_t_SV=(3435100.496, 945571.538, -6053387.573) +
+  TOD_q_SV=(0.946366, 0.0, -0.323096813, 0.0)  +
+  SV_t_C=(0.0,0.0,0.0) +
+  SV_q_C=(1.0,0.0,0.0,0.0)  +
+  fu=2500000  +
+  fv=2500000  +
+  q=0.0 +
+  u0=1824.5 +
+  v0=1688.0 +
+  kappa=(0.0,0.0,0.0,0.0,0.0) +
+  calc_mode=0
+
+
+ibis-l xxxb nr=9 csiz=(12,12,12,12,12) +
+   cfor="%12.7f %12.7f %12.7f %12.7f %12.7f"
+
+! 070801 case1, expected lon/lat = -74.917, 0.032
+
+gen xxxa nl=3 ns=3
+ibis-gen xxxb nc=5 nr=9 deffmt=DOUB
+ephref (xxxa,xxxb) urange=(1.0,1823.5,3648.0) +
+  vrange=(1.0,1687.0,3375.0) +
+  hrange=(0.0,50.0,200.0) +
+  ACS_time=196314734.968640 +
+  TOD_t_SV=(7087537.538762, -748249.427431, 1944593.258940) +
+  TOD_q_SV=(-0.598927, 0.734034, -0.050906, -0.316053)  +
+  SV_t_C=(0.0,0.0,0.0) +
+  SV_q_C=(1.0,0.0,0.0,0.0)  +
+  fu=2500000  +
+  fv=2500000  +
+  q=0.0 +
+  u0=1824.5 +
+  v0=1688.0 +
+  kappa=(0.0,0.0,0.0,0.0,0.0) +
+  calc_mode=0
+
+! TOD_q_SV=(-0.598927, 0.734034, -0.050906, -0.316053)  +
+! TOD_q_SV=(0.734034, -0.050906, -0.316053, -0.598927)  +
+ibis-l xxxb nr=9 csiz=(12,12,12,12,12) +
+   cfor="%12.7f %12.7f %12.7f %12.7f %12.7f"
+
+! 070801 case2
+
+gen xxxa nl=3 ns=3
+ibis-gen xxxb nc=5 nr=9 deffmt=DOUB
+ephref (xxxa,xxxb) urange=(1.0,1823.5,3648.0) +
+  vrange=(1.0,1687.0,3375.0) +
+  hrange=(0.0,50.0,200.0) +
+  ACS_time=196314749.768920 +
+  TOD_t_SV=(7117585.063109, -712689.258756, 1846313.971284) +
+  TOD_q_SV=(0.724756, -0.050953, -0.334346, -0.600287)  +
+  SV_t_C=(0.0,0.0,0.0) +
+  SV_q_C=(1.0,0.0,0.0,0.0)  +
+  fu=2500000  +
+  fv=2500000  +
+  q=0.0 +
+  u0=1824.5 +
+  v0=1688.0 +
+  kappa=(0.0,0.0,0.0,0.0,0.0) +
+  calc_mode=0
+
+! TOD_q_SV=(-0.598927, 0.734034, -0.050906, -0.316053)  +
+! TOD_q_SV=(0.734034, -0.050906, -0.316053, -0.598927)  +
+ibis-l xxxb nr=9 csiz=(12,12,12,12,12) +
+   cfor="%12.7f %12.7f %12.7f %12.7f %12.7f"
+
+! 6378137.0 erad
+! 704000.0 lsat
+
+!Delta_UT1= 0.1128609 +
+
+theend>
+end-proc

@@ -1,0 +1,13 @@
+#define SUBROUTINE nsyt_instruments
+
+#define MODULE_LIST nsyt_instruments.cc
+#define MARS_SUBLIB
+
+#define USES_C_PLUS_PLUS
+
+#define LIB_P2SUB
+#define LIB_XERCES
+
+/* Doesn't use OMP directly but needs some newer C++ features */
+#define LIB_OMP
+

@@ -99,7 +99,7 @@ void main44()
 
   PHO_ILLUM *illum_array; 
 
-  zifmessage("PHOTFIT2 version 2019-09-06");
+  zifmessage("PHOTFIT2 version 2021-11-12");
 
   zveaction("sau","");
 
@@ -882,7 +882,7 @@ int phocatRead(
 	double *phoFuncVal,
 	double *eps)
 {
-  int status, rstatus, count, col, ncol, nrow, i, tclass_id;
+  int status, rstatus, count, col, ncol, nrow, i, tclass_id=0;
   float ftemp;
   double temp, dtemp, caz;
   char type[phoCAT_NAME_LENGTH+1];
@@ -1261,7 +1261,6 @@ int phoMetropolis(
   double dval;
   char keylist[phoMAX_PARAM_PER_FUNC][phoMAX_KEYWD_LENGTH+1];
   char msg[133], cval1[133];
-  time_t tim;
   long *seed1 = NULL;
 
   if (seed1 != NULL )  free(seed1);
@@ -1313,11 +1312,7 @@ int phoMetropolis(
   } /* for all function parameters */ 
 
 
-/*  Compute a random number seed based on the time of day.  */
-
-/*  if(!(time(&tim) % 2))  tim--; */
-  tim = time(NULL);
-  *seed1 = (long )tim;
+  *seed1 = 31415951413L;
   while( *seed1 > 714025) *seed1 = *seed1 - 714025;
   if(!(*seed1 % 2))  *seed1 = *seed1 - (long )1;
   zrangen( seed1, &randout ); 

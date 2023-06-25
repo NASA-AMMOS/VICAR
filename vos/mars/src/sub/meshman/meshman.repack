@@ -1,0 +1,4 @@
+$ vpack meshman.com -
+	-s meshman.cc -
+	-i meshman.imake
+$ Exit

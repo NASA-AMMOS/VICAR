@@ -16,17 +16,19 @@ ibis-list graph gr1dim=3 nr=9
 
 !Test the various formatting options
 xyzpic2 graph image nl=8 ns=8
-list image
+list image 'nousrtim
 
 xyzpic2 graph image nl=9 ns=9 format=half
-list image
+list image 'nousrtim
 
 xyzpic2 graph image nl=10 ns=10 format=full
-list image
+list image 'nousrtim
 
 xyzpic2 graph image nl=10 ns=10 format=real
-list image
+list image 'nousrtim
 
 disable-log
+
+ush rm graph image
 
 end-proc

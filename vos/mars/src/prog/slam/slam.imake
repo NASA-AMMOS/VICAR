@@ -1,0 +1,9 @@
+#define PROCEDURE slam
+
+#define MODULE_LIST slam.py 
+
+#define USES_PYTHON
+#define MARSLIB
+
+
+

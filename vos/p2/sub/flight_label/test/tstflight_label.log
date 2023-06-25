@@ -1,7 +1,8 @@
 Write " The Test Data are handled for both VMS and UNIX in this PDF. "
  The Test Data are handled for both VMS and UNIX in this PDF. 
-tflight_label  /project/test_work/testdata/mipl/gll/venus.img
+tflight_label  venus.img.vic
 Beginning VICAR task tflight_label
+FLIGHT_LABEL test version 2019-08-01
 GLL/SSI  PICNO=?           FILTER=3(VLT)  TLMFMT=HCM     TARGET=VENUS     
 RIM=*/00184944:00:1:0      EXP=   25.00   FIBE=0000      TCA=CLOSEST TIME
 SCET=1990.044 05:58:16:962 GAIN=2(100K)   COMP=RC        TRUNC BITS/PXL=0.00
@@ -29,12 +30,12 @@ DC=2F30.DC                 CNV=9.3808e+01
 BLM=VIO2F.BLM              SO=CALIBRATION.SO             EDR=************/***
 FINISHED
 
-LABEL-LIST  /project/test_work/testdata/mipl/gll/venus.img     'nousrtim
+LABEL-LIST  venus.img.vic     'nousrtim
 Beginning VICAR task LABEL
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 ************************************************************
  
-        ************  File /project/test_work/testdata/mipl/gll/venus.img ************
+        ************  File venus.img.vic ************
                 3 dimensional IMAGE file
                 File organization is BSQ
                 Pixels are in HALF format from a AXP-VMS host
@@ -105,8 +106,9 @@ COMMENT='GALSOS replaced 14 pixels by interpolation'
 ---- Task: PERSLAB -- User:  --  ----
  
 ************************************************************
-tflight_label  /project/test_work/testdata/mipl/gll/venus2.img
+tflight_label  venus2.img.vic
 Beginning VICAR task tflight_label
+FLIGHT_LABEL test version 2019-08-01
 GLL/SSI  PICNO=?           FILTER=5(968)  TLMFMT=HCM     TARGET=VENUS     
 RIM=*/00184944:45:6:0      EXP=   66.67   FIBE=1000      TCA=CLOSEST TIME
 SCET=1990.044 05:58:47:329 GAIN=2(100K)   COMP=RC        TRUNC BITS/PXL=0.00
@@ -134,12 +136,12 @@ DC=2F30.DC                 CNV=4.7519e+00
 BLM=9682F.BLM              SO=CALIBRATION.SO             EDR=************/***
 FINISHED
 
-LABEL-LIST  /project/test_work/testdata/mipl/gll/venus2.img    'nousrtim
+LABEL-LIST  venus2.img.vic    'nousrtim
 Beginning VICAR task LABEL
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 ************************************************************
  
-        ************  File /project/test_work/testdata/mipl/gll/venus2.img ************
+        ************  File venus2.img.vic ************
                 3 dimensional IMAGE file
                 File organization is BSQ
                 Pixels are in HALF format from a VAX-VMS host
@@ -210,8 +212,9 @@ COMMENT='GALSOS replaced 723 pixels by interpolation'
 ---- Task: COPY -- User:  --  ----
  
 ************************************************************
-tflight_label  /project/test_work/testdata/mipl/gll/venus3.img
+tflight_label  venus3.img.vic
 Beginning VICAR task tflight_label
+FLIGHT_LABEL test version 2019-08-01
 GLL/SSI  PICNO=?           FILTER=3(VLT)  TLMFMT=HCM     TARGET=VENUS     
 RIM=*/00185063:00:1:0      EXP=   25.00   FIBE=1000      TCA=CLOSEST TIME
 SCET=1990.044 07:58:36:296 GAIN=2(100K)   COMP=RC        TRUNC BITS/PXL=0.00
@@ -239,12 +242,12 @@ DC=2F30.DC                 CNV=8.4913e+00
 BLM=VIO2F.BLM              SO=CALIBRATION.SO             EDR=************/***
 FINISHED
 
-LABEL-LIST  /project/test_work/testdata/mipl/gll/venus3.img     'nousrtim
+LABEL-LIST  venus3.img.vic     'nousrtim
 Beginning VICAR task LABEL
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 ************************************************************
  
-        ************  File /project/test_work/testdata/mipl/gll/venus3.img ************
+        ************  File venus3.img.vic ************
                 3 dimensional IMAGE file
                 File organization is BSQ
                 Pixels are in HALF format from a VAX-VMS host
@@ -315,8 +318,9 @@ COMMENT='GALSOS replaced 23 pixels by interpolation'
 ---- Task: COPY -- User:  --  ----
  
 ************************************************************
-tflight_label  /project/test_work/testdata/sitod1/test_data/images/s0061498500.1
+tflight_label  s0061498500.1.vic
 Beginning VICAR task tflight_label
+FLIGHT_LABEL test version 2019-08-01
 GLL/SSI  PICNO=?           FILTER=4(756)  TLMFMT=XCM     TARGET=?         
 RIM=*/00614985:00:1:0      EXP=   25.00   FIBE=1000      TCA=CLOSEST TIME
 SCET=0000.000 00:00:00:000 GAIN=2(100K)   COMP=RC        TRUNC BITS/PXL=0.00
@@ -344,12 +348,12 @@ DC=*******************     CNV=**********
 BLM=*******************    SO=*******************        REDR=************/***
 FINISHED
 
-LABEL-LIST  /project/test_work/testdata/sitod1/test_data/images/s0061498500.1    'nousrtim
+LABEL-LIST  s0061498500.1.vic    'nousrtim
 Beginning VICAR task LABEL
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 ************************************************************
  
-        ************  File /project/test_work/testdata/sitod1/test_data/images/s0061498500.1 ************
+        ************  File s0061498500.1.vic ************
                 3 dimensional IMAGE file
                 File organization is BSQ
                 Pixels are in BYTE format from a VAX-VMS host
@@ -409,8 +413,9 @@ SLRANGE=0.0
 SOLRANGE=7.779091e+08
  
 ************************************************************
-tflight_label  /project/test_work/testdata/sitod1/test_data/images/s0061510200.1
+tflight_label  s0061510200.1.vic
 Beginning VICAR task tflight_label
+FLIGHT_LABEL test version 2019-08-01
 GLL/SSI  PICNO=?           FILTER=1(GRN)  TLMFMT=XCM     TARGET=?         
 RIM=*/00615102:00:1:0      EXP=    6.25   FIBE=1000      TCA=CLOSEST TIME
 SCET=0000.000 00:00:00:000 GAIN=2(100K)   COMP=RC        TRUNC BITS/PXL=0.00
@@ -438,12 +443,12 @@ DC=*******************     CNV=**********
 BLM=*******************    SO=*******************        REDR=************/***
 FINISHED
 
-LABEL-LIST  /project/test_work/testdata/sitod1/test_data/images/s0061510200.1     'nousrtim
+LABEL-LIST  s0061510200.1.vic     'nousrtim
 Beginning VICAR task LABEL
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 ************************************************************
  
-        ************  File /project/test_work/testdata/sitod1/test_data/images/s0061510200.1 ************
+        ************  File s0061510200.1.vic ************
                 3 dimensional IMAGE file
                 File organization is BSQ
                 Pixels are in BYTE format from a VAX-VMS host
@@ -503,8 +508,9 @@ SLRANGE=0.0
 SOLRANGE=7.779091e+08
  
 ************************************************************
-tflight_label  /project/test_work/testdata/sitod1/test_data/images/s0061512000.1
+tflight_label  s0061512000.1.vic
 Beginning VICAR task tflight_label
+FLIGHT_LABEL test version 2019-08-01
 GLL/SSI  PICNO=?           FILTER=1(GRN)  TLMFMT=XCM     TARGET=?         
 RIM=*/00615120:00:1:0      EXP=    6.25   FIBE=1000      TCA=CLOSEST TIME
 SCET=0000.000 00:00:00:000 GAIN=2(100K)   COMP=RC        TRUNC BITS/PXL=0.00
@@ -532,12 +538,12 @@ DC=*******************     CNV=**********
 BLM=*******************    SO=*******************        REDR=************/***
 FINISHED
 
-LABEL-LIST  /project/test_work/testdata/sitod1/test_data/images/s0061512000.1     'nousrtim
+LABEL-LIST  s0061512000.1.vic     'nousrtim
 Beginning VICAR task LABEL
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 ************************************************************
  
-        ************  File /project/test_work/testdata/sitod1/test_data/images/s0061512000.1 ************
+        ************  File s0061512000.1.vic ************
                 3 dimensional IMAGE file
                 File organization is BSQ
                 Pixels are in BYTE format from a VAX-VMS host
@@ -597,8 +603,9 @@ SLRANGE=0.0
 SOLRANGE=7.779091e+08
  
 ************************************************************
-tflight_label  /project/test_work/testdata/gll/test_image_ict.udr
+tflight_label  test_image_ict.udr.vic
 Beginning VICAR task tflight_label
+FLIGHT_LABEL test version 2019-08-01
 GLL/SSI  PICNO=EVV0067     FILTER=3(VLT)  TLMFMT=IM8     TARGET=VENUS     
 RIM=1/00184944:00:0:0      EXP=   25.00   MOFIBE=000000  TCA=002T23:59:16Z
 SCET=1957.365 00:00:00:000 GAIN=2(100K)   ETYPE=ICT      COMP-RATIO= 48.54
@@ -630,12 +637,12 @@ DC=*******************     CNV=********** SEQNO=1        DSPK_THRESH=********
 BLM=*******************    SO=*******************        REDR=************/***
 FINISHED
 
-LABEL-LIST  /project/test_work/testdata/gll/test_image_ict.udr	    'nousrtim
+LABEL-LIST  test_image_ict.udr.vic	    'nousrtim
 Beginning VICAR task LABEL
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 ************************************************************
  
-        ************  File /project/test_work/testdata/gll/test_image_ict.udr ************
+        ************  File test_image_ict.udr.vic ************
                 3 dimensional IMAGE file
                 File organization is BSQ
                 Pixels are in BYTE format from a AXP-VMS host
@@ -699,8 +706,9 @@ MAXIMUM_COMPRESSION_RATIO=81.0127
 MINIMUM_COMPRESSION_RATIO=12.7395
  
 ************************************************************
-tflight_label  /project/test_work/testdata/gll/test_image_barc.udr
+tflight_label  test_image_barc.udr.vic
 Beginning VICAR task tflight_label
+FLIGHT_LABEL test version 2019-08-01
 GLL/SSI  PICNO=?           FILTER=0(CLR)  TLMFMT=HCA     TARGET=?         
 RIM=1/00005002:00:0:0      EXP= 1066.60   MOFIBE=000000  TCA=CLOSEST TIME
 SCET=1957.365 00:00:00:000 GAIN=2(100K)   ETYPE=RC       TRUNC BITS/PXL=0.19
@@ -728,12 +736,12 @@ DC=*******************     CNV=********** SEQNO=******   DSPK_THRESH=********
 BLM=*******************    SO=*******************        REDR=************/***
 FINISHED
 
-LABEL-LIST  /project/test_work/testdata/gll/test_image_barc.udr	    'nousrtim
+LABEL-LIST  test_image_barc.udr.vic	    'nousrtim
 Beginning VICAR task LABEL
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 ************************************************************
  
-        ************  File /project/test_work/testdata/gll/test_image_barc.udr ************
+        ************  File test_image_barc.udr.vic ************
                 3 dimensional IMAGE file
                 File organization is BSQ
                 Pixels are in BYTE format from a AXP-VMS host
@@ -787,8 +795,9 @@ DEC=-999.0
 SMEAR=-999.0
  
 ************************************************************
-tflight_label  /project/test_work/testdata/gll/test_image_lossless.udr
+tflight_label  test_image_lossless.udr.vic
 Beginning VICAR task tflight_label
+FLIGHT_LABEL test version 2019-08-01
 GLL/SSI  PICNO=EVV0067     FILTER=3(VLT)  TLMFMT=IM8     TARGET=VENUS     
 RIM=1/00182211:00:0:0      EXP=   25.00   MOFIBE=000000  TCA=002T23:59:16Z
 SCET=1957.365 00:00:00:000 GAIN=2(100K)   ETYPE=HUF      COMP-RATIO=  2.07
@@ -818,12 +827,12 @@ DC=*******************     CNV=********** SEQNO=1        DSPK_THRESH=********
 BLM=*******************    SO=*******************        REDR=************/***
 FINISHED
 
-LABEL-LIST  /project/test_work/testdata/gll/test_image_lossless.udr   'nousrtim
+LABEL-LIST  test_image_lossless.udr.vic   'nousrtim
 Beginning VICAR task LABEL
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 ************************************************************
  
-        ************  File /project/test_work/testdata/gll/test_image_lossless.udr ************
+        ************  File test_image_lossless.udr.vic ************
                 3 dimensional IMAGE file
                 File organization is BSQ
                 Pixels are in BYTE format from a AXP-VMS host
@@ -887,12 +896,50 @@ MAXIMUM_COMPRESSION_RATIO=2.35695
 MINIMUM_COMPRESSION_RATIO=1.97249
  
 ************************************************************
-label-list /project/test_work/ssi/udr/s0165200300.20 'nousrtim
+tflight_label  s0165200300.20.vic
+Beginning VICAR task tflight_label
+FLIGHT_LABEL test version 2019-08-01
+GLL/SSI  PICNO=E2W1078     FILTER=2(RED)  TLMFMT=AI8     TARGET=IO        
+RIM=1/01652003:00:0:0      EXP=    4.17   MOFIBE=000000  TCA=000T17:24:28Z
+SCET=1957.365 00:00:00:000 GAIN=2(100K)   ETYPE=ICT      COMP-RATIO=  5.00
+PA=E2WSZOOMMV01-000WDLT    RATE=60 2/3    ENTROPY=0.00   HUF=UNIFORM
+MAX_C RATIO=  8.33         MIN_C RATIO=  3.22            THW=(377,377, 96, 96)
+QSTEP=8     QM=UNIFORM     ZZ=ZIGZAG                     ROI=( 81, 81,344,344)
+INA= 64.31  TWST=112.62    SUNAZ=******   BOOM=POSSIBLE  HSCL=5.7732e+03 M/PXL
+EMA= 44.82  CONE=  0.00    SMRAZ=******   SMEAR=-999.0   VSCL=5.7732e+03 M/PXL
+PHA= 80.21  RA=-999.0      S/CAZ=******   LAT= 22.73     PLANETRNG=5.7460e+05
+HRA=-999.0  DEC=  5.80     NORAZ=******   LON=356.81     SLANT RNG=5.6850e+05
+CAL=*******************    IOF=********** UBWC=***       SOLAR RNG=-9.9900e+0
+DC=*******************     CNV=********** SEQNO=1        DSPK_THRESH=-32768
+BLM=*******************    SO=*******************        REDR=************/***
+SUB_SOLAR_LAT=-22.86       SUB_SOLAR_LONG=310.31         SUB_SPCFT_LAT= -5.47 
+SUB_SPCFT_LONG= 31.75      
+
+PRINTING FROM OUTPUT BUFFER
+
+GLL/SSI  PICNO=E2W1078     FILTER=2(RED)  TLMFMT=AI8     TARGET=IO        
+RIM=1/01652003:00:0:0      EXP=    4.17   MOFIBE=000000  TCA=000T17:24:28Z
+SCET=1957.365 00:00:00:000 GAIN=2(100K)   ETYPE=ICT      COMP-RATIO=  5.00
+PA=E2WSZOOMMV01-000WDLT    RATE=60 2/3    ENTROPY=0.00   HUF=UNIFORM
+MAX_C RATIO=  8.33         MIN_C RATIO=  3.22            THW=(377,377, 96, 96)
+QSTEP=8     QM=UNIFORM     ZZ=ZIGZAG                     ROI=( 81, 81,344,344)
+INA= 64.31  TWST=112.62    SUNAZ=******   BOOM=POSSIBLE  HSCL=5.7732e+03 M/PXL
+EMA= 44.82  CONE=  0.00    SMRAZ=******   SMEAR=-999.0   VSCL=5.7732e+03 M/PXL
+PHA= 80.21  RA=-999.0      S/CAZ=******   LAT= 22.73     PLANETRNG=5.7460e+05
+HRA=-999.0  DEC=  5.80     NORAZ=******   LON=356.81     SLANT RNG=5.6850e+05
+CAL=*******************    IOF=********** UBWC=***       SOLAR RNG=-9.9900e+0
+DC=*******************     CNV=********** SEQNO=1        DSPK_THRESH=-32768
+BLM=*******************    SO=*******************        REDR=************/***
+SUB_SOLAR_LAT=-22.86       SUB_SOLAR_LONG=310.31         SUB_SPCFT_LAT= -5.47 
+SUB_SPCFT_LONG= 31.75      
+FINISHED
+
+label-list s0165200300.20.vic 'nousrtim
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 ************************************************************
  
-        ************  File /project/test_work/ssi/udr/s0165200300.20 ************
+        ************  File s0165200300.20.vic ************
                 3 dimensional IMAGE file
                 File organization is BSQ
                 Pixels are in BYTE format from a AXP-VMS host
@@ -969,49 +1016,12 @@ SUB_SPACECRAFT_LATITUDE=-5.4715
 SUB_SPACECRAFT_LONGITUDE=31.753
  
 ************************************************************
-tflight_label  /project/test_work/ssi/udr/s0165200300.20
-Beginning VICAR task tflight_label
-GLL/SSI  PICNO=E2W1078     FILTER=2(RED)  TLMFMT=AI8     TARGET=IO        
-RIM=1/01652003:00:0:0      EXP=    4.17   MOFIBE=000000  TCA=000T17:24:28Z
-SCET=1957.365 00:00:00:000 GAIN=2(100K)   ETYPE=ICT      COMP-RATIO=  5.00
-PA=E2WSZOOMMV01-000WDLT    RATE=60 2/3    ENTROPY=0.00   HUF=UNIFORM
-MAX_C RATIO=  8.33         MIN_C RATIO=  3.22            THW=(377,377, 96, 96)
-QSTEP=8     QM=UNIFORM     ZZ=ZIGZAG                     ROI=( 81, 81,344,344)
-INA= 64.31  TWST=112.62    SUNAZ=******   BOOM=POSSIBLE  HSCL=5.7732e+03 M/PXL
-EMA= 44.82  CONE=  0.00    SMRAZ=******   SMEAR=-999.0   VSCL=5.7732e+03 M/PXL
-PHA= 80.21  RA=-999.0      S/CAZ=******   LAT= 22.73     PLANETRNG=5.7460e+05
-HRA=-999.0  DEC=  5.80     NORAZ=******   LON=356.81     SLANT RNG=5.6850e+05
-CAL=*******************    IOF=********** UBWC=***       SOLAR RNG=-9.9900e+0
-DC=*******************     CNV=********** SEQNO=1        DSPK_THRESH=-32768
-BLM=*******************    SO=*******************        REDR=************/***
-SUB_SOLAR_LAT=-22.86       SUB_SOLAR_LONG=310.31         SUB_SPCFT_LAT= -5.47 
-SUB_SPCFT_LONG= 31.75      
-
-PRINTING FROM OUTPUT BUFFER
-
-GLL/SSI  PICNO=E2W1078     FILTER=2(RED)  TLMFMT=AI8     TARGET=IO        
-RIM=1/01652003:00:0:0      EXP=    4.17   MOFIBE=000000  TCA=000T17:24:28Z
-SCET=1957.365 00:00:00:000 GAIN=2(100K)   ETYPE=ICT      COMP-RATIO=  5.00
-PA=E2WSZOOMMV01-000WDLT    RATE=60 2/3    ENTROPY=0.00   HUF=UNIFORM
-MAX_C RATIO=  8.33         MIN_C RATIO=  3.22            THW=(377,377, 96, 96)
-QSTEP=8     QM=UNIFORM     ZZ=ZIGZAG                     ROI=( 81, 81,344,344)
-INA= 64.31  TWST=112.62    SUNAZ=******   BOOM=POSSIBLE  HSCL=5.7732e+03 M/PXL
-EMA= 44.82  CONE=  0.00    SMRAZ=******   SMEAR=-999.0   VSCL=5.7732e+03 M/PXL
-PHA= 80.21  RA=-999.0      S/CAZ=******   LAT= 22.73     PLANETRNG=5.7460e+05
-HRA=-999.0  DEC=  5.80     NORAZ=******   LON=356.81     SLANT RNG=5.6850e+05
-CAL=*******************    IOF=********** UBWC=***       SOLAR RNG=-9.9900e+0
-DC=*******************     CNV=********** SEQNO=1        DSPK_THRESH=-32768
-BLM=*******************    SO=*******************        REDR=************/***
-SUB_SOLAR_LAT=-22.86       SUB_SOLAR_LONG=310.31         SUB_SPCFT_LAT= -5.47 
-SUB_SPCFT_LONG= 31.75      
-FINISHED
-
-label-list /project/test_work/testdata/gll/s1677721400.3 'nousrtim
+label-list s1677721400.3.vic 'nousrtim
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 ************************************************************
  
-        ************  File /project/test_work/testdata/gll/s1677721400.3 ************
+        ************  File s1677721400.3.vic ************
                 3 dimensional IMAGE file
                 File organization is BSQ
                 Pixels are in BYTE format from a AXP-VMS host
@@ -1088,12 +1098,13 @@ SUB_SPACECRAFT_LATITUDE=-999.0
 SUB_SPACECRAFT_LONGITUDE=-999.0
  
 ************************************************************
-label-replace /project/test_work/testdata/gll/s1677721400.3 star.out "FILTER=3" TASK="TASK"
+label-replace s1677721400.3.vic star.out "FILTER=3" TASK="TASK"
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 Keyword FILTER replaced
 tflight_label star.out
 Beginning VICAR task tflight_label
+FLIGHT_LABEL test version 2019-08-01
 GLL/SSI  PICNO=E2W4280     FILTER=3(VLT)  TLMFMT=HIM     TARGET=JUPITER   
 RIM=1/16777214:00:0:0      EXP= -999.00   MOFIBE=000000  TCA=008T11:39:16Z
 SCET=1957.365 00:00:00:000 GAIN=1(400K)   ETYPE=ICT      COMP-RATIO= 34.00
@@ -1133,7 +1144,7 @@ label-add star.out  stars.out "NSTARS = 5, +
 STAR1=(231,165,12,894),STAR2=(21,32,187,23),STAR3=(5,10,15,20), +
 STAR4=(1,2,3,5),STAR5=(9,4,8,3)" TASK="TASK"
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 Keyword NSTARS added
 Keyword STAR1 added
 Keyword STAR2 added
@@ -1142,6 +1153,7 @@ Keyword STAR4 added
 Keyword STAR5 added
 tflight_label stars.out
 Beginning VICAR task tflight_label
+FLIGHT_LABEL test version 2019-08-01
 GLL/SSI  PICNO=E2W4280     FILTER=3(VLT)  TLMFMT=HIM     TARGET=JUPITER   
 RIM=1/16777214:00:0:0      EXP= -999.00   MOFIBE=000000  TCA=008T11:39:16Z
 SCET=1957.365 00:00:00:000 GAIN=1(400K)   ETYPE=ICT      COMP-RATIO= 34.00
@@ -1183,7 +1195,7 @@ FINISHED
 
 label-list stars.out 'nousrtim
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File stars.out ************
@@ -1273,10 +1285,11 @@ STAR5=(9, 4, 8, 3)
 ************************************************************
 label-replace stars.out star.out "NSTARS = 4" TASK="TASK"
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 Keyword NSTARS replaced
 tflight_label star.out
 Beginning VICAR task tflight_label
+FLIGHT_LABEL test version 2019-08-01
 GLL/SSI  PICNO=E2W4280     FILTER=3(VLT)  TLMFMT=HIM     TARGET=JUPITER   
 RIM=1/16777214:00:0:0      EXP= -999.00   MOFIBE=000000  TCA=008T11:39:16Z
 SCET=1957.365 00:00:00:000 GAIN=1(400K)   ETYPE=ICT      COMP-RATIO= 34.00
@@ -1316,10 +1329,11 @@ FINISHED
 
 label-replace stars.out star.out "NSTARS = 3" TASK="TASK"
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 Keyword NSTARS replaced
 tflight_label star.out
 Beginning VICAR task tflight_label
+FLIGHT_LABEL test version 2019-08-01
 GLL/SSI  PICNO=E2W4280     FILTER=3(VLT)  TLMFMT=HIM     TARGET=JUPITER   
 RIM=1/16777214:00:0:0      EXP= -999.00   MOFIBE=000000  TCA=008T11:39:16Z
 SCET=1957.365 00:00:00:000 GAIN=1(400K)   ETYPE=ICT      COMP-RATIO= 34.00
@@ -1359,10 +1373,11 @@ FINISHED
 
 label-replace stars.out star.out "NSTARS = 2" TASK="TASK"
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 Keyword NSTARS replaced
 tflight_label star.out
 Beginning VICAR task tflight_label
+FLIGHT_LABEL test version 2019-08-01
 GLL/SSI  PICNO=E2W4280     FILTER=3(VLT)  TLMFMT=HIM     TARGET=JUPITER   
 RIM=1/16777214:00:0:0      EXP= -999.00   MOFIBE=000000  TCA=008T11:39:16Z
 SCET=1957.365 00:00:00:000 GAIN=1(400K)   ETYPE=ICT      COMP-RATIO= 34.00
@@ -1402,10 +1417,11 @@ FINISHED
 
 label-replace stars.out star.out "NSTARS = 1" TASK="TASK"
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 Keyword NSTARS replaced
 tflight_label star.out
 Beginning VICAR task tflight_label
+FLIGHT_LABEL test version 2019-08-01
 GLL/SSI  PICNO=E2W4280     FILTER=3(VLT)  TLMFMT=HIM     TARGET=JUPITER   
 RIM=1/16777214:00:0:0      EXP= -999.00   MOFIBE=000000  TCA=008T11:39:16Z
 SCET=1957.365 00:00:00:000 GAIN=1(400K)   ETYPE=ICT      COMP-RATIO= 34.00
@@ -1443,10 +1459,11 @@ FINISHED
 
 label-add     stars.out star.out "RAD = 10.22" TASK="TASK"
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 Keyword RAD added
 tflight_label star.out
 Beginning VICAR task tflight_label
+FLIGHT_LABEL test version 2019-08-01
 GLL/SSI  PICNO=E2W4280     FILTER=3(VLT)  TLMFMT=HIM     TARGET=JUPITER   
 RIM=1/16777214:00:0:0      EXP= -999.00   MOFIBE=000000  TCA=008T11:39:16Z
 SCET=1957.365 00:00:00:000 GAIN=1(400K)   ETYPE=ICT      COMP-RATIO= 34.00
@@ -1488,7 +1505,7 @@ FINISHED
 
 label-delete stars.out star.out /all task="TASK"
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 Keyword MISSION deleted
 Keyword SENSOR deleted
 Keyword PICNO deleted
@@ -1564,7 +1581,7 @@ label-add    star.out  stars.out "MISSION=GLL PARTITION=1, +
                ENCODING_TYPE='INTEGER COSINE TRANSFORM ',  +
                NSTARS=2 SENSOR=SSI SUB_SOLAR_LATITUDE=9.0" TASK="TASK"
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 Keyword MISSION added
 Keyword PARTITION added
 Keyword ENCODING_TYPE added
@@ -1573,6 +1590,7 @@ Keyword SENSOR added
 Keyword SUB_SOLAR_LATITUDE added
 tflight_label stars.out
 Beginning VICAR task tflight_label
+FLIGHT_LABEL test version 2019-08-01
 GLL/SSI  PICNO=*******     FILTER=*(****) TLMFMT=***     TARGET=********  
 RIM=*/********:**:*:*      EXP=********   MOFIBE=******  TCA=*************
 SCET=****.*** **:**:**:*** GAIN=*(****)   ETYPE=ICT      COMP-RATIO=********
@@ -1612,8 +1630,9 @@ FINISHED
 
 Write  "The file should not have an output: NON-SSI image "
 The file should not have an output: NON-SSI image 
-tflight_label INP= /project/test_work/testdata/mipl/vgr/mirandab.vio
+tflight_label INP= mirandab.vio.vic
 Beginning VICAR task tflight_label
+FLIGHT_LABEL test version 2019-08-01
 NON-SSI IMAGE
  - SSI label display aborted
 
@@ -1622,12 +1641,42 @@ PRINTING FROM OUTPUT BUFFER
 Nothing to print.  Buffer is empty.
 FINISHED
 
-label-list /project/test_work/stream/udr/s0351305813.galsos 'nousrtim
+tflight_label s0351305813.galsos.vic
+Beginning VICAR task tflight_label
+FLIGHT_LABEL test version 2019-08-01
+GLL/SSI  PICNO=TBD0072     FILTER=0(CLR)  TLMFMT=HCA     TARGET=SMALL_SA  
+RIM=1/03513058:13:0:0      EXP=  200.00   MOFIBE=000000  TCA=000T00:00:00Z
+SCET=1996.189 02:49:12:659 GAIN=3(40K)    ETYPE=RC       TRUNC BITS/PXL=3.19
+PA=TESTBED08               RATE=60 2/3    ENTROPY=3.62   TRUNC PXLS/LNE=464
+INA=-999.0  TWST=-999.0    SUNAZ=******   BOOM=POSSIBLE  HSCL=********** M/PXL
+EMA=-999.0  CONE=  0.00    SMRAZ=******   SMEAR= 0.10    VSCL=********** M/PXL
+PHA=******  RA=-999.0      S/CAZ=******   LAT=******     PLANETRNG=**********
+HRA=-999.0  DEC=-999.0     NORAZ=******   LON=******     SLANT RNG=**********
+CAL=clrf.cal03             IOF=1.0000e+00 UBWC=OFF       SOLAR RNG=7.7791e+08
+DC=3f60.dc02               CNV=1.8020e-01 SEQNO=******   DSPK_THRESH=********
+BLM=clr3f.blm02            SO=calibration.so02           EDR=************/***
+
+PRINTING FROM OUTPUT BUFFER
+
+GLL/SSI  PICNO=TBD0072     FILTER=0(CLR)  TLMFMT=HCA     TARGET=SMALL_SA  
+RIM=1/03513058:13:0:0      EXP=  200.00   MOFIBE=000000  TCA=000T00:00:00Z
+SCET=1996.189 02:49:12:659 GAIN=3(40K)    ETYPE=RC       TRUNC BITS/PXL=3.19
+PA=TESTBED08               RATE=60 2/3    ENTROPY=3.62   TRUNC PXLS/LNE=464
+INA=-999.0  TWST=-999.0    SUNAZ=******   BOOM=POSSIBLE  HSCL=********** M/PXL
+EMA=-999.0  CONE=  0.00    SMRAZ=******   SMEAR= 0.10    VSCL=********** M/PXL
+PHA=******  RA=-999.0      S/CAZ=******   LAT=******     PLANETRNG=**********
+HRA=-999.0  DEC=-999.0     NORAZ=******   LON=******     SLANT RNG=**********
+CAL=clrf.cal03             IOF=1.0000e+00 UBWC=OFF       SOLAR RNG=7.7791e+08
+DC=3f60.dc02               CNV=1.8020e-01 SEQNO=******   DSPK_THRESH=********
+BLM=clr3f.blm02            SO=calibration.so02           EDR=************/***
+FINISHED
+
+label-list s0351305813.galsos.vic 'nousrtim
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 ************************************************************
  
-        ************  File /project/test_work/stream/udr/s0351305813.galsos ************
+        ************  File s0351305813.galsos.vic ************
                 3 dimensional IMAGE file
                 File organization is BSQ
                 Pixels are in HALF format from a SUN-SOLR host
@@ -1695,41 +1744,50 @@ BLM='clr3f.blm02'
 COMMENT='GALSOS replaced 90 pixels by interpolation'
  
 ************************************************************
-tflight_label /project/test_work/stream/udr/s0351305813.galsos
+tflight_label scet_jan_01_2000.img.vic
 Beginning VICAR task tflight_label
-GLL/SSI  PICNO=TBD0072     FILTER=0(CLR)  TLMFMT=HCA     TARGET=SMALL_SA  
-RIM=1/03513058:13:0:0      EXP=  200.00   MOFIBE=000000  TCA=000T00:00:00Z
-SCET=1996.189 02:49:12:659 GAIN=3(40K)    ETYPE=RC       TRUNC BITS/PXL=3.19
-PA=TESTBED08               RATE=60 2/3    ENTROPY=3.62   TRUNC PXLS/LNE=464
-INA=-999.0  TWST=-999.0    SUNAZ=******   BOOM=POSSIBLE  HSCL=********** M/PXL
-EMA=-999.0  CONE=  0.00    SMRAZ=******   SMEAR= 0.10    VSCL=********** M/PXL
-PHA=******  RA=-999.0      S/CAZ=******   LAT=******     PLANETRNG=**********
-HRA=-999.0  DEC=-999.0     NORAZ=******   LON=******     SLANT RNG=**********
-CAL=clrf.cal03             IOF=1.0000e+00 UBWC=OFF       SOLAR RNG=7.7791e+08
-DC=3f60.dc02               CNV=1.8020e-01 SEQNO=******   DSPK_THRESH=********
-BLM=clr3f.blm02            SO=calibration.so02           EDR=************/***
+FLIGHT_LABEL test version 2019-08-01
+GLL/SSI  PICNO=E1W0251     FILTER=2(RED)  TLMFMT=HMA     TARGET=EARTH     
+RIM=1/00610362:45:0:0      EXP=    6.25   MOFIBE=011000  TCA=000T02:28:47Z
+SCET=2000.001 00:00:00:000 GAIN=3(40K)    ETYPE=ICT      COMP-RATIO= 30.14
+PA=E1WSFTRACK03____WZGF    RATE=30 1/3    ENTROPY=0.00   HUF=SKEWED
+MAX_C RATIO= 19.37         MIN_C RATIO=  9.22            THW=(641,241, 96, 96)
+QSTEP=16    QM=UNIFORM     ZZ=ZIGZAG                     ROI=(200,100,799,784)
+INA= 52.55  TWST= 73.50    SUNAZ=-999.0   BOOM=POSSIBLE  HSCL=9.5749e+02 M/PXL
+EMA= 29.32  CONE=  0.00    SMRAZ=-999.0   SMEAR=-999.0   VSCL=9.5749e+02 M/PXL
+PHA= 24.33  RA= 50.22      S/CAZ=-999.0   LAT=-24.82     PLANETRNG=8.9273e+04
+HRA=-999.0  DEC= 32.28     NORAZ=-999.0   LON=225.64     SLANT RNG=8.3673e+04
+CAL=*******************    IOF=********** UBWC=***       SOLAR RNG=-9.9900e+0
+DC=*******************     CNV=********** SEQNO=0        DSPK_THRESH=-32768
+BLM=*******************    SO=*******************        REDR=************/***
+SUB_SOLAR_LAT=-22.77       SUB_SOLAR_LONG=167.79         SUB_SPCFT_LAT=-32.00 
+SUB_SPCFT_LONG=195.51      
 
 PRINTING FROM OUTPUT BUFFER
 
-GLL/SSI  PICNO=TBD0072     FILTER=0(CLR)  TLMFMT=HCA     TARGET=SMALL_SA  
-RIM=1/03513058:13:0:0      EXP=  200.00   MOFIBE=000000  TCA=000T00:00:00Z
-SCET=1996.189 02:49:12:659 GAIN=3(40K)    ETYPE=RC       TRUNC BITS/PXL=3.19
-PA=TESTBED08               RATE=60 2/3    ENTROPY=3.62   TRUNC PXLS/LNE=464
-INA=-999.0  TWST=-999.0    SUNAZ=******   BOOM=POSSIBLE  HSCL=********** M/PXL
-EMA=-999.0  CONE=  0.00    SMRAZ=******   SMEAR= 0.10    VSCL=********** M/PXL
-PHA=******  RA=-999.0      S/CAZ=******   LAT=******     PLANETRNG=**********
-HRA=-999.0  DEC=-999.0     NORAZ=******   LON=******     SLANT RNG=**********
-CAL=clrf.cal03             IOF=1.0000e+00 UBWC=OFF       SOLAR RNG=7.7791e+08
-DC=3f60.dc02               CNV=1.8020e-01 SEQNO=******   DSPK_THRESH=********
-BLM=clr3f.blm02            SO=calibration.so02           EDR=************/***
+GLL/SSI  PICNO=E1W0251     FILTER=2(RED)  TLMFMT=HMA     TARGET=EARTH     
+RIM=1/00610362:45:0:0      EXP=    6.25   MOFIBE=011000  TCA=000T02:28:47Z
+SCET=2000.001 00:00:00:000 GAIN=3(40K)    ETYPE=ICT      COMP-RATIO= 30.14
+PA=E1WSFTRACK03____WZGF    RATE=30 1/3    ENTROPY=0.00   HUF=SKEWED
+MAX_C RATIO= 19.37         MIN_C RATIO=  9.22            THW=(641,241, 96, 96)
+QSTEP=16    QM=UNIFORM     ZZ=ZIGZAG                     ROI=(200,100,799,784)
+INA= 52.55  TWST= 73.50    SUNAZ=-999.0   BOOM=POSSIBLE  HSCL=9.5749e+02 M/PXL
+EMA= 29.32  CONE=  0.00    SMRAZ=-999.0   SMEAR=-999.0   VSCL=9.5749e+02 M/PXL
+PHA= 24.33  RA= 50.22      S/CAZ=-999.0   LAT=-24.82     PLANETRNG=8.9273e+04
+HRA=-999.0  DEC= 32.28     NORAZ=-999.0   LON=225.64     SLANT RNG=8.3673e+04
+CAL=*******************    IOF=********** UBWC=***       SOLAR RNG=-9.9900e+0
+DC=*******************     CNV=********** SEQNO=0        DSPK_THRESH=-32768
+BLM=*******************    SO=*******************        REDR=************/***
+SUB_SOLAR_LAT=-22.77       SUB_SOLAR_LONG=167.79         SUB_SPCFT_LAT=-32.00 
+SUB_SPCFT_LONG=195.51      
 FINISHED
 
-label-list /project/test_work/testdata/y2k/scet_jan_01_2000.img 'nousrtim
+label-list scet_jan_01_2000.img.vic 'nousrtim
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 ************************************************************
  
-        ************  File /project/test_work/testdata/y2k/scet_jan_01_2000.img ************
+        ************  File scet_jan_01_2000.img.vic ************
                 3 dimensional IMAGE file
                 File organization is BSQ
                 Pixels are in BYTE format from a SUN-SOLR host
@@ -1819,11 +1877,12 @@ SCETMSEC=0
 ---- Task: LABEL -- User:  --  ----
  
 ************************************************************
-tflight_label /project/test_work/testdata/y2k/scet_jan_01_2000.img
+tflight_label scet_mar_01_2000.img.vic
 Beginning VICAR task tflight_label
+FLIGHT_LABEL test version 2019-08-01
 GLL/SSI  PICNO=E1W0251     FILTER=2(RED)  TLMFMT=HMA     TARGET=EARTH     
 RIM=1/00610362:45:0:0      EXP=    6.25   MOFIBE=011000  TCA=000T02:28:47Z
-SCET=2000.001 00:00:00:000 GAIN=3(40K)    ETYPE=ICT      COMP-RATIO= 30.14
+SCET=2000.061 00:00:00:000 GAIN=3(40K)    ETYPE=ICT      COMP-RATIO= 30.14
 PA=E1WSFTRACK03____WZGF    RATE=30 1/3    ENTROPY=0.00   HUF=SKEWED
 MAX_C RATIO= 19.37         MIN_C RATIO=  9.22            THW=(641,241, 96, 96)
 QSTEP=16    QM=UNIFORM     ZZ=ZIGZAG                     ROI=(200,100,799,784)
@@ -1841,7 +1900,7 @@ PRINTING FROM OUTPUT BUFFER
 
 GLL/SSI  PICNO=E1W0251     FILTER=2(RED)  TLMFMT=HMA     TARGET=EARTH     
 RIM=1/00610362:45:0:0      EXP=    6.25   MOFIBE=011000  TCA=000T02:28:47Z
-SCET=2000.001 00:00:00:000 GAIN=3(40K)    ETYPE=ICT      COMP-RATIO= 30.14
+SCET=2000.061 00:00:00:000 GAIN=3(40K)    ETYPE=ICT      COMP-RATIO= 30.14
 PA=E1WSFTRACK03____WZGF    RATE=30 1/3    ENTROPY=0.00   HUF=SKEWED
 MAX_C RATIO= 19.37         MIN_C RATIO=  9.22            THW=(641,241, 96, 96)
 QSTEP=16    QM=UNIFORM     ZZ=ZIGZAG                     ROI=(200,100,799,784)
@@ -1856,12 +1915,12 @@ SUB_SOLAR_LAT=-22.77       SUB_SOLAR_LONG=167.79         SUB_SPCFT_LAT=-32.00
 SUB_SPCFT_LONG=195.51      
 FINISHED
 
-label-list /project/test_work/testdata/y2k/scet_mar_01_2000.img 'nousrtim
+label-list scet_mar_01_2000.img.vic 'nousrtim
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 ************************************************************
  
-        ************  File /project/test_work/testdata/y2k/scet_mar_01_2000.img ************
+        ************  File scet_mar_01_2000.img.vic ************
                 3 dimensional IMAGE file
                 File organization is BSQ
                 Pixels are in BYTE format from a SUN-SOLR host
@@ -1951,11 +2010,12 @@ SCETMSEC=0
 ---- Task: LABEL -- User:  --  ----
  
 ************************************************************
-tflight_label /project/test_work/testdata/y2k/scet_mar_01_2000.img
+tflight_label scet_dec_31_2000.img.vic
 Beginning VICAR task tflight_label
+FLIGHT_LABEL test version 2019-08-01
 GLL/SSI  PICNO=E1W0251     FILTER=2(RED)  TLMFMT=HMA     TARGET=EARTH     
 RIM=1/00610362:45:0:0      EXP=    6.25   MOFIBE=011000  TCA=000T02:28:47Z
-SCET=2000.061 00:00:00:000 GAIN=3(40K)    ETYPE=ICT      COMP-RATIO= 30.14
+SCET=2000.366 23:59:59:999 GAIN=3(40K)    ETYPE=ICT      COMP-RATIO= 30.14
 PA=E1WSFTRACK03____WZGF    RATE=30 1/3    ENTROPY=0.00   HUF=SKEWED
 MAX_C RATIO= 19.37         MIN_C RATIO=  9.22            THW=(641,241, 96, 96)
 QSTEP=16    QM=UNIFORM     ZZ=ZIGZAG                     ROI=(200,100,799,784)
@@ -1973,7 +2033,7 @@ PRINTING FROM OUTPUT BUFFER
 
 GLL/SSI  PICNO=E1W0251     FILTER=2(RED)  TLMFMT=HMA     TARGET=EARTH     
 RIM=1/00610362:45:0:0      EXP=    6.25   MOFIBE=011000  TCA=000T02:28:47Z
-SCET=2000.061 00:00:00:000 GAIN=3(40K)    ETYPE=ICT      COMP-RATIO= 30.14
+SCET=2000.366 23:59:59:999 GAIN=3(40K)    ETYPE=ICT      COMP-RATIO= 30.14
 PA=E1WSFTRACK03____WZGF    RATE=30 1/3    ENTROPY=0.00   HUF=SKEWED
 MAX_C RATIO= 19.37         MIN_C RATIO=  9.22            THW=(641,241, 96, 96)
 QSTEP=16    QM=UNIFORM     ZZ=ZIGZAG                     ROI=(200,100,799,784)
@@ -1988,12 +2048,12 @@ SUB_SOLAR_LAT=-22.77       SUB_SOLAR_LONG=167.79         SUB_SPCFT_LAT=-32.00
 SUB_SPCFT_LONG=195.51      
 FINISHED
 
-label-list /project/test_work/testdata/y2k/scet_dec_31_2000.img 'nousrtim
+label-list scet_dec_31_2000.img.vic 'nousrtim
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 ************************************************************
  
-        ************  File /project/test_work/testdata/y2k/scet_dec_31_2000.img ************
+        ************  File scet_dec_31_2000.img.vic ************
                 3 dimensional IMAGE file
                 File organization is BSQ
                 Pixels are in BYTE format from a SUN-SOLR host
@@ -2083,11 +2143,12 @@ SCETMSEC=999
 ---- Task: LABEL -- User:  --  ----
  
 ************************************************************
-tflight_label /project/test_work/testdata/y2k/scet_dec_31_2000.img
+tflight_label scet_jan_01_2001.img.vic
 Beginning VICAR task tflight_label
+FLIGHT_LABEL test version 2019-08-01
 GLL/SSI  PICNO=E1W0251     FILTER=2(RED)  TLMFMT=HMA     TARGET=EARTH     
 RIM=1/00610362:45:0:0      EXP=    6.25   MOFIBE=011000  TCA=000T02:28:47Z
-SCET=2000.366 23:59:59:999 GAIN=3(40K)    ETYPE=ICT      COMP-RATIO= 30.14
+SCET=2001.001 00:00:00:000 GAIN=3(40K)    ETYPE=ICT      COMP-RATIO= 30.14
 PA=E1WSFTRACK03____WZGF    RATE=30 1/3    ENTROPY=0.00   HUF=SKEWED
 MAX_C RATIO= 19.37         MIN_C RATIO=  9.22            THW=(641,241, 96, 96)
 QSTEP=16    QM=UNIFORM     ZZ=ZIGZAG                     ROI=(200,100,799,784)
@@ -2105,7 +2166,7 @@ PRINTING FROM OUTPUT BUFFER
 
 GLL/SSI  PICNO=E1W0251     FILTER=2(RED)  TLMFMT=HMA     TARGET=EARTH     
 RIM=1/00610362:45:0:0      EXP=    6.25   MOFIBE=011000  TCA=000T02:28:47Z
-SCET=2000.366 23:59:59:999 GAIN=3(40K)    ETYPE=ICT      COMP-RATIO= 30.14
+SCET=2001.001 00:00:00:000 GAIN=3(40K)    ETYPE=ICT      COMP-RATIO= 30.14
 PA=E1WSFTRACK03____WZGF    RATE=30 1/3    ENTROPY=0.00   HUF=SKEWED
 MAX_C RATIO= 19.37         MIN_C RATIO=  9.22            THW=(641,241, 96, 96)
 QSTEP=16    QM=UNIFORM     ZZ=ZIGZAG                     ROI=(200,100,799,784)
@@ -2120,12 +2181,12 @@ SUB_SOLAR_LAT=-22.77       SUB_SOLAR_LONG=167.79         SUB_SPCFT_LAT=-32.00
 SUB_SPCFT_LONG=195.51      
 FINISHED
 
-label-list /project/test_work/testdata/y2k/scet_jan_01_2001.img 'nousrtim
+label-list scet_jan_01_2001.img.vic 'nousrtim
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 ************************************************************
  
-        ************  File /project/test_work/testdata/y2k/scet_jan_01_2001.img ************
+        ************  File scet_jan_01_2001.img.vic ************
                 3 dimensional IMAGE file
                 File organization is BSQ
                 Pixels are in BYTE format from a SUN-SOLR host
@@ -2215,11 +2276,12 @@ SCETMSEC=0
 ---- Task: LABEL -- User:  --  ----
  
 ************************************************************
-tflight_label /project/test_work/testdata/y2k/scet_jan_01_2001.img
+tflight_label scet_mar_01_2001.img.vic
 Beginning VICAR task tflight_label
+FLIGHT_LABEL test version 2019-08-01
 GLL/SSI  PICNO=E1W0251     FILTER=2(RED)  TLMFMT=HMA     TARGET=EARTH     
 RIM=1/00610362:45:0:0      EXP=    6.25   MOFIBE=011000  TCA=000T02:28:47Z
-SCET=2001.001 00:00:00:000 GAIN=3(40K)    ETYPE=ICT      COMP-RATIO= 30.14
+SCET=2001.060 00:00:00:000 GAIN=3(40K)    ETYPE=ICT      COMP-RATIO= 30.14
 PA=E1WSFTRACK03____WZGF    RATE=30 1/3    ENTROPY=0.00   HUF=SKEWED
 MAX_C RATIO= 19.37         MIN_C RATIO=  9.22            THW=(641,241, 96, 96)
 QSTEP=16    QM=UNIFORM     ZZ=ZIGZAG                     ROI=(200,100,799,784)
@@ -2237,7 +2299,7 @@ PRINTING FROM OUTPUT BUFFER
 
 GLL/SSI  PICNO=E1W0251     FILTER=2(RED)  TLMFMT=HMA     TARGET=EARTH     
 RIM=1/00610362:45:0:0      EXP=    6.25   MOFIBE=011000  TCA=000T02:28:47Z
-SCET=2001.001 00:00:00:000 GAIN=3(40K)    ETYPE=ICT      COMP-RATIO= 30.14
+SCET=2001.060 00:00:00:000 GAIN=3(40K)    ETYPE=ICT      COMP-RATIO= 30.14
 PA=E1WSFTRACK03____WZGF    RATE=30 1/3    ENTROPY=0.00   HUF=SKEWED
 MAX_C RATIO= 19.37         MIN_C RATIO=  9.22            THW=(641,241, 96, 96)
 QSTEP=16    QM=UNIFORM     ZZ=ZIGZAG                     ROI=(200,100,799,784)
@@ -2252,12 +2314,12 @@ SUB_SOLAR_LAT=-22.77       SUB_SOLAR_LONG=167.79         SUB_SPCFT_LAT=-32.00
 SUB_SPCFT_LONG=195.51      
 FINISHED
 
-label-list /project/test_work/testdata/y2k/scet_mar_01_2001.img 'nousrtim
+label-list scet_mar_01_2001.img.vic 'nousrtim
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 ************************************************************
  
-        ************  File /project/test_work/testdata/y2k/scet_mar_01_2001.img ************
+        ************  File scet_mar_01_2001.img.vic ************
                 3 dimensional IMAGE file
                 File organization is BSQ
                 Pixels are in BYTE format from a SUN-SOLR host
@@ -2347,11 +2409,12 @@ SCETMSEC=0
 ---- Task: LABEL -- User:  --  ----
  
 ************************************************************
-tflight_label /project/test_work/testdata/y2k/scet_mar_01_2001.img
+tflight_label scet_dec_31_2001.img.vic
 Beginning VICAR task tflight_label
+FLIGHT_LABEL test version 2019-08-01
 GLL/SSI  PICNO=E1W0251     FILTER=2(RED)  TLMFMT=HMA     TARGET=EARTH     
 RIM=1/00610362:45:0:0      EXP=    6.25   MOFIBE=011000  TCA=000T02:28:47Z
-SCET=2001.060 00:00:00:000 GAIN=3(40K)    ETYPE=ICT      COMP-RATIO= 30.14
+SCET=2001.365 23:59:59:999 GAIN=3(40K)    ETYPE=ICT      COMP-RATIO= 30.14
 PA=E1WSFTRACK03____WZGF    RATE=30 1/3    ENTROPY=0.00   HUF=SKEWED
 MAX_C RATIO= 19.37         MIN_C RATIO=  9.22            THW=(641,241, 96, 96)
 QSTEP=16    QM=UNIFORM     ZZ=ZIGZAG                     ROI=(200,100,799,784)
@@ -2369,7 +2432,7 @@ PRINTING FROM OUTPUT BUFFER
 
 GLL/SSI  PICNO=E1W0251     FILTER=2(RED)  TLMFMT=HMA     TARGET=EARTH     
 RIM=1/00610362:45:0:0      EXP=    6.25   MOFIBE=011000  TCA=000T02:28:47Z
-SCET=2001.060 00:00:00:000 GAIN=3(40K)    ETYPE=ICT      COMP-RATIO= 30.14
+SCET=2001.365 23:59:59:999 GAIN=3(40K)    ETYPE=ICT      COMP-RATIO= 30.14
 PA=E1WSFTRACK03____WZGF    RATE=30 1/3    ENTROPY=0.00   HUF=SKEWED
 MAX_C RATIO= 19.37         MIN_C RATIO=  9.22            THW=(641,241, 96, 96)
 QSTEP=16    QM=UNIFORM     ZZ=ZIGZAG                     ROI=(200,100,799,784)
@@ -2384,12 +2447,12 @@ SUB_SOLAR_LAT=-22.77       SUB_SOLAR_LONG=167.79         SUB_SPCFT_LAT=-32.00
 SUB_SPCFT_LONG=195.51      
 FINISHED
 
-label-list /project/test_work/testdata/y2k/scet_dec_31_2001.img 'nousrtim
+label-list scet_dec_31_2001.img.vic 'nousrtim
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 ************************************************************
  
-        ************  File /project/test_work/testdata/y2k/scet_dec_31_2001.img ************
+        ************  File scet_dec_31_2001.img.vic ************
                 3 dimensional IMAGE file
                 File organization is BSQ
                 Pixels are in BYTE format from a SUN-SOLR host
@@ -2479,46 +2542,6 @@ SCETMSEC=999
 ---- Task: LABEL -- User:  --  ----
  
 ************************************************************
-tflight_label /project/test_work/testdata/y2k/scet_dec_31_2001.img
-Beginning VICAR task tflight_label
-GLL/SSI  PICNO=E1W0251     FILTER=2(RED)  TLMFMT=HMA     TARGET=EARTH     
-RIM=1/00610362:45:0:0      EXP=    6.25   MOFIBE=011000  TCA=000T02:28:47Z
-SCET=2001.365 23:59:59:999 GAIN=3(40K)    ETYPE=ICT      COMP-RATIO= 30.14
-PA=E1WSFTRACK03____WZGF    RATE=30 1/3    ENTROPY=0.00   HUF=SKEWED
-MAX_C RATIO= 19.37         MIN_C RATIO=  9.22            THW=(641,241, 96, 96)
-QSTEP=16    QM=UNIFORM     ZZ=ZIGZAG                     ROI=(200,100,799,784)
-INA= 52.55  TWST= 73.50    SUNAZ=-999.0   BOOM=POSSIBLE  HSCL=9.5749e+02 M/PXL
-EMA= 29.32  CONE=  0.00    SMRAZ=-999.0   SMEAR=-999.0   VSCL=9.5749e+02 M/PXL
-PHA= 24.33  RA= 50.22      S/CAZ=-999.0   LAT=-24.82     PLANETRNG=8.9273e+04
-HRA=-999.0  DEC= 32.28     NORAZ=-999.0   LON=225.64     SLANT RNG=8.3673e+04
-CAL=*******************    IOF=********** UBWC=***       SOLAR RNG=-9.9900e+0
-DC=*******************     CNV=********** SEQNO=0        DSPK_THRESH=-32768
-BLM=*******************    SO=*******************        REDR=************/***
-SUB_SOLAR_LAT=-22.77       SUB_SOLAR_LONG=167.79         SUB_SPCFT_LAT=-32.00 
-SUB_SPCFT_LONG=195.51      
-
-PRINTING FROM OUTPUT BUFFER
-
-GLL/SSI  PICNO=E1W0251     FILTER=2(RED)  TLMFMT=HMA     TARGET=EARTH     
-RIM=1/00610362:45:0:0      EXP=    6.25   MOFIBE=011000  TCA=000T02:28:47Z
-SCET=2001.365 23:59:59:999 GAIN=3(40K)    ETYPE=ICT      COMP-RATIO= 30.14
-PA=E1WSFTRACK03____WZGF    RATE=30 1/3    ENTROPY=0.00   HUF=SKEWED
-MAX_C RATIO= 19.37         MIN_C RATIO=  9.22            THW=(641,241, 96, 96)
-QSTEP=16    QM=UNIFORM     ZZ=ZIGZAG                     ROI=(200,100,799,784)
-INA= 52.55  TWST= 73.50    SUNAZ=-999.0   BOOM=POSSIBLE  HSCL=9.5749e+02 M/PXL
-EMA= 29.32  CONE=  0.00    SMRAZ=-999.0   SMEAR=-999.0   VSCL=9.5749e+02 M/PXL
-PHA= 24.33  RA= 50.22      S/CAZ=-999.0   LAT=-24.82     PLANETRNG=8.9273e+04
-HRA=-999.0  DEC= 32.28     NORAZ=-999.0   LON=225.64     SLANT RNG=8.3673e+04
-CAL=*******************    IOF=********** UBWC=***       SOLAR RNG=-9.9900e+0
-DC=*******************     CNV=********** SEQNO=0        DSPK_THRESH=-32768
-BLM=*******************    SO=*******************        REDR=************/***
-SUB_SOLAR_LAT=-22.77       SUB_SOLAR_LONG=167.79         SUB_SPCFT_LAT=-32.00 
-SUB_SPCFT_LONG=195.51      
-FINISHED
-
-if ($syschar(1)="UNIX")
-	ush rm stars.out
-        ush rm star.out
-else
-end-if
+ush rm stars.out
+ush rm star.out
 disable-log

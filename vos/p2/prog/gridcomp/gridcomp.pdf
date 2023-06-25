@@ -1,0 +1,123 @@
+process help=*
+ !
+ PARM INP     TYPE=STRING COUNT=2
+ PARM OUT     TYPE=STRING COUNT=1
+ PARM ACOLS   TYPE=INTEGER COUNT=4 DEFAULT=(1,2,3,4)
+ PARM BCOLS   TYPE=INTEGER COUNT=4 DEFAULT=(1,2,3,4)
+ !
+ END-PROC
+!
+! HELP TEXT FOR GRIDCOMP
+.TITLE
+GRIDCOMP - composition of two warp grids to produce a single grid.
+.HELP
+PURPOSE
+     GRIDCOMP is a VICAR applications program which composes two
+     GEOMV grids into a single grid so that a single GEOMV can
+     be performed in place of two.  This avoids double resampling
+     of the image pixels in the overall operation.  High geometric
+     accuracy can be maintained by using high resolution grids
+     (say, 500 x 500 or more).
+     
+     The resulting grid is in a four column IBIS file with the
+     normal column order (1,2,3,4) in double precision.  The inputs
+     can be single or double precision, or integer.
+	   
+CALL
+     gridcomp (GRID_A,GRID_B) GRID_OUT ACOLS=(C1,C2,C3,C4) BCOLS=(C1,C2,C3,C4)
+  WHERE:
+     GRID_A         is the first grid in GEOMV format.
+     GRID_B         is the second grid in GEOMV format.
+     GRID_OUT       is the output grid in GEOMV format.
+     ACOLS          are the columns used in the first ibis file.
+     BCOLS          are the columns used in the second ibis file.
+     
+     The GEOMV format of the warp grid will now be described.
+
+     The IBIS-file form of the grid contains four columns of
+single or double precision tiepoint records.  The columns in
+order are (newline,newsamp,oldline,oldsamp); or the column order
+can be user specified.  NAH and NAV will be calculated from the
+grid and the grid must be rectangular.
+
+     The TIEPOINT-GRID is a set of points describing the relation
+of the output file to that of the input file using the keyword
+TIEPOINT and optionally NAH and NAV which are ignored.
+   NAH=nah  NAV=nav
+     tiepoint=(nl1,ns1,ol1,os1,nl2,ns2,ol2,os2,...
+                   ...nlk,nsk,olk,osk)
+
+where the grid is rectangular in the output image space, nah is
+the number of grid cells horizontally (across the top in the sample
+direction), nav is the number of grid cells vertically in the output
+image space, the point pairs (nli,nsi,oli,osi) are line-sample
+coordinates in the output (new) and input (old) spaces respectively.
+the number of pairs k must equal (nah+1)*(nav+1).  The grid must be
+perfectly rectangular in the output image space (the rows and
+columns must be perfectly horizontal and vertical respectively).
+Each direction must be evenly spaced as well, but all values can
+br fractional.  There are no keywords NAH and NAV, the true
+values are calculated from the grid.
+  
+OPERATION
+
+GRIDCOMP copies the second input, keeping the output grid as is
+(except perhaps for conversion to double precision), and substituting
+for the input grid points, the values that passed through the first
+grid would yield the inputs.
+
+For points that fall outside the first grid, an extrapolation process
+similar to that of tieconv is used.  This should be avoided, but is
+provided as a convenience in case the edge effects are not significant.
+
+PERFORMANCE
+
+Guess about a minute for a 500 x 500 grid.
+
+.PAGE
+Restrictions
+------------
+
+EACH OF THE TWO INPUTS HAVE A PAIR OF GRIDS THAT COULD BE CALLED
+"INPUT" AND "OUTPUT".  THESE MUST SATISFY THE REQUIREMENTS FOR
+GEOMV.
+
+THE OUTPUT GRIDS MUST BE UNIFORMLY SPACED IN EACH DIRECTION
+(MORE RESTRICTIVE THAN LGEOM).  THE SPACING VERTICALLY DOES
+NOT HAVE TO EQUAL THE SPACING HORIZONTALLY THOUGH.
+ON THE OTHER HAND, THE OUTPUT GRID VALUES CAN BE FRACTIONAL (LGEOM
+REQUIRES WHOLE NUMBERS).  THESE REQUIREMENTS ARE EASY TO MEET IF THE
+GRID IS GENERATED MATHEMATICALLY OR IF A PROGRAM SUCH AS TIECONV IS
+USED.
+
+.PAGE
+Original Programmer: A. L. Zobrist, 23 Jun. 2000.
+Current Cognizant Programmer: B. A. McGuffie
+Revisions:
+  2007-12-29 WLB Switched to USES_ANSI_C AND LIB_CARTO; misc cleanup
+  2016-01-08 WLB Migrated to MIPL; replaced printf with zifmessage
+
+.LEVEL1
+.VARI INP
+IBIS tables containing the two
+grids to be composed.
+.VARI OUT
+Output IBIS table name
+.VARI ACOLS
+Columns in the first input
+.VARI BCOLS
+Columns in the second input
+.LEVEL2
+.VARIABLE ACOLS
+    ACOLS=(C1,C2,C3,C4)  Columns in the first IBIS tabular file that
+			 contain the tiepoints.  C1 has new line,
+			 C2 has new sample, C3 has old line, and
+			 C4 has old sample.  The defaults are
+			 (1,2,3,4).
+.VARIABLE BCOLS
+    BCOLS=(C5,C6,C7,C8)  Columns in the second IBIS tabular file that
+			 contain the tiepoints.  C5 has new line,
+			 C6 has new sample, C7 has old line, and
+			 C8 has old sample.  The defaults are
+			 (1,2,3,4).
+.END

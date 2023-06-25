@@ -63,6 +63,8 @@ refgbl $autousage
 refgbl $syschar
 
 body
+enable-log
+
 !let _onfail="stop"
 let _onfail="stop"
 let $echo="no"
@@ -73,7 +75,7 @@ translog INP=AFIDS_ROOT TRANS=afidsroot
 translog INP=AFIDS_TESTDATA TRANS=aftestdata
 if (afidsroot = "")
 !MIPL        
-    ush ln -s /project/test_work/testdata/cassini/iss cas 
+    ush ln -s data cas 
 else         
 !CARTLAB
     if (aftestdata = "")    
@@ -98,7 +100,7 @@ ltgen a.img ltf.out 'DBUG EXPO=(0.,50.,66.67,100.,133.33,200.,266.67) +
 let $echo="no" 
 WRITE "Verify from file: zeroed place holders"
 let $echo="yes"
-list ltf.out     
+list ltf.out 'nousrtim
 
 maxmin ltf.out maxival=maxval minival=minval
 let $echo="no"
@@ -107,7 +109,7 @@ write "Data set  min = &minval should be 0.000"
 write "  "
 WRITE "Verify the NUM_AREA, AREAS, NUM_EXP, and EXPOSURES labels"
 let $echo="yes"
-label-list ltf.out
+label-list ltf.out 'nousrtim
 
 ! TEST 2 - noisy image HALF image
 !
@@ -244,17 +246,20 @@ write "Data set line 4 min = &minval should be &casmin4"
     if (&maxval = casmax4  and &minval = casmin4) write "          ******* Line 4 passes *******"
 let $echo="yes"
 
-list casltf.out sl=1 ss=1 nl=4 ns=10 
+list casltf.out sl=1 ss=1 nl=4 ns=10 'nousrtim
 
 let $echo="no"
 WRITE "Verify NUM_AREA, AREAS, NUM_EXP, and EXPOSURES labels." 
 let $echo="yes"
 
-label-list casltf.out
-
+label-list casltf.out 'nousrtim
 
 rm>
 let $echo="no"
-   ush rm cas
-end-proc
+ush rm cas
 
+ush rm a1.img a2.img a.img b1.img b2.img casltf.out d1.img d2.img l1.a l1.b l1.c
+ush rm l2.a l2.b l2.c l3.a l3.b l3.c l4.a l4.b l4.c l.list ltf1.out ltf.out
+
+disable-log
+end-proc

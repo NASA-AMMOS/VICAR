@@ -1,0 +1,135 @@
+procedure
+parm    mode    type=keyword count=(0:1) valid=(batch,nobatch,inter) default=batch
+
+local   afidsroot   type=string count=1
+local   aftestdata  type=string count=1
+local   rmaxval type=real count=1 init=0.0
+local   rminval type=real count=1 init=0.0
+local   maxval  type=integer count=1 init=0
+local   minval  type=integer count=1 init=0
+
+local   aoinl   type=integer count=1
+local   aoins   type=integer count=1
+local   xxA     type=string count=1 init="xxA"      !
+local   xxB     type=string count=1 init="xxB"      !
+local   xxC     type=string count=1 init="xxC"      !
+local   xxD     type=string count=1 init="xxD"      !
+
+! a procedure to colorize an elevation map given an
+! image whose pixels are in meters in HALF format
+! use the sfo_elevation image and ane elevation
+! lookup table in /raid1/vicar_test_images/testdata/carto
+! on carto raids, There is no equivalent directory in mipl 
+
+! Sep 17, 2013 - RJB
+! TEST SCRIPT FOR IFTHEN 
+!   TEST for ibis TABULAR files
+!
+! Vicar Programs:
+!       translog lab2tcl maxmin mssibis mf4 label-remove 
+!       label-create vlookup xvd
+!
+! External Programs"
+!   <none>
+!
+! Parameters:
+!   mode - method for processing: 
+!       1) batch provides no xvd display
+!       2) interactive or nobatch is used for xvd 
+!           display requiring user interaction.
+!           
+! Requires external test data: 
+! Uses cartlab or mipl dependent pointers
+!
+!   Cartlab defines env var $AFIDS_ROOT, mipl doesn't
+!   The test data in cartlab is on /raid1/test_data 
+!   but in other facilities it might be somewhere else. 
+!   
+!   To facilitate this test you can define an
+!   environment variable $AFIDS_TESTDATA to point to
+!   that data. The cartlab system does not. In the git archive
+!   on pistol there is softlink to the test data in vdev that
+!   allows this test to pass 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+refgbl $echo
+
+body
+let $echo="no"
+let _onfail="stop"
+
+enable-log
+
+!check to see if mipl or cartlab for certain programs
+!cartlab defines env var $AFIDS_ROOT, mipl doesm't
+translog INP=AFIDS_ROOT TRANS=afidsroot
+translog INP=AFIDS_TESTDATA TRANS=aftestdata
+if (afidsroot = "")
+!MIPL
+    ush ln -s . ct
+else
+!CARTLAB
+    if (aftestdata = "")
+        ush ln -s /raid1/vicar_test_images/testdata/carto ct
+    else
+        ush ln -s $AFIDS_TESTDATA/vicar_test_images/testdata/carto ct
+    end-if
+end-if
+
+let _onfail="goto rm"
+let $echo="yes"
+lab2tcl ct/sfo_elevation.img v1=aoinl v2=aoins keyword=(nl,ns) 'system 
+maxmin  ct/sfo_elevation.img minival=rminval maxival=rmaxval
+
+let $echo="no"
+let minval = $fix(&rminval)
+let maxval = $fix(&rmaxval)
+
+if (minval <> 0) let minval = 0
+if (maxval < 3000) let maxval = 3000
+let $echo="yes"
+!create an IBIS file and put elevation, in meters in col 1
+mssibis   ct/sfo_elevation.img sfo_elevation.tbl 'toibis +
+          cols=1 ncol=3
+!add an index in column 2, to order the pixels
+mf4       sfo_elevation.tbl func="c2=@index"
+!
+!  TEST 1 - now colorize according to elevation up to a max of 5500 meters
+!
+ifthen    sfo_elevation.tbl if=("c1<1") then=("c3=0") else=("c3=c3")
+
+ifthen    sfo_elevation.tbl if=("c1>0") then=("c3=2") else=("c3=c3")
+ifthen    sfo_elevation.tbl if=("c1>500") then=("c3=32") else=("c3=c3")
+ifthen    sfo_elevation.tbl if=("c1>1000") then=("c3=64") else=("c3=c3")
+ifthen    sfo_elevation.tbl if=("c1>1500") then=("c3=96") else=("c3=c3")
+ifthen    sfo_elevation.tbl if=("c1>2000") then=("c3=128") else=("c3=c3")
+ifthen    sfo_elevation.tbl if=("c1>2500") then=("c3=160") else=("c3=c3")
+ifthen    sfo_elevation.tbl if=("c1>3000") then=("c3=192") else=("c3=c3")
+ifthen    sfo_elevation.tbl if=("c1>3500") then=("c3=224") else=("c3=c3")
+ifthen    sfo_elevation.tbl if=("c1>4000") then=("c3=252") else=("c3=c3")
+ifthen    sfo_elevation.tbl if=("c1>4500") then=("c3=253") else=("c3=c3")
+ifthen    sfo_elevation.tbl if=("c1>5000") then=("c3=254") else=("c3=c3")
+ifthen    sfo_elevation.tbl if=("c1>5500") then=("c3=255") else=("c3=c3")
+
+mssibis sfo_elevation.tbl xxB 'tomss +
+     cols=(3) nl=&aoinl ns=&aoins format=byte         !col 4 is count (used for averaging)\n";
+label-rem  xxB xxC                                    ! Fix bad label from mssibis\n";
+label-cre  xxC xxD nl=&aoinl ns=&aoins format=byte
+
+! Colorize the image
+    vlookup  xxD out=sfo_elevation_red.vic lutfile=ct/elevation13.lut column=2
+    vlookup  xxD out=sfo_elevation_grn.vic lutfile=ct/elevation13.lut column=3
+    vlookup  xxD out=sfo_elevation_blu.vic lutfile=ct/elevation13.lut column=4
+
+! Display Central California Coast
+if (mode = "nobatch" or mode = "inter")
+    let $echo="no"
+    xvd (sfo_elevation_red.vic,sfo_elevation_grn.vic,sfo_elevation_blu.vic)
+end-if
+
+rm>
+let $echo="yes"
+ush rm ct sfo_elevation_blu.vic sfo_elevation_grn.vic sfo_elevation_red.vic sfo_elevation.tbl xxB xxC xxD
+
+disable-log
+
+end-proc

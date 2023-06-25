@@ -11,7 +11,8 @@ C FORTRAN subroutine to test FORTRAN bridge to subroutines in TXTSUBS
 
       integer i, j, lth, flag
       character*80 buf
-      logical status, txtfont, txtsize, txtrotate, txtcolor
+      integer status
+      logical txtfont, txtsize, txtrotate, txtcolor
       logical txtlength, txttext
 
       do 10 i = 1, text_height

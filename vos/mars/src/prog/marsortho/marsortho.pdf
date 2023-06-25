@@ -1,0 +1,963 @@
+process help=*
+PARM INP TYPE=STRING COUNT=(0:20)
+PARM IN_XYZ TYPE=STRING COUNT=(1:20) DEFAULT=--
+PARM OUT TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM OUT_DEM TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM NAVTABLE TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM IMG_NODATA TYPE=REAL COUNT=1 DEFAULT=0.0
+PARM DEM_NODATA TYPE=REAL COUNT=1 DEFAULT=3.40282E+38
+PARM FILL_SIZE TYPE=INTEGER COUNT=1 DEFAULT=0
+PARM FILL_FACTOR TYPE=REAL COUNT=1 DEFAULT=1.0
+PARM FILL_METHOD TYPE=KEYWORD VALID=("UNIFORM", "WEIGHTED") DEFAULT=UNIFORM
+PARM FILL_MECHANISM TYPE=KEYWORD VALID=("SQUARE", "ELONGATED") DEFAULT=SQUARE
+PARM MAX_ANGLE TYPE=REAL COUNT=1 DEFAULT=1.55334
+PARM MAX_SPAN TYPE=REAL COUNT=1 DEFAULT=10
+PARM PIXEL_ANGLE TYPE=REAL COUNT=(0:1) DEFAULT=--
+PARM DEM_FILL TYPE=INTEGER COUNT=(0:1) DEFAULT=--
+PARM BAND TYPE=INTEGER COUNT=(0:1) DEFAULT=--
+PARM MINX TYPE=REAL COUNT=(0:1) DEFAULT=--
+PARM MINY TYPE=REAL COUNT=(0:1) DEFAULT=--
+PARM MAXX TYPE=REAL COUNT=(0:1) DEFAULT=--
+PARM MAXY TYPE=REAL COUNT=(0:1) DEFAULT=--
+PARM SCALE TYPE=REAL COUNT=(0:1) DEFAULT=--
+PARM SCALE_THRESH TYPE=REAL COUNT=(0:1) DEFAULT=--
+PARM NL TYPE=INTEGER COUNT=(0:1) DEFAULT=--
+PARM NL_THRESH TYPE=INTEGER COUNT=(0:1) DEFAULT=--
+PARM RANGE TYPE=REAL COUNT=1 DEFAULT=0.0
+PARM CUT TYPE=REAL COUNT=(0:1) DEFAULT=--
+PARM CUT_TYPE TYPE=KEYWORD VALID=("CIRCLE", "SAWTOOTH") DEFAULT=SAWTOOTH
+PARM OVERLAY TYPE=KEYWORD VALID=("CLOSEST", "AVG", "MIN", "MAX", "FIRST", "LAST") DEFAULT=FIRST
+PARM CAMERA_CENTER TYPE=REAL COUNT=(0:3) DEFAULT=--
+PARM RAD TYPE=KEYWORD VALID=("RAD", "ZENITH_SCALED_RAD", "NORAD") DEFAULT=RAD
+PARM DNSCALE TYPE=REAL DEFAULT=100.0
+PARM DNSCALE_IN TYPE=KEYWORD COUNT=1 VALID=("AUTOSCALE", "RESCALE", "NOSCALE") DEFAULT=AUTOSCALE
+PARM DNSCALE_OUT TYPE=KEYWORD COUNT=1 VALID=("STATIC", "DYNAMIC", "IDENTITY") DEFAULT=STATIC
+PARM TAU TYPE=REAL DEFAULT=0.6
+PARM BRTCORR TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM INPUT_RANGE TYPE=INTEGER COUNT=(0:2) DEFAULT=--
+PARM MORPHOLOGIC TYPE=KEYWORD VALID=("EROSION", "NONE") DEFAULT=NONE
+PARM ERODE_SHAPE TYPE=KEYWORD VALID=("SQUARE", "DIAMOND") DEFAULT=SQUARE
+PARM ERODE_FACTOR TYPE=REAL COUNT=1 DEFAULT=1.0
+PARM Z_DIRECTION TYPE=KEYWORD COUNT=1 VALID=("ZUP", "ZDOWN") DEFAULT=ZDOWN
+PARM CONFIG_PATH STRING DEFAULT="$MARS_CONFIG_PATH"
+PARM MATCH_METHOD TYPE=STRING COUNT=(0:1) VALID=("LOOSE", "TIGHT") +
+     DEFAULT=LOOSE
+PARM MATCH_TOL TYPE=REAL COUNT=1 DEFAULT=.002
+PARM POINT_METHOD TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM NOSITE TYPE=KEYWORD COUNT=(0:1) VALID=NOSITE DEFAULT=--
+PARM DATA_SET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM DATA_SET_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM RELEASE_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCT_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_INST TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_TYPE TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM RSF TYPE=STRING COUNT=0:100 DEFAULT=--
+PARM DEBUG_RSF TYPE=KEYWORD COUNT=0:1 VALID=DEBUG_RSF DEFAULT=--
+PARM COORD TYPE=KEYWORD VALID=("FIXED", "INSTRUMENT", "SITE", "ROVER", +
+        "LOCAL_LEVEL", "RMECH") DEFAULT="FIXED"
+PARM Z_COORD TYPE=STRING COUNT=(0:1) DEFFAULT=--
+PARM WRITE_COORD TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM COORD_INDEX TYPE=INTEGER COUNT=0:10 DEFAULT=--
+PARM FIXED_SITE TYPE=INTEGER COUNT=0:1 DEFAULT=--
+PARM SOLUTION_ID TYPE=STRING COUNT=0:1 DEFAULT=--
+
+! Outputs for coordinate index outptu files
+PARM IDX_OUT TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM ICM_OUT TYPE=STRING COUNT=(0:1) DEFAULT=--
+
+PARM OMP_ON TYPE=KEYWORD VALID=(OMP_ON,OMP_OFF) DEFAULT=OMP_ON
+
+END-PROC
+
+.TITLE
+VICAR program MARSORTHO.
+
+.HELP
+PURPOSE:
+To assemble multiple frames into a mosaic in orthographic projection. 
+It takes either skin data asscoiated with XYZ data to generate ortho output, 
+or it takes XYZ data to generate DEM. In order to generate ortho output, 
+one-to-one correspondence is expected between XYZ and skin data. 
+Moreover, every entry in skin list should be geometrically registered to 
+every entry in XYZ list.
+
+This is a multimission program. It supports and mission, instrument, 
+and camera model supported by the Planetary Image Geometry (Pig) software 
+suite.
+
+The program provides the options to generate both dem and ortho outputs
+in one execution. Dem and ortho outputs can also be generated individually.
+
+The program provides different options to handle overlay areas for 
+both ortho and DEM outputs. The overlay options include: 
+    1. closest to camera (CLOSEST)
+    2. average (AVG)
+    3. minimum (MIN)
+    4. maximum (MAX)
+    5. first on top (FIRST)
+    6. bottom on top (LAST)
+For detailed information regarding overlay options, see parameter OVERLAY.
+
+Radiometric correction is performed by default on integer inputs, 
+and it may be turned off via the RAD keyword parameter. 
+Radiometric correction is turned off by default on float inputs, 
+and it cannot be turned on.
+
+.page
+EXECUTION:
+
+Note: For the usage examples below, if the command contains "...",
+it means that command is incomplete. 
+
+There are two ways to present INP input:
+    1. marsortho inp=(a.img, b.img, c.img, ...) out=dem.img ...
+    2. marsortho inp=ascii_listoffiles out=dem.img ...
+where ascii_listoffiles is a text file created by Sybase or an editor,
+containing the list of filenames to include in the mosaic, one per record.
+Up to 200 input images can be listed.
+
+There is only one way to present IN_XYZ input:
+    1. marsortho inp=ascii_listoffiles1 in_xyz=ascii_listoffiles2 out=ortho.img ...
+where ascii_listoffiles1 and ascii_listoffiles2 are the same as above. 
+Every entry in ascii_listoffiles2 must be geometrically registered to 
+every entry in ascii_listoffiles1.
+
+OUT_DEM can be optional, and OUT can be optional, but at least one of 
+them must be defined. For example:
+    1. marsortho in_xyz out_dem=dem.img ... (correct)
+    2. marsortho inp=img.lis in_xyz=xyz.lis out=ortho.img ... (correct)
+    3. marsortho inp=img.lis in_xyz=xyz.lis ... (incorrect)
+
+The program provides the following ways to define geometry.
+    1. Define parameter NL. 
+       If the parameter NL is defined, then SCALE (map resolution) will be 
+       computed based on NL, and then NS will be computed based on SCALE and 
+       MAXY and MINY (MAXY and MINY will be computed in the program). 
+    2. Define parameter SCALE.
+       If the parameter SCALE is defined, then NL and NS will be computed based
+       on SCALE, MAXX, MINX, MAXY, and MINY (MAXX, MINX, MAXY, MINY will be
+       computed in the program).
+    3. Define both parameters NL and SCALE
+       If both NL and SCALE are defined, then MAXX will be re-computed based on 
+       NL and SCALE. 
+
+The program has the capability of processing multi-bands INP inputs. All the 
+bands can be processed at once, or each band can be processed individually. If 
+BAND=N, then only that band will be processed. If BAND is not defined, then all 
+bands will be processed. BAND is undefined by default to process all bands 
+unless user explicitly defines it.
+See the two usage examples below:
+    1. Given that images in skin.lis contain 5 bands, and we only want to 
+       process the second band.
+           marsortho inp=img.lis in_xyz=xyz.lis band=2 out=ortho_band2.img ...
+       By defining BAND=2, only band 2 will be processed, and the ortho output 
+       will be a 1-band image.
+    2. Given that images in skin.lis contain 5 bands, and we want to process 
+       them all.
+           marsortho inp=img.lis in_xyz=xyz.lis out=ortho_all_5_bands.img ...
+       In order to have all the 5 bands get processed, all we need to do is left
+       BAND to be undefined. The ortho output in this case will be a 5-bands 
+       image.
+
+Below are examples of complete commands for specific use cases:
+    1. marsortho in_xyz=xyz.lis out_dem=dem.img dem_fill=5 nl=1000 -min
+
+       The above command will use the images in xyz.lis to generate a DEM map 
+       dem.img that has 1000 total number of lines with fill factor to be 
+       (5 * 2 + 1) pixels. -min means when multiple points hit the same 
+       position, the smallest value will be picked.
+       For different options of handling overlay methods in DEM output, please 
+       see parameter OVERLAY.
+
+    2. marsortho inp=img.lis in_xyz=xyz.lis out=ortho.img NL=1000 
+       brtcorr=example.brt -norad
+
+       The above command will use the images in xyz.lis as coordinates and use 
+       the images in img.lis as texture map to overlay on top of the 
+       coordinates. The program will use example.brt generated by marsmap and 
+       marsbrt to perform linear brightness correction. Parameter -norad will
+       turn off the radiometric correction.
+
+    3. marsortho inp=img.lis in_xyz=xyz.lis out_dem=dem.img out=ortho.img 
+       nl=1000 dem_nodata=0 img_nodata=0 fill_size=5 -local -min
+
+       The command above will use xyz.lis and img.lis to genereate DEM map 
+       dem.img and ortho map ortho.img. Parameter nl sets the number of lines 
+       for both dem.img and ortho.img. The number of samples will be calculated
+       based on parameter scale which by default is 0.01, and the actual min and
+       max values in xyz images. Parameters dem_nodata and img_nodata will set 
+       the pixel values for the no data position for dem.img and ortho.img to be
+       0. Parameter fill_size will set the fill size for dem.img and ortho.img 
+       in pixels. Parameter -local will set the output frame to be local. -min 
+       means in dem.img and ortho.img when multiple points hit the same 
+       position, the smallest value will be picked. 
+
+.page
+Index Files
+-----------
+Optionally, index (IDX and ICM) files can be output.  These collectively
+identify what pixel from which input was used for each point in the mosaic.
+
+The index file (IDX_OUT parameter) contains, for each pixel, a halfword
+integer (16 bit signed) identifying which image the pixel came from.
+0 indicates no value (black in the mosaic).  Numbers from 1-n match the
+order of files in the input list file (or INP parameter, if a list file
+isn't given).  For most mosaics, the file could be converted to byte using
+CFORM (half is used to support more than 255 input files).
+
+The ICM file (ICM_OUT parameter) is an Image Coregistration Map.  It is a
+two-band float file containing the line, sample coordinate of the input
+pixel used for the point.  This is the same basic format as correlation
+maps such as MARSCOR3 produces, except that multiple images are involved
+(thus the need for the index file).
+
+HISTORY:
+09-30-13  O. Pariser  Initial marsortho by O. Pariser, based on idl code from 
+                      Jeff R. Hall
+08-31-15  Steven Lu   Added SimpleImage support for better memory management. 
+                      (replacing IBUF, FBUF, ...)
+03-02-16  Steven Lu   Added support for radiometric and brightness correction.
+03-02-16  Steven Lu   Added options to handle overlap areas.
+03-02-16  Steven Lu   Added the capability of processing multiple bands.
+07-24-16  Steven Lu   Added pixel-based fill implementation.
+                      Added INPUT_RANGE capability.
+                      Added morphologic erosion capability. 
+02-10-17  Steven Lu   Changed RANGE parameter definition.
+                      Added parameter CUT and CUT_TYPE.
+09-06-17  Steven Lu   Added parameter Z_COORD
+                      Added parameter Z_DIRECTION
+                      Changed weighted fill to use camera resolution. 
+10-06-17  Steven Lu   Added parameter FILL_FACTOR
+                      Changed ERODE_FACTOR
+11-21-17  Bob Deen    Added WRITE_COORD parameter
+09-28-18  Steven Lu   Added IDX_OUT and ICM_OUT parameters.
+10-31-18  Steven Lu   Added CAMERA_CENTER and PIXEL_ANGLE parameters.
+12-10-18  Steven Lu   Fixed a bug for applying HSI brt corr when -NORAD is on.
+04-21-20  Bob Deen/   Added elongated fill and erosion methods; 
+          Steven Lu   OMP parallelization; Caching erosion kernel;
+
+COGNIZANT PROGRAMMER: Oleg Pariser/Steven Lu
+
+
+.LEVEL1
+.VARI INP
+Input images or ascii file list.
+
+.VARI IN_XYZ
+Input XYZs or ascii file list.
+
+.VARI OUT
+Ortho output image.
+
+.VARI OUT_DEM
+DEM output image.
+
+.VARI NAVTABLE
+Corrected navigation filename.
+
+.VARI IMG_NODATA
+Defines what values to set for ORTHO output image when there is no data 
+available. If this variable is not defined, the value for no data is 0.0.
+
+.VARI DEM_NODATA
+Defines what values to set for DEM output image when there is no data available.
+If this variable is not defined, the value for no data is MAXFLOAT.
+
+.VARI FILL_SIZE
+Defines fill size in pixel.
+
+.VARI FILL_FACTOR
+Defines the factor to enlarge or reduce filled squares.
+
+.VARI FILL_METHOD
+Defines which method to use for fill function. 
+
+.VARI MAX_ANGLE
+Defines the maximum pixel angle.
+
+.VARI MAX_SPAN
+Defines the maximum span.
+
+.VARI PIXEL_ANGLE
+Specifies or overrides
+pixel angle.
+
+.VARI DEM_FILL
+Override FILL_SIZE for DEM output.
+ 
+.VARI RANGE
+Maximum range in meters, measured from coordinate system origin.
+
+.VARI CUT
+Range to cut a circle or sawtooth shape.
+
+.VARI CUT_TYPE
+Specifies the shape to cut.
+
+.VARI BAND
+The BSQ input file band number.
+
+.VARI MINX
+Minimum extent of mosaic in X direction, measured in meters.
+
+.VARI MINY
+Minimum extent of mosaic in Y direction, measured in meters.
+
+.VARI MAXX
+Maximum extent of mosaic in X direction, measured in meters.
+
+.VARI MAXY
+Maximum extent of mosaic in Y direction, measured in meters.
+
+.VARI SCALE
+Scale (map resolution) for both DEM and ORTHO outputs, measured in meters/pixel.
+
+.VARI SCALE_THRESH
+If SCALE is computed from Extent and NL params, and the computed value exceeds values
+specified by this parameter, SCALE will be set to the value of this parameter.
+
+.VARI OVERLAY
+Keyword parameter that provides 6 different methods of handling overlay areas
+in DEM and ortho output mosaic. It defaults to method FIRST.
+1. CLOSEST = closest to camera. 
+2. AVG = average.
+3. MIN = minimum.
+4. MAX = maximum.
+5. FIRST = first on top.
+6. LAST = bottom on top.
+
+.VARI CAMERA_CENTER
+Specifies or overrides
+camera position.
+
+.VARI RAD
+Turns on and off radiometric correction.
+
+.VARI BRTCORR
+Input file containing brightness corrections.
+
+.VARI INPUT_RANGE
+The range of inputs to actually mosaic.
+
+.VARI MORPHOLOGIC
+Turns on and off erosion feature.
+
+.VARI ERODE_SHAPE
+Structuring element shape for erosion feature.
+
+.VARI ERODE_FACTOR
+Defines how much to erode borders and holes.
+
+.VARI Z_DIRECTION
+Deinfes the direction of Z-axis.
+
+.VARI NL
+Number of Lines for both DEM and ORTHO output mosaic.
+
+.VARI NL_THRESH
+If SCALE is computed from Extent and NL params, and the computed value exceeds values
+specified by this parameter, SCALE will be set to the value of this parameter and NL
+will be recomputed.  If recomputed NL value exceeds the value of this parameter, it 
+will be set to NL_THRESH.
+
+.VARI IDX_OUT
+Optional output
+index filename.
+
+.VARI ICM_OUT
+Optional output
+coregistration coordinate
+filename.
+
+.VARI CONFIG_PATH
+Path used to find configuration/calibration files.
+
+.VARI MATCH_METHOD
+Specifies a method
+for pointing corrections.
+
+.VARI MATCH_TOL
+Tolerance value for
+matching pointing params
+in pointing corrections file.
+
+.VARI POINT_METHOD
+Specifies a mission-specific pointing method to use
+
+.VARI NOSITE
+Disables coordinate system sites.
+
+.VARI RSF
+Rover State File(s) to use.
+
+.VARI DEBUG_RSF
+Turns on debugging of RSF parameter.
+
+.VARI COORD
+Coordinate system to use.
+
+.VARI Z_COORD
+Coordinate system to use for Z values in DEM.
+
+.VARI WRITE_COORD
+Extra coord system to write to output label.
+
+.VARI COORD_INDEX
+Coordinate system index for some COORD/mission combos.
+
+.VARI FIXED_SITE
+Which site is FIXED for rover missions.
+
+.VARI SOLUTION_ID
+Solution ID to use for COORD_INDEX
+
+.VARI DATA_SET_NAME
+Specifies the full name given to a data set or a data product.
+
+.VARI DATA_SET_ID
+Specifies a unique alphanumeric identifier for a data set or data product.
+
+.VARI RELEASE_ID
+Specifies the unique identifier associated with the release to the
+public of all or part of a data set.
+The release number is associated with the data set, not the mission.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique identifier assigned to a data
+product by its producer.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier
+of an entity associated with the
+production a data set.
+
+.VARI PRODUCER_INST
+Specifies the full name of the
+identity of an entity associated
+with the production of a data set.
+
+.VARI TARGET_NAME
+Specifies a target.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target.
+
+.VARI OMP_ON
+Turns on or off parallel
+processing (multiple threads,
+single machine). Default: on
+
+.LEVEL2
+.VARI INP                                                            
+There are two options for describing input images.
+
+Either:
+List the image file names
+
+Or:
+provide an ascii file with the file names listed, one per record.
+
+The input images can be 1-band or multi-band. The input images must be 
+co-registered to the images provided in IN_XYZ parameter.
+
+.VARI IN_XYZ
+There are two options for describing IN_XYZ.
+
+Either:
+List the image file names
+
+Or:
+provide an ascii file with the file names listed, one per record.
+
+The input images must be 3-band in REAL (float) format. The bands are in x, y, z
+order. The input images must be co-registered to the images provided in INP 
+parameter.
+
+.VARI OUT
+Output image contains the ORTHO mosaic.
+
+.VARI OUT_DEM
+Output image contains the DEM mosaic.
+
+.VARI NAVTABLE
+Corrected navigation filename.
+If marsnav was run on the input images it created a table of corrected
+pointing parameters. If you refer to this table using NAVTABLE it
+will override the pointing parameters (e.g. azimuth and elevation) in the
+picture labels, giving you a better registered mosaic.
+
+.VARI IMG_NODATA
+Defines what value to be used for the no data areas in ORTHO output. The 
+default value is 0.0. The value is going to be used as a flag to distinguish
+whether a position has a valid data or not, so the value of IMG_NODATA is better
+be set outside the image range.
+
+.VARI DEM_NODATA
+Defines what value to be used for the no data areas in DEM output. The
+default value is the maximum floating point number, which is 3.40282E+38.
+The value is going to be used as a flag to distinguish whether a position 
+has a valid value or not, so the value of DEM_NODATA is better be set 
+outside the image range.
+
+.VARI FILL_SIZE
+Defines the size in pixel for fill implementation. 
+
+.VARI FILL_FACTOR
+Defines the factor to enlarge or reduce filled squares. For example, if a 
+filled square has size=5, and FILL_FACTOR=2, the resultant filled square 
+will have size=9. new_size = ((old_size - 1) / 2) * FILL_FACTOR * 2 + 1.
+
+.VARI FILL_METHOD
+Defines the method for fill implementation. UNIFORM mode fills pixels with a 
+uniformed size defined by FILL_SIZE. WEIGHTED mode fills pixels using camera 
+resolution. 
+
+.VARI MAX_ANGLE
+Defines the maximum pixel angle in radians. It is roughly 89 degress. It is used
+to safe guard pixel angles so that they won't exceed 90 degrees (tan(90) 
+approaches to positive infinity). In general, this value should not be modified.
+
+.VARI MAX_SPAN
+Defines the maximum span (in pixels) for the WEIGHTED mode.  The span can get
+unreasonably large near the horizon.
+
+.VARI PIXEL_ANGLE
+Normally the pixel angle comes from the camera model. This parameter allows the 
+angle to be overridden. If the input file does not have a camera model, this 
+parameter is mandatory. If the specified value is greater than MAX_ANGLE, 
+MAX_ANGLE will be used in the calculations. Consider using the following
+values:
+
+InSight:
+ICC: 2.1e-3
+IDC: 0.82e-3
+ 
+MER:
+Pancam: 0.27e-3
+Navcam: 0.77e-3
+Hazcam: 2.0e-3
+ 
+MSL:
+Hazcam: 2.1e-3
+Navcam: 0.82e-3
+Mastcam left eye: 0.22e-3
+Mastcam right eye: 0.074e-3
+MAHLI: 0.3e-3 ~ 0.34e-3 
+
+.VARI DEM_FILL
+Override FILL_SIZE for DEM output.
+
+.VARI RANGE
+Specifying a range will override the automatically determined min/max x/y,
+so for example saying range=50 will set the output to +/- 50 meters in
+both directions. This can be overridden by the specific MIN/MAX X/Y parameters.
+
+If RANGE is given and CUT is not, the default for CUT is to cut a circle
+at the same size of RANGE.
+
+.VARI CUT
+Specifies the size of the circle/sawtooth shape (see CUT_TYPE) at which to 
+cut the data, as a 2D distance from the coordinate system origin or a 3D 
+distance from camera. If the value is 0, no cut is performed (i.e. the output 
+goes to the corners of the rectangle). If the value is undefined, the value of 
+RANGE is used.
+
+Thus specifying RANGE=50 will set the size of the image to +/-50 meters
+and do a circular cut at 50m distance.  RANGE=50 CUT=40 will set the image
+to 50 meters in size but cut all data at 40m (thus leaving missing data
+around the circle).  RANGE=50 CUT=0 will set the image to 50 meter range
+but not cut in a circle.  CUT=50 will not set the size of the image (it
+comes instead from the auto min/max x/y, parameters, or NL), but it will
+cut a circle at 50m.
+
+.VARI CUT_TYPE
+CIRCLE = 2d distance from coordinate system origin, results in circular image.  
+SAWTOOTH = 3d distance from camera (each camera), results in sawtooth pattern 
+for typical mast-mounted camera panoramas since the camera origin changes with
+each image.
+
+.VARI BAND
+The BSQ input file band number. Defaults to undefined. The parameter defines
+which band(s) in skin images will be processed to put in ORTHO output mosaic.
+If BAND=N, then only that band in skin images will be processed. If BAND is 
+left to be undefined, then all bands in skin images will be processed.
+
+.VARI MINX
+Specifies the minimum extent of the image in meters in the X direction. If MINX 
+is undefined, the program computes the minimum x value from the XYZ data 
+provided with IN_XYZ parameter. If parameter RANGE is provided, then MINX is 
+overriden by -RANGE.
+
+.VARI MAXX
+Specifies the maximum extent of the image in meters in the X direction. If MAXX
+is undefined, the program computes the maximum x value from the XYZ data
+provided with IN_XYZ parameter. If parameter RANGE is provided, then MAXX is
+overriden by RANGE. 
+
+.VARI MINY
+Specifies the minimum extent of the image in meters in Y direction. If MINY
+is undefined, the program computes the minimum y value from the XYZ data
+provided with IN_XYZ parameter. If parameter RANGE is provided, then MINY is
+overriden by -RANGE. 
+
+.VARI MAXY
+Specifies the maximum extent of the image in meters in Y direction. If MAXY
+is undefined, the program computes the maximum y value from the XYZ data
+provided with IN_XYZ parameter. If parameter RANGE is provided, then MAXY is
+overriden by RANGE.
+
+.VARI SCALE
+The scale for both DEM and ORTHO output mosaic, it is measured in meters per 
+pixel. If it is defined, the mosaic will be set exactly at that resolution.
+If it is undefined, then SCALE will be computed based on NL, MINX, MAXX. Either
+SCALE or NL needs to be provided for the program to compute output's geometry.
+
+.VARI SCALE_THRESH
+If SCALE is computed from Extent and NL params, and the computed value exceeds values
+specified by this parameter, SCALE will be set to the value of this parameter.
+
+.VARI OVERLAY
+Keyword parameter that provides 6 different methods of handling overlay areas
+in DEM and ortho output mosaic. It defaults to method FIRST.
+1. CLOSEST = closest to camera.
+   When multiple points hit the same position, the one that is the closest to
+   the camera will be picked and written in the output mosaic. This method 
+   should give the best result if input XYZ data contains lesser noise.
+
+2. AVG = average.
+   When multiple points hit the same position, the average value of the points 
+   will be picked and written in the output mosaic.
+    
+3. MIN = minimum.
+   When multiple points hit the same position, the minimum value of the points 
+   will be picked and written in output mosaic. 
+
+4. MAX = maximum.
+   When multiple points hit the same position, the maximum value of the points 
+   will be picked and written in output mosaic.
+
+5. FIRST = first on top.
+   If this mode is enabled, depending on the images order in the input list,
+   the points from images on top of the input list will have higher priorities 
+   to be picked and written in the output mosaic. For example, given the 
+   input list to be in the order of img1, img2, and img3, points come from img1 
+   will be picked when there are overlap areas between img1 and img2; points 
+   come from img2 will be picked when there are overlap areas between img2 and 
+   img3.   
+
+6. LAST = bottom on top.
+   If this mode is enabled, depending on the images order in the input list,
+   the points from images on bottom of the input list will have higher 
+   priorities to be picked and written in the output mosaic. For example, given 
+   the input list to be in the order of img1, img2, and img3, points come from 
+   img2 will be picked when there are overlap areas between img1 and img2; 
+   points come from img3 will be picked when there are overlap areas between 
+   img2 and img3.
+
+.VARI CAMERA_CENTER
+Normally the camera position comes from the camera model in the label.
+This parameter allows the position to be overridden.  If the input file
+does not have a camera model, this parameter is mandatory.
+
+.VARI RAD
+Keyword parameter that turns on or off radiometric correction of the input 
+images. RAD (the default) enables the correction (for missions/instruments which
+support it), while NORAD disables it. For input images which are in REAL(float) 
+format, radiometric correction is disabled. 
+
+.VARI BRTCORR
+Specifies an input file containing brightness corrections.  This is an
+XML file that comes from a program like marsbrt which contains correction
+factors for each image.  These factors may be additive or multiplicative
+constants to be applied to the image, or other corrections that may be
+implemented in the future.
+
+.VARI INPUT_RANGE
+The range of inputs to actually mosaic.  Normally all inputs are mosaicked.
+However, if this parameter is specified, all inputs will be used to calculate
+the output projection, but only the inputs in the specified range will be
+mosaicked.
+
+The input numbers are 1-based.  If only one number is specified, it is the
+starting number; the end defaults to the # of inputs.
+
+.VARI MORPHOLOGIC
+Flag to enable erosion feature. If it is on, then the program will erode the
+borders of generated DEM and ORTHO results. Note that the erosion will feature
+will erode all the holes in DEM and ORTHO results.
+
+.VARI ERODE_SHAPE
+Structuring element shape for erosion feature. Currently, two default shapes
+SQUARE and DIAMOND are provided. Using different structuring element shape
+will cause the program to erode borders and holes differently.
+
+.VARI ERODE_FACTOR
+Defines how much to erode borders and holes.  
+
+.VARI Z_DIRECTION
+Defines the direction of Z-axis. It only applies to DEM output specified by 
+OUT_DEM parameter. By default, positive Z is pointing down. Setting ZUP will 
+make positive Z up. For MER, use ZDOWN to generate the height maps.
+
+.VARI NL
+Number of Lines for both DEM and ORTHO output mosaic. If it is defined, the
+number of lines of the mosaic will be set exactly to that number. If it is 
+undefined, it is computed based on SCALE, MINX, and MAXX. Either NL or SCALE
+needs to provided for the program to compute output's geometry.  
+
+.VARI NL_THRESH
+If SCALE is computed from Extent and NL params, and the computed value exceeds values
+specified by this parameter, SCALE will be set to the value of this parameter and NL
+will be recomputed.  If recomputed NL value exceeds the value of this parameter, it 
+will be set to NL_THRESH.
+
+.VARI IDX_OUT
+Specifies the (optional) output filename for the index file.
+
+The index file contains, for each pixel, a halfword integer (16 bit signed)
+identifying which image the pixel came from.  0 indicates no value (black
+in the mosaic).  Numbers from 1-n match the order of files in the input list
+file (or INP parameter, if a list file isn't given).  For most mosaics, the
+file could be converted to byte using CFORM (half is used to support more
+than 255 input files).
+
+.VARI ICM_OUT
+Specifies the (optional) output filename for the ICM file.
+
+The ICM file is an Image Coregistration Map.  It is a two-band float file
+containing the line, sample coordinate of the input pixel used for the point.
+This is the same basic format as correlation maps such as MARSCOR3 produces,
+except that multiple images are involved (thus the need for the index file,
+in IDX_OUT).
+
+.VARI CONFIG_PATH
+A colon-separated list of directories in which to look for configuration
+and calibration files.  Environment variables are allowed in the list
+(and may themselves contain colon-separated lists).  The directories are
+searched in order for each config/cal file when it is loaded.  This allows
+multiple projects to be supported simultaneously, and allows the user to
+override any given config/cal file.  Note that the directory structure below
+the directories specified in this path must match what the project expects.
+For example, Mars 98 expects flat fields to be in a subdirectory named
+"flat_fields" while Mars Pathfinder expects them to be directly in the
+directory specified by the path (i.e. no intermediate subdirectories).
+
+.VARI MATCH_METHOD
+Specifies a method for pointing corrections.
+
+Loose method matchs with pointing parameters of the image.
+Tight method matchs with unique id of the image.
+
+.VARI MATCH_TOL
+Tolerance value for matching pointing parameters in the pointing corrections file.
+Used if MATCH_METHOD=LOOSE
+Default value is pretty arbitrary, though seems to work well so far....
+
+.VARI POINT_METHOD
+Specifies a mission-specific pointing method to use.  Normally this
+parameter is not used, in which case the "default" pointing methods
+are used.  Some missions may have special, or alternate, pointing
+methods available, which are indicated by this string (for example,
+backlash models, using arm joint angles instead of x/y/z/az/el, etc).
+A substring search is used, so multiple methods (where that makes sense)
+can be specified by separating the keywords with commas.
+
+Note that nav files created using one pointing method will most likely
+not be compatible with a mosaic created using a different pointing method.
+
+The methods available vary per mission, but some methods available at
+the time of this writing are:
+
+.VARI NOSITE
+Disables all label-derived parameters to the Site mechanism which underlies
+coordinate systems.  This forces all sites to be identical, with all rotations
+and offsets set the same.  In the case of MPF or Mars 98, this disables
+the lander quaternion and offset (sets them to identity and 0, respectively).
+This option should not be used with images taken from different vantage
+points (e.g. the spacecraft moved, or mixing a lander and a rover) or
+invalid results will be obtained.  The use of this option invalidates the
+Fixed coordinate frame; any values reported in the Fixed frame will not
+correctly reflect the orientation of the lander/rover.
+
+Obviously, this option should be rarely used; it is intended for when the
+image labels defining the site are invalid or inconsistent.
+
+.VARI DATA_SET_NAME
+The DATA_SET_NAME typically identifies the instrument that acquired the
+data, the target of that instrument, and the processing level of the data.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_NAME.
+
+.VARI DATA_SET_ID
+The DATA_SET_ID value for a given data set or product is constructed
+according to flight project naming conventions.  In most cases the
+DATA_SET_ID is an abbreviation of the DATA_SET_NAME.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_ID.
+
+.VARI RELEASE_ID
+When a data set is released incrementally, such as every three months during
+a mission, the RELEASE_ID is updated each time part of the data set is released.
+For each mission(or host id if multiple spacecrafts), the first release of a data
+set should have a value of "0001".
+This value is copied to the output label, property IDENTIFICATION,
+keyword RELEASE_ID.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique identifier assigned to a data product by
+its producer. Most commonly, it is the filename minus the extension.
+This value is copied to the output label, property IDENTIFICATION,
+keyword PRODUCT_ID.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier of an entity associated with the
+production of a data set. This value is copied to the output label,
+property IDENTIFICATION, keyword PRODUCER_ID.
+
+.VARI PRODUCER_INST
+Specifies the identity of a university, research center, NASA center or other
+institution associated with the production of a data set.
+This value is copied to the output label, property IDENTIFICATION, keyword
+PRODUCER_INSTITUTION_NAME.
+
+.VARI TARGET_NAME
+Specifies a target.  The target may be a planet, satelite, ring, region, feature,
+asteroid or comet.  This value is copied to the output label, property
+IDENTIFICATION, keyword TARGET_NAME.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target. This value is copied to the output
+label, property IDENTIFICATION, keyword TARGET_NAME.
+
+.VARI RSF
+Rover State File.  This is a list of filenames to load containing
+Rover State information.  These files contain position and orientation
+information for a rover (or other mobile spacecraft) at various sites.
+They are in XML format.  See the "Rover Motion Counter (RMC) Master File SIS"
+for details on these files.
+
+Rover State Files have a priority order.  The files listed first have
+the highest priority.
+
+Environment variables may be used in the list.
+
+For MER, if a directory is specified, then that directory is searched for
+RMC Master files and any found are loaded.  The directory structure and
+filename convention is covered in the RMC SIS.  The directory specified
+is the one containing "master", so if <dir> is the name specified in the
+RSF parameter, the following files will be searched for:
+
+<dir>/master/<mission>_Master.svf
+<dir>/master/<mission>_Site_<n>_Master.rvf
+
+The name of each file loaded is printed to the stdout log for reference.
+
+.VARI DEBUG_RSF
+If enabled, this causes the internal database of RMC locations to be
+printed out to the stdout log.  This is after the RSF files have been
+loaded and the coordinate systems read from the input label(s).
+
+.VARI COORD
+The coordinate system to use for all input parameters and output values,
+and the mosaic itself. The interpretation of the values is dependent on 
+the mission.  Some representative missions are listed here:
+
+Fixed - The Fixed frame.  This is the ultimate reference frame
+    (see also FIXED_SITE for rover missions).
+Instrument - (default) The "natural" frame for the instrument 
+    (of the first input image).  MPF: Lander or Rover; M98: MVACS; MER: Rover.
+Site - A major Site frame.  For rover missions, COORD_INDEX specifies which
+    Site frame to use.  Non-rover missions treat this as Fixed.
+Rover - An instance of the Rover frame.  For rover missions, COORD_INDEX
+    specifies which instance of the rover frame to use.  Non-rover mission
+    use the spacecraft frame (e.g. Lander for M98).  For MSL, this is the
+    Rover Nav frame.
+Local_Level - An instance of a Local Level frame.  This is typically
+    coincident with the Rover frame (in XYZ) but oriented toward North
+    like the Site and Fixed frames.  For MER, this is an instance of a
+    Drive index move.
+RMECH - for MSL, this is the Rover Mechanical frame.  It should not normally
+    be used except for testing.
+
+.VARI Z_COORD
+Coordinate system to use for Z values in DEM. It is similar to COORD parameter, 
+but it applies only to the Z values in DEM. If Z_COORD is specified, it 
+overrides the coordinate system specified with COORD for Z values in DEM. 
+
+.VARI WRITE_COORD
+Specifies an additional coordinate system to write to the label.  The
+coordinate system is not otherwise used.  The use case is to make sure that
+the Rover coordinate system is written to a label when only Site frame XYZ's
+and Site frame projection coordinates are used, so the output can be used
+as input to the InSight instrument placement programs, some of which expect
+a rover frame.  Not needed if either the skin or the projection coordinate
+is rover.
+
+.VARI COORD_INDEX
+The index specifies which instance of a coordinate system to use.  It is
+currently applicable only to rover-based missions, but could have other
+uses.  The index is equivalent to the Rover Motion Counter (RMC) for MER
+and FIDO.
+
+For MER/FIDO, there are many Site frames.  Each is numbered with a single
+index.  For Site Frames, coord_index specifies which to use.  Likewise,
+there are many Local_Level and Rover frames, corresponding to values of
+the RMC.  The multiple instances of this frame are selected by COORD_INDEX.
+
+Generally COORD_INDEX defaults sensibly so you don't usually need to
+specify it.  It will default to the instance used by the first input.
+
+.VARI FIXED_SITE
+Specifies which major Site is the "Fixed" Site for this run.
+
+Historically, MPF and M98 had a single "Surface Fixed" frame which never
+moved, and which all other coordinate system frames were referenced to.
+With the advent of long-range rovers (such as MER and FIDO), that became
+insufficient.  The rover traverses far enough that errors in knowledge of
+coordinate system offset and orientation become unacceptable.
+
+For this reason, a system of major Sites was introduced.  Periodically
+during the mission, a Site frame is declared.  This then becomes the
+reference frame for all activities until the next Site is declared.
+References are kept local, and errors don't propogate across Sites.
+
+However, if images from more than one Site are combined together, the
+Site's must be placed relative to each other.  Therefore a single reference
+frame is still needed to combine different sites.
+
+The FIXED_SITE parameter controls which of the major Site frames is
+the reference ("fixed") site for this program run.  This fixed frame
+can vary in different program runs, but is constant throughout one
+execution.
+
+If not specified, FIXED_SITE defaults to the minimum Site number (i.e.
+lowest numbered, or earliest chronologically) used in all input images.
+Normally this default is sufficient; rarely must FIXED_SITE be specified.
+
+One or more Rover State Files must usually be specified in order to combine
+image from more than one Site.  These describe the relationship between
+sites.  See the RSF parameter.
+
+.VARI SOLUTION_ID
+Specifies which solution ID to use when specifying the coordinate system.
+
+There are potentially many different definitions for the same coordinate
+system.  These are identified via a unique Solution ID.  If this parameter
+is given, only the specified solution's definition is searched for.  Without
+it, the "best" available solution is chosen.
+
+It is extremely rare that this parameter should be needed.  The default
+will be sufficient in almost every case.
+
+Note that the current MER implementation requires that a value for COORD_INDEX
+also be provided, in order for this parameter to take effect.
+
+.VARI OMP_ON
+Turns on or off parallel processing using OMP, which uses multiple cores on
+a single host machine.  The default is on.  The help for e.g. marsmap
+describes some environment variables that can further control parallel
+processing.  Note that this program uses standard OpenMP (which is built
+in to the gcc/g++ compilers), so further details can be found in the OpenMP
+documentation.

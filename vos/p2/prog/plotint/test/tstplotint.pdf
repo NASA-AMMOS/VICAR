@@ -221,4 +221,10 @@ end-if
 
 let $echo="no"
 disable-log
+
+ush rm demo.int mult.int new.int plotint.asc plotint.gpi test2a.asc test2a.gpi
+ush rm test2.asc test2b.asc test2b.gpi test2.gpi test3.asc test3.gpi test4.asc
+ush rm test4.gpi test5.asc test5.gpi test6.asc test6.gpi test7.asc test7.eps
+ush rm test7.eps.gpi test7.gpi test8.asc test8.gpi test9.asc test9.gpi xxA xxB
+
 end-proc

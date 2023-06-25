@@ -1,18 +1,17 @@
-tstxform
 let $becho=("yes","yes")
 WRITE "THIS IS A SCRIPT FILE TO TEST PROCEDURE XFORM"
 THIS IS A SCRIPT FILE TO TEST PROCEDURE XFORM
 gen AX 40 40
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen BX 40 40 LINC=0 SINC=1
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen CX 40 40 LINC=1 SINC=0
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 WRITE "TEST THE REGULAR TRANSFORMATION PHASE"
 TEST THE REGULAR TRANSFORMATION PHASE
@@ -32,12 +31,13 @@ XFORM version 11-JAN-2004
  *** SCALING FACTORS ***
      OFFSET    GAIN
       0.000    1.000
-list  D (1,1,5,5)
+list  D (1,1,5,5) 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:46:47 2004
- Task:XFORM     User:lwk       Date_Time:Wed Feb 11 11:46:47 2004
+ Task:GEN       User:          Date_Time:                        
+ Task:XFORM     User:          Date_Time:                        
      Samp     1       3       5
    Line
       1       0   3   6   9  12
@@ -45,12 +45,13 @@ Beginning VICAR task list
       3       4   7  10  13  16
       4       6   9  12  15  18
       5       8  11  14  17  20
-list  D (16,16,5,5)
+list  D (16,16,5,5) 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:46:47 2004
- Task:XFORM     User:lwk       Date_Time:Wed Feb 11 11:46:47 2004
+ Task:GEN       User:          Date_Time:                        
+ Task:XFORM     User:          Date_Time:                        
      Samp    16      18      20
    Line
      16      75  78  81  84  87
@@ -71,12 +72,13 @@ XFORM version 11-JAN-2004
  *** SCALING FACTORS ***
      OFFSET    GAIN
       0.000    1.000
-list  D (1,1,5,5)
+list  D (1,1,5,5) 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:46:47 2004
- Task:XFORM     User:lwk       Date_Time:Wed Feb 11 11:46:48 2004
+ Task:GEN       User:          Date_Time:                        
+ Task:XFORM     User:          Date_Time:                        
      Samp     1       3       5
    Line
       1       0   2   4   6   8
@@ -97,12 +99,13 @@ XFORM version 11-JAN-2004
  *** SCALING FACTORS ***
      OFFSET    GAIN
       0.000    1.000
-list  D (1,1,5,10) 'HALF
+list  D (1,1,5,10) 'HALF 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:46:47 2004
- Task:XFORM     User:lwk       Date_Time:Wed Feb 11 11:46:48 2004
+ Task:GEN       User:          Date_Time:                        
+ Task:XFORM     User:          Date_Time:                        
      Samp       1     2     3     4     5     6     7     8     9    10
    Line
       1         0     3     6     9    12    15    18    21    24    27
@@ -133,12 +136,13 @@ XFORM version 11-JAN-2004
      OFFSET    GAIN
     -52.306    1.923
     -51.948    1.396
-list  D (1,1,15,15)
+list  D (1,1,15,15) 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:46:47 2004
- Task:XFORM     User:lwk       Date_Time:Wed Feb 11 11:46:49 2004
+ Task:GEN       User:          Date_Time:                        
+ Task:XFORM     User:          Date_Time:                        
      Samp     1       3       5       7       9      11      13      15
    Line
       1       0   0   0   0   0   0   0   0   0   0   5  11  17  23  28
@@ -156,12 +160,13 @@ Beginning VICAR task list
      13       0   0   5  11  17  23  28  34  40  46  52  57  63  69  75
      14       0   3   9  15  21  27  32  38  44  50  55  61  67  73  78
      15       2   7  13  19  25  30  36  42  48  53  59  65  71  77  82
-list  E (1,1,15,15)
+list  E (1,1,15,15) 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:46:47 2004
- Task:XFORM     User:lwk       Date_Time:Wed Feb 11 11:46:49 2004
+ Task:GEN       User:          Date_Time:                        
+ Task:XFORM     User:          Date_Time:                        
      Samp     1       3       5       7       9      11      13      15
    Line
       1       0   0   0   0   0   0   0   0   0   0   0   0   0   3   7
@@ -196,12 +201,13 @@ XFORM version 11-JAN-2004
  *** SCALING FACTORS ***
      OFFSET    GAIN
     -18.044    1.969
-list  D (1,1,10,10)
+list  D (1,1,10,10) 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:46:47 2004
- Task:XFORM     User:lwk       Date_Time:Wed Feb 11 11:46:49 2004
+ Task:GEN       User:          Date_Time:                        
+ Task:XFORM     User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       0   0   0   0   0   2   6  10  13  17
@@ -214,12 +220,13 @@ Beginning VICAR task list
       8      10  13  17  21  25  29  33  37  41  45
       9      13  17  21  25  29  33  37  41  45  49
      10      17  21  25  29  33  37  41  45  49  53
-list  D (31,31,10,10)
+list  D (31,31,10,10) 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:46:47 2004
- Task:XFORM     User:lwk       Date_Time:Wed Feb 11 11:46:49 2004
+ Task:GEN       User:          Date_Time:                        
+ Task:XFORM     User:          Date_Time:                        
      Samp    31      33      35      37      39
    Line
      31     218 222 226 230 234 238 242 246 250 254
@@ -249,12 +256,13 @@ XFORM version 11-JAN-2004
  *** SCALING FACTORS ***
      OFFSET    GAIN
      -4.855    0.883
-list  D (1,1,5,5)
+list  D (1,1,5,5) 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:46:47 2004
- Task:XFORM     User:lwk       Date_Time:Wed Feb 11 11:46:50 2004
+ Task:GEN       User:          Date_Time:                        
+ Task:XFORM     User:          Date_Time:                        
      Samp     1       3       5
    Line
       1       0   0   0   0   2
@@ -262,12 +270,13 @@ Beginning VICAR task list
       3       0   0   2   4   6
       4       0   2   4   6   8
       5       2   4   6   8   9
-list  D (36,36,5,5)
+list  D (36,36,5,5) 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:46:47 2004
- Task:XFORM     User:lwk       Date_Time:Wed Feb 11 11:46:50 2004
+ Task:GEN       User:          Date_Time:                        
+ Task:XFORM     User:          Date_Time:                        
      Samp    36      38      40
    Line
      36     119 120 122 124 126
@@ -292,12 +301,13 @@ XFORM version 11-JAN-2004
  *** SCALING FACTORS ***
      OFFSET    GAIN
      -7.586    1.379
-list  D (1,1,5,5)
+list  D (1,1,5,5) 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:46:47 2004
- Task:XFORM     User:lwk       Date_Time:Wed Feb 11 11:46:50 2004
+ Task:GEN       User:          Date_Time:                        
+ Task:XFORM     User:          Date_Time:                        
      Samp     1       3       5
    Line
       1       0   0   0   1   3
@@ -305,12 +315,13 @@ Beginning VICAR task list
       3       0   1   3   6   9
       4       1   3   6   9  12
       5       3   6   9  12  14
-list  D (36,36,5,5)
+list  D (36,36,5,5) 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:46:47 2004
- Task:XFORM     User:lwk       Date_Time:Wed Feb 11 11:46:50 2004
+ Task:GEN       User:          Date_Time:                        
+ Task:XFORM     User:          Date_Time:                        
      Samp    36      38      40
    Line
      36     186 188 191 194 197
@@ -335,12 +346,13 @@ XFORM version 11-JAN-2004
  *** SCALING FACTORS ***
      OFFSET    GAIN
    -246.762    4.798
-list  D (11,11,20,20)
+list  D (11,11,20,20) 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:46:47 2004
- Task:XFORM     User:lwk       Date_Time:Wed Feb 11 11:46:51 2004
+ Task:GEN       User:          Date_Time:                        
+ Task:XFORM     User:          Date_Time:                        
      Samp    11      13      15      17      19      21      23      25      27      29
    Line
      11       0   0   0   0   0   0   3  12  22  32  41  51  60  70  80  89  99 108 118 127
@@ -379,12 +391,13 @@ XFORM version 11-JAN-2004
  *** SCALING FACTORS ***
      OFFSET    GAIN
  -47087.289  603.683
-list  D (1,1,5,10) 'HALF
+list  D (1,1,5,10) 'HALF 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:46:47 2004
- Task:XFORM     User:lwk       Date_Time:Wed Feb 11 11:46:51 2004
+ Task:GEN       User:          Date_Time:                        
+ Task:XFORM     User:          Date_Time:                        
      Samp       1     2     3     4     5     6     7     8     9    10
    Line
       1    -32768-32768-32768-32768-32768-32768-32768-32768-32768-32768
@@ -414,11 +427,13 @@ XFORM version 11-JAN-2004
      OFFSET    GAIN
       0.000    1.000
       0.000    1.000
-list  G
+list  G 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
  ** The specified window is all zero.
-list  GG
+list  GG 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
  ** The specified window is all zero.
 WRITE "TEST THE MSS BYTE OUTPUT"
 TEST THE MSS BYTE OUTPUT
@@ -440,8 +455,9 @@ XFORM version 11-JAN-2004
  *** SCALING FACTORS ***
      OFFSET    GAIN
       0.000    1.000
-list  D
+list  D  'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
  ** The specified window is all zero.
 WRITE "TEST THE MSS SPECIFIED PARM USE"
 TEST THE MSS SPECIFIED PARM USE
@@ -463,18 +479,19 @@ XFORM version 11-JAN-2004
  *** SCALING FACTORS ***
      OFFSET    GAIN
       0.000    1.000
-list  D
+list  D 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
  ** The specified window is all zero.
 WRITE "TEST THE MSS HALFWORD OUTPUT"
 TEST THE MSS HALFWORD OUTPUT
 gen AY 10 20 'HALF
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen BY 10 20 'HALF
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 mss (AY,BY) MSS
 Beginning VICAR task mss
@@ -494,8 +511,9 @@ XFORM version 11-JAN-2004
  *** SCALING FACTORS ***
      OFFSET    GAIN
       0.000    1.000
-list  D
+list  D 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
  ** The specified window is all zero.
 write "=============================================="
 ==============================================
@@ -503,21 +521,22 @@ WRITE "TEST THE AREA PARAMETER WITH ONE OR MORE AREAS"
 TEST THE AREA PARAMETER WITH ONE OR MORE AREAS
 gen AX 10 10 LINC=10 SINC=1
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen BX 10 10 LINC=10 SINC=1 IVAL=100
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 MSS (AX,BX) MSSB1
 Beginning VICAR task MSS
 * OUTPUT CONTAINS   2INTERLEAVED DATA SETS **
 * ACTUAL OUTPUT RECORD LENGTH     20SAMPLES **
-list  AX
+list  AX 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:46:55 2004
+ Task:GEN       User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       0   1   2   3   4   5   6   7   8   9
@@ -550,12 +569,13 @@ XFORM version 11-JAN-2004
  *** SCALING FACTORS ***
      OFFSET    GAIN
       1.275    2.550
-list  XFORM0 'NOEJECT
+list  XFORM0 'NOEJECT 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:46:55 2004
- Task:XFORM     User:lwk       Date_Time:Wed Feb 11 11:46:56 2004
+ Task:GEN       User:          Date_Time:                        
+ Task:XFORM     User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       1   4   6   9  11  14  17  19  22  24
@@ -583,12 +603,13 @@ XFORM version 11-JAN-2004
  *** SCALING FACTORS ***
      OFFSET    GAIN
       1.275    2.550
-list  XFORM0 'NOEJECT
+list  XFORM0 'NOEJECT 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:46:55 2004
- Task:XFORM     User:lwk       Date_Time:Wed Feb 11 11:46:56 2004
+ Task:GEN       User:          Date_Time:                        
+ Task:XFORM     User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       1   4   6   9  11  14  17  19  22  24
@@ -619,12 +640,13 @@ XFORM version 11-JAN-2004
  *** SCALING FACTORS ***
      OFFSET    GAIN
     -76.875    3.750
-list  XFORM0 'NOEJECT
+list  XFORM0 'NOEJECT 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:46:55 2004
- Task:XFORM     User:lwk       Date_Time:Wed Feb 11 11:46:57 2004
+ Task:GEN       User:          Date_Time:                        
+ Task:XFORM     User:          Date_Time:                        
      Samp     1       3       5       7
    Line
       1       2   6   9  13  17  21  24  28
@@ -649,12 +671,13 @@ XFORM version 11-JAN-2004
  *** SCALING FACTORS ***
      OFFSET    GAIN
     -76.875    3.750
-list  XFORM0 'NOEJECT
+list  XFORM0 'NOEJECT 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:46:55 2004
- Task:XFORM     User:lwk       Date_Time:Wed Feb 11 11:46:57 2004
+ Task:GEN       User:          Date_Time:                        
+ Task:XFORM     User:          Date_Time:                        
      Samp     1       3       5       7
    Line
       1       2   6   9  13  17  21  24  28
@@ -684,12 +707,13 @@ XFORM version 11-JAN-2004
  *** SCALING FACTORS ***
      OFFSET    GAIN
     -76.875    3.750
-list  XFORM0 'NOEJECT 'ZERO
+list  XFORM0 'NOEJECT 'ZERO 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:46:55 2004
- Task:XFORM     User:lwk       Date_Time:Wed Feb 11 11:46:58 2004
+ Task:GEN       User:          Date_Time:                        
+ Task:XFORM     User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       0   0   0   0   0   0   0   0   0   0
@@ -717,12 +741,13 @@ XFORM version 11-JAN-2004
  *** SCALING FACTORS ***
      OFFSET    GAIN
     -76.875    3.750
-list  XFORM0 'NOEJECT 'ZERO
+list  XFORM0 'NOEJECT 'ZERO 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:46:55 2004
- Task:XFORM     User:lwk       Date_Time:Wed Feb 11 11:46:58 2004
+ Task:GEN       User:          Date_Time:                        
+ Task:XFORM     User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       0   0   0   0   0   0   0   0   0   0
@@ -749,12 +774,13 @@ XFORM version 11-JAN-2004
  *** SCALING FACTORS ***
      OFFSET    GAIN
    -653.438   31.875
-list  XFORM0 'NOEJECT 'ZERO
+list  XFORM0 'NOEJECT 'ZERO 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:46:55 2004
- Task:XFORM     User:lwk       Date_Time:Wed Feb 11 11:46:58 2004
+ Task:GEN       User:          Date_Time:                        
+ Task:XFORM     User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       0   0   0   0   0   0   0   0   0   0
@@ -782,12 +808,13 @@ XFORM version 11-JAN-2004
  *** SCALING FACTORS ***
      OFFSET    GAIN
    -653.438   31.875
-list  XFORM0 'NOEJECT 'ZERO
+list  XFORM0 'NOEJECT 'ZERO 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:46:55 2004
- Task:XFORM     User:lwk       Date_Time:Wed Feb 11 11:46:59 2004
+ Task:GEN       User:          Date_Time:                        
+ Task:XFORM     User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       0   0   0   0   0   0   0   0   0   0
@@ -815,12 +842,13 @@ XFORM version 11-JAN-2004
  *** SCALING FACTORS ***
      OFFSET    GAIN
    -108.906    5.312
-list  XFORM0 'NOEJECT 'ZERO
+list  XFORM0 'NOEJECT 'ZERO 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:46:55 2004
- Task:XFORM     User:lwk       Date_Time:Wed Feb 11 11:46:59 2004
+ Task:GEN       User:          Date_Time:                        
+ Task:XFORM     User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       0   0   0   0   0   0   0   0   0   0
@@ -849,12 +877,13 @@ XFORM version 11-JAN-2004
  *** SCALING FACTORS ***
      OFFSET    GAIN
    -108.906    5.312
-list  XFORM0 'NOEJECT 'ZERO
+list  XFORM0 'NOEJECT 'ZERO 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:46:55 2004
- Task:XFORM     User:lwk       Date_Time:Wed Feb 11 11:46:59 2004
+ Task:GEN       User:          Date_Time:                        
+ Task:XFORM     User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       0   0   0   0   0   0   0   0   0   0
@@ -885,12 +914,13 @@ XFORM version 11-JAN-2004
  *** SCALING FACTORS ***
      OFFSET    GAIN
     -28.333    3.148
-list  XFORM0 'NOEJECT 'ZERO
+list  XFORM0 'NOEJECT 'ZERO  'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:46:55 2004
- Task:XFORM     User:lwk       Date_Time:Wed Feb 11 11:47:00 2004
+ Task:GEN       User:          Date_Time:                        
+ Task:XFORM     User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       0   0   0   0   0   0   0   0   0   0
@@ -918,12 +948,13 @@ XFORM version 11-JAN-2004
  *** SCALING FACTORS ***
      OFFSET    GAIN
     -28.333    3.148
-list  XFORM0 'NOEJECT 'ZERO
+list  XFORM0 'NOEJECT 'ZERO 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:46:55 2004
- Task:XFORM     User:lwk       Date_Time:Wed Feb 11 11:47:00 2004
+ Task:GEN       User:          Date_Time:                        
+ Task:XFORM     User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       0   0   0   0   0   0   0   0   0   0
@@ -950,12 +981,13 @@ XFORM version 11-JAN-2004
  *** SCALING FACTORS ***
      OFFSET    GAIN
     -28.333    3.148
-list  XFORM0 'NOEJECT 'ZERO
+list  XFORM0 'NOEJECT 'ZERO 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:46:55 2004
- Task:XFORM     User:lwk       Date_Time:Wed Feb 11 11:47:01 2004
+ Task:GEN       User:          Date_Time:                        
+ Task:XFORM     User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       0   0   0   0   0   0   0   0   0   0
@@ -983,12 +1015,13 @@ XFORM version 11-JAN-2004
  *** SCALING FACTORS ***
      OFFSET    GAIN
     -28.333    3.148
-list  XFORM0 'NOEJECT 'ZERO
+list  XFORM0 'NOEJECT 'ZERO 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:46:55 2004
- Task:XFORM     User:lwk       Date_Time:Wed Feb 11 11:47:01 2004
+ Task:GEN       User:          Date_Time:                        
+ Task:XFORM     User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       0   0   0   0   0   0   0   0   0   0
@@ -1015,12 +1048,13 @@ XFORM version 11-JAN-2004
  *** SCALING FACTORS ***
      OFFSET    GAIN
     -28.333    3.148
-list  XFORM0 'NOEJECT 'ZERO
+list  XFORM0 'NOEJECT 'ZERO 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:46:55 2004
- Task:XFORM     User:lwk       Date_Time:Wed Feb 11 11:47:01 2004
+ Task:GEN       User:          Date_Time:                        
+ Task:XFORM     User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       0   0   0   0   0   0   0   0   0   0
@@ -1048,12 +1082,13 @@ XFORM version 11-JAN-2004
  *** SCALING FACTORS ***
      OFFSET    GAIN
     -28.333    3.148
-list  XFORM0 'NOEJECT 'ZERO
+list  XFORM0 'NOEJECT 'ZERO 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:46:55 2004
- Task:XFORM     User:lwk       Date_Time:Wed Feb 11 11:47:02 2004
+ Task:GEN       User:          Date_Time:                        
+ Task:XFORM     User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       0   0   0   0   0   0   0   0   0   0
@@ -1082,12 +1117,13 @@ XFORM version 11-JAN-2004
  *** SCALING FACTORS ***
      OFFSET    GAIN
     -28.333    3.148
-list  XFORM0 'NOEJECT 'ZERO
+list  XFORM0 'NOEJECT 'ZERO 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:46:55 2004
- Task:XFORM     User:lwk       Date_Time:Wed Feb 11 11:47:02 2004
+ Task:GEN       User:          Date_Time:                        
+ Task:XFORM     User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       0   0   0   0   0   0   0   0   0   0
@@ -1117,12 +1153,13 @@ XFORM version 11-JAN-2004
  *** SCALING FACTORS ***
      OFFSET    GAIN
     -28.333    3.148
-list  XFORM0 'NOEJECT 'ZERO
+list  XFORM0 'NOEJECT 'ZERO 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:46:55 2004
- Task:XFORM     User:lwk       Date_Time:Wed Feb 11 11:47:02 2004
+ Task:GEN       User:          Date_Time:                        
+ Task:XFORM     User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       0   0   0   0   0   0   0   0   0   0
@@ -1151,12 +1188,13 @@ XFORM version 11-JAN-2004
  *** SCALING FACTORS ***
      OFFSET    GAIN
     -28.333    3.148
-list  XFORM0 'NOEJECT 'ZERO
+list  XFORM0 'NOEJECT 'ZERO 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:46:55 2004
- Task:XFORM     User:lwk       Date_Time:Wed Feb 11 11:47:03 2004
+ Task:GEN       User:          Date_Time:                        
+ Task:XFORM     User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       0   0   0   0   0   0   0   0   0   0
@@ -1186,12 +1224,13 @@ XFORM version 11-JAN-2004
  *** SCALING FACTORS ***
      OFFSET    GAIN
     -28.333    3.148
-list  XFORM0 'NOEJECT 'ZERO
+list  XFORM0 'NOEJECT 'ZERO 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:46:55 2004
- Task:XFORM     User:lwk       Date_Time:Wed Feb 11 11:47:03 2004
+ Task:GEN       User:          Date_Time:                        
+ Task:XFORM     User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       0   0   0   0   0   0   0   0   0   0
@@ -1223,12 +1262,13 @@ XFORM version 11-JAN-2004
      OFFSET    GAIN
       1.275    2.550
    -253.725    2.550
-list  X
+list  X 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:46:55 2004
- Task:XFORM     User:lwk       Date_Time:Wed Feb 11 11:47:04 2004
+ Task:GEN       User:          Date_Time:                        
+ Task:XFORM     User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       1   4   6   9  11  14  17  19  22  24
@@ -1241,12 +1281,13 @@ Beginning VICAR task list
       8     180 182 185 187 190 193 195 198 200 203
       9     205 208 210 213 215 218 221 223 226 228
      10     231 233 236 238 241 244 246 249 251 254
-list  Y
+list  Y 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:46:55 2004
- Task:XFORM     User:lwk       Date_Time:Wed Feb 11 11:47:04 2004
+ Task:GEN       User:          Date_Time:                        
+ Task:XFORM     User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       1   4   6   9  11  14  17  19  22  24
@@ -1279,28 +1320,30 @@ WRITE "SHOULD GET 0 DIFFERENCES."
 SHOULD GET 0 DIFFERENCES.
 difpic (X X1)
 Beginning VICAR task difpic
-DIFPIC version 10-11-95
- NUMBER OF DIFFERENCES =   0
+DIFPIC version 2021-03-09
+ NUMBER OF DIFFERENT PIXELS =   0
 difpic (Y Y1)
 Beginning VICAR task difpic
-DIFPIC version 10-11-95
- NUMBER OF DIFFERENCES =   0
+DIFPIC version 2021-03-09
+ NUMBER OF DIFFERENT PIXELS =   0
 gen A0 10 10 ival=0 linc=0 sinc=0
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen A 10 10 ival=100
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 fastmos (A A0) A1 SIZE=(1,1, 100,100)
 Beginning VICAR task fastmos
-list A1
+FASTMOS version 2018-12-18
+list A1 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:47:05 2004
- Task:FASTMOS   User:lwk       Date_Time:Wed Feb 11 11:47:05 2004
+ Task:GEN       User:          Date_Time:                        
+ Task:FASTMOS   User:          Date_Time:                        
      Samp     1       3       5       7       9      11      13      15      17      19      21      23      25      27      29
    Line
       1     100 101 102 103 104 105 106 107 108 109   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
@@ -1313,26 +1356,27 @@ Beginning VICAR task list
       8     107 108 109 110 111 112 113 114 115 116   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
       9     108 109 110 111 112 113 114 115 116 117   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
      10     109 110 111 112 113 114 115 116 117 118   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
-label-list A1
+label-list A1 'nousrtim
 Beginning VICAR task label
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File A1 ************
                 3 dimensional IMAGE file
                 File organization is BSQ
-                Pixels are in BYTE format from a SUN-SOLR host
+                Pixels are in BYTE format from a X86-64-LIN host
                 1 bands
                 100 lines per band
                 100 samples per line
                 0 lines of binary header
                 0 bytes of binary prefix per line
----- Task: GEN -- User: lwk -- Wed Feb 11 11:47:05 2004 ----
+---- Task: GEN -- User:  --  ----
 IVAL=100.0
 SINC=1.0
 LINC=1.0
 BINC=1.0
 MODULO=0.0
----- Task: FASTMOS -- User: lwk -- Wed Feb 11 11:47:05 2004 ----
+---- Task: FASTMOS -- User:  --  ----
  
 ************************************************************
 xform A1 OUT=B1 MATR=1. PERC=10. INC=1 EXCLUDE=0
@@ -1365,8 +1409,8 @@ XFORM version 11-JAN-2004
   -1767.445   17.385
 difpic (B B1)
 Beginning VICAR task difpic
-DIFPIC version 10-11-95
- NUMBER OF DIFFERENCES =   0
+DIFPIC version 2021-03-09
+ NUMBER OF DIFFERENT PIXELS =   0
 xform A OUT=B 'real MATR=1. 'preset
 Beginning VICAR task xform
 XFORM version 11-JAN-2004
@@ -1378,12 +1422,13 @@ XFORM version 11-JAN-2004
  *** SCALING FACTORS ***
      OFFSET    GAIN
       0.000    1.000
-list B
+list B 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    REAL     samples are interpreted as  REAL*4  data
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:47:05 2004
- Task:XFORM     User:lwk       Date_Time:Wed Feb 11 11:47:06 2004
+ Task:GEN       User:          Date_Time:                        
+ Task:XFORM     User:          Date_Time:                        
      Samp             1           2           3           4           5           6           7           8           9          10
    Line
       1       1.000E+02   1.010E+02   1.020E+02   1.030E+02   1.040E+02   1.050E+02   1.060E+02   1.070E+02   1.080E+02   1.090E+02
@@ -1407,12 +1452,13 @@ XFORM version 11-JAN-2004
  *** SCALING FACTORS ***
      OFFSET    GAIN
       0.000    1.000
-list B
+list B 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    FULL     samples are interpreted as FULLWORD data
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:47:05 2004
- Task:XFORM     User:lwk       Date_Time:Wed Feb 11 11:47:07 2004
+ Task:GEN       User:          Date_Time:                        
+ Task:XFORM     User:          Date_Time:                        
      Samp            1          2          3          4          5          6          7          8          9         10
    Line
       1            100        101        102        103        104        105        106        107        108        109
@@ -1427,7 +1473,7 @@ Beginning VICAR task list
      10            109        110        111        112        113        114        115        116        117        118
 gen A 40 40 3
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 xform A B (1,1,20,20) 'BYTE  +
  MATR=(1.,2.,1.) 'PRES
@@ -1441,34 +1487,36 @@ XFORM version 11-JAN-2004
  *** SCALING FACTORS ***
      OFFSET    GAIN
       0.000    1.000
-label-list B
+label-list B 'nousrtim
 Beginning VICAR task label
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File B ************
                 3 dimensional IMAGE file
                 File organization is BSQ
-                Pixels are in BYTE format from a SUN-SOLR host
+                Pixels are in BYTE format from a X86-64-LIN host
                 1 bands
                 20 lines per band
                 20 samples per line
                 0 lines of binary header
                 0 bytes of binary prefix per line
----- Task: GEN -- User: lwk -- Wed Feb 11 11:47:07 2004 ----
+---- Task: GEN -- User:  --  ----
 IVAL=0.0
 SINC=1.0
 LINC=1.0
 BINC=1.0
 MODULO=0.0
----- Task: XFORM -- User: lwk -- Wed Feb 11 11:47:07 2004 ----
+---- Task: XFORM -- User:  --  ----
  
 ************************************************************
-list  B (1,1,5,5) nb=1
+list  B (1,1,5,5) nb=1 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:47:07 2004
- Task:XFORM     User:lwk       Date_Time:Wed Feb 11 11:47:07 2004
+ Task:GEN       User:          Date_Time:                        
+ Task:XFORM     User:          Date_Time:                        
      Samp     1       3       5
    Line
       1       4   8  12  16  20
@@ -1476,12 +1524,13 @@ Beginning VICAR task list
       3      12  16  20  24  28
       4      16  20  24  28  32
       5      20  24  28  32  36
-list  B (16,16,5,5) nb=1
+list  B (16,16,5,5) nb=1 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:47:07 2004
- Task:XFORM     User:lwk       Date_Time:Wed Feb 11 11:47:07 2004
+ Task:GEN       User:          Date_Time:                        
+ Task:XFORM     User:          Date_Time:                        
      Samp    16      18      20
    Line
      16     124 128 132 136 140
@@ -1489,27 +1538,29 @@ Beginning VICAR task list
      18     132 136 140 144 148
      19     136 140 144 148 152
      20     140 144 148 152 156
-list  B (1,1,5,5) nb=1 sb=3
+list  B (1,1,5,5) nb=1 sb=3 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
  ** Requested area exceeds size of input picture.
  ** Number of bands printed reduced.
  ** Specified window contains no data.
-list  B (16,16,5,5) nb=1 sb=3
+list  B (16,16,5,5) nb=1 sb=3 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
  ** Requested area exceeds size of input picture.
  ** Number of bands printed reduced.
  ** Specified window contains no data.
 gen AX 40 40
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen BX 40 40 LINC=0 SINC=1
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 gen CX 40 40 LINC=1 SINC=0
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
 xform (AX,BX,CX) D 'BYTE MATR=(1.,2.,1.,2.,1.,2.)  +
  LINC=5 PERC=12.
@@ -1528,35 +1579,37 @@ XFORM version 11-JAN-2004
      OFFSET    GAIN
     -52.306    1.923
     -51.948    1.396
-label-list D
+label-list D 'nousrtim
 Beginning VICAR task label
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File D ************
                 3 dimensional IMAGE file
                 File organization is BIL
-                Pixels are in BYTE format from a SUN-SOLR host
+                Pixels are in BYTE format from a X86-64-LIN host
                 2 bands
                 40 lines per band
                 40 samples per line
                 0 lines of binary header
                 0 bytes of binary prefix per line
----- Task: GEN -- User: lwk -- Wed Feb 11 11:47:08 2004 ----
+---- Task: GEN -- User:  --  ----
 IVAL=0.0
 SINC=1.0
 LINC=1.0
 BINC=1.0
 MODULO=0.0
----- Task: XFORM -- User: lwk -- Wed Feb 11 11:47:09 2004 ----
+---- Task: XFORM -- User:  --  ----
 SUBAREA1='    1,    1,   40,   40)   LINC=  5   SINC=  1'
  
 ************************************************************
-list  D (1,1,15,15) 'bsq
+list  D (1,1,15,15) 'bsq 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:47:08 2004
- Task:XFORM     User:lwk       Date_Time:Wed Feb 11 11:47:09 2004
+ Task:GEN       User:          Date_Time:                        
+ Task:XFORM     User:          Date_Time:                        
  ***********
  Band =     1
  ***********
@@ -1579,8 +1632,8 @@ Beginning VICAR task list
      15       2   7  13  19  25  30  36  42  48  53  59  65  71  77  82
 
 
- Task:GEN       User:lwk       Date_Time:Wed Feb 11 11:47:08 2004
- Task:XFORM     User:lwk       Date_Time:Wed Feb 11 11:47:09 2004
+ Task:GEN       User:          Date_Time:                        
+ Task:XFORM     User:          Date_Time:                        
  ***********
  Band =     2
  ***********
@@ -1601,16 +1654,4 @@ Beginning VICAR task list
      13      15  19  23  28  32  36  40  44  49  53  57  61  65  70  74
      14      21  25  29  33  37  42  46  50  54  58  63  67  71  75  79
      15      26  30  35  39  43  47  51  56  60  64  68  72  77  81  85
-end-proc
-exit
-slogoff
-if ($RUNTYPE = "INTERACTIVE")
-  if ($syschar(1) = "VAX_VMS")
-  end-if
-else
-  if ($syschar(1) = "VAX_VMS")
-  end-if
-end-if
-ulogoff
-END-PROC
-END-PROC
+disable-log

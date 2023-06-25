@@ -1,0 +1,252 @@
+ibis-gen xxa nc=2 nr=1 format=("DOUB","DOUB")
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+acopin (ct/gtcrop.dat,xxa) cols=(1,2) lead_rm=1
+Beginning VICAR task acopin
+acopin Fri Dec  5 2014 - wlb
+Number of input cols = 2
+Output length is 5 records
+
+
+ibis-list xxa 'format
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:5  Number of Columns: 2       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:5
++-----------+-----------
+         C:1         C:2
+        DOUB        DOUB
++-----------+-----------
+        3.00        3.00
+        4.00        6.00
+        6.10        7.00
+        6.10        3.00
+        3.00        3.00
+gen xxxim1 nl=10 ns=10
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+gtgen inp=xxxim1 out=xxxim2 'tiecnvrt  +
+   geotiff=("ModelTiePointTag=(0,0,0,350807.4,5317081.3,0.0)",  +
+          "ModelTiePointTag=(200,100,0,351807.4,5316081.3,0.0)",  +
+          "ModelTiePointTag=(200,0,0,351807.4,5317081.3,0.0)",  +
+          "ProjectedCSTypeGeoKey=32637(PCS_WGS84_UTM_zone_37N)",  +
+          "GTRasterTypeGeoKey=1(RasterPixelIsArea)")
+Beginning VICAR task gtgen
+GTGEN version 2019-09-05
+gtcrop (xxxim2,xxa) xxxim3 'coverpol cols=(1,2) vsline=tline vssamp=tsamp
+Beginning VICAR task gtcrop
+gtcrop version 2015-10-15
+write "tline,tsamp 3,3"
+tline,tsamp 3,3
+list xxxim3 'zero 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTCROP    User:          Date_Time:                        
+     Samp     1       3       5
+   Line
+      1       4   0   0   0   0
+      2       5   6   7   8   0
+      3       6   7   8   9   0
+      4       7   8   9  10   0
+gtlist xxxim2
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(0,0,0,350807.4,5317081.3,0.0)
+MODELPIXELSCALETAG=(5.0,10.0,0.0)
+PROJECTEDCSTYPEGEOKEY=32637(PCS_WGS84_UTM_zone_37N)
+GTRASTERTYPEGEOKEY=1(RasterPixelIsArea)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  350809.9000000  5317076.300000
+       1.0     10.0          9.5      0.5  350854.9000000  5317076.300000
+      10.0      1.0          0.5      9.5  350809.9000000  5316986.300000
+      10.0     10.0          9.5      9.5  350854.9000000  5316986.300000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  350807.4000000  5317081.300000
+       0.5     10.5         10.0      0.0  350857.4000000  5317081.300000
+      10.5      0.5          0.0     10.0  350807.4000000  5316981.300000
+      10.5     10.5         10.0     10.0  350857.4000000  5316981.300000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 1
+123
+456
+789
+The scale units of the image are (ignoring sign):
+1 sample = 5.0000000000000 map units east
+1 line   = 10.0000000000000 map units north
+The scale fraction is 1 /    195.0
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+gtlist xxxim3
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(-2.0,-2.0,0,350807.4,5317081.3,0.0)
+MODELPIXELSCALETAG=(5.0,10.0,0.0)
+PROJECTEDCSTYPEGEOKEY=32637(PCS_WGS84_UTM_ZONE_37N)
+GTRASTERTYPEGEOKEY=1(RASTERPIXELISAREA)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  350819.9000000  5317056.300000
+       1.0      5.0          4.5      0.5  350839.9000000  5317056.300000
+       4.0      1.0          0.5      3.5  350819.9000000  5317026.300000
+       4.0      5.0          4.5      3.5  350839.9000000  5317026.300000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  350817.4000000  5317061.300000
+       0.5      5.5          5.0      0.0  350842.4000000  5317061.300000
+       4.5      0.5          0.0      4.0  350817.4000000  5317021.300000
+       4.5      5.5          5.0      4.0  350842.4000000  5317021.300000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 1
+123
+456
+789
+The scale units of the image are (ignoring sign):
+1 sample = 5.0000000000000 map units east
+1 line   = 10.0000000000000 map units north
+The scale fraction is 1 /     97.5
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+ibis-gen xxa nc=2 nr=1 format=("DOUB","DOUB")
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+acopin (ct/gtcrop.dat,xxa) cols=(1,2) lead_rm=1
+Beginning VICAR task acopin
+acopin Fri Dec  5 2014 - wlb
+Number of input cols = 2
+Output length is 5 records
+
+
+ibis-list xxa 'format
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:5  Number of Columns: 2       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:5
++-----------+-----------
+         C:1         C:2
+        DOUB        DOUB
++-----------+-----------
+        3.00        3.00
+        4.00        6.00
+        6.10        7.00
+        6.10        3.00
+        3.00        3.00
+gen xxxim1 nl=10 ns=10
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+gtgen inp=xxxim1 out=xxxim2 'tiecnvrt  +
+   geotiff=("ModelTiePointTag=(0,0,0,350807.4,5317081.3,0.0)",  +
+          "ModelTiePointTag=(200,100,0,351807.4,5316081.3,0.0)",  +
+          "ModelTiePointTag=(200,0,0,351807.4,5317081.3,0.0)",  +
+          "ProjectedCSTypeGeoKey=32637(PCS_WGS84_UTM_zone_37N)",  +
+          "GTRasterTypeGeoKey=1(RasterPixelIsArea)")
+Beginning VICAR task gtgen
+GTGEN version 2019-09-05
+gtcrop (xxxim2,xxa) xxxim3 'coverinp cols=(1,2)
+Beginning VICAR task gtcrop
+gtcrop version 2015-10-15
+list xxxim3 'zero 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:GTCROP    User:          Date_Time:                        
+     Samp     1       3       5       7       9
+   Line
+      1       0   0   0   0   0   0   0   0   0   0
+      2       0   0   0   0   0   0   0   0   0   0
+      3       0   0   4   0   0   0   0   0   0   0
+      4       0   0   5   6   7   8   0   0   0   0
+      5       0   0   6   7   8   9   0   0   0   0
+      6       0   0   7   8   9  10   0   0   0   0
+      7       0   0   0   0   0   0   0   0   0   0
+      8       0   0   0   0   0   0   0   0   0   0
+      9       0   0   0   0   0   0   0   0   0   0
+     10       0   0   0   0   0   0   0   0   0   0
+gtlist xxxim2
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(0,0,0,350807.4,5317081.3,0.0)
+MODELPIXELSCALETAG=(5.0,10.0,0.0)
+PROJECTEDCSTYPEGEOKEY=32637(PCS_WGS84_UTM_zone_37N)
+GTRASTERTYPEGEOKEY=1(RasterPixelIsArea)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  350809.9000000  5317076.300000
+       1.0     10.0          9.5      0.5  350854.9000000  5317076.300000
+      10.0      1.0          0.5      9.5  350809.9000000  5316986.300000
+      10.0     10.0          9.5      9.5  350854.9000000  5316986.300000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  350807.4000000  5317081.300000
+       0.5     10.5         10.0      0.0  350857.4000000  5317081.300000
+      10.5      0.5          0.0     10.0  350807.4000000  5316981.300000
+      10.5     10.5         10.0     10.0  350857.4000000  5316981.300000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 1
+123
+456
+789
+The scale units of the image are (ignoring sign):
+1 sample = 5.0000000000000 map units east
+1 line   = 10.0000000000000 map units north
+The scale fraction is 1 /    195.0
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+gtlist xxxim3
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(0,0,0,350807.4,5317081.3,0.0)
+MODELPIXELSCALETAG=(5.0,10.0,0.0)
+PROJECTEDCSTYPEGEOKEY=32637(PCS_WGS84_UTM_zone_37N)
+GTRASTERTYPEGEOKEY=1(RasterPixelIsArea)
+
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5  350809.9000000  5317076.300000
+       1.0     10.0          9.5      0.5  350854.9000000  5317076.300000
+      10.0      1.0          0.5      9.5  350809.9000000  5316986.300000
+      10.0     10.0          9.5      9.5  350854.9000000  5316986.300000
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0  350807.4000000  5317081.300000
+       0.5     10.5         10.0      0.0  350857.4000000  5317081.300000
+      10.5      0.5          0.0     10.0  350807.4000000  5316981.300000
+      10.5     10.5         10.0     10.0  350857.4000000  5316981.300000
+The rotation of the image relative to an E-N geographic frame is:
+rotation 1
+123
+456
+789
+The scale units of the image are (ignoring sign):
+1 sample = 5.0000000000000 map units east
+1 line   = 10.0000000000000 map units north
+The scale fraction is 1 /    195.0
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+ush rm ct xxa  xxxim1  xxxim2  xxxim3
+disable-log

@@ -1,0 +1,341 @@
+gengrid2 out=xxx1 ncol=8 nah=3 nav=4  +
+     l1=21.0 s1=1.0  +
+     l2=21.0 s2=9.0  +
+     l3=12.0 s3=1.0  +
+     l4=18.0 s4=9.0
+let nahp1=nah+1
+let navp1=nav+1
+let nahxnav=nahp1*navp1
+ibis-gen xxx1 version="ibis-2" org="column" nc=8      +
+ nr=20 deffmt=DOUB
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+mf3 xxx1 func="c3=@int((@index-1)/4)/4"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+mf3 xxx1 func="c4=@mod(@index+3,4)/3"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+mf3 xxx1 func="c5=c3*(1.200000000000e+01-(2.100000000000e+01))+(2.100000000000e+01)$c6=c3*(1.800000000000e+01-(2.100000000000e+01))+
++(2.100000000000e+01)"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+mf3 xxx1 func="c1=c4*(c6-c5)+c5"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+mf3 xxx1 func="c7=c4*(9.000000000000e+00-(1.000000000000e+00))+(1.000000000000e+00)$c8=c4*(9.000000000000e+00-(1.000000000000e+00))+
++(1.000000000000e+00)"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+mf3 xxx1 func="c2=c3*(c8-c7)+c7"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+mf3 xxx1 func="c3=0$c4=0$c5=0$c6=0$c7=0$c8=0$"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+end-proc
+ibis-list xxx1 cols=(1,2)
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:20  Number of Columns: 8       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:20
++-----------+-----------
+         C:1         C:2
++-----------+-----------
+       21.00        1.00
+       21.00        3.67
+       21.00        6.33
+       21.00        9.00
+       18.75        1.00
+       19.25        3.67
+       19.75        6.33
+       20.25        9.00
+       16.50        1.00
+       17.50        3.67
+       18.50        6.33
+       19.50        9.00
+       14.25        1.00
+       15.75        3.67
+       17.25        6.33
+       18.75        9.00
+       12.00        1.00
+       14.00        3.67
+       16.00        6.33
+       18.00        9.00
+gengrid2 out=xxx2 ncol=8 nah=3 nav=4  +
+     l1=19.0 s1=1.0  +
+     l2=17.0 s2=9.0  +
+     l3=10.0 s3=1.0  +
+     l4=10.0 s4=9.0
+let nahp1=nah+1
+let navp1=nav+1
+let nahxnav=nahp1*navp1
+ibis-gen xxx2 version="ibis-2" org="column" nc=8      +
+ nr=20 deffmt=DOUB
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+mf3 xxx2 func="c3=@int((@index-1)/4)/4"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+mf3 xxx2 func="c4=@mod(@index+3,4)/3"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+mf3 xxx2 func="c5=c3*(1.000000000000e+01-(1.900000000000e+01))+(1.900000000000e+01)$c6=c3*(1.000000000000e+01-(1.700000000000e+01))+
++(1.700000000000e+01)"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+mf3 xxx2 func="c1=c4*(c6-c5)+c5"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+mf3 xxx2 func="c7=c4*(9.000000000000e+00-(1.000000000000e+00))+(1.000000000000e+00)$c8=c4*(9.000000000000e+00-(1.000000000000e+00))+
++(1.000000000000e+00)"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+mf3 xxx2 func="c2=c3*(c8-c7)+c7"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+mf3 xxx2 func="c3=0$c4=0$c5=0$c6=0$c7=0$c8=0$"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+end-proc
+ibis-list xxx2 cols=(1,2)
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:20  Number of Columns: 8       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:20
++-----------+-----------
+         C:1         C:2
++-----------+-----------
+       19.00        1.00
+       18.33        3.67
+       17.67        6.33
+       17.00        9.00
+       16.75        1.00
+       16.25        3.67
+       15.75        6.33
+       15.25        9.00
+       14.50        1.00
+       14.17        3.67
+       13.83        6.33
+       13.50        9.00
+       12.25        1.00
+       12.08        3.67
+       11.92        6.33
+       11.75        9.00
+       10.00        1.00
+       10.00        3.67
+       10.00        6.33
+       10.00        9.00
+ibis-cat (xxx1,xxx2) xxx3
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+mf3 xxx3 f="x3=x1$x4=x2$x1=@int((@index+3)/4+0.001)$x2=@mod(@index-1,4)*2+1"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+ibis-list xxx3 cols=(1,2,3,4)
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:40  Number of Columns: 8       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:30
++-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4
++-----------+-----------+-----------+-----------
+        1.00        1.00       21.00        1.00
+        1.00        3.00       21.00        3.67
+        1.00        5.00       21.00        6.33
+        1.00        7.00       21.00        9.00
+        2.00        1.00       18.75        1.00
+        2.00        3.00       19.25        3.67
+        2.00        5.00       19.75        6.33
+        2.00        7.00       20.25        9.00
+        3.00        1.00       16.50        1.00
+        3.00        3.00       17.50        3.67
+        3.00        5.00       18.50        6.33
+        3.00        7.00       19.50        9.00
+        4.00        1.00       14.25        1.00
+        4.00        3.00       15.75        3.67
+        4.00        5.00       17.25        6.33
+        4.00        7.00       18.75        9.00
+        5.00        1.00       12.00        1.00
+        5.00        3.00       14.00        3.67
+        5.00        5.00       16.00        6.33
+        5.00        7.00       18.00        9.00
+        6.00        1.00       19.00        1.00
+        6.00        3.00       18.33        3.67
+        6.00        5.00       17.67        6.33
+        6.00        7.00       17.00        9.00
+        7.00        1.00       16.75        1.00
+        7.00        3.00       16.25        3.67
+        7.00        5.00       15.75        6.33
+        7.00        7.00       15.25        9.00
+        8.00        1.00       14.50        1.00
+        8.00        3.00       14.17        3.67
+ 
+Rows: 31:40
++-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4
++-----------+-----------+-----------+-----------
+        8.00        5.00       13.83        6.33
+        8.00        7.00       13.50        9.00
+        9.00        1.00       12.25        1.00
+        9.00        3.00       12.08        3.67
+        9.00        5.00       11.92        6.33
+        9.00        7.00       11.75        9.00
+       10.00        1.00       10.00        1.00
+       10.00        3.00       10.00        3.67
+       10.00        5.00       10.00        6.33
+       10.00        7.00       10.00        9.00
+gen xximg nl=10 ns=7 linc=10 sinc=0
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+ibis-copy xxx3 xxx4
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+bowtie (xximg,xxx4) xximg2 cols=(1,2,3,4) nscan=8
+Beginning VICAR task bowtie
+bowtie version 2016-01-13
+gridnah,gridnav 3 9
+offset=-1
+ibis-list xxx3 cols=(1,2,3,4)
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:40  Number of Columns: 8       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:30
++-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4
++-----------+-----------+-----------+-----------
+        1.00        1.00       21.00        1.00
+        1.00        3.00       21.00        3.67
+        1.00        5.00       21.00        6.33
+        1.00        7.00       21.00        9.00
+        2.00        1.00       18.75        1.00
+        2.00        3.00       19.25        3.67
+        2.00        5.00       19.75        6.33
+        2.00        7.00       20.25        9.00
+        3.00        1.00       16.50        1.00
+        3.00        3.00       17.50        3.67
+        3.00        5.00       18.50        6.33
+        3.00        7.00       19.50        9.00
+        4.00        1.00       14.25        1.00
+        4.00        3.00       15.75        3.67
+        4.00        5.00       17.25        6.33
+        4.00        7.00       18.75        9.00
+        5.00        1.00       12.00        1.00
+        5.00        3.00       14.00        3.67
+        5.00        5.00       16.00        6.33
+        5.00        7.00       18.00        9.00
+        6.00        1.00       19.00        1.00
+        6.00        3.00       18.33        3.67
+        6.00        5.00       17.67        6.33
+        6.00        7.00       17.00        9.00
+        7.00        1.00       16.75        1.00
+        7.00        3.00       16.25        3.67
+        7.00        5.00       15.75        6.33
+        7.00        7.00       15.25        9.00
+        8.00        1.00       14.50        1.00
+        8.00        3.00       14.17        3.67
+ 
+Rows: 31:40
++-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4
++-----------+-----------+-----------+-----------
+        8.00        5.00       13.83        6.33
+        8.00        7.00       13.50        9.00
+        9.00        1.00       12.25        1.00
+        9.00        3.00       12.08        3.67
+        9.00        5.00       11.92        6.33
+        9.00        7.00       11.75        9.00
+       10.00        1.00       10.00        1.00
+       10.00        3.00       10.00        3.67
+       10.00        5.00       10.00        6.33
+       10.00        7.00       10.00        9.00
+ibis-list xxx4 cols=(1,2,3,4)
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:40  Number of Columns: 8       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:30
++-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4
++-----------+-----------+-----------+-----------
+        1.00        1.00       21.00        1.00
+        1.00        3.00       21.00        3.67
+        1.00        5.00       21.00        6.33
+        1.00        7.00       21.00        9.00
+        2.00        1.00       18.75        1.00
+        2.00        3.00       19.25        3.67
+        2.00        5.00       19.75        6.33
+        2.00        7.00       20.25        9.00
+        3.00        1.00       16.50        1.00
+        3.00        3.00       17.50        3.67
+        3.00        5.00       18.50        6.33
+        3.00        7.00       19.50        9.00
+        4.00        1.00       14.25        1.00
+        4.00        3.00       15.75        3.67
+        4.00        5.00       17.25        6.33
+        4.00        7.00       18.75        9.00
+        5.00        1.00       12.00        1.00
+        5.00        3.00       14.00        3.67
+        5.00        5.00       16.00        6.33
+        5.00        7.00       18.00        9.00
+        6.00        1.00       19.00        1.00
+        6.00        3.00       18.33        3.67
+        6.00        5.00       17.67        6.33
+        6.00        7.00       17.00        9.00
+        7.00        1.00       16.75        1.00
+        7.00        3.00       16.25        3.67
+        7.00        5.00       15.75        6.33
+        7.00        7.00       15.25        9.00
+        8.00        1.00       14.50        1.00
+        8.00        3.00       14.17        3.67
+ 
+Rows: 31:40
++-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4
++-----------+-----------+-----------+-----------
+        8.00        5.00       13.83        6.33
+        8.00        7.00       13.50        9.00
+        9.00        1.00       12.25        1.00
+        9.00        3.00       12.08        3.67
+        9.00        5.00       11.92        6.33
+        9.00        7.00       11.75        9.00
+       10.00        1.00       10.00        1.00
+       10.00        3.00       10.00        3.67
+       10.00        5.00       10.00        6.33
+       10.00        7.00       10.00        9.00
+list xximg2 'zero 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+ Task:BOWTIE    User:          Date_Time:                        
+     Samp     1       3       5       7
+   Line
+      1       0   0   0   0   0   0   0
+      2      10  10  10  10  10  10  10
+      3      20  20  20  20  20  20  20
+      4      30  30  30  30  30  30  30
+      5      40  40  40  40  40  40  40
+      6      50  50  50  50  50  50  50
+      7      60  60  60  60  60  60  60
+      8      70  70  70  70  70  70  70
+      9      80  80  80  80  80  80  80
+     10      90  90  90  90  90  90  90
+ush rm xximg  xximg2  xxx1  xxx2  xxx3  xxx4
+disable-log

@@ -1,0 +1,150 @@
+lab2tcl ct/sfo_elevation.img v1=aoinl v2=aoins keyword=(nl,ns) 'system
+Beginning VICAR task lab2tcl
+LAB2TCL - 09 Dec 2012 - rjb - (64-bit)
+maxmin  ct/sfo_elevation.img minival=rminval maxival=rmaxval
+Beginning VICAR task maxmin
+*** maxmin - 06-Jul-2012
+
+Min. value:           -5   at  (    40,    83)
+Max. value:         3841   at  (    57,   144)
+
+let $echo="no"
+mssibis   ct/sfo_elevation.img sfo_elevation.tbl 'toibis  +
+          cols=1 ncol=3
+Beginning VICAR task mssibis
+MSSIBIS version 6-MAR-95
+mf4       sfo_elevation.tbl func="c2=@index"
+Beginning VICAR task mf4
+MF4 version 2019-08-01
+function string = c2=@index
+
+15000 records in
+
+ifthen    sfo_elevation.tbl if=("c1<1") then=("c3=0") else=("c3=c3")
+Beginning VICAR task ifthen
+IFTHEN version 2019-07-31
+if   string = c1<1
+then string = c3=0
+else string = c3=c3
+15000 records out
+
+ifthen    sfo_elevation.tbl if=("c1>0") then=("c3=2") else=("c3=c3")
+Beginning VICAR task ifthen
+IFTHEN version 2019-07-31
+if   string = c1>0
+then string = c3=2
+else string = c3=c3
+15000 records out
+
+ifthen    sfo_elevation.tbl if=("c1>500") then=("c3=32") else=("c3=c3")
+Beginning VICAR task ifthen
+IFTHEN version 2019-07-31
+if   string = c1>500
+then string = c3=32
+else string = c3=c3
+15000 records out
+
+ifthen    sfo_elevation.tbl if=("c1>1000") then=("c3=64") else=("c3=c3")
+Beginning VICAR task ifthen
+IFTHEN version 2019-07-31
+if   string = c1>1000
+then string = c3=64
+else string = c3=c3
+15000 records out
+
+ifthen    sfo_elevation.tbl if=("c1>1500") then=("c3=96") else=("c3=c3")
+Beginning VICAR task ifthen
+IFTHEN version 2019-07-31
+if   string = c1>1500
+then string = c3=96
+else string = c3=c3
+15000 records out
+
+ifthen    sfo_elevation.tbl if=("c1>2000") then=("c3=128") else=("c3=c3")
+Beginning VICAR task ifthen
+IFTHEN version 2019-07-31
+if   string = c1>2000
+then string = c3=128
+else string = c3=c3
+15000 records out
+
+ifthen    sfo_elevation.tbl if=("c1>2500") then=("c3=160") else=("c3=c3")
+Beginning VICAR task ifthen
+IFTHEN version 2019-07-31
+if   string = c1>2500
+then string = c3=160
+else string = c3=c3
+15000 records out
+
+ifthen    sfo_elevation.tbl if=("c1>3000") then=("c3=192") else=("c3=c3")
+Beginning VICAR task ifthen
+IFTHEN version 2019-07-31
+if   string = c1>3000
+then string = c3=192
+else string = c3=c3
+15000 records out
+
+ifthen    sfo_elevation.tbl if=("c1>3500") then=("c3=224") else=("c3=c3")
+Beginning VICAR task ifthen
+IFTHEN version 2019-07-31
+if   string = c1>3500
+then string = c3=224
+else string = c3=c3
+15000 records out
+
+ifthen    sfo_elevation.tbl if=("c1>4000") then=("c3=252") else=("c3=c3")
+Beginning VICAR task ifthen
+IFTHEN version 2019-07-31
+if   string = c1>4000
+then string = c3=252
+else string = c3=c3
+15000 records out
+
+ifthen    sfo_elevation.tbl if=("c1>4500") then=("c3=253") else=("c3=c3")
+Beginning VICAR task ifthen
+IFTHEN version 2019-07-31
+if   string = c1>4500
+then string = c3=253
+else string = c3=c3
+15000 records out
+
+ifthen    sfo_elevation.tbl if=("c1>5000") then=("c3=254") else=("c3=c3")
+Beginning VICAR task ifthen
+IFTHEN version 2019-07-31
+if   string = c1>5000
+then string = c3=254
+else string = c3=c3
+15000 records out
+
+ifthen    sfo_elevation.tbl if=("c1>5500") then=("c3=255") else=("c3=c3")
+Beginning VICAR task ifthen
+IFTHEN version 2019-07-31
+if   string = c1>5500
+then string = c3=255
+else string = c3=c3
+15000 records out
+
+mssibis sfo_elevation.tbl xxB 'tomss  +
+     cols=(3) nl=100 ns=150 format=byte
+Beginning VICAR task mssibis
+MSSIBIS version 6-MAR-95
+label-rem  xxB xxC
+Beginning VICAR task label
+LABEL version 2019-09-06
+label-cre  xxC xxD nl=100 ns=150 format=byte
+Beginning VICAR task label
+LABEL version 2019-09-06
+    vlookup  xxD out=sfo_elevation_red.vic lutfile=ct/elevation13.lut column=2
+Beginning VICAR task vlookup
+VLOOKUP version 4-MAR-1994
+    vlookup  xxD out=sfo_elevation_grn.vic lutfile=ct/elevation13.lut column=3
+Beginning VICAR task vlookup
+VLOOKUP version 4-MAR-1994
+    vlookup  xxD out=sfo_elevation_blu.vic lutfile=ct/elevation13.lut column=4
+Beginning VICAR task vlookup
+VLOOKUP version 4-MAR-1994
+if (mode = "nobatch" or mode = "inter")
+end-if
+let $echo="yes"
+ush rm ct sfo_elevation_blu.vic sfo_elevation_grn.vic sfo_elevation_red.vic sfo_elevation.tbl xxB xxC xxD
+disable-log

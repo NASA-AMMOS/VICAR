@@ -1,0 +1,401 @@
+process help=*
+PARM INP  TYPE=STRING
+PARM OUT  TYPE=STRING  COUNT=(0:1) DEFAULT=--
+PARM HEADER TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM OUTDATA TYPE=STRING COUNT=(0:1) VALID=(VICAR,SCALE8,SCALE16,8,16,32,-32+
+	 ,FLOAT) DEFAULT=VICAR
+PARM BLOCK TYPE=STRING COUNT=(0:1) VALID=(BLOCK,NOBLOCK) DEFAULT=NOBLOCK
+PARM FACTOR TYPE=INTEGER COUNT=(0:1) DEFAULT=1
+PARM HISTORY TYPE=STRING COUNT=(0:1) VALID=(HISTORY,TASKS,NOHISTORY) +
+	DEFAULT=HISTORY
+PARM DEBUG TYPE=STRING COUNT=(0:1) VALID=(DEBUG,NODEBUG) DEFAULT=NODEBUG
+END-PROC
+.TITLE
+FITSOUT  --  Copy VICAR file to FITS format file.
+.HELP
+PURPOSE:
+       
+   FITSOUT is a VICAR*2 Applications program to convert a VICAR*2
+image file into FITS formatted data sets.
+
+OPERATION:
+
+	Flexible Image Transport System (FITS) tapes are a general interchange
+data format used by radio and optical astronomy observatories for passing
+multidimensional and tabular data.  The format consists of fixed length
+records of 2880 bytes or integer multiples of 2880 bytes. There is at least 
+one header block of ASCII information that preceeds the binary (data) 
+information. The fixed length record of 2880 bytes was chosen because it is 
+divisible by the word lengths of the most common computer systems. The data 
+records from the instrument are packed into these fixed length records after
+the FITS header.
+
+	FITSOUT creates a standard FITS header block of 2880 bytes by
+extracting certain information from the VICAR system label.  It will optionally
+transfer VICAR history information to FITS with the HISTORY parmameter.
+The entire header block is printed out on the log.
+
+	No provision has been made to create FITS tapes with ANSI standard
+labels.  If you were to create one with the VICAR MOUNT command then 
+the FITS images will be file numbers 2, 5, 8, 11,... on the
+tape. File numbers 1, 3, 4, 6, 7, etc will be ANSI header records. Note not
+all facilities are able to read FITS with ANSI labels directly. Please
+indicate ANSI labels if you are passing such a tape to another facility.
+
+
+FITS HEADER 
+
+	Each header block consists of 36 80-byte records (card images).
+The first 10 columns of each card image contains an 8-character keyword
+followed by a blank and an equals sign. Columns 11 through 30 contain a
+value or string in ASCII characters which is right-justified. Columns 31
+through 80 are a comment field. The first character of a comment field
+(column 31) is a slash, /.
+
+	The first FITS header record at a minimum consists of the following
+information:
+	The first card contains "SIMPLE    =" in columns 1 through 10  
+followed by a logical "T" or "F" in column 30. "T" indicates that the
+tape format follows the basic rules of FITS format. "F" implies that
+it does not.
+	The second card contains "BITPIX    =" which gives the number of bits
+per pixel in each data record.  The valid values are 8, 16 and 32. All
+axes of data must have the same number of bits per pixel.
+	The third card contains "NAXIS     =" which gives the number of
+dimensions (axes) of the data.  fitsout currently only processes three
+dimensions or less.  When a sample tape of four or more dimensions is
+received then it should be possible to convert the data to IBIS tabular
+files although the current program does not do this.
+	The fourth and subsequent cards (up to the number of dimensions)
+contain "NAXIS1    =", "NAXIS2     =", "NAXIS3    =",...,"NAXISn    ="
+which define the number of pixels along each dimension, n.
+	Any number of optional header cards may follow.
+	The last card is always the "END" card.
+
+For example, the simplest FITS header sequence would look like:
+
+	'         111111111122222222223'  <--card column number
+	'123456789012345678901234567890'	
+	'SIMPLE   =               T'		!LOGICAL
+	'BITPIX   =              16'		!INTEGER
+	'NAXIS    =               2'		!INTEGER
+	'NAXIS1   =             512'		!INTEGER
+	'NAXIS2   =             512'		!INTEGER
+	'END                       '
+
+	FITS allows many optional header cards.  These optional header cards
+vary from one sensor to another and one observatory to another. Some of 
+the more important ones, as far as FITSOUT is concerned, are BZERO, BSCALE,
+BUNIT, OBJECT, DATE, DATAMAX, DATAMIN, COMMENT, HISTORY, and BLANK.
+
+An example of a complete FITS header of a 3-band VICAR image (without VICAR
+history labels is :
+         11111111112222222222333333333344444444445
+12345678901234567890123456789012345678901234567890
+SIMPLE  =                    T /  format follows FITS standards
+BITPIX  =                    8 /  8-bit unsigned integers
+NAXIS   =                    2 /  number of axes
+NAXIS1  =                  800 /  number of pixels per row
+NAXIS2  =                  800 /  number of rows
+NAXIS3  =                    3 /  number of bands
+BLOCKED =                    T /
+EXTEND  =                    T / 
+ORIGIN  = 'JPL-MIPL   PGM=FITSOUT  VERSION  2/15/91'
+USERID  = 'RJB050      '       /
+HOST    = 'VAX-VMS '           /  data processor (cpu)
+INTFMT  = 'LOW     '           /  original VICAR integer format
+REALFMT = 'VAX     '           /  original VICAR real*4 format
+DATATYPE= 'IMAGE   '           /  original VICAR data set type
+DATE    = '15-FEB-91   '       /  date of transfer to FITS
+FILENAME= 'globe.red                              '
+VIC-MIN =                      /  minimum value in VICAR data set
+VIC-MAX =                      /  maximum value in VICAR data set
+VIC-B/P =                    8 /  bits per pixel in VICAR data set
+VIC-FMT = 'BYTE    '           /  data format in VICAR data set
+BSCALE  =                    0 /  real = tape*BSCALE + BZERO
+BZERO   =                16512 /  amount of bias added to each pixel
+BUNIT   = 'DN      '           /  units of brightness
+BLANK   =                    0 /  
+DATAMAX =      4.495524406E+00 /  max pixel value (after scaling)
+DATAMIN =     -1.217470840E-01 /  min pixel value in file
+END     
+
+
+CONVERSION OF VICAR HISTORY LABELS INTO FITS HEADERS
+
+HISTORY   'VICAR LABEL LISTING'
+VIC-TASK= 'STARCAT - 13-AUG-1990 04:03'
+VIC-ITEM= '			'
+
+                                                                       
+Many of the FITS labels have strings in them. By convention a string
+begins with a single quote (') and ends with another single quote. VICAR
+however, stores strings with double quotes ("). FITSOUT converts all VICAR
+double quote strings to FITS single quotes .
+For example, VICAR label of:
+
+COMMENT="PLANET SATURN - VOYAGER 2 - SEPT 20, 1981"
+
+This would be converted into the FITS label item
+
+VIC-ITEM= 'PLANET SATURN - VOYAGER 2 - SEPT 20, 1981'       
+
+FITS EXTENSIONS
+
+	FITS extensions are not yet supported.  The current recognized
+extensions are 'TABLE', '3DTABLE', and 'A3DTABLE'. They will be incorporated
+as soon as examples are received.
+
+FITS DATA
+
+	Data on fits tape are packed into 2880 byte fixed length records
+or integer multiples of 2880-byte fixed length records.
+The label items BITPIX, NAXIS, NAXIS1, NAXIS2, ..., NAXISn describe how
+the data is packed. BITPIX which indicates the number of bits per pixel,
+can take on the values 8 (BYTE), 16 (HALF WORD), 32 (FULL WORD) and -32 
+(IEEE single precision REAL). IEEE double precision,
+BITPIX = -64, is not supported in this program. NAXIS tells how many
+dimensions the data has. FITSOUT in its current implementation can
+process only NAXIS values of 1, 2 and 3. NAXIS1, NAXIS2 and NAXIS3 give
+the number of pixels per axis (sample, line, band) in VICAR nomenclature.
+
+
+PARAMETERS
+
+	The OUT=filename parameter is not required.  If not given then
+only the VICAR header of the INP= file is scanned and converted to FITS header
+which are printed out to the terminal and/or session log. The scan will
+list the number and content of all FITS keywords to be created.
+
+	The HEADER= parameter is not required. It saves the created
+FITS label in a file which has 80 byte fixed length records. No output 
+FITS data is created. The HISTORY=NOHISTORY parameter will exclude VICAR
+history information from this file.  The HISTORY=TASKS will list the VICAR
+tasks, the username and the time and date that the task was run.
+
+	The parameter OUTDATA="VICAR"/"SCALE8"/"SCALE16"/"8"/"16"/"32"/"-32"
+refers to the number of bits per pixel to pass to the output FITS image.
+The default is VICAR format which means that it will pass to the output
+image the same data format that is stored in the VICAR image according to
+the following table. 
+
+		VICAR		FITS
+
+		BYTE		BITPIX=8	unsigned
+		HALF		BITPIX=16	signed
+		WORD		BITPIX=32	signed
+		FULL		BITPIX=32 	(older VICAR specifier)
+		REAL		BITPIX=-32
+		DOUBLE		BITPIX=-64	not supported yet
+		COMPLEX		BITPIX=-33	-33 is internal to FITSOUT
+		COMP		BITPIX=-33	(older VICAR specifier)
+
+For example, If the VICAR data is 'BYTE' then the output will be FITS
+"BITPIX = 8".  In this case it will enter into the resultant FITS header
+the value of BSCALE = 1.0 and BZERO = 0.0.  Note that VICAR real data sets are
+converted from VAX F Floating Point Format (real*4) data into IEEE
+floating point format.
+
+If OUTDATA="SCALE8" then FITSOUT will transform the VICAR data into FITS
+"BITPIX = 8" with appropriate BSCALE = and BZERO = values.  If OUTDATA="SCALE16"
+then FITSOUT will convert the VICAR data into FITS "BITPIX = 16" with
+appropriate BSCALE and BZERO values.
+
+
+			REAL = (FITS*BSCALE)+BZERO
+where,
+
+REAL is the R*4 output value in the VICAR image,
+FITS is the FITS stored data value in 8 bit, 16 bit or 32 bit format,
+BSCALE is the value stored in the FITS BSCALE header record,
+BZERO is the value stored in the FITS BZERO header record.
+					
+If no BSCALE or BZERO values are found in the label when you give this option
+then fitsout will warn you and then use default values of BSCALE=1.0 and
+BZERO=0.0 to do the conversion. Thus, use of the "OUTDATA=REAL" option will
+force the output to be 'REAL' no matter what format the VICAR data is in.
+
+The parameters BLOCK and FACTOR control the physical length of the records
+recorded on tape and disk. BLOCK is a keyword that can have the values
+"BLOCK" or "NOBLOCK", with the default being NOBLOCK.  FACTOR tells the
+number of logical records to pack into each physical record on a tape. As
+such it must be an integer.  It's maximum value is 10, the FITS standard
+maximum value.  Not all FITS sites can read blocked tapes. 
+
+The other parameter is geared toward limiting the number of FITS headers.
+
+	HISTORY="HISTORY"/"TASKS"/"NOHISTORY" - Pass all History/Pass only
+	Tasks/Don't Pass VICAR history labels to the FITS header.
+	By default, all VICAR history labels are passed.
+	
+The DEBUG parameter allows the printing out of certain information as the
+program executes.
+
+LIMITATIONS
+
+	1. The program has not been implemented for multi-dimensional files
+	   greater than 3 dimensions.
+	2. Changes  (double quotes) in VICAR labels to  (single quote)
+	   in FITS labels.
+	3. Does not support IEEE double precision output (BITPIX = -64)
+	4. Does not allow use of FITS extensions yet.  The header record
+	   is included for future use.
+	5. ANSII standard labels are not supported yet.
+	6. Does not work with VICAR data sets of type COMPLEX or COMP.
+	7. Works only in BSQ mode for NAXIS=3.
+	8. Multivolume tapes not supported.
+	9. Only works with image data sets (not TABLULAR or GRAPHICS)
+	10. Does not transfer VICAR "property" labels yet
+	11. Truncates VICAR keywords to 8 characters in transfer to FITS
+	12. Multidimensional files must be generated in VICAR since this
+	    program allows for only one input file.
+
+PROGRAM HISTORY:
+
+  1992-04-29 R.J. Bambery - Original release
+  1992-05-07 R.J. Bambery - Fix header bugs which: 1) reversed
+                            NAXIS1 and NAXIS2 and 2) placed
+                            -1 and 0 in data buffer
+  1992-07-17 R.J. Bambery - 1) Fixed "xv" calls for UNIX compatibility
+                            2) Added 32 characters for tkey and
+                            task lists and outputs since new VICAR uses
+                            32-byte keys and tasks
+                            3) Fixed bug in hdrlength which reset label
+                            entry to SYSTEM from HISTORY
+  1992-07-30 R.J. Bambery - Added DEBUG parameter to minimize output
+  1995-05-15 R.J. Bambery
+  1996-01-03 R.J. Bambery - Renamed subroutines, fixed VMS date to unix date
+                            get rid of  BYTE_SWAPPER
+  2004-02-24 R.J. Bambery - ufmt, macos-x other fixes
+  2004-02-25 R.J. Bambery - Many more code fixes, outheader, taskrecord
+  2005-11-23 R.J. Bambery - Add '??E to error messages
+  2008-02-24 R.J. Bambery - Fixes for Linux
+  2010-01-30 R.J. Bambery - Made compatible with 64-bit afids Build 793
+                            Linux, MacOSX (both Intel/PowerPC)
+  2010-05-15 R.J. Bambery - Fixed differing lengths of common block /cpm/
+                            due to change in lenght of version variable 
+  2010-05-16 R.J. Bambery - Made 64-bit clean for chkstat routine
+  2010-08-12 R.J. Bambery - Fixed errors (warning messages on Mac/Intel and Linux)
+                            By changing a number of variable names
+                            No longer have access to Mac/PowerPC
+  2012-06-30 R.J. Bambery - Removed <tab> in front of continuation
+                            lines to make backward compatible with
+                            32-bit Linux gfortran 4.2.1, otherwise
+                            compatible 64-bit Linux gfortran 4.6.3 
+  2016-02-29 W.L. Bunch   - Migrated to MIPL.
+  2022-07-26 B. Crocco afids to opensource
+  
+EXAMPLES:
+
+       fitsout INP=VICAR.IMG  PARMS   (for scanning converted headers)
+                   --or--
+       fitsout INP=VICAR.IMG  OUT=FITS.DAT PARAMS (for converting data)
+
+       fitsout INP=VICAR.IMG  HEADER=FITS.HDR (for saving generated FITS label)
+		  --or--
+       fitsout INP=VICAR.IMG OUT=FITS.DAT HEADER=FITS.HDR PARAMS (for
+				 saving FITS labels and converting data)
+      
+Parameters are defined above and in the TUTOR mode.
+
+REFERENCES
+
+Donald C. Wells, "FITS: A Flexible Image Transport System", National Optical
+Astronomy Observatories (NOAO) publication, 1979
+
+Flexible Image Transport System (FITS) Draft Standard, NSDSSO 100-0.1,
+December, 1990.
+
+.LEVEL1
+.VARIABLE INP
+ STRING
+ A Vicar formated input
+ image.
+.VARIABLE OUT
+ STRING--OPTIONAL
+ A FITS tape file number or
+ disk file.
+.VARIABLE HEADER
+ STRING-OPTIONAL
+ File name for outputting
+ converted FITS labels
+.VARIABLE OUTDATA
+ STRING-OPTIONAL
+ Data format to pass to VICAR
+ image
+ VICAR/8/16/32/-32/SCALE8/SCALE16,FLOAT
+ DEFAULT="VICAR"
+.VARIABLE BLOCK
+ STRING-OPTIONAL
+ FITS image will be blocked/
+ not blocked
+ BLOCK/NOBLOCK
+ DEFAULT="NOBLOCK"
+.VARIABLE FACTOR
+ INTEGER-OPTIONAL
+ Blocking Factor if BLOCK
+ called. Must be integer
+ between 1 and 10.
+ DEFAULT=1
+.VARIABLE HISTORY
+ STRING-OPTIONAL
+ Pass all history/
+ Pass Tasks only/ 
+ Don't Pass VICAR
+ HISTORY labels
+ HISTORY/TASKS/NOHISTORY
+ DEFAULT=HISTORY
+.VARIABLE DEBUG
+ STRING-OPTIONAL
+ Print out certain
+ debugging information
+ DEBUG/NODEBUG
+ DEFAULT=NODEBUG
+.LEVEL2
+.VARIABLE INP
+ A FITS formatted data file on tape or disk.
+.VARIABLE OUT
+ A Vicar formatted output image. Output can be 'BYTE', 'HALF', 'FULL'
+ or 'REAL' depending on FITS format or the fitsout parameter "DATA="
+.VARIABLE HEADER
+ An output file containing FITS label information in ASCII 80 byte fixed
+ length records.
+.VARIABLE OUTDATA
+ STRING-OPTIONAL
+ Data format to pass to FITS image. Default is "VICAR" format which
+ can be 'BYTE', 'HALF', 'FULL'  or 'REAL' which will be converted to FITS
+ types BITPIX=8, BITPIX=16, BITPIX=32 or BITPIX=-32. BSCALE in the output
+ image will be 1.0 and BZERO will be 0.0.
+ 
+ If "SCALE8" then will convert VICAR data from "HALF", "FULL" or "REAL" into
+ scaled unsigned 8-bit integers. If SCALE16 then it will pass "FULL" or "REAL"
+ VICAR data into scaled 16-bit integers.
+
+ BSCALE and BZERO values will be generated based on the relationship
+
+	"SCALED" = (FITS*BSCALE)+BZERO.
+
+ VICAR/8/16/32/-32/SCALE8/SCALE16/FLOAT
+ DEFAULT="VICAR"
+.VARIABLE BLOCK
+ STRING-OPTIONAL
+ FITS image will be blocked/not blocked.
+ BLOCK/NOBLOCK
+ DEFAULT="NOBLOCK"
+.VARIABLE FACTOR
+ INTEGER-OPTIONAL
+ Blocking Factor if BLOCK specified. Must be integer between 1 and 10.
+ DEFAULT=1
+.VARIABLE HISTORY
+ STRING-OPTIONAL
+ HISTORY - Pass all VICAR history labels to FITS header
+ TASKS - Pass only names of VICAR Tasks, User identifier and date to FITS header
+ NOHISTORY - Don't Pass any VICAR history labels to FITS header
+ HISTORY/TASKS/NOHISTORY
+ DEFAULT=HISTORY
+.VARIABLE DEBUG
+ STRING-OPTIONAL
+ DEBUG - Print out certain inforamation as program executes
+ NODEBUG - Don't print it
+ DEFAULT=NODEBUG
+.END

@@ -1,0 +1,5 @@
+$ vpack marsfidfinder.com -mixed -
+	-s marsfidfinder.cc -
+	-i marsfidfinder.imake -
+	-p marsfidfinder.pdf
+$ Exit

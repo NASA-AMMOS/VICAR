@@ -1,0 +1,7 @@
+header data not desired in ibis file
+another header data
+aaaaa   bbbbb   ccccc   ddddd   eeeee  5.00
+aaaaa   lllll   mmmmm   ggggg   ddddd  4.00
+aaaaa   eeeee   ddddd   ccccc   ooooo 15.00
+bbbbb   hhhhh   ddddd   fffff   ooooo 15.00
+bbbbb   bbbbb   qqqqq   iiiii   eeeee  5.00

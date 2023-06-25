@@ -1,0 +1,767 @@
+process help=*
+PARM INP TYPE=STRING COUNT=2
+PARM OUT TYPE=STRING COUNT=(1:3)
+PARM DISPAR TYPE=STRING COUNT=(1:2)
+PARM ERR_FILE TYPE=STRING COUNT=0:1 DEFAULT=--
+PARM NAVTABLE TYPE=STRING COUNT=0:1 DEFAULT=--
+
+PARM ERROR TYPE=REAL COUNT=1 DEFAULT=.005
+PARM ABSERROR TYPE=REAL COUNT=1 DEFAULT=.05
+PARM LINEDISP TYPE=REAL COUNT=1 DEFAULT=4.0
+PARM AVGLINEDISP TYPE=REAL COUNT=1 DEFAULT=0.75
+PARM BOX_WIDTH TYPE=INTEGER COUNT=1 DEFAULT=51
+PARM BOX_HEIGHT TYPE=INTEGER COUNT=1 DEFAULT=51
+PARM ZLIMITS TYPE=REAL COUNT=2 DEFAULT=(-40.,40.)
+PARM RANGE_LIMIT TYPE=REAL COUNT=0:1 DEFAULT=--
+PARM RANGE_FACTOR TYPE=REAL COUNT=1 DEFAULT=1000
+PARM SPIKE TYPE=REAL COUNT=0:1 DEFAULT=--
+PARM SPIKE_RANGE TYPE=REAL COUNT=0:1 DEFAULT=--
+PARM SPIKE_BOX TYPE=INTEGER COUNT=(1:2) DEFAULT=11
+PARM OUTLIER TYPE=REAL COUNT=0:1 DEFAULT=--
+PARM OUTLIER_BOX TYPE=INTEGER COUNT=(1:2) DEFAULT=21
+PARM WRITE_CM TYPE=KEYWORD VALID="WRITE_CM" COUNT=(0:1) DEFAULT=--
+
+PARM CONFIG_PATH STRING DEFAULT="$MARS_CONFIG_PATH"
+PARM MATCH_METHOD TYPE=STRING COUNT=(0:1) VALID=("LOOSE", "TIGHT") +
+     DEFAULT=LOOSE
+PARM MATCH_TOL TYPE=REAL COUNT=1 DEFAULT=.002
+PARM POINT_METHOD TYPE=STRING COUNT=(0:1) DEFAULT=--
+
+PARM DATA_SET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM DATA_SET_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM RELEASE_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCT_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_INST TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_TYPE TYPE=STRING COUNT=(0:1) DEFAULT=--
+
+PARM RSF TYPE=STRING COUNT=0:100 DEFAULT=--
+PARM DEBUG_RSF TYPE=KEYWORD COUNT=0:1 VALID=DEBUG_RSF DEFAULT=--
+PARM COORD TYPE=KEYWORD VALID=("FIXED", "INSTRUMENT", "SITE", "ROVER", +
+        "LOCAL_LEVEL", "RMECH", "HELI_G_FRAME") DEFAULT="FIXED"
+PARM COORD_INDEX TYPE=INTEGER COUNT=0:10 DEFAULT=--
+PARM FIXED_SITE TYPE=INTEGER COUNT=0:1 DEFAULT=--
+PARM SOLUTION_ID TYPE=STRING COUNT=0:1 DEFAULT=--
+
+END-PROC
+
+.TITLE
+VICAR program MARSXYZ.
+
+.HELP
+PURPOSE:
+To compute, from a disparity map, the XYZ coordinates of each point in
+a stereo pair.
+
+This is a multimission program derived from Mars Pathfinder's mpfxyz.
+It supports any mission, instrument, and camera model supported by the
+Planetary Image Geometry (Pig) software suite.
+
+The XYZ coordinates are in a coordinate system defined by the COORD and
+COORD_INDEX parameters.  This defaults to the Fixed frame for the mission
+(see the COORD and COORD_INDEX parameters).
+
+Best results are obtained if the images are actually a stereo pair, but
+this is in theory not a requirement.  Images from different locations
+and instruments should be usable, as long as disparity maps can be
+generated.
+
+EXECUTION:
+marscorr inp=(left,right) out=(line_disparity,sample_disparity) ...
+marsxyz inp=(left,right) dispar=(line_disparity,sample_disparity) + 
+  out=xyz.img err_file=error.img parameters
+where:
+left is the left eye image of a stereo pair
+right is the corresponding right eye image of a stereo pair
+line_disparity is the right eye line value computed by marscorr or other
+  correlator.
+sample_disparity is the right eye sample value computed by marscorr or other
+  correlator.
+xyz.img is a 3-band file with the X, Y, and Z values at that pixel in meters.
+error.img is the view ray miss distance in meters
+
+Any correlation program producing the correct kind of disparity map may
+be used; marscorr is simply an example.
+.PAGE
+
+METHOD:
+Marsxyz computes, for each pixel, two view rays using the input camera models 
+and the disparity maps.
+It locates the closest approach point for the two vectors. These become the xyz
+coordinates in local level mars coordinates (for MPF, M98).
+
+Input file contents:
+
+INP: left eye view, right eye view
+
+Note that there's no actual requirement that the first input be left or the
+second right.  The two images can be given in any order.  The first image,
+though, is the "master" image; the disparity maps and output files match the
+first image's pixels.  Convention places left first, however.
+
+Also, the actual image pixels are not used from these files; only the label
+information (to get the pointing and thus camera models) are used.
+
+DISPAR: REAL-formatted images giving the line and sample disparity.  Either
+two files may be given (line, sample order), or a single file with two bands.
+
+The disparities are interpreted as follows:  Each pixel in the disparity
+map corresponds to the same pixel in the first (left) input.  The value of
+the pixel in the disparity map is the line and sample of the point in the
+second (right) image, which matches this location in the first (left).  Note
+that these are standard VICAR 1-based file coordinates.  If both line and
+sample disparity values are 0, the point has no value.
+
+Output file contents:
+
+OUT:  marsxyz will generate either three separate one-band files (x, y, z), or
+a single 3-band file, depending on the number of filenames given.  The output
+files are in the coordinates of the first (left eye) image. This means there
+is a 1:1 correspondence between pixels and the first input file.
+
+Units of XYZ are in meters, in the coordinate system specified by the
+COORD and COORD_SYS parameters.
+
+ERR_FILE:  This is the miss distance between the view rays for each pixel,
+in meters.  It is also in coordinates of the first (left) image.
+
+.page
+
+There are various reasons points are rejected by MARSXYZ, most of them
+controllable via parameters.  A summary of points rejected for each reason,
+as well as successfully computed points, is printed at the end of the run.
+They are:
+
+Rejected n points for missing correlation
+    These points failed to correlate.  This is normally a large number.
+Rejected n points for excessive line disparity
+    Adjusted by LINEDISP parameter.
+Rejected n points for exeeding average line disparity
+    These points exceeded the local average line disparity.  Adjusted by
+    AVGLINEDISP, BOX_WIDTH, and BOX_HEIGHT parameters.
+Rejected n points as not computable
+    The miss-distance calculation failed, possibly due to parallel rays.
+    Should always be 0.
+Rejected n points for excessive absolute miss distance (abserror)
+    Adjusted by ABSERROR parameter.
+Rejected n points for excessive miss distance per range (error)
+    Adjusted by ERROR parameter.
+Rejected n points for exceeding Z limits
+    Adjusted by ZLIMITS parameter
+Rejected n points due to diverging rays
+    Diverging rays put the XYZ point "behind" the camera and are always
+    rejected.  Should always be 0; if not, a bad camera model or bad
+    correlations are likely suspects.
+Rejected n points for exceeding range limit
+    Adjusted by RANGE_LIMIT and RANGE_FACTOR parameters.  The actual range
+    limit used is printed out early in the log.
+Rejected n points for exceeding spike value
+    The point differs from its neighbors in XYZ space by more than a threshold.
+    Adjusted by SPIKE and SPIKE_BOX parameters.
+Rejected n points for exceeding spike value per range
+    As above, but the threshold is based on the range to the point.
+    Adjusted by SPIKE_RANGE and SPIKE_BOX parameters.
+Rejected n points for being outliers
+    Points that do not have enough valid neighbors are defined as outliers.
+    Adjusted by OUTLIER and OUTLIER_BOX parameters.
+Computed n valid XYZ points
+    The number of valid XYZ points in the file.
+
+.PAGE
+
+COGNIZANT PROGRAMMER:  Bob Deen
+
+HISTORY:
+  1995-12-1  J Lorre - Initial mpfxyz
+  1999-03    B. Deen - Multimission conversion
+  2003-02    B. Deen - Additional rejection filtering; rejection reasons reported
+  2004-02    B. Deen - Added AVGLINEDISP and ABSERROR
+  2007-08    B. Deen - Added spike and outlier filters
+  2019-12-12 W. Bunch - Initialized some variables; cleaned up -Wall warnings; added unit test
+  2020-05-26 W. Bunch - Replaced sprintfs
+
+.LEVEL1
+.VARI INP
+Input images.
+Must be 2.
+
+.VARI OUT
+Output files
+(x,y,z) triplet
+or 1 3-band file.
+
+.VARI DISPAR
+Disparity map
+input files.
+(l,s) or 1 2-band file.
+
+.VARI ERR_FILE
+Miss distance output
+file.
+
+.VARI NAVTABLE
+Corrected navigation
+filename.
+
+.VARI ERROR
+Maximum ray miss
+distance per meter of
+range.
+
+.VARI ABSERROR
+Maximum ray miss
+distance (not adjusted
+for range).
+
+.VARI LINEDISP
+Maximum line
+disparity.
+
+.VARI AVGLINEDISP
+Maximum line disparity
+deviation from local
+average.
+
+.VARI BOX_WIDTH
+Width of box used for
+AVGLINEDISP local average.
+
+.VARI BOX_HEIGHT
+Height of box used for
+AVGLINEDISP local average.
+
+.VARI ZLIMITS
+Permitted limits
+on z.
+
+.VARI RANGE_LIMIT
+Override range limit
+for computed points.
+
+.VARI RANGE_FACTOR
+Normal way to specify
+range limit for computed
+points.
+
+.VARI SPIKE
+Specifies threshold for
+spike filter (also
+enables it).
+
+.VARI SPIKE_RANGE
+Specifies threshold for
+spike filter that is
+adjusted based on range
+(also enables the filter).
+
+.VARI SPIKE_BOX
+Size (h,w) of box used
+for spike filter.
+
+.VARI OUTLIER
+Specifies threshold for
+outlier filter (also
+enables it).
+
+.VARI OUTLIER_BOX
+Size (h,w) of box used
+for outlier filter.
+
+.VARI WRITE_CM
+Writes the camera model
+to the file.
+
+.VARI CONFIG_PATH
+Path used to find
+configuration/calibration
+files.
+
+.VARI MATCH_METHOD
+Specifies a method
+for pointing corrections.
+
+.VARI MATCH_TOL
+Tolerance value for
+matching pointing params
+in pointing corrections file.
+
+.VARI POINT_METHOD
+Specifies a mission-
+specific pointing
+method to use
+
+.VARI DATA_SET_NAME
+Specifies the full name given
+to a data set or a data product.
+
+.VARI DATA_SET_ID
+Specifies a unique alphanumeric
+identifier for a data set or data
+product.
+
+.VARI RELEASE_ID
+Specifies the unique identifier
+associated with the release to the
+public of all or part of a data set.
+The release number is associated with
+the data set, not the mission.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique
+identifier assigned to a data
+product by its producer.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier
+of an entity associated with the
+production a data set.
+
+.VARI PRODUCER_INST
+Specifies the full name of the
+identity of an entity associated
+with the production of a data set.
+
+.VARI TARGET_NAME
+Specifies a target.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target.
+
+.VARI RSF
+Rover State File(s) to use.
+
+.VARI DEBUG_RSF
+Turns on debugging of RSF
+parameter.
+
+.VARI COORD
+Coordinate system to use.
+
+.VARI COORD_INDEX
+Coordinate system index for
+some COORD/mission combos.
+
+.VARI FIXED_SITE
+Which site is FIXED for
+rover missions.
+
+.VARI SOLUTION_ID
+Solution ID to use for
+COORD_INDEX
+
+.LEVEL2
+.VARI INP
+Two files containing the input stereo pair images.  The pixel data from these
+files are not used; only the label information is used to determine the
+pointing and camera models.
+
+A single file list file may also be specified (a la marsmos, etc.), but the
+file list must have only two entries.
+
+Note that there's no actual requirement that the first input be left or the
+second right.  The two images can be given in any order.  The first image,
+though, is the "master" image; the disparity maps and output files match the
+first image's pixels.  Convention places left first, however.
+
+.VARI OUT
+Output files containing the XYZ coordinates.
+
+If three filenames are given, three separate 1-band files will be created,
+one each for X, Y, and Z.  If only one filename is given, a single 3-band
+file will be created, with bands in (X,Y,Z) order.
+
+The output files are in REAL (float) format.
+
+.VARI DISPAR
+REAL-formatted images giving the line and sample disparity.  Either
+two files may be given (line, sample order), or a single file with two bands.
+
+The disparities are interpreted as follows:  Each pixel in the disparity
+map corresponds to the same pixel in the first (left) input.  The value of
+the pixel in the disparity map is the line and sample of the point in the
+second (right) image, which matches this location in the first (left).  Note
+that these are standard VICAR 1-based file coordinates.  If both line and
+sample disparity values are 0, the point has no value.
+
+.VARI ERR_FILE
+A REAL-formatted output file containing the view ray miss distance, in
+meters.  This file is not required and will not be generated if ERR_FILE
+is not specified.
+
+.VARI NAVTABLE
+Corrected navigation filename.
+If marsnav was run on the input images it created a table of corrected
+pointing parameters. If you refer to this table using NAVTABLE it
+will override the pointing parameters (e.g. azimuth and elevation) in the
+picture labels, giving different (and presumably better) output coordinates.
+
+.VARI ERROR
+Maximum permitted view ray miss distance per meter of range.
+Any two projected view rays through a pixel will miss by some value M meters.
+If M divided by the range to that pixel (in meters) exceeds  
+ERROR the point will be rejected.
+Default is .0025 (or 2.5 millimeter per meter).
+
+.VARI ABSERROR
+Maximum permitted view ray miss distance in absolute terms (not adjusted for
+range).  Any two projected view rays through a pixel will miss by some value
+M meters.  If M exceeds ABSERROR the point will be rejected.
+
+Note that the absolute error should not be larger than the camera baseline
+(distance between the cameras); that would indicate a divergent ray.  The
+value should be somewhat less than that, although testing with MER data
+shows a .05 is a good cutoff regardless of baseline.
+
+Default is .05 (or 0.5 centimeters).
+
+.VARI LINEDISP
+Maximum permitted line disparity. If the line values of a tiepoint
+differ by over LINEDISP pixels then the point will be rejected.
+Default is 2.5 pixels. Accuracy depends upon the camera models themselves
+so tolerances cannot be set too small.
+
+.VARI AVGLINEDISP
+Maximum permitted line disparity from local average.
+
+If enabled, a delta line disparity image is created internally (delta line
+disparity meaning the line disparity from the file minus the line number -
+most people think of this as the true disparity).
+
+If any line disparities exceed LINEDISP, they are discarded.  For all
+remaining pixels, a box filter is run over the line disparity image
+(see BOX_WIDTH, BOX_HEIGHT) to compute the average line disparity in the
+local area around each pixel.  The line disparity is then compared to this
+average.  If the difference exceeds AVGLINEDISP, the pixel is rejected.
+
+The effect of this is to adapt to camera models that are not precisely
+epipolar aligned.  The line disparities can "drift" while still preserving
+a very tight tolerance on the line disparities (which helps to reject noise).
+
+Recommended values are 0.5 for AVGLINEDISP, 4.0 for LINEDISP, and 51 for
+BOX_WIDTH and BOX_HEIGHT.
+
+A negative value for AVGLINEDISP turns off the check and disables the box
+filter.
+
+.VARI BOX_WIDTH
+Width of the box filter used by AVGLINEDISP.  Must be odd.
+
+.VARI BOX_HEIGHT
+Height of the box filter used by AVGLINEDISP.  Must be odd.
+
+.VARI ZLIMITS
+Two values representing the lowest and the highest values of Z permitted.
+Values of Z outside this range will be rejected.
+Defaults to (-10,+10) meters.
+
+.VARI RANGE_LIMIT
+Override for the range limit.  If this parameter is specified, RANGE_FACTOR
+is ignored.
+
+The range limit is the maximum distance from the reference (left) camera
+that an XYZ point can have.  Any points farther than this are rejected,
+since range accuracy diminishes to the point of uselessness beyond a certain
+point, as the view rays become more and more parallel.
+
+.VARI RANGE_FACTOR
+This is the normal way to specify the range limit.  This is a factor that
+is multiplied by the camera baseline (distance between the two cameras)
+in order to derive the range limit.
+
+The range limit is the maximum distance from the reference (left) camera
+that an XYZ point can have.  Any points farther than this are rejected,
+since range accuracy diminishes to the point of uselessness beyond a certain
+point, as the view rays become more and more parallel.
+
+.VARI SPIKE
+Enables the spike filter, and specifies an absolute threshold.
+
+The spike filter works by computing the average XYZ value of all pixels
+within a box surrounding the pixel in question (see SPIKE_BOX).  A distance
+is then computed from the pixel to the average in XYZ space.  If this distance
+is greather than the SPIKE threshold, then the pixel is considered a "spike"
+(something unlikely to happen in a real scene) and is rejected.
+
+Note that all average XYZ values are computed at once, before anything is
+rejected by the spike filter.  Therefore, rejecting one spike will not affect
+a neighbor's computation.
+
+Spikes seem to occur as a result of the marscor3 algorithm, but the detailed
+reason for them is not known.
+
+If SPIKE and SPIKE_RANGE are not specified, no spike filtering is done.
+
+Recommended value:  none (use SPIKE_RANGE instead)
+
+.VARI SPIKE_RANGE
+Enables the spike filter (see SPIKE).  However, instead of using a constant
+threshold, the spike threshold is adjusted based on range from the camera
+(via spike_range * range).  So, the farther away the point is, the larger the
+allowable spike.  This compensates for increasing noise as you go farther away
+from the camera.
+
+Note that it is okay to have both SPIKE and SPIKE_RANGE active at the same
+time.  One average is computed, then the distance is compared to both
+thresholds.
+
+Recommended value:  0.04
+
+.VARI SPIKE_BOX
+Specifies the size of the box used to compute the average XYZ for the spike
+filter.  If one value is specified, the result is a square box.  If two are
+specified, a rectangular box of (height, width) is used.
+
+Note that both height and width of the box must be odd.
+
+.VARI OUTLIER
+This filter attempts to remove "outliers", defined as pixels with too few
+computed neighbors.
+
+The theory is that pixels should have neighbors, because the scene is generally
+continuous.  Having too few neighboring good pixels is thus likely the result
+of a bad correlation.
+
+Neighbors are defined as any pixel within a box (see OUTLIER_BOX) that has a
+valid result.  A binary image is defined, such that missing pixels are 0 and
+valid pixels are 1.  A box filter is then run over this image.  If the result
+of this box filter is less than the OUTLIER threshold, the pixel is rejected.
+
+If OUTLIER is set to 0.5, this has the same effect as running a median filter,
+which is where this idea originated.
+
+If OUTLIER is greater than 0.5, the effect is to erode away the edges of the
+valid area.  At 0.5, the "average" edge is retained, while removing those
+pixels beyond the edge (which still might be connected to the valid area).
+Below 0.5, the effect tends more towards removing only more isolated pixels.
+Thus, a value of 1.0 is maximum filtering (only pixels with the entire box
+filled will be retained - not recommended) and 0.0 effectively disables the
+filter.
+
+Note that this is NOT the same as a "blob" filter.  It does not look at
+connectedness in the sense of disparities being close to each other.  It
+only looks at how many valid neighbors there are.
+
+This is the last filter, thus valid neighbors have already passed all the
+other tests.
+
+Recommended value:  0.5
+
+.VARI OUTLIER_BOX
+Specifies the size of the box used to compute the outlier filter.  If one
+value is specified, the result is a square box.  If two are specified, a
+rectangular box of (height, width) is used.
+
+Note that both height and width of the box must be odd.
+
+.VARI WRITE_CM
+If specified, the program will write an updated camera model to the output
+file.  This camera model is for the left image, as modified by the nav file.
+The purpose of this is to be able to create a properly-labeled XYZ file
+from unmodified FFL (linearized) files and a nav file, for the purpose of
+pointing-correction of a mesh.
+
+Note that point=cm=label should NOT be specified, as that will override the
+nav file.  Also, you may need to specify point=cahv_fohv=xxx (often, "max"),
+in order for the camera model to match the FFL.  Basically, whatever is given
+to marscahv, should be given in this case as well.
+
+.VARI CONFIG_PATH
+A colon-separated list of directories in which to look for configuration
+and calibration files.  Environment variables are allowed in the list
+(and may themselves contain colon-separated lists).  The directories are
+searched in order for each config/cal file when it is loaded.  This allows
+multiple projectes to be supported simultaneously, and allows the user to
+override any given config/cal file.  Note that the directory structure below
+the directories specified in this path must match what the project expects.
+For example, Mars 98 expects flat fields to be in a subdirectory named
+"flat_fields" while Mars Pathfinder expects them to be directly in the
+directory specified by the path (i.e. no intermediate subdirectories).
+
+.VARI MATCH_METHOD
+Specifies a method for pointing corrections.
+
+Loose method matchs with pointing parameters of the image.
+Tight method matchs with unique id of the image.
+
+.VARI MATCH_TOL
+Tolerance value for matching pointing parameters in the pointing corrections file.
+Used if MATCH_METHOD=LOOSE
+Default value is pretty arbitrary, though seems to work well so far....
+
+.VARI POINT_METHOD
+Specifies a mission-specific pointing method to use.  Normally this
+parameter is not used, in which case the "default" pointing methods
+are used.  Some missions may have special, or alternate, pointing
+methods available, which are indicated by this string (for example,
+backlash models, using arm joint angles instead of x/y/z/az/el, etc).
+A substring search is used, so multiple methods (where that makes sense)
+can be specified by separating the keywords with commas.
+
+Note that nav files created using one pointing method will most likely
+not be compatible with a mosaic created using a different pointing method.
+
+The methods available vary per mission, but some methods available at
+the time of this writing are:
+
+BACKLASH : Mars 98 SSI only.  Selects a backlash pointing model,
+which adjusts the telemetered azimuth and elevation values based on
+knowledge of the camera's mechanical backlash and the direction the
+motor was travelling when the image was taken.
+
+.VARI DATA_SET_NAME
+The DATA_SET_NAME typically identifies the instrument that acquired the
+data, the target of that instrument, and the processing level of the data.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_NAME.
+
+.VARI DATA_SET_ID
+The DATA_SET_ID value for a given data set or product is constructed
+according to flight project naming conventions.  In most cases the
+DATA_SET_ID is an abbreviation of the DATA_SET_NAME.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_ID.
+
+.VARI RELEASE_ID
+When a data set is released incrementally, such as every three months during
+a mission, the RELEASE_ID is updated each time part of the data set is released.
+For each mission(or host id if multiple spacecrafts), the first release of a data
+set should have a value of "0001".
+This value is copied to the output label, property IDENTIFICATION,
+keyword RELEASE_ID.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique identifier assigned to a data product by
+its producer. Most commonly, it is the filename minus the extension.
+This value is copied to the output label, property IDENTIFICATION,
+keyword PRODUCT_ID.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier of an entity associated with the
+production of a data set. This value is copied to the output label,
+property IDENTIFICATION, keyword PRODUCER_ID.
+
+.VARI PRODUCER_INST
+Specifies the identity of a university, research center, NASA center or other
+institution associated with the production of a data set.
+This value is copied to the output label, property IDENTIFICATION, keyword
+PRODUCER_INSTITUTION_NAME.
+
+.VARI TARGET_NAME
+Specifies a target.  The target may be a planet, satelite, ring, region, feature,
+asteroid or comet.  This value is copied to the output label, property
+IDENTIFICATION, keyword TARGET_NAME.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target. This value is copied to the output
+label, property IDENTIFICATION, keyword TARGET_NAME.
+
+.VARI RSF
+Rover State File.  This is a list of filenames to load containing
+Rover State information.  These files contain position and orientation
+information for a rover (or other mobile spacecraft) at various sites.
+They are in XML format.  See the "Rover Motion Counter (RMC) Master File SIS"
+for details on these files.
+
+Rover State Files have a priority order.  The files listed first have
+the highest priority.
+
+Environment variables may be used in the list.
+
+For MER, if a directory is specified, then that directory is searched for
+RMC Master files and any found are loaded.  The directory structure and
+filename convention is covered in the RMC SIS.  The directory specified
+is the one containing "master", so if <dir> is the name specified in the
+RSF parameter, the following files will be searched for:
+
+<dir>/master/<mission>_Master.svf
+<dir>/master/<mission>_Site_<n>_Master.rvf
+
+The name of each file loaded is printed to the stdout log for reference.
+
+.VARI DEBUG_RSF
+If enabled, this causes the internal database of RMC locations to be
+printed out to the stdout log.  This is after the RSF files have been
+loaded and the coordinate systems read from the input label(s).
+
+.VARI COORD
+The coordinate system to use for all input parameters and output values,
+and the XYZ points themselves.  The interpretation of the values is dependent
+on the mission.  Some representative missions are listed here:
+
+Fixed - The Fixed frame (default).  This is the ultimate reference frame
+    (see also FIXED_SITE for rover missions).
+Instrument - The "natural" frame for the instrument (of the first input
+    image).  MPF: Lander or Rover; M98: MVACS; MER: Rover.
+Site - A major Site frame.  For rover missions, COORD_INDEX specifies which
+    Site frame to use.  Non-rover missions treat this as Fixed.
+Rover - An instance of the Rover frame.  For rover missions, COORD_INDEX
+    specifies which instance of the rover frame to use.  Non-rover mission
+    use the spacecraft frame (e.g. Lander for M98).  For MSL, this is the
+    Rover Nav frame.
+Local_Level - An instance of a Local Level frame.  This is typically
+    coincident with the Rover frame (in XYZ) but oriented toward North
+    like the Site and Fixed frames.  For MER, this is an instance of a
+    Drive index move.
+RMECH - For MSL, this is the Rover Mechanical frame.  It should not normally
+    be used except for testing.
+
+.VARI COORD_INDEX
+The index specifies which instance of a coordinate system to use.  It is
+currently applicable only to rover-based missions, but could have other
+uses.  The index is equivalent to the Rover Motion Counter (RMC) for MER
+and FIDO.
+
+For MER/FIDO, there are many Site frames.  Each is numbered with a single
+index.  For Site Frames, coord_index specifies which to use.  Likewise,
+there are many Local_Level and Rover frames, corresponding to values of
+the RMC.  The multiple instances of this frame are selected by COORD_INDEX.
+
+Generally COORD_INDEX defaults sensibly so you don't usually need to
+specify it.  It will default to the instance used by the first input.
+
+.VARI FIXED_SITE
+Specifies which major Site is the "Fixed" Site for this run.
+
+Historically, MPF and M98 had a single "Surface Fixed" frame which never
+moved, and which all other coordinate system frames were referenced to.
+With the advent of long-range rovers (such as MER and FIDO), that became
+insufficient.  The rover traverses far enough that errors in knowledge of
+coordinate system offset and orientation become unacceptable.
+
+For this reason, a system of major Sites was introduced.  Periodically
+during the mission, a Site frame is declared.  This then becomes the
+reference frame for all activities until the next Site is declared.
+References are kept local, and errors don't propogate across Sites.
+
+However, if images from more than one Site are combined together, the
+Site's must be placed relative to each other.  Therefore a single reference
+frame is still needed to combine different sites.
+
+The FIXED_SITE parameter controls which of the major Site frames is
+the reference ("fixed") site for this program run.  This fixed frame
+can vary in different program runs, but is constant throughout one
+execution.
+
+If not specified, FIXED_SITE defaults to the minimum Site number (i.e.
+lowest numbered, or earliest chronologically) used in all input images.
+Normally this default is sufficient; rarely must FIXED_SITE be specified.
+
+One or more Rover State Files must usually be specified in order to combine
+image from more than one Site.  These describe the relationship between
+sites.  See the RSF parameter.
+
+.VARI SOLUTION_ID
+Specifies which solution ID to use when specifying the coordinate system.
+
+There are potentially many different definitions for the same coordinate
+system.  These are identified via a unique Solution ID.  If this parameter
+is given, only the specified solution's definition is searched for.  Without
+it, the "best" available solution is chosen.
+
+It is extremely rare that this parameter should be needed.  The default
+will be sufficient in almost every case.
+
+Note that the current MER implementation requires that a value for COORD_INDEX
+also be provided, in order for this parameter to take effect.
+

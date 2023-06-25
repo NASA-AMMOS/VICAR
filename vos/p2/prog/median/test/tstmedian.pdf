@@ -9,70 +9,72 @@ enable-log
 
 ! BYTE FORMAT
 gausnois out=a.img nl=10 ns=10 seed=7382382
-list a.img
+list a.img 'nousrtim
 median inp=a.img out=b.img nlw=3 nsw=3
-list b.img
+list b.img 'nousrtim
 !This example performs the highpass median filter of default size 3 lines
 !by 3 samples.
 median inp=a.img out=b.img 'high nlw=3 nsw=3 dclevel=100. dctran=0.
-list b.img
+list b.img 'nousrtim
 !This example outputs the value corresponding to the 20% level of a 
 !histogram
 median inp=a.img out=b.img perc=20.0 nlw=5 nsw=5
-list b.img
+list b.img 'nousrtim
 
 ! HALF FORMAT
 gausnois out=a.img nl=10 ns=10 seed=7382382 format=half sigma=10. +
   mean=-1000
-list a.img
+list a.img 'nousrtim
 median inp=a.img out=b.img nlw=3 nsw=3
-list b.img
+list b.img 'nousrtim
 !This example performs the highpass median filter of default size 3 lines
 !by 3 samples.
 median inp=a.img out=b.img 'high nlw=3 nsw=3 dclevel=100. dctran=0.
-list b.img
+list b.img 'nousrtim
 !This example outputs the value corresponding to the 20% level of a 
 !histogram
 median inp=a.img out=b.img perc=20.0 nlw=5 nsw=5
-list b.img
+list b.img 'nousrtim
 
 ! HALF FORMAT
 gausnois out=a.img nl=10 ns=10 seed=7382382 format=half sigma=10. +
   mean=-1000
-list a.img
+list a.img 'nousrtim
 median inp=a.img out=b.img nlw=3 nsw=3
-list b.img
+list b.img 'nousrtim
 !This example performs the highpass median filter of default size 3 lines
 !by 3 samples.
 median inp=a.img out=b.img 'high nlw=3 nsw=3 dclevel=100. dctran=0.
-list b.img
+list b.img 'nousrtim
 !This example outputs the value corresponding to the 20% level of a 
 !histogram
 median inp=a.img out=b.img perc=20.0 nlw=5 nsw=5
-list b.img
+list b.img 'nousrtim
 
 ! REAL FORMAT DIAGONAL GRADIENT
 gen out=a.img nl=10 ns=10
-list a.img
+list a.img 'nousrtim
 median inp=a.img out=b.img nlw=3 nsw=3
-list b.img
+list b.img 'nousrtim
 !This example performs the highpass median filter of default size 3 lines
 !by 3 samples.
 median inp=a.img out=b.img 'high nlw=3 nsw=3 dclevel=100. dctran=0.
-list b.img
+list b.img 'nousrtim
 !This example outputs the value corresponding to the 20% level of a 
 !histogram
 median inp=a.img out=b.img perc=20.0 nlw=5 nsw=5
-list b.img
+list b.img 'nousrtim
 
 ! BYTE FORMAT, 2 BANDS
 gausnois out=a1.img nl=10 ns=10 seed=7382382
-list a1.img
+list a1.img 'nousrtim
 gausnois out=a2.img nl=10 ns=10 seed=7382383
-list a2.img
+list a2.img 'nousrtim
 viccub inp=(a1.img,a2.img) out=anb2.img
 median inp=anb2.img out=bnb2.img nlw=3 nsw=3
-list bnb2.img
+list bnb2.img 'nousrtim
+
+ush rm a1.img a2.img a.img anb2.img b.img bnb2.img
 
 disable-log
 end-proc

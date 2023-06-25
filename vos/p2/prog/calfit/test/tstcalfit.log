@@ -1,0 +1,548 @@
+write "TESTING FITONLY OPTION"
+TESTING FITONLY OPTION
+gen xxx1 nl=3 ns=2 ival = 1 linc=1 sinc=1
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+gen xxx2 nl=3 ns=2 ival = 3 linc=3 sinc=2
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+gen xxx3 nl=3 ns=2 ival = 7 linc=2 sinc=4
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+gen xxx4 nl=3 ns=2 ival = 9 linc=2 sinc=2
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+gen xxx5 nl=3 ns=2 ival = 12 linc=2 sinc=4
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+list xxx1 'zer 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+     Samp     1
+   Line
+      1       1   2
+      2       2   3
+      3       3   4
+list xxx2 'zer 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+     Samp     1
+   Line
+      1       3   5
+      2       6   8
+      3       9  11
+list xxx3 'zer 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+     Samp     1
+   Line
+      1       7  11
+      2       9  13
+      3      11  15
+list xxx4 'zer 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+     Samp     1
+   Line
+      1       9  11
+      2      11  13
+      3      13  15
+list xxx5 'zer 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   BYTE     samples are interpreted as   BYTE   data
+ Task:GEN       User:          Date_Time:                        
+     Samp     1
+   Line
+      1      12  16
+      2      14  18
+      3      16  20
+calfit inp=(xxx1,xxx2,xxx3,xxx4,xxx5) out=(xxx6,xxx7)  +
+     calval=(0.0,5.0,10.0,14.0,20.0) 'fitonly
+Beginning VICAR task calfit
+calfit version Thu Jan  3 2008
+list xxx6 'zer 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:CALFIT    User:          Date_Time:                        
+     Samp             1           2
+   Line
+      1       5.706E-01   6.977E-01
+      2       5.914E-01   7.184E-01
+      3       6.121E-01   7.392E-01
+list xxx7 'zer 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:CALFIT    User:          Date_Time:                        
+     Samp             1           2
+   Line
+      1       8.081E-01   2.163E+00
+      2       2.605E+00   3.959E+00
+      3       4.401E+00   5.756E+00
+f2 inp=(xxx1,xxx6,xxx7) out=xxx8 func="0.0*in2+in3-in1" format=real
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 6 TIMES
+f2 inp=(xxx2,xxx6,xxx7) out=xxx9 func="5.0*in2+in3-in1" format=real
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 6 TIMES
+f2 inp=(xxx3,xxx6,xxx7) out=xxxa func="10.0*in2+in3-in1" format=real
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 6 TIMES
+f2 inp=(xxx4,xxx6,xxx7) out=xxxb func="14.0*in2+in3-in1" format=real
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 6 TIMES
+f2 inp=(xxx5,xxx6,xxx7) out=xxxc func="20.0*in2+in3-in1" format=real
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 6 TIMES
+list xxx8 'zer 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2        User:          Date_Time:                        
+     Samp             1           2
+   Line
+      1      -1.919E-01   1.628E-01
+      2       6.047E-01   9.593E-01
+      3       1.401E+00   1.756E+00
+list xxx9 'zer 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2        User:          Date_Time:                        
+     Samp             1           2
+   Line
+      1       6.611E-01   6.512E-01
+      2      -4.385E-01  -4.485E-01
+      3      -1.538E+00  -1.548E+00
+list xxxa 'zer 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2        User:          Date_Time:                        
+     Samp             1           2
+   Line
+      1      -4.859E-01  -1.860E+00
+      2      -4.817E-01  -1.856E+00
+      3      -4.776E-01  -1.852E+00
+list xxxb 'zer 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2        User:          Date_Time:                        
+     Samp             1           2
+   Line
+      1      -2.035E-01   9.302E-01
+      2      -1.163E-01   1.017E+00
+      3      -2.907E-02   1.105E+00
+list xxxc 'zer 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2        User:          Date_Time:                        
+     Samp             1           2
+   Line
+      1       2.201E-01   1.163E-01
+      2       4.319E-01   3.281E-01
+      3       6.437E-01   5.399E-01
+write "TESTING AVG OPTION"
+TESTING AVG OPTION
+calfit inp=(xxx1,xxx2,xxx3,xxx4,xxx5) out=(xxx6,xxx7)  +
+     calval=(0.0,5.0,10.0,14.0,20.0) 'calibavg
+Beginning VICAR task calfit
+calfit version Thu Jan  3 2008
+list xxx6 'zer 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:CALFIT    User:          Date_Time:                        
+     Samp             1           2
+   Line
+      1       4.737E-01   3.874E-01
+      2       4.570E-01   3.762E-01
+      3       4.415E-01   3.656E-01
+list xxx7 'zer 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:CALFIT    User:          Date_Time:                        
+     Samp             1           2
+   Line
+      1       1.649E+00   1.194E+00
+      2       8.410E-01   5.420E-01
+      3       8.820E-02  -7.303E-02
+f2 inp=(xxx1,xxx6,xxx7) out=xxx8 func="in1*in2+in3" format=real
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 6 TIMES
+f2 inp=(xxx2,xxx6,xxx7) out=xxx9 func="in1*in2+in3" format=real
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 6 TIMES
+f2 inp=(xxx3,xxx6,xxx7) out=xxxa func="in1*in2+in3" format=real
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 6 TIMES
+f2 inp=(xxx4,xxx6,xxx7) out=xxxb func="in1*in2+in3" format=real
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 6 TIMES
+f2 inp=(xxx5,xxx6,xxx7) out=xxxc func="in1*in2+in3" format=real
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 6 TIMES
+list xxx8 'zer 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2        User:          Date_Time:                        
+     Samp             1           2
+   Line
+      1       2.122E+00   1.968E+00
+      2       1.755E+00   1.671E+00
+      3       1.413E+00   1.389E+00
+list xxx9 'zer 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2        User:          Date_Time:                        
+     Samp             1           2
+   Line
+      1       3.070E+00   3.130E+00
+      2       3.583E+00   3.551E+00
+      3       4.062E+00   3.949E+00
+list xxxa 'zer 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2        User:          Date_Time:                        
+     Samp             1           2
+   Line
+      1       4.964E+00   5.455E+00
+      2       4.954E+00   5.432E+00
+      3       4.945E+00   5.411E+00
+list xxxb 'zer 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2        User:          Date_Time:                        
+     Samp             1           2
+   Line
+      1       5.911E+00   5.455E+00
+      2       5.868E+00   5.432E+00
+      3       5.828E+00   5.411E+00
+list xxxc 'zer 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2        User:          Date_Time:                        
+     Samp             1           2
+   Line
+      1       7.332E+00   7.392E+00
+      2       7.239E+00   7.313E+00
+      3       7.153E+00   7.239E+00
+write "TESTING MEDIAN OPTION"
+TESTING MEDIAN OPTION
+calfit inp=(xxx1,xxx2,xxx3,xxx4,xxx5) out=(xxx6,xxx7)  +
+     calval=(0.0,5.0,10.0,14.0,20.0) 'calibmed
+Beginning VICAR task calfit
+calfit version Thu Jan  3 2008
+list xxx6 'zer 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:CALFIT    User:          Date_Time:                        
+     Samp             1           2
+   Line
+      1       1.073E+00   8.774E-01
+      2       1.035E+00   8.520E-01
+      3       1.000E+00   8.281E-01
+list xxx7 'zer 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:CALFIT    User:          Date_Time:                        
+     Samp             1           2
+   Line
+      1       3.534E+00   2.504E+00
+      2       1.705E+00   1.028E+00
+      3       0.000E+00  -3.652E-01
+f2 inp=(xxx1,xxx6,xxx7) out=xxx8 func="in1*in2+in3" format=real
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 6 TIMES
+f2 inp=(xxx2,xxx6,xxx7) out=xxx9 func="in1*in2+in3" format=real
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 6 TIMES
+f2 inp=(xxx3,xxx6,xxx7) out=xxxa func="in1*in2+in3" format=real
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 6 TIMES
+f2 inp=(xxx4,xxx6,xxx7) out=xxxb func="in1*in2+in3" format=real
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 6 TIMES
+f2 inp=(xxx5,xxx6,xxx7) out=xxxc func="in1*in2+in3" format=real
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 6 TIMES
+list xxx8 'zer 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2        User:          Date_Time:                        
+     Samp             1           2
+   Line
+      1       4.607E+00   4.258E+00
+      2       3.775E+00   3.584E+00
+      3       3.000E+00   2.947E+00
+list xxx9 'zer 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2        User:          Date_Time:                        
+     Samp             1           2
+   Line
+      1       6.753E+00   6.890E+00
+      2       7.916E+00   7.844E+00
+      3       9.000E+00   8.744E+00
+list xxxa 'zer 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2        User:          Date_Time:                        
+     Samp             1           2
+   Line
+      1       1.104E+01   1.215E+01
+      2       1.102E+01   1.210E+01
+      3       1.100E+01   1.206E+01
+list xxxb 'zer 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2        User:          Date_Time:                        
+     Samp             1           2
+   Line
+      1       1.319E+01   1.215E+01
+      2       1.309E+01   1.210E+01
+      3       1.300E+01   1.206E+01
+list xxxc 'zer 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2        User:          Date_Time:                        
+     Samp             1           2
+   Line
+      1       1.641E+01   1.654E+01
+      2       1.620E+01   1.636E+01
+      3       1.600E+01   1.620E+01
+write "TESTING QUADRATIC OPTION"
+TESTING QUADRATIC OPTION
+calfit inp=(xxx1,xxx2,xxx3,xxx4,xxx5) out=(xxx6,xxx7,xxx8)  +
+     calval=(0.0,5.0,10.0,14.0,20.0) 'fitonly
+Beginning VICAR task calfit
+calfit version Thu Jan  3 2008
+list xxx6 'zer 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:CALFIT    User:          Date_Time:                        
+     Samp             1           2
+   Line
+      1       6.053E-01   8.249E-01
+      2       7.869E-01   1.007E+00
+      3       9.686E-01   1.188E+00
+list xxx7 'zer 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:CALFIT    User:          Date_Time:                        
+     Samp             1           2
+   Line
+      1       7.190E-01   1.836E+00
+      2       2.102E+00   3.219E+00
+      3       3.485E+00   4.602E+00
+list xxx8 'zer 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:CALFIT    User:          Date_Time:                        
+     Samp             1           2
+   Line
+      1      -1.737E-03  -6.376E-03
+      2      -9.805E-03  -1.444E-02
+      3      -1.787E-02  -2.251E-02
+f2 inp=(xxx1,xxx6,xxx7,xxx8) out=xxx9 func="0.0*in4+0.0*in2+in3-in1" format=real
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 6 TIMES
+f2 inp=(xxx2,xxx6,xxx7,xxx8) out=xxxa func="25.0*in4+5.0*in2+in3-in1" format=real
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 6 TIMES
+f2 inp=(xxx3,xxx6,xxx7,xxx8) out=xxxb func="100.0*in4+10.0*in2+in3-in1" format=real
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 6 TIMES
+f2 inp=(xxx4,xxx6,xxx7,xxx8) out=xxxc func="196.0*in4+14.0*in2+in3-in1" format=real
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 6 TIMES
+f2 inp=(xxx5,xxx6,xxx7,xxx8) out=xxxd func="400.0*in4+20.0*in2+in3-in1" format=real
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 6 TIMES
+list xxx9 'zer 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2        User:          Date_Time:                        
+     Samp             1           2
+   Line
+      1      -2.810E-01  -1.642E-01
+      2       1.019E-01   2.187E-01
+      3       4.847E-01   6.015E-01
+list xxxa 'zer 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2        User:          Date_Time:                        
+     Samp             1           2
+   Line
+      1       7.019E-01   8.007E-01
+      2      -2.086E-01  -1.097E-01
+      3      -1.119E+00  -1.020E+00
+list xxxb 'zer 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2        User:          Date_Time:                        
+     Samp             1           2
+   Line
+      1      -4.022E-01  -1.553E+00
+      2      -9.253E-03  -1.160E+00
+      3       3.836E-01  -7.674E-01
+list xxxc 'zer 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2        User:          Date_Time:                        
+     Samp             1           2
+   Line
+      1      -1.479E-01   1.134E+00
+      2       1.972E-01   1.479E+00
+      3       5.424E-01   1.824E+00
+list xxxd 'zer 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2        User:          Date_Time:                        
+     Samp             1           2
+   Line
+      1       1.292E-01  -2.175E-01
+      2      -8.130E-02  -4.279E-01
+      3      -2.918E-01  -6.384E-01
+disable-log

@@ -1,0 +1,27 @@
+/***********************************************************************
+
+                     IMAKE FILE FOR PROGRAM rastovec
+
+   To Create the build file give the command:
+
+		$ vimake rastovec			(VMS)
+   or
+		% vimake rastovec			(Unix)
+
+************************************************************************/
+#define PROGRAM	rastovec
+
+#define MODULE_LIST rastovec.f lregn.f flabl.f slabl.f csegs.f comps.f \
+          polyc.f open_files.f cycle.f links.f ccp.f opvr.f outpol.f \
+          close_pol.f reduce.f outedg.f movcen.f
+#define MAIN_LANG_FORTRAN
+#define USES_FORTRAN
+#define R2LIB
+#define FTNINC_LIST fortport
+#define INCLUDE_LIST  
+
+#define LIB_RTL
+#define LIB_TAE
+#define LIB_P2SUB
+/* #define DEBUG */
+/************************* End of Imake file ***************************/

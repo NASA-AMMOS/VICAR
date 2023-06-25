@@ -1,0 +1,5 @@
+$ vpack marsc2uvw.com -mixed -
+	-s marsc2uvw.cc -
+	-i marsc2uvw.imake -
+	-p marsc2uvw.pdf
+$ Exit

@@ -1,0 +1,422 @@
+eval 'exec perl -w -S $0 ${1+"$@"}'
+    if 0;
+print '== do_wedge $Revision: 1.13 $ ' . `date`;
+
+# $Id: do_wedge,v 1.13 2007/08/21 16:51:59 jack Exp jack $
+# Run SUMMITT terrain generation on one XYZ/image input
+#
+# Exit status:
+#       0 = completed okay
+#       1 = invalid arguments or environment setup
+#       >1 = bitmap of failures:
+#               2 = octree/vista processing failed (maybe bad input data)
+#               4 = per-wedge tiled mesh generation failed
+#               8 = per-wedge height map creation failed
+
+# show usage and abort
+
+use File::Basename;
+
+sub usage {
+	print "$_[0]\n";
+	print "Usage: $0 [options] xyz_file img_file imageID version\n";
+	print "Type \"$0 -help\" for options\n";
+	exit 1;
+}
+
+# Base directory for binaries, data
+$BASE = $ENV{CRUMBS_HOME};
+$BASE = "{CRUMBS_HOME}" if (!defined($BASE));
+#$sbin = "$ENV{CRUMBS_BIN}/$ENV{VICCPU}";
+$ARCH = $ENV{VICCPU};
+
+# Argument for "tar" to create archive; "cf" is required;
+# include "z" for gzip compression, "j" for bzip2 compression
+$TAR_OPT = "czf";
+
+# make up basename for VISTA file based on EDR
+sub vista_name
+{
+	$_ = $edr;
+	if (length() >= 14) {
+		substr($_, 11, 3) = "VIL";
+	}
+	return "$_.VST";
+}
+
+# run a command after logging command line
+sub run
+{
+	print "\nRunning: $_[0]\n";
+	system $_[0];
+
+	if ($? == -1) {
+		print "WARNING: couldn't run: $!\n";
+        }
+}
+
+# get key from PDS header
+# first arg is filename
+# second arg is key
+# optional third arg is pattern to extract from key value
+sub pds_key
+{
+        my ($name, $key, $pattern) = @_;
+        if (!defined($pattern)) {
+                $pattern = "(.*)\r";
+        }
+        open PDS,$name or die "Can't open $name for PDS key search\n";
+        while (<PDS>) {
+                if (/^\s*$key\s+=\s+$pattern/) {
+			close PDS;
+			return $1;
+		}
+        }               
+        #die "Didn't find PDS key $key in $name\n";
+}
+
+# acquire exclusive file lock, waiting until available
+use Fcntl qw(:DEFAULT :flock);
+sub get_lock
+{
+	my $lock = shift;
+	sysopen(LOCK, $lock, O_RDWR|O_CREAT) or 
+		die "Can't open lock file $lock: $!\n";
+	print "Acquiring lock $lock...\n";
+	flock(LOCK, LOCK_EX);
+}
+
+# release file lock
+sub unlock
+{
+	my $lock = shift;
+	close LOCK;
+	unlink $lock;
+}
+	
+#"key;INSTRUMENT_ID,ROVER_MOTION_COUNTER,DOWNSAMPLE_METHOD;Comma-separated list of PDS keys to extract for forest database", 
+# Define command-line options. Edit defaults as desired.
+# format is <name>;<default>;<description>
+foreach (
+"cmod;-;Camera model filename (- means extract from XYZ)",
+"forest;all;Name of forest database (.fst) to update",
+"htmap_alpha;-alpha;Create DEM alpha coverage channel?",
+"htmap_interp;-a 1;Create interpolated DEM band?",
+"htmap_xres;;Output DEM X resolution in pixels",
+"htmap_wres;0.1;Output DEM resolution in meters/pixel (0=disable)",
+"key;INSTRUMENT_ID,ROVER_MOTION_COUNTER,DOWNSAMPLE_METHOD;Comma-separated list of PDS keys to extract for forest database", 
+#"key;;Comma-separated list of PDS keys to extract for forest database", 
+"lod_scale;400;LOD switching scale factor",
+"max_angle;87;max angle between triangle face and view direction (deg)",
+"oss;${BASE}/oss;CRUMBS work area containing Output files (will make/use \$oss/XXX)",
+"refsite;-1;site reference (-1=latest)",
+"res_min;200;Approx triangles per tile at min LOD",
+"res_max;40000;Approx triangles per tile at max LOD",
+"rng_min;-0.01;min mesh range in meters (negative means scale by FOV)",
+"rng_max;30.0;max mesh range in meters (negative means scale by FOV)",
+"rflt_dist;0;range filtering max distance for VISTA (0=disable)",
+"rflt_gap;2;max XYZ gap interpolation pixels for VISTA",
+"sbin;${BASE}/bin/${ARCH};path to CRUMBS binaries",
+"svf;;site vector file",
+"tileres;1000000000;approximate number of triangles per mesh tile (0=disable)",
+"vista_fmt;;VISTA output format (empty for no VISTA)",
+"vista_tex;../linear/%s.IMG;VISTA texture filename pattern",
+"verbose;-v;verbose logging? (-v or empty)",
+"xyz_gaps;2;max XYZ gaps to interpolate, pixels",
+"rf_maxd;0;initial range filtering, max delta range") {
+	($name,$defval,$descr) = split ';';
+	$parmval{$name} = $defval;
+	$parmdsc{$name} = $descr;
+}
+
+# Extract command-line options
+while ($#ARGV >= 0 && $ARGV[0] =~ /^-(\w+)/) {
+	$option = $1;
+
+	if ($option eq "help") {
+		foreach (keys %parmval) {
+			print "  -$_ = $parmdsc{$_}\n     default $parmval{$_}\n";
+		}
+		exit 1;
+	}
+
+	if (!exists $parmval{$option}) {
+		usage("Unknown option -$option");
+	}
+	shift;
+	$parmval{$option} = shift;
+}
+if ($#ARGV != 3) {
+	usage("Wrong number of required arguments");
+}
+$xyz = shift;
+$img = shift;
+$id = shift;
+#$version = shift;
+#!!!!ozp $edr = "$id-$version";	# internal combined wedge ID
+$edr = "$id";	# internal combined wedge ID
+#$ht = "$xyz";	# internal combined wedge ID
+#$ht = basename("$xyz",  ".IMG");
+$ht = "$id";
+
+
+# Verify setup
+$sbin = $parmval{sbin};
+$oss = $parmval{oss};
+if ($xyz !~ /^\//) {
+	usage("Input XYZ file \"$xyz\" not absolute path");
+}
+if (! -r $xyz) {
+	usage("Input XYZ file \"$xyz\" not found or not readable");
+}
+if ($img !~ /^\//) {
+	usage("Input image \"$img\" not absolute path");
+}
+if (! -r $img) {
+	usage("Input image \"$img\" not found or not readable");
+}
+if (! -x "$sbin/tmsa") {
+	usage("CRUMBS binary directory $sbin not valid");
+}
+if (! -d $oss) {
+	usage("OSS output directory $oss not valid");
+}
+
+# make sure files are created with reasonable permissions
+umask 002;
+
+# setup OSS area if necessary
+foreach (qw/xyz vista vistaque mesh work
+		mesh\/tex2 mesh\/tex4 mesh\/tex8/) {
+	mkdir "$oss/$_";
+}
+if (! -d "$oss/vista") {
+	die "Unable to create $oss subdirectories\n";
+}
+
+# preprocess site vector file if necessary
+$svf = $parmval{svf};
+if ($svf ne "") {
+	if (! -r $svf) {
+		usage("Site vector file $svf not found or not readable");
+	}
+	$svf =~ m:.*/(.*):;
+	$psvf = "$oss/$1.txt";
+	# rebuild if text version doesn't exist or XML SVF is newer 
+	if ((! -e $psvf) || (-M $psvf > -M $svf)) {
+		print "Updating text SVF $psvf\n";
+		if (system("$sbin/xmln $svf | 
+				perl -w $sbin/site_vector.p > $psvf") != 0) {
+			usage("Failure parsing Site Vector File $svf");
+		}
+	}
+	$parmval{svf} = "-svf $psvf";
+}
+
+# Log options in use
+print "== Parameters used:\n";
+foreach (sort (keys %parmval)) {
+	print "  -$_ = $parmval{$_}\n";
+}
+
+# Setup temporary work subdirectory to minimize the time that wedge
+# data is incomplete
+#if (-d "$oss/mesh/$edr.ht") {
+if (-d "$oss/mesh/$ht.ht") {
+	print "Replacing previous wedge $edr data\n";
+}
+$work = "$oss/work/$edr";
+mkdir $work;
+symlink $xyz, "$work/tm.xyz";
+symlink $xyz, "$oss/xyz/$edr";
+symlink $img, "$work/tm.img";
+chdir $work;
+
+# Do image file processing now, so the file can be moved
+# once VISTA is built
+
+# Get PDS keywords from image header for forest database
+$keyvals = "";
+foreach (split(",", $parmval{key})) {
+	$keyvals .= " " . pds_key($img, $_);
+}
+
+print "== Building texture maps\n";
+
+# Create terrain texture maps for mesh product
+# -m = stretch to map mean pixel to 128, -e = ignore edges
+# -2 = force dimensions to a power of two
+# -f = fixed shift of limit input to 8-bit output
+#     limit based on SAMPLE_BIT_MASK for PDS, else 4095
+# For radiometrically-corrected images, use fixed scaling
+if ($img =~ /...*RAS/) {
+	$map = "-p0:4095";
+}
+elsif ($img =~ /...*RAD/) {
+	$map = "-p0:32767";
+}
+elsif ($img =~ /...*CWG/) {
+	$map = "-p0:255";
+}
+elsif ($img =~ /...*MWG/) {
+	$map = "-p0:255";
+} else {
+	#$map = "-m";
+	$map = "-f";
+}
+system "$sbin/img16to8 $map -e $img $oss/mesh/$edr.rgb";
+#!!!!ozp
+system "$sbin/img16to8 $map -e $img $work/$edr.rgb";
+
+`$ENV{R2LIB}/cform $img $work/tmp.img 'irange=\(0,4095\) orange=\(0,255\) oform=byte'`;
+system "java jpl.mipl.io.jConvertIIO inp=$work/tmp.img out=$work/$edr.png format=png 2rgb=true oform=byte ri=true";
+
+
+# reduced-res versions too
+system "$sbin/convert -interp -zoom 0.5 $oss/mesh/$edr.rgb" .
+			" $oss/mesh/tex2/$edr.rgb 14";
+system "$sbin/convert -interp -zoom 0.5 $oss/mesh/tex2/$edr.rgb" .
+			" $oss/mesh/tex4/$edr.rgb 14";
+system "$sbin/convert -interp -zoom 0.5 $oss/mesh/tex4/$edr.rgb" .
+			" $oss/mesh/tex8/$edr.rgb 14";
+
+# fallback if scaling failed, e.g. original image too small
+if (! -s "$oss/mesh/tex2/$edr.rgb") {
+	system "cp $oss/mesh/$edr.rgb $oss/mesh/tex2/$edr.rgb";
+}
+if (! -s "$oss/mesh/tex4/$edr.rgb") {
+	system "cp $oss/mesh/tex2/$edr.rgb $oss/mesh/tex4/$edr.rgb";
+}
+if (! -s "$oss/mesh/tex8/$edr.rgb") {
+	system "cp $oss/mesh/tex4/$edr.rgb $oss/mesh/tex8/$edr.rgb";
+}
+
+print "== Building VISTA and octree files\n";
+
+run "$sbin/tmsa $parmval{verbose}" .
+	" -rng $parmval{rng_min} $parmval{rng_max}" .
+	" $parmval{vista_fmt} -t $parmval{vista_tex}" .
+	" -name $work -cmod $parmval{cmod} $parmval{svf}";
+
+# if that failed (e.g. no valid XYZ points), we're done
+if ($? != 0 || ! -r "tm.fst") {
+	print "WARNING: VISTA/octree build failed\n";
+	exit 2+4+8;
+}
+
+# so far so good
+$result = 0;
+
+# rename/move/save vista file, and MIPL queueing link
+if ($parmval{vista_fmt} ne "") {
+	$_ = vista_name();
+	system "mv tm.vst $oss/vista/$_";
+	symlink "$oss/vista/$_", "$oss/vistaque/$_";
+}
+
+if ($parmval{tileres} == 0) {
+	print "== Skipping tile mesh (tileres=0)\n";
+} else {
+	print "== Building tile meshes (Inventor format)\n";
+
+	# Quadtree subdivision of wedge into tiles
+	run "$sbin/fstquad -refsite $parmval{refsite} tm.fst" .
+		" $parmval{tileres} > mesh.iv";
+	if ($? == 0) {
+		# -nm = no merged mesh, use overlapping simple meshes
+		run "$sbin/tilemesh $parmval{verbose}" .
+			" -i tm.fst -q mesh.iv -dir $oss/xyz" .
+			" -res $parmval{res_min} $parmval{res_max}" .
+			" -rng $parmval{rng_min} $parmval{rng_max}" .
+			" -g $parmval{xyz_gaps} -s $parmval{lod_scale}" .
+			" -rf $parmval{rf_maxd} -a $parmval{max_angle} -nm";
+	}
+	if ($? != 0) {
+		print "WARNING: mesh tile generation failed\n";
+		$result |= 4;
+	}
+
+	print "== Storing Inventor files ". `date`;
+	system "tar $TAR_OPT $edr.tar *.iv";
+	print "== Storing OBJ files ". `date`;
+	system "tar $TAR_OPT ${edr}_obj.tar *.obj *.mtl *png";
+	system "gzip ${edr}_obj.tar";
+        run "$ENV{CRUMBS_BIN}/$ENV{VICCPU}/tile_cat $work mesh.iv $work/$edr.iv bin tex";
+        #system "$ENV{INVENTOR_ROOT}/bin/ivcat -o $edr.iv -f mesh.iv";
+        
+	unlink <tile*.iv>;
+	unlink <mesh*.iv>;
+	unlink <*.rgb>;
+	unlink <*.obj>;
+	unlink <*.mtl>;
+	unlink <*.png>;
+	unlink <*.img>;
+        
+}
+
+# clean up cached range map
+unlink "$oss/xyz/pp${edr}.ran";
+
+if ($parmval{htmap_wres} == 0) {
+	print "== Skipping height map (wres=0)\n";
+} else {
+	print "== Building 2.5D VICAR height map " . `date`;
+
+	if ($parmval{htmap_xres} ne "") {
+		$res = "-x $parmval{htmap_xres}";
+	} else {
+		$res = "";
+	}
+	run "$sbin/fst2img $parmval{verbose}" .
+		" -i tm.fst -o $ht.ht $res $parmval{htmap_interp}" .
+		" -refsite $parmval{refsite} $parmval{htmap_alpha}";
+
+	# quick check on results
+	#if ($? != 0 || ! -s "$edr.ht") {
+	if ($? != 0 || ! -s "$ht.ht") {
+		print "WARNING: Height map was not created (or is empty)\n";
+		$result |= 8;
+	}
+}
+
+# clean up
+unlink <$work/tm.*>;
+unlink "$oss/xyz/$edr";
+chdir "$oss/mesh";
+# move old versions (if any) out of the way
+rename "$ht.ht", "$ht.ht.old";
+#rename "$edr.iv.tar", "$edr.iv.tar.old";
+rename "$edr.tar", "$edr.tar.old";
+# move results to main mesh directory
+rename "$work/$ht.ht", "$ht.ht";
+#rename "$work/$edr.iv.tar", "$edr.iv.tar";
+rename "$work/$edr.tar", "$edr.tar";
+rename "$work/${edr}_obj.tar.gz", "${edr}_obj.tar.gz";
+rename "$work/$edr.iv", "$edr.iv";
+rmdir $work;
+# remove old version now
+unlink "$ht.ht.old";
+#unlink "$edr.iv.tar.old";
+unlink "$edr.tar.old";
+
+# update "forest database" to aid special product selection
+if ($parmval{forest} ne "") {
+	$list = "$oss/mesh/$parmval{forest}.fst";
+	get_lock "${list}.lck";
+	if (!rename $list, "$list.bak") {
+		system "touch $list.bak";
+	}
+	open(NLIST, ">$list") or die "can't open site list $list: $!\n";
+	open(OLIST, "$list.bak");
+	# copy anything but (exact) duplicate
+	while (<OLIST>) {
+		print NLIST unless (/^$edr /);	
+	}
+	print NLIST "$edr $keyvals\n";
+	close OLIST;
+	close NLIST;
+	unlock "${list}.lck";
+}
+
+print "== do_wedge done. " . `date`;
+exit $result;

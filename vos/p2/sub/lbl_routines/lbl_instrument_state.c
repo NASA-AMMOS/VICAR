@@ -1854,6 +1854,66 @@ static LblApiElement_typ	LabelTbl[] = {
                 LBL_OFFSET(LblInstrumentState_typ, OriginalSampleBits.Valid),
                 LBL_NO_RETURN,  LBL_SIZE(OriginalSampleBits.Value)},
 
+    {"CENTER_FILTER_WAVELENGTH",                  "INT",  LBL_OPTIONAL,
+        LBL_NO_CONT,    1,      1,      LBL_NULL,
+        LBL_OFFSET(LblInstrumentState_typ, CenterFilterWavelength[0].Value),
+        LBL_OFFSET(LblInstrumentState_typ, CenterFilterWavelength[0].Valid),
+        LBL_NO_RETURN,  LBL_SIZE(CenterFilterWavelength[0].Value)},
+
+    {"CENTER_FILTER_WAVELENGTH",                  "INT",  LBL_OPTIONAL,
+        LBL_NO_CONT,    1,      2,      LBL_NULL,
+        LBL_OFFSET(LblInstrumentState_typ, CenterFilterWavelength[1].Value),
+        LBL_OFFSET(LblInstrumentState_typ, CenterFilterWavelength[1].Valid),
+        LBL_NO_RETURN,  LBL_SIZE(CenterFilterWavelength[1].Value)},
+
+    {"CENTER_FILTER_WAVELENGTH",                  "INT",  LBL_OPTIONAL,
+        LBL_NO_CONT,    1,      3,      LBL_NULL,
+        LBL_OFFSET(LblInstrumentState_typ, CenterFilterWavelength[2].Value),
+        LBL_OFFSET(LblInstrumentState_typ, CenterFilterWavelength[2].Valid),
+        LBL_NO_RETURN,  LBL_SIZE(CenterFilterWavelength[2].Value)},
+
+    {"CENTER_FILTER_WAVELENGTH",                  "INT",  LBL_OPTIONAL,
+        LBL_NO_CONT,    1,      4,      LBL_NULL,
+        LBL_OFFSET(LblInstrumentState_typ, CenterFilterWavelength[3].Value),
+        LBL_OFFSET(LblInstrumentState_typ, CenterFilterWavelength[3].Valid),
+        LBL_NO_RETURN,  LBL_SIZE(CenterFilterWavelength[3].Value)},
+
+    {"CENTER_FILTER_WAVELENGTH",                  "INT",  LBL_OPTIONAL,
+        LBL_NO_CONT,    1,      5,      LBL_NULL,
+        LBL_OFFSET(LblInstrumentState_typ, CenterFilterWavelength[4].Value),
+        LBL_OFFSET(LblInstrumentState_typ, CenterFilterWavelength[4].Valid),
+        LBL_NO_RETURN,  LBL_SIZE(CenterFilterWavelength[4].Value)},
+
+    {"CENTER_FILTER_WAVELENGTH__UNIT",            "STRING",      LBL_OPTIONAL,
+        LBL_NO_CONT,    1,  1,  LBL_NULL,
+        LBL_OFFSET(LblInstrumentState_typ, CenterFilterWavelengthUnit[0].Value),
+        LBL_OFFSET(LblInstrumentState_typ, CenterFilterWavelengthUnit[0].Valid),
+        LBL_NO_RETURN,  LBL_SIZE(CenterFilterWavelengthUnit[0].Value)},
+
+    {"CENTER_FILTER_WAVELENGTH__UNIT",            "STRING",      LBL_OPTIONAL,
+        LBL_NO_CONT,    1,  2,  LBL_NULL,
+        LBL_OFFSET(LblInstrumentState_typ, CenterFilterWavelengthUnit[1].Value),
+        LBL_OFFSET(LblInstrumentState_typ, CenterFilterWavelengthUnit[1].Valid),
+        LBL_NO_RETURN,  LBL_SIZE(CenterFilterWavelengthUnit[1].Value)},
+
+    {"CENTER_FILTER_WAVELENGTH__UNIT",            "STRING",      LBL_OPTIONAL,
+        LBL_NO_CONT,    1,  3,  LBL_NULL,
+        LBL_OFFSET(LblInstrumentState_typ, CenterFilterWavelengthUnit[2].Value),
+        LBL_OFFSET(LblInstrumentState_typ, CenterFilterWavelengthUnit[2].Valid),
+        LBL_NO_RETURN,  LBL_SIZE(CenterFilterWavelengthUnit[2].Value)},
+
+    {"CENTER_FILTER_WAVELENGTH__UNIT",            "STRING",      LBL_OPTIONAL,
+        LBL_NO_CONT,    1,  4,  LBL_NULL,
+        LBL_OFFSET(LblInstrumentState_typ, CenterFilterWavelengthUnit[3].Value),
+        LBL_OFFSET(LblInstrumentState_typ, CenterFilterWavelengthUnit[3].Valid),
+        LBL_NO_RETURN,  LBL_SIZE(CenterFilterWavelengthUnit[3].Value)},
+
+    {"CENTER_FILTER_WAVELENGTH__UNIT",            "STRING",      LBL_OPTIONAL,
+        LBL_NO_CONT,    1,  5,  LBL_NULL,
+        LBL_OFFSET(LblInstrumentState_typ, CenterFilterWavelengthUnit[4].Value),
+        LBL_OFFSET(LblInstrumentState_typ, CenterFilterWavelengthUnit[4].Valid),
+        LBL_NO_RETURN,  LBL_SIZE(CenterFilterWavelengthUnit[4].Value)},
+
 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
 
 static LblApiProcess_typ	Label = {

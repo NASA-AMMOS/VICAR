@@ -6,11 +6,14 @@
 procedure help=*
 refgbl $echo
 body
+enable-log
+
 let _onfail="continue"
 let $echo="yes"
 
 tgeomvo
 
+disable-log
 end-proc
 .title TSTGEOMVO.PDF - unit test for subroutine GEOMVO
 .end

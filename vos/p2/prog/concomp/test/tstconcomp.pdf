@@ -1,0 +1,50 @@
+procedure
+refgbl $echo
+
+local lstcmp int
+
+body
+
+enable-log
+
+let $echo="yes"
+
+! TEST SCRIPT FOR concomp
+
+! huge case
+
+gen xxx1 nl=1500 ns=1500 'half
+f2 xxx1 out=xxx2 func="(mod(line+samp,3)<0.5)+(line>1498)"
+list xxx2 sl=1495 ss=1495 nl=6 ns=6 'nousrtim
+concomp xxx2 (xxx4,xxx3)
+list xxx4 sl=1495 ss=1495 nl=6 ns=6 'nousrtim
+
+! huge case with zedge
+
+!gen xxx1 nl=1500 ns=1500 'half
+!f2 xxx1 out=xxx2 func="(mod(line+samp,3)<0.5)+(line>1498)"
+!list xxx2 sl=1495 ss=1495 nl=6 ns=6 'nousrtim
+!concomp xxx2 (xxx4,xxx3)
+!list xxx4 sl=1495 ss=1495 nl=6 ns=6 'nousrtim
+
+! small case
+
+gen xxx1 nl=7 ns=7 'half
+f2 xxx1 out=xxx2 func="line*((samp<5)+(samp>5))"
+list xxx2 'nousrtim
+concomp xxx2 (xxx4,xxx3)
+list xxx4 'nousrtim
+
+! test of startcmp, lastcmp keywords
+
+concomp xxx2 (xxx4,xxx3) startcmp=12 lastcmp=lstcmp
+list xxx4 'nousrtim
+write "lstcmp &lstcmp"
+
+theend>
+
+ush rm -f xxx1  xxx2  xxx3  xxx4
+
+disable-log
+
+end-proc

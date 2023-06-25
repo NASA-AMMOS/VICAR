@@ -1,0 +1,14 @@
+procedure
+
+body
+
+!let _onfail="continue"
+
+ush cp alcase129m.img xx
+accck xx landsatmos/tahoe.band3 outfile=xx2 fftsize=128 +
+      outnl=1200 remap="y"
+label-list xx
+label-list xx2
+
+theend>
+end-proc

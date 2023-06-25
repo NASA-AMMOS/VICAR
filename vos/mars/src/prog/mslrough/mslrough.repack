@@ -1,0 +1,5 @@
+$ vpack mslrough.com -mixed -
+	-s mslrough.cc xyz_uvw_to_roughness.h xyz_uvw_to_roughness.cc -
+	-i mslrough.imake -
+	-p mslrough.pdf
+$ Exit

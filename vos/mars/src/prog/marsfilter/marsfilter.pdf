@@ -1,0 +1,691 @@
+process help=*
+PARM INP TYPE=STRING COUNT=(1:3)
+PARM OUT TYPE=STRING COUNT=1
+PARM EXTRA_FILTER TYPE=STRING COUNT=0:1 DEFAULT=--
+PARM FILTER TYPE=STRING COUNT=0:1 DEFAULT=--
+PARM PARAMS TYPE=REAL COUNT=(0:10)
+PARM HORIZON TYPE=REAL COUNT=(0:1)
+PARM PRINT TYPE=KEYWORD VALID=(PRINT,NOPRINT) DEFAULT=NOPRINT
+PARM NUMBERS TYPE=KEYWORD VALID=(NONUMBERS,NUMBERS) DEFAULT=NONUMBERS
+PARM USE_XYZ TYPE=KEYWORD VALID=(USE_XYZ,NO_XYZ) DEFAULT=USE_XYZ
+PARM RMC TYPE=KEYWORD VALID=(RMC, NO_RMC) DEFAULT=RMC
+
+PARM NAVTABLE TYPE=STRING COUNT=(0:1) DEFAULT=--
+
+PARM CONFIG_PATH STRING DEFAULT="$MARS_CONFIG_PATH"
+PARM POINT_METHOD TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM NOSITE TYPE=KEYWORD COUNT=(0:1) VALID=NOSITE DEFAULT=--
+
+PARM RSF TYPE=STRING COUNT=0:100 DEFAULT=--
+PARM DEBUG_RSF TYPE=KEYWORD COUNT=0:1 VALID=DEBUG_RSF DEFAULT=--
+PARM COORD TYPE=KEYWORD VALID=("FIXED", "INSTRUMENT", "SITE", "ROVER", +
+        "LOCAL_LEVEL", "RMECH") DEFAULT="INSTRUMENT"
+PARM COORD_INDEX TYPE=INTEGER COUNT=0:10 DEFAULT=--
+PARM FIXED_SITE TYPE=INTEGER COUNT=0:1 DEFAULT=--
+PARM SOLUTION_ID TYPE=STRING COUNT=0:1 DEFAULT=--
+
+END-PROC
+
+.TITLE
+VICAR program MARSFILTER.
+
+.HELP
+PURPOSE:
+
+MARSFILTER computes a mask for an XYZ image, intdended to remove points
+that are not of interest.  This is normally used to exclude the spacecraft
+(e.g. rover) itself from the generated range data, but can also be used to
+remove artifacts or other problems with the range data.
+
+The input for MARSFILTER is an XYZ image such as that created by the MARSXYZ
+program.  It can be a single 3-band file or three 1-band files; see MARSXYZ
+for details.  The image is converted to Instrument (Rover for MER) coordinates
+internally; the filter data is interpreted in that frame.  (The frame may be
+overridden by COORD et al, but the filter data would also have to change.)
+
+The program also requires a filter description file, which is an XML text
+file describing the filters to be applied.  See below for the file format.
+The program will automatically look for the filter file via CONFIG_PATH, or
+it can be explicitly specified via FILTER.  Some filters may be modified
+via numeric parameters given in PARAMS.
+
+A second filter file can be specified with EXTRA_FILTER, which is combined
+with the first.  The intent is for the first to be common filters that apply
+to everything, while EXTRA_FILTER is something specific to this image, such
+as what is produced by mslfilter.
+
+The output of MARSFILTER is a single 1-band byte file, where 0 represents
+something not in the filter, and 255 represents something to be filtered out.
+Note that this is reversed from what you might expect at first glance, but
+is intentional: it is easier to see what is being removed from the data this
+way.  Labels are updated in the file, to indicate the type of image (mask),
+the mask filter filenames, and the horizon value.
+
+EXECUTION:
+
+marsfilter inp=data.xyz out=data.mask filter=filter.xml
+where:
+data.xyz is an input 3-band image of type REAL with the X, Y and Z values
+    at that pixel in meters (the unit is actually irrelevant).
+data.mask is an output 1-band image of type BYTE containing the mask.
+filter.xml is an optional file containing the filter description.  (A
+    description file is mandatory but the parameter is optional; see below).
+
+Any program producing 3D position could be used; marsxyz is simply an example.
+
+Note: With the -NO_XYZ option, the input need not be an XYZ image, but rather
+can be anything with a PIG-compatible label describing the camera model
+geometry.  However, in this case you lose the capabilty to do Volume masks.
+
+.PAGE
+METHOD:
+
+MARSFILTER reads a "filter" file or files containing a description of the
+mask to be generated.  While this file is mandatory, the parameter is optional.
+If omitted, MARSFILTER will use the CONFIG_PATH parameter (which is usually
+set to $MARS_CONFIG_PATH) to find the file:
+
+param_files/MER1_rover_filter.xml
+
+where "MER1" is replaced with the host ID (or mission name if only one
+host) found in the XYZ image's label.  Each directory in CONFIG_PATH is
+searched in turn until the file is found.  An error results if the file is
+not found after the entire path is searched.
+
+A second filter file can be provided via EXTRA_FILTER; these are combined
+in the output.
+
+The filter file is then searched for <camera> elements that apply to this
+image.  There are two ways to match a filter to the image.  Both can be used
+simultanously; if so, both have to match.
+
+The first is by the camera id ("id" attribute).  This must match the instrument
+name derived from the input label.  An attribute of "any" will match any
+camera (thus disabling this check).  The camera ID check is best when there
+are image-space mask elements, such as for a hazcam.
+
+The second is by RMC.  Any rmc1, rmc2, ... attributes given in <camera> must
+match the corresponding elements in the RMC of the image label.  Attributes
+not listed do not have to match (thus if no attributes are listed, the RMC
+check is disabled).  The RMC check can also be disabled by -NO_RMC.  The intent
+of the RMC check is to allow filters that follow a rover's articulation state,
+such as are produced by the program MSLFILTER.  Those filters that match the
+image's articulation state are used, while others are ignored.
+
+After finding the right <camera> elements, the filter entries inside are
+processed one by one, adding each to the mask.
+
+Finally, the completed mask is written to the output file.
+
+.page
+
+Types of Filters
+----------------
+
+There are three fundamental types of filters, with potentially several shapes
+available in each type:  IMAGE, PROJECTED, and VOLUME.
+
+Some filters can be modified at runtime (for example, a rotation angle).
+This is accomplished using the PARAMS parameter.  Numeric parameters are
+supplied here; how they are used is specified by the individual filter.
+
+IMAGE Type
+----------
+
+The filter is a shape in image space.  This becomes a constant area in the
+output regardless of the input.  Note though that this is the "nominal"
+image space, i.e. for MER it's based on a 1024x1024 image.  Any subframing
+or downsampling is applied to these nominal coordinates.
+
+The intent of this filter type is to remove constant obscurations for fixed
+cameras (or obscurations that move with the camera).  For MER, this is used
+for the underside of the rover deck for the rear hazcams, and the area
+covered by the stowed IDD for the front hazcams.
+
+There is one IMAGE shape available:
+
+POLYGON:  A list of (x,y) coordinates of arbitrary length.  It should be a
+    convex polygon, although the current implementation seems not to care.
+    (The current implementation is slow, so to provide room for later
+    replacement with a faster implementation, the convex polygon constraint
+    should apply).  The polygon is assumed to be closed, i.e. the initial
+    point need not be repeated at the end.
+
+  Shape specified by:
+
+    List of (x,y) vertices in nominal-image space.
+
+.page
+
+PROJECTED Type
+--------------
+
+This filter is a shape in XYZ space.  The shape is projected through the
+image's camera model into image space to greate a polygon, and then that
+polygon is filtered as with the IMAGE-Polygon type (although without
+additional subframe/downsample adjustment, since those are built in to
+the camera models).
+
+The intent of this filter is to remove items which are fixed in space (in
+the coordinate system used) but which may appear in different parts of the
+image due to articulation of the camera.  This mode is preferred to the
+VOLUME mode when the area behind the shape is completely and statically
+obscured because it removes all points in the area.  If a point in the
+area mis-correlated such that it would be outside of the volume, it would
+still get masked by this filter.
+
+For MER, this type is used to model the top of the rover deck as seen by
+the navcam and pancam, and to cut off the horizon.
+
+For MSL, this type is used for almost all filters, via the mission-specific
+program MSLFILTER.  This program looks at the vehicle articulation state
+described in the label and computes a custom set of polygons for use by
+that specific image (or other images at the same articulation state).  This
+obviates the need for Volume spaces, and cuts out much less good data, e.g.
+due to modeling the wheel positions rather than taking their maximum possible
+volume.
+
+There are two TRIANGLE shapes available:
+
+POLYGON:  A list of (x,y,z) coordinates forming a closed, convex polygon
+    (see the Image polyon).  Points should all be co-planar.  This works
+    by projecting each point into the image, doing some cropping, and then
+    onverting the result to an Image polygon.  Non-coplanar points could
+    cause unexpected results.
+
+  Shape specified by:
+    List of (x,y) vertices in XYZ space.
+
+HORIZON:  Cuts off anything above the given elevation (defined as projecting
+    the pixel through the camera model and looking at the elevation component
+    of that projection).  Note that the elevation is defined in the SITE
+    frame, regardless of the setting of the COORD parameter.  The given
+    elevation can be overridden by the HORIZON parameter (but only if the
+    horizon shape exists in the file).
+
+  Shape specified by:
+    Maximum elevation above which the image is masked.
+
+TRIANGLE:  This is a special case of POLYGON.  It is retained for
+    backwards compatibility, but POLYGON should be used instead for
+    new filters.
+.page
+
+VOLUME Type
+-----------
+
+This filter looks at the XYZ values in the input image, and removes those
+that are within a defined shape in 3-D space.  Unlike the other two, this
+looks at actual XYZ values, so the mask will only have a value if the XYZ
+image has a value at the given point.
+
+The intent of this filter is to remove objects which are not easily modeled
+by the other two.  For example, MER uses this for two things.  The wheels
+as seen by the hazcams can articulate left/right and up/down.  Since they can
+vary quite a bit in image space, removing them via an image filter runs the
+risk of throwing out too much good data.  The volume filter captures the
+wheels without hurting the surrounding terrain too much.
+
+The other MER usage is for the superstructure above the rover deck for navcam
+and pancam.  The HGA antenna moves, and the LGA is too close to the camera
+to be accurately modeled in image space.  So, a large cylinder above the rover
+deck removes any points on this superstructure.  Of course, points that
+correlated wrong may not be removed.
+
+The volumes can optionally be rotated arbitrarily in 3-D space, so they do
+not have to align with the coordinate axes.
+
+If the -NO_XYZ option is used, then the Volume types are not available and
+will be silently ignored (a general warning is printed if -NO_XYZ is on).
+
+There are three VOLUME shapes available:
+
+BOX:  A rectangular space aligned with the axes.
+
+  Shape specified by:
+    Min and max extents for each of (x,y,z)
+    Optional rotation
+
+Z_CYLINDER:  A cylinder with its axis parallel to the Z axis.
+
+  Shape specified by:
+    Location of the axis in X and Y
+    Radius of the cylinder
+    Min and max extents of the cylinder in Z (the end caps)
+    Optional rotation
+
+Y_WASHER:  A "washer"-shaped area with its axis parallel to the Y axis.
+    This could also be described as a donut with a rectangular cross-section,
+    or as a cylinder aligned with Y, with a central cylinder removed from the
+    volume.
+
+  Shape specified by:
+    Location of the axis in X and Z
+    Min and max radii of the washer (point must be between them)
+    Min and max extents of the washer in Y (the end caps, or washer faces).
+    Optional rotation
+
+.page
+
+FILTER FILE FORMAT
+------------------
+
+The filter file is in XML format, and is pretty straightforward.  Rather than
+a formal DTD or Schema, the syntax is described by example below.  Comments
+are used to further explain elements and are not part of the format (although
+they are allowed as per the XML spec).  Ellipses (...) indicate potentially
+repeated items and are not part of the file.  Indents and blank lines are
+not required but are allowed for readability.
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mesh_filter host_id="sim2">    <!-- or mission name -->
+
+  <camera id="NAVCAM_LEFT">     <!-- each instrument has a different filter -->
+				<!-- id="any" will match all instruments -->
+
+    <image shape="polygon">
+      <vertex x="1.0" y="2.0" />
+      <vertex x="2.0" y="3.0" />
+      <vertex x="3.0" y="4.0" />
+       ...
+    </image>
+
+    <projected shape="triangle">	<!-- deprecated, use polygon -->
+      <vertex x="1.0" y="2.0" z="3.0" />
+      <vertex x="2.0" y="3.0" z="4.0" />
+      <vertex x="3.0" y="4.0" z="5.0" />
+    </projected>
+
+    <projected shape="polygon">
+      <vertex x="1.0" y="2.0" z="3.0" />
+      <vertex x="2.0" y="3.0" z="4.0" />
+      <vertex x="3.0" y="4.0" z="5.0" />
+      <vertex x="4.0" y="5.0" z="6.0" />
+      ...
+    </projected>
+
+    <projected shape="horizon">
+      <max elevation="-1.0" />
+    </projected>
+
+    <volume shape="box">
+      <min x="2.0" y="4.0" z="0.0" />
+      <max x="4.0" y="8.0" z="1.0" />
+      <rotate ... />
+    </volume>
+
+    <volume shape="z_cylinder">
+      <axis x="1.0" y="2.0" />
+      <min z="3.0" />
+      <max z="4.0" radius="5.0" />
+      <rotate ... />
+    </volume>
+
+    <volume shape="y_washer">
+      <axis x="1.0" z="2.0" />
+      <min y="3.0" radius="4.0" />
+      <max y="5.0" radius="6.0" />
+      <rotate ... />
+    </volume>
+
+  </camera>
+
+  <camera id="PANCAM_LEFT">                <!-- next instrument... -->
+    <volume shape="y_washer">
+      <axis x="1.0" z="2.0" />
+      <min y="3.0" radius="4.0" />
+      <max y="5.0" radius="6.0" />
+    </volume>
+    ...
+  </camera>
+
+  <camera id="any" rmc1="4" rmc2="2" rmc4="10">	<!-- match any w/given RMC -->
+    ...
+  </camera>
+
+  ...
+
+</mesh_filter>
+
+Note that <projected shape="triangle"> is an old name preserved for backward
+compatibility; the more general <projected shape="polygon"> is preferred.
+
+The <rotate> tag in the three volume elements is optional. If present, it
+specifies how the entire mask volume should be rotated.  The syntax of this
+element is as follows:
+
+<rotate x="1.2" y="2.1" z="0.0" axis_x="0.0" axis_y="0.0" axis_z="1.0" angle="10.2" add_angle="1" />
+
+The x, y, and z attributes specify the center of rotation - what point are we
+rotating around.  The axis_x, axis_y, and axis_z attributes represent a unit
+vector describing the axis around which the rotation will take place.  The
+angle attribute specifies how much rotation to apply.  The optional "add_angle"
+attribute specifies which element from the PARAM parameter list will be added
+to the angle (1-based).  This allows the amount of rotation to be adjusted
+at runtime.  Angle, and the value from PARAM if used, are both specified in
+degrees.
+
+Note that the specified horizon elevation can be overridden by the HORIZON
+parameter.  But the <horizon> element must be present; i.e. specifying HORIZON
+without the <horizon> element does nothing.
+
+.page
+
+HISTORY:
+2012-04-27 Added RMC checking (rgd)
+2012-03-22 Added proj poly, no_xyz, multiple files and camera elements, id=any
+2011-10-26 Added HORIZON parameter (rgd)
+2004-09-04 Added projected horizon type (rgd).
+2003-12-08 Initial marsfilter by B. Deen.  Acknowledgement to Chris Leger (348)
+          for simple polygon fill routine.
+COGNIZANT PROGRAMMER: B. Deen
+
+.LEVEL1
+.VARI INP
+Input images.
+Must be 1 3-band file
+or (x,y,z) triplet, or any
+file with -NO_XYZ.
+
+.VARI OUT
+Output file.
+Must be 1 filename.
+
+.VARI EXTRA_FILTER
+Specific filter file for this
+image.
+
+.VARI FILTER
+Common filter file, or blank
+for auto-find.
+
+.VARI PARAMS
+Numeric parameters for use
+by some filters.
+
+.VARI HORIZON
+Override for the horizon value.
+
+.VARI PRINT
+Controls printing of the filters
+to stdout.
+
+.VARI NUMBERS
+Puts filter numbers in mask
+
+.VARI USE_XYZ
+Allows non-XYZ images to be
+used as input.
+
+.VARI RMC
+Turns on or off RMC checking.
+Defaults to on.
+
+.VARI NAVTABLE
+Corrected navigation
+filename.
+
+.VARI CONFIG_PATH
+Path used to find
+configuration/calibration
+files.
+
+.VARI POINT_METHOD
+Specifies a mission-
+specific pointing
+method to use
+
+.VARI NOSITE
+Disables coordinate
+system sites.
+
+.VARI RSF
+Rover State File(s) to use.
+
+.VARI DEBUG_RSF
+Turns on debugging of RSF
+parameter.
+
+.VARI COORD
+Coordinate system to use.
+
+.VARI COORD_INDEX
+Coordinate system index for
+some COORD/mission combos.
+
+.VARI FIXED_SITE
+Which site is FIXED for
+rover missions.
+
+.VARI SOLUTION_ID
+Solution ID to use for
+COORD_INDEX
+
+.LEVEL2
+.VARI INP
+Input files contain the XYZ coordinates. If three filenames are given,
+they all should be single band files each containing X, Y and Z values
+in that order.  If only one filename is given, it should be a 3-band
+file with bands in (X,Y,Z) order.
+
+The input files are in REAL (float) format.
+
+If -NO_XYZ is given, then the input need not be an XYZ file, but can in
+fact be any image with PIG-compatible labels (from which a camera model
+can be derived).  The Volume filters are disabled, however.
+
+.VARI OUT
+Output file containing the mask.
+
+The output file is in BYTE format, with 255 representing a point inside a
+filter element, and 0 for points outside..
+
+.VARI EXTRA_FILTER
+Input XML file containing an extra filter, typically one specific to this
+input file.  It is loaded in addition to the common filter of the FILTER
+parameter, and the resulting masks are merged.
+
+This is used by MSL, where the extra filter is a filter tailored to the
+specific image's kinematic state by the MSLFILTER program.
+
+.VARI FILTER
+Input XML file containing the common filter description to use.
+
+If this parameter is not specified, an attempt is made to automatically find
+the file based on CONFIG_PATH.  See the main help text for a description of
+the algorithm.
+
+.VARI PARAMS
+Numeric parameters for use with some filters.  For example, the optional
+"rotate" element of the volume shapes can add a value from PARAMS to the
+rotation angle.  Note that indexing of PARAMS starts at 1 (0 meaning no
+value), so the first element of PARAMS would correspond to add_angle="1" in
+the XML file.
+
+The use of PARAMS, and the interpretation of each value, dependends on the
+filter in use.  The filter file should describe which, if any, parameters are
+used.
+
+.VARI HORIZON
+Override for the horizon mask elevation, in degrees.  The file must contain
+a <horizon> entry or this parameter will be ignored.  The horizon mask can be
+effectively disabled by providing an elevation greater than 90.
+
+.VARI PRINT
+This parameter causes all the filters to be printed to stdout (including
+the results of projecting polygons to image space).  It can be useful for
+debugging.  By default, this is off (which is a change as of 2012/03/22;
+before printing was always on).
+
+.VARI NUMBERS
+This parameter causes the object number (derived from "id" in the xmlf file)
+to be used as the mask value rather than 255.  This is intended for
+debugging/setup and helps find what polygon is causing issues in a mask.
+It's actually the value mod 256 to fit in a byte (so it could be either 2 or
+258, for example).
+
+.VARI USE_XYZ
+If -NO_XYZ is specified, then the input file need not be an XYZ image, but
+rather any image with a PIG-compatible label.  The capability to do Volume
+masks is turned off in this case.  This can be useful in situations where
+volume masks are not important (such as MSL) and it is desired to get a mask
+for a non-stereo image.
+
+.VARI RMC
+Specifies whether or not to enable RMC checking in the filter mask file.
+Checking is on by default.  If -NO_RMC is on, checking is disabled, as if
+there were no rmcX attributes in the mask file.
+
+.VARI CONFIG_PATH
+A colon-separated list of directories in which to look for configuration
+and calibration files.  Environment variables are allowed in the list
+(and may themselves contain colon-separated lists).  The directories are
+searched in order for each config/cal file when it is loaded.  This allows
+multiple projects to be supported simultaneously, and allows the user to
+override any given config/cal file.  Note that the directory structure below
+the directories specified in this path must match what the project expects.
+For example, Mars 98 expects flat fields to be in a subdirectory named
+"flat_fields" while Mars Pathfinder expects them to be directly in the
+directory specified by the path (i.e. no intermediate subdirectories).
+
+.VARI POINT_METHOD
+Specifies a mission-specific pointing method to use.  Normally this
+parameter is not used, in which case the "default" pointing methods
+are used.  Some missions may have special, or alternate, pointing
+methods available, which are indicated by this string (for example,
+backlash models, using arm joint angles instead of x/y/z/az/el, etc).
+A substring search is used, so multiple methods (where that makes sense)
+can be specified by separating the keywords with commas.
+
+Note that nav files created using one pointing method will most likely
+not be compatible with a mosaic created using a different pointing method.
+
+The methods available vary per mission, but some methods available at
+the time of this writing are:
+
+BACKLASH : Mars 98 SSI only.  Selects a backlash pointing model,
+which adjusts the telemetered azimuth and elevation values based on
+knowledge of the camera's mechanical backlash and the direction the
+motor was travelling when the image was taken.
+
+.VARI NOSITE
+Disables all label-derived parameters to the Site mechanism which underlies
+coordinate systems.  This forces all sites to be identical, with all rotations
+and offsets set the same.  In the case of MPF or Mars 98, this disables
+the lander quaternion and offset (sets them to identity and 0, respectively).
+This option should not be used with images taken from different vantage
+points (e.g. the spacecraft moved, or mixing a lander and a rover) or
+invalid results will be obtained.  The use of this option invalidates the
+Fixed coordinate frame; any values reported in the Fixed frame will not
+correctly reflect the orientation of the lander/rover.
+
+Obviously, this option should be rarely used; it is intended for when the
+image labels defining the site are invalid or inconsistent.
+
+.VARI RSF
+Rover State File.  This is a list of filenames to load containing
+Rover State information.  These files contain position and orientation
+information for a rover (or other mobile spacecraft) at various sites.
+They are in XML format.  See the "Rover Motion Counter (RMC) Master File SIS"
+for details on these files.
+
+Rover State Files have a priority order.  The files listed first have
+the highest priority.
+
+Environment variables may be used in the list.
+
+For MER, if a directory is specified, then that directory is searched for
+RMC Master files and any found are loaded.  The directory structure and
+filename convention is covered in the RMC SIS.  The directory specified
+is the one containing "master", so if <dir> is the name specified in the
+RSF parameter, the following files will be searched for:
+
+<dir>/master/<mission>_Master.svf
+<dir>/master/<mission>_Site_<n>_Master.rvf
+
+The name of each file loaded is printed to the stdout log for reference.
+
+.VARI DEBUG_RSF
+If enabled, this causes the internal database of RMC locations to be
+printed out to the stdout log.  This is after the RSF files have been
+loaded and the coordinate systems read from the input label(s).
+
+.VARI COORD
+The coordinate system to use for the output UVW vectors.  The interpretation
+of the values is dependent on the mission.  Some representative missions are
+listed here:
+
+Fixed - The Fixed frame.  This is the ultimate reference frame
+    (see also FIXED_SITE for rover missions).
+Instrument - (default) The "natural" frame for the instrument 
+    (of the first input image).  MPF: Lander or Rover; M98: MVACS; MER: Rover.
+Site - A major Site frame.  For rover missions, COORD_INDEX specifies which
+    Site frame to use.  Non-rover missions treat this as Fixed.
+Rover - An instance of the Rover frame.  For rover missions, COORD_INDEX
+    specifies which instance of the rover frame to use.  Non-rover mission
+    use the spacecraft frame (e.g. Lander for M98).
+Local_Level - An instance of a Local Level frame.  This is typically
+    coincident with the Rover frame (in XYZ) but oriented toward North
+    like the Site and Fixed frames.  For MER, this is an instance of a
+    Drive index move.
+
+.VARI COORD_INDEX
+The index specifies which instance of a coordinate system to use.  It is
+currently applicable only to rover-based missions, but could have other
+uses.  The index is equivalent to the Rover Motion Counter (RMC) for MER
+and FIDO.
+
+For MER/FIDO, there are many Site frames.  Each is numbered with a single
+index.  For Site Frames, coord_index specifies which to use.  Likewise,
+there are many Local_Level and Rover frames, corresponding to values of
+the RMC.  The multiple instances of this frame are selected by COORD_INDEX.
+
+Generally COORD_INDEX defaults sensibly so you don't usually need to
+specify it.  It will default to the instance used by the first input.
+
+.VARI FIXED_SITE
+Specifies which major Site is the "Fixed" Site for this run.
+
+Historically, MPF and M98 had a single "Surface Fixed" frame which never
+moved, and which all other coordinate system frames were referenced to.
+With the advent of long-range rovers (such as MER and FIDO), that became
+insufficient.  The rover traverses far enough that errors in knowledge of
+coordinate system offset and orientation become unacceptable.
+
+For this reason, a system of major Sites was introduced.  Periodically
+during the mission, a Site frame is declared.  This then becomes the
+reference frame for all activities until the next Site is declared.
+References are kept local, and errors don't propogate across Sites.
+
+However, if images from more than one Site are combined together, the
+Site's must be placed relative to each other.  Therefore a single reference
+frame is still needed to combine different sites.
+
+The FIXED_SITE parameter controls which of the major Site frames is
+the reference ("fixed") site for this program run.  This fixed frame
+can vary in different program runs, but is constant throughout one
+execution.
+
+If not specified, FIXED_SITE defaults to the minimum Site number (i.e.
+lowest numbered, or earliest chronologically) used in all input images.
+Normally this default is sufficient; rarely must FIXED_SITE be specified.
+
+One or more Rover State Files must usually be specified in order to combine
+image from more than one Site.  These describe the relationship between
+sites.  See the RSF parameter.
+
+.VARI SOLUTION_ID
+Specifies which solution ID to use when specifying the coordinate system.
+
+There are potentially many different definitions for the same coordinate
+system.  These are identified via a unique Solution ID.  If this parameter
+is given, only the specified solution's definition is searched for.  Without
+it, the "best" available solution is chosen.
+
+It is extremely rare that this parameter should be needed.  The default
+will be sufficient in almost every case.
+
+Note that the current MER implementation requires that a value for COORD_INDEX
+also be provided, in order for this parameter to take effect.
+

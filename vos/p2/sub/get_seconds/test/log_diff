@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+
+# This defeats the purpose of the test, but time() always returns a different value:
+sed '/version/Id' $1 | sed '/time in seconds/d' > tmplog1
+sed '/version/Id' $2 | sed '/time in seconds/d' > tmplog2
+
+diff tmplog1 tmplog2
+retval=$?
+
+rm tmplog1 tmplog2
+
+echo "log_diff returning $retval"
+
+exit $retval

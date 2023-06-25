@@ -2,13 +2,12 @@ procedure
 refgbl $echo
 refgbl $syschar
 body
+enable-log
+
 let _onfail="continue"
 let $echo="yes"
 
-local path type=string init="wms_test_work:[testdata.mipl.vgr]"
-if ($syschar(1) = "UNIX")
-    let path="/project/test_work/testdata/mipl/vgr/"
-end-if
+tzficor f1636832.geo
 
-tficor &"path"f1636832.geo
+disable-log
 end-proc

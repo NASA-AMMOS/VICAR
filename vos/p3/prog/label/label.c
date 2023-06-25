@@ -90,7 +90,7 @@ void main44(void)
     return;
 }
 
-add_items(action)
+void add_items(action)
 
     int action;
 {
@@ -651,7 +651,7 @@ char *str;
 }
 
 
-add_system_label()
+void add_system_label()
 {
 /* add_system_label 						*/
 /*								*/
@@ -890,7 +890,7 @@ add_system_label()
 
 concat_labels(){}
 
-delete_items()
+void delete_items()
 {
 /*	delete_items						*/
 /*								*/
@@ -1378,7 +1378,7 @@ list_label()
     }	/* End of for loop 	*/
 }	/* End of list_label()	*/
 
-list_system_info(unit)
+void list_system_info(unit)
 {
 /*	list_system_info					*/
 /*								*/
@@ -1460,7 +1460,7 @@ list_system_info(unit)
     return;
 }
 
-dump_all_items(unit)
+void dump_all_items(unit)
 {
 /*	dump_all_items						*/
 /*								*/
@@ -1654,7 +1654,7 @@ dump_all_items(unit)
 
 }
 
-list_history_items(unit)
+void list_history_items(unit)
 {
 /*	list_history_items()					*/
 /*								*/
@@ -1772,7 +1772,7 @@ list_history_items(unit)
 }		/* End of list_history_items */
 
 
-list_property_items(unit)
+void list_property_items(unit)
 {
 /*	list_property_items()					*/
 /*								*/
@@ -1944,7 +1944,7 @@ flush_key_value_pair()
     }
 }
 
-list_task_headers(unit)
+void list_task_headers(unit)
 {
 /*	list_task_headers()					*/
 /*								*/
@@ -1992,7 +1992,7 @@ list_task_headers(unit)
     }
 }
 
-remove_label()
+void remove_label()
 {
 /* 	remove entire label from image file			*/
 /*								*/
@@ -2152,7 +2152,7 @@ remove_label()
     return;
 }
 
-switch_labels()
+void switch_labels()
 {
 /*	switch_labels						*/
 /* 								*/

@@ -1,0 +1,5 @@
+$ vpack marsgreach.com -mixed -
+	-s marsgreach.cc -
+	-i marsgreach.imake -
+	-p marsgreach.pdf
+$ Exit

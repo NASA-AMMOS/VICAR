@@ -1,0 +1,5 @@
+$ vpack marstile.com -mixed -
+        -s marstile.cc -
+        -i marstile.imake -
+        -p marstile.pdf
+$ Exit

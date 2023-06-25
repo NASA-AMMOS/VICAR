@@ -1,0 +1,828 @@
+process help=*
+local dummy real count=(0:1000)
+PARM INP TYPE=STRING COUNT=(0:20) DEFAULT=--
+PARM MOSAIC TYPE=STRING COUNT=1
+PARM NAVTABLE TYPE=STRING COUNT=(0:1) DEFAULT=--
+
+PARM IN_FILE TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM OUT_FILE TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM IN_COORDS TYPE=REAL COUNT=(0:1000) DEFAULT=--
+PARM OUT_COORDS TYPE=NAME default=dummy
+
+PARM COORD_TYPE TYPE=KEYWORD VALID=("INPUT","PROJECTION") DEFAULT=INPUT
+PARM DIRECTION TYPE=KEYWORD VALID=("TO_MOSAIC","FROM_MOSAIC") +
+	DEFAULT=FROM_MOSAIC
+PARM MULTIMATCH TYPE=KEYWORD VALID=("SINGLE", "MULTI") DEFAULT=SINGLE
+
+PARM USE_PARM TYPE=KEYWORD VALID=("USE_PARM","NOUSE_PARM") DEFAULT=NOUSE_PARM
+PARM PRINT TYPE=KEYWORD VALID=("PRINT", "NOPRINT") DEFAULT=PRINT
+PARM FILE_TYPE TYPE=KEYWORD VALID=("FLAT","TWOLAYER") DEFAULT=FLAT
+
+PARM SCALE   TYPE=REAL COUNT=0:1 DEFAULT=--
+PARM LEFTAZ  TYPE=REAL COUNT=(0:1) DEFAULT=--
+PARM RIGHTAZ  TYPE=REAL COUNT=(0:1) DEFAULT=--
+PARM TOPEL  TYPE=REAL COUNT=(0:1) DEFAULT=--
+PARM BOTTOMEL  TYPE=REAL COUNT=(0:1) DEFAULT=--
+PARM PROJ_ORIGIN TYPE=REAL COUNT=(0,3) DEFAULT=--
+PARM UP_AZ TYPE=REAL COUNT=(0:1) DEFAULT=--
+PARM NADIR_LINE TYPE=INTEGER COUNT=(0:1) DEFAULT=--
+PARM NADIR_SAMP TYPE=INTEGER COUNT=(0:1) DEFAULT=--
+PARM VERT_SCALE TYPE=REAL COUNT=(0:1) VALID=(0:1000.) DEFAULT=--
+PARM MAXX TYPE=REAL COUNT=(0:1) DEFAULT=--
+PARM MAXY TYPE=REAL COUNT=(0:1) DEFAULT=--
+PARM MINX TYPE=REAL COUNT=(0:1) DEFAULT=--
+PARM MINY TYPE=REAL COUNT=(0:1) DEFAULT=--
+
+PARM NORMAL  TYPE=REAL COUNT=(0:3) DEFAULT=--
+PARM GROUND  TYPE=REAL COUNT=(0:3) DEFAULT=--
+PARM SURF_COORD TYPE=STRING COUNT=(0:1) DEFAULT="FIXED"
+PARM SURF_MESH TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM SURF_CSFILE TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM SURFACE TYPE=KEYWORD COUNT=(0:1) +
+  VALID=("INFINITY","PLANE", "SPHERE1", "SPHERE2", "MESH") DEFAULT=PLANE
+PARM CONFIG_PATH STRING DEFAULT="$MARS_CONFIG_PATH"
+PARM POINT_METHOD TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM MATCH_METHOD TYPE=STRING COUNT=(0:1) VALID=("LOOSE", "TIGHT") +
+	DEFAULT=LOOSE
+PARM NOSITE TYPE=KEYWORD COUNT=(0:1) VALID=NOSITE DEFAULT=--
+
+PARM RSF TYPE=STRING COUNT=0:100 DEFAULT=--
+PARM DEBUG_RSF TYPE=KEYWORD COUNT=0:1 VALID=DEBUG_RSF DEFAULT=--
+PARM COORD TYPE=KEYWORD VALID=("FIXED", "INSTRUMENT", "SITE", "ROVER", +
+	"LOCAL_LEVEL") DEFAULT="FIXED"
+PARM COORD_INDEX TYPE=INTEGER COUNT=0:10 DEFAULT=--
+PARM FIXED_SITE TYPE=INTEGER COUNT=0:1 DEFAULT=--
+PARM SOLUTION_ID TYPE=STRING COUNT=0:1 DEFAULT=--
+
+END-PROC
+
+.TITLE
+VICAR program MARSCOORDTRANS
+
+.HELP
+PURPOSE:
+
+This program will translate mosaic coordinates from one form into another.
+The coordinates can come from parameters or a file, and may be output to
+parameters, a file, or stdout.
+
+Coordinates
+-----------
+
+The program works with three types of coordinates:  INPUT, MOSAIC, and
+PROJECTION.  MOSAIC coordinates are always used; they can be converted to
+or from either of the other two types.
+
+INPUT:  These are line/sample coordinates in the input files.  INPUT
+coordinates are expressed as a triplet of (image_number, line, sample).
+All values are 1-based, so (3.0, 1.0, 1.0) means the upper-left corner of
+the third input image.  Note that the image number is expressed as a float
+for consistency with the other modes, although it will always be an integer.
+
+MOSAIC:  These are line/sample coordinates in the mosaic file.  MOSAIC
+coordinates are 1-based, so (1.0, 1.0) refers to the upper-left corner of
+the mosaic.  They are in the order (line, sample).
+
+PROJECTION:  These are the projected world-space coordinates, expressed in
+the mosaic's coordinate system (unless overridden by COORD et al).  For
+Cylindrical and Polar projection, PROJECTION coordinates are expressed as
+(azimuth, elevation) in DEGREES.  For Vertical projection, they are expressed
+as (X, Y).
+
+Thus there are four modes, selected by the DIRECTION and COORD_TYPE keywords:
+
+-from_mosaic -input      : MOSAIC -> INPUT
+-to_mosaic -input:       : INPUT -> MOSAIC
+-from_mosaic -projection : MOSAIC -> PROJECTION
+-to_mosaic -projection   : PROJECTION -> MOSAIC
+
+Note that for MOSAIC->INPUT, the result is not necessarily unique, as the
+point could have come from any of several overlapping inputs.  By default
+only the first matching input is reported; this matches the stacking order
+used to create the mosaic.  If you wish to see all possible inputs, specify
+-MULTI.
+
+
+Coordinate Systems
+------------------
+
+The standard PIG COORD parameter set is used to specify the coordinate system
+in which the PROJECTION coordinates are accepted or reported.  Use of these
+parameters does not change the mapping of the mosaic, only the reporting.
+So for example, a poor man's translation from SITE to ROVER frame could be
+effected by running this program once with -site -projection -to_mosaic,
+and feeding the results back into another run using the same mosaic with
+-rover -projection -to_mosaic.
+
+Input Image Files
+-----------------
+
+Obviously, the input mosaic must always be provided via the MOSAIC parameter.
+Cylindrical, polar, and vertical projections are supported.  Projection
+information is derived from the label; however, these values can be overridden
+by SCALE, LEFTAZ, etc. (this should rarely be needed).
+
+If INPUT coordinates are used, the input files used to make the mosaic must
+be supplied.  The input files should generally match what was used to make
+the mosaic, but that is not a requirement.  It is possible to provide a
+subset of images, or even completely different ones.  However, if different
+images are provided, the features in the mosaic may not match the features in
+the input, as the transform is mathematical and not feature-based.  Any small
+difference in pointing would be apparent.
+
+In order to truly match the inputs, the nav file used to originally make the
+image must also be supplied.  The surface model and projection parameters are
+obtained from the mosaic and should not be specified.
+
+Input image files are not necessary if PROJECTION coordinates are used.
+
+Input and Output of Coordinates
+-------------------------------
+
+There are two ways of supplying input coordinates: by parameter or by file.
+
+Parameter input uses the IN_COORDS parameter.  This parameter is simply a
+list of 2-item (or 3-item for INPUT coords) coordinate values, one after
+the other.  For example, converting the two points (50, 33.2) and (102.1, 27)
+would be specified via:
+
+    in_coords=(50, 33.2, 102.1, 27)
+
+Thus in_coords contains 2n (or 3n for INPUT) values, where n is the number
+of points to convert.
+
+For an input file, provide the filename in the IN_FILE parameter.  File
+formats are discussed below.
+
+Note that it is possible to use both IN_COORDS and IN_FILE.  IN_COORDS
+are translated first, followed by IN_FILE.  Both end up in all output methods.
+However, this is not possible for the TWOLAYER file format; to use that,
+IN_COORDS must not be specified.
+
+There are three methods of output:  printing, parameter, or file.
+
+Printing is simply that:  the translated coordinates are printed to stdout.
+This occurs unless -noprint is specified.  Each coordinate will be printed
+on its own line.
+
+File output writes the results to a file, in the same format as the input
+file.  The formats are discussed below.  This mode is active if a filename
+is specified in OUT_FILE.
+
+Parameter output uses the TAE parameter output facility.  This mode may be
+useful for running the program from a script.  For efficiency reasons,
+parameter output is not used unless -USE_PARM is specified.
+
+Note that any or all of the output modes may be used simultaneously.
+
+Coordinate File Formats
+-----------------------
+
+There are two file formats supported:  a simple list of coordinates ("-flat"),
+or one with prepended counts ("-twolayer).  The same format is used for
+input and output files.
+
+In either case, coordinates are presented one per line and separated by
+spaces, e.g.
+
+50.0 33.2
+102.1 27.0
+
+For INPUT coordinates, there will be 3 values per line.
+
+In the case of MOSAIC->INPUT only, and if -MULTI is specified, then there
+can be more than one set of coordinates per line, indicating multiple matches.
+All matches will be printed on the same line.  This means that lines will
+exactly match between input and output files.  It is also possible in this
+mode for the coordinate to map to none of the input images; in this case a
+blank line is output.
+
+A -FLAT file is simply a list of coordinates as specified above.
+
+A -TWOLAYER file has coordinates broken into sets.  Each set is prepended
+by an integer saying how many coordinates are in that set.  The entire file
+is prepended by the number of sets.  Thus the file might look like:
+
+3
+2
+50.0 33.2
+102.1 27.0
+3
+12.5 9.0
+10.0 1004.0
+33.1 42.0
+1
+57.0 1020.0
+
+The first 3 indicates there are 3 sets; the first has 2 entries, the second
+3, and the last 1.
+
+TWOLAYER output requires the input also come from a TWOLAYER file; input from
+parameters is not supported.  (parameters input to a FLAT file is allowed).
+
+.page
+EXECUTION:
+
+Convert mosaic coordinates to projection, input via params, output to screen:
+
+marscoordtrans mosaic=mosaic.img in_coord=\(50, 33.2, 102.1, 27\)
+   -from_mosaic -projection
+
+Convert mosaic coordinates to input, using files:
+
+marscoordtrans mosaic.lis mosaic.img mosaic.nav in_file=coord_list.txt
+   out_file=coord_out.txt -from_mosaic -input -noprint -twolayer
+
+.PAGE
+OPERATION:
+
+The program sets up the input images a la marsmap, and the input mosaic as in
+marsunmosaic.  It then loops through all coordinates provided, runs them
+through the appropriate math exactly like marsmap or marsunmosaic, and
+outputs the results.
+
+NOT IMPLEMENTED YET:
+
+Override of mosaic surface model via parameters
+Output via out_coords parameter
+
+.page
+
+HISTORY:
+
+  2005-11    rgd - Original version, derived from marsmap and marsunmosaic.
+  2017-09    jpr - Added support for polar and vertical projections.
+  2019-03-21 jpr - IDS-7886 - Fixed math errors in marscoordtrans.
+  2019-10-02 wlb - IDS-7926 - initialized some variables.
+             Commented some unused variables.
+	     Added a test script and log.
+  2020-02-04 wlb - IDS 7929 - null-terminated a string.
+  2020-03-05 wlb - IDS 7927 - replaced sprintf calls with snprintf.
+
+COGNIZANT PROGRAMMER:  Bob Deen
+
+.LEVEL1
+.VARI INP
+Input image(s) or
+file list (optional).
+
+.VARI MOSAIC
+Input mosaic.
+
+.VARI NAVTABLE
+Corrected navigation
+filename.
+
+.VARI IN_FILE
+Input file of coordinates
+to translate.
+
+.VARI OUT_FILE
+Output file of
+translated coordinates.
+
+.VARI IN_COORDS
+Coordinates to translate.
+
+.VARI OUT_COORDS
+Translated coordinates.
+
+.VARI COORD_TYPE
+Select INPUT or PROJECTION
+coordinates.
+
+.VARI DIRECTION
+Select direction of
+conversion.
+
+.VARI MULTIMATCH
+Select one or multiple
+results for MOSAIC->INPUT
+translations.
+
+.VARI USE_PARM
+Enables OUT_COORDS
+output.
+
+.VARI PRINT
+Selects whether to print
+the results or not.
+
+.VARI FILE_TYPE
+Select the coordinate
+file format.
+
+.VARI SCALE
+Mosaic scale in
+pixels/degree.
+CYL, POLAR ONLY
+
+.VARI LEFTAZ
+Left mosaic azimuth
+Cylindrical only.
+
+.VARI RIGHTAZ
+Right mosaic azimuth
+Cylindrical only.
+
+.VARI TOPEL
+Top mosaic elevation
+Cyl, Polar only.
+
+.VARI BOTTOMEL
+Bottom mosaic
+elevation.
+Cylindrical only.
+
+.VARI PROJ_ORIGIN
+Overrides center of
+projection.
+Cyl, Polar only.
+
+.VARI UP_AZ
+Overrides azimuth at
+top of mosaic.
+Polar only.
+
+.VARI NADIR_LINE
+Overrides line pixel at
+the nadir of the mosaic.
+Polar only.
+
+.VARI NADIR_SAMP
+Overrides sample pixel at
+the nadir of the mosaic.
+Polar only.
+
+.VARI VERT_SCALE
+Mosaic scale in
+meters/pixel.
+Vertical only.
+
+.VARI MINX
+Start point in X
+(meters)
+Vertical only.
+
+.VARI MINY
+Start point in Y
+(meters)
+Vertical only.
+
+.VARI MAXX
+Size of mosaic in X
+(meters)
+Vertical only.
+
+.VARI MAXY
+Size of mosaic in Y
+(meters)
+Vertical only.
+
+.VARI NORMAL
+Surface normal vector.
+
+.VARI GROUND
+Surface ground point.
+
+.VARI SURFACE
+The type of mars
+surface to use INFINITY, PLANE, 
+SPHERE1, SPHERE2, MESH.
+
+.VARI SURF_MESH 
+Mesh file for surface model
+
+VARI SURF_CSFILE 
+File containing CS for surface
+model
+
+.VARI SURF_COORD
+Coordinate system used to define
+surface parameters.
+
+.VARI CONFIG_PATH
+Path used to find
+configuration/calibration
+files.
+
+.VARI POINT_METHOD
+Specifies a mission-
+specific pointing
+method to use
+
+.VARI MATCH_METHOD
+Specifies a method
+for pointing corrections.
+
+.VARI NOSITE
+Disables coordinate
+system sites.
+
+.VARI RSF
+Rover State File(s) to use.
+
+.VARI DEBUG_RSF
+Turns on debugging of RSF
+parameter.
+
+.VARI COORD
+Coordinate system to use.
+
+.VARI COORD_INDEX
+Coordinate system index for
+some COORD/mission combos.
+
+.VARI FIXED_SITE
+Which site is FIXED for
+rover missions.
+
+.VARI SOLUTION_ID
+Solution ID to use for
+pointing correction.
+
+.LEVEL2
+.VARI INP
+The INP parameter is used to name the input files that make up the mosaic.
+It is only needed if -INPUT is specified.  As with all similar programs, there
+are two options for describing input images:
+
+Either:
+List the image file names
+
+Or:
+provide an ascii file with the file names listed, one per record.
+
+.VARI MOSAIC
+Input mosaic.  As of this writing, it must be in cylindrical projection
+(vertical and poar will be supported later), and have appropriate
+(MER-style) labels describing the projection.  Projection parameters may
+be overridden.
+
+.VARI NAVTABLE
+Corrected navigation filename.
+If marsnav was run on the input images it created a table of corrected
+pointing parameters. If you refer to this table using NAVTABLE it
+will override the pointing parameters (e.g. azimuth and elevation) in the
+picture labels, giving you a better registered mosaic.
+
+Note that if NAVTABLE was used when initially creating the mosaic, it should
+be specified for this program as well.
+
+.VARI IN_FILE
+Input file containing coordinates.  The file formats are described in the
+main help.
+
+.VAR OUT_FILE
+Output file continaining translated coordinates.  The file formats are
+described in the main help.  If this filename is not given, no file output
+will be done.
+
+.VARI IN_COORDS
+Input coordinate specified directly via parameter.  This is simply a list
+of numbers, two per coordinate (in the case of INPUT coordinates, 3 per
+coordinate).
+
+.VARI OUT_COORDS
+Output coordinates via parameters.  These can be accessed via the normal
+VICAR output parameter mechanisms (v2param).  Note that coordinates are only
+output here if -USE_PARM is specified.
+
+.VARI COORD_TYPE
+Type of coordinates to use for the translation.  One is always MOSAIC
+coordinates.  The other may be either INPUT or PROJECTION coordinates, and
+that is specified by this parameter.  INPUT is the default.
+
+.VARI DIRECTION
+Specifies whether the translation is being done FROM mosaic coordinates, or
+TO them.  FROM_MOSAIC is the default.
+
+.VARI MULTIMATCH
+When doing MOSAIC->INPUT transforms (-INPUT -FROM_MOSAIC), the result can
+be ambiguous, as multiple inputs can overlap the same pixel.  With the
+default SINGLE, only the first overlapping input is reported.  If -MULTI
+is specified, all overlapping inputs are reported (on the same line).
+
+Note that use of -MULTI with -USE_PARM and OUT_COORDS should be avoided, as
+it will be ambiguous which outputs map to which inputs.  If this is needed,
+specify only one input coordinate.
+
+.VARI USE_PARM
+Specifies whether or not coordinates are output to the OUT_COORDS parameter.
+THe default is not to, for efficiency reasons.
+
+.VARI PRINT
+Specifies whether or not to print the transforms to the terminal screen
+(stdout).  The default is to print.
+
+.VARI FILE_TYPE
+Specifies which of two similar file formats to use.  In either case,
+coordinates are listed one per line.  For the default FLAT, that's all
+that is in the file.  For -TWOLAYER, there are additional counts of
+coordinates first.  See the main help for details.
+ 
+.VARI SCALE
+Override for the input mosaic scale in pixels/degree.  Defaults to the scale
+from the mosaic label.
+NOTE:  THIS IS FOR CYLINDRICAL AND POLAR ONLY.  See VERT_SCALE for Vertical
+projection.
+
+.VARI LEFTAZ
+Override for the azimuth of the left edge of the input mosaic.  Defaults to the
+azimuth from the mosaic label.
+Cylindrical only.
+
+.VARI RIGHTAZ
+Override for the azimuth of the right edge of the input mosaic.  Defaults to
+the azimuth from the mosaic label.
+Cylindrical only.
+
+.VARI TOPEL
+Override for the elevation of the top of the input mosaic.  Defaults to the
+elevation from the moasaic label.
+Used for both Cylindrical and Polar (unlike the other az/el limits).
+
+.VARI BOTTOMEL
+Override for the elevation of the bottom of the input mosaic.  Defaults to the
+elevation from the mosaic label.
+Cylindrical only.
+
+.VARI PROJ_ORIGIN
+Overrides the center of projection.  This is an XYZ point from which
+all of the azimuth/elevation rays emanate.  It defaults to the origin
+from the mosaic label.
+Cylindrical, Polar only.
+
+.VARI UP_AZ
+Overrides the azimuth at the top of the image.  This has the effect of
+rotating the image, with the given azimuth being straight up.  It defaults
+to the azimuth from the mosaic label.
+Polar only.
+
+.VARI NADIR_LINE
+Overrides line pixel at the nadir (bottom point) of the mosaic. The nadir,
+in rover frame, is directly underneath the center of the rover body. Typically,
+this is the center pixel of the mosaic, rounded down. Default is read from the
+mosaic label.
+Polar only.
+
+.VARI NADIR_SAMP
+Overrides sample pixel at the nadir (bottom point) of the mosaic. The nadir,
+in rover frame, is directly underneath the center of the rover body. Typically,
+this is the center pixel of the mosaic, rounded down. Default is read from the
+mosaic label.
+Polar only.
+
+.VARI VERT_SCALE
+Overrides the input mosaic scale in meters/pixel for Vertical projections
+only.  (See SCALE for Cylindrical and Polar).  It defaults to the scale from
+the mosaic label.
+
+.VARI MINX
+Overrides the minimum extent of the image in meters in the X direction
+(up, or north). The picture height is from -MINX to +MAXX.
+Defaults to the value from the mosaic label.
+
+.VARI MINY
+Overrides the minimum extent of the image in meters in the Y direction
+(up, or north). The picture height is from -MINY to +MAXY. 
+Defaults to the value from the mosaic label.
+
+.VARI MAXX
+Overrides the maximum extent of the image in meters in the X direction
+(up, or north).  The picture height is from -MAXX to +MAXX.
+Defaults to the value from the mosaic label.
+
+.VARI MAXY
+Overrides the maximum extent of the image in meters in the Y direction
+(right, or east).  The picture width is from -MAXY to +MAXY.
+Defaults to the value from the mosaic label.
+
+.VARI NORMAL
+The local mars surface normal vector in the coordinate system specified
+by SURF_COORD.  It defaults to thevalue from the mosaic label.
+
+For most pan/tilt cameras, if the lander is not tilted this vector
+would be: normal=(0,0,-1).  ie: x_component=0, y_component=0, z_component=-1.
+This need not be a unit vector.  This vector is used to define the
+surface plane to which image points are projected in order to minimize
+parallax.
+
+For SPHERE1/2 surface models, NORMAL's first parameter is used to
+denote the sphere's radius.  Thus to describe sphere of radius R, the
+user would specify NORMAL=(R, 0, 0).
+
+.VARI GROUND
+Any point on the surface, in the coordinate system specified by SURF_COORD
+(defaults to surface fixed coordinates).  This defines where the tilted
+plane is in space.  Although any point may be used, ideally the point just
+"under" the origin is selected.
+
+Defaults to the value from the mosaic label; this is an override.
+
+For SPHERE1/2 surface models, the GROUND parameter is used to denote the
+sphere's center.  
+
+
+.VARI SURFACE
+The type of mars surface to use. The surface is used to intercept view rays
+emanating from the cameras in order to model out parallax between the
+stereo cameras. The options are surface=INFINITY which means no surface
+is used, surface=PLANE (the default case). If surface = PLANE then the plane
+is defined by the NORMAL and GROUND parameters.  For the cases when PLANE 
+doesn't match local topography sufficiently well, here are two sphere surface
+models: surface=SPHERE1 and surface=SPHERE2.  SPHERE1 is useful to model
+convex surfaces like hills, it returns closest(first) ray-surface intersection 
+point.  SPHERE2 is useful to model concave surfaces, like crater when the
+camera point is outside looking in, it returns farthest(second) ray-surface 
+intersection point.  For the case when camera is inside the sphere surface, 
+like rover sitting in the crater, there is only a single intersection point
+and SPHERE1 and SPHERE2 behave exactly the same. Last, MESH is a surface
+model defined by a mesh file (.obj) which path is given with SURF_MESH.
+
+This is an override for the value taken from the mosaic label.
+
+.VARI SURF_MESH 
+Mesh OBJ file to use as the surface model. For the mesh to be used,
+SURFACE must be set to MESH. The coordinates of the mesh vertices can be 
+expressed in any CS. However the mesh CS must be supplied via SURF_CSFILE.
+If SURF_CSFILE is not used, then the mesh is assumed to be to the CS that
+results from COORD or SURF_COORD
+
+VARI SURF_CSFILE 
+File name of a vicar file whose CS (contained in the labels) will be read and
+assigned to the SURFACE model. The type of image and its content are of no
+interest, we are just reading the CS. That CS will supersede any other surface 
+CS definition (COORD or SURF_COORD). Its typical use is to supply a CS to a
+given mesh file (expectedly the XYZ from which the mesh is computed from, but
+doesn't have to). But SURF_CSFILE could be use to define a CS in which NORMAL 
+and GROUND for a PLANE surface are expressed in.
+
+.VARI SURF_COORD
+The coordinate system that surface parameters like GROUND and NORMAL are
+defined in.  For valid values refer to the COORD parameter description.
+Defaults to the value taken from the mosaic label.
+
+Note that no validation is done for input strings because COORD is using
+the same values.  So the user needs to be extra careful in specifying
+SURF_COORD values.  For example, COORD=local would be correctly interpreted
+to mean LOCAL_LEVEL because of the validation process.  On the other hand,
+specifying SURF_COORD=local is not valid and would revert to the default.
+So the values for SURF_COORD should be spelled exactly as found in the list
+of valid values for COORD.
+
+.VARI CONFIG_PATH
+A colon-separated list of directories in which to look for configuration
+and calibration files.  Environment variables are allowed in the list
+(and may themselves contain colon-separated lists).  The directories are
+searched in order for each config/cal file when it is loaded.  This allows
+multiple projectes to be supported simultaneously, and allows the user to
+override any given config/cal file.  Note that the directory structure below
+the directories specified in this path must match what the project expects.
+For example, Mars 98 expects flat fields to be in a subdirectory named
+"flat_fields" while Mars Pathfinder expects them to be directly in the
+directory specified by the path (i.e. no intermediate subdirectories).
+
+.VARI POINT_METHOD
+Specifies a mission-specific pointing method to use.  Normally this
+parameter is not used, in which case the "default" pointing methods
+are used.  Some missions may have special, or alternate, pointing
+methods available, which are indicated by this string (for example,
+backlash models, using arm joint angles instead of x/y/z/az/el, etc).
+A substring search is used, so multiple methods (where that makes sense)
+can be specified by separating the keywords with commas.
+
+Note that nav files created using one pointing method will most likely
+not be compatible with a mosaic created using a different pointing method.
+
+The methods available vary per mission, but some methods available at
+the time of this writing are:
+
+BACKLASH : Mars 98 SSI only.  Selects a backlash pointing model,
+which adjusts the telemetered azimuth and elevation values based on
+knowledge of the camera's mechanical backlash and the direction the
+motor was travelling when the image was taken.
+
+.VARI MATCH_METHOD
+Specifies a method for pointing corrections.
+
+Loose method matchs with pointing parameters of the image.
+Tight method matchs with unique id of the image.
+
+.VARI NOSITE
+Disables all label-derived parameters to the Site mechanism which underlies
+coordinate systems.  This forces all sites to be identical, with all rotations
+and offsets set the same.  In the case of MPF or Mars 98, this disables
+the lander quaternion and offset (sets them to identity and 0, respectively).
+This option should not be used with images taken from different vantage
+points (e.g. the spacecraft moved, or mixing a lander and a rover) or
+invalid results will be obtained.  The use of this option invalidates the
+Fixed coordinate frame; any values reported in the Fixed frame will not
+correctly reflect the orientation of the lander/rover.
+
+Obviously, this option should be rarely used; it is intended for when the
+image labels defining the site are invalid or inconsistent.
+
+.VARI RSF
+Rover State File.  This is a list of filenames to load containing
+Rover State information.  These files contain position and orientation
+information for a rover (or other mobile spacecraft) at various sites.
+They are in XML format.  See the "Rover Motion Counter (RMC) Master File SIS"
+for details on these files.
+
+Rover State Files have a priority order.  The files listed first have
+the highest priority.
+
+Environment variables may be used in the list.
+
+For MER, if a directory is specified, then that directory is searched for
+RMC Master files and any found are loaded.  The directory structure and
+filename convention is covered in the RMC SIS.  The directory specified
+is the one containing "master", so if <dir> is the name specified in the
+RSF parameter, the following files will be searched for:
+
+<dir>/master/<mission>_Master.svf
+<dir>/master/<mission>_Site_<n>_Master.rvf
+
+The name of each file loaded is printed to the stdout log for reference.
+
+.VARI DEBUG_RSF
+If enabled, this causes the internal database of RMC locations to be
+printed out to the stdout log.  This is after the RSF files have been
+loaded and the coordinate systems read from the input label(s).
+
+.VARI COORD
+The coordinate system to use for the mosaic input parameters.  The default
+is taken from the mosaic; this is an override.  Note that it can be dangerous
+to override this without also overriding all the mosaic projection parameters
+(and possibly even then).
+
+The interpretation of the values of COORD is dependent on the mission.
+Some representative missions are listed here:
+
+Fixed - The Fixed frame (default).  This is the ultimate reference frame
+    (see also FIXED_SITE for rover missions).
+Instrument - The "natural" frame for the instrument (of the first input
+    image).  MPF: Lander or Rover; M98: MVACS; MER: Rover.
+Site - A major Site frame.  For rover missions, COORD_INDEX specifies which
+    Site frame to use.  Non-rover missions treat this as Fixed.
+Rover - An instance of the Rover frame.  For rover missions, COORD_INDEX
+    specifies which instance of the rover frame to use.  Non-rover mission
+    use the spacecraft frame (e.g. Lander for M98).
+Local_Level - An instance of a Local Level frame.  This is typically
+    coincident with the Rover frame (in XYZ) but oriented toward North
+    like the Site and Fixed frames.  For MER, this is an instance of a
+    Drive index move.
+
+.VARI COORD_INDEX
+The index specifies which instance of a coordinate system to use.  It is
+currently applicable only to rover-based missions, but could have other
+uses.  The index is equivalent to the Rover Motion Counter (RMC) for MER
+and FIDO.
+
+For MER/FIDO, there are many Site frames.  Each is numbered with a single
+index.  For Site Frames, coord_index specifies which to use.  Likewise,
+there are many Local_Level and Rover frames, corresponding to values of
+the RMC.  The multiple instances of this frame are selected by COORD_INDEX.
+
+Generally COORD_INDEX defaults sensibly so you don't usually need to
+specify it.  It will default to the instance used by the first input.
+
+.VARI FIXED_SITE
+Specifies which major Site is the "Fixed" Site for this run.
+
+Historically, MPF and M98 had a single "Surface Fixed" frame which never
+moved, and which all other coordinate system frames were referenced to.
+With the advent of long-range rovers (such as MER and FIDO), that became
+insufficient.  The rover traverses far enough that errors in knowledge of
+coordinate system offset and orientation become unacceptable.
+
+For this reason, a system of major Sites was introduced.  Periodically
+during the mission, a Site frame is declared.  This then becomes the
+reference frame for all activities until the next Site is declared.
+References are kept local, and errors don't propogate across Sites.
+
+However, if images from more than one Site are combined together, the
+Site's must be placed relative to each other.  Therefore a single reference
+frame is still needed to combine different sites.
+
+The FIXED_SITE parameter controls which of the major Site frames is
+the reference ("fixed") site for this program run.  This fixed frame
+can vary in different program runs, but is constant throughout one
+execution.
+
+If not specified, FIXED_SITE defaults to the minimum Site number (i.e.
+lowest numbered, or earliest chronologically) used in all input images.
+Normally this default is sufficient; rarely must FIXED_SITE be specified.
+
+One or more Rover State Files must usually be specified in order to combine
+image from more than one Site.  These describe the relationship between
+sites.  See the RSF parameter.
+
+.VARI SOLUTION_ID
+Specifies which solution ID to use for pointing corrections.
+
+There are potentially many different definitions for the same coordinate
+system. These are identified via a unique Solution ID.  If this parameter
+is given, only the specified solution's definition is searched for.
+

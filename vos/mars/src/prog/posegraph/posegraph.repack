@@ -1,0 +1,5 @@
+$ vpack posegraph.com -mixed -
+	-s posegraph.cc -
+	-i posegraph.imake -
+	-p posegraph.pdf
+$ Exit

@@ -1,0 +1,12 @@
+double dsign(double a, double b);
+double dasum(int n, double *dx, int incx);
+int daxpy(int n, double da, double *dx, int incx, double *dy, int incy);
+int dcopy(int n, double *dx, int incx, double *dy, int incy);
+double ddot(int n, double *dx, int incx, double *dy, int incy);
+double dmach(int job);
+double dnrm2(int n, double *dx, int incx);
+int dscal(int n, double da, double *dx, int incx);
+int dswap(int n, double *dx, int incx, double *dy, int incy);
+int idamax(int n, double *dx, int incx);
+int drotg(double *da_adr, double *db_adr, double *c_adr, double *s_adr);
+int drot(int n, double *dx, int incx, double *dy, int incy, double c, double s);

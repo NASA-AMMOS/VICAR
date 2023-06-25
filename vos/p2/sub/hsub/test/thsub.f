@@ -3,7 +3,7 @@ c  test subroutine HSUB
       SUBROUTINE MAIN44
 C test pgm for subroutine HSUB
       IMPLICIT INTEGER (A-Z)
-      BYTE BUF(1000000)
+      BYTE BUF(2000000)
       DIMENSION HIST(65536)
       CHARACTER*8 FORMAT
 C==================================================================

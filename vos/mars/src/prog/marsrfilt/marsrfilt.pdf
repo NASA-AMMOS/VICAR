@@ -1,0 +1,769 @@
+process help=*
+PARM INP TYPE=STRING COUNT=(1:3)
+PARM OUT TYPE=STRING COUNT=1
+PARM NAVTABLE TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM ORIGIN TYPE=REAL COUNT=(0:3) DEFAULT=--
+
+PARM CORR TYPE=REAL COUNT=1 DEFAULT=0.25
+PARM BASELINE TYPE=REAL COUNT=(0:1) DEFAULT=--
+PARM ASPECT_RATIO TYPE=REAL COUNT=1 DEFAULT=0.5
+PARM NUM_SIGMA TYPE=REAL COUNT=1 DEFAULT=1.0
+PARM WFACTOR TYPE=REAL COUNT=1 DEFAULT=1.0
+PARM WINDOW TYPE=INT COUNT=1 DEFAULT=35
+PARM IFOV TYPE=REAL COUNT=(0:1) DEFAULT=--
+PARM PROX_MIN TYPE=REAL COUNT=1 DEFAULT=5
+PARM PROX_MAX TYPE=REAL COUNT=1 DEFAULT=10
+PARM CAST TYPE=KEYWORD VALID=(CMOD,RAY) DEFAULT=CMOD
+PARM MIN_WINDOW TYPE=INT COUNT=1 DEFAULT=3
+PARM SPIKE TYPE=KEYWORD VALID=SPIKE COUNT=0:1 DEFAULT=--
+PARM SPIKE_WINDOW TYPE=INT COUNT=1 DEFAULT=15
+PARM SPIKE_FACTOR TYPE=REAL COUNT=1 DEFAULT=2
+
+PARM OMP_ON TYPE=KEYWORD VALID=(OMP_ON,OMP_OFF) DEFAULT=OMP_ON
+
+PARM CONFIG_PATH STRING DEFAULT="$MARS_CONFIG_PATH"
+PARM MATCH_METHOD TYPE=STRING COUNT=(0:1) VALID=("LOOSE", "TIGHT") +
+     DEFAULT=LOOSE
+PARM MATCH_TOL TYPE=REAL COUNT=1 DEFAULT=.002
+PARM POINT_METHOD TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM NOSITE TYPE=KEYWORD COUNT=(0:1) VALID=NOSITE DEFAULT=--
+
+PARM RSF TYPE=STRING COUNT=0:100 DEFAULT=--
+PARM DEBUG_RSF TYPE=KEYWORD COUNT=0:1 VALID=DEBUG_RSF DEFAULT=--
+PARM COORD TYPE=KEYWORD VALID=("FIXED", "INSTRUMENT", "SITE", "ROVER", +
+        "LOCAL_LEVEL", "RMECH", "HELI_G_FRAME") DEFAULT="FIXED"
+PARM COORD_INDEX TYPE=INTEGER COUNT=0:10 DEFAULT=--
+PARM FIXED_SITE TYPE=INTEGER COUNT=0:1 DEFAULT=--
+PARM SOLUTION_ID TYPE=STRING COUNT=0:1 DEFAULT=--
+
+PARM DATA_SET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM DATA_SET_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM RELEASE_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCT_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_INST TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_TYPE TYPE=STRING COUNT=(0:1) DEFAULT=--
+
+END-PROC
+
+.TITLE
+VICAR program MARSRFILT
+
+.HELP
+PURPOSE:
+MARSRFILT does range-based filtering on an XYZ image, returning a new XYZ
+image.  This is intended to compensate for XYZ's having an error (in the
+range direction) that is often much greater than the cross-range resolution.
+This difference causes "spikes" in the XYZ data.  These spikes are greadly
+reduced or eliminated by this program
+
+EXECUTION:
+marsrfilt inp=xyz_data.img out=filtered_xyz_data.img
+where:
+xyz_data.img is an input 3-band image of type REAL with the X,Y and Z values
+at that pixel in meters.  The program also acceps separate X, Y, and Z images,
+although that's not the normal usage mode.
+filtered_xyz_data.img is the output 3-band image in the same format.  Multiple
+one-band images are not supported.
+
+.PAGE
+
+BACKGROUND:
+
+The stereo range error equation is:
+
+error = range^2 * ifov * corr / baseline
+
+where range is the distance from the camera to the object, ifov is the
+instantaneous field of view (angular size of one pixel, generally at the
+center of the image), corr is the correlation accuracy (typically 0.25 to 0.5),
+and baseline is the stereo baseline (separation between the cameras, in meters).
+
+Note that actually, the above is correct for perpendicular range (the distance
+from the camera plane to the point), not the actual range (the distance from
+the lens to the point).  This program works with actual range.  Dividing by
+the sine of the angle between the view ray and the baseline converts the
+error to actual range error.  However, this sin term cancels out in the ratio
+equation (below) and so we ignore the difference in this program.  The only
+place it might matter is in the error computed for the proximity filter, where
+it's a second order effect at best.
+
+The size of a pixel (measured horizontally, cross-range) is:
+
+size = range * ifov
+
+(really, tan(ifov) but the small angle approximation applies).
+
+For most real stereo cameras, the stereo range error is much bigger than
+the cross-range pixel size.  For example, on MSL the navcam has ifov=0.00082
+radians and baseline=0.424 meters, while the Mastcam (M34) has ifov=0.00022
+radians and baseline=0.245 meters.  If we plug in those values (assuming
+0.25 correlation accuracy, a very aggressive assumption to minimize the
+error), we get:
+
+Range	Navcam Error	Navcam Size	Mastcam Error	Mastcam Size
+1	0.0483 cm	0.082 cm	0.022 cm	0.022 cm
+5	1.21 cm		0.41 cm		0.56 cm		0.11 cm
+10	4.83 cm		0.82 cm		2.24 cm		0.22 cm
+50	121 cm		4.1 cm		56.1 cm		1.10 cm
+
+While these are comparable close in (1m), the ratio error/size quickly gets
+quite large; up to 51 for the Mastcam at 50m.
+
+This ratio is key.  It says that the along-range resolution is 51 times worse
+than the cross-range resolution.  In practical terms, it means the noise in
+the along-range direction is 51 times the noise in the cross-range direction.
+
+This discrepancy leads to pronounced "spikes" in the XYZ data.  These are
+most visible when looking at a terrain mesh.  The farther out you go, the
+more prevalent these spikes (pointing back at the camera, or away from it) are.
+
+However, the spikes are pure noise, caused by correlation uncertainty.
+
+This program significantly reduces this noise by converting the XYZ to range
+data (thus separating the noisy along-range data from the non-noisy cross-range
+data), filtering the range, and converting it back to XYZ.  Filtering is
+based on the error formula, and is adaptive, so the proper amount of filtering
+is done at each point.
+
+.page
+
+METHOD:
+
+In a nutshell, the program implements a weighted plane fit to the range
+data around the given pixel, evaluating the plane at the given pixel.
+This has a similar effect to averaging, but gets around issues with biasing
+the results as the window slides off the edge of the image.
+
+First, the program reads the XYZ data and converts it (if necessary) to the
+specified coordinate system.
+
+It then does a lowpass filter (standard boxcar filter, excluding 0s) on the
+range data.  This is used as the range for determining the window size later.
+The boxcar filter prevents the window size from gyrating wildly from pixel to
+pixel, as it would do if we used the raw range.  This filter does suffer from
+edge effects and other issues, but having an accurate range here is not that
+critical, as it is only used to size the filter, and small inaccuracies in
+the filter size have negligible effect.
+
+The range filter itself proceeds as follows.  Each pixel is computed
+independently, and if OMP_ON is enabled, it is parallelized on a line-by-line
+basis.  (see the help for e.g. marsmap for more on OMP).
+
+First, the nominal size of the filter half-window is determined.  This is based
+on the ratio of error to size, and ends up being simply:
+
+size = 0.5 * range * corr / baseline
+
+The correlation quality defaults to 0.25 so as to err on the side of less
+filtering.  The range in this equation is the smoothed range discussed above.
+
+The stereo baseline is obtained from the image label (it is output from
+marsxyz, in STEREO_BASELINE), and the ifov (used in the proximity filter,
+below) is obtained from the camera model.  Both can be overridden on the
+command line.
+
+The actual half-window width is computed by multiplying the nominal width
+by WFACTOR.  This allows larger or smaller windows to be selected.
+
+The half-window height is derived from the width using the ASPECT_RATIO
+parameter.  This allows the kernel to be shrunk vertically (e.g. with a ratio
+of 0.5, the default), because there is typically much more range variation
+in the vertical direction than horizontal, for most in-situ scenes.
+
+If the computed window height or width is less than the MIN_WINDOW parameter
+(really, half size < (MIN_WINDOW-1)/2 ), the half-size is set to that.  This
+means that some filtering is always done.  If MIN_WINDOW is 0, anything
+smaller than 3 pixels (half size of 1) will be passed through unchanged, with
+no filtering.
+
+The width of the Gaussian itself is determined by the NUM_SIGMA parameter.
+The default is 1.0, meaning 1.0 sigmas fit into the half-window.  A larger
+value will use a steeper Gaussian (thus favoring the center more); a value
+close to 0 will emulate a box filter.
+
+The program then loops over the window.  For each pixel in the window, the
+weight is computed.  This weight is a combination of two factors: the
+Gaussian kernel, and a proximity filter.  These two together implement
+a form of bilateral filter.
+
+The Gaussian kernel is simply:
+
+weight = e ^ (-(x^2 / 2G_x^2 + y^2 / 2G_y^2))
+
+where x and y are the pixel coordinates within the window (0,0 being the
+center), and G_x, G_y are the Gaussian sigmas determined above.
+
+The proximity filter is used to reject values that are too far away in
+range space.  This helps particularly when there are gaps due to occlusions.
+Without the proximity filter, the data on the far side of the occlusion (which
+could be tens of meters away, say due to a ridgeline) is included in the plane
+fit, which can bias the results, with the effect of the terrain "bending" to
+fill the gap.  The proximity filter prevents this by de-weighting and
+eventually eliminating data that is too far away.
+
+The proximity filter is controlled by the PROX_MIN and PROX_MAX parameters.
+The actual expected error in meters (not the ratio) is determined using the
+actual central pixel (as mentioned in the introduction, the sin term related
+to the angle the pixel makes with the baseline is ignored).  This error is
+then multiplied by the PROX_MIN and PROX_MAX parameters (in other words, the
+parameters are factors, so the actual min and max values vary dynamically
+with range).  The range of the pixel being considered in the window is then
+compared to the (actual) range of the central pixel.  If the difference is
+within +/- of the minimum value, the Gaussian weight is passed through
+unchanged.  If it is bigger than the maximum value, the pixel is discarded.
+If it is in between, a proximity weight is applied, which is linearly scaled
+from 1.0 at the min distance to 0.0 at the max distance.  This has the effect
+of gradually rolling off the proximity window, which helps to avoid
+discontinuities in the data.
+
+Once the final weight is determined for each pixel in the window, a plane fit
+is performed.  The plane equation is:
+
+z = Ax + By + C
+
+and the solution matrix equation is:
+
+[  xx  xy  x  ] [ A ]   [ xz ]
+[  xy  yy  y  ] [ B ] = [ yz ]
+[  x   y   n  ] [ C ]   [ z  ]
+
+where each cell is the sum of xx, or xy, etc. throughout the window.  The
+weight is applied to each element before summing (i.e. the upper left corner
+is the sum of wt * (x*x) not (wt*x) * (wt*x) ), and "n" is the sum of all
+the weights.
+
+The matrix is solved using Cramer's rule, and then evaluated at the center
+to get the final range.  Because the center is x=0 y=0, we actually only have
+to solve for C, so much of the plane fit solution is commented out in the
+code.
+
+After the range filter, an optional spike filter removes "spikes" in the
+same way that the spike filter in marsxyz does.  It computes an average range
+(after filtering; not the same as the initial average range discussed above)
+for an area of SPIKE_WINDOW centered on the pixel.  It then takes the
+difference between the range value and the average range, and compares it to
+a threshold.  If the value exceeds the threshold, the pixel is rejected as
+a spike.  The threshold is determined by the SPIKE_FACTOR parameter.  This
+is used to calculate the spike per range squared as follows:
+
+spike_per_rangesq = spike_factor * ifov * corr / baseline
+
+which is closely related to the range error equation.  This value is multiplied
+by the range squared to get the threshold to use.
+
+This final range value is then projected back into XYZ using the camera model.
+
+There is one subtlety in this final projection.  The marsxyz program works by
+projecting rays out of both eyes of the stereo camera models.  Where they
+intersect, is the XYZ position.  However, due to noise and other errors,
+they rarely actually intersect.  Instead, the reported XYZ position is the
+midpoint at closest approach of the rays.  This means the XYZ position is
+in general not on the actual ray projected from the center of the pixel.
+
+When we reconstruct XYZ from range in this program, there are two options
+on what to do.  The default option (-CMOD) uses the nominal projected ray from
+the camera model - not the slightly skewed value from the XYZ.  This is the
+default because for good camera models, the deviation from the nominal ray
+is largely based on noise in the results - noise that is significantly
+reduced by this program.  It is therefore more likely that the true value
+is along the ray, than it is along the noise-induced skewed ray.
+
+However, for poor-quality camera models, this is not necessarily the case.
+Poor models can have significant distance (called the miss distance) between
+the left and right rays.  Furthermore, this miss distance has a large
+systematic component due to the camera model errors.  In these cases, the
+systematic component can far outweigh the noise.  The -RAY option will
+cause it to project along the original vector (which generally points to the
+midpoint at closest approach) instead.
+
+The practical upshot of -CMOD is that XYZ values run using the left as a
+reference and the right as a reference will not necessarily match, unlike
+the raw marsxyz results.  With -RAY, they may match much closer.
+
+The minimum, maximum, and average of the nominal window widths throughout the
+program are saved in labels.  This allows a mesh program to use downsampling
+in cases where there is no full-res (unmodified) data.
+
+It should be noted that there is one potential bias that is not accounted
+for in this program.  As you get closer to the horizon in a typical in-situ
+scene, pixels get farther and farther apart, as the tangent of the view
+angle.  This means that typically, pixels in the window below the central
+pixel will be closer to the central pixel in range space than pixels an
+equal number of lines above the central pixel.  This will have the effect
+of biasing the results slightly away from the camera.  However, this is a
+second-order effect that is not expected to be an issue for real images.
+It is partially mitigated for two reasons: the proximity filter will be
+more likely to cut off the distant pixels, and correlation tends not to
+work well when the view angle is close to tangent anyway.
+
+.PAGE
+
+HISTORY:
+2019-10-04 rgd	Initial version
+COGNIZANT PROGRAMMER: Bob Deen
+
+.LEVEL1
+.VARI INP
+Input images.
+Must be 1 3-band file
+or (x,y,z) triplet.
+
+.VARI OUT
+Output files
+Will be 1 3-band file.
+
+.VARI NAVTABLE
+Nav file for pointing
+correction.
+
+.VARI ORIGIN
+Override of 3D Point
+from which to compute 
+range.
+
+.VARI CORR
+Correlation accuracy.
+
+.VARI BASELINE
+Stereo baseline override
+(meters).
+
+.VARI ASPECT_RATIO
+Controls roundness of
+Gaussian kernel.
+
+.VARI NUM_SIGMA
+Controls steepness of
+Gaussian function
+
+.VARI WFACTOR
+Controls size of window.
+
+.VARI WINDOW
+Window size for initial
+range smoothing.
+
+.VARI IFOV
+IFOV override (radians).
+
+.VARI PROX_MIN
+Min factor for
+proximity filter.
+
+.VARI PROX_MAX
+Max factor for
+proximity filter.
+
+.VARI CAST
+How to reconstruct the XYZ.
+
+.VARI MIN_WINDOW
+Min window size
+for range filter.
+
+.VARI SPIKE
+Turns on spike filter
+
+.VARI SPIKE_WINDOW
+Window size for
+spike filter
+
+.VARI SPIKE_RANGESQ
+Threshold for spike filter.
+
+.VARI CONFIG_PATH
+Path used to find
+configuration/calibration
+files.
+
+.VARI MATCH_METHOD
+Specifies a method
+for pointing corrections.
+
+.VARI MATCH_TOL
+Tolerance value for
+matching pointing params
+in pointing corrections file.
+
+.VARI POINT_METHOD
+Specifies a mission-
+specific pointing
+method to use
+
+.VARI NOSITE
+Disables coordinate
+system sites.
+
+.VARI RSF
+Rover State File(s) to use.
+
+.VARI DEBUG_RSF
+Turns on debugging of RSF
+parameter.
+
+.VARI COORD
+Coordinate system to use.
+
+.VARI COORD_INDEX
+Coordinate system index for
+some COORD/mission combos.
+
+.VARI FIXED_SITE
+Which site is FIXED for
+rover missions.
+
+.VARI SOLUTION_ID
+Solution ID to use for
+COORD_INDEX
+
+.VARI DATA_SET_NAME
+Specifies the full name given
+to a data set or a data product.
+
+.VARI DATA_SET_ID
+Specifies a unique alphanumeric
+identifier for a data set or data
+product.
+
+.VARI RELEASE_ID
+Specifies the unique identifier
+associated with the release to the
+public of all or part of a data set.
+The release number is associated with
+the data set, not the mission.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique
+identifier assigned to a data
+product by its producer.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier
+of an entity associated with the
+production a data set.
+
+.VARI PRODUCER_INST
+Specifies the full name of the
+identity of an entity associated
+with the production of a data set.
+
+.VARI TARGET_NAME
+Specifies a target.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target.
+
+.LEVEL2
+.VARI INP
+Input files contain the XYZ coordinates. If three filenames are given,
+they all should be single band files each containing X, Y and Z values
+in that order.  If only one filename is given, it should be a 3-band
+file with bands in (X,Y,Z) order.
+
+The input files are in REAL (float) format.
+
+.VARI OUT
+The output of MARSRFILT is a single 3-band file of type REAL (float).
+
+.VARI NAVTABLE
+Corrected navigation filename.
+If marsnav was run on the input images it created a table of corrected
+pointing parameters. If you refer to this table using NAVTABLE it
+will override the pointing parameters (e.g. azimuth and elevation) in the
+picture labels.
+
+.VARI ORIGIN
+Specifies the 3D point to compute the range from.  By default it's set to
+camera location as specified by C-point for CAHV-based instruments.
+
+.VAR CORR
+Correlation accuracy, in pixels.  Generally this is quoted as 0.25, 0.33,
+or 0.5 depending on who you ask.  The default for this program is 0.25,
+which errs on the side of less filtering.
+
+.VARI BASELINE
+Override for the camera baseline, in meters.  The baseline is determined by
+the STEREO_BASELINE label (as written by marsxyz).  If this label item is
+not present, it must be specified via this parameter.
+
+.VARI ASPECT_RATIO
+Allows the window (and thus the Gaussian kernel) to be distorted out of
+saure (round).  The default of 0.5 means the window in the Y direction is half
+of the window in the X direction.  This is appropriate for most normal in-situ
+scenes, but in a case like the InSight workspace (arm camera looking more or
+less straight down), a circular kernel (1.0) may be more appropriate.
+
+.VARI NUM_SIGMA
+Controls how many sigma are included in the actual window.  The higher the
+value, the steeper the Gaussian, meaning values near the center are weighted
+more.  A value near 0 emulates a simple box filter.
+
+.VARI WFACTOR
+Controls the window size.  A value greater than 1 makes the window bigger
+than the nominal computed size.  See the main help text for the formula.
+
+.VARI WINDOW
+Specifies the size of the window used for the initial range smoothing
+boxcar filter.
+
+.VARI IFOV
+Override for the instantaneous field of view (angular size of one pixel), in
+radians.  The default is to determine this from the camera model.
+
+.VARI PROX_MIN
+Defines the inner edge of the proximity filter (see main help).  This factor
+is multiplied by the actual range error to get the edge of the filter in
+meters.  Any pixels closer than this to the central range will not be
+affected by the proximity filter.  Those between this and the maximum will
+be scaled linearly.
+
+.VARI PROX_MAX
+Defines the outer edge of the proximity filter (see main help).  This factor
+is multiplied by the actual range error to get the edge of the filter in
+meters.  Any pixels farther than this from the central range will be
+excluded from the plane fit.  Those between this and the minimum will be
+scaled linearly.
+
+.VARI CAST
+Specifies how to reconstruct the XYZ point - casting either long the camera
+model (-CMOD) or along the original vector (-RAY).  See the main help for
+a more complete discussion.
+
+.VARI MIN_WINDOW
+Minimum window size for range filter.  This ensures a minimum level of
+filtering even for very nearby data.  See the main text for full writeup.
+
+.VARI SPIKE
+Turns on spike filter.  See the main text for a full writeup.
+
+.VARI SPIKE_WINDOW
+Window size for the spike filter.  See the main text for a full writeup.
+
+.VARI SPIKE_RANGESQ
+Threshold for spike filter.  See the main text for a full writeup.
+
+The proper value of this depends on camera resolution.  The default of
+.001 is approximately correct for the MSL Navcams.  The MSL M34 (ML) value
+that works best appears to be about .00045, and for M100 (MR) the value
+appears to be about .00015.
+
+.VARI OMP_ON
+Turns on or off parallel processing using OMP, which uses multiple cores on
+a single host machine.  The default is on.  The help for e.g. marsmap
+describes some environment variables that can further control parallel
+processing.  Note that this program uses standard OpenMP (which is built
+in to the gcc/g++ compilers), so further details can be found in the OpenMP
+documentation.
+
+.VARI CONFIG_PATH
+A colon-separated list of directories in which to look for configuration
+and calibration files.  Environment variables are allowed in the list
+(and may themselves contain colon-separated lists).  The directories are
+searched in order for each config/cal file when it is loaded.  This allows
+multiple projectes to be supported simultaneously, and allows the user to
+override any given config/cal file.  Note that the directory structure below
+the directories specified in this path must match what the project expects.
+For example, Mars 98 expects flat fields to be in a subdirectory named
+"flat_fields" while Mars Pathfinder expects them to be directly in the
+directory specified by the path (i.e. no intermediate subdirectories).
+
+.VARI MATCH_METHOD
+Specifies a method for pointing corrections.
+
+Loose method matchs with pointing parameters of the image.
+Tight method matchs with unique id of the image.
+
+.VARI MATCH_TOL
+Tolerance value for matching pointing parameters in the pointing corrections file.
+Used if MATCH_METHOD=LOOSE
+Default value is pretty arbitrary, though seems to work well so far....
+
+
+.VARI POINT_METHOD
+Specifies a mission-specific pointing method to use.  Normally this
+parameter is not used, in which case the "default" pointing methods
+are used.  Some missions may have special, or alternate, pointing
+methods available, which are indicated by this string (for example,
+backlash models, using arm joint angles instead of x/y/z/az/el, etc).
+A substring search is used, so multiple methods (where that makes sense)
+can be specified by separating the keywords with commas.
+
+Note that nav files created using one pointing method will most likely
+not be compatible with a mosaic created using a different pointing method.
+
+The methods available vary per mission, but some methods available at
+the time of this writing are:
+
+BACKLASH : Mars 98 SSI only.  Selects a backlash pointing model,
+which adjusts the telemetered azimuth and elevation values based on
+knowledge of the camera's mechanical backlash and the direction the
+motor was travelling when the image was taken.
+
+.VARI NOSITE
+Disables all label-derived parameters to the Site mechanism which underlies
+coordinate systems.  This forces all sites to be identical, with all rotations
+and offsets set the same.  In the case of MPF or Mars 98, this disables
+the lander quaternion and offset (sets them to identity and 0, respectively).
+This option should not be used with images taken from different vantage
+points (e.g. the spacecraft moved, or mixing a lander and a rover) or
+invalid results will be obtained.  The use of this option invalidates the
+Fixed coordinate frame; any values reported in the Fixed frame will not
+correctly reflect the orientation of the lander/rover.
+
+Obviously, this option should be rarely used; it is intended for when the
+image labels defining the site are invalid or inconsistent.
+
+.VARI RSF
+Rover State File.  This is a list of filenames to load containing
+Rover State information.  These files contain position and orientation
+information for a rover (or other mobile spacecraft) at various sites.
+They are in XML format.  See the "Rover Motion Counter (RMC) Master File SIS"
+for details on these files.
+
+Rover State Files have a priority order.  The files listed first have
+the highest priority.
+
+Environment variables may be used in the list.
+
+For MER, if a directory is specified, then that directory is searched for
+RMC Master files and any found are loaded.  The directory structure and
+filename convention is covered in the RMC SIS.  The directory specified
+is the one containing "master", so if <dir> is the name specified in the
+RSF parameter, the following files will be searched for:
+
+<dir>/master/<mission>_Master.svf
+<dir>/master/<mission>_Site_<n>_Master.rvf
+
+The name of each file loaded is printed to the stdout log for reference.
+
+.VARI DEBUG_RSF
+If enabled, this causes the internal database of RMC locations to be
+printed out to the stdout log.  This is after the RSF files have been
+loaded and the coordinate systems read from the input label(s).
+
+.VARI COORD
+The coordinate system to use for all input parameters and output values,
+and the XYZ points themselves.  The interpretation of the values is dependent
+on the mission.  Some representative missions are listed here:
+
+Fixed - The Fixed frame (default).  This is the ultimate reference frame
+    (see also FIXED_SITE for rover missions).
+Instrument - The "natural" frame for the instrument (of the first input
+    image).  MPF: Lander or Rover; M98: MVACS; MER: Rover.
+Site - A major Site frame.  For rover missions, COORD_INDEX specifies which
+    Site frame to use.  Non-rover missions treat this as Fixed.
+Rover - An instance of the Rover frame.  For rover missions, COORD_INDEX
+    specifies which instance of the rover frame to use.  Non-rover mission
+    use the spacecraft frame (e.g. Lander for M98).
+Local_Level - An instance of a Local Level frame.  This is typically
+    coincident with the Rover frame (in XYZ) but oriented toward North
+    like the Site and Fixed frames.  For MER, this is an instance of a
+    Drive index move.
+
+.VARI COORD_INDEX
+The index specifies which instance of a coordinate system to use.  It is
+currently applicable only to rover-based missions, but could have other
+uses.  The index is equivalent to the Rover Motion Counter (RMC) for MER
+and FIDO.
+
+For MER/FIDO, there are many Site frames.  Each is numbered with a single
+index.  For Site Frames, coord_index specifies which to use.  Likewise,
+there are many Local_Level and Rover frames, corresponding to values of
+the RMC.  The multiple instances of this frame are selected by COORD_INDEX.
+
+Generally COORD_INDEX defaults sensibly so you don't usually need to
+specify it.  It will default to the instance used by the first input.
+
+.VARI FIXED_SITE
+Specifies which major Site is the "Fixed" Site for this run.
+
+Historically, MPF and M98 had a single "Surface Fixed" frame which never
+moved, and which all other coordinate system frames were referenced to.
+With the advent of long-range rovers (such as MER and FIDO), that became
+insufficient.  The rover traverses far enough that errors in knowledge of
+coordinate system offset and orientation become unacceptable.
+
+For this reason, a system of major Sites was introduced.  Periodically
+during the mission, a Site frame is declared.  This then becomes the
+reference frame for all activities until the next Site is declared.
+References are kept local, and errors don't propogate across Sites.
+
+However, if images from more than one Site are combined together, the
+Site's must be placed relative to each other.  Therefore a single reference
+frame is still needed to combine different sites.
+
+The FIXED_SITE parameter controls which of the major Site frames is
+the reference ("fixed") site for this program run.  This fixed frame
+can vary in different program runs, but is constant throughout one
+execution.
+
+If not specified, FIXED_SITE defaults to the minimum Site number (i.e.
+lowest numbered, or earliest chronologically) used in all input images.
+Normally this default is sufficient; rarely must FIXED_SITE be specified.
+
+One or more Rover State Files must usually be specified in order to combine
+image from more than one Site.  These describe the relationship between
+sites.  See the RSF parameter.
+
+.VARI SOLUTION_ID
+Specifies which solution ID to use when specifying the coordinate system.
+
+There are potentially many different definitions for the same coordinate
+system.  These are identified via a unique Solution ID.  If this parameter
+is given, only the specified solution's definition is searched for.  Without
+it, the "best" available solution is chosen.
+
+It is extremely rare that this parameter should be needed.  The default
+will be sufficient in almost every case.
+
+Note that the current MER implementation requires that a value for COORD_INDEX
+also be provided, in order for this parameter to take effect.
+
+.VARI DATA_SET_NAME
+The DATA_SET_NAME typically identifies the instrument that acquired the
+data, the target of that instrument, and the processing level of the data.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_NAME.
+
+.VARI DATA_SET_ID
+The DATA_SET_ID value for a given data set or product is constructed
+according to flight project naming conventions.  In most cases the
+DATA_SET_ID is an abbreviation of the DATA_SET_NAME.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_ID.
+
+.VARI RELEASE_ID
+When a data set is released incrementally, such as every three months during
+a mission, the RELEASE_ID is updated each time part of the data set is released.
+For each mission(or host id if multiple spacecrafts), the first release of a data
+set should have a value of "0001".
+This value is copied to the output label, property IDENTIFICATION,
+keyword RELEASE_ID.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique identifier assigned to a data product by
+its producer. Most commonly, it is the filename minus the extension.
+This value is copied to the output label, property IDENTIFICATION,
+keyword PRODUCT_ID.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier of an entity associated with the
+production of a data set. This value is copied to the output label,
+property IDENTIFICATION, keyword PRODUCER_ID.
+
+.VARI PRODUCER_INST
+Specifies the identity of a university, research center, NASA center or other
+institution associated with the production of a data set.
+This value is copied to the output label, property IDENTIFICATION, keyword
+PRODUCER_INSTITUTION_NAME.
+
+.VARI TARGET_NAME
+Specifies a target.  The target may be a planet, satelite, ring, region, feature,
+asteroid or comet.  This value is copied to the output label, property
+IDENTIFICATION, keyword TARGET_NAME.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target. This value is copied to the output
+label, property IDENTIFICATION, keyword TARGET_NAME.

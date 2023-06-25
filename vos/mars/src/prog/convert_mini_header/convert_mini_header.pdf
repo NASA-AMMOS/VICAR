@@ -1,0 +1,66 @@
+PROCESS HELP=*
+PARM INP STRING COUNT=1
+PARM MINI_FILE STRING COUNT=1
+PARM MINI_OFFSET INT COUNT=1 DEFAULT=0
+PARM ZSTACK KEYWORD VALID=ZSTACK COUNT=0:1 DEFAULT=--
+PARM MISSION KEYWORD VALID=(MSL,M20) COUNT=1 DEFAULT=MSL
+END-PROC
+
+.TITLE
+Convert a MMM mini-header to labels
+.HELP
+Reads a 64-byte MMM mini-header from the mini_file (at offset mini_offset)
+and converts the values into labels in a MINI_HEADER group.  Originally
+written for the MSAM project (Mastcam Stereo Analysis and Mosaics, a PDART
+task).
+
+The INP file is modified to have the labels added.
+
+The mini_file may be the .dat file delivered by MMM to PDS (in which case the
+offset is 0).
+
+ZStack mini-headers are formatted slightly differently.  If this is a
+zstack, set the -zstack keyword.
+
+The mini-header is the same between MSL and M2020.  However, M2020 uses zoom,
+while MSL does not.  The default -msl thus omits zoom.  Add -m20 to add the
+zoom value to the articulation device state.
+
+History
+
+2018-01-23	rgd	Initial version
+2019-12-09	rgd	Added -m20 and zoom
+
+.level1
+.var INP
+Input file, is modified
+.var MINI_FILE
+File containing mini-header
+.var MINI_OFFSET
+Offset into file where mini-header is
+.var ZSTACK
+Set if this is a zstack
+.var MISSION
+Set to m20 to add zoom
+
+.level2
+.var INP
+Input file.  This file is modified in-place, so it should be a standard VICAR
+file, not a dual-label file.
+
+.var MINI_FILE
+The file to read containing the mini-header.  Generally this would be the .dat
+file supplied to PDS by the MMM instrument, in which case the offset would be
+zero.
+
+.var MINI_OFFSET
+Generally zero, but present in case the mini-header is somewhere else in the
+file.
+
+.var ZSTACK
+ZStack images have slightly different formatting in their mini-header.  If this
+is a zstack image, turn on this keyword in order to parse the header correctly.
+
+.var MISSION
+If MISSION is -m20, add the zoom value to the articulation device state.
+

@@ -1,0 +1,12 @@
+#define PROGRAM convert_mini_header
+#define MODULE_LIST convert_mini_header.cc read_mini_header.cc write_mini_header.cc
+#define INCLUDE_LIST MiniHeader.h
+
+#define USES_C_PLUS_PLUS
+#define MAIN_LANG_C_PLUS_PLUS
+#define MARSLIB
+
+#define LIB_RTL
+#define LIB_P2SUB
+#define LIB_TAE
+

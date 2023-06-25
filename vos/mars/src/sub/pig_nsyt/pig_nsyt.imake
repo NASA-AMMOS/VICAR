@@ -1,0 +1,13 @@
+#define SUBROUTINE pig_nsyt
+
+#define MODULE_LIST  PigFileModelNSYT.cc PigPointNSYTarmCamera.cc \
+PigPointNSYTarmCamera6dof.cc PigNSYT.cc \
+PigLabelModelNSYT.cc PigColorModelNSYT.cc 
+
+#define MARS_SUBLIB
+
+#define USES_C_PLUS_PLUS
+
+#define LIB_P2SUB
+#define LIB_XERCES
+

@@ -1,0 +1,29 @@
+/***********************************************************************
+
+                     IMAKE FILE FOR PROGRAM mvecall
+
+   To Create the build file give the command:
+
+		$ vimake mvecall			(VMS)
+   or
+		% vimake mvecall			(Unix)
+
+
+************************************************************************/
+
+
+#define PROGRAM	mvecall
+
+#define MODULE_LIST mvecall.c
+
+#define MAIN_LANG_C
+#define R2LIB
+#define USES_ANSI_C
+#define LIB_NETWORK
+#define LIB_CARTO
+#define LIB_RTL
+#define LIB_TAE
+#define LIB_P2SUB
+#define LIB_FORTRAN
+/*#define LIB_P1SUB tried this for the zmve/mve problem*/
+/************************* End of Imake file ***************************/

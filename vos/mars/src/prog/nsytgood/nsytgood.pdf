@@ -1,0 +1,324 @@
+process help=*
+PARM INP TYPE=STRING COUNT=(1:5)
+PARM OUT TYPE=STRING COUNT=1
+PARM MASK TYPE=STRING COUNT=(0:1)
+
+PARM BAND TYPE=INTEGER COUNT=(1:5) DEFAULT=1
+PARM THRESH TYPE=REAL COUNT=(1:5) DEFAULT=5.0
+PARM MASK_BAND TYPE=INTEGER COUNT=1 DEFAULT=1
+PARM MASK_THRESH TYPE=REAL COUNT=1 DEFAULT=5.0
+
+PARM GOOD_VALUE TYPE=INTEGER COUNT=1 DEFAULT=5
+PARM SINGLE_BAD TYPE=INTEGER COUNT=(1:5) DEFAULT=(2,2,3,3,4)
+PARM MULTI_BAD TYPE=INTEGER COUNT=1 DEFAULT=1
+PARM MASK_BAD TYPE=INTEGER COUNT=1 DEFAULT=0
+
+PARM CONFIG_PATH STRING DEFAULT="$MARS_CONFIG_PATH"
+PARM POINT_METHOD TYPE=STRING COUNT=(0:1) DEFAULT=--
+
+PARM DATA_SET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM DATA_SET_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM RELEASE_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCT_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_INST TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_TYPE TYPE=STRING COUNT=(0:1) DEFAULT=--
+
+END-PROC
+
+.TITLE
+VICAR program NSYTGOOD
+
+.HELP
+PURPOSE:
+
+The NSYTGOOD program generates an overall goodness product by looking at
+the goodness bands of multiple other products (such as tilt and roughness).
+
+Note that this program is not really InSight specific; it is flexible and
+configurable enough to be used anywhere there are multiple status bands.
+
+EXECUTION:
+
+for seis:
+nsytgood \( rus ruw tfs tfw tds\) gus mask=wss
+
+for hp3:
+nsytgood \( ruh -- tfh\) guh mask=wsh
+
+where ruh/rus/ruw come from NSYTROUGH, tfh/tfs/tfw/tds come from NSYTTILT,
+and wss/wsh come from NSYTWKSP.
+
+METHOD:
+
+The BAND parameter specifies which band contains the goodness map for each
+input product (default 1).  For each pixel, NSYTGOOD looks at the goodness
+value for each product, and compares to THRESH (default 5).  If the value
+is >= THRESH, it is good.  If all of the input products are good, the output
+is set to GOOD_VALUE (default 5).  If one of them is bad, the corresponding
+item is pulled from the SINGLE_BAD parameter, and that value is put in the
+output.  If more than one of them are bad, the output is set to the value
+in MULTI_BAD.
+
+If the optional MASK file is given, the MASK file is also consulted.  If the
+value in MASK is < MASK_THRESH, the pixel is outside of the mask and is marked
+bad using MASK_BAD (0), regardless of the status of the inputs.
+
+If an input file is "--" then that slot is skipped, which allows the same
+per-band parameter defaults to be used for multiple cases (e.g. InSight
+SEIS vs HP3).
+
+For InSight, the default parameters produce the following for SEIS (given
+the inputs shown at the top of this help):
+
+0 = no data or outside mask
+1 = multiple inputs are bad
+2 = roughness of either seis or wts is bad
+3 = tilt of either seis or wts is bad
+4 = delta-tilt between seis and wts is bad
+5 = all good
+
+and the following for HP3:
+
+0 = no data or outside mask
+1 = multiple inputs are bad
+2 = roughness is bad
+3 = tilt is bad
+4 = n/a
+5 = all good
+
+Note:  multiple inputs can use the same single_bad value, but if more than
+one are bad it goes to multi_bad.
+
+.PAGE
+
+HISTORY:
+  2015-09    rgd - Initial version
+  2016-01    rgd - Wrote help
+  2019-12-23 wlb - IDS-7926 - initialized some variables; cleaned up -Wall warnings;
+                   added unit test.
+                   Note 'mask.SimpleImage<double>::_line_stride' may be used uninitialized
+
+COGNIZANT PROGRAMMER: B. Deen
+
+.LEVEL1
+.VARI INP
+Input files.
+List file not supported.
+
+.VARI OUT
+Output file.
+Must be 1 filename.
+
+.VARI MASK
+Optional input mask file.
+
+.VARI BAND
+Goodness band in each input.
+
+.VARI THRESH
+Goodness threshold for each input.
+
+.VARI MASK_BAND
+Band to use for mask input.
+
+.VARI MASK_THRESH
+Goodness threshold for mask input.
+
+.VARI GOOD_VALUE
+Output value for good status.
+
+.VARI SINGLE_BAD
+Output value for a single input
+being bad.
+
+.VARI MULTI_BAD
+Output value for multiple
+inputs being bad.
+
+.VARI MASK_BAD
+Output value for mask input
+being bad.
+
+.VARI CONFIG_PATH
+Path used to find
+configuration/calibration
+files.
+
+.VARI POINT_METHOD
+Specifies a mission-
+specific pointing
+method to use
+
+.VARI DATA_SET_NAME
+Specifies the full name given
+to a data set or a data product.
+
+.VARI DATA_SET_ID
+Specifies a unique alphanumeric
+identifier for a data set or data
+product.
+
+.VARI RELEASE_ID
+Specifies the unique identifier
+associated with the release to the
+public of all or part of a data set.
+The release number is associated with
+the data set, not the mission.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique
+identifier assigned to a data
+product by its producer.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier
+of an entity associated with the
+production a data set.
+
+.VARI PRODUCER_INST
+Specifies the full name of the
+identity of an entity associated
+with the production of a data set.
+
+.VARI TARGET_NAME
+Specifies a target.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target.
+
+.LEVEL2
+.VARI INP
+Input files contain a goodness band which indicates whether the product
+meets thresholds.  Up to 5 inputs are supported, although this is arbitrary
+and easily increased if needed.  List file inputs are not supported.
+
+If an input file is "--", it is ignored.  This allows the same slots to
+be re-used in different scenarios.  For example, on InSight the SEIS goodness
+file has two roughness inputs, but HP3 has only one.  Supplying -- for the
+second input for HP3 allows the 3rd input to be tilt in most cases, meaning
+the SINGLE_BAD values don't have to change per instrument.
+
+.VARI OUT
+Output goodness file.  The values in this file are controlled by the
+GOOD_VALUE, SINGLE_BAD, MULTI_BAD, and MASK_BAD parameters.
+
+.VARI MASK
+Optional mask file.  If the mask file is present, anything outside the mask
+is marked bad.
+
+.VARI BAND
+Specifies the band in each input that contains the goodness map.  If there
+are fewer entries than files, the last entry in BAND is used for all remaining
+files.
+
+.VARI THRESH
+Specifies the threshold value for "good" status for each input.  Values
+greater than or equal to the threshold are considered good.
+
+.VARI MASK_BAND
+Specifies the band in the mask file to be used.
+
+.VARI MASK_THRESH
+Specifies the threshold for the mask band.  Values greater than or equal to
+the threshold are considered good (unmasked).
+
+.VARI GOOD_VALUE
+Specifies the value to use in the output file to indicate the value is good.
+
+.VARI SINGLE_BAD
+Specifies the value to use in the output file if a single value is bad.
+If there are fewer entries than files, the last entry in SINGLE_BAD is used
+for all remaining files.
+
+Note that multiple inputs can use the same SINGLE_BAD value, but if more than
+one of these are bad, it reverts to a multi-bad situation.
+
+.VARI MULTI_BAD
+Specifies the value to use in the output file to indicate more than one
+input was bad.
+
+.VARI MASK_BAD
+Specifies the value to use in the output file to indicate the mask was bad.
+
+
+.VARI CONFIG_PATH
+A colon-separated list of directories in which to look for configuration
+and calibration files.  Environment variables are allowed in the list
+(and may themselves contain colon-separated lists).  The directories are
+searched in order for each config/cal file when it is loaded.  This allows
+multiple projects to be supported simultaneously, and allows the user to
+override any given config/cal file.  Note that the directory structure below
+the directories specified in this path must match what the project expects.
+For example, Mars 98 expects flat fields to be in a subdirectory named
+"flat_fields" while Mars Pathfinder expects them to be directly in the
+directory specified by the path (i.e. no intermediate subdirectories).
+
+.VARI POINT_METHOD
+Specifies a mission-specific pointing method to use.  Normally this
+parameter is not used, in which case the "default" pointing methods
+are used.  Some missions may have special, or alternate, pointing
+methods available, which are indicated by this string (for example,
+backlash models, using arm joint angles instead of x/y/z/az/el, etc).
+A substring search is used, so multiple methods (where that makes sense)
+can be specified by separating the keywords with commas.
+
+Note that nav files created using one pointing method will most likely
+not be compatible with a mosaic created using a different pointing method.
+
+The methods available vary per mission, but some methods available at
+the time of this writing are:
+
+BACKLASH : Mars 98 SSI only.  Selects a backlash pointing model,
+which adjusts the telemetered azimuth and elevation values based on
+knowledge of the camera's mechanical backlash and the direction the
+motor was travelling when the image was taken.
+
+.VARI DATA_SET_NAME
+The DATA_SET_NAME typically identifies the instrument that acquired the
+data, the target of that instrument, and the processing level of the data.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_NAME.
+
+.VARI DATA_SET_ID
+The DATA_SET_ID value for a given data set or product is constructed
+according to flight project naming conventions.  In most cases the
+DATA_SET_ID is an abbreviation of the DATA_SET_NAME.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_ID.
+
+.VARI RELEASE_ID
+When a data set is released incrementally, such as every three months during
+a mission, the RELEASE_ID is updated each time part of the data set is released.
+For each mission(or host id if multiple spacecrafts), the first release of a data
+set should have a value of "0001".
+This value is copied to the output label, property IDENTIFICATION,
+keyword RELEASE_ID.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique identifier assigned to a data product by
+its producer. Most commonly, it is the filename minus the extension.
+This value is copied to the output label, property IDENTIFICATION,
+keyword PRODUCT_ID.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier of an entity associated with the
+production of a data set. This value is copied to the output label,
+property IDENTIFICATION, keyword PRODUCER_ID.
+
+.VARI PRODUCER_INST
+Specifies the identity of a university, research center, NASA center or other
+institution associated with the production of a data set.
+This value is copied to the output label, property IDENTIFICATION, keyword
+PRODUCER_INSTITUTION_NAME.
+
+.VARI TARGET_NAME
+Specifies a target.  The target may be a planet, satellite, ring, region, feature,
+asteroid or comet.  This value is copied to the output label, property
+IDENTIFICATION, keyword TARGET_NAME.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target. This value is copied to the output
+label, property IDENTIFICATION, keyword TARGET_NAME.
+

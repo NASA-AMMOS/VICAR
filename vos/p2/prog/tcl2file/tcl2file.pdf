@@ -1,0 +1,44 @@
+process help=*
+ !
+ PARM OUT            TYPE=(STRING,99)
+ PARM TCLTEXT        TYPE=(STRING,99) COUNT=(1:100)
+!
+ END-PROC
+!
+.TITLE
+GNUPSET - Program for creating a gnu plot parameter file
+.HELP
+PURPOSE
+     
+CALL
+     tcl2file OUT TCLTEXT
+  WHERE:
+     OUT            is the output data set
+     TCLTEXT        are text lines that become text lines in the
+                    output file; each is free formatted 
+    
+OPERATION
+
+PERFORMANCE
+
+Less than 1 second
+
+.PAGE
+RESTRICTIONS
+------------
+
+Only 100 lines can be input
+
+.PAGE
+Original Programmer: A. L. Zobrist, 14 Dec. 2005
+Current Cognizant Programmer: A. L. Zobrist
+Revisions:
+  2008-01-03 wlb - switched to USES_ANSI_C AND LIB_CARTO; misc cleanup  
+  2021-06-10 wlb - migrated to MIPL
+
+.LEVEL1
+.VARI OUT
+output file name
+.VARI TCLTEXT
+lines to write to file
+.END

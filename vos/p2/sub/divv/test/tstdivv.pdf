@@ -1,8 +1,12 @@
 procedure
 refgbl $echo
 body
+enable-log
+
 let _onfail="continue"
 let $echo="yes"
 WRITE "THIS IS A TEST OF MODULE DIVV"
 tdivv
+
+disable-log
 end-proc

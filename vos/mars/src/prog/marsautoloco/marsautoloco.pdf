@@ -1,0 +1,523 @@
+process help=*
+PARM INP TYPE=STRING COUNT=1
+PARM BASEMAP TYPE=STRING COUNT=1
+PARM DEM TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM OUT TYPE=STRING COUNT=(0:200) DEFAULT=-- 
+
+PARM RMC TYPE=INTEGER COUNT=(1:2)
+
+PARM ORTHO_NORTHING TYPE=REAL COUNT=1
+PARM ORTHO_EASTING TYPE=REAL COUNT=1
+PARM ORTHO_X_SCALE TYPE=REAL COUNT=(0:1)
+PARM ORTHO_Y_SCALE TYPE=REAL COUNT=(0:1)
+PARM ORTHO_L_OFFSET TYPE=INTEGER COUNT=(0:1)
+PARM ORTHO_S_OFFSET TYPE=INTEGER COUNT=(0:1)
+
+PARM MAP_NORTHING TYPE=REAL COUNT=(0:1)
+PARM MAP_EASTING TYPE=REAL COUNT=(0:1)
+PARM MAP_X_SCALE TYPE=REAL COUNT=(0:1)
+PARM MAP_Y_SCALE TYPE=REAL COUNT=(0:1)
+PARM MAP_L_OFFSET TYPE=INTEGER COUNT=(0:1)
+PARM MAP_S_OFFSET TYPE=INTEGER COUNT=(0:1)
+
+PARM DEM_NORTHING TYPE=REAL COUNT=(0:1)
+PARM DEM_EASTING TYPE=REAL COUNT=(0:1)
+PARM DEM_X_SCALE TYPE=REAL COUNT=(0:1)
+PARM DEM_Y_SCALE TYPE=REAL COUNT=(0:1)
+PARM DEM_L_OFFSET TYPE=INTEGER COUNT=(0:1)
+PARM DEM_S_OFFSET TYPE=INTEGER COUNT=(0:1)
+
+PARM SEARCH_RANGE  TYPE=INTEGER COUNT=1 DEFAULT=7
+PARM WEIGHT TYPE=KEYWORD COUNT=1 VALID=("WEIGHT","NOWEIGHT") DEFAULT="WEIGHT"
+
+LOCAL DUMY TYPE=REAL INITIAL=0.0
+PARM CORR_SCORE TYPE=NAME DEFAULT=DUMY
+
+PARM CONFIG_PATH STRING DEFAULT="$MARS_CONFIG_PATH"
+PARM POINT_METHOD TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM MATCH_METHOD TYPE=STRING COUNT=(0:1) VALID=("LOOSE", "TIGHT") +
+	DEFAULT=LOOSE
+PARM MATCH_TOL TYPE=REAL COUNT=1 DEFAULT=.002
+PARM NOSITE TYPE=KEYWORD COUNT=(0:1) VALID=NOSITE DEFAULT=--
+
+PARM RSF TYPE=STRING COUNT=0:100 DEFAULT=--
+PARM DEBUG_RSF TYPE=KEYWORD COUNT=0:1 VALID=DEBUG_RSF DEFAULT=--
+PARM COORD TYPE=KEYWORD VALID=("FIXED", "INSTRUMENT", "SITE", "ROVER", +
+        "LOCAL_LEVEL") DEFAULT="FIXED"
+PARM COORD_INDEX TYPE=INTEGER COUNT=0:10 DEFAULT=--
+PARM FIXED_SITE TYPE=INTEGER COUNT=0:1 DEFAULT=--
+
+!# parm inp(2-200) hints=default
+!# parm out file=vicar; direction=output
+
+END-PROC
+
+.TITLE
+VICAR program MARSAUTOLOCO
+
+.HELP
+PURPOSE:
+-------
+
+To automatically adjust the map coordinates origin (Easting, Northing) of the
+INP image with respect to the base map image. The adjustment is based on
+the coregistration of the orthomosaic (INP) to the baseline image.
+
+.page
+
+EXECUTION:
+---------
+
+marsautoloco inp=orthomosaic.img basemap=basemap.img out=solution.xml rmc=45,345 ortho_northing=-279206.27 ortho_easting=8141890.79
+
+.page
+
+METHOD:
+------
+
+The process is composed of the following steps:
+
+[1]
+The orthomosaic is low-pass filtered and decimated according to the basemap
+resolution to simulate an orthomosaic at the same resolution of the basemap
+
+[2]
+Using the input Easting/Northing map coordinates estimate of the orthomosaic 
+(usually based on the telemetry), a subset of the basemap image that contains 
+the footprint of the orthomosaic is extracted. The subset is actually enlarged 
+to account for the search space
+
+[3]
+The downsampled orthomosaic and base map are correlated using NCC. The 
+correlation is designed to account for holes (no data) in the orthomosaic and 
+can weight (WEIGHT) differently pixel that are far from orthomosaic map 
+coordinates origin (usually the center of the mosaic, which also usually 
+corresponds to the rover location). The hypothese is that orthomosaic pixels 
+far from the rover are of poorer quality. Also, good registration in the 
+vicinity of the rover is what matters.
+
+[4]
+The corrected map coordinates of the orthomosaic reference system with respect 
+to the base map are saved in an XML file. If a DEM is supplied, the elevation
+at the corrected coordinates is extracted and supplied in the XML file.
+
+
+.page
+
+
+
+HISTORY:
+-------
+
+  2002-02-18 Francois Ayoub - Initial marsautoloco. 
+  2019-10-02 Walt Bunch - IDS-7926 - Initialized some variables;
+                          Commented unused variables. Added a test directory
+                          with a csh test script and example output and log.
+
+COGNIZANT PROGRAMMER:  Francois Ayoub
+
+
+.LEVEL1
+.VARI INP
+Input image. 
+
+.VARI BASEMAP
+Basemap image.
+
+.VARI DEMP
+DEM image.
+
+.VARI OUT
+Output XML file.
+
+.VARI RMC
+RMC numbers
+
+
+.VARI ORTHO_NORTHING
+Northing of ortho in
+base map projection.
+
+.VARI ORTHO_EASTING
+Easting of ortho in
+base map projection.
+
+.VARI ORTHO_X_SCALE
+Scale in X. Same unit
+as base map scale.
+
+.VARI ORTHO_Y_SCALE
+Scale in Y. Same unit
+as base map scale.
+
+.VARI ORTHO_L_OFFSET
+Pixel line of ortho 
+Northing coordinate.
+
+.VARI ORTHO_S_OFFSET
+Pixel sample of ortho 
+Northing coordinate.
+
+
+.VARI MAP_NORTHING
+Northing of base map
+
+.VARI MAP_EASTING
+Easting of base map
+
+.VARI MAP_X_SCALE
+Scale of base map in X. 
+
+.VARI MAP_Y_SCALE
+Scale of base map in Y. 
+
+.VARI MAP_L_OFFSET
+Pixel line of map 
+coordinate.
+
+.VARI MAP_S_OFFSET
+Pixel sample of 
+map coordinate.
+
+
+.VARI DEM_NORTHING
+Northing of DEM
+
+.VARI DEM_EASTING
+Easting of DEM
+
+.VARI DEM_X_SCALE
+Scale of DEM in X. 
+
+.VARI DEM_Y_SCALE
+Scale of DEM in Y. 
+
+.VARI DEM_L_OFFSET
+Pixel line of map 
+coordinate.
+
+.VARI DEM_S_OFFSET
+Pixel sample of 
+map coordinate.
+
+
+.VARI SEARCH_RANGE
+Search range in 
+pixel.
+
+.VARI WEIGHT
+Weighted correlation.
+
+.VARI CORR_SCORE
+Output variable for
+correlation score
+
+.VARI CONFIG_PATH
+Path used to find
+configuration/calibration
+files.
+
+.VARI POINT_METHOD
+Specifies a mission-
+specific pointing
+method to use
+
+.VARI MATCH_METHOD
+Specifies a method
+for pointing corrections.
+
+.VARI MATCH_TOL
+Tolerance value for
+matching pointing params
+in pointing corrections file.
+
+.VARI NOSITE
+Disables coordinate
+system sites.
+
+.VARI RSF
+Rover State File(s) to use.
+
+.VARI DEBUG_RSF
+Turns on debugging of RSF
+parameter.
+
+.VARI COORD
+Coordinate system to use.
+Ignored by marstie.
+
+.VARI COORD_INDEX
+Coordinate system index for
+some COORD/mission combos.
+Ignored by marstie.
+
+.VARI FIXED_SITE
+Which site is FIXED for
+rover missions.
+
+
+
+
+.LEVEL2
+.VARI INP
+File name of the orthomosaic to register to the base map. By default, the 
+program will retrieve the orthomosaic scale, sample/line offset, RMC, if a
+SURFACE_PROJECTION_PARMS property is in the label. If they are not there, then
+the user will need to supply them through parameters (ORTHO_*).
+However, even if the RMC is in the label and is retrieved from there by the 
+program, the user must still enter them. A check on RMC correspondence is done
+and a warning is displayed if they differ. The reason for forcing the user to 
+supply the RMC although they can be read from the label is that at the time of 
+the program writting is wasn't clear how to manage RMC gotten from PLACES and 
+the one in the labels. This behavior might change eventually.
+
+
+.VARI BASEMAP
+File name of the base map to register the orthomosaic (INP) onto. It is assumed
+that the image label contains a IMAGE_MAP_PROJECTION property, with at minimum
+the line/sample_projection_offset, map_scale, and line/sample_first_pixel 
+information. Otherwise, the user will have to supply them through parameters
+(MAP_*).
+
+.VARI DEM
+File name of the DEM to use. The DEM is not used for the registration process. 
+It is used at the end, once the ortho mosaic image map coordinates has been 
+corrected, to extract the elevation of the map origin. This elevation is 
+supplied in the output file.
+Same constraints as the base map regarding labels.
+
+
+.VARI OUT
+Name of the XML that will contains the solution of the auto localization
+
+.VARI RMC 
+RMC numbers (1 or 2, depending if Major or Minor Site).
+
+.VARI ORTHO_NORTHING
+This is a mandatory parameter. It is the Northing map coordinate of the 
+orthomosaic. The coordinate is in the same map projection system as the basemap.
+It is a mandatory parameter as there is no other way to "connect" the base map
+map projection (usually some equirectangular projection with clat=0, clong=0) to
+the local map projection of the orthomosaic.
+
+.VARI ORTHO_EASTING
+same as northing, but for easting.
+
+.VARI ORTHO_X_SCALE
+Scale of the orthomosaic in the sample direction. Usually m/pixel, but don't
+have to be. Unit has to be the same as the base map scale though. 
+
+.VARI ORTHO_Y_SCALE
+Scale of the orthomosaic in the line direction. Usually m/pixel, but don't
+have to be. Unit has to be the same as the base map scale though. 
+
+.VARI ORTHO_L_OFFSET
+Line of the pixel in the orthomosaic image at which ORTHO_NORTHING/EASTING is
+"attached". Pixel coordinates is 1-based.
+For instance, if (ORTHO_L_OFFSET, ORTHO_S_OFFSET) is (1,1), then it means that
+the top/left pixel of the orthomosaic image has map coordinates of 
+(ORTHO_NORTHING, ORTHO_EASTING).
+
+.VARI ORTHO_S_OFFSET
+Sample of the pixel in the orthomosaic image at which ORTHO_NORTHING/EASTING is
+"attached". Pixel coordinates is 1-based.
+
+
+.VARI MAP_NORTHING
+Northing map projection coordinate of the pixel (MAP_L_OFFSET, MAP_S_OFFSET).
+Read from the label, unless supplied by user in which case it overwrites.
+
+.VARI MAP_EASTING
+Easting map projection coordinate of the pixel (MAP_L_OFFSET, MAP_S_OFFSET).
+Read from the label, unless supplied by user in which case it overwrites.
+
+.VARI MAP_X_SCALE
+Scale of the base map pixel in Easting direction (always positive). Usually in 
+m/pixel but don't have to. Depends on the projection map system.
+Read from the label, unless supplied by user in which case it overwrites.
+
+.VARI MAP_Y_SCALE
+Scale of the base map pixel in Northing direction (always positive). Usually in 
+m/pixel but don't have to. Depends on the projection map system.
+Read from the label, unless supplied by user in which case it overwrites.
+
+.VARI MAP_L_OFFSET
+Line of the pixel in the base map image at which (MAP_NORTHING, MAP_EASTING) is
+"attached". Pixel coordinates is 1-based.
+
+.VARI MAP_S_OFFSET
+Sample of the pixel in the base map image at which (MAP_NORTHING, MAP_EASTING) 
+is "attached". Pixel coordinates is 1-based.
+
+
+.VARI DEM_NORTHING
+Northing map projection coordinate of the pixel (DEM_L_OFFSET, DEM_S_OFFSET).
+Read from the label, unless supplied by user in which case it overwrites.
+
+.VARI DEM_EASTING
+Easting map projection coordinate of the pixel (DEM_L_OFFSET, DEM_S_OFFSET).
+Read from the label, unless supplied by user in which case it overwrites.
+
+.VARI DEM_X_SCALE
+Scale of the DE pixel in Easting direction (always positive). Usually in 
+m/pixel but don't have to. Depends on the projection map system.
+Read from the label, unless supplied by user in which case it overwrites.
+
+.VARI DEM_Y_SCALE
+Scale of the DEM pixel in Northing direction (always positive). Usually in 
+m/pixel but don't have to. Depends on the projection map system.
+Read from the label, unless supplied by user in which case it overwrites.
+
+.VARI DEM_L_OFFSET
+Line of the pixel in the DEM image at which (DEM_NORTHING, DEM_EASTING) is
+"attached". Pixel coordinates is 1-based.
+
+.VARI DEM_S_OFFSET
+Sample of the pixel in the DEM image at which (DEM_NORTHING, DEM_EASTING) 
+is "attached". Pixel coordinates is 1-based.
+
+
+.VARI SEARCH_RANGE
+Search range in (base map) pixel to look for the best coregistration between the
+orthomosaic and the base map. The starting point is based on (ORTHO_NORTHING,
+ORTHO_EASTING) and SEARCH_RANGE specifies the length of the exploration in each 
+direction (up, down, left, right).
+
+.VARI WEIGHT
+If WEIGHT is on, then the correlation is weigted. At each location of the search
+space, the entire orthomosaic is correlated at once with the base map. In a non-
+weighted correlation all the pixel have the same weight in the correlation score.
+However, if WEIGHT is ON, then each pixel has a different weigth in the 
+correlation. Their weight is inversely proportional to the distance between the
+pixels and the pixel at which the map coordinates of the orthomosaic is 
+attached. The "special pixel" (ORTHO_S_OFFSET, ORTHO_L_OFFSET) usually 
+corresponds to the location of the rover. The closer the pixels are to the 
+rover, the more weight they have in the correlation.
+
+.VARI CORR_SCORE
+Output variable that will contain the correlation score. It can be retrieved
+using the v2param function.
+If correlation score is equal to 0, that means that the maximum correlation was
+found on the edges of the search space, which is almost certainly a bogus
+measurement. 
+
+
+.VARI CONFIG_PATH
+A colon-separated list of directories in which to look for configuration
+and calibration files.  Environment variables are allowed in the list
+(and may themselves contain colon-separated lists).  The directories are
+searched in order for each config/cal file when it is loaded.  This allows
+multiple projectes to be supported simultaneously, and allows the user to
+override any given config/cal file.  Note that the directory structure below
+the directories specified in this path must match what the project expects.
+For example, Mars 98 expects flat fields to be in a subdirectory named
+"flat_fields" while Mars Pathfinder expects them to be directly in the
+directory specified by the path (i.e. no intermediate subdirectories).
+
+.VARI POINT_METHOD
+Specifies a mission-specific pointing method to use.  Normally this
+parameter is not used, in which case the "default" pointing methods
+are used.  Some missions may have special, or alternate, pointing
+methods available, which are indicated by this string (for example,
+backlash models, using arm joint angles instead of x/y/z/az/el, etc).
+A substring search is used, so multiple methods (where that makes sense)
+can be specified by separating the keywords with commas.
+
+Note that nav files created using one pointing method will most likely
+not be compatible with a mosaic created using a different pointing method.
+
+The methods available vary per mission, but some methods available at
+the time of this writing are:
+
+.VARI MATCH_METHOD
+Specifies a method for pointing corrections.
+
+Loose method matches with pointing parameters of the image.
+Tight method matches with unique id of the image.
+
+.VARI MATCH_TOL
+Tolerance value for matching pointing parameters in the pointing corrections
+file.  Used if MATCH_METHOD=LOOSE
+Default value is pretty arbitrary, though seems to work well so far....
+
+.VARI NOSITE
+Disables all label-derived parameters to the Site mechanism which underlies
+coordinate systems.  This forces all sites to be identical, with all rotations
+and offsets set the same.  In the case of MPF or Mars 98, this disables
+the lander quaternion and offset (sets them to identity and 0, respectively).
+This option should not be used with images taken from different vantage
+points (e.g. the spacecraft moved, or mixing a lander and a rover) or
+invalid results will be obtained.  The use of this option invalidates the
+Fixed coordinate frame; any values reported in the Fixed frame will not
+correctly reflect the orientation of the lander/rover.
+
+Obviously, this option should be rarely used; it is intended for when the
+image labels defining the site are invalid or inconsistent.
+
+.VARI RSF
+Rover State File.  This is a list of filenames to load containing
+Rover State information.  These files contain position and orientation
+information for a rover (or other mobile spacecraft) at various sites.
+They are in XML format.  See the "Rover Motion Counter (RMC) Master File SIS"
+for details on these files.
+
+Rover State Files have a priority order.  The files listed first have
+the highest priority.
+
+Environment variables may be used in the list.
+
+For MER, if a directory is specified, then that directory is searched for
+RMC Master files and any found are loaded.  The directory structure and
+filename convention is covered in the RMC SIS.  The directory specified
+is the one containing "master", so if <dir> is the name specified in the
+RSF parameter, the following files will be searched for:
+
+<dir>/master/<mission>_Master.svf
+<dir>/master/<mission>_Site_<n>_Master.rvf
+
+The name of each file loaded is printed to the stdout log for reference.
+
+.VARI DEBUG_RSF
+If enabled, this causes the internal database of RMC locations to be
+printed out to the stdout log.  This is after the RSF files have been
+loaded and the coordinate systems read from the input label(s).
+
+.VARI COORD
+This parameter is ignored by marstie.  It is here for compatibility
+with subroutines used by other programs (see e.g. marsmap).
+
+.VARI COORD_INDEX
+This parameter is ignored by marstie.  It is here for compatibility
+with subroutines used by other programs (see e.g. marsmap).
+
+.VARI FIXED_SITE
+Specifies which major Site is the "Fixed" Site for this run.
+
+Historically, MPF and M98 had a single "Surface Fixed" frame which never
+moved, and which all other coordinate system frames were referenced to.
+With the advent of long-range rovers (such as MER and FIDO), that became
+insufficient.  The rover traverses far enough that errors in knowledge of
+coordinate system offset and orientation become unacceptable.
+
+For this reason, a system of major Sites was introduced.  Periodically
+during the mission, a Site frame is declared.  This then becomes the
+reference frame for all activities until the next Site is declared.
+References are kept local, and errors don't propogate across Sites.
+
+However, if images from more than one Site are combined together, the
+Site's must be placed relative to each other.  Therefore a single reference
+frame is still needed to combine different sites.
+
+The FIXED_SITE parameter controls which of the major Site frames is
+the reference ("fixed") site for this program run.  This fixed frame
+can vary in different program runs, but is constant throughout one
+execution.
+
+If not specified, FIXED_SITE defaults to the minimum Site number (i.e.
+lowest numbered, or earliest chronologically) used in all input images.
+Normally this default is sufficient; rarely must FIXED_SITE be specified.
+
+One or more Rover State Files must usually be specified in order to combine
+image from more than one Site.  These describe the relationship between
+sites.  See the RSF parameter.
+

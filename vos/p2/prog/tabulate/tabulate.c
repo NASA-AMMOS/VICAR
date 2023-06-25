@@ -8,6 +8,8 @@
 #include <string.h>
 #include "vicmain_c"
 
+void file_error(char fname[], char msg[]);
+
 void main44()
 {
 #define MAXR1    255              /* buffer length for file name      */
@@ -82,7 +84,7 @@ void main44()
 
 
 /* handles file errors */
-file_error(fname, msg)
+void file_error(fname, msg)
 char fname[], msg[];
 {
   char buf[MAXR1+25];

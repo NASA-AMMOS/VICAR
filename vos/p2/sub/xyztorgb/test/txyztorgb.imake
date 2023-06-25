@@ -11,5 +11,4 @@
 
 #define   LIB_RTL
 #define   LIB_TAE
-#define   LIB_LOCAL       /*  Disable during delivery   */
-/* #define LIB_P2SUB             Enable during delivery  */
+#define   LIB_P2SUB

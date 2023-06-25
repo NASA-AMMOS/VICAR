@@ -1,18 +1,18 @@
 local path type=string init="wms_test_work:[testdata.mipl.gll]"
 if ($syschar(1) = "UNIX")
-    let path="/project/test_work/testdata/mipl/gll/"
+    let path="data/"
 end-if
-addnoise /project/test_work/testdata/mipl/gll/venus2.img n rate=100 seed=9699691
+addnoise data/venus2.img n rate=100 seed=9699691
 Beginning VICAR task addnoise
 ADDNOISE version 2016-05-26
 Input format is HALF
    51155 pixels hit by bit errors
 despike  n  d
 Beginning VICAR task despike
-DESPIKE version 11-Oct-2005
+DESPIKE version 2020-06-16
 pixels pass first gate=      91235
 spikes removed=      58683
-f2 (/project/test_work/testdata/mipl/gll/venus.img,d) diff func="abs(in1-in2)"
+f2 (data/venus.img,d) diff func="abs(in1-in2)"
 Beginning VICAR task f2
 F2 version 98-Aug-2015
 F2 using hash table lookup
@@ -26,7 +26,7 @@ AVERAGE GRAY LEVEL=14702.71       STANDARD DEVIATION=15811.66       NUMBER ELEME
 MIN. DN=         0
 MAX. DN=     32767
 
-fit /project/test_work/testdata/mipl/gll/venus2.img byte perc=0.1 'byte
+fit data/venus2.img byte perc=0.1 'byte
 Beginning VICAR task fit
 
 FIT version 5 August, 2003
@@ -48,7 +48,7 @@ Input format is BYTE
    51155 pixels hit by bit errors
 despike  n  d  scale=2 tol=4
 Beginning VICAR task despike
-DESPIKE version 11-Oct-2005
+DESPIKE version 2020-06-16
 pixels pass first gate=      32295
 spikes removed=      31069
 f2 (byte,d) diff func="abs(in1-in2)"
@@ -72,10 +72,10 @@ F2 calculating every pixel
 FUNCTION EVALUATED 640000 TIMES
 despike nr d
 Beginning VICAR task despike
-DESPIKE version 11-Oct-2005
+DESPIKE version 2020-06-16
 pixels pass first gate=      35235
 spikes removed=      32129
-f2 (/project/test_work/testdata/mipl/gll/venus2.img,d) diff func="(in1-in2)" 'real
+f2 (data/venus2.img,d) diff func="(in1-in2)" 'real
 Beginning VICAR task f2
 F2 version 98-Aug-2015
 F2 calculating every pixel
@@ -113,10 +113,10 @@ MAX. DN=2234.000
 
 despike nr d 'posonly
 Beginning VICAR task despike
-DESPIKE version 11-Oct-2005
+DESPIKE version 2020-06-16
 pixels pass first gate=      35235
 spikes removed=      24907
-f2 (/project/test_work/testdata/mipl/gll/venus2.img,d) diff func="(in1-in2)" 'real
+f2 (data/venus2.img,d) diff func="(in1-in2)" 'real
 Beginning VICAR task f2
 F2 version 98-Aug-2015
 F2 calculating every pixel
@@ -163,7 +163,7 @@ Input format is BYTE
     7984 pixels hit by bit errors
 despike b3d c3d
 Beginning VICAR task despike
-DESPIKE version 11-Oct-2005
+DESPIKE version 2020-06-16
 pixels pass first gate=       1290
 spikes removed=        811
 pixels pass first gate=          0
@@ -195,7 +195,7 @@ Input format is BYTE
     3980 pixels hit by bit errors
 despike b3d c3d
 Beginning VICAR task despike
-DESPIKE version 11-Oct-2005
+DESPIKE version 2020-06-16
 pixels pass first gate=       2397
 spikes removed=       2163
 pixels pass first gate=          0

@@ -1,0 +1,5 @@
+$ vpack marsmask.com -mixed -
+	-s marsmask.cc -
+	-i marsmask.imake -
+	-p marsmask.pdf
+$ Exit

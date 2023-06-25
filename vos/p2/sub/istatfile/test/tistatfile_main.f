@@ -129,7 +129,7 @@ C
 	if (row .lt. 0) then
 		message = '  Not Found. ' 
 	else 
-		write (message, '(A,I)') 'Found at row: ',row
+		write (message, '(A,I10)') 'Found at row: ',row
 	endif 
 	call xvmessage(message,' ')
 	
@@ -138,7 +138,7 @@ C
 	if (status .lt. 0) call istat_signal(unit,status,1) 
 	
 	write (message,'(I10,A11,2I7,2F9.3)')
-     +      row,classname,npix,nb,means(0),covariance(0)
+     +      row,classname,npix,nb,means(1),covariance(1)
 	call xvmessage(message,' ') 
 	
 	call istat_file_close(unit,status) 

@@ -1,0 +1,111 @@
+procedure
+refgbl $echo
+refgbl $autousage
+refgbl $syschar
+body
+enable-log
+let $autousage = "none"
+let _onfail="return"
+let $echo="yes"
+
+! TEST SCRIPT FOR calfit
+
+! test the fitonly option
+write "TESTING FITONLY OPTION"
+
+gen xxx1 nl=3 ns=2 ival = 1 linc=1 sinc=1
+gen xxx2 nl=3 ns=2 ival = 3 linc=3 sinc=2
+gen xxx3 nl=3 ns=2 ival = 7 linc=2 sinc=4
+gen xxx4 nl=3 ns=2 ival = 9 linc=2 sinc=2
+gen xxx5 nl=3 ns=2 ival = 12 linc=2 sinc=4
+list xxx1 'zer 'nousrtim
+list xxx2 'zer 'nousrtim
+list xxx3 'zer 'nousrtim
+list xxx4 'zer 'nousrtim
+list xxx5 'zer 'nousrtim
+
+calfit inp=(xxx1,xxx2,xxx3,xxx4,xxx5) out=(xxx6,xxx7) +
+     calval=(0.0,5.0,10.0,14.0,20.0) 'fitonly
+
+list xxx6 'zer 'nousrtim
+list xxx7 'zer 'nousrtim
+
+f2 inp=(xxx1,xxx6,xxx7) out=xxx8 func="0.0*in2+in3-in1" format=real
+f2 inp=(xxx2,xxx6,xxx7) out=xxx9 func="5.0*in2+in3-in1" format=real
+f2 inp=(xxx3,xxx6,xxx7) out=xxxa func="10.0*in2+in3-in1" format=real
+f2 inp=(xxx4,xxx6,xxx7) out=xxxb func="14.0*in2+in3-in1" format=real
+f2 inp=(xxx5,xxx6,xxx7) out=xxxc func="20.0*in2+in3-in1" format=real
+
+list xxx8 'zer 'nousrtim
+list xxx9 'zer 'nousrtim
+list xxxa 'zer 'nousrtim
+list xxxb 'zer 'nousrtim
+list xxxc 'zer 'nousrtim
+
+!  now test the avg option
+write "TESTING AVG OPTION"
+
+calfit inp=(xxx1,xxx2,xxx3,xxx4,xxx5) out=(xxx6,xxx7) +
+     calval=(0.0,5.0,10.0,14.0,20.0) 'calibavg
+
+list xxx6 'zer 'nousrtim
+list xxx7 'zer 'nousrtim
+
+f2 inp=(xxx1,xxx6,xxx7) out=xxx8 func="in1*in2+in3" format=real
+f2 inp=(xxx2,xxx6,xxx7) out=xxx9 func="in1*in2+in3" format=real
+f2 inp=(xxx3,xxx6,xxx7) out=xxxa func="in1*in2+in3" format=real
+f2 inp=(xxx4,xxx6,xxx7) out=xxxb func="in1*in2+in3" format=real
+f2 inp=(xxx5,xxx6,xxx7) out=xxxc func="in1*in2+in3" format=real
+
+list xxx8 'zer 'nousrtim
+list xxx9 'zer 'nousrtim
+list xxxa 'zer 'nousrtim
+list xxxb 'zer 'nousrtim
+list xxxc 'zer 'nousrtim
+
+!  now test the median option
+write "TESTING MEDIAN OPTION"
+
+calfit inp=(xxx1,xxx2,xxx3,xxx4,xxx5) out=(xxx6,xxx7) +
+     calval=(0.0,5.0,10.0,14.0,20.0) 'calibmed
+
+list xxx6 'zer 'nousrtim
+list xxx7 'zer 'nousrtim
+
+f2 inp=(xxx1,xxx6,xxx7) out=xxx8 func="in1*in2+in3" format=real
+f2 inp=(xxx2,xxx6,xxx7) out=xxx9 func="in1*in2+in3" format=real
+f2 inp=(xxx3,xxx6,xxx7) out=xxxa func="in1*in2+in3" format=real
+f2 inp=(xxx4,xxx6,xxx7) out=xxxb func="in1*in2+in3" format=real
+f2 inp=(xxx5,xxx6,xxx7) out=xxxc func="in1*in2+in3" format=real
+
+list xxx8 'zer 'nousrtim
+list xxx9 'zer 'nousrtim
+list xxxa 'zer 'nousrtim
+list xxxb 'zer 'nousrtim
+list xxxc 'zer 'nousrtim
+
+!  now test the quadratic option
+write "TESTING QUADRATIC OPTION"
+
+calfit inp=(xxx1,xxx2,xxx3,xxx4,xxx5) out=(xxx6,xxx7,xxx8) +
+     calval=(0.0,5.0,10.0,14.0,20.0) 'fitonly
+
+list xxx6 'zer 'nousrtim
+list xxx7 'zer 'nousrtim
+list xxx8 'zer 'nousrtim
+
+f2 inp=(xxx1,xxx6,xxx7,xxx8) out=xxx9 func="0.0*in4+0.0*in2+in3-in1" format=real
+f2 inp=(xxx2,xxx6,xxx7,xxx8) out=xxxa func="25.0*in4+5.0*in2+in3-in1" format=real
+f2 inp=(xxx3,xxx6,xxx7,xxx8) out=xxxb func="100.0*in4+10.0*in2+in3-in1" format=real
+f2 inp=(xxx4,xxx6,xxx7,xxx8) out=xxxc func="196.0*in4+14.0*in2+in3-in1" format=real
+f2 inp=(xxx5,xxx6,xxx7,xxx8) out=xxxd func="400.0*in4+20.0*in2+in3-in1" format=real
+
+list xxx9 'zer 'nousrtim
+list xxxa 'zer 'nousrtim
+list xxxb 'zer 'nousrtim
+list xxxc 'zer 'nousrtim
+list xxxd 'zer 'nousrtim
+
+theend>
+disable-log
+end-proc

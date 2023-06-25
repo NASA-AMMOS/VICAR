@@ -1,0 +1,24 @@
+Results will vary depending on what system you are using
+tget_ran
+Beginning VICAR task tget_ran
+ The input seed value:      15289
+ The output seed value:     0.578753
+ The input seed value:      15457
+ The output seed value:     0.780694
+ The input seed value:      26245
+ The output seed value:     0.876492
+ The input seed value:      12102
+ The output seed value:     0.743339
+ The input seed value:      25759
+ The output seed value:     0.340770
+ The input seed value:      20685
+ The output seed value:     0.540757
+ The input seed value:       9296
+ The output seed value:     0.979247
+ The input seed value:      28928
+ The output seed value:     0.705344
+ The input seed value:       2207
+ The output seed value:     0.284921
+ The input seed value:       3230
+ The output seed value:     0.817408
+disable-log

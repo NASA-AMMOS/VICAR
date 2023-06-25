@@ -4,6 +4,8 @@ refgbl $syschar
 LOCAL DIR    TYPE=STRING 
 LOCAL INPIC   TYPE=STRING
 body
+enable-log
+
 let _onfail="continue"
 let $echo="no"
 
@@ -11,11 +13,9 @@ WRITE "THIS IS A TEST OF MODULE ABLE97"
 WRITE " "
 write " Test Cassini ISS ground label"
 WRITE " "
-if ($syschar(1) = "UNIX")
-   LET INPIC   ="/project/test_work/testdata/cassini/iss/labtest.img"
-else 
-   LET INPIC   ="WMS_TEST_WORK:[TESTDATA.CASSINI.ISS]LABTEST.IMG"
-end-if
+
+! From /project/test_work/testdata/cassini/iss/labtest.img
+LET INPIC   ="labtest.vic"
 
 let $echo="yes"
 label-list &INPIC
@@ -26,11 +26,9 @@ let $echo="no"
 WRITE " "
 write " Test Cassini ISS2 label"
 WRITE " "
-if ($syschar(1) = "UNIX")
-   LET INPIC   ="/project/test_work/testdata/cassini/casIss/y2.img"
-else 
-   LET INPIC   ="WMS_TEST_WORK:[TESTDATA.CASSINI.CAS$I$SS]Y2.IMG"
-end-if
+
+! From /project/test_work/testdata/cassini/casIss/y2.img
+LET INPIC   ="y2.vic"
 
 let $echo="yes"
 label-list &INPIC
@@ -42,11 +40,8 @@ WRITE " "
 write " Test Cassini ISS new cruise label"
 WRITE " "
 
-if ($syschar(1) = "UNIX")
-   LET INPIC   ="/project/test_work/testdata/cassini/casIss/n1356781097.2"
-else 
-   LET INPIC   ="WMS_TEST_WORK:[TESTDATA.CASSINI.CAS$I$SS]N1356781097.2"
-end-if
+! From /project/test_work/testdata/cassini/casIss/n1356781097.2
+LET INPIC   ="n1356781097.2.vic"
 
 let $echo="yes"
 label-list &INPIC
@@ -58,17 +53,15 @@ WRITE " "
 write " Test Cassini ISS tour label"
 WRITE " "
 
-if ($syschar(1) = "UNIX")
-   LET INPIC   = "/project/test_work/testdata/cassini/iss/N1358285193_7.IMG"
-else 
-   LET INPIC   ="WMS_TEST_WORK:[TESTDATA.CASSINI.ISS]$N1358285193_7.IMG"
-end-if
+! From /project/test_work/testdata/cassini/iss/N1358285193_7.IMG
+LET INPIC   = "N1358285193_7.vic"
 
 let $echo="yes"
 label-list &INPIC
 
 TABLE97 &INPIC
 
+disable-log
 end-proc
 .title
 Test Procedure for the subroutine, ABLE97.

@@ -1,26 +1,3 @@
-                Version 5C/16C
-
-      ***********************************************************
-      *                                                         *
-      * VICAR Supervisor version 5C, TAE V5.2                   *
-      *   Debugger is now supported on all platforms            *
-      *   USAGE command now implemented under Unix              *
-      *                                                         *
-      * VRDI and VIDS now support X-windows and Unix            *
-      * New X-windows display program: xvd (for all but VAX/VMS)*
-      *                                                         *
-      * VICAR Run-Time Library version 16C                      *
-      *   '+' form of temp filename now avail. on all platforms *
-      *   ANSI C now fully supported                            *
-      *                                                         *
-      * See B.Deen(RGD059) with problems                        *
-      *                                                         *
-      ***********************************************************
-
-  --- Type NUT for the New User Tutorial ---
-
-  --- Type MENU for a menu of available applications ---
-
 *******************************************************
 THIS IS A TEST OF MODULE filter
 WE WILL SPATIALLY filter AN IMAGE AND LIST THE RESULTS
@@ -30,13 +7,14 @@ AFTER EACH RUN.
 Generate a picture
 gen A nl=64 ns=64 ival=0 linc=1 sinc=1 modulo=6
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
-list A size=(1,1,10,10)
+list A size=(1,1,10,10) 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Mon Feb  9 15:05:33 2015
+ Task:GEN       User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       0   1   2   3   4   5   0   1   2   3
@@ -51,15 +29,16 @@ Beginning VICAR task list
      10       3   4   5   0   1   2   3   4   5   0
 f2 A filter.A func=("in1*51")
 Beginning VICAR task f2
-F2 version 26-Jul-11
+F2 version 98-Aug-2015
 F2 using byte table lookup
 FUNCTION EVALUATED 256 TIMES
-list filter.A size=(1,1,10,10)
+list filter.A size=(1,1,10,10) 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Mon Feb  9 15:05:33 2015
- Task:F2        User:wlb       Date_Time:Mon Feb  9 15:05:33 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:F2        User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       0  51 102 153 204 255   0  51 102 153
@@ -77,12 +56,13 @@ TEST 1 - Do a default filter  (Surveyor Footpad Filter Kernel)
 filter filter.A filter.Y1
 Beginning VICAR task filter
 ** Filter 13-Aug-2010 (64-bit) - RJB
-list filter.Y1 size=(1,1,10,10)
+list filter.Y1 size=(1,1,10,10) 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Mon Feb  9 15:05:33 2015
- Task:FILTER    User:wlb       Date_Time:Mon Feb  9 15:05:33 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:FILTER    User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       0   0   0  82 255 255   0   0   0  89
@@ -97,7 +77,7 @@ Beginning VICAR task list
      10      87 255 255   0   0  75 175 255 255   0
 difpic (filter.A,filter.Y1) filter.dif1
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  AVE VAL OF POS DIFFS=  39.1419
  NUMBER OF POS DIFF=1367
  AVE VAL OF NEG DIFFS= -39.1201
@@ -105,12 +85,13 @@ DIFPIC version 06Oct11
  TOTAL NUMBER OF DIFFERENT PIXELS=2732
  AVE VAL OF DIFFS= 0.263672E-01
  % DIFF PIXELS=  66.6992
-list filter.dif1 size=(1,1,10,10)
+list filter.dif1 size=(1,1,10,10) 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Mon Feb  9 15:05:33 2015
- Task:DIFPIC    User:wlb       Date_Time:Mon Feb  9 15:05:33 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:DIFPIC    User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       0  51 102  71   0   0   0  51 102  64
@@ -130,12 +111,13 @@ TEST 2 - Do default filter using size field
 filter filter.A filter.Y2 (7,7,39,39)
 Beginning VICAR task filter
 ** Filter 13-Aug-2010 (64-bit) - RJB
-list filter.Y2 size=(1,1,10,10)
+list filter.Y2 size=(1,1,10,10) 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Mon Feb  9 15:05:33 2015
- Task:FILTER    User:wlb       Date_Time:Mon Feb  9 15:05:33 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:FILTER    User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       0   0   0  82 255 255   0   0   0  89
@@ -154,7 +136,7 @@ let $echo="no"
 TEST 3 - Now filter with halfword input and output
 cform filter.A filter.Z oform=half
 Beginning VICAR task cform
-CFORM VERSION 06-JUN-1998
+*** CFORM version 2018-03-29 ***
 OUT = IN *     1.000+     0.000
 INPUT FORMAT = BYTE
 OUTPUT FORMAT = HALF
@@ -162,12 +144,13 @@ CONVERSION COMPLETE
 filter filter.Z filter.W
 Beginning VICAR task filter
 ** Filter 13-Aug-2010 (64-bit) - RJB
-list filter.W size=(1,1,10,15)
+list filter.W size=(1,1,10,15)  'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
- Task:GEN       User:wlb       Date_Time:Mon Feb  9 15:05:33 2015
- Task:FILTER    User:wlb       Date_Time:Mon Feb  9 15:05:33 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:FILTER    User:          Date_Time:                        
      Samp       1     2     3     4     5     6     7     8     9    10    11    12    13    14    15
    Line
       1         0     0     0    82   295   568     0     0     0    89   303   569     0     0     0
@@ -182,7 +165,7 @@ Beginning VICAR task list
      10        87   267   484     0     0    75   175   303   480     0     0    78   177   303   480
 difpic (filter.Z,filter.W) filter.dif2
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  AVE VAL OF POS DIFFS=  39.1419
  NUMBER OF POS DIFF=1367
  AVE VAL OF NEG DIFFS= -116.115
@@ -190,12 +173,13 @@ DIFPIC version 06Oct11
  TOTAL NUMBER OF DIFFERENT PIXELS=3414
  AVE VAL OF DIFFS= -44.9658
  % DIFF PIXELS=  83.3496
-list filter.dif2 size=(1,1,10,10)
+list filter.dif2 size=(1,1,10,10) 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    HALF     samples are interpreted as HALFWORD data
- Task:GEN       User:wlb       Date_Time:Mon Feb  9 15:05:33 2015
- Task:DIFPIC    User:wlb       Date_Time:Mon Feb  9 15:05:33 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:DIFPIC    User:          Date_Time:                        
      Samp       1     2     3     4     5     6     7     8     9    10
    Line
       1         0    51   102    71   -91  -313     0    51   102    64
@@ -218,12 +202,13 @@ filter filter.A filter.V nlw=5 nsw=5 'nons  +
 	     -5,80,100,70,-10)
 Beginning VICAR task filter
 ** Filter 13-Aug-2010 (64-bit) - RJB
-list filter.V size=(1,1,10,10)
+list filter.V size=(1,1,10,10) 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Mon Feb  9 15:05:33 2015
- Task:FILTER    User:wlb       Date_Time:Mon Feb  9 15:05:33 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:FILTER    User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       0   0 180 250 194  80  34  27 180 250
@@ -238,7 +223,7 @@ Beginning VICAR task list
      10     240 219 161 115  49  86 147 207 161 115
 difpic (filter.A,filter.V) filter.dif3
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  AVE VAL OF POS DIFFS=  31.8498
  NUMBER OF POS DIFF=2649
  AVE VAL OF NEG DIFFS= -58.5336
@@ -246,12 +231,13 @@ DIFPIC version 06Oct11
  TOTAL NUMBER OF DIFFERENT PIXELS=4094
  AVE VAL OF DIFFS=-0.515137E-01
  % DIFF PIXELS=  99.9512
-list filter.dif3 size=(1,1,10,10)
+list filter.dif3 size=(1,1,10,10) 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Mon Feb  9 15:05:33 2015
- Task:DIFPIC    User:wlb       Date_Time:Mon Feb  9 15:05:33 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:DIFPIC    User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       0  51   0   0  10 175   0  24   0   0
@@ -274,12 +260,13 @@ filter filter.A filter.U nlw=5 nsw=5 'nons scale=(0,2)  +
 	     -5,80,100,70,-10)
 Beginning VICAR task filter
 ** Filter 13-Aug-2010 (64-bit) - RJB
-list filter.U size=(1,1,10,10)
+list filter.U size=(1,1,10,10) 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Mon Feb  9 15:05:33 2015
- Task:FILTER    User:wlb       Date_Time:Mon Feb  9 15:05:33 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:FILTER    User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       0   0 255 255 255 160  68  53 255 255
@@ -294,7 +281,7 @@ Beginning VICAR task list
      10     255 255 255 230  99 172 255 255 255 230
 difpic (filter.A,filter.U) filter.dif4
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  AVE VAL OF POS DIFFS=  55.5652
  NUMBER OF POS DIFF=  92
  AVE VAL OF NEG DIFFS= -99.9327
@@ -302,12 +289,13 @@ DIFPIC version 06Oct11
  TOTAL NUMBER OF DIFFERENT PIXELS=3433
  AVE VAL OF DIFFS= -80.2644
  % DIFF PIXELS=  83.8135
-list filter.dif4 size=(1,1,10,10) 'zer
+list filter.dif4 size=(1,1,10,10) 'zer 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Mon Feb  9 15:05:33 2015
- Task:DIFPIC    User:wlb       Date_Time:Mon Feb  9 15:05:33 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:DIFPIC    User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       0  51   0   0   0  95   0   0   0   0
@@ -330,12 +318,13 @@ filter filter.A filter.R nlw=3 nsw=3 'asym  +
 	         -10,20,-10)
 Beginning VICAR task filter
 ** Filter 13-Aug-2010 (64-bit) - RJB
-list filter.R size=(1,1,10,10)
+list filter.R size=(1,1,10,10) 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Mon Feb  9 15:05:33 2015
- Task:FILTER    User:wlb       Date_Time:Mon Feb  9 15:05:33 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:FILTER    User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1      12  79 130 181 212 125  38  79 130 181
@@ -350,7 +339,7 @@ Beginning VICAR task list
      10     132 219 230  64   7  97 148 219 230  64
 difpic (filter.A,filter.R) filter.dif5
 Beginning VICAR task difpic
-DIFPIC version 06Oct11
+DIFPIC version 2021-03-09
  AVE VAL OF POS DIFFS=  20.0923
  NUMBER OF POS DIFF=2720
  AVE VAL OF NEG DIFFS= -39.8408
@@ -358,12 +347,13 @@ DIFPIC version 06Oct11
  TOTAL NUMBER OF DIFFERENT PIXELS=4096
  AVE VAL OF DIFFS=-0.415039E-01
  % DIFF PIXELS=  100.000
-list filter.dif5 size=(1,1,10,10)
+list filter.dif5 size=(1,1,10,10) 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Mon Feb  9 15:05:33 2015
- Task:DIFPIC    User:wlb       Date_Time:Mon Feb  9 15:05:33 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:DIFPIC    User:          Date_Time:                        
      Samp     1       3       5       7       9
    Line
       1       0   0   0   0   0 130   0   0   0   0
@@ -380,13 +370,14 @@ if (mode = "nobatch" or mode = "inter")
 end-if
 gen filter.3X nl=100 ns=100 nb=3 ival=10 sinc=15 linc=20 binc=30
 Beginning VICAR task gen
-GEN Version 6
+GEN Version 2019-05-28
 GEN task completed
-list filter.3X size=(41,41,10,10)
+list filter.3X size=(41,41,10,10) 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Mon Feb  9 15:05:33 2015
+ Task:GEN       User:          Date_Time:                        
  ***********
  Band =     1
  ***********
@@ -404,7 +395,7 @@ Beginning VICAR task list
      50      54  69  84  99 114 129 144 159 174 189
 
 
- Task:GEN       User:wlb       Date_Time:Mon Feb  9 15:05:33 2015
+ Task:GEN       User:          Date_Time:                        
  ***********
  Band =     2
  ***********
@@ -422,7 +413,7 @@ Beginning VICAR task list
      50      84  99 114 129 144 159 174 189 204 219
 
 
- Task:GEN       User:wlb       Date_Time:Mon Feb  9 15:05:33 2015
+ Task:GEN       User:          Date_Time:                        
  ***********
  Band =     3
  ***********
@@ -443,12 +434,13 @@ TEST 7 - Test a 3D image
 filter filter.3X filter.3Y
 Beginning VICAR task filter
 ** Filter 13-Aug-2010 (64-bit) - RJB
-list filter.3Y size=(1,1,10,10) sb=1 nb=3
+list filter.3Y size=(1,1,10,10) sb=1 nb=3 'nousrtim
 Beginning VICAR task list
+LIST version 2019-09-06
 
    BYTE     samples are interpreted as   BYTE   data
- Task:GEN       User:wlb       Date_Time:Mon Feb  9 15:05:33 2015
- Task:FILTER    User:wlb       Date_Time:Mon Feb  9 15:05:33 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:FILTER    User:          Date_Time:                        
  ***********
  Band =     1
  ***********
@@ -466,8 +458,8 @@ Beginning VICAR task list
      10     141 183 233 255 255   0   0  30  70  85
 
 
- Task:GEN       User:wlb       Date_Time:Mon Feb  9 15:05:33 2015
- Task:FILTER    User:wlb       Date_Time:Mon Feb  9 15:05:33 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:FILTER    User:          Date_Time:                        
  ***********
  Band =     2
  ***********
@@ -485,8 +477,8 @@ Beginning VICAR task list
      10     222 255 255   0   0  30  70  85  90  94
 
 
- Task:GEN       User:wlb       Date_Time:Mon Feb  9 15:05:33 2015
- Task:FILTER    User:wlb       Date_Time:Mon Feb  9 15:05:33 2015
+ Task:GEN       User:          Date_Time:                        
+ Task:FILTER    User:          Date_Time:                        
  ***********
  Band =     3
  ***********

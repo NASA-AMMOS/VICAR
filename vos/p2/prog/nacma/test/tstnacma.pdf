@@ -1,0 +1,179 @@
+! Parameters:
+!   <none>
+!
+! Requires external test data: 
+!   cartlab or mipl dependent pointers
+!
+!   Cartlab defines env var $AFIDS_ROOT, mipl doesn't
+!   The test data in cartlab is on /raid1/test_data 
+!   but in other facilities it might be somewhere else. 
+!   
+!   To facilitate this test you can define an
+!   environment variable $AFIDS_TESTDATA to point to
+!   that data. The cartlab system does not. In the git archive
+!   on pistol there is softlink to the test data in vdev that
+!   allows this test to pass 
+
+procedure
+
+refgbl $echo
+refgbl $autousage
+local   afidsroot   type=string count=1
+local   aftestdata  type=string count=1
+
+local set     string
+local path    string
+local outpath string
+local band1   string
+local band2   string
+local band3   string
+local band4   string
+local band5   string
+local band13  string
+local band14  string
+local meta    string
+local filt1   string
+local filt2   string
+local filt3   string
+local filt4   string
+local filt5   string
+local filt6   string
+local filt7   string
+local filt8   string
+local rad1    string
+local rad2    string
+local rad3    string
+local rad4    string
+local rad5    string
+local rad13   string
+local rad14   string
+local ref1    string
+local ref2    string
+local ref3    string
+local ref4    string
+local ref5    string
+local bcomp   string
+local tb13out string
+local tb14out string
+local cmvalid string
+local final   string
+
+body
+
+enable-log
+
+!check to see if mipl or cartlab for test images
+!cartlab defines env var $AFIDS_ROOT, mipl doesn't
+let _onfail="stop"
+translog INP=AFIDS_ROOT TRANS=afidsroot
+translog INP=AFIDS_TESTDATA TRANS=aftestdata
+ush rm -f ct
+if (afidsroot = "")
+!MIPL
+    ush ln -s . ct
+else
+!CARTLAB
+    if (aftestdata = "")
+        ush ln -s /raid1/vicar_test_images/testdata/carto ct
+    else 
+        ush ln -s $AFIDS_TESTDATA/vicar_test_images/testdata/carto ct
+    end-if
+end-if
+
+let _onfail="continue"
+let $autousage="none"
+let $echo="yes"
+
+! Define input files logged below from HDF source
+let band1   = "TERRA_ASTER_2005-03-03_18:50:_1.img"
+let band2   = "TERRA_ASTER_2005-03-03_18:50:_2.img"
+let band3   = "TERRA_ASTER_2005-03-03_18:50:_3N.img"
+let band4   = "TERRA_ASTER_2005-03-03_18:50:_4.img"
+let band5   = "TERRA_ASTER_2005-03-03_18:50:_5.img"
+let band13  = "TERRA_ASTER_2005-03-03_18:50:_13.img"
+let band14  = "TERRA_ASTER_2005-03-03_18:50:_14.img"
+let meta    = "TERRA_ASTER_2005-03-03_18:50:_VNIR.txt"
+
+! Define output files
+let filt1   = "filt1"
+let filt2   = "filt2"
+let filt3   = "filt3"
+let filt4   = "filt4"
+let filt5   = "filt5"
+let filt6   = "filt6"
+let filt7   = "filt7"
+let filt8   = "filt8"
+let rad1    = "rad1"
+let rad2    = "rad2"
+let rad3    = "rad3"
+let rad4    = "rad4"
+let rad5    = "rad5"
+let rad13   = "rad13"
+let rad14   = "rad14"
+let ref1    = "ref1"
+let ref2    = "ref2"
+let ref3    = "ref3"
+let ref4    = "ref4"
+let ref5    = "ref5"
+let bcomp   = "bcomp"
+let tb13out = "tb13"
+let tb14out = "tb14"
+let cmvalid = "validmask"
+let final   = "finalout"
+
+asterlog inp=ct/AST_L1B_00303032005185015_20080118234333_11757.hdf sensor=VNIR
+asterlog inp=ct/AST_L1B_00303032005185015_20080118234333_11757.hdf sensor=SWIR
+asterlog inp=ct/AST_L1B_00303032005185015_20080118234333_11757.hdf sensor=TIR
+
+nacma inp=("&band1", "&band2", "&band3", "&band4", "&band5", "&band13", "&band14") +
+      filter1out="&filt1" filter2out="&filt2" filter3out="&filt3" +
+      filter4out="&filt4" filter5out="&filt5" filter6out="&filt6" +
+      filter7out="&filt7" filter8out="&filt8" +
+      ref1out="&ref1" ref2out="&ref2" ref3out="&ref3" +
+      ref4out="&ref4" ref5out="&ref5" tempcompout="&bcomp" +
+      rad1out="&rad1" rad2out="&rad2" rad3out="&rad3" rad4out="&rad4" +
+      rad5out="&rad5" rad13out="&rad13" rad14out="&rad14" out="&final" +
+      meta="&meta" btemp13out="&tb13out" btemp14out="&tb14out" +
+      maskvalid="&cmvalid"
+
+label-list filt1 'nousrtim
+label-list filt2 'nousrtim
+label-list filt3 'nousrtim
+label-list filt4 'nousrtim
+label-list filt5 'nousrtim
+label-list filt6 'nousrtim
+label-list filt7 'nousrtim
+label-list filt8 'nousrtim
+label-list rad1 'nousrtim
+label-list rad2 'nousrtim
+label-list rad3 'nousrtim
+label-list rad4 'nousrtim
+label-list rad5 'nousrtim
+label-list rad13 'nousrtim
+label-list rad14 'nousrtim
+label-list ref1 'nousrtim
+label-list ref2 'nousrtim
+label-list ref3 'nousrtim
+label-list ref4 'nousrtim
+label-list ref5 'nousrtim
+label-list bcomp 'nousrtim
+label-list tb13 'nousrtim
+label-list tb14 'nousrtim
+label-list validmask 'nousrtim
+label-list finalout 'nousrtim
+
+theend>
+
+ush rm -f bcomp ct default_gvout default_ndsiout default_ref1dsout default_ref2dsout default_ref3dsout default_ref4dsout 
+ush rm -f default_ref5dsout default_rsout default_svout filt1 filt2 filt3 filt4 filt5 filt6 filt7 filt8 finalout rad1 
+ush rm -f rad13 rad14 rad2 rad3 rad4 rad5 ref1 ref2 ref3 ref4 ref5 tb13 tb14 TERRA_ASTER_2005-03-03_18:50:_10.img 
+ush rm -f TERRA_ASTER_2005-03-03_18:50:_11.img TERRA_ASTER_2005-03-03_18:50:_12.img TERRA_ASTER_2005-03-03_18:50:_13.img 
+ush rm -f TERRA_ASTER_2005-03-03_18:50:_14.img TERRA_ASTER_2005-03-03_18:50:_1.img TERRA_ASTER_2005-03-03_18:50:_2.img 
+ush rm -f TERRA_ASTER_2005-03-03_18:50:_3N.img TERRA_ASTER_2005-03-03_18:50:_4.img TERRA_ASTER_2005-03-03_18:50:_5.img 
+ush rm -f TERRA_ASTER_2005-03-03_18:50:_6.img TERRA_ASTER_2005-03-03_18:50:_7.img TERRA_ASTER_2005-03-03_18:50:_8.img 
+ush rm -f TERRA_ASTER_2005-03-03_18:50:_9.img TERRA_ASTER_2005-03-03_18:50:.int TERRA_ASTER_2005-03-03_18:50:_SWIR.txt 
+ush rm -f TERRA_ASTER_2005-03-03_18:50:_TIR.txt TERRA_ASTER_2005-03-03_18:50:_VNIR.txt validmask
+
+disable-log
+
+END-PROC

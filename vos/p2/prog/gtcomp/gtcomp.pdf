@@ -1,0 +1,75 @@
+procedure help=*
+parm inp1 type=(string,99) count=1
+parm inp2 type=(string,99) count=1
+
+local nl int
+local ns int
+
+body
+
+
+!  GTCOMP HANDYPROC
+
+
+lab2tcl &inp1 v1=nl v2=ns keyword=(nl,ns) 'system
+ibis-gen xxqqgrid1 version="ibis-2" org="column"  nc=11 nr=10 deffmt=DOUB
+mf3 xxqqgrid1 func=("c1=@rand*(&nl-2)+1$c2=@rand*(&ns-2)+1")
+pixmap (xxqqgrid1,&inp1) mapcols=(3,4) pixcols=(1,2) 'pixtomap
+gtproj (xxqqgrid1,&inp1,&inp2) incol=(3,4) outcol=(5,6)
+pixmap (xxqqgrid1,&inp2) mapcols=(5,6) pixcols=(7,8) 'maptopix
+getzval (&inp1,xxqqgrid1) cols=(1,2,9) win=2
+getzval (&inp2,xxqqgrid1) cols=(7,8,10) win=2
+mf3 xxqqgrid1 func=("c11=c9-c10")
+ibis-list xxqqgrid1 cols=(1,2,3,4,5,6) +
+     cfor="%8.3f %8.3f %14.6f %14.6f %14.6f %14.6f"
+ibis-list xxqqgrid1 cols=(7,8,9,10,11) +
+     cfor="%8.3f %8.3f %8.3f %8.3f %8.3f %8.3f"
+
+end-proc
+.TITLE
+GTCOMP - Checks GeoTIFF labels on two images by getting z values.
+.HELP
+PURPOSE
+     GTCOMP generates a set of points in the first image, then uses the
+     GeoTIFF labels to locate the points in the second image.  Then getzval
+     is used on both images, using the corresponding points.  The last
+     column of the file has the differences of the z values obtained from
+     the two images.  If the GeoTIFF labels are correct, the differences
+     (for the same underlying data) should be close to zero.
+	   
+CALL
+     GTCOMP INP1 INP2
+  WHERE:
+     INP1          is the first data set (must have a GeoTIFF label).
+     INP2          is the second data set (must have a GeoTIFF label).
+     
+  
+OPERATION
+
+see above.
+
+PERFORMANCE
+
+less than 30 seconds for the largest images.
+.PAGE
+Restrictions
+------------
+
+The input and reference images must have GeoTIFF labels.
+
+
+.PAGE
+Original Programmer: A. L. Zobrist, 02 Apr, 2000
+Current Cognizant Programmer: B. A. McGuffie
+
+Revisions:
+     2022-07-14 B. Crocco afids to opensource
+     
+.LEVEL1
+.VARI INP1
+First input file name with
+GeoTIFF label
+.VARI INP2
+Second input file name with
+GeoTIFF label
+.END

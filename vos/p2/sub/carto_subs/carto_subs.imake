@@ -13,7 +13,11 @@
                     ibishelper.c cartoLinkedList.c ImageUtils.c cloud_masks.c \
                     cartoLoggerUtils.c cartoClassUtils.c georeference_camera.c \
                     earth_coordinates.c verbosity_manager.c io_view.c endianness.c \
-                    pfx.c ray_intersect_ellipsoid.c atteph_convert.c slerp.c
+                    pfx.c ray_intersect_ellipsoid.c atteph_convert.c slerp.c \
+                    lsqequation.c lsqibis.c LandsatManager.c cartoRpcUtils.c \
+                    IKManager.c WV2Manager.c camera_frame.c estimate_wpp_camera.c \
+                    extract_azr.c rpc_to_wpp.c rpc.c estimate_affine_projection.c \
+                    least_squares.c pinv.c csvd.c cblas.c
 
 #define USES_ANSI_C
 

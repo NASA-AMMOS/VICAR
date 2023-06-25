@@ -1,0 +1,24 @@
+procedure
+body
+enable-log
+
+! This is a unit test for OBJ2PLANE.
+! Test the two algorithm types and a couple of different decimation values
+! Results saved in the respective plane_input_{reg,svd}.txt file
+
+! CASE 1: with decimation, and solving using regression
+ush echo "CASE1 - with decimation, and solving using regression" 
+obj2plane INP=test_mesh_octahedron.OBJ OUT=plane_octahedron_dec2_reg.txt DECIMATION=2 ALGO=regression
+!ush echo "CASE 1 (regression, decimation=2) produces this best-fit plane" 
+ush head plane_octahedron_dec2_reg.txt 
+!ush echo "\n\n" 
+
+! CASE 2: no decimation, and solving using SVD
+ush echo "CASE2 - no decimation, and solving using SVD" 
+obj2plane INP=test_mesh_teapot.OBJ OUT=plane_teapot_dec1_svd.txt DECIMATION=1 ALGO=svd 
+!ush echo "CASE 2 (svd, no decimation) produces this best-fit plane" 
+ush head plane_teapot_dec1_svd.txt 
+
+disable-log
+end-proc
+

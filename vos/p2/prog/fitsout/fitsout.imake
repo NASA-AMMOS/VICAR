@@ -1,0 +1,10 @@
+#define PROGRAM	fitsout
+
+#define MODULE_LIST fitsout.f
+#define MAIN_LANG_FORTRAN
+#define USES_FORTRAN
+#define R2LIB
+#define FTNINC_LIST errdefs
+#define LIB_RTL
+#define LIB_TAE
+#define LIB_P2SUB

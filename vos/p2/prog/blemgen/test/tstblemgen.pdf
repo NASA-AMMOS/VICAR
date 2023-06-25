@@ -45,17 +45,17 @@ let _onfail="continue"
     let g10  = "wms_test_work:[testdata.mipl.gll]galt10.dat"
     let goff = "wms_test_work:[testdata.mipl.gll]goffsets.img"
   else ! Unix
-    let g1   = "/project/test_work/testdata/mipl/gll/galt1.dat"
-    let g2   = "/project/test_work/testdata/mipl/gll/galt2.dat"
-    let g3   = "/project/test_work/testdata/mipl/gll/galt3.dat"
-    let g4   = "/project/test_work/testdata/mipl/gll/galt4.dat"
-    let g5   = "/project/test_work/testdata/mipl/gll/galt5.dat"
-    let g6   = "/project/test_work/testdata/mipl/gll/galt6.dat"
-    let g7   = "/project/test_work/testdata/mipl/gll/galt7.dat"
-    let g8   = "/project/test_work/testdata/mipl/gll/galt8.dat"
-    let g9   = "/project/test_work/testdata/mipl/gll/galt9.dat"
-    let g10  = "/project/test_work/testdata/mipl/gll/galt10.dat"
-    let goff = "/project/test_work/testdata/mipl/gll/goffsets.img"
+    let g1   = "data/galt1.dat"
+    let g2   = "data/galt2.dat"
+    let g3   = "data/galt3.dat"
+    let g4   = "data/galt4.dat"
+    let g5   = "data/galt5.dat"
+    let g6   = "data/galt6.dat"
+    let g7   = "data/galt7.dat"
+    let g8   = "data/galt8.dat"
+    let g9   = "data/galt9.dat"
+    let g10  = "data/galt10.dat"
+    let goff = "data/goffsets.img"
   end-if
 
 !!!!!!!!!
@@ -88,17 +88,17 @@ blemgen (cal.100,sat.100,fit.100,rms.100,dc.100) blem.100. +
     let s37  = "wms_test_work:[testdata.cassini.iss]sum2.37"
     let sol  = "wms_test_work:[testdata.cassini.iss]sol.dat"
   else ! Unix
-    let s1   = "/project/test_work/testdata/cassini/iss/sum2.1"
-    let s2   = "/project/test_work/testdata/cassini/iss/sum2.2"
-    let s7   = "/project/test_work/testdata/cassini/iss/sum2.7"
-    let s8   = "/project/test_work/testdata/cassini/iss/sum2.8"
-    let s14  = "/project/test_work/testdata/cassini/iss/sum2.14"
-    let s15  = "/project/test_work/testdata/cassini/iss/sum2.15"
-    let s24  = "/project/test_work/testdata/cassini/iss/sum2.24"
-    let s25  = "/project/test_work/testdata/cassini/iss/sum2.25"
-    let s36  = "/project/test_work/testdata/cassini/iss/sum2.36"
-    let s37  = "/project/test_work/testdata/cassini/iss/sum2.37"
-    let sol  = "/project/test_work/testdata/cassini/iss/sol.dat"
+    let s1   = "data/sum2.1.dat"
+    let s2   = "data/sum2.2.dat"
+    let s7   = "data/sum2.7.dat"
+    let s8   = "data/sum2.8.dat"
+    let s14  = "data/sum2.14.dat"
+    let s15  = "data/sum2.15.dat"
+    let s24  = "data/sum2.24.dat"
+    let s25  = "data/sum2.25.dat"
+    let s36  = "data/sum2.36.dat"
+    let s37  = "data/sum2.37.dat"
+    let sol  = "data/sol.dat"
   end-if
 !-----------------------------------------------------------
 !CASSINI DATA
@@ -317,6 +317,11 @@ let $becho="yes"
 blemgen (cal,sat,err,rms,dc) blem +
   minslope=0 maxslope=50 mindc=-100 maxdc=500 +
   minsat=0 maxerr=1000 maxrms=1000 
+
+ush rm blem dc cal v u t blem.tmp d cal2 g r e s
+ush rm c sat2 bx b rms err sat cg4 cg3 cg2 cg1
+ush rm cgdc blem.100. dc.100 cal.100 rms.100
+ush rm fit.100 sat.100
 
 disable-log
 end-proc

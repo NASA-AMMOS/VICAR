@@ -1,0 +1,4 @@
+$ vpack xvector.com -
+	-s xvector.cc -
+	-i xvector.imake
+$ Exit

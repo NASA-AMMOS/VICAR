@@ -1,0 +1,109 @@
+gen xxx1 nl=1500 ns=1500 'half
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+f2 xxx1 out=xxx2 func="(mod(line+samp,3)<0.5)+(line>1498)"
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 2250000 TIMES
+list xxx2 sl=1495 ss=1495 nl=6 ns=6 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   HALF     samples are interpreted as HALFWORD data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2        User:          Date_Time:                        
+     Samp    1495  1496  1497  1498  1499  1500
+   Line
+   1495         0     1     0     0     1     0
+   1496         1     0     0     1     0     0
+   1497         0     0     1     0     0     1
+   1498         0     1     0     0     1     0
+   1499         2     1     1     2     1     1
+   1500         1     1     2     1     1     2
+concomp xxx2 (xxx4,xxx3)
+Beginning VICAR task concomp
+concomp version Thu Jul  3 2014
+list xxx4 sl=1495 ss=1495 nl=6 ns=6 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   FULL     samples are interpreted as FULLWORD data
+ Task:GEN       User:          Date_Time:                        
+ Task:CONCOMP   User:          Date_Time:                        
+     Samp         1495       1496       1497       1498       1499       1500
+   Line
+   1495              0     747499          0          0     747500          0
+   1496         747999          0          0     748000          0          0
+   1497              0          0     748499          0          0     748500
+   1498              0     748501          0          0     748501          0
+   1499         748501     748501     748501     748501     748501     748501
+   1500         748501     748501     748501     748501     748501     748501
+gen xxx1 nl=7 ns=7 'half
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+f2 xxx1 out=xxx2 func="line*((samp<5)+(samp>5))"
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 49 TIMES
+list xxx2 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   HALF     samples are interpreted as HALFWORD data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2        User:          Date_Time:                        
+     Samp       1     2     3     4     5     6     7
+   Line
+      1         1     1     1     1     0     1     1
+      2         2     2     2     2     0     2     2
+      3         3     3     3     3     0     3     3
+      4         4     4     4     4     0     4     4
+      5         5     5     5     5     0     5     5
+      6         6     6     6     6     0     6     6
+      7         7     7     7     7     0     7     7
+concomp xxx2 (xxx4,xxx3)
+Beginning VICAR task concomp
+concomp version Thu Jul  3 2014
+list xxx4 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   FULL     samples are interpreted as FULLWORD data
+ Task:GEN       User:          Date_Time:                        
+ Task:CONCOMP   User:          Date_Time:                        
+     Samp            1          2          3          4          5          6          7
+   Line
+      1              1          1          1          1          0          2          2
+      2              1          1          1          1          0          2          2
+      3              1          1          1          1          0          2          2
+      4              1          1          1          1          0          2          2
+      5              1          1          1          1          0          2          2
+      6              1          1          1          1          0          2          2
+      7              1          1          1          1          0          2          2
+concomp xxx2 (xxx4,xxx3) startcmp=12 lastcmp=lstcmp
+Beginning VICAR task concomp
+concomp version Thu Jul  3 2014
+list xxx4 'nousrtim
+Beginning VICAR task list
+LIST version 2019-09-06
+
+   FULL     samples are interpreted as FULLWORD data
+ Task:GEN       User:          Date_Time:                        
+ Task:CONCOMP   User:          Date_Time:                        
+     Samp            1          2          3          4          5          6          7
+   Line
+      1             12         12         12         12          0         13         13
+      2             12         12         12         12          0         13         13
+      3             12         12         12         12          0         13         13
+      4             12         12         12         12          0         13         13
+      5             12         12         12         12          0         13         13
+      6             12         12         12         12          0         13         13
+      7             12         12         12         12          0         13         13
+write "lstcmp 13"
+lstcmp 13
+ush rm -f xxx1  xxx2  xxx3  xxx4
+disable-log

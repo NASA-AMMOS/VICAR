@@ -1,0 +1,56 @@
+norangle (1,1,10,10) degrees=degangle radians=radangle height=height width=width
+Beginning VICAR task norangle
+** norangle version 2015-12-10
+let $echo="no"
+TEST 1 -  h = 9 w =  -9 : -4.500000000000e+01  degrees  (-7.853981852531e-01 radians)
+norangle (1,10,10,1) degrees=degangle radians=radangle height=height width=width
+Beginning VICAR task norangle
+** norangle version 2015-12-10
+let $echo="no"
+TEST 2 - h = 9 w =  9 : 4.500000000000e+01  degrees  (7.853981852531e-01 radians)
+norangle (1,10,10,10) degrees=degangle radians=radangle height=height width=width
+Beginning VICAR task norangle
+** norangle version 2015-12-10
+let $echo="no"
+TEST 3 - h = 9 w =  0 : 0.000000000000e+00  degrees  (0.000000000000e+00 radians)
+norangle (10,1,10,10) degrees=degangle radians=radangle height=height width=width
+Beginning VICAR task norangle
+** norangle version 2015-12-10
+let $echo="no"
+TEST 4 - h = 0 w =  -9 : -9.000000000000e+01  degrees  (-1.570796370506e+00 radians)
+norangle (10,10,10,1) degrees=degangle radians=radangle height=height width=width
+Beginning VICAR task norangle
+** norangle version 2015-12-10
+let $echo="no"
+TEST 5 - h = 0 w =  9 : 9.000000000000e+01  degrees  (1.570796370506e+00 radians)
+norangle (10,20,20,10) degrees=degangle radians=radangle height=height width=width
+Beginning VICAR task norangle
+** norangle version 2015-12-10
+let $echo="no"
+TEST 6 - h = 10 w =  10 : 4.500000000000e+01  degrees  (7.853981852531e-01 radians)
+norangle (11,67,20,62) degrees=degangle radians=radangle height=height width=width
+Beginning VICAR task norangle
+** norangle version 2015-12-10
+let $echo="no"
+TEST 7 - h = 9 w =  5 : 2.905460357666e+01  degrees  (5.070984959602e-01 radians)
+norangle (20,62,11,67) degrees=degangle radians=radangle height=height width=width
+Beginning VICAR task norangle
+** norangle version 2015-12-10
+let $echo="no"
+TEST 8 - h = -9 w =  -5 : -1.509453887939e+02  degrees  (-2.634494066238e+00 radians)
+norangle (23,12,19,42) degrees=degangle radians=radangle height=height width=width
+Beginning VICAR task norangle
+** norangle version 2015-12-10
+let $echo="no"
+TEST 9 - h = -4 w =  -30 : -9.759463500977e+01  degrees  (-1.703347802162e+00 radians)
+norangle (19,42,23,12) degrees=degangle radians=radangle height=height width=width
+Beginning VICAR task norangle
+** norangle version 2015-12-10
+let $echo="no"
+TEST 10 - h = 4 w =  30 : 8.240535736084e+01  degrees  (1.438244819641e+00 radians)
+norangle (10,50,70,60) degrees=degangle radians=radangle height=height width=width
+Beginning VICAR task norangle
+** norangle version 2015-12-10
+let $echo="no"
+TEST 11 - h = 60 w =  -10 : -9.462322235107e+00  degrees  (-1.651486754417e-01 radians)
+disable-log

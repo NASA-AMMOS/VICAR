@@ -1,0 +1,1270 @@
+process help=*
+PARM INP TYPE=STRING COUNT=(1:200)
+PARM OUT TYPE=STRING COUNT=1 
+PARM NAVTABLE TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM BAND    TYPE=INTEGER COUNT=(0:1) DEFAULT=1
+PARM TEMPLATE TYPE=INTEGER COUNT=(1:2) DEFAULT=15
+PARM SEARCH TYPE=INTEGER COUNT=(1:2) DEFAULT=199
+PARM QUALITY TYPE=REAL COUNT=(0:1) DEFAULT=.93
+PARM BORDER TYPE=INTEGER COUNT=(0:1) VALID=0:20 DEFAULT=3
+PARM BUSY TYPE=REAL COUNT=(0:1) VALID=0.:1000. DEFAULT=270.
+
+PARM GRID_SPACING TYPE=INTEGER COUNT=1 DEFAULT=15
+PARM SEP_ANGLE TYPE=REAL COUNT=1 DEFAULT=50
+PARM SEARCH_EDGE TYPE=REAL COUNT=1 DEFAULT=0.3 VALID=(0:0.5)
+PARM SEARCH_FACTOR TYPE=REAL COUNT=1 DEFAULT=1.25 VALID=(1:5)
+PARM SEARCH_MIN TYPE=INTEGER COUNT=(1:2) DEFAULT=29
+PARM SEARCH_MAX TYPE=INTEGER COUNT=(1:2) DEFAULT=301
+PARM BUSY_WINDOW TYPE=INTEGER COUNT=(1:2) DEFAULT=7
+PARM LINEAR_QUALITY TYPE=REAL COUNT=(0:1) DEFAULT=.85
+PARM MASK TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM USE_MASK TYPE=KEYWORD COUNT=1 VALID=("DO_MASK","NO_MASK") +
+		DEFAULT="NO_MASK"
+PARM DENSITY TYPE=INTEGER COUNT=1 DEFAULT=250
+PARM MAX_ITER TYPE=INTEGER COUNT=1 DEFAULT=20
+PARM CENTER_WEIGHT TYPE=REAL COUNT=1 DEFAULT=5.0
+PARM PARAM_WIN TYPE=INTEGER COUNT=(1:2) DEFAULT=500
+PARM PARAM_SIGMA TYPE=REAL COUNT=8 DEFAULT=(1.0, 1.0, 1.2, 1.0, +
+					    1.0, 1.0, 1.2, 1.0)
+PARM PARAM_MIN TYPE=REAL COUNT=8   DEFAULT=(0.076, 0.030, 1.000, 0.010, +
+					    0.030, 0.076, 1.000, 0.010)
+PARM PARAM_ABS TYPE=REAL COUNT=8   DEFAULT=(0.38, 0.15, 14.0, 0.05, +
+					    0.15, 0.38, 53.0, 0.05)
+PARM DEBUG TYPE=INTEGER COUNT=1 DEFAULT=0 VALID=(0,1,2,3)
+PARM START_KEY TYPE=INTEGER COUNT=1 DEFAULT=0
+PARM FORMAT TYPE=KEYWORD COUNT=1 VALID=("OLD","XML") DEFAULT="XML"
+PARM NOMINAL_HEIGHT TYPE=INTEGER COUNT=1 DEFAULT=0
+PARM REFIMAGE TYPE=INTEGER COUNT=(0:200) VALID=(-1000:1000) DEFAULT=--
+PARM FOV TYPE=REAL COUNT=(0:1) DEFAULT=--
+
+PARM OMP_ON TYPE=KEYWORD VALID=(OMP_ON,OMP_OFF) DEFAULT=OMP_ON
+
+PARM NORMAL  TYPE=REAL COUNT=(0:3) DEFAULT=(0.,0.,-1.)
+PARM GROUND  TYPE=REAL COUNT=(0:3) DEFAULT=--
+PARM SURF_COORD TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM SURF_MESH TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM SURF_CSFILE TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM SURFACE TYPE=KEYWORD COUNT=(0:1) +
+  VALID=("INFINITY","PLANE", "SPHERE1", "SPHERE2", "MESH") DEFAULT=--
+PARM CONFIG_PATH STRING DEFAULT="$MARS_CONFIG_PATH"
+PARM POINT_METHOD TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM MATCH_METHOD TYPE=STRING COUNT=(0:1) VALID=("LOOSE", "TIGHT") +
+	DEFAULT=LOOSE
+PARM MATCH_TOL TYPE=REAL COUNT=1 DEFAULT=.002
+PARM NOSITE TYPE=KEYWORD COUNT=(0:1) VALID=NOSITE DEFAULT=--
+
+PARM RSF TYPE=STRING COUNT=0:100 DEFAULT=--
+PARM DEBUG_RSF TYPE=KEYWORD COUNT=0:1 VALID=DEBUG_RSF DEFAULT=--
+PARM COORD TYPE=KEYWORD VALID=("FIXED", "INSTRUMENT", "SITE", "ROVER", +
+        "LOCAL_LEVEL") DEFAULT="FIXED"
+PARM COORD_INDEX TYPE=INTEGER COUNT=0:10 DEFAULT=--
+PARM FIXED_SITE TYPE=INTEGER COUNT=0:1 DEFAULT=--
+
+!# parm inp(2-200) hints=default
+!# parm out file=vicar; direction=output
+
+END-PROC
+
+.TITLE
+VICAR program MARSAUTOTIE.
+
+.HELP
+PURPOSE:
+-------
+
+To automatically gather tiepoints for a set of overlapping images.
+The resulting tiepoints are output in OUT for use by other programs
+such as MARSNAV, or for manual refinement via MARSTIE.
+
+MARSAUTOTIE supports any mission, instrument, and camera model supported
+by the Planetary Image Geometry (Pig) software suite.  However, the
+parameters are likely to be camera-specific, so much tuning may be
+required.
+
+.page
+
+EXECUTION:
+---------
+
+There are two ways to present input images:
+
+marsautotie inp=(a.img,b.img,c.img,...) out=tiepoints.tpt
+or
+marstie inp=ascii_listoffiles out_tpt=tiepoints.tpt
+
+where ascii_listoffiles is a text file containing the list of filenames
+to include in the mosaic, one per record.  Up to 200 input images can be
+listed.
+
+Then use MARSNAV to generate navigation solutions, and then one of the
+mosaic programs:
+
+marsnav inp=files.lis out=mosaic.nav in_tpt=tiepoints.tpt
+marsmos inp=files.lis out=mosaic.img navtable=mosaic.nav
+
+Note: there are two tiepoint file formats; "old" is the text-based list,
+while "xml" is an XML-based format.  The FORMAT parameter controls which
+one to use.  Over time "old" should be phased out and eventually the FORMAT
+parameter will disappear.
+
+.page
+
+USAGE:
+-----
+
+It is important that all images be connected to each other via tiepoints.
+If an image or block of images is not connected, the entire block can "drift"
+as a unit out of alignment during the nav process.  The program will report
+single unconnected images, but not blocks of them.  The "inertia" parameter
+to MARSNAV can help compensate for this.
+
+The program depends on having some initial pointing parameters in the
+images, so that overlaps can be detected and tiepoints found... even though
+the purpose of the program is to gather tiepoints to *correct* the pointing!
+So the initial pointings (usually telemetered with the image) must be at
+least somewhat close for the program to work.
+
+The parameters likely need to be tuned; there is not yet enough experience
+to say definitively what they should be.
+
+There are many window sizes in this program:  TEMPLATE, SEARCH, SEARCH_MIN,
+SEARCH_MAX, BUSY_WINDOW, PARAM_WIN.  Each of them can be specified via a
+single value, which applies to both line and sample directions.  Or, they
+may be specified as a pair: (line,samp), in order to define a rectangular
+window.
+
+.page
+
+METHOD:
+------
+
+For each input ("left" image):
+   Compute a busyness metric
+   Define a candidate tiepoint grid
+   Get the busyest point in each grid cell
+   Filter out points on the rover
+   For each higher-numbered input ("right" image):
+      Reject pairs that are too far apart
+      Project tiepoints from left to right image
+      Correlate all tiepoints
+      if no tiepoints left
+         Use minimum search window and correlate again
+      Filter tiepoints based on correlator parameters
+      Geometric scatter of points
+      Store pairwise tiepoints
+Save all tiepoints
+
+Each step is detailed below, along with relevant parameters that affect
+the step.  Note that throughout, for convenience, the first image of a
+pair is referred to as "left" and the second as "right".  This is a
+historical artifact of the correlator's roots in stereo processing, and
+means absolutely nothing in terms of the relative position of the two
+images in the mosaic.  The "left" image could very well be on the right.
+It just means "left" is the reference, and "right" is the one searched
+for matches.
+
+.page
+
+Compute a busyness metric
+-------------------------
+
+This is used to determine the most interesting places to correlate on,
+i.e. to make sure that there are some features that the correlator can
+lock on to.  This also helps to avoid uninteresting areas such as
+undifferentiated sand and sky.
+
+The busyness metric is computed by comparing each pixel with its immediate
+right and down neighbors (via absolute value of the difference), and
+summing that across a window surrounding the pixel.  (algorithm courtesy
+of Jean Lorre).
+
+The BUSY_WINDOW parameter controls the size of the window over which the
+busyness is computed.  As with the other windows, rectangular windows are
+possible (line,samp order).  Note that the busyness values are dependent
+on the window size (i.e. the larger the window, the higher the busyness
+value), so when the window is adjusted, the BUSY threshold should also be
+adjusted.  The metric is also sensitive to the overall brightness of the
+image, and thus the proper threshold may vary per camera or even by mosaic.
+
+Ideally, the busy window should be the same size as the correlation template
+(TEMPLATE parameter).  However, the algorithm is currently implemented in
+an inefficient manner (sliding sums should be used) and a window the size
+of the template can be prohibitively expensive.
+
+.page
+
+Define a candidate tiepoint grid
+--------------------------------
+
+A grid is defined over the image.  Each grid cell will potentially contribute
+a single tiepoint.  The extent of the grid is defined by using the hard
+borders as returned by PIG (FileModel.getImageBorders), combined with the
+BORDER parameter and half the template size on all edges (this allows extra
+slop for rotating the template).  The grid spacing is specified by (surprise!)
+GRID_SPACING.
+
+.page
+
+Get the busyest point in each grid cell
+---------------------------------------
+
+Within each grid cell, the pixel with the highest busyness metric is
+determined.  If this value exceeds the busyness threshold (BUSY parameter),
+the pixel is saved as a candidate tiepoint.  Note that the busyness
+metric is somewhat unstable and thus the threshold may have to be adjusted
+(see the computation section above).
+
+.page
+
+Filter out points on the rover
+------------------------------
+
+This is an optional step which is enabled via the "DO_MASK" keyword value.
+The points are filtered out using a rover filter, which is the same concept
+as that used by the MARSFILTER program (the same subroutines are used).
+This takes out most of the points that would be on the rover; presumably
+any stragglers should be taken out by the parameter filter step.
+
+Note that a different mask file is used than that typically used by
+MARSFILTER.  That is because this program really should only use projected
+mask shapes (ProjectedTriangle); image space masks are unlikely to be
+useful and volume-based shapes are not supported (as no XYZ data is available
+to this program).  A ProjectedHorizon could be used but probably should not
+(especially if the horizon algorithm is ever implemented).
+
+The mask file must be specified via the MASK parameter.  In the future this
+file may be automatically loaded via the PIG library from the config directory,
+but this is not yet implemented.  Nevertheless, that is a good place to
+store the files.
+
+A common use case for MSL is to run MSLFILTER on the input list to get a
+mask covering the actual articulation states of the rover, and providing that
+to MARSAUTOTIE to avoid all points on the rover.
+
+.page
+
+Reject pairs that are too far apart
+-----------------------------------
+
+The "pointing" of the cameras (not really, but it's what getCameraOrientation()
+returns) for the pair is compared.  If the angle between them is too great,
+the pair is rejected as not having any potential overlap.  This is both for
+efficiency, and to get around certain issues that sometimes occur with the
+camera models (CAHVOR especially) when projecting well off the image.
+
+The allowed separation is specified by SEP_ANGLE.  This could be computed from
+the camera FOV, but currently is not.
+
+.page
+
+Project tiepoints from left to right image
+------------------------------------------
+
+Each potential tiepoint from the left image is projected onto the surface
+model, and then back-projected into the right image (a la the mosaic programs,
+like MARSMAP).  This gives an initial tiepoint position on the right side
+using the camera models.
+
+Note that the surface model is used for this step.  If the surface model is
+significantly wrong (or for that matter, if the pointing is too poor), the
+projection may be far enough off that the correlator can't find a match.  This
+problem has not been observed in testing yet, but if it is, a multipass
+approach could in principle be used, with MARSNAV generating an initial
+surface (and pointing), then submitting those to another run of MARSAUTOTIE.
+The surface model is also used for the rover filtering, but not by any other
+part of this program.
+
+The projected tiepoint is checked to make sure it is within the right image.
+Potentially a "slop" factor could be added here (to allow the point to be
+slightly off the edge, for really bad pointing) but that is not implemented.
+
+In addition to projecting the point itself, a second point, a few pixels
+over horizontally, is projected as well.  This is used to determine the
+nominal frame rotation angle and scale between the images at that point
+(the angle changes throughout the image).  The angle and scale are used by
+the correlator as an initial condition; see below.
+
+.page
+
+Correlate all tiepoints
+-----------------------
+
+Each tiepoint is then correlated to find its match.  This is a multi-stage
+process.  Fundamentally, a patch surrounding the point on the left image
+(TEMPLATE specifies the window size) is used to look for a matching area on
+the right within a search window, which is centered on the projected right
+side of the tiepoint as an initial location (possibly modified by edge
+effects).  The search window is dynamically adjusted, as described below,
+but starts off at a size specified by SEARCH (or SEARCH_MIN, if this process
+is repeated).
+
+The first step is to do a linear correlation (GRUEN mode 0).  This allows a
+match to be found quickly over a large search area.  The results are then
+refined using amoeba8 (GRUEN mode 7).
+
+For the linear correlation, the template is rotated and scaled by the frame
+rotation and scale factor computed during projection.  This effectively
+removes the rotation and scale difference, which greatly improves match success.
+
+The search window is then determined.  Nominally this is centered over the
+projected right-side tiepoint.  However, if the tiepoint is too close to
+the edge, the search window is truncated to the edge.  For example, if the
+search window is 101 pixels, a projected pixel right on the edge would be
+allowed, extending half the search (50 pixels) on one side, and 0 on the
+other.  This allows large search windows to still find points close to the
+edge.  There is a limit to this however; the projected pixel must be at
+least half of SEARCH_MIN away from the edge of the image or the point is
+rejected.
+
+A linear correlation is then performed.  The resulting quality must meet or
+exceed LINEAR_QUALITY or the point is rejected.  It is generally a good idea
+to have a lower quality setting for the linear case than for the amoeba case,
+to handle cases like the frame rotation being inaccurate.
+
+The correlation is then run again using the amoeba8 (8 degrees-of-freedom)
+mode.  However, the correlation uses the *original* template, not the
+rotated/scaled one.  The initial conditions for gruen are set to incorporate
+the rotation angle and scale factor, as well as the location of the match as
+returned by the linear step.  Using the original, unrotated template reduces
+interpolation noise and gives GRUEN more flexibility to refine the angle.
+
+The resulting correlation quality must meet or exceed QUALTIY, or the point
+is rejected.
+
+The final transform terms - all 8 of them - are saved for later use in the
+parameter filtering step.  However, the nominal rotation and scale are backed
+out from these parameters, in order to make the filtering easier.
+
+Finally, the search window is dynamically adjusted.  This has no effect on
+the tiepoint just determined, but is used for the next tiepoint (tiepoints
+are processed in order according to the grid, which generally marches from
+top to bottom of the image).  The dynamic adjustment allows for a wide search
+area in cases where it is needed (such as when the projection is way off),
+but still keeps the search size under control to some extent (which greatly
+improves efficiency, and helps to reduce false matches).
+
+The dynamic tuning is controlled by the search_edge parameter.  The delta
+position is computed by subtracting the final correlated location on the
+right side from the initial position.  This is then compared to the size of
+the search window (really, the search minus template, divided by two - the
+true "wiggle room" for template placement).  If this position is "close" to
+zero (meaning the predicted position was accurate), the search window is
+decreased.  If the position is "close" to the edge of the search area, then
+the window is increased.  "Close" is defined via the SEARCH_EDGE parameter.
+If the value is 0.3, then "close" means 30% of the total wiggle room on either
+side.
+
+If the window needs to be adjusted, then it is multiplied (to increase), or
+divided (to decrease) by SEARCH_FACTOR.  SEARCH_MIN and SEARCH_MAX are used
+to constrain the window size.
+
+Note that this process happens independently in both directions (horizontal
+and vertical).  It is quite possible to increase one dimension while decreasing
+the other.
+
+.page
+
+if no tiepoints left
+ Use minimum search window and correlate again
+----------------------------------------------
+
+If after the correlation process there are no tiepoints left, it is possible
+that the search window was too big for the overlap.  In that case, the
+projection and correlation steps are run again, using SEARCH_MIN as the
+initial search window size rather than SEARCH.
+
+It may be that this step is now unnecessary, since the search window shaping
+and dynamic adjustment were added.  That would however require some additional
+analysis to prove, which is not worthwhile as of this writing.
+
+.page
+
+Filter tiepoints based on correlator parameters
+-----------------------------------------------
+
+This step is really the heart of the program.  The idea is to throw out
+outlier tiepoints - those whose projection parameters are statistically
+dissimilar to the neighboring points.  This helps to reject bad correlations
+(such as horizon mismatches or shadows that move), as well as tiepoints that
+are significantly off the general trend (such as on top of a large rock, or
+a stray point on the rover itself).  Experience tiepointing MER images shows
+that points that are off the general trend should be avoided, as the reason
+they are off the trend is usually due to uncorrectable parallax.  Correcting
+the trend is much more profitable, and minimizes seams overall.
+
+Filtering for each tiepoint is accomplished by considering an area around the
+tiepoint (in pixel space), defined by PARAM_WIN, and finding all the active
+tiepoints within that region.  The mean and standard deviation of each
+transform coefficient are then computed.  These coefficients come straight
+out of GRUEN, modified by the rotation angle and scale factor as described
+above.  They represent the geometric transform (affine plus xy terms) needed
+to make the template match the right side.
+
+If there are insufficient other tiepoints available to compute meaningful
+statistics (the minimum is currently hardcoded as 3), the point is rejected.
+
+Finally, the values for each coefficient are compared against the statistics.
+For the mean, if the difference is greater than that specified by PARAM_ABS,
+the point is rejected.  Standard deviation is a bit more complicated.  If the
+computed standard deviation is too small (less than PARAM_MIN), then the
+point is accepted (this avoids rejecting points when most everything is good).
+Otherwise, if the difference from the mean is greater than or equal to the
+sigma value times PARAM_SIGMA, then the point is rejected.
+
+In other words, we accept variances from the mean up to PARAM_SIGMA standard
+deviations, unless the computed stdev is too small to bother with.  And the
+variance must also be within an absolute limit.
+
+When computing statistics, we consider all points that were active at the
+time the filtering started, i.e. we include points that are rejected, when
+computing statistics for later points.  While this sounds odd at first, it
+helps solve two problems.  First, when the correlations are questionable and
+many are being rejected, it is quite possible to run out of points with which
+to do statistics at the bottom of the image (because everything above has been
+rejected).  Even if they don't run out, the statistics get skewed towards the
+bottom tiepoints, which would end up almost always being accepted.  Second,
+it helps with the bimodal problem.  When there are two populations, as often
+occurs with the ground and rover deck, then the first population could be
+completely filtered out, leaving the second unmolested.  Since the second
+is typically not what we want (being on the rover deck), considering all the
+points helps to reject them.  (the rover mask is not perfect, after all).
+
+Properly tuning the PARAM_WIN, PARAM_SIGMA, PARAM_MIN, and PARAM_ABS
+parameters has to be one of the hardest and most tedious parts of using
+this program.  More experience must be gained before a good parameter set
+that applies to many cases can be determined.  To give a starting point,
+initial tests have shown the following parameters to work for the MER
+Spirit Pancam:
+
+PARAM_SIGMA=\( 1.0, 1.0, 1.2, 1.0, 1.0, 1.0, 1.2, 1.0 \)
+PARAM_MIN=\( .076, .030, 1.0, .01, .030, .076, 1.0, .01 \)
+PARMA_ABS=\( 0.38, 0.15, 14, 0.05, 0.15, 0.38, 53, 0.05 \)
+PARAM_WIN=500
+
+And the following worked for the MER Spirit Navcam:
+
+PARAM_SIGMA=\( 1.5, 1.5, 1.2, 1.0, 1.5, 1.5, 1.2, 1.0 \)
+PARAM_MIN=\( .076, .030, 1.0, .01, .030, .076, 1.0, .01 \)
+PARMA_ABS=\( 0.38, 0.15, 14, 0.05, 0.15, 0.38, 53, 0.05 \)
+PARAM_WIN=\( 150, 300 \)
+
+.page
+
+Geometric scatter of points
+---------------------------
+
+The final significant step is to take the set of tiepoints determined above,
+and pare them down for use in MARSNAV.  MER experience shows that 3-4 tiepoints
+per edge works reasonably well.  Tiepoints should be as close as possible to
+the edge of the image that is on top in the mosaic (first in the image list),
+and they should be well separated from each other.  This is achieved by
+selecting a few tiepoints to survive out of the results of all of the above.
+
+It is assumed by this point that all surviving tiepoints are "good", in that
+any of them could profitably be used.  Thus, the quality of the points is not
+considered; only their location within the (left) image is.  Note that by
+virtue of how the loops work, the left image will always be the one first in
+the list, and thus the one on top in the mosaic.
+
+The first thing to determine is how many tiepoints to keep.  This is computed
+by determining the min and max extents of the bounding box surrounding all
+tiepoints.  The diagonal distance across this box is then computed, as a
+rough estimate of how long the "line" of tiepoints is that covers the overlap
+area.  The DENSITY parameter is then used to compute the number of tiepoints,
+by dividing it into the overlap length.  Thus if the tiepoints extend all along
+an edge-to-edge overlap, many more will be selected than if the tiepoints are
+all concentrated in one area, or if it is a corner overlap.  Note that a
+minimum of one tiepoint is kept, regardless.  The kept tiepoints are referred
+to below as "candidates".
+
+Next, the geometric center of all the tiepoints is computed (just by averaging
+their line and sample coordinates).  We find the tiepoint closest to the
+center, which is used to initialize all of the candidates.
+
+We then loop over each candidate, looking to find the best tiepoint to replace
+it with.  Each tiepoint is then considered, by calculating its distance from
+all other candidates, and find the one that is farthest away from all the other
+candidates.  We overemphasize close distances to make sure things spread out.
+So instead of computing max(sum(sqrt(d2))), we do min(sum(1/d2)) (where d2 is
+the Cartesian distance, squared).  We also include a factor weighting the
+distance away from the center of the image (this ensures our points hug the
+edge).  This weighting is controlled by CENTER_WEIGHT, and is computed as
+CENTER_WEIGHT/d2.  Basically a value of 5 for CENTER_WEIGHT means that there
+are 5 virtual tiepoints at the center of the image, repelling all other
+tiepoints.
+
+The tiepoint that is farthest away from the others is chosen as the new value
+for that candidate slot, and the next slot is computed in the same way.
+
+This entire process iterates until it converges (no more candidate slots
+change), or MAX_ITER is exceeded (at which point, whatever is in the candidate
+slots is kept).
+
+.page
+
+Saving tiepoints
+----------------
+
+The survivors from the geometric scatter process are stored away as the
+tiepoints for that pair.  After all pairs are considered, the entire set is
+written out to the output tiepoint file.
+
+.page
+
+TUNING:
+------
+
+Tuning parameters for this program can be tricky.  The DEBUG parameter can
+be of assistance here.  Set it to a number between 0 and 3 to control the
+amount of information printed out.
+
+0 = no debug.  There is still a fair amount of information printed out
+to the log.
+
+1 = Print info about dynamic search window adjustment, and the culling
+(geometric scatter) process.
+
+2 = Everything from 1, plus info about the tiepoints and parameter filtering.
+This is probably the most useful.  Each putative tiepoint is printed out,
+along with its transform parameters.  During the filtering step, the statistics
+for each tiepoint is also printed, along with a code at the end saying why it
+was rejected (e.g. R6 for Relative (sigma) on parameter 6, or A2 for Absolute
+on parameter 2).  A summary of the number of points rejected for each reason
+is also printed for each image pair.
+
+3 = Everything from 2, plus temporary images are saved throughout the process
+showing the locations of surviving tiepoints at several steps.  This should
+only be used with one or two pairs, as a LOT of images end up being saved.
+One of the images is the busyness image, which can help in setting the busyness
+threshold.  The images all start with "tmp".  Identifying which is which is
+beyond the scope of this help; look at the source code.  However, there are
+images indicating the initial points with rotation, projected points,
+correlated points before filtering, and after filtering, usually on both the
+left and right images.
+
+.PAGE
+
+Multiple Image Resolutions
+--------------------------
+
+Marsautotie can handle inputs at different resolutions.  For example, thumbnail
+images, or combinations like Mastcam-100, Mastcam-34, and Navcam (MSL).
+However, there are a few considerations when mixing images.
+
+The program will automatically detect the scale difference (as well as rotation)
+and apply that as initial conditions when doing correlation, as described
+above.  However, there are limits to this.  For example, if the scale
+difference was a factor of 8, and the correlation window was 9 pixels, there
+wouldn't be much left to correlate.  Conversely, if the scaling happens the
+other direction, the correlation window might be 72 pixels (with a corresponding
+performance hit).  This should be taken into account when setting the
+parameters.  One way to mitigate that somewhat is to take advantage of the
+natural ordering in marsautotie; the "left" image will be the one closer to
+the front of the list while the "right" one is at the back.  The left image
+is the one that is scaled and rotated.
+
+The GRID_SPACING and DENSITY parameters are measured in pixels, but naturally
+relate to the image as a whole.  Therefore when presented with different
+resolution images, the spacing and density may not be optimal.  That is the
+purpose of the NOMINAL_HEIGHT parameter: the grid spacing and density are
+scaled by the ratio of the nominal height to the actual height of each image.
+So if you set a grid spacing such that you'd get 10 grid points across an image,
+NOMINAL_HEIGHT will ensure you'll get 10 points across the thumbnail as well,
+even though they'll be much closer together.  An open question is whether this
+nominal height ratio should be applied to other pixel-dimensioned quantities,
+such as correlation size (see discussion in previous paragraph).
+
+Finally, it is sometimes the case that the difference in resolution is too
+great for the linear correlator to deal with, even with the compensations
+described above.  The second-stage (2-D) correlator is much more equipped to
+handle these differences.  In this case it could be helpful to set the linear
+correlation quality threshold (LINEAR_QUALITY) very low (0 effectively disables
+it), passing all points through to the 2-D correlator.
+
+EXAMPLES:
+--------
+
+MER Spirit pancam:
+
+$MARSLIB/marsautotie mcmurdo_ilf_L2.lis mcmurdo_ilf_L2.tie grid_sp=15 sep=20 -do_mask mask=MER2_autotie_filter.xml param_sigma=\( 1.0, 1.0, 1.2, 1.0, 1.0, 1.0, 1.2, 1.0 \)
+
+MER Spirit navcam:
+
+$MARSLIB/marsautotie 2NN755ILFAOCYLC6P0605L000M2.LIS 2NN755ILFAOCYLC6P0605L000M2.tie grid_sp=15 sep=60 -do_mask mask=MER2_autotie_filter.xml param_win=\(150,300\) linear_q=0.75 busy=150 density=150 templ=15 search_min=59 q=.9
+
+.PAGE
+
+Parallel Processing
+-------------------
+This program has been parallelized using Open MP (OMP), which is built in
+to the g++ compiler.
+
+By default the number of threads used equals the number of cores on the machine
+where the program is being run.  Each candidate in the correlation loop is
+run in parallel.  Unfortunately, the dynamic adjustment of the search window
+is fundamentally a serial thing - we adjust it at each tiepoint to affect the
+next tiepoint.  And the dynamic adjustment is critical for performance; it
+can have a 10x or better impact on runtimes.
+
+After careful consideration, it was realized that the *timing* of the window
+adjustment algorithm is not critical - it does not have to strictly affect the
+next tiepoint, just future tiepoints, in order to be effective.  Therefore, the
+window is adjusted as necessary, but that new window is picked up by the next
+iteration to start - existing parallel iterations are not affected.  This works
+well from a performance standpoint, but has the unfortunate side-effect of
+making the results somewhat non-deterministic, as the tiepoints that are
+affected by the update depend on what's been processed already, which is
+unpredictable.  Use of dynamic scheduling means that each thread when it's
+ready for more work will pick up the next iteration in order, which helps
+mitigate the nondeterministic effect somewhat.  Note that you can get
+deterministic behavior by setting SEARCH_EDGE to 0, effectively disabling the
+window adjustment algorithm, without having to disable OMP.  If you do disable
+OMP, the algorithm devolves to the original serial algorithm, and you should
+again get deterministic results (although the results may differ from the
+omp_on + search_edge=0 case).
+
+The busyness computation is also parallelized (per line).
+
+Parallel processing can be disabled via the -OMP_OFF keyword.  The number
+of threads can be controlled by setting the OMP_NUM_THREADS environment
+variable before running the program.  There are numerous other OMP variables
+that can be set; see the OMP documentation.  However, the number of threads
+is the only one that is likely to be useful in most cases.
+
+.page
+
+TO DO LIST:
+----------
+
+* Use moving box for busyness calculation for efficiency.
+* Consider using Gary Yagi's horizon mask routines.
+* More parameter tuning!!
+* Fix rover filter to compensate for CAHVOR bug (see method comments).
+* Use PIG to find filter file in the config dir automatically.
+* Compute appropriate SEP_ANGLE based on camera FOV.
+* Once parameter sets stabilize, perhaps have "sets" you can choose from
+  for different cameras (rather than setting dozens of params).
+* More adaptable algorithms for parameters... for example, increasing
+  window size when there's not enough information to correlate properly.
+* Do something more to avoid line problems (e.g. horizon, shadows) where
+  the correlation is unconstrained in one direction.
+* Add some "slop" for on-image checks when projecting to the right side.
+* Determine if the "correlate again using min search window" step is really
+  useful any more, now that the search window shaping and adjustment is done.
+
+.PAGE
+
+HISTORY:
+-------
+
+1994-04-30 J Lorre - Initial mpfnav
+1998-09    B. Deen - Multimission conversion
+1999-07    ??? - Split of original MARSNAV into two parts:  MARSTIE and MARSNAV
+2006-09    rgd - Wrote MARSAUTOTIE using MARSTIE as a base
+2013-04-02 rgd - Changes to work with multiple resolution inputs
+2016-10-18 rgd - Parallelization of code
+2020-02-18 wlb - IDS-7927 - replaced sprintf() calls with snprintf() calls; removed unused variables.
+
+COGNIZANT PROGRAMMER:  Bob Deen
+
+.LEVEL1
+.VARI INP
+Input image(s) or
+file list.
+
+.VARI OUT
+Output tiepoint file.
+
+.VARI NAVTABLE
+Corrected navigation
+filename.
+
+.VARI BAND
+The vicar image 
+band number. 
+Defaults to 1
+
+.VARI TEMPLATE
+correlation size.
+
+.VARI SEARCH
+correlation search
+area.
+
+.VARI QUALITY
+Minimum acceptable
+correlation quality.
+
+.VARI BORDER
+Pixels to avoid
+on picture border.
+
+.VARI BUSY
+Threshold for busyness
+metric.
+
+.VARI GRID_SPACING
+Spacing for initial
+tiepoint grid.
+
+.VARI SEP_ANGLE
+Max separation angle
+for image pairs.
+
+.VARI SEARCH_EDGE
+Dynamic search window
+tuning: how close to edge.
+
+.VARI SEARCH_FACTOR
+Dynamic search window
+tuning: how much to adjust.
+
+.VARI SEARCH_MIN
+Minimum search window size.
+
+.VARI SEARCH_MAX
+Maximum search window size.
+
+.VARI BUSY_WINDOW
+Size of window for busyness
+metric calculation.
+
+.VARI LINEAR_QUALITY
+Quality threshold for linear
+correlation.
+
+.VARI MASK
+File to use specifying rover
+mask.
+
+.VARI USE_MASK
+Enables use of rover mask.
+
+.VARI DENSITY
+Controls how many tiepoints
+to keep per pair.
+
+.VARI MAX_ITER
+Max iterations for geometric
+scatter step.
+
+.VARI CENTER_WEIGHT
+Weighting factor for center
+of image in geometric scatter.
+
+.VARI PARAM_WIN
+Window size for parameter
+filtering.
+
+.VARI PARAM_SIGMA
+Allowed sigma for parameter
+filtering.
+
+.VARI PARAM_MIN
+Minimum sigma value for
+parameter filtering.
+
+.VARI PARAM_ABS
+Absolute difference value
+for parameter filtering.
+
+.VARI DEBUG
+Flag to enable debug
+prints and files.
+
+.VARI START_KEY
+Starting key number for
+tiepoint file (XML format
+only).
+
+.VARI FORMAT
+OLD or XML tiepoint
+file format.
+
+.VARI NOMINAL_HEIGHT
+Nominal height of input
+images.
+
+.VARI REFIMAGE
+Specifies reference
+images.
+
+.VARI FOV
+Overrides FOV limit
+for projection
+
+.VARI OMP_ON
+Turns on or off parallel
+processing (default: on)
+
+.VARI NORMAL
+Surface normal vector.
+
+.VARI GROUND
+Surface ground point.
+
+.VARI SURF_COORD
+Coordinate system used to define
+surface parameters.
+
+.VARI SURFACE
+The type of mars surface to use.
+INFINITY, PLANE, SPHERE1, SPHERE2,
+MESH.
+
+.VARI SURF_MESH 
+Mesh file for surface model
+
+VARI SURF_CSFILE 
+File containing CS for surface
+model
+
+.VARI CONFIG_PATH
+Path used to find
+configuration/calibration
+files.
+
+.VARI POINT_METHOD
+Specifies a mission-
+specific pointing
+method to use
+
+.VARI MATCH_METHOD
+Specifies a method
+for pointing corrections.
+
+.VARI MATCH_TOL
+Tolerance value for
+matching pointing params
+in pointing corrections file.
+
+.VARI NOSITE
+Disables coordinate
+system sites.
+
+.VARI RSF
+Rover State File(s) to use.
+
+.VARI DEBUG_RSF
+Turns on debugging of RSF
+parameter.
+
+.VARI COORD
+Coordinate system to use.
+Ignored by marstie.
+
+.VARI COORD_INDEX
+Coordinate system index for
+some COORD/mission combos.
+Ignored by marstie.
+
+.VARI FIXED_SITE
+Which site is FIXED for
+rover missions.
+
+.LEVEL2
+.VARI INP
+There are two options for describing input images. 
+
+Either:
+List the image file names 
+
+Or:
+provide an ascii file with the file names listed, one per record.
+
+.VARI OUT
+Output tiepoint table.
+This is an ASCII table with a header, a record indicating the number of
+tiepoints, then a series of records, one per tiepoint.  Values in the record
+are:
+laft_image, right_image, left_sample, left_line, right_sample, right_line,
+corrected_sample, corrected_line, quality, interactive_flag
+
+.VARI NAVTABLE
+Corrected navigation filename.
+If marsnav was run on the input images it created a table of corrected
+pointing parameters. If you refer to this table using NAVTABLE it
+will override the pointing parameters (e.g. azimuth and elevation) in the
+picture labels, giving you a better registered mosaic.
+
+.VARI BAND
+The vicar image band number. Defaults to 1
+
+.VARI TEMPLATE
+Correlation size. Must be an odd number. Defaults to 15 square.
+
+Window can be specified via a single value, which applies to both line
+and sample directions.  Or, it may be specified as a pair: (line,samp),
+in order to define a rectangular window.
+
+.VARI SEARCH
+Initial correlation search area. Must be an odd number. Defaults to 199 square.
+See "Correlate all tiepoints".
+
+Window can be specified via a single value, which applies to both line
+and sample directions.  Or, it may be specified as a pair: (line,samp),
+in order to define a rectangular window.
+
+.VARI QUALITY
+Minimum acceptable correlation quality for amoeba8 step.  See "Correlate
+all tiepoints".
+
+.VARI BORDER
+The width of a border all around the image to avoid in selecting
+pixels for correlation.
+Also is the width added to the template area all around to permit
+rotation of the template.  See "Define a candidate tiepoint grid".
+
+.VARI BUSY
+The busyness threshold.
+Any correlation area must have a business above BUSY to be correlated.
+See "Compute a busyness metric".
+
+.VARI GRID_SPACING
+Spacing for initial tiepoint grid.  See "Define a candidate tiepoint grid".
+The grid spacing is optinally adjusted by the ratio between the nominal and
+actual heights of the images (see NOMINAL_HEIGHT).
+
+.VARI SEP_ANGLE
+Maximum separation angle for image pairs.  Current best values are 60 for
+MER navcam, and 20 for MER pancam.  See "Reject pairs that are too far apart".
+
+.VARI SEARCH_EDGE
+Specifies how close the point can be to the center or edge of the search
+window during dynamic search window tuning.  See "Correlate all tiepoints".
+
+.VARI SEARCH_FACTOR
+Specifies how much to adjust the search window during dynamic search window
+tuning.  See "Correlate all tiepoints".
+
+.VARI SEARCH_MIN
+Minimum search window size.  Used for three things:
+
+1) How close the search window can be to the image edge.  See "Define
+a candidate tiepoint grid".
+2) Initial search window when there are no tiepoints.  See "Use minimum
+search window and correlate again".
+3) Minimum size of search window during dynamic adjustment.  See "Correlate
+all tiepoints".
+
+.VARI SEARCH_MAX
+Maximum size of search window during dynamic adjustment.  See "Correlate
+all tiepoints".
+
+.VARI BUSY_WINDOW
+Size of window used for calculatiny busyness metric.  See "Compute a
+busyness metric".
+
+.VARI LINEAR_QUALITY
+Quality threshold for linear correlation.  See "Correlate all tiepoints".
+
+.VARI MASK
+File to use specifying rover mask.  See "Filter out points on the rover".
+The format of this XML file is the same as that used for MARSFILTER; see the
+help for MARSFILTER for details.
+
+.VARI USE_MASK
+Enables use of rover mask.  See "Filter out points on the rover".
+
+.VARI DENSITY
+Controls how many tiepoints to keep per image pair, based on the size of the
+area covered by the tiepoints.  See "Geometric scatter of points".  The
+density is optionally adjusted by the ratio between the nominal and actual
+heights of the image (see NOMINAL_HEIGHT).
+
+.VARI MAX_ITER
+Maximum # of iterations for geometric scatter step.  See "Geometric scatter
+of points".
+
+.VARI CENTER_WEIGHT
+Weighting factor for center of image in geometric scatter.  See "Geometric
+scatter of points".
+
+.VARI PARAM_WIN
+Window size for parameter filtering.  See "Filter tiepoints based on
+correlator parameters".
+
+.VARI PARAM_SIGMA
+The value must be within this many sigmas during parameter filtering.  See
+"Filter tiepoints based on correlator parameters".
+
+.VARI PARAM_MIN
+Minimum sigma value for parameter filtering, below which sigma checks are
+not used and the point is passed.  See "Filter tiepoints based on correlator
+parameters".
+
+.VARI PARAM_ABS
+Maximum absolute difference value from mean for parameter filtering.  See
+"Filter tiepoints based on correlator parameters".
+
+.VARI DEBUG
+Flag to enable debug prints and files.  See the "TUNING" section in the
+main help.
+
+0 == no debug
+1 == info about window sizes, culling
+2 == 1 + info about tiepoints and param filtering
+3 == 2 + saving intermediate (temp) images (don't do w/more than 1 or 2 pairs!)
+
+.VARI START_KEY
+Starting key number for the tiepoint file (XML format only).  Tiepoint files
+contain a list of images, each of which is associated with an integer key.
+Setting START_KEY to some value allows tiepoint files to be merged easily,
+without the keys conflicting.  It is acceptable to have the same image in
+different sections of a merged file (with different keys); they are properly
+merged when read in.
+
+.VARI FORMAT
+There are two tiepoint file formats: "old" is the simple text-based list,
+as used for most of MER, while "xml" is an XML-based format that supports
+additional tiepoint types.  The FORMAT parameter controls which one to use.
+Over time the use of "old" should be phased out and eventually the FORMAT
+parameter will disappear.
+
+.VARI NOMINAL_HEIGHT
+Specifies the nominal height of an input image.  If specified, the GRID_SPACING
+and DENSITY parameters are assumed to apply to an image of this height.  The
+parameters are then scaled based on the actual image height.  This allows the
+grid spacing and density to have similar effect across the inputs, when the
+input images are at different resolutions.  For example, when including a
+thumbnail image, a density setting that would produce 3 tiepoints along the
+edge of a nominally-sized image will still produce 3 tiepoints on the thumbnail.
+
+The parameter is option, but highly recommended when mixing resolutions.
+Without this, the grid spacing might be larger than an entire thumbnail.
+
+.VARI REFIMAGE
+Specifies which image (if any) are reference images.
+
+Reference images are not tiepointed to each other.  They are tiepointed to
+non-reference images.  The use case is where you have a mosaic that has already
+been tiepointed that is being used as a control network for a new mosaic of the
+same area.  These frames will be set to references when running marsnav/marsnav2
+meaning they will not be adjusted.  Because they won't be adjusted, there is
+no point in collecting tiepoints between them.  Although these tiepoints don't
+hurt per se, they do take time to compute and file space to manage.  So turning
+them off is more efficient.  We do tie reference to non-reference images as
+this is needed for them to work as a control network.
+
+If a number in the list is negative, it means all images from the previous
+number through (the absolute value of) this one will be references.  For
+example a list:
+
+1,3,-6,8,11,-15
+
+will cause the following images to be reference images:
+
+1,2,4,5,6,8,11,12,13,14,15
+
+Numbering of images starts at 1.
+
+.VARI FOV
+Overrides the FOV limit for projection.  Normally this is the H + V FOV of the
+camera, but limited to the range 30-90 degrees.  This parameter overrides that
+value (after the limits, so it can be anything).  The projected vector has to
+be within this of the center projection of the camera.  Currently A is used as
+a proxy for this, which causes issues with some camera models where A through C
+does not project to the middle of the image.
+
+.VARI OMP_ON
+Turns on or off parallel processing.  The default is on.  The main help
+describes some environment variables that can further control parallel
+processing.  Note that this program uses standard OpenMP (which is built in
+to the gcc/g++ compilers), so further details can be found in the OpenMP
+documentation.
+
+.VARI NORMAL
+The local mars surface normal vector coordinate system specified by SURF_COORD 
+parameter (defaults to surface fixed).
+For most pan/tilt cameras, if the lander is not tilted this vector
+would be: normal=(0,0,-1).  ie: x_component=0, y_component=0, z_component=-1.
+This need not be a unit vector.  This vector is used to define the
+surface plane to which image points are projected in order to minimize
+parallax.
+For SPHERE1/2 surface models, normal's first parameter is used to
+denote sphere's radius.  Thus to describe sphere of radius R, user
+would specify normal=(R, 0, 0).
+
+.VARI GROUND
+Any point on the surface, in coordinate system specified by SURF_COORD parameter
+(defaults to surface fixed).  This defines where the tilted plane is in space.  
+Although any point may be used, normally the point just "under" the origin is selected.
+Defaults:
+Mars Pathfinder:  (0.0, 0.0, 0.0)       (lander zero point is on the ground)
+Mars 98 Lander:   (0.0, 0.0, 1.64)      (lander zero point is on top of deck)
+MER           :   (0.0, 0.0, 0.294)
+For MER images taken on top of the lander, the ground is roughly at (0.0, 0.0, 0.7)
+For SPHERE1/2 surface models, GROUND parameter is used to denote sphere's
+center.  
+    
+.VARI SURF_COORD
+The coordinate system that surface parameters like GROUND and NORMAL are defined in.
+For valid values refer to COORD parameter description.  The interpretation of the 
+values is dependent on the mission. Defaults to surface fixed coordinate system.
+Note that no validation is done for input strings because COORD is using the same
+values.  So user needs to be extra careful in specifying SURF_COORD value.  For 
+example COORD=local would be correctly interpreted to mean LOCAL_LEVEL because of
+validation process.  On the other hand specifying SURF_COORD=local would lead
+to underlying code treating the input value as invalid and reverting to default
+which is FIXED frame.  So the values for SURF_COORD should be spelled exactly as
+found in the list of valid values for COORD parameter.
+
+.VARI SURFACE
+The type of mars surface to use. The surface is used to intercept view rays
+emanating from the cameras in order to model out parallax between the
+stereo cameras. The two options are surface=INFINITY which means no surface
+is used or surface=PLANE (the default case). If surface=PLANE then the plane
+is defined by the NORMAL and GROUND parameters. For the cases when PLANE
+doesn't match local topography sufficiently well, here are two sphere surface
+models: surface=SPHERE1 and surface=SPHERE2.  SPHERE1 is useful to model
+convex surfaces like hills, it returns closest(first) ray-surface intersection
+point.  SPHERE2 is useful to model concave surfaces, like crater when the
+camera point is outside looking in, it returns farthest(second) ray-surface
+intersection point.  For the case when camera is inside the sphere surface,
+like rover sitting in the crater, there is only a single intersection point
+and SPHERE1 and SPHERE2 behave exactly the same. Last, MESH is a surface
+model defined by a mesh file (.obj) which path is given with SURF_MESH.
+
+.VARI SURF_MESH 
+Mesh OBJ file to use as the surface model. For the mesh to be used,
+SURFACE must be set to MESH. The coordinates of the mesh vertices can be 
+expressed in any CS. However the mesh CS must be supplied via SURF_CSFILE.
+If SURF_CSFILE is not used, then the mesh is assumed to be to the CS that
+results from COORD or SURF_COORD
+
+VARI SURF_CSFILE 
+File name of a vicar file whose CS (contained in the labels) will be read and
+assigned to the SURFACE model. The type of image and its content are of no
+interest, we are just reading the CS. That CS will supersede any other surface 
+CS definition (COORD or SURF_COORD). Its typical use is to supply a CS to a
+given mesh file (expectedly the XYZ from which the mesh is computed from, but
+doesn't have to). But SURF_CSFILE could be use to define a CS in which NORMAL 
+and GROUND for a PLANE surface are expressed in.
+
+
+
+
+.VARI CONFIG_PATH
+A colon-separated list of directories in which to look for configuration
+and calibration files.  Environment variables are allowed in the list
+(and may themselves contain colon-separated lists).  The directories are
+searched in order for each config/cal file when it is loaded.  This allows
+multiple projectes to be supported simultaneously, and allows the user to
+override any given config/cal file.  Note that the directory structure below
+the directories specified in this path must match what the project expects.
+For example, Mars 98 expects flat fields to be in a subdirectory named
+"flat_fields" while Mars Pathfinder expects them to be directly in the
+directory specified by the path (i.e. no intermediate subdirectories).
+
+.VARI POINT_METHOD
+Specifies a mission-specific pointing method to use.  Normally this
+parameter is not used, in which case the "default" pointing methods
+are used.  Some missions may have special, or alternate, pointing
+methods available, which are indicated by this string (for example,
+backlash models, using arm joint angles instead of x/y/z/az/el, etc).
+A substring search is used, so multiple methods (where that makes sense)
+can be specified by separating the keywords with commas.
+
+Note that nav files created using one pointing method will most likely
+not be compatible with a mosaic created using a different pointing method.
+
+The methods available vary per mission, but some methods available at
+the time of this writing are:
+
+BACKLASH : Mars 98 SSI only.  Selects a backlash pointing model,
+which adjusts the telemetered azimuth and elevation values based on
+knowledge of the camera's mechanical backlash and the direction the
+motor was travelling when the image was taken.
+
+.VARI MATCH_METHOD
+Specifies a method for pointing corrections.
+
+Loose method matches with pointing parameters of the image.
+Tight method matches with unique id of the image.
+
+.VARI MATCH_TOL
+Tolerance value for matching pointing parameters in the pointing corrections
+file.  Used if MATCH_METHOD=LOOSE
+Default value is pretty arbitrary, though seems to work well so far....
+
+.VARI NOSITE
+Disables all label-derived parameters to the Site mechanism which underlies
+coordinate systems.  This forces all sites to be identical, with all rotations
+and offsets set the same.  In the case of MPF or Mars 98, this disables
+the lander quaternion and offset (sets them to identity and 0, respectively).
+This option should not be used with images taken from different vantage
+points (e.g. the spacecraft moved, or mixing a lander and a rover) or
+invalid results will be obtained.  The use of this option invalidates the
+Fixed coordinate frame; any values reported in the Fixed frame will not
+correctly reflect the orientation of the lander/rover.
+
+Obviously, this option should be rarely used; it is intended for when the
+image labels defining the site are invalid or inconsistent.
+
+.VARI RSF
+Rover State File.  This is a list of filenames to load containing
+Rover State information.  These files contain position and orientation
+information for a rover (or other mobile spacecraft) at various sites.
+They are in XML format.  See the "Rover Motion Counter (RMC) Master File SIS"
+for details on these files.
+
+Rover State Files have a priority order.  The files listed first have
+the highest priority.
+
+Environment variables may be used in the list.
+
+For MER, if a directory is specified, then that directory is searched for
+RMC Master files and any found are loaded.  The directory structure and
+filename convention is covered in the RMC SIS.  The directory specified
+is the one containing "master", so if <dir> is the name specified in the
+RSF parameter, the following files will be searched for:
+
+<dir>/master/<mission>_Master.svf
+<dir>/master/<mission>_Site_<n>_Master.rvf
+
+The name of each file loaded is printed to the stdout log for reference.
+
+.VARI DEBUG_RSF
+If enabled, this causes the internal database of RMC locations to be
+printed out to the stdout log.  This is after the RSF files have been
+loaded and the coordinate systems read from the input label(s).
+
+.VARI COORD
+This parameter is ignored by marstie.  It is here for compatibility
+with subroutines used by other programs (see e.g. marsmap).
+
+.VARI COORD_INDEX
+This parameter is ignored by marstie.  It is here for compatibility
+with subroutines used by other programs (see e.g. marsmap).
+
+.VARI FIXED_SITE
+Specifies which major Site is the "Fixed" Site for this run.
+
+Historically, MPF and M98 had a single "Surface Fixed" frame which never
+moved, and which all other coordinate system frames were referenced to.
+With the advent of long-range rovers (such as MER and FIDO), that became
+insufficient.  The rover traverses far enough that errors in knowledge of
+coordinate system offset and orientation become unacceptable.
+
+For this reason, a system of major Sites was introduced.  Periodically
+during the mission, a Site frame is declared.  This then becomes the
+reference frame for all activities until the next Site is declared.
+References are kept local, and errors don't propogate across Sites.
+
+However, if images from more than one Site are combined together, the
+Site's must be placed relative to each other.  Therefore a single reference
+frame is still needed to combine different sites.
+
+The FIXED_SITE parameter controls which of the major Site frames is
+the reference ("fixed") site for this program run.  This fixed frame
+can vary in different program runs, but is constant throughout one
+execution.
+
+If not specified, FIXED_SITE defaults to the minimum Site number (i.e.
+lowest numbered, or earliest chronologically) used in all input images.
+Normally this default is sufficient; rarely must FIXED_SITE be specified.
+
+One or more Rover State Files must usually be specified in order to combine
+image from more than one Site.  These describe the relationship between
+sites.  See the RSF parameter.
+

@@ -1,0 +1,137 @@
+process help=*
+PARM INP       TYPE=STRING COUNT=1:2
+PARM OUT       TYPE=STRING
+PARM OP        TYPE=KEYWORD VALID=(ADD, SUB, DIV, MULT, CABS, CONJ, COMP, REAL2COMPREAL, REAL2COMPIMAG, COMP2REAL, COMP2IMAG) COUNT=0:1 DEFAULT=--
+PARM SCALAR    TYPE=KEYWORD VALID=SCALAR COUNT=0:1 DEFAULT=--
+PARM SL        INTEGER COUNT=0:1 DEFAULT=1
+PARM SS        INTEGER COUNT=0:1 DEFAULT=1
+PARM NL        INTEGER COUNT=0:1 DEFAULT=0
+PARM NS        INTEGER COUNT=0:1 DEFAULT=0
+PARM SIZE      TYPE=INTEGER COUNT=4 DEFAULT=(1,1,0,0)
+
+END-PROC
+
+.TITLE
+F2COMP Program to perform arithmetic on complex image data
+.HELP
+PURPOSE:
+  F2COMP is a special purpose VICAR program to handle arithmetic
+  operations on complex input data. It will take a most two input
+  data sets.  The operations available are:
+       ADD   (complex+complex, or complex+real)
+       SUB   (complex-complex, or complex-real, or real-complex)
+       MULT  (complex*complex, or complex*real, or real*complex)
+       DIV   (complex/complex, or complex/read, or real/complex)
+       CABS  (absolute value of complex input, output=real*4)
+       CONJ  (complex conjugate of complex input, output=complex)
+       COMP  (1st data set will be real, 2nds data set will be complex)
+       REAL2COMPREAL
+             (turns a real data set into a complex real data set)
+       REAL2COMPIMAG
+             (turns a real data set into a complex imaginary data set)
+       COMP2REAL
+             (extracts the real part of the complex data set and
+              stores it as a real data set)
+       COMP2IMAG
+             (extracts the imaginary part of the complex data set
+              and stores it as a real data set)
+In mixed real and complex operations, the output will always be
+COMPLEX*8. In mixed operations, real values are coverted to complex
+with zero imaginary part before the operation is carried out.
+Divide by zero protection is accomplished by setting the result
+of an attempted divide-by-zero to zero on output.
+.page
+EXECUTION:
+
+  F2COMP  INP  OUT  PARAMS
+
+  where INP and OUT are input and output file parameters, and PARAMS are
+  the usual size field parameters plus the keyword OP. For example:
+
+  f2comp inp=(A,B) out=C op=mult
+
+  If the input data sets are of different size, F2COMP will truncate to
+  the smallest number of lines and smallest number of samples in the
+  two images.
+
+TIMING: 
+  As fast as C can read and write the lines.  
+
+ORIGINAL PROGRAMMER:     P. KIM          22 Oct 2007
+Based on the version by: J.E. Solomon    02 Apr 1985
+
+REVISIONS:
+  2007-11-29 P. Kim - Modified and delivered to vdev
+  2007-12-29 W. Bunch - Switched to USES_ANSI_C AND LIB_CARTO; misc cleanup
+  2009-07-07 P. Kim - Fixed format string length from 5 to 8
+  2015-11-24 W. Bunch - Migrated to MIPL
+  2019-08-22 W. Bunch - IDS-7922 - initialized some variables
+  2022-07-14 B. Crocco afids to opensource
+  
+.LEVEL1
+.VARIABLE INP
+Input file name.
+.VARIABLE OUT
+Output file name.
+.VARIABLE SIZE
+Standard VICAR size field
+.VARIABLE SL
+Starting Line.
+.VARIABLE SS
+Starting Sample.
+.VARIABLE NL
+Number of Lines.
+.VARIABLE NS
+Number of Samples.
+.VARIABLE OP
+Operation to be performed;
+allowed strings are: add,
+sub, mult, div, cabs, conj,
+comp, real2compreal,
+real2compimag, comp2real,
+comp2imag
+.VARIABLE SCALAR
+Specifies whether to perform
+a scalar operation instead
+of a complex operation
+.LEVEL2
+.VARIABLE INP
+Input file name
+Up to two inputs
+.VARIABLE OUT
+One output file name
+.VARIABLE SIZE
+The size field is specified with four arguments:
+size=(sl,ss,nl,ns)
+.VARIABLE OP
+  F2COMP is a special purpose VICAR program to handle arithmetic
+  operations on complex input data. It will take a most two input
+  data sets.  The operations available are:
+       ADD   (complex+complex, or complex+real)
+       SUB   (complex-complex, or complex-real, or real-complex)
+       MULT  (complex*complex, or complex*real, or real*complex)
+       DIV   (complex/complex, or complex/real, or real/complex)
+       CABS  (absolute value of complex input, output=real*4)
+       CONJ  (complex conjugate of complex input, output=complex)
+       COMP  (1st data set will be real, 2nds data set will be complex)
+       REAL2COMPREAL
+             (turns a real data set into a complex real data set)
+       REAL2COMPIMAG
+             (turns a real data set into a complex imaginary data set)
+       COMP2REAL
+             (extracts the real part of the complex data set and
+              stores it as a real data set)
+       COMP2IMAG
+             (extracts the imaginary part of the complex data set
+              and stores it as a real data set)
+.VARIABLE SCALAR
+  This keyword, if specified along with div or mult option will
+  perform a scalar division or multiplication instead of a
+  complex operation.  Input data sets should be complex [*,/] real.
+
+In mixed real and complex operations, the output will always be
+COMPLEX*8. In mixed operations, real values are coverted to complex
+with zero imaginary part before the operation is carried out.
+Divide by zero protection is accomplished by setting the result
+of an attempted divide-by-zero to zero on output.
+.END

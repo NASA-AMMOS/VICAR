@@ -1,0 +1,5 @@
+$ vpack marsseedgen.com -mixed -
+	-s marsseedgen.cc -
+	-i marsseedgen.imake -
+	-p marsseedgen.pdf
+$ Exit

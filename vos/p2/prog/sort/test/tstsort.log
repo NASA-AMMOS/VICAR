@@ -1,36 +1,13 @@
-                Version 5C/16C
-
-      ***********************************************************
-      *                                                         *
-      * VICAR Supervisor version 5C, TAE V5.2                   *
-      *   Debugger is now supported on all platforms            *
-      *   USAGE command now implemented under Unix              *
-      *                                                         *
-      * VRDI and VIDS now support X-windows and Unix            *
-      * New X-windows display program: xvd (for all but VAX/VMS)*
-      *                                                         *
-      * VICAR Run-Time Library version 16C                      *
-      *   '+' form of temp filename now avail. on all platforms *
-      *   ANSI C now fully supported                            *
-      *                                                         *
-      * See B.Deen(RGD059) with problems                        *
-      *                                                         *
-      ***********************************************************
-
-  --- Type NUT for the New User Tutorial ---
-
-  --- Type MENU for a menu of available applications ---
-
 let $autousage="none"
 ibis-gen xxc version=ibis-2 org=column nc=4 nr=22 deffmt=DOUB
 Beginning VICAR task ibis
+IBIS version 2019-07-31
 mf3 xxc func="c1=@int(@rand*8)$c2=@int(@rand*8)"
 Beginning VICAR task mf3
 mf3 version Wed Oct 07 2008
-function string = c1=@int(@rand*8)$c2=@int(@rand*8)
-22 records in
 ibis-list xxc
 Beginning VICAR task ibis
+IBIS version 2019-07-31
  
 Number of Rows:22  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -66,6 +43,7 @@ Beginning VICAR task sort
 sort version Wed Jan  2 2008
 ibis-list xxc
 Beginning VICAR task ibis
+IBIS version 2019-07-31
  
 Number of Rows:22  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -104,8 +82,10 @@ Rows: 1:22
 	     xxxx,xxxx,  +
 	     aaaa,bbbb)
 Beginning VICAR task ibis
+IBIS version 2019-07-31
    ibis-list a a4col=(1,2)
 Beginning VICAR task ibis
+IBIS version 2019-07-31
  
 Number of Rows:5  Number of Columns: 4       
 File Version:IBIS-1  Organization:COLUMN  SubType:NONE
@@ -124,6 +104,7 @@ Beginning VICAR task sort
 sort version Wed Jan  2 2008
    ibis-list a a4col=(1,2)
 Beginning VICAR task ibis
+IBIS version 2019-07-31
  
 Number of Rows:5  Number of Columns: 4       
 File Version:IBIS-1  Organization:COLUMN  SubType:NONE
@@ -144,8 +125,10 @@ Rows: 1:5
 	  5,4, +
 	  2,5)
 Beginning VICAR task ibis
+IBIS version 2019-07-31
   ibis-list a
 Beginning VICAR task ibis
+IBIS version 2019-07-31
  
 Number of Rows:5  Number of Columns: 3       
 File Version:IBIS-1  Organization:COLUMN  SubType:NONE
@@ -164,6 +147,7 @@ Beginning VICAR task sort
 sort version Wed Jan  2 2008
   ibis-list a
 Beginning VICAR task ibis
+IBIS version 2019-07-31
  
 Number of Rows:5  Number of Columns: 3       
 File Version:IBIS-1  Organization:COLUMN  SubType:NONE
@@ -182,6 +166,7 @@ Beginning VICAR task sort
 sort version Wed Jan  2 2008
   ibis-list a
 Beginning VICAR task ibis
+IBIS version 2019-07-31
  
 Number of Rows:5  Number of Columns: 3       
 File Version:IBIS-1  Organization:COLUMN  SubType:NONE
@@ -203,8 +188,10 @@ Rows: 1:5
 	     xxxx,xxxx,  +
 	     aaaa,bbbb)
 Beginning VICAR task ibis
+IBIS version 2019-07-31
    ibis-list a a4col=(1,2)
 Beginning VICAR task ibis
+IBIS version 2019-07-31
  
 Number of Rows:5  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -223,6 +210,7 @@ Beginning VICAR task sort
 sort version Wed Jan  2 2008
    ibis-list a a4col=(1,2)
 Beginning VICAR task ibis
+IBIS version 2019-07-31
  
 Number of Rows:5  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -249,8 +237,10 @@ Rows: 1:5
 	     xxxxxxxxxx,xxxxxxxxxx,  +
 	     aaaaaaaaaa,bbbbbbbbbb)
 Beginning VICAR task ibis
+IBIS version 2019-07-31
    ibis-list a a4col=(1,2)
 Beginning VICAR task ibis
+IBIS version 2019-07-31
  
 Number of Rows:10  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -274,6 +264,7 @@ Beginning VICAR task sort
 sort version Wed Jan  2 2008
    ibis-list a a4col=(1,2)
 Beginning VICAR task ibis
+IBIS version 2019-07-31
  
 Number of Rows:10  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -297,6 +288,7 @@ Beginning VICAR task sort
 sort version Wed Jan  2 2008
    ibis-list a a4col=(1,2)
 Beginning VICAR task ibis
+IBIS version 2019-07-31
  
 Number of Rows:10  Number of Columns: 4       
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
@@ -316,4 +308,4 @@ Rows: 1:10
   zzzzzzzzzz  zzzzzzzzzz        9.00        1.00
   zzzzzzzzzz  yyyyyyyyyy       10.00        2.00
    ush rm a xxc
-end-proc
+disable-log

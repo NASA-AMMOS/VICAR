@@ -1,0 +1,130 @@
+procedure help=*
+parm inp     type=string count=1
+parm out     type=string count=1 default="-"
+parm prefix  type=string count=1 default="-"
+parm image   type=int default=0
+parm band    type=int default=0
+parm sl      type=int default=1
+parm ss      type=int default=1
+parm nl      type=int default=0
+parm ns      type=int default=0
+
+local afidsvdevdata type=(string,99)
+local ref string
+local t1e real
+local t1n real
+local t2e real
+local t2n real
+local t3e real
+local t3n real
+local t4e real
+local t4n real
+local nlx int
+local nsx int
+local bp1 int
+local ip1 int
+local tvar int
+body
+
+let _onfail="continue"
+
+local afidsroot type=(string,128)
+local osname type=(string,20)
+translog AFIDS_ROOT afidsroot
+translog OS_NAME osname
+tcl2tcl script="clock seconds" intvar=tvar
+let tvar = (tvar-543210) !Make it unique
+write "tvar = &tvar"
+
+! Need to add support for all the other options
+let bp1 = band + 1
+let ip1 = image + 1
+translog AFIDS_VDEV_DATA afidsvdevdata
+let ref = "&afidsvdevdata/etop02nobath.hlf"
+
+ush nitf_to_vicar --dem=&ref --band=&bp1 --image=&ip1 &inp &out 
+
+lab2tcl &out v1=nlx v2=nsx keyword=(nl,ns) 'system
+
+ibis-gen xxnew_&tvar nc=4 nr=4 deffmt=DOUB datacol=(1,2) +
+   data=(0,0, 0,&nsx, &nlx,&nsx, &nlx,0)
+pixmap (xxnew_&tvar,&out) pixcol=(1,2) mapcol=(3,4) 'pixtomap
+ibis2tcl xxnew_&tvar v1=t1e v2=t1n v3=t2e v4=t2n v5=t3e v6=t3n v7=t4e v8=t4n +
+      vartype=(-1,-1,-1,-1,-1,-1,-1,-1) +
+      ibisloc=(1,3,1,4,2,3,2,4,3,3,3,4,4,3,4,4)
+label-list &out
+gtgenup inp=&out geotiff="NITF_CORNERLON1=&t1e"
+gtgenup inp=&out geotiff="NITF_CORNERLAT1=&t1n"
+gtgenup inp=&out geotiff="NITF_CORNERLON2=&t2e"
+gtgenup inp=&out geotiff="NITF_CORNERLAT2=&t2n"
+gtgenup inp=&out geotiff="NITF_CORNERLON3=&t3e"
+gtgenup inp=&out geotiff="NITF_CORNERLAT3=&t3n"
+gtgenup inp=&out geotiff="NITF_CORNERLON4=&t4e"
+gtgenup inp=&out geotiff="NITF_CORNERLAT4=&t4n"
+
+theend>
+
+write "vextract2 ends"
+ush date
+ush rm xxnew_&tvar
+end-proc
+
+.title
+VICAR Program vextract2 - logs NITF image file to VICAR
+.help
+PURPOSE
+
+     VEXTRACT2 logs NITF image and metadata
+
+.PAGE
+TAE COMMAND LINE FORMAT
+
+     vextract2 inp outpre
+     
+     where
+
+     inp         is an NITF input image
+     outpre      is a prefix for output files
+     image       is a zero-based index selecting a particular image
+     band        is a zero-based band selecting a band from the particular image
+
+     options
+       image selects one of several images in a data set; zero-based index
+       band  selects one of several bands in a multispectral image; zero-based index
+       sl, ss, nl, ns specify a subarea to log
+
+.PAGE
+OPERATION
+
+.PAGE
+
+RESTRICTIONS
+
+.PAGE
+WRITTEN BY:            W. L. Bunch
+
+COGNIZANT PROGRAMMER:  W. L. Bunch
+
+REVISIONS: 
+
+  Fri May 26 2006
+    Initial version
+
+.level1
+.var inp
+Input NITF image file
+.var outpre
+Output file prefix
+.var image
+Used to select one of several images. This is a zero-based index.
+.var band
+Used to select one of several bands. This is a zero-based index.
+.var sl
+Used to select a subarea to log.
+.var ss
+Used to select a subarea to log.
+.var nl
+Used to select a subarea to log.
+.var ns
+Used to select a subarea to log.
+.end

@@ -1,0 +1,459 @@
+process help=*
+PARM INP TYPE=STRING COUNT=(1:20)
+PARM OUT TYPE=STRING COUNT=(1:20)
+PARM BAND TYPE=INTEGER COUNT=(0:1) DEFAULT=--
+PARM RAD TYPE=KEYWORD VALID=("RAD", "ZENITH_SCALED_RAD", "NORAD") DEFAULT=RAD
+PARM TAU TYPE=REAL DEFAULT=0.6
+PARM DNSCALE TYPE=REAL DEFAULT=100.0
+PARM DNSCALE_IN TYPE=KEYWORD COUNT=1 VALID=("AUTOSCALE", "RESCALE", "NOSCALE") DEFAULT=AUTOSCALE
+PARM DNSCALE_OUT TYPE=KEYWORD COUNT=1 VALID=("STATIC", "DYNAMIC", "IDENTITY") DEFAULT=STATIC
+PARM CONFIG_PATH STRING DEFAULT="$MARS_CONFIG_PATH"
+PARM POINT_METHOD TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM FORMAT TYPE=KEYWORD VALID=("HALF", "REAL") DEFAULT=HALF
+PARM BITS TYPE=INTEGER COUNT=(0:1) DEFAULT=--
+
+PARM DATA_SET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM DATA_SET_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM RELEASE_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCT_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_ID TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM PRODUCER_INST TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_NAME TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM TARGET_TYPE TYPE=STRING COUNT=(0:1) DEFAULT=--
+
+PARM RSF TYPE=STRING COUNT=0:100 DEFAULT=--
+PARM DEBUG_RSF TYPE=KEYWORD COUNT=0:1 VALID=DEBUG_RSF DEFAULT=--
+PARM COORD TYPE=KEYWORD VALID=("FIXED", "INSTRUMENT", "SITE", "ROVER", +
+        "LOCAL_LEVEL") DEFAULT="FIXED"
+PARM COORD_INDEX TYPE=INTEGER COUNT=0:10 DEFAULT=--
+PARM FIXED_SITE TYPE=INTEGER COUNT=0:1 DEFAULT=--
+
+END-PROC
+
+.TITLE
+VICAR program MARSRAD.
+
+.HELP
+PURPOSE:
+To radiometrically correct an image, usually an EDR.
+
+This is a multimission program.  It supports any mission, instrument,
+and camera model supported by the Planetary Image Geometry (Pig) software
+suite and its associated Radiometry models (mars_radiometry).
+
+The output file will have the same labels as the input, with the addition
+of the radiometric correction scale factors (RADIANCE_SCALING_FACTOR and
+RADIANCE_OFFSET).
+
+Multiple images can be given to the program, in which case each is corrected
+independently.  The number of outputs must match the number of inputs.
+
+The program will work with color images if such are given as input and
+the BAND parameter is not specified; the number of output bands will equal
+the number of input bands.  If BANDS is specified, only that one single band
+is processed and output.
+
+NOTE: currently the SAME rad correction is applied to ALL bands.  This
+should probably be fixed.
+
+EXECUTION:
+
+The inputs and outputs may be presented in two ways:
+1) Normal file parameters, e.g. inp=(a.img,b.img,c.img...)
+2) A file list, e.g. inp=filelist.txt
+
+The file list is a simple ASCII text file containing one filename per line.
+
+If only one value is given for the INP or OUT parameter, it is assumed that
+the value is the name of a file list file.  However, if the file appears to
+be a VICAR image, or if it doesn't exist (OUT only), then it is treated as
+an actual image name.  This means that you can simply correct a single image:
+
+marsrad inp=a.img out=a.out
+
+without having to create file lists.
+
+The number of input filename must match the number of output filenames, but
+it is okay if one is a file list and the other is directly entered in the
+parameter.
+
+The default is to create a short int (HALF) format file, with radiometric
+values scaled to short int using DNSCALE.  However, specifying FORMAT=REAL
+will create a floating point file, in actual physical units.  Note that
+DNSCALE=1.0 should be used in this case.
+
+If BITS is specified (and FORMAT=REAL is not), then the results are clamped
+to have that many bits, e.g. if BITS is 12 then the results will be in the
+range 0-4095.  The sample bit mask in the label will be set appropriately.
+As a backward compatibility feature, if BITS is not set then there is no
+clamping but the sample bit mask is still set to 15 bits.  BITS is ignored
+for floating-point files.
+
+.PAGE
+OPERATION:
+
+The specific algorithm used for radiometric correction depends on the mission
+type, but most are similar.
+
+MARS PATHFINDER / MARS 98
+-------------------------
+
+The absolute radiance S of a single pixel (at a location (i,j) in an image)
+is given by
+
+S(i,j) = DN(i,j)/(t * R(lambda,temperature) * G(i,j))
+
+where
+DN(i,j) is the instrument signal (in units of DN) from the input image
+G(i,j) is the normalized flat field of the camera system (which corrects
+    for the pixel to pixel sensitivity variations)
+t is the exposure time of the image (in seconds)
+R(lambda,temperature) is the responsivity curve defined by a quadratic
+    function in temperature.
+temperature is the camera head temperature in degrees C.
+lambda is the wavelength in nm, which is derived from the filter.
+
+t, temperature, and filter are derived from the image label.  G depends
+on the filter and eye (left or right), which are also derived from the
+image label.
+
+Flat field files are obtained via the CONFIG_PATH parameter.
+
+The responsivity function R is embedded in the source code; refer to
+mars_radiometry.com if details are required.
+
+The dark current of the camera (i.e., the signal that does not correspond
+to photons incident onto the detector) is insignificant at the low Martian
+temperatures experienced by the lander cameras and is not subtracted for
+the calculations presented here.  (During Mars Pathfinder surface operations,
+the largest dark current of the camera (2 PM local solar time, camera
+temperature = -9 degrees C) was < 2 counts/sec (less than 0.5 % in radiance
+for well-exposed pixels)).
+
+For more information, see Maki et al., 1999 (JGR).
+
+HISTORY:
+Apr. 99  Initial version
+2017-03	mjl, rgd	Support for multiple bands
+COGNIZANT PROGRAMMER:  Bob Deen
+
+.LEVEL1
+.VARI INP
+input image(s) or
+file list.
+
+.VARI OUT
+Output image(s) or
+file list.
+
+.VARI BAND
+Input image band number to
+write to output image. Defaults
+to all bands.
+
+.VARI RAD
+Turns on or off
+radiometric correction.
+
+.VARI TAU
+atmospheric opacity
+
+.VARI DNSCALE
+DN scaling factor.
+
+.VARI DNSCALE_IN
+Selects the mode for 
+applying scaling parameters
+
+.VARI DNSCALE_OUT
+Selects the mode for 
+scaling outputs
+
+.VARI CONFIG_PATH
+Path used to find
+configuration/calibration
+files.
+
+.VARI POINT_METHOD
+Specifies a mission-
+specific pointing
+method to use
+
+.VARI FORMAT
+Selects HALF (short int)
+or REAL (float) output
+format.
+
+.VARI BITS
+Sets number of bits in output
+for non-floating-point files.
+
+.VARI DATA_SET_NAME
+Specifies the full name given
+to a data set or a data product.
+
+.VARI DATA_SET_ID
+Specifies a unique alphanumeric
+identifier for a data set or data
+product.
+
+.VARI RELEASE_ID
+Specifies the unique identifier
+associated with the release to the
+public of all or part of a data set.
+The release number is associated with
+the data set, not the mission.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique
+identifier assigned to a data
+product by its producer.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier
+of an entity associated with the
+production a data set.
+
+.VARI PRODUCER_INST
+Specifies the full name of the
+identity of an entity associated
+with the production of a data set.
+
+.VARI TARGET_NAME
+Specifies a target.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target.
+
+.VARI RSF
+Rover State File(s) to use.
+Not used by this program.
+
+.VARI DEBUG_RSF
+Turns on debugging of RSF
+parameter.
+
+.VARI COORD
+Coordinate system to use.
+Not used by this program.
+
+.VARI COORD_INDEX
+Coordinate system index for
+some COORD/mission combos.
+Not used by this program.
+
+.VARI FIXED_SITE
+Which site is FIXED for
+rover missions.
+Not used by this program.
+
+.LEVEL2
+.VARI INP
+There are two options for describing input images.
+ 
+1) List the image file names
+2) Provide an ascii file with the file names listed, one per record.
+
+If only one value is given, it is assumed that the value is the name of a
+file list file.  However, if the file appears to be a VICAR image, then it
+is treated as an actual image name.  This means that you can simply correct
+a single image:
+
+marsrad inp=a.img out=a.out
+
+without having to create file lists.
+
+.VARI OUT
+There are two options for describing output images.
+
+1) List the image file names
+2) Provide an ascii file with the file names listed, one per record.
+
+If only one value is given, it is assumed that the value is the name of a
+file list file.  However, if the file appears to be a VICAR image, or if
+it doesn't exist, then it is treated as an actual image name.  This means
+that you can simply correct a single image:
+
+marsrad inp=a.img out=a.out
+
+without having to create file lists.
+
+.VARI BAND
+Specifies which band from the input image to write to the output image file.
+If no band is specified, all bands from the input image will be processed then
+written to the output image.
+
+.VARI TAU
+Tau is a measure of atmospheric opacity.  The default for normal Mars conditions 
+is 0.6. Higher tau means more dust in the atmosphere.
+
+.VARI RAD
+Keyword paramter that selects radiometric correction mode of the input images.
+RAD (the default) enables the correction (for missions/instruments which support 
+it); NORAD disables it; ZENITH_SCALED_RAD the radiometry you'd get if the sun 
+were at zenith on a clear day.  The scaling factor is a combination of solar 
+elevation and tau, and will have the effect of brightening up images that 
+were taken near sunset.
+  
+NORAD is not of much use in MARSRAD, since turning off radiometric correction 
+would defeat the entire purpose of MARSRAD! 
+
+.VARI DNSCALE
+DN scaling factor.  This factor is used to convert between physical
+radiometric units (watts/(meter**2, steradian, micron)) and DN's for the
+output mosaic.  The formula is:
+
+true_radiance = offset + (factor * DN)
+
+where "offset" is 0.0 in the current implementation, and "factor" is
+1.0 / DNSCALE (making the formula equivalently:  offset + (DN / DNSCALE)).
+The offset and factor (1.0/DNSCALE) are written to the output mosaic label.
+
+If FORMAT=REAL is specified, DNSCALE should be set to 1.0, or a warning
+will be printed.  The given DNSCALE is still applied, however.
+
+.VARI DNSCALE_IN
+Three-state keyword parameter to control whether or not to apply scaling
+parameters to reconstruct floating point values.
+
+RESCALE says to do the conversion, and reconstitute the float based on the 
+RADIANCE_* keywords.  Note that if there are no RADIANCE_* keywords, 
+this is a no-op, so it doesn't hurt to turn this on for non-scaled images.
+
+NOSCALE says to not to the conversion.  This is what we do now.  If your 
+inputs are dynamically scaled, you'll probably get surprising results.
+
+AUTOSCALE says to figure it out based on the DNSCALE_OUT parameter (see 
+DNSCALE_OUT for details) and -ZENITH_SCALED_RAD flag. If DNSCALE_OUT is STATIC, 
+then it is NOSCALE; if DNSCALE_OUT is DYNAMIC/IDENTIT or RAD=ZENITH_SCALED_RAD,
+then it is RESCALE.
+
+.VARI DNSCALE_OUT
+Three-state keywork parameter to scale output DN values.
+
+If -STATIC is enabled, then the value specified by DNSCALE will be used
+as the DN scaling factor (note the unit scaling factor as well) for all
+radiometric models supplied.
+
+If -DYNAMIC is enabled, then the maximum responsivity value across all
+radiometric models will be used as the DN scaling factor (note the unit
+scaling factor as well).
+
+If -IDENTITY is enabled, then no scaling will be applied.
+
+.VARI CONFIG_PATH
+A colon-separated list of directories in which to look for configuration
+and calibration files.  Environment variables are allowed in the list
+(and may themselves contain colon-separated lists).  The directories are
+searched in order for each config/cal file when it is loaded.  This allows
+multiple projectes to be supported simultaneously, and allows the user to
+override any given config/cal file.  Note that the directory structure below
+the directories specified in this path must match what the project expects.
+For example, Mars 98 expects flat fields to be in a subdirectory named
+"flat_fields" while Mars Pathfinder expects them to be directly in the
+directory specified by the path (i.e. no intermediate subdirectories).
+
+.VARI POINT_METHOD
+Specifies a mission-specific pointing method to use.  Normally this
+parameter is not used, in which case the "default" pointing methods
+are used.  Some missions may have special, or alternate, pointing
+methods available, which are indicated by this string (for example,
+backlash models, using arm joint angles instead of x/y/z/az/el, etc).
+A substring search is used, so multiple methods (where that makes sense)
+can be specified by separating the keywords with commas.
+
+Note that nav files created using one pointing method will most likely
+not be compatible with a mosaic created using a different pointing method.
+
+The methods available vary per mission, but some methods available at
+the time of this writing are:
+
+BACKLASH : Mars 98 SSI only.  Selects a backlash pointing model,
+which adjusts the telemetered azimuth and elevation values based on
+knowledge of the camera's mechanical backlash and the direction the
+motor was travelling when the image was taken.
+
+.VARI FORMAT
+Selects short int (HALF) or float (REAL) output format.  The default
+is short int; the values are scaled using DNSCALE to the short int range.
+However, direct radiometry units can be created using -REAL.  In this case,
+DNSCALE should be set to 1.0 (if not, a warning is printed, but DNSCALE
+*is* used).
+
+.VARI BITS
+If BITS is specified (and FORMAT=REAL is not), then the results are clamped
+to have that many bits, e.g. if BITS is 12 then the results will be in the
+range 0-4095.  The sample bit mask in the label will be set appropriately.
+As a backward compatibility feature, if BITS is not set then there is no
+clamping but the sample bit mask is still set to 15 bits.  BITS is ignored
+for floating-point files.
+
+.VARI DATA_SET_NAME
+The DATA_SET_NAME typically identifies the instrument that acquired the
+data, the target of that instrument, and the processing level of the data.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_NAME.
+
+.VARI DATA_SET_ID
+The DATA_SET_ID value for a given data set or product is constructed
+according to flight project naming conventions.  In most cases the
+DATA_SET_ID is an abbreviation of the DATA_SET_NAME.
+This value is copied to the output label, property IDENTIFICATION,
+keyword DATA_SET_ID.
+
+.VARI RELEASE_ID
+When a data set is released incrementally, such as every three months during
+a mission, the RELEASE_ID is updated each time part of the data set is released.
+For each mission(or host id if multiple spacecrafts), the first release of a data
+set should have a value of "0001".
+This value is copied to the output label, property IDENTIFICATION,
+keyword RELEASE_ID.
+
+.VARI PRODUCT_ID
+Specifies a permanent, unique identifier assigned to a data product by
+its producer. Most commonly, it is the filename minus the extension.
+This value is copied to the output label, property IDENTIFICATION,
+keyword PRODUCT_ID.
+
+.VARI PRODUCER_ID
+Specifies the unique identifier of an entity associated with the
+production of a data set. This value is copied to the output label,
+property IDENTIFICATION, keyword PRODUCER_ID.
+
+.VARI PRODUCER_INST
+Specifies the identity of a university, research center, NASA center or other
+institution associated with the production of a data set.
+This value is copied to the output label, property IDENTIFICATION, keyword
+PRODUCER_INSTITUTION_NAME.
+
+.VARI TARGET_NAME
+Specifies a target.  The target may be a planet, satelite, ring, region, feature,
+asteroid or comet.  This value is copied to the output label, property
+IDENTIFICATION, keyword TARGET_NAME.
+
+.VARI TARGET_TYPE
+Specifies the type of a named target. This value is copied to the output
+label, property IDENTIFICATION, keyword TARGET_NAME.
+
+.VARI RSF
+The Rover State File is loaded by, but not used by, marsrad.  The parameter
+exists for compatibility with subroutines used by other programs (see
+e.g. marsmap).
+
+.VARI DEBUG_RSF
+If enabled, this causes the internal database of RMC locations to be
+printed out to the stdout log.  This is after the RSF files have been
+loaded and the coordinate systems read from the input label(s).
+
+.VARI COORD
+This parameter is ignored by marsrad.  The parameter exists for
+compatibility with subroutines used by other programs (see e.g. marsmap).
+
+.VARI COORD_INDEX
+This parameter is ignored by marsrad.  The parameter exists for
+compatibility with subroutines used by other programs (see e.g. marsmap).
+
+.VARI FIXED_SITE
+This parameter is ignored by marsrad.  The parameter exists for
+compatibility with subroutines used by other programs (see e.g. marsmap).
+

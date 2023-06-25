@@ -1,0 +1,130 @@
+procedure
+parm    mode    type=keyword count=(0:1) valid=(batch,nobatch,inter) default=batch
+
+refgbl $echo
+! Dec 02, 2012 - RJB
+! TEST SCRIPT FOR DERIV
+! tests REAL images
+!
+! Vicar Programs:
+!       spot cform f2 xvd
+! 
+! External programs
+!       <none>
+!
+! Parameters:
+!   mode - method for processing: 
+!       1) batch provides no xvd display
+!       2) interactive or nobatch is used for display requiring
+!       user interaction. 
+!           
+!
+! External test data: 
+!       <none>
+!            
+! Output:    
+!            
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+body
+enable-log
+
+let _onfail="stop"
+let $echo="yes"
+spot out=sp1.dat nl=50 ns=50 shape=gauss sigmax=8 sigmay=16
+cform sp1.dat sp1real.dat oform=real
+deriv sp1real.dat (sp1hderiv.dat,sp1hderiv.infl) orient=horiz
+deriv sp1real.dat (sp1vderiv.dat,sp1vderiv.infl) orient=vert
+let $echo="no"
+if (mode = "nobatch" or mode = "inter")
+
+write "These displays show an image, followed by the 1st derivative"
+write " and a ternary display of the inflection points"
+write " The ternary display is 0 for no inflection, 1 for positive"
+write " inflection and -1 for negative inflection"
+write " display these files:"
+ xvd sp1real.dat
+ xvd sp1hderiv.dat
+ xvd sp1hderiv.infl
+end-if
+let $echo="yes"
+spot out=sp2.dat nl=50 ns=50 shape=gauss sigmax=8 sigmay=100
+cform sp2.dat sp2real.dat oform=real
+deriv sp2real.dat (sp2hderiv.dat,sp2hderiv.infl) orient=horiz
+deriv sp2real.dat (sp2vderiv.dat,sp2vderiv.infl) orient=vert
+let $echo="no"
+if (mode = "nobatch" or mode = "inter")
+ xvd sp2real.dat
+ xvd sp2hderiv.dat
+ xvd sp2hderiv.infl
+end-if
+let $echo="yes"
+spot out=sp3.dat nl=50 ns=50 shape=conical sigmax=8 sigmay=16
+cform sp3.dat sp3real.dat oform=real
+deriv sp3real.dat (sp3hderiv.dat,sp3hderiv.infl) orient=horiz
+deriv sp3real.dat (sp3vderiv.dat,sp3vderiv.infl) orient=vert
+let $echo="no"
+if (mode = "nobatch" or mode = "inter")
+ xvd sp3real.dat
+ xvd sp3hderiv.dat
+ xvd sp3hderiv.infl
+end-if
+let $echo="yes"
+spot out=sp4.dat nl=50 ns=50 shape=dome sigmax=8 sigmay=16
+cform sp4.dat sp4real.dat oform=real
+deriv sp4real.dat (sp4hderiv.dat,sp4hderiv.infl) orient=horiz
+deriv sp4real.dat (sp4vderiv.dat,sp4vderiv.infl) orient=vert
+let $echo="no"
+if (mode = "nobatch" or mode = "inter")
+ xvd sp4real.dat
+ xvd sp4hderiv.dat
+ xvd sp4hderiv.infl
+end-if
+let $echo="yes"
+spot out=sp5.dat nl=50 ns=50 shape=disk sigmax=8 sigmay=16
+cform sp5.dat sp5real.dat oform=real
+deriv sp5real.dat (sp5hderiv.dat,sp5hderiv.infl) orient=horiz
+deriv sp5real.dat (sp5vderiv.dat,sp5vderiv.infl) orient=vert
+let $echo="no"
+if (mode = "nobatch" or mode = "inter")
+ xvd sp5real.dat
+ xvd sp5hderiv.dat
+ xvd sp5hderiv.infl
+end-if
+let $echo="yes"
+spot out=sp6.dat nl=50 ns=50 shape=recprocl sigmax=8 sigmay=16
+cform sp6.dat sp6real.dat oform=real
+deriv sp6real.dat (sp6hderiv.dat,sp6hderiv.infl) orient=horiz
+deriv sp6real.dat (sp6vderiv.dat,sp6vderiv.infl) orient=vert
+let $echo="no"
+if (mode = "nobatch" or mode = "inter")
+ xvd sp6real.dat
+ xvd sp6hderiv.dat
+ xvd sp6hderiv.infl
+end-if
+let $echo="yes"
+!more complex
+spot out=sp3l.dat nl=50 ns=50 shape=conical sigmax=8 sigmay=16 x0=13
+spot out=sp1r.dat nl=50 ns=50 shape=gauss sigmax=8 sigmay=16 x0=33
+cform sp3l.dat sp3lreal.dat oform=real
+cform sp1r.dat sp1rreal.dat oform=real
+f2 (sp3lreal.dat,sp1rreal.dat) sp31real.dat func=("in1+in2")
+deriv sp31real.dat (sp31hderiv.dat,sp31hderiv.infl) orient=horiz
+deriv sp31real.dat (sp31rderiv.dat,sp31rderiv.infl) orient=vert
+let $echo="no"
+if (mode = "nobatch" or mode = "inter")
+ xvd sp31real.dat
+ xvd sp31hderiv.dat
+ xvd sp31hderiv.infl
+end-if
+
+ush rm -f sp1.dat sp1hderiv.dat sp1hderiv.infl sp1r.dat sp1real.dat sp1rreal.dat sp1vderiv.dat sp1vderiv.infl sp2.dat
+ush rm -f sp2hderiv.dat sp2hderiv.infl sp2real.dat sp2vderiv.dat sp2vderiv.infl sp31hderiv.dat sp31hderiv.infl 
+ush rm -f sp31rderiv.dat sp31rderiv.infl sp31real.dat sp3.dat sp3hderiv.dat sp3hderiv.infl sp3l.dat sp3lreal.dat 
+ush rm -f sp3real.dat sp3vderiv.dat sp3vderiv.infl sp4.dat sp4hderiv.dat sp4hderiv.infl sp4real.dat sp4vderiv.dat 
+ush rm -f sp4vderiv.infl sp5.dat sp5hderiv.dat sp5hderiv.infl sp5real.dat sp5vderiv.dat sp5vderiv.infl sp6.dat 
+ush rm -f sp6hderiv.dat sp6hderiv.infl sp6real.dat sp6vderiv.dat sp6vderiv.infl
+
+let $echo="no"
+disable-log
+end-proc

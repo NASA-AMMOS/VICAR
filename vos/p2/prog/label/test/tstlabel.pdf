@@ -64,6 +64,9 @@ label-list t6 'nousrtim
 gen t6
 label-concat (t5,t6) t7 prop=tstlut instance=2
 label-list t7 'nousrtim
+gen t6
+label-concat (t5,t6) t7 prop=tstlut out_name=new_lut
+label-list t7 'nousrtim
 !
 write " -DELETE -- Delete different items"
 label-delete t5 task=insert key=mv element=3 nelement=2

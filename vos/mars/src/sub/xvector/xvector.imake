@@ -1,0 +1,10 @@
+#define SUBROUTINE xvector
+
+#define MODULE_LIST xvector.cc xvector_multiview.cc xvector_optimize.cc
+
+#define MARS_SUBLIB
+
+#define USES_C_PLUS_PLUS
+
+#define LIB_P2SUB
+#define LIB_EIGEN

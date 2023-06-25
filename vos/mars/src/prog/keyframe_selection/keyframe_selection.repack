@@ -1,0 +1,5 @@
+$ vpack keyframe_selection.com -mixed -
+	-s keyframe_selection.cc -
+	-i keyframe_selection.imake -
+	-p keyframe_selection.pdf
+$ Exit

@@ -1,0 +1,181 @@
+procedure
+parm    mode    type=keyword count=(0:1) valid=(batch,nobatch,inter) default=batch
+local   minval  type=real count=1
+local   maxval  type=real count=1
+local   iminval  type=integer count=1
+local   imaxval  type=integer count=1
+refgbl $echo
+refgbl $autousage
+! Dec 02, 2012 - RJB
+! TEST SCRIPT FOR DETSTAT
+! tests BYTE, REAL images
+!
+! Vicar Programs:
+!       gen list size gausnois maxmin cform f2 spot xvd
+! 
+! External programs
+!       <none>
+!
+! Parameters:
+!   mode - method for processing: 
+!       1) batch provides no xvd display
+!       2) interactive or nobatch is used for display requiring
+!       user interaction. 
+!           
+!
+! External test data: 
+!       <none>
+!            
+! Output:    
+!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+body
+let _onfail="stop"
+let $autousage="none"
+let $echo="yes"
+
+enable-log
+
+!byte image
+gen x 10 10 ival=100 linc=2 sinc=2
+list x 'nousrtim
+!detstat on BYTE image
+! Test 1 - Center pixel subtracted from neighbor in window (5x5)
+detstat x x1 mode=1
+list x1 'nousrtim
+! Test 2 - Pixels in 5x5 window averaged without center pixel
+detstat x x2 mode=2
+list x2 'nousrtim
+! Test 3 - Pixels in window averaged then average subtracted
+!          from pixels. Each pixel then is squared
+detstat x x3 mode=3
+list x3 'nousrtim
+! Test 4 - center pixel is subtracted from all neighbors in the
+!          window. Differences ae average (Neg values possible) 
+detstat x x4 mode=4
+list x4 'nousrtim
+! Zoom them up for display
+size x  xz zoom=10 'noin
+size x1 x1z zoom=10 'noin
+size x2 x2z zoom=10 'noin
+size x3 x3z zoom=10 'noin
+size x4 x4z zoom=10 'noin
+let $echo="no"
+if (mode = "nobatch" or mode = "inter")
+  xvd xz
+  xvd x1z
+  xvd x2z
+  xvd x3z
+  xvd x4z
+end-if
+let $echo="yes"
+!byte noisy image
+gausnois gaus4 nl=10 ns=10 mean=100 sigma=6  seed=56
+list gaus4 'nousrtim
+
+f2 (x,gaus4) g  func=("(in1+in2)/2")
+list g 'nousrtim
+! Test 5 - Center pixel subtracted from neighbor in window (5x5)
+detstat g g1 mode=1
+list g1 'nousrtim
+! Test 6 - Pixels in 5x5 window averaged without center pixel
+detstat g g2 mode=2
+list g2 'nousrtim
+! Test 7 - Pixels in window averaged then average subtracted
+!          from pixels. Each pixel then is squared
+detstat g g3 mode=3
+list g3 'nousrtim
+! Test 8 - center pixel is subtracted from all neighbors in the
+!          window. Differences ae average (Neg values possible) 
+detstat g g4 mode=4
+list g4 'nousrtim
+
+size g  gz zoom=10 'noin
+size g1 g1z zoom=10 'noin
+size g2 g2z zoom=10 'noin
+size g3 g3z zoom=10 'noin
+size g4 g4z zoom=10 'noin
+let $echo="no"
+if (mode = "nobatch" or mode = "inter")
+  xvd gz
+  xvd g1z
+  xvd g2z
+  xvd g3z
+  xvd g4z
+end-if
+let $echo="yes"
+maxmin g4 minival=minval maxival=maxval
+let $echo="no"
+let iminval = $fix(minval)
+let imaxval = $fix(maxval)
+write "g4   iminval = &iminval  imaxval = &imaxval"
+let $echo="yes"
+cform g4 f4 irange=(&iminval,&imaxval) +
+    orange=(&iminval,&imaxval) oform=full
+list f4 'nousrtim
+! float image
+cform x yy +
+    irange=(0,255) orange=(0,5000) oform=real
+
+f2 yy y func=("in1/10")
+list y 'nousrtim
+! Test 9 - Center pixel subtracted from neighbor in window (3x3)
+detstat y y1 mode=1 win=3
+list y1 'nousrtim
+! Test 10 - Pixels in 3x3 window averaged without center pixel
+detstat y y2 mode=2 win=3
+list y2 'nousrtim
+! Test 11 - Pixels in window averaged then average subtracted
+!          from pixels. Each pixel then is squared
+detstat y y3 mode=3 win=3
+list y3 'nousrtim
+! Test 12 - center pixel is subtracted from all neighbors in the
+!          window. Differences ae average (Neg values possible) 
+detstat y y4 mode=4 win=3
+list y4 'nousrtim
+
+size y  yz zoom=10 'noin
+size y1 y1z zoom=10 'noin
+size y2 y2z zoom=10 'noin
+size y3 y3z zoom=10 'noin
+size y4 y4z zoom=10 'noin
+let $echo="no"
+if (mode = "nobatch" or mode = "inter")
+  xvd yz
+  xvd y1z
+  xvd y2z
+  xvd y3z
+  xvd y4z
+end-if
+let $echo="yes"
+
+spot out=do nl=100 ns=100 shape=dome sigmax=20 sigmay=20 dnmax=224
+list do sl=50 ss=28 nl=1 ns=44 'nousrtim
+! Test 13 - Center pixel subtracted from neighbor in window (5x5)
+detstat do d1 mode=1 win=5
+list d1 sl=50 ss=28 nl=1 ns=44 'nousrtim
+! Test 14 - Pixels in 5x5 window averaged without center pixel
+detstat do d2 mode=2 win=5
+list d2 sl=50 ss=28 nl=1 ns=44 'nousrtim
+! Test 15 - Pixels in window averaged then average subtracted
+!          from pixels. Each pixel then is squared
+detstat do d3 mode=3 win=5
+list d3 sl=50 ss=28 nl=1 ns=44 'nousrtim
+! Test 16 - center pixel is subtracted from all neighbors in the
+!          window. Differences ae average (Neg values possible) 
+detstat do d4 mode=4 win=5
+list d4 sl=50 ss=28 nl=1 ns=44 'nousrtim
+let $echo="yes"
+if (mode = "nobatch" or mode = "inter")
+  xvd do 
+  xvd d1
+  xvd d2
+  xvd d3
+  xvd d4
+end-if
+let $echo="yes"
+
+disable-log
+
+end-proc

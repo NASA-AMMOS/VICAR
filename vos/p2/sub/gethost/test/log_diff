@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+
+# This defeats the purpose of the test, but gethostname() value varies:
+sed '/version/Id' $1 | sed '/Host Name/d' > tmplog1
+sed '/version/Id' $2 | sed '/Host Name/d' > tmplog2
+
+diff tmplog1 tmplog2
+retval=$?
+
+rm tmplog1 tmplog2
+
+echo "log_diff returning $retval"
+
+exit $retval

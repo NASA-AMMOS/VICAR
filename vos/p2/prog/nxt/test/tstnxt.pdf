@@ -55,7 +55,7 @@ translog INP=AFIDS_ROOT TRANS=afidsroot
 translog INP=AFIDS_TESTDATA TRANS=aftestdata
 if (afidsroot = "")
 !MIPL
-    ush ln -s /project/test_work/testdata/carto ct
+    ush ln -s data ct
 else
 !CARTLAB
     if (aftestdata = "") 
@@ -95,7 +95,7 @@ end-loop
 !To test for AR100461, add the current path in front
 !of input filename, as: /project/it/tih/deliv20.01/ss/nxt/tstnxt.dat
 rm>
-ush rm ct
+ush rm ct tstnxt.dat file_list.list
 
 disable-log
 

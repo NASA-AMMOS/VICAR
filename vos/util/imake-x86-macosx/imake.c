@@ -1400,8 +1400,14 @@ get_gcc_incdir(FILE *inFile, char* name)
       (void) pclose (gccproc);
   }
 
-  if (buf[0])
+  if (buf[0]) {
+      // For some reason the above started returning a newline at the end
+      // starting in May 2023.  No idea why, but this fixes it (rgd).
+      if (buf[strlen(buf)-1] == '\n')
+          buf[strlen(buf)-1] = '\0';
+
       fprintf (inFile, "#define DefaultGccIncludeDir \"%s\"\n", buf);
+  }
 }
 #endif
 

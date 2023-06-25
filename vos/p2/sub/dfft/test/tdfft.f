@@ -25,11 +25,11 @@ C FORWARD TRANSFORM..
 110	CALL PRNT(7,N,A(1,I), 'BEFORE.')
 C
       DO 120 I=1,N
-      CALL dfft(A(I,1),A(I,2),M2,M2,M2,N2,&950,&960)
+      CALL dfft(A(I,1),A(I,2),M2,M2,M2,N2,*950,*960)
       CALL REALTR(A(I,1),A(I,2),M2,N2)
 120   CONTINUE
       DO 140 I=2,MP2,2
-      CALL dfft(A(1,I-1),A(1,I),N,N,N,1,&950,&960)
+      CALL dfft(A(1,I-1),A(1,I),N,N,N,1,*950,*960)
 140   CONTINUE
 	CALL XVMESSAGE( 'THE RESULTING TRANSFORM', ' ')
 	DO 130 I=1,MP2
@@ -38,11 +38,11 @@ C
 C THE INVERSE TRANSFORM..
 C
       DO 220 I=2,MP2,2
-      CALL dfft(A(1,I-1),A(1,I),N,N,N,-1,&950,&960)
+      CALL dfft(A(1,I-1),A(1,I),N,N,N,-1,*950,*960)
 220   CONTINUE
       DO 240 I=1,N
       CALL REALTR(A(I,1),A(I,2),M2,-N2)
-      CALL dfft(A(I,1),A(I,2),M2,M2,M2,-N2,&950,&960)
+      CALL dfft(A(I,1),A(I,2),M2,M2,M2,-N2,*950,*960)
 240   CONTINUE
 	CALL XVMESSAGE( 'REVERSE THE TRANSFORM', ' ')
 	S = 2*M*N

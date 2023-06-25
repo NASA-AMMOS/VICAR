@@ -1,0 +1,103 @@
+PROCESS       HELP=*
+PARM INP      TYPE=(STRING,99) COUNT=1
+PARM COLS     TYPE=INT COUNT=(0:2) DEFAULT=(1,2)
+PARM GRIDTOL  TYPE=REAL COUNT=1 DEFAULT=.99
+PARM VALNAH   TYPE=NAME
+PARM VALNAV   TYPE=NAME
+
+END-PROC
+.TITLE
+VICAR Program gridck - verify rectangular grid and return nah, nav
+.HELP
+PURPOSE
+
+     GRIDCK checks that a grid (in an IBIS file) is rectangular
+     (with allowance for slight irregularity) and also can return
+     the nah, nav of the grid as TAE TCL variables.
+     
+     If the points do not form a grid, the nah and nav return as
+     zero, so this can be used as a grid check for TAE TCL logic.
+     
+     
+
+TAE COMMAND LINE FORMAT
+
+     gridck INP=A
+     gridck INP=A valnah=nah valnav=nav
+     
+     where
+
+     A                   is the input dataset (IBIS file).
+     nah                 is a TCL integer variable to get nah.
+     nav                 is a TCL integer variable to get nav.
+
+OPERATION
+
+     The selected columns of the grid are read into an array.
+     Points are scanned, with each pair predicting where the next
+     will lie.  If the actual next point is roughly where predicted,
+     the scanning continues.  When a point does not satisfy the
+     tolerance, nah is recorded and a new line begun.  All subsequent
+     lines are done in the same fashion, except that failure to have
+     exactly nah+1 points causes the grid to be rejected.
+     
+     Then nav is calculated by (total points)/(nah+1).  Then all
+     of the vertical columns of points are checked for both 
+     tolerance and point count as were the horizontal rows.
+     
+     Usually, there are four columns in a warp grid (newline, newsamp,
+     oldline, oldsamp).  Only two are used at a time in this program,
+     for example, (oldline,oldsamp).
+
+
+TIMING
+
+     Dominated by the time to read the array in.
+     
+RESTRICTIONS
+
+     The input array is mallocked.  Compare the size of the input
+     IBIS file with system parameters.  
+
+WRITTEN BY:            A. L. Zobrist, 23 March 2003
+
+COGNIZANT PROGRAMMER:  A. L. Zobrist
+
+REVISIONS:
+  2008-01-02 WLB Switched to USES_ANSI_C AND LIB_CARTO; misc cleanup  
+  2015-10-23 WLB Migrated to MIPL
+  2016-08-12 WLB Fixed 64-bit bug
+  2022-07-14 B. Crocco afids to opensource
+  
+.LEVEL1
+.VARIABLE INP
+Input IBIS tabular file;
+Contains a grid
+.VARIABLE COLS
+The columns containing the
+grid in order (line,samp)
+.VARIABLE GRIDTOL
+Use to make grid-finding more
+or less tolerant
+.variable valnah
+TAE TCL name without &, gets
+the nah value of the grid in
+integer format, 0 if not a grid
+.variable valnav
+TAE TCL name without &, gets
+the nav value of the grid in
+integer format, 0 if not a grid
+.LEVEL2
+.VARIABLE GRIDTOL
+The grid is detected automatically and has a tolerance for
+points being out of regularity on the grid.  Each point is
+predicted by its two previous neighbors and the distance
+from the predicted to the actual is ratioed to the neighbor
+grid distance.  GRIDTOL is the maximum ratio allowed.
+
+You can be generous with this parameter, say 10 or 20, but
+keep it smaller than the nah or nav by half.  The row or 
+column that is found must match the length of the other rows
+or columns and (nah+1)*(nav+1) must equal the total number of
+points.
+.END

@@ -47,7 +47,7 @@ gen C 256 256  linc=1 sinc=5 ival=10 format=byte modulo=112
 insect (A,B) W insect=(1,1,256,256,1,257)
 insect (W,C) X insect=(1,1,256,256,257,1)
 sargonb X  B1 func1=setto const1=1000 vert1=(255,255,257,255,257,257,255,257)
-label-list B1
+label-list B1 'nousrtim
 
 fftflip B1 C1 'flip line=0 
 
@@ -82,7 +82,7 @@ gen C 256 256  linc=1 sinc=5 ival=20 format=half modulo=412
 insect (A,B) W insect=(1,1,256,256,1,257)
 insect (W,C) X insect=(1,1,256,256,257,1)
 sargonb X  B2 func1=setto const1=1000 vert1=(255,255,257,255,257,257,255,257)
-label-list B2
+label-list B2 'nousrtim
 
 fftflip B2 C2 'flip line=0 
 
@@ -119,7 +119,7 @@ gen C 256 256  linc=1 sinc=5 ival=20 format=full modulo=412
 insect (A,B) W insect=(1,1,256,256,1,257)
 insect (W,C) X insect=(1,1,256,256,257,1)
 sargonb X B3 func1=setto const1=10000 vert1=(255,255,257,255,257,257,255,257)
-!label-list B3
+!label-list B3 'nousrtim
 
 fftflip B3 C3 'flip line=0 
 
@@ -154,7 +154,7 @@ insect (A,B) W insect=(1,1,256,256,1,257)
 insect (W,C) X insect=(1,1,256,256,257,1)
 sargonb X B4 func1=setto const1=10000 vert1=(255,255,257,255,257,257,255,257)
 
-label-list B4
+label-list B4 'nousrtim
 
 fftflip B4 C4 'flip line=0
 
@@ -179,6 +179,9 @@ if (mode = "nobatch" or mode = "inter")
 end-if
 
 disable-log
+
+ush rm A B B1 B2 B3 B4 BC1 BC3 BC4 BD1 BD3 BD4 BE1 BE2 BE3 BE4
+ush rm C C1 C2 C3 C4 D1 D2 D3 D4 DE1 DE2 DE3 DE4 E1 E2 E3 E4 W X
 
 let $echo="no"
 end-proc

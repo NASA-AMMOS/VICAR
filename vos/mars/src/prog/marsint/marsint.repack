@@ -1,0 +1,5 @@
+$ vpack marsint.com -mixed -
+	-s marsint.cc -
+	-i marsint.imake -
+	-p marsint.pdf
+$ Exit

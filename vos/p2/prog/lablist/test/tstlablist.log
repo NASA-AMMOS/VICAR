@@ -1,11 +1,11 @@
 Write " The Test Data are handled for both VMS and UNIX in this PDF. "
  The Test Data are handled for both VMS and UNIX in this PDF. 
-LABLIST  /project/test_work/testdata/sitod1/test_data/images/gll.edr
+LABLIST  data/gll.edr 'nousrtim
 Beginning VICAR task LABLIST
 LABLIST version 2019-08-01
 
 LABEL FOR FILE:
-/project/test_work/testdata/sitod1/test_data/images/gll.edr
+data/gll.edr
 HALF FORMAT  NB= 1  NL=  800  NS=  800  FILE ORGANIZATION=BSQ
 GLL/SSI  PICNO=XXXYZZZ     FILTER=1(GRN)  TLMFMT=HCM     TARGET=*TARGET*  
 RIM=*/00294951:00:0:0      EXP=  100.00   FIBE=1100      TCA=CLOSEST TIME
@@ -20,12 +20,12 @@ DC=DC.100                  CNV=2.1788e+03
 BLM=BLEM.100               SO=OFFSETS.IMG                EDR=************/***
  
 GALSOS
-LABLIST  /project/test_work/testdata/sitod1/test_data/images/gll.edr   'full 'nousrtim
+LABLIST  data/gll.edr   'full 'nousrtim
 Beginning VICAR task LABLIST
 LABLIST version 2019-08-01
 
 LABEL FOR FILE:
-/project/test_work/testdata/sitod1/test_data/images/gll.edr
+data/gll.edr
 HALF FORMAT  NB= 1  NL=  800  NS=  800  FILE ORGANIZATION=BSQ
 GLL/SSI  PICNO=XXXYZZZ     FILTER=1(GRN)  TLMFMT=HCM     TARGET=*TARGET*  
 RIM=*/00294951:00:0:0      EXP=  100.00   FIBE=1100      TCA=CLOSEST TIME
@@ -41,12 +41,12 @@ BLM=BLEM.100               SO=OFFSETS.IMG                EDR=************/***
  
 ---- TASK: GALSOS        USER: 	 ----
 COMMENT='GALSOS replaced 1218 pixels by interpolation'
-LABEL-LIST  /project/test_work/testdata/sitod1/test_data/images/gll.edr    'nousrtim
+LABEL-LIST  data/gll.edr    'nousrtim
 Beginning VICAR task LABEL
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 ************************************************************
  
-        ************  File /project/test_work/testdata/sitod1/test_data/images/gll.edr ************
+        ************  File data/gll.edr ************
                 3 dimensional IMAGE file
                 File organization is BSQ
                 Pixels are in HALF format from a VAX-VMS host
@@ -113,12 +113,12 @@ SO='OFFSETS.IMG'
 COMMENT='GALSOS replaced 1218 pixels by interpolation'
  
 ************************************************************
-LABLIST  /project/test_work/testdata/mipl/vgr/mirandab.vio
+LABLIST  data/mirandab.vio 'nousrtim
 Beginning VICAR task LABLIST
 LABLIST version 2019-08-01
 
 LABEL FOR FILE:
-/project/test_work/testdata/mipl/vgr/mirandab.vio
+data/mirandab.vio
 BYTE FORMAT  NB= 1  NL= 1000  NS= 1000  FILE ORGANIZATION=BSQ
 VGR-2   FDS 26844.11   PICNO 1579U2-001   SCET 86.024 15:03:09         
 NA CAMERA  EXP  2880.0 MSEC  FILT 1(VIOLET)  LO GAIN  SCAN RATE  1:1   
@@ -132,12 +132,12 @@ WA   NO   PREP  NO    YES   NO    NO    NO    NO    3 P  * NORMAL     A
 LSB_TRUNC=OFF                                                          
  
 VGRFILLI - ADESPIKE - FICOR77 - FIXVGR - COPY - RESSAR77 - GEOMA - C
-LABLIST  /project/test_work/testdata/mipl/vgr/mirandab.vio  'full 'nousrtim
+LABLIST  data/mirandab.vio  'full 'nousrtim
 Beginning VICAR task LABLIST
 LABLIST version 2019-08-01
 
 LABEL FOR FILE:
-/project/test_work/testdata/mipl/vgr/mirandab.vio
+data/mirandab.vio
 BYTE FORMAT  NB= 1  NL= 1000  NS= 1000  FILE ORGANIZATION=BSQ
 VGR-2   FDS 26844.11   PICNO 1579U2-001   SCET 86.024 15:03:09         
 NA CAMERA  EXP  2880.0 MSEC  FILT 1(VIOLET)  LO GAIN  SCAN RATE  1:1   
@@ -172,12 +172,12 @@ SCALE='URANUS '
 PIX_CNT=17156
 ---- TASK: GEOMA         USER: 	 ----
 ---- TASK: C             USER: 	 ----
-LABEL-LIST  /project/test_work/testdata/mipl/vgr/mirandab.vio   'nousrtim
+LABEL-LIST  data/mirandab.vio   'nousrtim
 Beginning VICAR task LABEL
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 ************************************************************
  
-        ************  File /project/test_work/testdata/mipl/vgr/mirandab.vio ************
+        ************  File data/mirandab.vio ************
                 2 dimensional IMAGE file
                 File organization is BSQ
                 Pixels are in BYTE format from a VAX-VMS host
@@ -233,12 +233,12 @@ PIX_CNT=17156
 ---- Task: C -- User:  --  ----
  
 ************************************************************
-LABLIST  /project/test_work/testdata/mipl/gll/venus.img
+LABLIST  data/venus.img 'nousrtim
 Beginning VICAR task LABLIST
 LABLIST version 2019-08-01
 
 LABEL FOR FILE:
-/project/test_work/testdata/mipl/gll/venus.img
+data/venus.img
 HALF FORMAT  NB= 1  NL=  800  NS=  800  FILE ORGANIZATION=BSQ
 GLL/SSI  PICNO=?           FILTER=3(VLT)  TLMFMT=HCM     TARGET=VENUS     
 RIM=*/00184944:00:1:0      EXP=   25.00   FIBE=0000      TCA=CLOSEST TIME
@@ -253,12 +253,12 @@ DC=2F30.DC                 CNV=9.3808e+01
 BLM=VIO2F.BLM              SO=CALIBRATION.SO             EDR=************/***
  
 GALSOS - LABEL - PERSLAB
-LABLIST  /project/test_work/testdata/mipl/gll/venus.img     'full 'nousrtim
+LABLIST  data/venus.img     'full 'nousrtim
 Beginning VICAR task LABLIST
 LABLIST version 2019-08-01
 
 LABEL FOR FILE:
-/project/test_work/testdata/mipl/gll/venus.img
+data/venus.img
 HALF FORMAT  NB= 1  NL=  800  NS=  800  FILE ORGANIZATION=BSQ
 GLL/SSI  PICNO=?           FILTER=3(VLT)  TLMFMT=HCM     TARGET=VENUS     
 RIM=*/00184944:00:1:0      EXP=   25.00   FIBE=0000      TCA=CLOSEST TIME
@@ -276,12 +276,12 @@ BLM=VIO2F.BLM              SO=CALIBRATION.SO             EDR=************/***
 COMMENT='GALSOS replaced 14 pixels by interpolation'
 ---- TASK: LABEL         USER: 	 ----
 ---- TASK: PERSLAB       USER: 	 ----
-LABEL-LIST  /project/test_work/testdata/mipl/gll/venus.img      'nousrtim
+LABEL-LIST  data/venus.img      'nousrtim
 Beginning VICAR task LABEL
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 ************************************************************
  
-        ************  File /project/test_work/testdata/mipl/gll/venus.img ************
+        ************  File data/venus.img ************
                 3 dimensional IMAGE file
                 File organization is BSQ
                 Pixels are in HALF format from a AXP-VMS host
@@ -352,12 +352,12 @@ COMMENT='GALSOS replaced 14 pixels by interpolation'
 ---- Task: PERSLAB -- User:  --  ----
  
 ************************************************************
-LABLIST  /project/test_work/testdata/mipl/gll/venus2.img
+LABLIST  data/venus2.img 'nousrtim
 Beginning VICAR task LABLIST
 LABLIST version 2019-08-01
 
 LABEL FOR FILE:
-/project/test_work/testdata/mipl/gll/venus2.img
+data/venus2.img
 HALF FORMAT  NB= 1  NL=  800  NS=  800  FILE ORGANIZATION=BSQ
 GLL/SSI  PICNO=?           FILTER=5(968)  TLMFMT=HCM     TARGET=VENUS     
 RIM=*/00184944:45:6:0      EXP=   66.67   FIBE=1000      TCA=CLOSEST TIME
@@ -372,12 +372,12 @@ DC=2F30.DC                 CNV=4.7519e+00
 BLM=9682F.BLM              SO=CALIBRATION.SO             EDR=************/***
  
 GALSOS - LABEL - COPY
-LABLIST  /project/test_work/testdata/mipl/gll/venus2.img    'full 'nousrtim
+LABLIST  data/venus2.img    'full 'nousrtim
 Beginning VICAR task LABLIST
 LABLIST version 2019-08-01
 
 LABEL FOR FILE:
-/project/test_work/testdata/mipl/gll/venus2.img
+data/venus2.img
 HALF FORMAT  NB= 1  NL=  800  NS=  800  FILE ORGANIZATION=BSQ
 GLL/SSI  PICNO=?           FILTER=5(968)  TLMFMT=HCM     TARGET=VENUS     
 RIM=*/00184944:45:6:0      EXP=   66.67   FIBE=1000      TCA=CLOSEST TIME
@@ -395,12 +395,12 @@ BLM=9682F.BLM              SO=CALIBRATION.SO             EDR=************/***
 COMMENT='GALSOS replaced 723 pixels by interpolation'
 ---- TASK: LABEL         USER: 	 ----
 ---- TASK: COPY          USER: 	 ----
-LABEL-LIST  /project/test_work/testdata/mipl/gll/venus2.img    'nousrtim
+LABEL-LIST  data/venus2.img    'nousrtim
 Beginning VICAR task LABEL
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 ************************************************************
  
-        ************  File /project/test_work/testdata/mipl/gll/venus2.img ************
+        ************  File data/venus2.img ************
                 3 dimensional IMAGE file
                 File organization is BSQ
                 Pixels are in HALF format from a VAX-VMS host
@@ -471,12 +471,12 @@ COMMENT='GALSOS replaced 723 pixels by interpolation'
 ---- Task: COPY -- User:  --  ----
  
 ************************************************************
-LABLIST  /project/test_work/testdata/mipl/gll/venus3.img
+LABLIST  data/venus3.img 'nousrtim
 Beginning VICAR task LABLIST
 LABLIST version 2019-08-01
 
 LABEL FOR FILE:
-/project/test_work/testdata/mipl/gll/venus3.img
+data/venus3.img
 HALF FORMAT  NB= 1  NL=  800  NS=  800  FILE ORGANIZATION=BSQ
 GLL/SSI  PICNO=?           FILTER=3(VLT)  TLMFMT=HCM     TARGET=VENUS     
 RIM=*/00185063:00:1:0      EXP=   25.00   FIBE=1000      TCA=CLOSEST TIME
@@ -491,12 +491,12 @@ DC=2F30.DC                 CNV=8.4913e+00
 BLM=VIO2F.BLM              SO=CALIBRATION.SO             EDR=************/***
  
 GALSOS - LABEL - COPY
-LABLIST  /project/test_work/testdata/mipl/gll/venus3.img    'full 'nousrtim
+LABLIST  data/venus3.img    'full 'nousrtim
 Beginning VICAR task LABLIST
 LABLIST version 2019-08-01
 
 LABEL FOR FILE:
-/project/test_work/testdata/mipl/gll/venus3.img
+data/venus3.img
 HALF FORMAT  NB= 1  NL=  800  NS=  800  FILE ORGANIZATION=BSQ
 GLL/SSI  PICNO=?           FILTER=3(VLT)  TLMFMT=HCM     TARGET=VENUS     
 RIM=*/00185063:00:1:0      EXP=   25.00   FIBE=1000      TCA=CLOSEST TIME
@@ -514,12 +514,12 @@ BLM=VIO2F.BLM              SO=CALIBRATION.SO             EDR=************/***
 COMMENT='GALSOS replaced 23 pixels by interpolation'
 ---- TASK: LABEL         USER: 	 ----
 ---- TASK: COPY          USER: 	 ----
-LABEL-LIST  /project/test_work/testdata/mipl/gll/venus3.img     'nousrtim
+LABEL-LIST  data/venus3.img     'nousrtim
 Beginning VICAR task LABEL
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 ************************************************************
  
-        ************  File /project/test_work/testdata/mipl/gll/venus3.img ************
+        ************  File data/venus3.img ************
                 3 dimensional IMAGE file
                 File organization is BSQ
                 Pixels are in HALF format from a VAX-VMS host
@@ -590,12 +590,12 @@ COMMENT='GALSOS replaced 23 pixels by interpolation'
 ---- Task: COPY -- User:  --  ----
  
 ************************************************************
-LABLIST  /project/test_work/testdata/sitod1/test_data/images/s0061498500.1    'FULL 'NOUSRTIM
+LABLIST  data/s0061498500.1    'FULL 'nousrtim
 Beginning VICAR task LABLIST
 LABLIST version 2019-08-01
 
 LABEL FOR FILE:
-/project/test_work/testdata/sitod1/test_data/images/s0061498500.1
+data/s0061498500.1
 BYTE FORMAT  NB= 1  NL=  800  NS=  800  FILE ORGANIZATION=BSQ
 GLL/SSI  PICNO=?           FILTER=4(756)  TLMFMT=XCM     TARGET=?         
 RIM=*/00614985:00:1:0      EXP=   25.00   FIBE=1000      TCA=CLOSEST TIME
@@ -608,12 +608,12 @@ HRA=-999.0  DEC=  0.00     NORAZ=  0.00   LON=  0.00     SLANT RNG=0.0000e+00
 CAL=*******************    IOF=********** UBWC=***       SOLAR RNG=7.7791e+08
 DC=*******************     CNV=********** 
 BLM=*******************    SO=*******************        REDR=************/***
-LABEL-LIST  /project/test_work/testdata/sitod1/test_data/images/s0061498500.1    'nousrtim
+LABEL-LIST  data/s0061498500.1    'nousrtim
 Beginning VICAR task LABEL
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 ************************************************************
  
-        ************  File /project/test_work/testdata/sitod1/test_data/images/s0061498500.1 ************
+        ************  File data/s0061498500.1 ************
                 3 dimensional IMAGE file
                 File organization is BSQ
                 Pixels are in BYTE format from a VAX-VMS host
@@ -673,12 +673,12 @@ SLRANGE=0.0
 SOLRANGE=7.779091e+08
  
 ************************************************************
-LABLIST  /project/test_work/testdata/sitod1/test_data/images/s0061510200.1    'FULL 'NOUSRTIM
+LABLIST  data/s0061510200.1    'FULL 'nousrtim
 Beginning VICAR task LABLIST
 LABLIST version 2019-08-01
 
 LABEL FOR FILE:
-/project/test_work/testdata/sitod1/test_data/images/s0061510200.1
+data/s0061510200.1
 BYTE FORMAT  NB= 1  NL=  800  NS=  800  FILE ORGANIZATION=BSQ
 GLL/SSI  PICNO=?           FILTER=1(GRN)  TLMFMT=XCM     TARGET=?         
 RIM=*/00615102:00:1:0      EXP=    6.25   FIBE=1000      TCA=CLOSEST TIME
@@ -691,12 +691,12 @@ HRA=-999.0  DEC=  0.00     NORAZ=  0.00   LON=  0.00     SLANT RNG=0.0000e+00
 CAL=*******************    IOF=********** UBWC=***       SOLAR RNG=7.7791e+08
 DC=*******************     CNV=********** 
 BLM=*******************    SO=*******************        REDR=************/***
-LABEL-LIST  /project/test_work/testdata/sitod1/test_data/images/s0061510200.1     'nousrtim
+LABEL-LIST  data/s0061510200.1     'nousrtim
 Beginning VICAR task LABEL
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 ************************************************************
  
-        ************  File /project/test_work/testdata/sitod1/test_data/images/s0061510200.1 ************
+        ************  File data/s0061510200.1 ************
                 3 dimensional IMAGE file
                 File organization is BSQ
                 Pixels are in BYTE format from a VAX-VMS host
@@ -756,12 +756,12 @@ SLRANGE=0.0
 SOLRANGE=7.779091e+08
  
 ************************************************************
-LABLIST  /project/test_work/testdata/sitod1/test_data/images/s0061512000.1    'FULL 'NOUSRTIM
+LABLIST  data/s0061512000.1    'FULL 'nousrtim
 Beginning VICAR task LABLIST
 LABLIST version 2019-08-01
 
 LABEL FOR FILE:
-/project/test_work/testdata/sitod1/test_data/images/s0061512000.1
+data/s0061512000.1
 BYTE FORMAT  NB= 1  NL=  800  NS=  800  FILE ORGANIZATION=BSQ
 GLL/SSI  PICNO=?           FILTER=1(GRN)  TLMFMT=XCM     TARGET=?         
 RIM=*/00615120:00:1:0      EXP=    6.25   FIBE=1000      TCA=CLOSEST TIME
@@ -774,12 +774,12 @@ HRA=-999.0  DEC=  0.00     NORAZ=  0.00   LON=  0.00     SLANT RNG=0.0000e+00
 CAL=*******************    IOF=********** UBWC=***       SOLAR RNG=7.7791e+08
 DC=*******************     CNV=********** 
 BLM=*******************    SO=*******************        REDR=************/***
-LABEL-LIST  /project/test_work/testdata/sitod1/test_data/images/s0061512000.1     'nousrtim
+LABEL-LIST  data/s0061512000.1     'nousrtim
 Beginning VICAR task LABEL
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 ************************************************************
  
-        ************  File /project/test_work/testdata/sitod1/test_data/images/s0061512000.1 ************
+        ************  File data/s0061512000.1 ************
                 3 dimensional IMAGE file
                 File organization is BSQ
                 Pixels are in BYTE format from a VAX-VMS host
@@ -839,12 +839,12 @@ SLRANGE=0.0
 SOLRANGE=7.779091e+08
  
 ************************************************************
-LABLIST  /project/test_work/testdata/gll/test_image_ict.udr	   'FULL 'NOUSRTIM
+LABLIST  data/test_image_ict.udr	   'FULL 'nousrtim
 Beginning VICAR task LABLIST
 LABLIST version 2019-08-01
 
 LABEL FOR FILE:
-/project/test_work/testdata/gll/test_image_ict.udr
+data/test_image_ict.udr
 BYTE FORMAT  NB= 1  NL=  800  NS=  800  FILE ORGANIZATION=BSQ
 GLL/SSI  PICNO=EVV0067     FILTER=3(VLT)  TLMFMT=IM8     TARGET=VENUS     
 RIM=1/00184944:00:0:0      EXP=   25.00   MOFIBE=000000  TCA=002T23:59:16Z
@@ -859,12 +859,12 @@ HRA=-999.0  DEC= 24.40     NORAZ=******   LON=******     SLANT RNG=**********
 CAL=*******************    IOF=********** UBWC=***       SOLAR RNG=**********
 DC=*******************     CNV=********** SEQNO=1        DSPK_THRESH=********
 BLM=*******************    SO=*******************        REDR=************/***
-LABEL-LIST  /project/test_work/testdata/gll/test_image_ict.udr	    'nousrtim
+LABEL-LIST  data/test_image_ict.udr	    'nousrtim
 Beginning VICAR task LABEL
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 ************************************************************
  
-        ************  File /project/test_work/testdata/gll/test_image_ict.udr ************
+        ************  File data/test_image_ict.udr ************
                 3 dimensional IMAGE file
                 File organization is BSQ
                 Pixels are in BYTE format from a AXP-VMS host
@@ -928,12 +928,12 @@ MAXIMUM_COMPRESSION_RATIO=81.0127
 MINIMUM_COMPRESSION_RATIO=12.7395
  
 ************************************************************
-LABLIST  /project/test_work/testdata/gll/test_image_barc.udr	   'FULL 'NOUSRTIM
+LABLIST  data/test_image_barc.udr	   'FULL 'nousrtim
 Beginning VICAR task LABLIST
 LABLIST version 2019-08-01
 
 LABEL FOR FILE:
-/project/test_work/testdata/gll/test_image_barc.udr
+data/test_image_barc.udr
 BYTE FORMAT  NB= 1  NL=  800  NS=  800  FILE ORGANIZATION=BSQ
 GLL/SSI  PICNO=?           FILTER=0(CLR)  TLMFMT=HCA     TARGET=?         
 RIM=1/00005002:00:0:0      EXP= 1066.60   MOFIBE=000000  TCA=CLOSEST TIME
@@ -946,12 +946,12 @@ HRA=-999.0  DEC=-999.0     NORAZ=******   LON=******     SLANT RNG=**********
 CAL=*******************    IOF=********** UBWC=***       SOLAR RNG=**********
 DC=*******************     CNV=********** SEQNO=******   DSPK_THRESH=********
 BLM=*******************    SO=*******************        REDR=************/***
-LABEL-LIST  /project/test_work/testdata/gll/test_image_barc.udr	    'nousrtim
+LABEL-LIST  data/test_image_barc.udr	    'nousrtim
 Beginning VICAR task LABEL
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 ************************************************************
  
-        ************  File /project/test_work/testdata/gll/test_image_barc.udr ************
+        ************  File data/test_image_barc.udr ************
                 3 dimensional IMAGE file
                 File organization is BSQ
                 Pixels are in BYTE format from a AXP-VMS host
@@ -1005,12 +1005,12 @@ DEC=-999.0
 SMEAR=-999.0
  
 ************************************************************
-LABLIST  /project/test_work/testdata/gll/test_image_lossless.udr   'FULL 'NOUSRTIM
+LABLIST  data/test_image_lossless.udr   'FULL 'nousrtim
 Beginning VICAR task LABLIST
 LABLIST version 2019-08-01
 
 LABEL FOR FILE:
-/project/test_work/testdata/gll/test_image_lossless.udr
+data/test_image_lossless.udr
 BYTE FORMAT  NB= 1  NL=  800  NS=  800  FILE ORGANIZATION=BSQ
 GLL/SSI  PICNO=EVV0067     FILTER=3(VLT)  TLMFMT=IM8     TARGET=VENUS     
 RIM=1/00182211:00:0:0      EXP=   25.00   MOFIBE=000000  TCA=002T23:59:16Z
@@ -1024,12 +1024,12 @@ HRA=-999.0  DEC= 24.40     NORAZ=******   LON=******     SLANT RNG=**********
 CAL=*******************    IOF=********** UBWC=***       SOLAR RNG=**********
 DC=*******************     CNV=********** SEQNO=1        DSPK_THRESH=********
 BLM=*******************    SO=*******************        REDR=************/***
-LABEL-LIST  /project/test_work/testdata/gll/test_image_lossless.udr   'nousrtim
+LABEL-LIST  data/test_image_lossless.udr   'nousrtim
 Beginning VICAR task LABEL
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 ************************************************************
  
-        ************  File /project/test_work/testdata/gll/test_image_lossless.udr ************
+        ************  File data/test_image_lossless.udr ************
                 3 dimensional IMAGE file
                 File organization is BSQ
                 Pixels are in BYTE format from a AXP-VMS host
@@ -1093,12 +1093,12 @@ MAXIMUM_COMPRESSION_RATIO=2.35695
 MINIMUM_COMPRESSION_RATIO=1.97249
  
 ************************************************************
-label-list /project/test_work/testdata/gll/s1677721400.3 'nousrtim
+label-list data/s1677721400.3 'nousrtim
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 ************************************************************
  
-        ************  File /project/test_work/testdata/gll/s1677721400.3 ************
+        ************  File data/s1677721400.3 ************
                 3 dimensional IMAGE file
                 File organization is BSQ
                 Pixels are in BYTE format from a AXP-VMS host
@@ -1175,11 +1175,11 @@ SUB_SPACECRAFT_LATITUDE=-999.0
 SUB_SPACECRAFT_LONGITUDE=-999.0
  
 ************************************************************
-label-replace /project/test_work/testdata/gll/s1677721400.3 star.out "FILTER=3" TASK="TASK"
+label-replace data/s1677721400.3 star.out "FILTER=3" TASK="TASK"
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 Keyword FILTER replaced
-lablist star.out
+lablist star.out 'nousrtim
 Beginning VICAR task lablist
 LABLIST version 2019-08-01
 
@@ -1207,14 +1207,14 @@ label-add star.out  stars.out "NSTARS = 5, +
 STAR1=(231,165,12,894),STAR2=(21,32,187,23),STAR3=(5,10,15,20), +
 STAR4=(1,2,3,5),STAR5=(9,4,8,3)" TASK="TASK"
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 Keyword NSTARS added
 Keyword STAR1 added
 Keyword STAR2 added
 Keyword STAR3 added
 Keyword STAR4 added
 Keyword STAR5 added
-lablist stars.out
+lablist stars.out 'nousrtim
 Beginning VICAR task lablist
 LABLIST version 2019-08-01
 
@@ -1242,7 +1242,7 @@ STAR5=(  9,  4,  8,  3)
 LABEL - LABEL
 label-list stars.out 'nousrtim
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 ************************************************************
  
         ************  File stars.out ************
@@ -1332,7 +1332,7 @@ STAR5=(9, 4, 8, 3)
 ************************************************************
 label-replace stars.out star.out "NSTARS = 4" TASK="TASK"
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 Keyword NSTARS replaced
 lablist star.out 'full 'nousrtim
 Beginning VICAR task lablist
@@ -1363,7 +1363,7 @@ STAR2=( 21, 32,187, 23)    STAR3=(  5, 10, 15, 20)    STAR4=(  1,  2,  3,  5)
 ---- TASK: LABEL         USER: 	 ----
 label-replace stars.out star.out "NSTARS = 3" TASK="TASK"
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 Keyword NSTARS replaced
 lablist star.out 'full 'nousrtim
 Beginning VICAR task lablist
@@ -1394,7 +1394,7 @@ STAR2=( 21, 32,187, 23)    STAR3=(  5, 10, 15, 20)
 ---- TASK: LABEL         USER: 	 ----
 label-replace stars.out star.out "NSTARS = 2" TASK="TASK"
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 Keyword NSTARS replaced
 lablist star.out 'full 'nousrtim
 Beginning VICAR task lablist
@@ -1425,7 +1425,7 @@ STAR2=( 21, 32,187, 23)
 ---- TASK: LABEL         USER: 	 ----
 label-replace stars.out star.out "NSTARS = 1" TASK="TASK"
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 Keyword NSTARS replaced
 lablist star.out 'full 'nousrtim
 Beginning VICAR task lablist
@@ -1455,11 +1455,11 @@ SUB_SPCFT_LONG=-999.00     NSTARS=1                   STAR1=(231,165, 12,894)
 ---- TASK: LABEL         USER: 	 ----
 label-add     stars.out star.out "RAD = 10.22" TASK="TASK"
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 Keyword RAD added
 label-replace star.out stars.out "TARGET = RING" TASK="TASK"
 Beginning VICAR task label
-LABEL version 2019-05-28
+LABEL version 2019-09-06
 Keyword TARGET replaced
 lablist stars.out 'full 'nousrtim
 Beginning VICAR task lablist

@@ -1,0 +1,4 @@
+$ vpack format_integer.com -mixed -
+	-s format_integer.sh -
+	-i format_integer.imake
+$ Exit

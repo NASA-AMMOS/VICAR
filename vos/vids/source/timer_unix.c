@@ -7,7 +7,7 @@ struct timezone tz;
 /* StartTimer saves the current time for checking by the other time 
  * functions, such as TimeElapsed.
  */
-StartTimer()
+void StartTimer()
 {
   gettimeofday(&savedTime, &tz);
   return;
@@ -35,7 +35,7 @@ Boolean TimeElapsed(secs)
   return False;
 }
 /************************************************************************/
-WaitElapsed(time)
+void WaitElapsed(time)
   float time;
 {
   Boolean TimeElapsed();

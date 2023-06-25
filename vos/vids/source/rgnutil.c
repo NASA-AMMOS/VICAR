@@ -1,7 +1,9 @@
 /* RgnUtil.c contains the utilities used for operations on regions.
  */
 #include "VIDSdefs.h"
-
+void IncludeEdge();
+void SortPolyEdgeTable();
+void SortActiveEdgeTable();
 /************************************************************************/
 /* StartRegionLine initializes a region state structure for use by
  * NextRegionLine().  Returns an error status if it runs out of memory.
@@ -429,7 +431,7 @@ Boolean NextPolyLine(rgnstate, y, x1, x2)
  * included in this scan line segment.
  */
 
-IncludeEdge(edge, x1, x2)
+void IncludeEdge(edge, x1, x2)
   PolyEdge *edge;		/* The edge in question */
   int *x1;			/* Starting point of the current segment */
   int *x2;			/* Ending point of the current segment */
@@ -467,7 +469,7 @@ IncludeEdge(edge, x1, x2)
  * routines in parallel!
  */
 
-SortPolyEdgeTable(table)
+void SortPolyEdgeTable(table)
   PolyEdge **table;		/* Address of pointer to start of table */
 {
   PolyEdge *newtbl;
@@ -510,7 +512,7 @@ SortPolyEdgeTable(table)
  * the sort.  Maintain both routines in parallel!
  */
 
-SortActiveEdgeTable(table)
+void SortActiveEdgeTable(table)
   PolyEdge **table;		/* Address of pointer to start of table */
 {
   PolyEdge *newtbl;

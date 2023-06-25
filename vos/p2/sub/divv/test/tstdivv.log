@@ -1,0 +1,28 @@
+WRITE "THIS IS A TEST OF MODULE DIVV"
+THIS IS A TEST OF MODULE DIVV
+tdivv
+Beginning VICAR task tdivv
+
+DCODE=    1  BYTE  BYTE      1    2    3    4    5
+DCODE=    2  HALF  HALF      1    2    3    4    5
+DCODE=    3  BYTE  HALF      1    2    3    4    5
+DCODE=    4  FULL  FULL      1    2    3    4    5
+DCODE=    5  BYTE  FULL      1    2    3    4    5
+DCODE=    6  HALF  FULL      1    2    3    4    5
+DCODE=    7  REAL  REAL    1.0  2.0  3.0  4.0  5.0
+DCODE=    8  DOUB  DOUB    1.0  2.0  3.0  4.0  5.0
+DCODE=    9  REAL  DOUB    1.0  2.0  3.0  4.0  5.0
+
+DCODE=   -1  BYTE  BYTE      1    2    3    4    5
+DCODE=   -2  HALF  HALF      1    2    3    4    5
+DCODE=   -3  HALF  BYTE      1    2    3    4    5
+DCODE=   -4  FULL  FULL      1    2    3    4    5
+DCODE=   -5  FULL  BYTE      1    2    3    4    5
+DCODE=   -6  FULL  HALF      1    2    3    4    5
+DCODE=   -7  REAL  REAL    1.0  2.0  3.0  4.0  5.0
+DCODE=   -8  DOUB  DOUB    1.0  2.0  3.0  4.0  5.0
+DCODE=   -9  DOUB  REAL    1.0  2.0  3.0  4.0  5.0
+Test the C interface
+Output from zdivv = 0   255
+Correct values are   0    255
+disable-log

@@ -1,0 +1,22 @@
+procedure
+refgbl $echo
+body
+enable-log
+
+let $echo="no"
+
+
+!   TEST WATERMASK HANDYPROC
+
+ibis-gen xxx1 nc=5 nr=100
+
+mf3 xxx1 f="c1=@rand*360-180$c2=@rand*180-90"
+
+watermask xxx1 xxx2 cols=(1,2,3,4,5)
+
+ibis-l xxx2
+
+ush rm -f xxx1 xxx2
+
+disable-log
+end-proc

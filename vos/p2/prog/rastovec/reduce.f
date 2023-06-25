@@ -1,0 +1,108 @@
+CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+C Do line unwinding a la david douglas
+C
+      SUBROUTINE REDUCE(DMINI,IBEG,L,LSTBEG,IP,XYA,IVBUF,IVPTR)
+      IMPLICIT NONE
+      REAL*4 DMINI
+      INTEGER*4 IBEG,L,LSTBEG,IP
+      INTEGER*4 IVBUF(1),IVPTR(1)
+      INTEGER*2 XYA(2,1)
+
+      COMMON/CMAX/MAXPOLY,MAXVERT,MAXSIZE
+      INTEGER MAXPOLY,MAXVERT,MAXSIZE
+
+      INTEGER IERR,IEND,NP,NM
+      INTEGER*4 I,IXI,IYI
+      INTEGER*4 M,IXM,IYM
+      INTEGER*4 N,IXN,IYN
+      REAL*4 DMAX,DMIN,D,DI,XND,YND
+      REAL*4 DY,DX,DXDY,DYDX
+
+      IERR = 0
+      DMIN = DMINI
+      IP = LSTBEG
+      IEND = IBEG + L - 1
+      NP = LSTBEG + L - 1
+      N = IBEG
+
+   10 M = IVPTR(NP)
+      CALL GETXY(IVBUF(M),XYA,ixm,iym)
+      CALL GETXY(IVBUF(N),XYA,ixn,iyn)
+      DY = IYM-IYN
+      DX = IXM-IXN
+      D = SQRT(DY*DY+DX*DX)
+      DMAX = 0.
+      I = N
+      IF (ABS(DX).GT.ABS(DY)) GOTO 70
+      IF (DY.EQ.0.) GOTO 120
+      DXDY = DX/DY
+      YND = DXDY*IYN
+
+   15 I = I + 1
+      IF (I.GE.M) GOTO 18
+      CALL GETXY(IVBUF(I),XYA,ixi,iyi)
+      DI = ABS(IXI-IXN+YND-DXDY*IYI)
+      IF (DI.GT.DMAX) THEN
+         DMAX = DI
+         NM = I
+      ENDIF
+      GOTO 15
+
+   18 IF (D.EQ.0.) GOTO 121
+      DMAX = ABS(DMAX*DY/D)
+      GOTO 90
+
+   70 IF (DX.EQ.0.) GOTO 122
+      DYDX = DY/DX
+      XND = DYDX*IXN
+
+   75 I = I+1
+      IF (I.GE.M) GOTO 80
+      CALL GETXY(IVBUF(I),XYA,ixi,iyi)
+      DI = ABS(IYI-IYN+XND-DYDX*IXI)
+      IF (DI.GT.DMAX) THEN
+         DMAX = DI
+         NM = I
+      ENDIF
+      GOTO 75
+
+   80 IF (D.EQ.0.) GOTO 123
+      DMAX = ABS(DMAX*DX/D)
+
+   90 IF (DMAX.GE.DMIN) THEN
+         NP = NP - 1
+         IVPTR(NP) = NM
+      ELSE    
+         IF (IP.GE.MAXSIZE) CALL MABEND('***MAXSIZE exceeded')
+         IP = IP + 1
+         IVPTR(IP) = M
+         NP = NP+1
+         IF (M.GE.IEND) RETURN
+         N = M
+      ENDIF
+      GOTO 10
+
+  120 IERR = IERR+1
+  121 IERR = IERR+1
+  122 IERR = IERR+1
+  123 IERR = IERR+1000
+      CALL XVMESSAGE(' ABEND IN REDUCE',' ')
+      CALL ABEND
+      RETURN
+      END
+
+CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+C Get x-y coordinates from XYA buffer.
+C
+      SUBROUTINE GETXY(IV,XYA,ix,iy)
+      IMPLICIT NONE
+      INTEGER*4 IV,IX,IY
+      INTEGER*2 XYA(2,1)
+
+      INTEGER I
+
+      I = IABS(IV)
+      IX = XYA(1,I)
+      IY = XYA(2,I)
+      RETURN
+      END

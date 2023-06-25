@@ -118,7 +118,7 @@ Rows: 1:5
 ibis-gen xxxagg4 nc=2 nr=1 format=("FULL","FULL","A5","FULL","DOUB")
 Beginning VICAR task ibis
 IBIS version 2019-07-31
-acopin (ct/aggrg.dat,xxxagg4) cols=(1,2,3,4,5) lead_rm=2
+acopin (aggrg.dat,xxxagg4) cols=(1,2,3,4,5) lead_rm=2
 Beginning VICAR task acopin
 acopin Fri Dec  5 2014 - wlb
 Number of input cols = 5
@@ -153,9 +153,9 @@ Number of Rows:5  Number of Columns: 5
 File Version:IBIS-2  Organization:COLUMN  SubType:NONE
  
 Rows: 1:5
-+-----------+-----------+------+-----------+-----------------
-         C:1         C:2    C:3         C:4               C:5
-+-----------+-----------+------+-----------+-----------------
++----------+----------+------+----------+-----------------
+        C:1        C:2    C:3        C:4               C:5
++----------+----------+------+----------+-----------------
     1     2  aaaaa    36    45.123456789012
     1     2  aaaaa    36    45.123456789012
     1     2  aaaaa    36    45.123456789012

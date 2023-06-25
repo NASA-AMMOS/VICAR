@@ -9,7 +9,7 @@
 #include "xvmaininc.h"
 #include "ftnbridge.h"
 
-static void ztbl(unsigned char *buf, unsigned char *tab, int n );
+void ztbl(unsigned char *buf, unsigned char *tab, int n );
 
 /************************************************************************/
 /* Fortran-Callable Version                                             */
@@ -27,7 +27,7 @@ int *n;
 /* C-Callable Version                                                   */
 /************************************************************************/
 
-static void ztbl(unsigned char *buf, unsigned char *tab, int n )
+void ztbl(unsigned char *buf, unsigned char *tab, int n )
 {
      int i, val;
      for (i=0; i<n; i++)

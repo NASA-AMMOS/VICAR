@@ -1,0 +1,19 @@
+/proj/ops/ssi/bin/README
+
+IRIX		-- IRIX binaries (should probably be mips-3, n32 bins)
+MCP.bash	-- Master Control Program which fires off stereopair2wits.
+			By Kurt Schwehr schwehr@ri.cmu.edu
+SunOS		-- Solaris 2.7 (SunOS 5.7) binaries.
+calibration	-- Calibrartion files for marsxyz.  From Justin Maki.
+fwADSC_MSOC.csh	-- Sends data to various places.
+java		-- wits.jar.
+magisoft	-- IDL code from UofA for calibration of images.
+stereopair2wits.bash -- The JAMES pipeline.  Produces data for VIZ and WITS.
+fwMaster.bash   -- Master start script for the MVACS processing pipeline
+fwIFPD.bash     -- (OLD) System archiver and pipeline entrypoint
+ctmIFPD.csh     -- New project level archiver and data pipeline feeder 
+
+stereo.default.james.em -- Config file for correlation with the
+				engineering model of the SSI (at MVACS).
+stereo.default.james.fm -- Flight model config file.
+

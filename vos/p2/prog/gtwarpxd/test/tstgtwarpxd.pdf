@@ -1,0 +1,92 @@
+procedure
+refgbl $echo
+parm version string def="ibis-2" 
+parm org string def="column"
+
+local gridout1 string
+local gridout2 string
+local gridout3 string
+body
+enable-log
+
+!let _onfail="continue"
+let $echo="yes"
+
+
+!   TEST GTWARPXD HANDYPROC
+
+! basic application, note perth is NOT VICAR rotated and has "post" pixels
+! australia is standard VICAR rotation and area pixels
+
+gen xxim1 nl=10 ns=10
+gtgen inp=xxim1 out=xxperth 'tiecnvrt +
+   geotiff=("ModelTiePointTag=(0,0,0,.3,.3,0.0)", +
+          "ModelTiePointTag=(10,0,0,.5,.3,0.0)", +
+          "ModelTiePointTag=(0,10,0,.3,.5,0.0)", +
+          "ProjectionGeoKey=20(CT_MillerCylindrical)", +
+          "GTRasterTypeGeoKey=2(RasterPixelIsPoint)", +
+          "GeogEllipsoidGeoKey=7030(Ellipse_WGS84)")
+gen xxim1 nl=20 ns=20
+gtgen inp=xxim1 out=xxaustralia 'tiecnvrt +
+   geotiff=("ModelTiePointTag=(0,0,0,.2,.7,0.0)", +
+          "ModelTiePointTag=(20,0,0,.7,.7,0.0)", +
+          "ModelTiePointTag=(0,20,0,.2,.2,0.0)", +
+          "ProjectionGeoKey=1(CT_TransverseMercator)", +
+          "GTRasterTypeGeoKey=1(RasterPixelIsArea)", +
+          "GeogEllipsoidGeoKey=7030(Ellipse_WGS84)")
+gtlist xxperth
+gtlist xxaustralia
+
+ibis-gen xxdist version=&version org=&org nc=4 nr=3 deffmt=DOUB
+acopin (gtwarpxd.dat,xxdist) cols=(1,2,3,4) lead_rm=1
+!ibis-list xxdist
+
+gtwarp inp=xxperth out=xxnewperth1 ref=xxaustralia 'coverinp +
+    nah=3 nav=4 gorewid=1
+
+gtwarpxd inp=xxperth out=xxnewperth2 ref=xxaustralia 'coverinp +
+    nah=3 nav=4 gorewid=1 distort=(xxdist,,,,) dcols=(1,2,3,4) +
+    gridout=xxxperthgrid
+
+gtwarpxd inp=xxperth out=xxnewperth3 ref=xxaustralia 'coverinp +
+    nah=3 nav=4 gorewid=1 distort=(xxdist,,,,) dcols=(1,2,3,4) +
+    polyfit=(linear,,,,)
+
+! new here
+
+ibis-gen xxdist2 version=&version org=&org nc=4 nr=3 deffmt=DOUB
+acopin (gtwarpxd2.dat,xxdist2) cols=(1,2,3,4) lead_rm=1
+
+let gridout1 = "xxxperthgrid" // "1"
+let gridout2 = "xxxperthgrid" // "2"
+let gridout3 = "xxxperthgrid" // "3"
+
+gtwarpxd inp=xxperth out=xxnewperth4 ref=xxaustralia 'coverinp +
+    nah=3 nav=4 gorewid=1 distort=(xxdist,xxdist2,,,) +
+    dcols=(1,2,3,4,1,2,3,4)
+gtwarpxd inp=xxperth out=xxnewperth5 ref=xxaustralia 'coverinp +
+    nah=3 nav=4 gorewid=1 distort=(xxxperthgrid,xxdist2,,,) +
+    dcols=(0,0,0,0,1,2,3,4)
+    
+
+gtoffset xxperth xxnewperth1
+gtoffset xxperth xxnewperth2
+gtoffset xxperth xxnewperth3
+gtoffset xxperth xxnewperth4
+gtoffset xxperth xxnewperth5
+
+difpic (xxnewperth4,xxnewperth5)
+
+gtlist xxnewperth1
+gtlist xxnewperth2
+gtlist xxnewperth3
+
+list xxnewperth1 'zero
+list xxnewperth2 'zero
+list xxnewperth3 'zero
+
+
+theend>
+
+disable-log
+end-proc

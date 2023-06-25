@@ -18,10 +18,8 @@ enable-log
 
 let $autousage="none"
 
-ush rm -f msl
-ush ln -s /project/test_work/testdata/msl msl
-ush ln -fs msl/1N546228391RADCYELP0684L0M1.IMG file1
-ush ln -fs msl/MH0_445788563EDR_S0261274MHLI00350M1.IMG file2
+ush ln -fs data/1N546228391RADCYELP0684L0M1.IMG file1
+ush ln -fs data/MH0_445788563EDR_S0261274MHLI00350M1.IMG file2
 
 ! Case 1: Single Band
 denoisetv inp=file1 out=denoised.IMG MU = 1.5
@@ -41,5 +39,7 @@ label-list denoised_band2.IMG  'NOUSRTIM
 theend>
 
 disable-log
+
+ush rm file1 file2 denoised_band2.IMG denoised.IMG denoised_multiband.IMG parameters_SBTV_L1G.dat
 
 end-proc

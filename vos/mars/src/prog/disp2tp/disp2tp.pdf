@@ -1,0 +1,186 @@
+process help=*
+parm inp    type=string count=1:200
+parm out    type=string count=1
+parm rhs    type=string count=1:200
+parm xyz    type=string count=0:200 default=--
+parm inptie type=string count=0:200 default=--
+parm cnt    type=int    count=0:1   default=100
+parm trad_mode count=0:1 type=keyword valid=("TRADITIONAL","MISS_DISTANCE") +
+	default="MISS_DISTANCE"
+
+! used by library beneath mars_setup()
+PARM CONFIG_PATH STRING DEFAULT="$MARS_CONFIG_PATH"
+PARM POINT_METHOD TYPE=STRING COUNT=(0:1) DEFAULT=--
+end-proc
+
+.title
+VICAR Program disp2tp - generates an XML tiepoint file from a disparity map
+.help
+PURPOSE
+
+    DISP2TP generates an XML tiepoint file for two images from a disparity map
+
+.PAGE
+TAE COMMAND LINE FORMAT
+
+    DISP2TP INP=(dspfiles) OUT=outtie RHS=(rhsfiles) XYZ=(xyzfiles) INPTIE=(inpties) CNT=count
+     
+    where
+
+    dspfiles is one or more input double-band, real-valued VICAR images.
+    rhsfiles is one or more VICAR images suitable for creating a PigFileModel.
+    outtie   is an output XML text file representing a set of tiepoints.
+    xyzfiles is one or more optional input XYZ files mapped to the corresponding dspfile.
+    inptie   is one or more optional input XML tiepoint files used to select tiepoints.
+
+    PARMS	
+        count is the approximate number of tiepoints to be generated.
+
+    Examples
+      disp2tp sampdisp.img samprhs.img samptie.xml cnt=42
+      disp2tp sampdisp.img samprhs.img samptie.xml sampxyz.img cnt=42 
+      disp2tp sampdisp.img samprhs.img samptie.xml inptie=selectie.tie
+
+.PAGE
+OPERATION
+
+    DISP2TP generates an XML tiepoint file connecting the left and
+    right images from one or more input disparity maps. INP is one or
+    more double-band, real-valued VICAR image disparity maps. OUT
+    is an xml text file representing the set of tiepoints. The output
+    tiepoint file identifies the left and right images using a PIG
+    unique ID. The RHS files must be equal in number to INP, and
+    correspond in order to the INP files. They are used to determine
+    the RHS unique ID for each disparity map. Only the RHS labels are
+    used, so either EDR or RDR files can be used.
+
+    If provided, INPTIE is used to select the tiepoints to generate
+    from a dspfile. Otherwise, CNT is used to generate a line/sample
+    sampling frequency such that approximately CNT tiepoints are
+    generated. The tiepoints are selected with approximately uniform
+    2-d spacing. The linear sampling frequency is approximately
+    sqrt(NL*NS/CNT). However, selected tiepoints are discarded when
+    the disparity value is undefined. Tiepoints also are discarded
+    when an optional XYZ file is provided and the XYZ is undefined.
+    For example, the test cases ask for 100 points but get only 28
+    without an XYZ file, and 21 with an XYZ file. A future
+    enhancement could count the undefined disparity values (and
+    optionally the undefined XYZ values) and scale the requested
+    number of tiepoints to yield a tiepoint set size closer to that
+    requested.
+   
+    If there are less INPTIE files than INP files, then the n INPTIE
+    files will be associated in order with the first n INP files. XYZ
+    files are associated similarly with INP files.
+
+    Following is a minimal example of an XML tiepoint file:
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <tiepoint_file version="1.0">
+    <tiepoint_set>
+      <reference_frame name="FIXED" index1="22" />
+      <images>
+        <image unique_id="MLG_436644282DSR_S0220000MCAM01813M1" key="0" />
+        <image unique_id="MRG_436644282DSR_S0220000MCAM01813M1" key="1" />
+      </images>
+      <tiepoints>
+        <tie type="0" left_key="0" right_key="1">
+          <left      line="71" samp="491" />
+          <projected line="145.984558" samp="138.428513" />
+          <right     line="145.984558" samp="138.428513" />
+          <flags quality="1.0" interactive="0" />
+        </tie>
+      </tiepoints>
+    </tiepoint_set>
+
+.PAGE
+
+RESTRICTIONS
+
+     None known.
+
+.PAGE
+WRITTEN BY:            W. L. Bunch
+
+COGNIZANT PROGRAMMER:  W. L. Bunch
+
+REVISIONS: 
+  Thu Sep 25 2014
+    Initial version
+
+.LEVEL1
+
+.VAR INP
+One or more disparity
+images.
+
+.VAR OUT
+An XML tiepoint file.
+
+.VAR RHS
+Required EDR or RDR
+type image file(s).
+
+.VAR XYZ
+Optional xyz file(s).
+
+.VAR INPTIE
+Optional XML input
+tiepoint file(s).
+
+.VAR CNT
+The number of
+tiepoints to generate.
+
+.VAR TRAD_MODE
+Selects output
+tiepoint type.
+
+.LEVEL2
+
+.VAR INP
+A required double-band, real-valued VICAR image of disparity values.
+
+.VAR OUT
+An XML text file representing a set of tiepoints.
+
+.VAR RHS
+A required EDR or RDR type file corresponding to the disparity image.
+Each input disparity image must have a RHS to determine the unique ID
+for each disparity map. Only the RHS labels are used, so either EDR 
+or RDR files can be used.
+
+.VAR XYZ
+An optional xyz file used to discard tp that do not have valid xyz
+data. If there are less xyz files than disparity files, then the n xyz
+files will be associated in order with the first n disparity files.
+
+.VAR INPTIE
+An optional XML text file representing a set of tiepoints. If
+provided, any cnt parameter will be ignored, and the inptie file will
+be used to select tiepoints for generation. If there are less inptie
+files than disparity files, then the n inptie files will be associated
+in order with the first n disparity files.
+
+.VAR CNT
+The approximate number of tiepoints to be generated, ignored if inptie
+is provided. If INPTIE is not provided, then CNT is used to generate a
+line/sample sampling frequency such that approximately CNT tiepoints
+are generated. The tiepoints are selected with approximately uniform
+2-d spacing. The linear sampling frequency is approximately
+sqrt(NL*NS/CNT). However, selected tiepoints are discarded when the
+disparity value is undefined. Tiepoints also are discarded when an
+optional XYZ file is provided and the XYZ is undefined.  For example,
+the test cases ask for 100 points but get only 28 without an XYZ file,
+and 21 with an XYZ file.
+
+.VAR TRAD_MODE
+Used to select output tiepoint type. Valid choices are TRADITIONAL and
+MISS_DISTANCE.  The tiepoint data are the same, but this type
+distinction directs marsnav to calculate error in different ways.
+With TRADITIONAL, the error is based on line/sample differences in the
+image space.  With MISS_DISTANCE, the error is based on the distance
+in xyz space between the rays to the left and right tiepoints, as
+calculated by xvector.
+
+.end

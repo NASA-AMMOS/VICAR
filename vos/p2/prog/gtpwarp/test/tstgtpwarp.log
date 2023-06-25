@@ -1,0 +1,188 @@
+gen xxxim0 nl=300 ns=310
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+f2 inp=xxxim0 out=xxxim1 func="(line*327+samp*193+line*samp)%255+1"
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 93000 TIMES
+gtgen in=xxxim1 'tiecnvrt  +
+   geotiff=("GTModelTypeGeoKey=2(ModelTypeGeographic)",  +
+          "GeogEllipsoidGeoKey=7008(Ellipse_Clarke_1866)",  +
+          "GeogPrimeMeridianGeoKey=40.0",  +
+          "ModelTiePointTag=(0,0,0,-110,35,0.0)",  +
+          "ModelTiePointTag=(0,300,0,-110,33,0.0)",  +
+          "ModelTiePointTag=(310,0,0,-108,35,0.0)",  +
+          "GTRasterTypeGeoKey=1(RasterPixelIsArea)")
+Beginning VICAR task gtgen
+GTGEN version 2019-09-05
+gen xxxim0 nl=300 ns=310
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+f2 inp=xxxim0 out=xxxim2  +
+  func="((line-2)*327+(samp-3)*193+(line-2)*(samp-3))%255+1"
+Beginning VICAR task f2
+F2 version 98-Aug-2015
+F2 calculating every pixel
+FUNCTION EVALUATED 93000 TIMES
+gtgen in=xxxim2 'tiecnvrt  +
+   geotiff=("GTModelTypeGeoKey=2(ModelTypeGeographic)",  +
+          "GeogEllipsoidGeoKey=7008(Ellipse_Clarke_1866)",  +
+          "GeogPrimeMeridianGeoKey=40.0",  +
+          "ModelTiePointTag=(0,0,0,-110,35,0.0)",  +
+          "ModelTiePointTag=(0,300,0,-110,33,0.0)",  +
+          "ModelTiePointTag=(310,0,0,-108,35,0.0)",  +
+          "GTRasterTypeGeoKey=1(RasterPixelIsArea)")
+Beginning VICAR task gtgen
+GTGEN version 2019-09-05
+gtwarp xxxim1 xxxim3 ref=xxxim2 'coverref
+let version="ibis-2"
+let org="column"
+let $echo="yes"
+write "gtwarp version 08-jun-10"
+gtwarp version 08-jun-10
+let xxqqgrid1 = "xxqqgrid1qq"
+let xxqqgrid2 = "xxqqgrid2qq"
+lab2tcl xxxim1 v1=tnl v2=tns keyword=(nl,ns) 'system
+Beginning VICAR task lab2tcl
+LAB2TCL - 09 Dec 2012 - rjb - (64-bit)
+let inpsize = tnl*tns
+if ("coverref"="coverinp")
+else
+   lab2tcl xxxim2 v1=tnl v2=tns keyword=(nl,ns) 'system
+Beginning VICAR task lab2tcl
+LAB2TCL - 09 Dec 2012 - rjb - (64-bit)
+   let sl=1-gorewid
+   let ss=1-gorewid
+   let nl=tnl+gorewid*2
+   let ns=tns+gorewid*2
+end-if
+write "geomv parameter (sl,ss,nl,ns) = (1,1,300,310)"
+geomv parameter (sl,ss,nl,ns) = (1,1,300,310)
+let nahp1=nah+1
+let navp1=nav+1
+let nahxnav=nahp1*navp1
+ibis-gen xxqqgrid2qq version=ibis-2 org=column  nc=8 nr=10201 deffmt=DOUB
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+mf3 xxqqgrid2qq func=("c1=(@int((@index-1)/101)/100)*300+(1-0.5)$",       +
+       "c2=(@mod(@index+100,101)/100)*310+(1-0.5)")
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+pixmap (xxqqgrid2qq,xxxim2) mapcols=(3,4) pixcols=(1,2) 'pixtomap
+Beginning VICAR task pixmap
+pixmap version Thu Jan  3 2008
+gtproj (xxqqgrid2qq,xxxim2,xxxim1) incol=(3,4) outcol=(5,6)
+Beginning VICAR task gtproj
+GTPROJ version 2019-09-05
+Input GeoTIFF label:
+GTMODELTYPEGEOKEY=2(ModelTypeGeographic)
+GEOGELLIPSOIDGEOKEY=7008(Ellipse_Clarke_1866)
+GEOGPRIMEMERIDIANGEOKEY=40.0
+MODELTIEPOINTTAG=(0,0,0,-110,35,0.0)
+MODELPIXELSCALETAG=(0.0064516129032,0.0066666666667,0.0)
+GTRASTERTYPEGEOKEY=1(RasterPixelIsArea)
+
+Output GeoTIFF label:
+GTMODELTYPEGEOKEY=2(ModelTypeGeographic)
+GEOGELLIPSOIDGEOKEY=7008(Ellipse_Clarke_1866)
+GEOGPRIMEMERIDIANGEOKEY=40.0
+MODELTIEPOINTTAG=(0,0,0,-110,35,0.0)
+MODELPIXELSCALETAG=(0.0064516129032,0.0066666666667,0.0)
+GTRASTERTYPEGEOKEY=1(RasterPixelIsArea)
+
+inverse not applied
+forward not applied
+datum shift not applied
+pixmap (xxqqgrid2qq,xxxim1) mapcols=(5,6) pixcols=(7,8) 'maptopix
+Beginning VICAR task pixmap
+pixmap version Thu Jan  3 2008
+geomv INP=(xxxim1,xxqqgrid2qq,xxxim2) OUT=xxxim3 size=(1,1,300,310+
+)         cols=(1,2,7,8) interp="bilin" znoin="" vmemsize=300000000
+Beginning VICAR task geomv
+GEOMV version 2019-09-04
+end-proc
+gtpwarp xxxim1 xxxim4 ref=xxxim2 'coverref nah=10 nav=10 toler=1.5
+let version="ibis-2"
+let org="column"
+let $echo="yes"
+write "GTPWARP version 2016-AUG-20"
+GTPWARP version 2016-AUG-20
+let imag = $fix(magnify)
+let fft1 = fftsize*imag
+let fft2 = fft1/2
+let bigtoler = toler*4.0
+let fftgrid1 = fftgrid(1)
+let fftgrid2 = fftgrid(2)
+let xqxqgrid1 = "xqxqgrid1qq"
+let xqxqgrid2 = "xqxqgrid2qq"
+let xqxqgrid3 = "xqxqgrid3qq"
+let xqxqgrid4 = "xqxqgrid4qq"
+if (ref_lowres="n")
+   let img1="xxxim1"
+   let img2="xxxim2"
+else
+end-if
+if (ref_res="")
+   let ref_resf=ref
+else
+end-if
+imcorner (xxxim1,xxxim2) line1=l1 samp1=s1 line2=l2 samp2=s2+
+        line3=l3 samp3=s3 line4=l4 samp4=s4 inside=0
+Beginning VICAR task imcorner
+IMCORNER version 2021-05-19
+gengrid2 out=xqxqgrid1qq ncol=21 nah=16 nav=16       l1=5.000+
+000000000e+00 s1=2.000000000000e+00 l2=2.000000000000e+00 s2=3.100000000000e+02 l3=3.000000000000e+02 s3=2.000000000000e+00 l4=3.00+
+0000000000e+02 s4=3.100000000000e+02
+let nahp1=nah+1
+let navp1=nav+1
+let nahxnav=nahp1*navp1
+ibis-gen xqxqgrid1qq version="ibis-2" org="column" nc=+
+21       nr=289 deffmt=DOUB
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+mf3 xqxqgrid1qq func="c3=@int((@index-1)/17)/16"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+mf3 xqxqgrid1qq func="c4=@mod(@index+16,17)/16"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+mf3 xqxqgrid1qq func="c5=c3*(3.000000000000e+02-(5.000000000000e+00))+(5.000000000000e+00)$c6=c3*(3.000000000000e+02-(2.00000000000+
+0e+00))+(2.000000000000e+00)"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+mf3 xqxqgrid1qq func="c1=c4*(c6-c5)+c5"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+mf3 xqxqgrid1qq func="c7=c4*(3.100000000000e+02-(2.000000000000e+00))+(2.000000000000e+00)$c8=c4*(3.100000000000e+02-(2.00000000000+
+0e+00))+(2.000000000000e+00)"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+mf3 xqxqgrid1qq func="c2=c3*(c8-c7)+c7"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+mf3 xqxqgrid1qq func="c3=0$c4=0$c5=0$c6=0$c7=0$c8=0$"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+end-proc
+mf3 xqxqgrid1qq f="c11=@rand" seed=19364793
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+sort xqxqgrid1qq sortcol=11
+Beginning VICAR task sort
+sort version Wed Jan  2 2008
+if (magmin<magnify)
+else
+   let magshrk="n"
+end-if
+if (itie=--)
+   picmtch5 (xxxim1,xxxim2,xqxqgrid1qq) fftsize=64 search=64       mins+
+rch=64 magnify=(1.000000000000e+00,1.000000000000e++
+00)       pred=linear autofit=14 redo=36 magmin=(1.000000000000e+00,1.0+
+00000000000e+00)       magshrk=n ffthalf=1 thr_res=1.000000000000e+01
+[TAE-NOPROC] Unable to locate proc 'picmtch5'.;
+ proc 'gtpwarp', line 121
+RETURN
+RETURN

@@ -6,12 +6,14 @@ enable-log
 let $echo="yes"
 !
 ! for phobos
-efgiso out=(E.img,F.img,G.img,R.img) planet=phobos nl=180 ns=360
+efgiso out=(E.img,F.img,G.img,R.img) planet=phobos nl=180 ns=360 path=data
 
 list E.img sl=70 nl=40 ss=160 ns=40 'nousrtim
 list F.img sl=70 nl=40 ss=160 ns=40 'nousrtim
 list G.img sl=70 nl=40 ss=160 ns=40 'nousrtim
 list R.img sl=70 nl=40 ss=160 ns=40 'nousrtim
+
+ush rm E.img F.img G.img R.img
 
 !xvd E.img
 !xvd F.img

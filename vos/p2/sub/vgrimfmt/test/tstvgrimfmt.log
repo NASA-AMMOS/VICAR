@@ -1,0 +1,434 @@
+ 
+ 
+ *************TEST ON VGRIMFMT ROUTINE************
+ ***********Calling from FORTRAN program *********
+Beginning VICAR task tvgrimfmt
+  IMCODE= 0   FORMAT=IM-2W   SCAN_RATE= 1
+        ** SS **    ** NS **
+	    1         800
+  IMCODE= 2   FORMAT=IM-S    SCAN_RATE= 5
+        ** SS **    ** NS **
+	   61         338
+	  399         338
+	  737         338
+	 1075         338
+	 1413         338
+  IMCODE= 3   FORMAT=IM-20   SCAN_RATE=10
+        ** SS **    ** NS **
+	   29         744
+	   29         744
+	   29         744
+	   29         744
+	   29         744
+	   29         744
+	   29         744
+	   29         744
+	   29         744
+	   29         744
+  IMCODE= 4   FORMAT=IM-O    SCAN_RATE= 5
+        ** SS **    ** NS **
+	    1         800
+	  801         800
+	 1601         800
+	 2401         800
+	 3201         800
+  IMCODE= 5   FORMAT=IM-21   SCAN_RATE=10
+        ** SS **    ** NS **
+	   30         372
+	   30         372
+	   30         372
+	   30         372
+	   30         372
+	   30         372
+	   30         372
+	   30         372
+	   30         372
+	   30         372
+  IMCODE= 6   FORMAT=IM-Q    SCAN_RATE= 5
+        ** SS **    ** NS **
+	    1         800
+	  801         800
+	 1601         800
+	 2401         800
+	 3201         800
+  IMCODE= 7   FORMAT=IM-22   SCAN_RATE=10
+        ** SS **    ** NS **
+	    1         400
+	    1         400
+	    1         400
+	    1         400
+	    1         400
+	    1         400
+	    1         400
+	    1         400
+	    1         400
+	    1         400
+  IMCODE= 8   FORMAT=IM-K    SCAN_RATE=10
+        ** SS **    ** NS **
+	    1         800
+	  801         800
+	 1601         800
+	 2401         800
+	 3201         800
+	 4001         800
+	 4801         800
+	 5601         800
+	 6401         800
+	 7201         800
+  IMCODE= 9   FORMAT=GS-4B   SCAN_RATE= 1
+        ** SS **    ** NS **
+	    1         800
+  IMCODE=10   FORMAT=IM-2X   SCAN_RATE= 2
+        ** SS **    ** NS **
+	    1         800
+	  801         800
+  IMCODE=11   FORMAT=GS-4C   SCAN_RATE= 1
+        ** SS **    ** NS **
+	    1         800
+  IMCODE=12   FORMAT=IM-2C   SCAN_RATE= 5
+        ** SS **    ** NS **
+	    1         800
+	  801         800
+	 1601         800
+	 2401         800
+	 3201         800
+  IMCODE=13   FORMAT=IM-23   SCAN_RATE=10
+        ** SS **    ** NS **
+	   17         384
+	  401         384
+	  785         384
+	 1169         384
+	 1553         384
+	 1937         384
+	 2321         384
+	 2705         384
+	 3089         384
+	 3473         384
+  IMCODE=14   FORMAT=IM-24   SCAN_RATE= 2
+        ** SS **    ** NS **
+	  101         600
+	  701         600
+  IMCODE=15   FORMAT=GS-4    SCAN_RATE= 1
+        ** SS **    ** NS **
+	    1         800
+  IMCODE=16   FORMAT=IM-2W   SCAN_RATE= 1
+        ** SS **    ** NS **
+	    1         800
+  IMCODE=17   FORMAT=GS-2    SCAN_RATE= 1
+        ** SS **    ** NS **
+	    1         800
+  IMCODE=19   FORMAT=OC-3    SCAN_RATE=10
+        ** SS **    ** NS **
+	  365          44
+	  409          44
+	  453          44
+	  497          44
+	  541          44
+	  585          44
+	  629          44
+	  673          44
+	  717          44
+	  761          44
+  IMCODE=20   FORMAT=IM-12   SCAN_RATE= 5
+        ** SS **    ** NS **
+	  201          80
+	  281          80
+	  361          80
+	  441          80
+	  521          80
+  IMCODE=21   FORMAT=IM-11   SCAN_RATE= 5
+        ** SS **    ** NS **
+	    1         160
+	  161         160
+	  321         160
+	  481         160
+	  641         160
+  IMCODE=22   FORMAT=IM-10   SCAN_RATE= 5
+        ** SS **    ** NS **
+	  136         106
+	  242         106
+	  348         106
+	  454         106
+	  560         106
+  IMCODE=23   FORMAT=IM-26   SCAN_RATE= 5
+        ** SS **    ** NS **
+	    2         800
+	  802         800
+	 1602         800
+	 2402         800
+	 3202         800
+  IMCODE=24   FORMAT=IM-15   SCAN_RATE= 1
+        ** SS **    ** NS **
+	  265         272
+  IMCODE=25   FORMAT=IM-25   SCAN_RATE= 5
+        ** SS **    ** NS **
+	  101         600
+	  701         600
+	 1301         600
+	 1901         600
+	 2501         600
+  IMCODE=26   FORMAT=IM-2D   SCAN_RATE= 5
+        ** SS **    ** NS **
+	   77         324
+	  401         324
+	  725         324
+	 1049         324
+	 1373         324
+  IMCODE=27   FORMAT=IM-5    SCAN_RATE= 2
+        ** SS **    ** NS **
+	    1         440
+	  441         360
+  IMCODE=28   FORMAT=IM-4    SCAN_RATE= 1
+        ** SS **    ** NS **
+	   97         608
+  IMCODE=29   FORMAT=IM-3    SCAN_RATE= 1
+        ** SS **    ** NS **
+	    1         800
+  IMCODE=30   FORMAT=IM-2    SCAN_RATE= 1
+        ** SS **    ** NS **
+	    1         800
+  IMCODE=31   FORMAT=IM-13   SCAN_RATE=10
+        ** SS **    ** NS **
+	    1          80
+	   81          80
+	  161          80
+	  241          80
+	  321          80
+	  401          80
+	  481          80
+	  561          80
+	  641          80
+	  721          80
+
+    REPEAT ABOVE TESTS FROM C LANGUAGE
+
+IMCODE=0, FORMAT=IM-2W, SCAN_RATE=1
+	SS	NS
+	1	800
+ 
+ 
+IMCODE=2, FORMAT=IM-S , SCAN_RATE=5
+	SS	NS
+	61	338
+	399	338
+	737	338
+	1075	338
+	1413	338
+ 
+IMCODE=3, FORMAT=IM-20, SCAN_RATE=10
+	SS	NS
+	29	744
+	29	744
+	29	744
+	29	744
+	29	744
+	29	744
+	29	744
+	29	744
+	29	744
+	29	744
+ 
+IMCODE=4, FORMAT=IM-O , SCAN_RATE=5
+	SS	NS
+	1	800
+	801	800
+	1601	800
+	2401	800
+	3201	800
+ 
+IMCODE=5, FORMAT=IM-21, SCAN_RATE=10
+	SS	NS
+	30	372
+	30	372
+	30	372
+	30	372
+	30	372
+	30	372
+	30	372
+	30	372
+	30	372
+	30	372
+ 
+IMCODE=6, FORMAT=IM-Q , SCAN_RATE=5
+	SS	NS
+	1	800
+	801	800
+	1601	800
+	2401	800
+	3201	800
+ 
+IMCODE=7, FORMAT=IM-22, SCAN_RATE=10
+	SS	NS
+	1	400
+	1	400
+	1	400
+	1	400
+	1	400
+	1	400
+	1	400
+	1	400
+	1	400
+	1	400
+ 
+IMCODE=8, FORMAT=IM-K , SCAN_RATE=10
+	SS	NS
+	1	800
+	801	800
+	1601	800
+	2401	800
+	3201	800
+	4001	800
+	4801	800
+	5601	800
+	6401	800
+	7201	800
+ 
+IMCODE=9, FORMAT=GS-4B, SCAN_RATE=1
+	SS	NS
+	1	800
+ 
+IMCODE=10, FORMAT=IM-2X, SCAN_RATE=2
+	SS	NS
+	1	800
+	801	800
+ 
+IMCODE=11, FORMAT=GS-4C, SCAN_RATE=1
+	SS	NS
+	1	800
+ 
+IMCODE=12, FORMAT=IM-2C, SCAN_RATE=5
+	SS	NS
+	1	800
+	801	800
+	1601	800
+	2401	800
+	3201	800
+ 
+IMCODE=13, FORMAT=IM-23, SCAN_RATE=10
+	SS	NS
+	17	384
+	401	384
+	785	384
+	1169	384
+	1553	384
+	1937	384
+	2321	384
+	2705	384
+	3089	384
+	3473	384
+ 
+IMCODE=14, FORMAT=IM-24, SCAN_RATE=2
+	SS	NS
+	101	600
+	701	600
+ 
+IMCODE=15, FORMAT=GS-4 , SCAN_RATE=1
+	SS	NS
+	1	800
+ 
+IMCODE=16, FORMAT=IM-2W, SCAN_RATE=1
+	SS	NS
+	1	800
+ 
+IMCODE=17, FORMAT=GS-2 , SCAN_RATE=1
+	SS	NS
+	1	800
+ 
+ 
+IMCODE=19, FORMAT=OC-3 , SCAN_RATE=10
+	SS	NS
+	365	44
+	409	44
+	453	44
+	497	44
+	541	44
+	585	44
+	629	44
+	673	44
+	717	44
+	761	44
+ 
+IMCODE=20, FORMAT=IM-12, SCAN_RATE=5
+	SS	NS
+	201	80
+	281	80
+	361	80
+	441	80
+	521	80
+ 
+IMCODE=21, FORMAT=IM-11, SCAN_RATE=5
+	SS	NS
+	1	160
+	161	160
+	321	160
+	481	160
+	641	160
+ 
+IMCODE=22, FORMAT=IM-10, SCAN_RATE=5
+	SS	NS
+	136	106
+	242	106
+	348	106
+	454	106
+	560	106
+ 
+IMCODE=23, FORMAT=IM-26, SCAN_RATE=5
+	SS	NS
+	2	800
+	802	800
+	1602	800
+	2402	800
+	3202	800
+ 
+IMCODE=24, FORMAT=IM-15, SCAN_RATE=1
+	SS	NS
+	265	272
+ 
+IMCODE=25, FORMAT=IM-25, SCAN_RATE=5
+	SS	NS
+	101	600
+	701	600
+	1301	600
+	1901	600
+	2501	600
+ 
+IMCODE=26, FORMAT=IM-2D, SCAN_RATE=5
+	SS	NS
+	77	324
+	401	324
+	725	324
+	1049	324
+	1373	324
+ 
+IMCODE=27, FORMAT=IM-5 , SCAN_RATE=2
+	SS	NS
+	1	440
+	441	360
+ 
+IMCODE=28, FORMAT=IM-4 , SCAN_RATE=1
+	SS	NS
+	97	608
+ 
+IMCODE=29, FORMAT=IM-3 , SCAN_RATE=1
+	SS	NS
+	1	800
+ 
+IMCODE=30, FORMAT=IM-2 , SCAN_RATE=1
+	SS	NS
+	1	800
+ 
+IMCODE=31, FORMAT=IM-13, SCAN_RATE=10
+	SS	NS
+	1	80
+	81	80
+	161	80
+	241	80
+	321	80
+	401	80
+	481	80
+	561	80
+	641	80
+	721	80
+ 
+ 
+ *************TEST COMPLETED************

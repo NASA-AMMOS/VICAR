@@ -1,0 +1,15 @@
+procedure
+body
+enable-log
+
+genpc xxa lon=-118 lat=36 mpix=1
+gtlist xxa
+
+genpc xxa lon=-118 lat=36 mpix=60 +
+   rastypstr="2(RasterPixelIsPoint)"
+gtlist xxa
+ush rm xxa
+
+disable-log
+end-proc
+

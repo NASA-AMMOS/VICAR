@@ -1,0 +1,554 @@
+process help=*
+PARM INP TYPE=STRING COUNT=(1:200)
+PARM REFIMAGES TYPE=INTEGER COUNT=(0:200) VALID=(-1000:1000) DEFAULT=1
+PARM IN_MESH TYPE=STRING COUNT=1 
+PARM OUT_MESH TYPE=STRING COUNT=1
+PARM TEXTURE_IDS TYPE=INTEGER COUNT=(1:200) DEFAULT=1
+PARM EVALUATE TYPE=KEYWORD COUNT=1 VALID=(EVALUATE,NOEVALUATE) DEFAULT=NOEVALUATE
+PARM MIN_VERTICES TYPE=INTEGER COUNT=1 DEFAULT=20
+PARM MAX_DIST TYPE=REAL COUNT=1 DEFAULT=-1
+PARM MIN_DIST TYPE=REAL COUNT=1 DEFAULT=0.0
+PARM LAMBDA TYPE=REAL COUNT=1 DEFAULT=1 
+PARM SIGMA TYPE=REAL COUNT=1 DEFAULT=2
+PARM NB_SIGMA TYPE=INTEGER COUNT=1 DEFAULT=3
+
+PARM NAVTABLE TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM OUT_SOLUTION_ID TYPE=STRING COUNT=0:1 DEFAULT=--
+PARM SOLUTION_ID TYPE=STRING COUNT=0:1 DEFAULT=--
+PARM UNTIL TYPE=KEYWORD COUNT=(0:1) +
+  VALID=("UNTIL","NULL") DEFAULT="NULL"
+PARM IGNORE TYPE=INTEGER COUNT=(0:200) VALID=(-1000:1000) DEFAULT=--
+
+PARM OMP_ON TYPE=KEYWORD VALID=(OMP_ON,OMP_OFF) DEFAULT=OMP_ON
+
+PARM CONFIG_PATH STRING DEFAULT="$MARS_CONFIG_PATH"
+PARM POINT_METHOD TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM MATCH_METHOD TYPE=STRING COUNT=(0:1) VALID=("LOOSE", "TIGHT") +
+	DEFAULT=LOOSE
+PARM MATCH_TOL TYPE=REAL COUNT=1 DEFAULT=.002
+
+PARM RSF TYPE=STRING COUNT=0:100 DEFAULT=--
+PARM DEBUG_RSF TYPE=KEYWORD COUNT=0:1 VALID=DEBUG_RSF DEFAULT=--
+PARM COORD TYPE=KEYWORD VALID=("FIXED", "INSTRUMENT", "SITE", "ROVER", +
+        "LOCAL_LEVEL") DEFAULT="FIXED"
+PARM COORD_INDEX TYPE=INTEGER COUNT=0:10 DEFAULT=--
+PARM FIXED_SITE TYPE=INTEGER COUNT=0:1 DEFAULT=--
+
+
+
+!# parm inp(2-200) hints=default
+!# parm in_tpt file=vicar; direction=input
+!# parm out_tpt file=vicar; direction=output
+
+END-PROC
+
+.TITLE
+VICAR program MARSREFMESH.
+
+.HELP
+
+Marsrefmesh is a program to refine the vertices coordinates (X,Y,Z) of a
+mesh which models a surface based on some photoconsistency criteria of a series 
+of images of that surface.
+
+EXECUTION:
+
+*IMPORTANT* - See Usage before using the program.
+
+marsrefmesh inp=ascii_listOfFiles refimage=1,2 in_mesh=file.OBJ 
+out_mesh=fileOut.OBJ
+
+where:
+- ascii_listoffiles is a text file containing all the images that will be 
+used in the refinement.
+- refimage ids represent the index of the images in ascii_listOfFiles that will
+be considered reference (see below for more information). 1-based index.
+- in_mesh is the input mesh file that is going to be refined
+- out_mesh is the ouput mesh filename
+
+
+USAGE:
+
+There are important considerations to take into account before using that 
+program:
+
+[1] This program should be used when several images of the area modelized by the
+mesh are available. Most of the time, the mesh is obtained from the correlation
+of a stereo pair of images. If only that pair of images is available, this 
+program should NOT be used. At least no details retrieval should be expected. 
+May be the program can be used as a denoiser, but that has not been tested in 
+this configuration.
+However, if more than two images on the area with reasonable incidence angles 
+are available, this program could be used.
+
+[2] The traditional way of obtaining meshes in mars pipeline is to generate a
+mesh with vertices for every pixels of the image (because correlation is 
+carried on every single pixel of the reference/master image). 
+Given how this program works, the mesh must be subsampled to insure that a mesh 
+face/triangle receive a couple of pixels. This can be achieved during the 
+meshing (marsmesh program) by subsampling the output (X_SUBSAMPLE, Y_SUBSAMPLE 
+parameters in marsmesh) by a factor of 4 for instance. We are not really loosing
+information by subsampling the mesh, because in its full resolution mode, the 
+mesh is highly oversampled as the correlation patch is at least 7x7 pixels, 
+although most of the time around 7x11 pixels.
+
+[3] The program is based on the optimization of a global score (coherency of the
+images through the mesh) and a regularization score (smoothness of the surface).
+However, the balancing between the data attachement (coherency of images) and the
+regularization (surface smoothness) is not trivial, without any hard and fast 
+rule. The scaling of the regularization (LAMBDA) has to be adjusted on a 
+case-by-case study. To estimate what LAMBDA shoulde be, a first run of the 
+program with -EVALUATE will provide the raw data and regularization costs. From
+these values, LAMBDA can be estimated (still a tricky excercise which will 
+require some experimentation) and the program can be re-run without -ESTIMATE.
+
+
+
+METHOD:
+
+This program is based on the following papers:
+- High accuracy and visibility-consistent dense multiview stereo, Vu et al.,
+  IEEE Transactions PAMI, vol 34., no. 5, 2012
+- Discrete differential-geometry operators for triangulated 2-manifold, Meyer et
+  al.,  Hege HC., Polthier K. (eds) Visualization and Mathematics III. Springer.
+  2003.
+- Implicit fairing of irregular meshes using diffusion and curvature flow, 
+  SIGGRAPH conference proceedings, pp 317-324, 1999
+
+
+The program is based on the variational refinement of the mesh vertices based on
+photo-consistency.
+
+A global score is computed that consists of the sum of the (inverse of) the 
+correlation between all the images once they have been projected on the mesh and
+back-projected to the reference images. That score is augmented with a 
+measurement of the global curvature. The mesh vertices locations are iteratively
+refined to minimize that global score using an unconstrained minimization 
+algorithm. This is a classical regularized approach where the data attachement 
+term is given by the inverse of the correlation score (the better the 
+correlation, the smaller the contribution to the score) and a regularization 
+term, given by the curvature cost, which favors smooth surface and penalize 
+strong bending. 
+
+At least one reference image is needed. If more than one reference image is 
+given, that means that, in turn, all the images are projected onto the reference
+and correlated, and the score cumulated. Potentially, all images of the list can
+also be reference images.
+
+The balancing between data attachement and regularization is controlled with
+LAMBDA. A dry run of the program with -EVALUATE will provide estimates of the
+data attachement and regularization costs, from which LAMBDA can be estimated.
+
+
+
+NOTES:
+
+
+.page
+
+COGNIZANT PROGRAMMER:  Francois Ayoub
+
+HISTORY:
+  2018-09-01 Francois Ayoub - Initial marsrefmesh implementation
+  2019-12-10 Walt Bunch - IDS-7926 Initialized some variables; cleaned up other -Wall warnings; added unit test.
+             Note line 2262:
+             texturedTriangles[i] == 1; // TODO: was this intended to be an assignment?
+
+.LEVEL1
+.VARI INP
+Input image(s) or
+file list.
+
+.VARI REFIMAGES
+Reference Images index 
+file list
+
+.VARI IN_MESH
+Input mesh OBJ file.
+
+.VARI OUT_MESH
+Output mesh OBJ file.
+
+.VARI EVALUATE
+Get the initial cost.
+
+.VARI TEXTURE_IDS
+Images indices to use
+for texturing mesh
+
+.VARI MIN_VERTICES
+Minimum number of vertices
+for valid mesh patch.
+
+.VARI MIN_DIST
+Minimum distance from 
+reference cameras.
+
+.VARI MAX_DIST
+Maximum distance from
+reference cameras.
+
+.VARI LAMBDA
+Regularization weight.
+
+.VARI SIGMA
+Standard deviation of
+Gaussian correlator.
+
+.VARI NB_SIGMA
+Number of std dev of
+Gaussian correlator.
+
+.VARI NAVTABLE
+Input navigation table.
+
+.VARI OUT_SOLUTION_ID
+Solution ID for OUTPUT
+nav file (required if
+XML format).
+
+.VARI SOLUTION_ID
+Solution ID for INPUT
+nav file, if needed.
+
+.VARI UNTIL
+All images up to
+REFIMAGE(1) are reference
+images.
+
+.VARI IGNORE
+List of images to ignore
+in the tiepoint list.
+
+.VARI OMP_ON
+Turns on or off parallel
+processing (multiple threads,
+single machine).  Default: on
+
+.VARI CONFIG_PATH
+Path used to find
+configuration/calibration
+files.
+
+.VARI POINT_METHOD
+Specifies a mission-
+specific pointing
+method to use
+
+.VARI MATCH_METHOD
+Specifies a method
+for pointing corrections.
+
+.VARI MATCH_TOL
+Tolerance value for
+matching pointing params
+in pointing corrections file.
+
+.VARI RSF
+Rover State File(s) to use.
+
+.VARI DEBUG_RSF
+Turns on debugging of RSF
+parameter.
+
+.VARI COORD
+Coordinate system to use.
+Ignored by marsnav, except
+for final surface model.
+
+.VARI COORD_INDEX
+Coordinate system index for
+some COORD/mission combos.
+Ignored by marsnav.
+
+.VARI FIXED_SITE
+Which site is FIXED for
+rover missions.
+
+.VARI SUMMARY
+Which verbosity of 
+optimization report to
+display in stdout
+
+.VARI RESIDUAL_DISP
+How many residuals to 
+display in the stdout
+
+.VARI ITER_DISP 
+Display or not info
+on each solver iteration
+
+
+.LEVEL2
+.VARI INP
+There are two options for describing input images. 
+
+Either:
+List the image file names 
+
+Or:
+provide an ascii file with the file names listed, one per record.
+
+.VARI IN_MESH
+Input mesh file in OBJ format. The OBJ file is expected to contain vertices
+coordinates, faces (only triangular faces).
+
+.VARI OUT_MESH
+Output file name of the refined mesh. Should be an OBJ type of file. The number 
+vertices and faces may be different than the output if some of the vertices are
+deemed invalid per user parameters (see MIN_VERTICES, MIN/MAX_DIST).
+
+.VARI REFIMAGES
+List of indexes (1-based) in INP list identifying the reference images. Default
+is 1, i.e.,  the first image of the list. There could be several reference 
+images, in which case, in turn, they will all be reference image with respect to
+the rest of the list (non-reference images and other reference images). For
+instance if REFIMAGES is 1,2,3, then all images of INP will be projected to the
+mesh, then backprojected onto img 1 and correlated. The correlation score of
+all pixels will be cumulated. Then all images will be projected on the mesh, 
+then backprojected onto img2 and correlated, augmenting the global correlation
+score. And so on with img 3. 
+Potentially all images in INP could be references images. Beware though, it can
+lead to very long processing time.
+
+REFIMAGES can be a single image, or a list of images.  Each image in the
+list will be a reference image.  (see also UNTIL).  This allows any arbitrary
+images to be selected as references.  If an image number is negative, it means
+all images from the previous number through (the absolute value of) this one 
+will be references.  For example a list:
+
+1,3,-6,8,11,-15
+
+will cause the following images to be reference imgaes:
+
+1,3,4,5,6,8,11,12,13,14,15
+
+REFIMAGES=-1 defaults to first image is a reference image.
+Numbering of images starts at 1.
+
+.VARI TEXTURE_IDS
+List of images indices (w.r.t. INP list) that will be used to texture the mesh.
+The order of the indices sets the priority of the images in texturing the mesh.
+The first image is used to texture as many faces as possible. Then, if some 
+faces are not textured by the first image (because of occlusion for instance), 
+the second image is used to texture the faces that haven't yet been textured.
+And so on. If the mesh is the output of a single stereo-correlation, it is 
+highly recommended to use first the master image of that stereo-pair. 
+
+.VARI EVALUATE
+If set, the process is run until the optimization starts and print out some
+information about the setup. Most notably, the global correlation score and
+the global curvature cost will be printed. The values can be used to decide
+on the regularization weight to apply (see LAMBDA). Once LAMBDA value has been
+decided, the program can be re-run with LAMBDA set to the proper value and
+EVALUATE removed.
+
+These two costs, which represent
+the data attachement and regularization costs are added like this:
+lambda is a weigthing factor (see LAMBDA)
+
+
+.VARI MIN_VERTICES
+This indicates the minimum size of a mesh patch (in number of vertices) for it
+to be refined. The refinement involves a series of mathematical operations on
+the mesh requires vertices on the edge and vertices whose neighbor vertices is 
+on the mesh edge to be held static (no refinement). So too small mesh patches
+are not worth being refined as most of the vertices will be held fixed. This
+parameters sets the minimum size of the mesh patch to consider for refinement.
+Default is 20.
+
+.VARI MIN_DIST
+Minimum distance (in the unit of the mesh file - usually meters) between the 
+mesh vertices and the reference image cameras positions. All vertices that are 
+closer to any reference image camera will be removed from the refinement.
+
+.VARI MAX_DIST
+Same thing as MIN_DIST but for a maximum distance.
+
+.VARI LAMBDA
+The global cost which is minimized is the sum of the two components:
+- The data attachement term, which is the sum of the (inverse) of the 
+correlation scores. The better the correlation, the smaller the score.
+- The regularization term, which is a measurment of the global curvature of the
+mesh.
+Essentially we have:
+global cost = data cost + lambda * regularization cost.
+The balancing between the two terms is controlled via a weigting factor, LAMBDA.
+The higher lambda, the smoother will be the mesh.
+Estimating a good LAMBDA is not trivial and usually involves a trial and error
+approach.
+
+.VARI SIGMA
+The correlation is done through a gaussian window (as opposed to a square 
+window). SIGMA scales the width of the gaussian spread (standard
+deviation). The default is 2 pixels.
+
+.VARI NB_SIGMA
+How large of a correlation window do we want, in terms of sigma. For instance
+if SIGMA is set to 2 and NB_SIGMA is set to 3 (the default), then a gaussian
+window of about 6x6 pixels will be used.
+
+
+
+.VARI NAVTABLE
+The optional input navigation table.  If provided, this allows the user to
+provide an initial nav solution, which is then tweaked by the marsnav process.
+This allows a pointing solution created by other means, (such as MICA) or via
+an earlier marsnav run, to be adjusted.  This may be used to better globally
+distribute error or accomodate new tiepoints, among other things.
+
+Note that there is no guarantee the result will bear any resemblance to the
+input nav file.  It is merely a starting point, and marsnav may go off in a
+completely different direction.
+
+
+.VARI OUT_SOLUTION_ID
+Solution id for the OUTPUT navigation file in XML format.
+If solution id is missing when FORMAT=XML, then the output
+navigation file can not be created (therefore the parameter is required).
+
+.VARI SOLUTION_ID
+Specifies which solution ID to use for the INPUT nav file (if present).
+
+There are potentially many different definitions for the same coordinate
+system. These are identified via a unique Solution ID.  If this parameter
+is given, only the specified solution's definition is searched for.  Normally
+it is not used.
+
+
+
+.VARI UNTIL
+Means that all images from 1 to the first value of REFIMAGES inclusive are
+treated as reference images. Any additional images listed in REFIMAGES will also
+be reference images.
+
+The functionality of this parameter has been subsumed by the negative number
+feature of REFIMAGES.  For example, REF=5 -UNTIL is the same as REF=\(1,-5\).
+
+.VARI IGNORE
+Specifies a list of images that won't be reference images. This parameter may 
+be used when all but a few images are to be reference. It is easier then to 
+set up all images as references (with REFIMAGES) and identify with this 
+parameters which ones are not. 
+
+Like REFIMAGES, IGNORE accepts negative numbers to indicate ranges.  So a value
+of 4,-7 means 4,5,6,7 are all ignored.  See REFIMAGES for more examples.
+
+
+.VARI OMP_ON
+Turns on or off parallel processing using OMP, which uses multiple cores on
+a single host machine.  The default is on.  The main help describes some
+environment variables that can further control parallel processing.  Note
+that this program uses standard OpenMP (which is built in to the gcc/g++
+compilers), so further details can be found in the OpenMP documentation.
+
+.VARI CONFIG_PATH
+A colon-separated list of directories in which to look for configuration
+and calibration files.  Environment variables are allowed in the list
+(and may themselves contain colon-separated lists).  The directories are
+searched in order for each config/cal file when it is loaded.  This allows
+multiple projectes to be supported simultaneously, and allows the user to
+override any given config/cal file.  Note that the directory structure below
+the directories specified in this path must match what the project expects.
+For example, Mars 98 expects flat fields to be in a subdirectory named
+"flat_fields" while Mars Pathfinder expects them to be directly in the
+directory specified by the path (i.e. no intermediate subdirectories).
+
+.VARI POINT_METHOD
+Specifies a mission-specific pointing method to use.  Normally this
+parameter is not used, in which case the "default" pointing methods
+are used.  Some missions may have special, or alternate, pointing
+methods available, which are indicated by this string (for example,
+backlash models, using arm joint angles instead of x/y/z/az/el, etc).
+A substring search is used, so multiple methods (where that makes sense)
+can be specified by separating the keywords with commas.
+
+The methods available vary per mission, but some methods available at
+the time of this writing are:
+
+BACKLASH : Mars 98 SSI only.  Selects a backlash pointing model,
+which adjusts the telemetered azimuth and elevation values based on
+knowledge of the camera's mechanical backlash and the direction the
+motor was travelling when the image was taken.
+
+.VARI MATCH_METHOD
+Specifies a method for reading the nav file.
+
+Loose method matches with pointing parameters of the image.
+Tight method matches with unique id of the image.
+
+Applies only to an input nav file, if given (not to the output nav file).
+
+.VARI MATCH_TOL
+Tolerance value for matching pointing parameters in the pointing corrections file.
+Used if MATCH_METHOD=LOOSE
+Default value is pretty arbitrary, though seems to work well so far....
+
+.VARI RSF
+Rover State File.  This is a list of filenames to load containing
+Rover State information.  These files contain position and orientation
+information for a rover (or other mobile spacecraft) at various sites.
+They are in XML format.  See the "Rover Motion Counter (RMC) Master File SIS"
+for details on these files.
+
+Rover State Files have a priority order.  The files listed first have
+the highest priority.
+
+Environment variables may be used in the list.
+
+For MER, if a directory is specified, then that directory is searched for
+RMC Master files and any found are loaded.  The directory structure and
+filename convention is covered in the RMC SIS.  The directory specified
+is the one containing "master", so if <dir> is the name specified in the
+RSF parameter, the following files will be searched for:
+
+<dir>/master/<mission>_Master.svf
+<dir>/master/<mission>_Site_<n>_Master.rvf
+
+The name of each file loaded is printed to the stdout log for reference.
+
+.VARI DEBUG_RSF
+If enabled, this causes the internal database of RMC locations to be
+printed out to the stdout log.  This is after the RSF files have been
+loaded and the coordinate systems read from the input label(s).
+
+.VARI COORD
+This parameter is ignored by marsnav, except for one place.  It is
+here for compatibility with subroutines used by other programs (see
+e.g. marsmap).
+
+.VARI COORD_INDEX
+This parameter is ignored by marsnav (except in one case; see COORD).  It
+is here for compatibility with subroutines used by other programs (see
+e.g. marsmap).
+
+.VARI FIXED_SITE
+Specifies which major Site is the "Fixed" Site for this run.
+
+Historically, MPF and M98 had a single "Surface Fixed" frame which never
+moved, and which all other coordinate system frames were referenced to.
+With the advent of long-range rovers (such as MER and FIDO), that became
+insufficient.  The rover traverses far enough that errors in knowledge of
+coordinate system offset and orientation become unacceptable.
+
+For this reason, a system of major Sites was introduced.  Periodically
+during the mission, a Site frame is declared.  This then becomes the
+reference frame for all activities until the next Site is declared.
+References are kept local, and errors don't propogate across Sites.
+
+However, if images from more than one Site are combined together, the
+Site's must be placed relative to each other.  Therefore a single reference
+frame is still needed to combine different sites.
+
+The FIXED_SITE parameter controls which of the major Site frames is
+the reference ("fixed") site for this program run.  This fixed frame
+can vary in different program runs, but is constant throughout one
+execution.
+
+If not specified, FIXED_SITE defaults to the minimum Site number (i.e.
+lowest numbered, or earliest chronologically) used in all input images.
+Normally this default is sufficient; rarely must FIXED_SITE be specified.
+
+One or more Rover State Files must usually be specified in order to combine
+image from more than one Site.  These describe the relationship between
+sites.  See the RSF parameter.

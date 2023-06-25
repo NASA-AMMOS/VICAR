@@ -13,7 +13,7 @@
         CALL XVMESSAGE(' ',' ')
         WRITE(MSG,1000) HR
         CALL XVMESSAGE(MSG,' ')
- 1000      FORMAT('Hour of year = ', I)
+ 1000      FORMAT('Hour of year = ', I10)
         CALL XVMESSAGE(' ',' ')
         CALL XVMESSAGE('ss_sec,fsec,year,hour,sec,msec',' ')
         CALL XVMESSAGE(' ',' ')
@@ -50,7 +50,7 @@
        CALL XVMESSAGE(' ',' ')
        CALL XVMESSAGE(MSG,' ')    
        CALL XVMESSAGE(' ',' ')
- 2000  FORMAT('Year = ', I)
+ 2000  FORMAT('Year = ', I10)
        DO 150 HR=0,8783,24
        SDR(1)=HR+24
        SDR(2)=3500

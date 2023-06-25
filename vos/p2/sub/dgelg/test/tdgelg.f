@@ -11,6 +11,10 @@ c     .. local arrays ..
       double precision b(3,2)/-359,281,85,-718,562,170/
       character*80 string
 
+      i = 0
+      ifail = 0
+      eps = 0
+
       n = 3
       ir = 2
 

@@ -17,10 +17,13 @@ This routine returns the current time in the format "HHMMSS".
 
 ***************************************************************************/
 
+void zxtime(char *time_now);
+
 /**************************************************************************/
 /*    FORTRAN-Callable Subroutine                                         */
 /**************************************************************************/
 
+void zxtime ();
 void FTN_NAME2(xtime, XTIME) (char *time_now, ZFORSTR_PARAM)
 {
      ZFORSTR_BLOCK
@@ -34,7 +37,7 @@ void FTN_NAME2(xtime, XTIME) (char *time_now, ZFORSTR_PARAM)
 /*    C-Callable Subroutine                                               */
 /**************************************************************************/
 
-zxtime(time_now)
+void zxtime(time_now)
 
 char *time_now;
 

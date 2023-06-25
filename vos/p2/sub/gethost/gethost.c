@@ -33,6 +33,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <errno.h>
 #include <string.h>
 
 #if VMS_OS
@@ -94,7 +95,7 @@ int  namelength;
    }
 #else
    status = gethostname(hostname, namelength);
-   if (status != 0) {
+   if (status != 0 && errno != ENAMETOOLONG) {
       hostname[0] = '\0';
       status = FAILURE;
    }

@@ -1,0 +1,5 @@
+$ vpack marsfakedisp.com -mixed -
+	-s marsfakedisp.cc -
+	-i marsfakedisp.imake -
+	-p marsfakedisp.pdf
+$ Exit

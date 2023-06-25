@@ -1,0 +1,24 @@
+tccase
+Beginning VICAR task tccase
+Original string:a#*defgHIJKL
+After reversing case:A#*DEFGhijkl
+In upper case:A#*DEFGHIJKL
+In lower case:a#*defghijkl
+In upper case again:A#*DEFGHIJKL
+Second string:a2 defgh
+After reversing case of first five chars:A2 DEfgh
+In upper case:A2 DEFGH
+In lower case:a2 defgh
+In upper case again:A2 DEFGH
+REPEAT SOME TESTS FROM C LANGUAGE
+Original string:
+a#*defgHIJKL
+After reversing case:
+A#*DEFGhijkl
+In upper case:
+A#*DEFGHIJKL
+In lower case:
+a#*defghijkl
+In upper case again:
+A#*DEFGHIJKL
+disable-log

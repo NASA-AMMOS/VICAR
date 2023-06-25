@@ -1,0 +1,96 @@
+process help=*
+LOCAL DUMINT  TYPE=INTEGER
+PARM INP TYPE=STRING COUNT=1
+PARM OUT TYPE=STRING COUNT=2
+PARM SIZE TYPE=INTEGER COUNT=4 DEFAULT=(1,1,0,0)
+PARM SL TYPE=INTEGER DEFAULT=1
+PARM SS TYPE=INTEGER DEFAULT=1
+PARM NL TYPE=INTEGER DEFAULT=0
+PARM NS TYPE=INTEGER DEFAULT=0
+PARM THRESH TYPE=INTEGER DEFAULT=0
+PARM ZEDGE TYPE=KEYWORD COUNT=(0:1) VALID=ZEDGE DEFAULT=--
+PARM STARTCMP TYPE=INTEGER DEFAULT=1 VALID=(1:999999)
+PARM LASTCMP TYPE=NAME default="DUMINT"
+END-PROC
+.TITLE
+concomp - find connected components (non-zero vs background 0) in image
+.HELP
+PURPOSE:
+concomp uses connectivity defined by adjacency (not diagonal) of pixels
+to turn an image into a connected component image.  Each connected
+component receives a unique pixel number.  The input and output must be
+halfword.
+
+The highest numbered component can be output to a tcl variable named
+LASTCMP.  The component numbering can also be started at a user selected
+number with the parm STARTCMP.
+
+EXECUTION:
+
+Example
+
+concomp A (B,WORK)      The image A will be turned into connected 
+                        components in image B.  The WORK image is
+                        needed for calcualtions and can be deleted.
+                               
+OPERATION:
+
+
+
+TIMING: 
+
+As fast as VICAR can read and write the lines.  
+
+ ORIGINAL PROGRAMMER:    A. Zobrist          05 Nov 2004
+ COGNIZANT PROGRAMMER:   A. Zobrist          05 Nov 2004
+ 
+ REVISION HISTORY
+  2004/05/11 AZ Initial version
+  2007/12/28 WB switched to USES_ANSI_C AND LIB_CARTO; misc cleanup
+  2014/07/03 WB increased component limit to 20000000; moved coin, join from stack to heap
+  2022-07-14 B. Crocco afids to opensource
+  
+.LEVEL1
+.VARIABLE INP
+The input image
+.VARIABLE OUT
+The output image, and the
+name of a working image, to
+be discarded later
+.VARIABLE SIZE
+Region of input file to be
+operated on
+.VARIABLE SL
+Starting line
+.VARIABLE SS
+Starting sample
+.VARIABLE NL
+Number of lines
+.VARIABLE NS
+Number of samples
+.VARIABLE THRESH
+Components smaller than this
+are discarded
+.VARIABLE ZEDGE
+All components touching edge
+are zeroed out
+.VARIABLE STARTCMP
+Start component numbering with 
+this value
+.VARIABLE LASTCMP
+Output highest component number
+in this integer TCL variable
+.LEVEL2
+.VARIABLE SIZE
+The default (1,1,0,0) means use the whole image.
+.VARIABLE SL
+INTEGER - Starting line (see SIZE)
+.VARIABLE SS
+INTEGER - Starting sample (see SIZE)
+.VARIABLE NL
+INTEGER - Number of lines (see SIZE)
+.VARIABLE NS
+INTEGER - Number of samples (see SIZE)
+.VARIABLE THRESH
+Set to two to discard single pixel components, etc.
+.END

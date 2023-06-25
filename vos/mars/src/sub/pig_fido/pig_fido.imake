@@ -1,0 +1,12 @@
+#define SUBROUTINE pig_fido
+
+#define MODULE_LIST  PigFileModelFIDO.cc PigPointFIDOMastArmCamera.cc \
+PigPointFIDOMastArmCamera2DOF.cc PigFIDO.cc
+
+#define MARS_SUBLIB
+
+#define USES_C_PLUS_PLUS
+
+#define LIB_P2SUB
+#define LIB_XERCES
+

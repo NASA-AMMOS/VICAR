@@ -1,0 +1,763 @@
+gen xim0 nl=100 ns=200 linc=1 sinc=3
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+ibis-gen xxa nc=6 nr=20 deffmt=DOUB
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+mf3 xxa func="c1=@rand*100$c2=@rand*200"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+getzval (xim0,xxa) cols=(1,2,3) win=2
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+getzval (xim0,xxa) cols=(1,2,4) win=11
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+getzval (xim0,xxa) cols=(1,2,6) 'noin
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+mf3 xxa func="c5=c4-c3"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+ibis-list xxa 'format
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:20  Number of Columns: 6       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:20
++-----------+-----------+-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4         C:5         C:6
+        DOUB        DOUB        DOUB        DOUB        DOUB        DOUB
++-----------+-----------+-----------+-----------+-----------+-----------
+       17.08       91.17       30.58       30.58        0.00       30.00
+       74.99       21.99      136.96      136.96        0.00      137.00
+        9.64      109.05       76.77       76.77       -0.00       77.00
+       87.05       78.14       61.46       61.46       -0.00       61.00
+       57.73      113.72      138.88      138.88        0.00      140.00
+       78.58      191.81      138.02      138.02        0.00      139.00
+       69.22      173.54       73.85       73.85        0.00       75.00
+       36.88       32.64      130.79      130.79       -0.00      132.00
+       87.39       55.10      248.70      178.09      -70.60      248.00
+       74.51       52.07      226.73      226.73        0.00      227.00
+       44.60      184.82       83.06       83.06        0.00       84.00
+       35.37       87.18       36.93       36.93        0.00       36.00
+       73.25      157.89       30.93       30.93        0.00       31.00
+       26.02       25.52       98.59       98.59        0.00      100.00
+       39.43       16.44       84.75       84.75        0.00       83.00
+       77.68      188.13      126.06      126.06       -0.00      126.00
+       84.50        5.11       95.85    -9999.00   -10094.85       96.00
+       57.58       30.84      146.11      146.11       -0.00      147.00
+       71.55       76.44       40.86       40.86        0.00       40.00
+        8.30       30.95       97.14       97.14        0.00       97.00
+gen xim0 nl=100 ns=200 linc=1 sinc=3
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+ibis-gen xxa nc=6 nr=20  deffmt=DOUB
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+mf3 xxa func="c1=@rand*150-25$c2=@rand*300-50"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+getzval (xim0,xxa) cols=(1,2,3) win=2
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+getzval (xim0,xxa) cols=(1,2,4) win=11
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+getzval (xim0,xxa) cols=(1,2,6) 'noin
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+mf3 xxa func="c5=c4-c3"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+ibis-list xxa 'format
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:20  Number of Columns: 6       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:20
++-----------+-----------+-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4         C:5         C:6
+        DOUB        DOUB        DOUB        DOUB        DOUB        DOUB
++-----------+-----------+-----------+-----------+-----------+-----------
+        0.62       86.75    -9999.00    -9999.00        0.00    -9999.00
+       87.49      -17.02    -9999.00    -9999.00        0.00    -9999.00
+      -10.54      113.57    -9999.00    -9999.00        0.00    -9999.00
+      105.57       67.21    -9999.00    -9999.00        0.00    -9999.00
+       61.60      120.58      163.32      163.32        0.00      165.00
+       92.87      237.72    -9999.00    -9999.00        0.00    -9999.00
+       78.83      210.32    -9999.00    -9999.00        0.00    -9999.00
+       30.31       -1.04    -9999.00    -9999.00        0.00    -9999.00
+      106.09       32.65    -9999.00    -9999.00        0.00    -9999.00
+       86.76       28.11      167.09      167.09        0.00      167.00
+       41.91      227.23    -9999.00    -9999.00        0.00    -9999.00
+       28.06       80.78       10.39       46.19       35.80       11.00
+       84.88      186.84      129.39      129.39        0.00      130.00
+       14.03      -11.71    -9999.00    -9999.00        0.00    -9999.00
+       34.14      -25.34    -9999.00    -9999.00        0.00    -9999.00
+       91.52      232.19    -9999.00    -9999.00        0.00    -9999.00
+      101.76      -42.33    -9999.00    -9999.00        0.00    -9999.00
+       61.37       -3.74    -9999.00    -9999.00        0.00    -9999.00
+       82.33       64.65       16.29       20.99        4.69       17.00
+      -12.55       -3.58    -9999.00    -9999.00        0.00    -9999.00
+gen xim0 nl=100 ns=200 linc=1 sinc=3
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+ibis-gen xxa nc=4 nr=20 deffmt=DOUB
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+mf3 xxa func="c1=@rand*100$c2=@rand*200"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+getzval (xim0,xxa) cols=(1,2,3) win=2 reject=1
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+getzval (xim0,xxa) cols=(1,2,4) win=11 reject=3
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+ibis-list xxa 'format
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:20  Number of Columns: 4       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:20
++-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4
+        DOUB        DOUB        DOUB        DOUB
++-----------+-----------+-----------+-----------
+       17.08       91.17       30.58       30.58
+       74.99       21.99      136.96      136.96
+        9.64      109.05       76.77       76.77
+       87.05       78.14       61.46       61.46
+       57.73      113.72      138.88      138.88
+       78.58      191.81      138.02      138.02
+       69.22      173.54       73.85       73.85
+       36.88       32.64      130.79      130.79
+       87.39       55.10      248.70    -9999.00
+       74.51       52.07      226.73      226.73
+       44.60      184.82       83.06       83.06
+       35.37       87.18       36.93       36.93
+       73.25      157.89       30.93       30.93
+       26.02       25.52       98.59       98.59
+       39.43       16.44       84.75       84.75
+       77.68      188.13      126.06      126.06
+       84.50        5.11       95.85    -9999.00
+       57.58       30.84      146.11      146.11
+       71.55       76.44       40.86       40.86
+        8.30       30.95       97.14       97.14
+gen xim0 nl=10 ns=10 linc=1 sinc=3
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+ibis-gen xxa nc=7 nr=9 deffmt=DOUB
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+mf3 xxa func=("c1=(@int((@index-1)/3))*0.01+3.99$",  +
+            "c2=(@mod(@index-1,3))*0.01+4.99")
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+getzval (xim0,xxa) cols=(1,2,3) win=2
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+getzval (xim0,xxa) cols=(1,2,4) win=3
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+getzval (xim0,xxa) cols=(1,2,5) win=4
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+mf3 xxa func="c6=c4-c3$c7=c5-c3"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+ibis-list xxa 'format cfor="%9.5f %9.5f %9.5f %9.5f %9.5f %9.5f %9.5f"
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:9  Number of Columns: 7       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:9
++---------+---------+---------+---------+---------+---------+--------
+       C:1       C:2       C:3       C:4       C:5       C:6      C:7
+      DOUB      DOUB      DOUB      DOUB      DOUB      DOUB     DOUB
++---------+---------+---------+---------+---------+---------+--------
+  3.99000   4.99000  14.96000  14.96000  14.96000   0.00000   0.00000
+  3.99000   5.00000  14.99000  14.99000  14.99000   0.00000   0.00000
+  3.99000   5.01000  15.02000  15.02000  15.02000   0.00000  -0.00000
+  4.00000   4.99000  14.97000  14.97000  14.97000   0.00000   0.00000
+  4.00000   5.00000  15.00000  15.00000  15.00000   0.00000  -0.00000
+  4.00000   5.01000  15.03000  15.03000  15.03000  -0.00000  -0.00000
+  4.01000   4.99000  14.98000  14.98000  14.98000  -0.00000  -0.00000
+  4.01000   5.00000  15.01000  15.01000  15.01000   0.00000  -0.00000
+  4.01000   5.01000  15.04000  15.04000  15.04000  -0.00000  -0.00000
+gen xim0 nl=10 ns=10 linc=1 sinc=3
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+ibis-gen xxa nc=7 nr=9 deffmt=DOUB
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+mf3 xxa func=("c1=(@int((@index-1)/3))*0.01+3.99$",  +
+            "c2=(@mod(@index-1,3))*0.01+4.99")
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+getzval (xim0,xxa) cols=(1,2,3) win=3 'integral
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+getzval (xim0,xxa) cols=(1,2,4) win=5 'integral
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+getzval (xim0,xxa) cols=(1,2,5) win=7 'integral
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+mf3 xxa func="c6=c4-c3$c7=c5-c3"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+ibis-list xxa 'format cfor="%9.5f %9.5f %9.5f %9.5f %9.5f %9.5f %9.5f"
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:9  Number of Columns: 7       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:9
++---------+---------+---------+---------+---------+---------+--------
+       C:1       C:2       C:3       C:4       C:5       C:6      C:7
+      DOUB      DOUB      DOUB      DOUB      DOUB      DOUB     DOUB
++---------+---------+---------+---------+---------+---------+--------
+  3.99000   4.99000  15.00000  15.00000  15.00000   0.00000   0.00000
+  3.99000   5.00000  15.00000  15.00000  15.00000   0.00000   0.00000
+  3.99000   5.01000  15.00000  15.00000  15.00000   0.00000   0.00000
+  4.00000   4.99000  15.00000  15.00000  15.00000   0.00000   0.00000
+  4.00000   5.00000  15.00000  15.00000  15.00000   0.00000   0.00000
+  4.00000   5.01000  15.00000  15.00000  15.00000   0.00000   0.00000
+  4.01000   4.99000  15.00000  15.00000  15.00000   0.00000   0.00000
+  4.01000   5.00000  15.00000  15.00000  15.00000   0.00000   0.00000
+  4.01000   5.01000  15.00000  15.00000  15.00000   0.00000   0.00000
+gen xim0 nl=10 ns=10 linc=1 sinc=3
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+ibis-gen xxa nc=7 nr=9 deffmt=DOUB
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+mf3 xxa func=("c1=(@int((@index-1)/3))*0.6+3.4$",  +
+            "c2=(@mod(@index-1,3))*0.6+4.4")
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+getzval (xim0,xxa) cols=(1,2,3) win=3 'integral
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+getzval (xim0,xxa) cols=(1,2,4) win=5 'integral
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+getzval (xim0,xxa) cols=(1,2,5) win=7 'integral
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+mf3 xxa func="c6=c4-c3$c7=c5-c3"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+ibis-list xxa 'format cfor="%9.5f %9.5f %9.5f %9.5f %9.5f %9.5f %9.5f"
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:9  Number of Columns: 7       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:9
++---------+---------+---------+---------+---------+---------+--------
+       C:1       C:2       C:3       C:4       C:5       C:6      C:7
+      DOUB      DOUB      DOUB      DOUB      DOUB      DOUB     DOUB
++---------+---------+---------+---------+---------+---------+--------
+  3.40000   4.40000  11.00000  11.00000 -9999.0000  0.00000 -10010.00
+  3.40000   5.00000  14.00000  14.00000 -9999.0000  0.00000 -10013.00
+  3.40000   5.60000  17.00000  17.00000 -9999.0000  0.00000 -10016.00
+  4.00000   4.40000  12.00000  12.00000  12.00000   0.00000   0.00000
+  4.00000   5.00000  15.00000  15.00000  15.00000   0.00000   0.00000
+  4.00000   5.60000  18.00000  18.00000  18.00000   0.00000   0.00000
+  4.60000   4.40000  13.00000  13.00000  13.00000   0.00000   0.00000
+  4.60000   5.00000  16.00000  16.00000  16.00000   0.00000   0.00000
+  4.60000   5.60000  19.00000  19.00000  19.00000   0.00000   0.00000
+gen xim0 nl=10 ns=10 linc=1 sinc=3
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+ibis-gen xxa nc=7 nr=9 deffmt=DOUB
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+mf3 xxa func=("c1=(@int((@index-1)/3))*0.01+3.99$",  +
+            "c2=(@mod(@index-1,3))*0.01+4.99")
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+getzval (xim0,xxa) cols=(1,2,3) win=3 'spot
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+getzval (xim0,xxa) cols=(1,2,4) win=5 'spot
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+getzval (xim0,xxa) cols=(1,2,5) win=7 'spot
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+mf3 xxa func="c6=c4-c3$c7=c5-c3"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+ibis-list xxa 'format cfor="%9.5f %9.5f %9.5f %9.5f %9.5f %9.5f %9.5f"
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:9  Number of Columns: 7       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:9
++---------+---------+---------+---------+---------+---------+--------
+       C:1       C:2       C:3       C:4       C:5       C:6      C:7
+      DOUB      DOUB      DOUB      DOUB      DOUB      DOUB     DOUB
++---------+---------+---------+---------+---------+---------+--------
+  3.99000   4.99000  15.00000  15.00000  15.00000   0.00000   0.00000
+  3.99000   5.00000  15.00000  15.00000  15.00000   0.00000   0.00000
+  3.99000   5.01000  15.00000  15.00000  15.00000   0.00000   0.00000
+  4.00000   4.99000  15.00000  15.00000  15.00000   0.00000   0.00000
+  4.00000   5.00000  15.00000  15.00000  15.00000   0.00000   0.00000
+  4.00000   5.01000  15.00000  15.00000  15.00000   0.00000   0.00000
+  4.01000   4.99000  15.00000  15.00000  15.00000   0.00000   0.00000
+  4.01000   5.00000  15.00000  15.00000  15.00000   0.00000   0.00000
+  4.01000   5.01000  15.00000  15.00000  15.00000   0.00000   0.00000
+gen xim0 nl=10 ns=10 linc=1 sinc=3
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+ibis-gen xxa nc=7 nr=9 deffmt=DOUB
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+mf3 xxa func=("c1=(@int((@index-1)/3))*0.01+3.99$",  +
+            "c2=(@mod(@index-1,3))*0.01+4.99")
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+getzval (xim0,xxa) cols=(1,2,3) win=3 'spot_r
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+getzval (xim0,xxa) cols=(1,2,4) win=5 'spot_r
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+getzval (xim0,xxa) cols=(1,2,5) win=7 'spot_r
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+mf3 xxa func="c6=c4-c3$c7=c5-c3"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+ibis-list xxa 'format cfor="%9.5f %9.5f %9.5f %9.5f %9.5f %9.5f %9.5f"
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:9  Number of Columns: 7       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:9
++---------+---------+---------+---------+---------+---------+--------
+       C:1       C:2       C:3       C:4       C:5       C:6      C:7
+      DOUB      DOUB      DOUB      DOUB      DOUB      DOUB     DOUB
++---------+---------+---------+---------+---------+---------+--------
+  3.99000   4.99000  14.99380  14.99176  14.99043  -0.00204  -0.00338
+  3.99000   5.00000  14.99845  14.99794  14.99761  -0.00051  -0.00085
+  3.99000   5.01000  15.00310  15.00412  15.00479   0.00102   0.00169
+  4.00000   4.99000  14.99536  14.99382  14.99282  -0.00153  -0.00254
+  4.00000   5.00000  15.00000  15.00000  15.00000   0.00000   0.00000
+  4.00000   5.01000  15.00464  15.00618  15.00718   0.00153   0.00254
+  4.01000   4.99000  14.99690  14.99588  14.99521  -0.00102  -0.00169
+  4.01000   5.00000  15.00155  15.00206  15.00239   0.00051   0.00085
+  4.01000   5.01000  15.00620  15.00824  15.00957   0.00204   0.00338
+gen xim0 nl=10 ns=10 linc=1 sinc=3
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+ibis-gen xxa nc=7 nr=9 deffmt=DOUB
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+mf3 xxa func=("c1=(@int((@index-1)/3))*0.01+3.99$",  +
+            "c2=(@mod(@index-1,3))*0.01+4.99")
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+getzval (xim0,xxa) cols=(1,2,3) win=3 'spot_r spotfac=6.0
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+getzval (xim0,xxa) cols=(1,2,4) win=5 'spot_r spotfac=6.0
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+getzval (xim0,xxa) cols=(1,2,5) win=7 'spot_r spotfac=6.0
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+mf3 xxa func="c6=c4-c3$c7=c5-c3"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+ibis-list xxa 'format cfor="%9.5f %9.5f %9.5f %9.5f %9.5f %9.5f %9.5f"
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:9  Number of Columns: 7       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:9
++---------+---------+---------+---------+---------+---------+--------
+       C:1       C:2       C:3       C:4       C:5       C:6      C:7
+      DOUB      DOUB      DOUB      DOUB      DOUB      DOUB     DOUB
++---------+---------+---------+---------+---------+---------+--------
+  3.99000   4.99000  14.99711  14.99583  14.99483  -0.00128  -0.00228
+  3.99000   5.00000  14.99928  14.99896  14.99871  -0.00032  -0.00057
+  3.99000   5.01000  15.00144  15.00209  15.00258   0.00064   0.00114
+  4.00000   4.99000  14.99783  14.99687  14.99612  -0.00096  -0.00171
+  4.00000   5.00000  15.00000  15.00000  15.00000   0.00000   0.00000
+  4.00000   5.01000  15.00217  15.00313  15.00388   0.00096   0.00171
+  4.01000   4.99000  14.99856  14.99791  14.99742  -0.00064  -0.00114
+  4.01000   5.00000  15.00072  15.00104  15.00129   0.00032   0.00057
+  4.01000   5.01000  15.00289  15.00417  15.00517   0.00128   0.00228
+gen xim0 nl=100 ns=200 linc=1 sinc=3
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+ibis-gen xxa nc=5 nr=20  deffmt=DOUB
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+mf3 xxa func="c1=@rand*100$c2=@rand*200"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+getzval (xim0,xxa) win=2
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+getzval (xim0,xxa) cols=(1,2,3,4) win=2
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+getzval (xim0,xxa) cols=(1,2,3,5) win=11
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+ibis-list xxa 'format
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:20  Number of Columns: 5       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:20
++-----------+-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4         C:5
+        DOUB        DOUB        DOUB        DOUB        DOUB
++-----------+-----------+-----------+-----------+-----------
+       17.08       91.17       30.58        0.85        8.78
+       74.99       21.99      136.96        0.21        8.81
+        9.64      109.05       76.77        0.57        8.79
+       87.05       78.14       61.46        0.76        8.79
+       57.73      113.72      138.88        1.02        8.76
+       78.58      191.81      138.02        1.07        8.78
+       69.22      173.54       73.85        1.12        8.70
+       36.88       32.64      130.79        1.03        8.74
+       87.39       55.10      178.09        0.78      107.06
+       74.51       52.07      226.73        0.69        8.79
+       44.60      184.82       83.06        1.04        8.78
+       35.37       87.18       36.93        1.04        8.78
+       73.25      157.89       30.93        0.76        8.80
+       26.02       25.52       98.59        1.01        8.69
+       39.43       16.44       84.75        1.15        8.70
+       77.68      188.13      126.06        0.82        8.80
+       84.50        5.11    -9999.00        0.87    -9999.00
+       57.58       30.84      146.11        0.98        8.78
+       71.55       76.44       40.86        1.19        8.70
+        8.30       30.95       97.14        0.63        8.80
+gen xim0 nl=10 ns=10 linc=1 sinc=3
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+ibis-gen xxa nc=6 nr=9 deffmt=DOUB
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+mf3 xxa func=("c1=(@int((@index-1)/3))*0.01+3.99$",  +
+            "c2=(@mod(@index-1,3))*0.01+4.99")
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+getzval (xim0,xxa) cols=(1,2,3,4) win=3 'integral
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+getzval (xim0,xxa) cols=(1,2,3,5) win=5 'integral
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+getzval (xim0,xxa) cols=(1,2,3,6) win=7 'integral
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+ibis-list xxa
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:9  Number of Columns: 6       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:9
++-----------+-----------+-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4         C:5         C:6
++-----------+-----------+-----------+-----------+-----------+-----------
+        3.99        4.99       15.00        2.58        4.47        6.32
+        3.99        5.00       15.00        2.58        4.47        6.32
+        3.99        5.01       15.00        2.58        4.47        6.32
+        4.00        4.99       15.00        2.58        4.47        6.32
+        4.00        5.00       15.00        2.58        4.47        6.32
+        4.00        5.01       15.00        2.58        4.47        6.32
+        4.01        4.99       15.00        2.58        4.47        6.32
+        4.01        5.00       15.00        2.58        4.47        6.32
+        4.01        5.01       15.00        2.58        4.47        6.32
+gen xim0 nl=10 ns=10 linc=1 sinc=3
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+ibis-gen xxa nc=6 nr=9 deffmt=DOUB
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+mf3 xxa func=("c1=(@int((@index-1)/3))*0.6+3.4$",  +
+            "c2=(@mod(@index-1,3))*0.6+4.4")
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+getzval (xim0,xxa) cols=(1,2,3,4) win=3 'integral
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+getzval (xim0,xxa) cols=(1,2,3,5) win=5 'integral
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+getzval (xim0,xxa) cols=(1,2,3,6) win=7 'integral
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+ibis-list xxa
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:9  Number of Columns: 6       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:9
++-----------+-----------+-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4         C:5         C:6
++-----------+-----------+-----------+-----------+-----------+-----------
+        3.40        4.40    -9999.00        2.58        4.47    -9999.00
+        3.40        5.00    -9999.00        2.58        4.47    -9999.00
+        3.40        5.60    -9999.00        2.58        4.47    -9999.00
+        4.00        4.40       12.00        2.58        4.47        6.32
+        4.00        5.00       15.00        2.58        4.47        6.32
+        4.00        5.60       18.00        2.58        4.47        6.32
+        4.60        4.40       13.00        2.58        4.47        6.32
+        4.60        5.00       16.00        2.58        4.47        6.32
+        4.60        5.60       19.00        2.58        4.47        6.32
+gen xim0 nl=10 ns=10 linc=1 sinc=3
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+ibis-gen xxa nc=6 nr=9 deffmt=DOUB
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+mf3 xxa func=("c1=(@int((@index-1)/3))*0.01+3.99$",  +
+            "c2=(@mod(@index-1,3))*0.01+4.99")
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+getzval (xim0,xxa) cols=(1,2,3,4) win=3 'spot
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+getzval (xim0,xxa) cols=(1,2,3,5) win=5 'spot
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+getzval (xim0,xxa) cols=(1,2,3,6) win=7 'spot
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+ibis-list xxa
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:9  Number of Columns: 6       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:9
++-----------+-----------+-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4         C:5         C:6
++-----------+-----------+-----------+-----------+-----------+-----------
+        3.99        4.99       15.00        2.58        4.02        5.40
+        3.99        5.00       15.00        2.58        4.02        5.40
+        3.99        5.01       15.00        2.58        4.02        5.40
+        4.00        4.99       15.00        2.58        4.02        5.40
+        4.00        5.00       15.00        2.58        4.02        5.40
+        4.00        5.01       15.00        2.58        4.02        5.40
+        4.01        4.99       15.00        2.58        4.02        5.40
+        4.01        5.00       15.00        2.58        4.02        5.40
+        4.01        5.01       15.00        2.58        4.02        5.40
+gen xim0 nl=10 ns=10 linc=1 sinc=3
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+ibis-gen xxa nc=6 nr=9 deffmt=DOUB
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+mf3 xxa func=("c1=(@int((@index-1)/3))*0.01+3.99$",  +
+            "c2=(@mod(@index-1,3))*0.01+4.99")
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+getzval (xim0,xxa) cols=(1,2,3,4) win=3 'spot_r
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+getzval (xim0,xxa) cols=(1,2,3,5) win=5 'spot_r
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+getzval (xim0,xxa) cols=(1,2,3,6) win=7 'spot_r
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+ibis-list xxa
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:9  Number of Columns: 6       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:9
++-----------+-----------+-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4         C:5         C:6
++-----------+-----------+-----------+-----------+-----------+-----------
+        3.99        4.99       14.99        2.12        3.44        4.68
+        3.99        5.00       15.00        2.12        3.44        4.68
+        3.99        5.01       15.00        2.12        3.44        4.68
+        4.00        4.99       14.99        2.12        3.44        4.68
+        4.00        5.00       15.00        2.12        3.81        5.06
+        4.00        5.01       15.01        2.12        3.44        4.68
+        4.01        4.99       15.00        2.12        3.44        4.68
+        4.01        5.00       15.00        2.12        3.44        4.68
+        4.01        5.01       15.01        2.12        3.44        4.68
+gen xim0 nl=10 ns=10 linc=1 sinc=3
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+ibis-gen xxa nc=6 nr=9 deffmt=DOUB
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+mf3 xxa func=("c1=(@int((@index-1)/3))*0.01+3.99$",  +
+            "c2=(@mod(@index-1,3))*0.01+4.99")
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+getzval (xim0,xxa) cols=(1,2,3,4) win=3 'spot_r spotfac=6.0
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+getzval (xim0,xxa) cols=(1,2,3,5) win=5 'spot_r spotfac=6.0
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+getzval (xim0,xxa) cols=(1,2,3,6) win=7 'spot_r spotfac=6.0
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+ibis-list xxa
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:9  Number of Columns: 6       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:9
++-----------+-----------+-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4         C:5         C:6
++-----------+-----------+-----------+-----------+-----------+-----------
+        3.99        4.99       14.99        2.18        3.55        4.86
+        3.99        5.00       15.00        2.18        3.55        4.86
+        3.99        5.01       15.00        2.18        3.55        4.86
+        4.00        4.99       15.00        2.18        3.55        4.86
+        4.00        5.00       15.00        2.54        3.93        5.24
+        4.00        5.01       15.00        2.18        3.55        4.86
+        4.01        4.99       15.00        2.18        3.55        4.86
+        4.01        5.00       15.00        2.18        3.55        4.86
+        4.01        5.01       15.01        2.18        3.55        4.86
+gen xim0 nl=100 ns=200 linc=32 sinc=16
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+ibis-gen xxa nc=8 nr=20 deffmt=DOUB
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+mf3 xxa func="c1=@rand*100$c2=@rand*200"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+getzval (xim0,xxa) cols=(1,2,3,4) win=11
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+getzval (xim0,xxa) cols=(1,2,5,6) win=11 'igzero
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+mf3 xxa func="c7=c5-c3$c8=c6-c4"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+ibis-list xxa cols=(1,2,3,4,7,8)
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:20  Number of Columns: 8       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:20
++-----------+-----------+-----------+-----------+-----------+-----------
+         C:1         C:2         C:3         C:4         C:7         C:8
++-----------+-----------+-----------+-----------+-----------+-----------
+       17.08       91.17      114.57       74.80        8.62       -4.36
+       74.99       21.99      117.18       76.11        8.82       -4.51
+        9.64      109.05      114.03       70.67        7.10       -3.95
+       87.05       78.14      116.68       75.93        8.78       -4.47
+       57.73      113.72      126.71       71.24        7.30       -4.93
+       78.58      191.81      115.32       75.38        8.65       -4.35
+       69.22      173.54      124.83       75.25        9.01       -5.43
+       36.88       32.64      120.21       76.63        9.05       -4.84
+       87.39       55.10      127.17       72.31        7.96       -5.31
+       74.51       52.07      122.70       76.34        9.24       -5.22
+       44.60      184.82      118.49       69.32        6.24       -3.85
+       35.37       87.18      113.41       74.05        8.54       -4.31
+       73.25      157.89      114.29       70.58        7.11       -3.98
+       26.02       25.52      114.14       74.52        8.58       -4.33
+       39.43       16.44      113.02       71.98        7.37       -3.88
+       77.68      188.13      125.79       74.63        9.03       -5.62
+       84.50        5.11    -9999.00    -9999.00        0.00        0.00
+       57.58       30.84      118.40       69.30        6.23       -3.84
+       71.55       76.44      118.00       76.55        8.88       -4.56
+        8.30       30.95      113.27       71.64        7.49       -4.00
+gen xim0 nl=10 ns=10 linc=1 sinc=3
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+ibis-gen xxa nc=5 nr=9 deffmt=DOUB
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+mf3 xxa func=("c1=(@int((@index-1)/3))*0.03+3.99$",  +
+            "c2=(@mod(@index-1,3))*0.04+4.99")
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+getzval (xim0,xxa) cols=(1,2,3) win=7 'spot_r
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+getzval (xim0,xxa) cols=(1,2,4) win=7 'spot_r2
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+mf3 xxa func="c5=c4-c3"
+Beginning VICAR task mf3
+mf3 version Wed Oct 07 2008
+ibis-list xxa 'format cfor="%9.5f %9.5f %9.5f %9.5f %9.5f"
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Number of Rows:9  Number of Columns: 5       
+File Version:IBIS-2  Organization:COLUMN  SubType:NONE
+ 
+Rows: 1:9
++---------+---------+---------+---------+--------
+       C:1       C:2       C:3       C:4      C:5
+      DOUB      DOUB      DOUB      DOUB     DOUB
++---------+---------+---------+---------+--------
+  3.99000   4.99000  14.99043  14.97775  -0.01268
+  3.99000   5.03000  15.01916  15.04450   0.02534
+  3.99000   5.07000  15.04794  15.11125   0.06331
+  4.02000   4.99000  14.99761  14.99444  -0.00317
+  4.02000   5.03000  15.02635  15.06119   0.03484
+  4.02000   5.07000  15.05514  15.12794   0.07280
+  4.05000   4.99000  15.00479  15.01113   0.00633
+  4.05000   5.03000  15.03355  15.07787   0.04433
+  4.05000   5.07000  15.06234  15.14462   0.08228
+disable-log

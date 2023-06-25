@@ -1,0 +1,5 @@
+$ vpack marscor2.com -mixed -
+	-s marscor2.cc -
+	-i marscor2.imake -
+	-p marscor2.pdf
+$ Exit

@@ -329,8 +329,13 @@ compare(map < string, map < string, vector < string >* >* > &lh,
 			} // end of while over all labels in property
 			//if (rhkv->size()>0)
 			//cerr<<"Before size="<<rhkv->size()<<endl;
-			if (!doneProp && rhkv->size()>0)
+			if (rhkv->size()>0)
 			{
+			        if (!doneProp)
+			          {
+			                doneProp = true;
+			                jpl::mipl::p2::difpic::VicarImageUtil::formatHdrMsg(lhit->first,differences);
+			          }
 				jpl::mipl::p2::difpic::VicarImageUtil::formatHdrMsg(lhit->first,differences);
 				if (!jpl::mipl::p2::difpic::VicarImageUtil::processExtraRHLabels(*rhkv,labelsToIgnore,differences))
 					sameLabels=false;

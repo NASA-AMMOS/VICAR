@@ -1,0 +1,124 @@
+procedure
+local radangle  type=real count=1
+local degangle  type=real count=1
+local height    type=integer count=1
+local width     type=integer count=1
+
+refgbl $echo
+
+! Oct 25, 2012 - RJB
+! TEST SCRIPT FOR NORANGLE
+! tests in pdf scripts
+!
+! Vicar Programs:
+!   <none>  
+! 
+! parameters:
+!   <none>
+!
+! Requires NO external test data: 
+!
+             
+body
+enable-log
+
+let _onfail="stop"
+let $echo="yes"
+
+!TEST 1 - FIRST A SIMPLE 45 DEGREE LINE COUNTERCLOCKWISE
+norangle (1,1,10,10) degrees=degangle radians=radangle height=height width=width
+
+let $echo="no"
+
+write "TEST 1 -  h = &height w =  &width : &degangle  degrees  (&radangle radians)"
+let $echo="yes"
+!
+! TEST 2 - line 45 deg counterclockwise
+norangle (1,10,10,1) degrees=degangle radians=radangle height=height width=width
+
+let $echo="no"
+
+write "TEST 2 - h = &height w =  &width : &degangle  degrees  (&radangle radians)"
+let $echo="yes"
+!
+! TEST 3 - VERTICAL LINE
+norangle (1,10,10,10) degrees=degangle radians=radangle height=height width=width
+
+
+let $echo="no"
+
+write "TEST 3 - h = &height w =  &width : &degangle  degrees  (&radangle radians)"
+let $echo="yes"
+!
+! TEST 4 - HORIZONTAL LINE - terminus on right
+norangle (10,1,10,10) degrees=degangle radians=radangle height=height width=width
+
+let $echo="no"
+
+write "TEST 4 - h = &height w =  &width : &degangle  degrees  (&radangle radians)"
+let $echo="yes"
+
+!
+! TEST 5 - HORIZONTAL LINE - terminus on left
+norangle (10,10,10,1) degrees=degangle radians=radangle height=height width=width
+
+let $echo="no"
+
+write "TEST 5 - h = &height w =  &width : &degangle  degrees  (&radangle radians)"
+let $echo="yes"
+!
+! TEST 6 - MORE COMPLEX cases - VECTORS in middle of image
+!
+! REPEAT TEST 2 - line 45 deg counterclockwise
+norangle (10,20,20,10) degrees=degangle radians=radangle height=height width=width
+let $echo="no"
+
+write "TEST 6 - h = &height w =  &width : &degangle  degrees  (&radangle radians)"
+let $echo="yes"
+!
+! TEST 7 - APPROX 29 deg angle
+norangle (11,67,20,62) degrees=degangle radians=radangle height=height width=width
+let $echo="no"
+
+write "TEST 7 - h = &height w =  &width : &degangle  degrees  (&radangle radians)"
+let $echo="yes"
+
+!
+! TEST 8 - REVERSE THE VECTOR - 180 - previous angle
+norangle (20,62,11,67) degrees=degangle radians=radangle height=height width=width
+let $echo="no"
+
+write "TEST 8 - h = &height w =  &width : &degangle  degrees  (&radangle radians)"
+let $echo="yes"
+
+!
+! TEST 9 - Very Slight slope
+
+norangle (23,12,19,42) degrees=degangle radians=radangle height=height width=width
+
+let $echo="no"
+
+write "TEST 9 - h = &height w =  &width : &degangle  degrees  (&radangle radians)"
+let $echo="yes"
+
+!
+! TEST 10 - Very Slight slope - Reverse termini
+
+norangle (19,42,23,12) degrees=degangle radians=radangle height=height width=width
+
+let $echo="no"
+
+write "TEST 10 - h = &height w =  &width : &degangle  degrees  (&radangle radians)"
+let $echo="yes"
+!
+! TEST 11 - Tall triangle
+norangle (10,50,70,60) degrees=degangle radians=radangle height=height width=width
+
+let $echo="no"
+
+write "TEST 11 - h = &height w =  &width : &degangle  degrees  (&radangle radians)"
+let $echo="yes"
+
+disable-log
+end-proc
+

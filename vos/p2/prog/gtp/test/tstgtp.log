@@ -1,0 +1,33 @@
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+Beginning VICAR task gtgen
+GTGEN version 2019-09-05
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+Beginning VICAR task pixmap
+pixmap version Thu Jan  3 2008
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Rows: 1:1
++-------------+-------------+---------------+---------------+--------
+           C:1           C:2             C:3             C:4      C:5
++-------------+-------------+---------------+---------------+--------
+     3.0000000     5.0000000       0.3800000       0.3400000     6.00
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+Beginning VICAR task pixmap
+pixmap version Thu Jan  3 2008
+Beginning VICAR task getzval
+GETZVAL version 2019-09-04
+Beginning VICAR task ibis
+IBIS version 2019-07-31
+ 
+Rows: 1:1
++-------------+-------------+---------------+---------------+--------
+           C:1           C:2             C:3             C:4      C:5
++-------------+-------------+---------------+---------------+--------
+     0.3800000     0.3400000       3.0000002       4.9999998     6.00

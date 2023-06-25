@@ -1,0 +1,12 @@
+#define PROGRAM	imgsum
+#define R2LIB
+
+#define MODULE_LIST imgsum.f
+#define FTNINC_LIST pgminc
+
+#define MAIN_LANG_FORTRAN
+#define USES_FORTRAN
+
+#define LIB_RTL
+#define LIB_TAE
+#define LIB_P2SUB

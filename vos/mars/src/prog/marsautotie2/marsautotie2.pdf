@@ -1,0 +1,1101 @@
+process help=*
+PARM INP TYPE=STRING COUNT=(1:200)
+PARM OUT TYPE=STRING COUNT=1 
+PARM NAVTABLE TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM BAND    TYPE=INTEGER COUNT=(0:1) DEFAULT=1
+
+PARM PAIR_MATCH TYPE=INTEGER COUNT=(0:1) DEFAULT=0
+PARM REFIMAGE TYPE=INTEGER COUNT=(0:200) VALID=(-1000:1000) DEFAULT=--
+PARM IGNORE TYPE=INTEGER COUNT=(0:200) VALID=(-1000:1000) DEFAULT=--
+PARM IGNORE_INTRA TYPE=KEYWORD COUNT=(0:1) VALID="IGNORE_INTRA" DEFAULT=--
+PARM NUMTILTS TYPE=INTEGER COUNT=(0:1) DEFAULT=1
+PARM EPIMAXDIST TYPE=REAL COUNT=(0:1) DEFAULT= -1
+PARM POSMAXDIST TYPE=REAL COUNT=(0:1) DEFAULT= -1
+PARM NBESTMATCHES TYPE=INTEGER COUNT=(0:1) DEFAULT=0
+PARM CROSSCHECK TYPE=KEYWORD COUNT=1 VALID=("CROSSCHECK","NOCROSSCHECK") +
+		DEFAULT="NOCROSSCHECK"
+PARM MASK TYPE=KEYWORD COUNT=1 VALID=("MASK","NOMASK") DEFAULT="NOMASK"
+PARM VALMASK TYPE=REAL COUNT=1 DEFAULT=0.0
+PARM DILATEMASK TYPE=INTEGER COUNT=1 DEFAULT=10
+
+PARM SEP_ANGLE TYPE=REAL COUNT=(0:1) DEFAULT=-- VALID=(0:360)
+PARM MAX_TIES TYPE=INTEGER COUNT=1 DEFAULT=0
+
+PARM GTM TYPE=INTEGER COUNT=1 DEFAULT=0
+
+PARM OCTAVE TYPE=INTEGER COUNT=(0:1) DEFAULT=1000
+PARM SCALES TYPE=INTEGER COUNT=(0:1) DEFAULT=3
+PARM MATCHRATIO TYPE=REAL COUNT=(0:1) DEFAULT=0.65
+PARM UPSAMPLE TYPE=KEYWORD COUNT=1 VALID=("UPSAMPLE","NOUPSAMPLE") +
+                 DEFAULT="UPSAMPLE"
+PARM INITSIGMA TYPE=REAL COUNT=(0:1) DEFAULT=1.6
+PARM DOGTHRESHOLD TYPE=REAL COUNT=(0:1) DEFAULT=0.0133
+PARM EDGETHRESHOLD TYPE=REAL COUNT=(0:1) DEFAULT=10
+PARM BORDER TYPE=REAL COUNT=(0:1) DEFAULT=10     
+
+PARM START_KEY TYPE=INTEGER COUNT=1 DEFAULT=0
+PARM FORMAT TYPE=KEYWORD COUNT=1 VALID=("OLD","XML") DEFAULT="XML"
+
+PARM OMP_ON TYPE=KEYWORD VALID=(OMP_ON,OMP_OFF) DEFAULT=OMP_ON
+
+PARM CONFIG_PATH STRING DEFAULT="$MARS_CONFIG_PATH"
+PARM POINT_METHOD TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM MATCH_METHOD TYPE=STRING COUNT=(0:1) VALID=("LOOSE", "TIGHT") +
+	DEFAULT=LOOSE
+PARM MATCH_TOL TYPE=REAL COUNT=1 DEFAULT=.002
+PARM NOSITE TYPE=KEYWORD COUNT=(0:1) VALID=NOSITE DEFAULT=--
+
+PARM RSF TYPE=STRING COUNT=0:100 DEFAULT=--
+PARM DEBUG_RSF TYPE=KEYWORD COUNT=0:1 VALID=DEBUG_RSF DEFAULT=--
+PARM COORD TYPE=KEYWORD VALID=("FIXED", "INSTRUMENT", "SITE", "ROVER", +
+        "LOCAL_LEVEL") DEFAULT="FIXED"
+PARM COORD_INDEX TYPE=INTEGER COUNT=0:10 DEFAULT=--
+PARM FIXED_SITE TYPE=INTEGER COUNT=0:1 DEFAULT=--
+
+!# parm inp(2-200) hints=default
+!# parm out file=vicar; direction=output
+
+END-PROC
+
+.TITLE
+VICAR program MARSAUTOTIE2.
+
+.HELP
+PURPOSE:
+-------
+
+To automatically gather tiepoints for a set of overlapping images.
+The resulting tiepoints are output in OUT for use by other programs such as 
+MARSNAV, MARSNAV2 or for manual refinement via MARSTIE.
+
+MARSAUTOTIE2 supports any mission, instrument, and camera model supported by the 
+Planetary Image Geometry (Pig) software suite.  However, the parameters are 
+likely to be camera-specific, so some tuning may be required.
+
+The main difference between MARSAUTOTIE and MARSAUTOTIE2 is that MARSAUTOTIE 
+core algorithm is based on image correlation to find tiepoints whereas 
+MARSAUTOTIE2 is based on keypoints detection, description and matching using
+the Affine SIFT (ASIFT) approach.
+
+.page
+
+
+PATENT, LICENSE, OPEN SOURCE CODE:
+------------------------------------
+
+MARSAUTOTIE2 is based on open source code which implements the ASIFT method 
+which is based on two techniques that are patented:
+[1] SIFT. Scale Invariant Feature Transform:
+    Method and apparatus for identifying scale invariant features in an image.
+    David G. Lowe, US Patent 6,711,293 (March 23, 2004). Provisional application
+    filed March 8, 1999. Assignee: The University of British Columbia.
+[2] Method and device for the invariant-affine recognition of shapes.
+    Jean-Michel Morel, Guoshen Yu, French Patent FR2931277 (September 20, 2009),
+    (US 8687920 B2). Assignees: Ecole Polytechnique, Ecole Normale Superieure.
+
+In essence [1] and [2] refer respectively to the "SIFT" and "Affine" parts of 
+the "Affine SIFT" technique. 
+
+At the time of this writing, informal authorizations (email/phone 
+correspondances) have been obtained to use these techniques in the MVOR (Multi-
+View Object Reconstruction) project (AMMOS-MGSS) - marsautotie2 is part of this
+project.  The context of use is for ops and scientific research. More formal 
+agreement is currently under consideration.
+
+
+****************
+
+The ASIFT technique that is implemented in VICAR is based on open source code
+implementation that has been obtained from the following publication:
+
+Guoshen Yu, and Jean-Michel Morel, ASIFT: An Algorithm for Fully Affine 
+Invariant Comparison, Image Processing On Line, 1 (2011), pp. 11-38. 
+https://doi.org/10.5201/ipol.2011.my-asift
+
+with companion source code obtained from: 
+http://www.ipol.im/pub/art/2011/my-asift/demo_ASIFT_src.tar.gz
+
+Source code use is subject to BSD license and is replicated further below.
+
+
+****************
+
+The original (downloaded) source code is a full program, i.e., not just a 
+library and has been modified in the following manner:
+1 - All elements not directly related to the ASIFT technique have been removed.
+  That is the readme.txt, Makefile, the main, the orsa technique, the eigen 
+  library, the input/output reading/writing, and some unused functions.
+2 - The SIFT-related functions and routines have been gathered and stored into
+  a library, namely libSift which is stored under proprietary/. In addition to 
+  this rearrangement, some functions inside the SIFT library have 
+  been streamlined or optimized. No algorythmic changes, but code cleaning, 
+  reformatting, or optimizing. The SIFT library is composed of:
+     - demo_lib_sift.cc, demo_lib_sift.h
+     - sift_library.cc, sift_library.h
+  demo_lib_sift implements the SIFT technique, whereas sift_library contains a
+  series of tools that the SIFT technique use.
+  A simple Makefile has been created to compile the SIFT library and which is 
+  located in the same directory as this file.
+3 - The Affine part of the ASIFT technique has been integrated into marsautotie2
+  by necessity. Affected source code of marsautotie2 program that contains some 
+  code (or rewritten code) based on the original source code are:
+     - marsautotie2.cc
+     - compute_asift_keypoints.cc
+     - compute_asift_matches.cc  
+  As such, marsautotie2 contains coded method  that is subject to patent 
+  restriction and specific care must be taken when running or distributing this
+  program.
+
+
+
+
+
+.page 
+
+EXECUTION:
+---------
+
+There are two ways to present input images:
+
+marsautotie2 inp=(a.img,b.img,c.img,...) out=tiepoints.tpt
+or
+marsautotie2 inp=ascii_listoffiles out_tpt=tiepoints.tpt
+
+where ascii_listoffiles is a text file containing the list of filenames
+to include in the mosaic, one per record.  Up to 200 input images can be
+listed.
+
+
+.page
+
+USAGE:
+-----
+
+It is important that all images be connected to each other via tiepoints.
+If an image or block of images is not connected, the entire block can "drift"
+as a unit out of alignment during the nav process.  The program will report
+single unconnected images, but not blocks of them.  
+
+The program does not depends on having some initial pointing parameters in the
+images to find tiepoints, except if geometric constraint is applied (see below).
+The Affine SIFT (ASIFT) will find and match features that are scale, rotation, 
+translation and affine invariant. This means that, locally at least, ground 
+features are assumed planar. This, of course, is not necessarily reality, but 
+experience shows that in most cases, the techniques works on real images. 
+Too "unplanar" or "parallax distorted" features will not be matched correctly 
+or at all.  
+
+
+.page
+
+METHOD:
+------
+
+The process is composed of three main steps. The outline is as follow:
+
+For each input (each image): *****************
+
+1: Find keypoints
+A keypoint is a location in the image that shows "interesting" features. That 
+is, a location which could a priori be quite uniquely defined by its direct
+surrounding. This seach for keypoints is carried out at different "octave", 
+that is at different image size (the image size is iteratively reduced by a 
+factor of 2), and at different "scale" (different levels of blur applied at 
+each given octave). This allows to find keypoints at different level of 
+resolution and zoom.
+
+2: Describe keypoints
+Once keypoints are identified, their "signature" is computed. A set of 
+statistics that describe the keypoints are defined from the keypoint 
+surrounding. The goal is to describe as precisely as possible the keypoints so
+that its signature uniquely identify it. 
+
+For each image pairs that are tiepointed: ******************
+
+3: Match keypoints
+Each keypoints (detected in the previous step) of the "left" image are compared 
+to each keypoints of the "right" image. If they match, then the two keypoints
+form a tiepoint. The comparison is based on the description of the keypoints.
+The euclidean distance between the two descriptions is computed. If the 
+distance is small, that indicates that the two keypoints "look" similar. 
+
+
+
+There are a number of parameters to fine tune each of these steps and to 
+add additional constraints to improve the number and quality of the tiepoints.
+The main parameters are now explained.
+
+
+Keypoints detections
+---------------------
+The ASIFT detects keypoints that are scale, rotation, translation and affine
+invariant. Rotation and translation invariance are obtained through 
+normalization whereas scale and affine invariance are obtained through
+simulation. Translation invariance is reached simply by removing the pixel
+location from the keypoint description. Rotation invariance is reached by 
+computing the main direction (gradient) of the patch surrounding the keypoint 
+and centering the description with respect to this main direction. Scale and
+affine invariance cannot be obtained from normalization and are simulated. The
+image is transformed through a series of scale and affine transformations and
+keypoint detection and description are carried out on each of these simulations.
+
+A set of parameters allows to control the actual keypoint detection and 
+simulations, i.e., how many scales and affine transforms are going to be 
+simulated. See NUMTILTS, OCTAVE, SCALES, UPSAMPLE, INITSIGMA, DOGGTHRESHOLD, 
+EDGETHRESHOLD, and BORDER.
+There is a tradeoff between extensive number of simulations and computing time. 
+See NBESTMATCHES for an optimized approach.
+
+
+Keypoints descriptions
+----------------------
+Once keypoints are identified, they are "described". Statistics on the keypoint
+surrounding are computed and an (oriented) histogram of the pixels distribution
+around the keypoints is formed to "describe" the keypoint. An histogram of 128
+bins is used traditionally. No parameters are made available for now as they 
+are seldomly changed.
+
+
+Keypoints matchings
+-------------------
+Once the keypoints are identified and described for all images, they are 
+matched. 
+By default, all input images are matched to all others. An alternative is to
+match images sequentially  depending on the input list order. This can be
+tuned with PAIR_MATCH.
+When two images are matched, all keypoints of the left images are matched to 
+all keypoints of the right image. In practice, a loop over the left keypoints
+is involved, where each left keypoint is matched to all right keypoints 
+(1 "left" vs all "right"). The euclidean distances between the left keypoint 
+descriptor and the right keypoints descriptors are computed. The distance ratio
+between the smallest and second-to-smallest distances is computed. If the ratio 
+is below a threshold then the matched is deemed valid: the left keypoint and
+the right keypoint with the smallest distance are paired as tiepoint. 
+A small ratio means that the keypoint is much more similar to the left keypoint 
+than all the other ones which add confidence on the matching. On the contrary, 
+a large ratio (close to 1) indicates that the descriptions of the smallest and 
+second-to-smallest keypoints are similar and cannot confidently discriminate one
+from the other. Note that the natural alternatives for matching which would 
+consist of simply selecting the smallest distance keypoint or setting up a 
+threshold on the distance itself either don't work or are difficult to adjust. 
+Simply selecting the smallest distance is not reliable as there will always be a 
+"smallest" even if the two images are completely unrelated. Adjusting a hard 
+threshold on the distance is not trivial to do. 
+Adjusting the matching ratio is done through MATCHRATIO parameter.  
+
+In the matching strategy described above, each and every keypoints in left are
+matched to all keypoints in right. The more keypoints are to be compared, the 
+more chance you could match two keypoints that satisfy the matching ratio 
+criteria but are two different ground point locations. As a matter of fact, 
+SIFT and ASIFT generates a lot of these outliers. One way to reduce them is to
+restrict the pool of right keypoints that are matched to a left keypoint by 
+bringing in additional constraints. There are two options available.
+- If the camera geometries are available, the epipolar constraint can be used. 
+That is, for a keypoint in left, a subset of the right keypoints is selected 
+based on the distance of these keypoints from the epipolar line of the left
+keypoint in the right image. This constrains the match to satisfy a closeness to
+the epipolar line (where it is supposed to be). See EPIMAXDIST for applying 
+this constraint.
+- The subset of right keypoints can be reduced based on their position relative
+to the left keypoint position. For instance, if left keypoint is at position
+(100,100) (pixel coordinates) in the left image, then the subset of right
+keypoints that are compared to the left keypoints could be limited to the 
+keypoints that are within 10 pixels of (100,100) in right image. This assumes 
+that features in left images are expected to be found within the same location 
+in right image. See POSMAXDIST for that approach.
+In both case, i.e., EPIMAXDIST and POSMAXDIST, if the subset of keypoints only
+contains one keypoint, no matching is done as there is no second-to-smallest to
+compare against. The drawback of such approach is that potentially we could 
+delete a good match.
+
+In addition to the geometric constraint, a set of filtering is applied by
+default (non parameter) to the tiepoint list which will filter out 
+non-unique tiepoints, one-to-multiple or multiple-to-one tiepoints. 
+Non-uniqueness happens because of the various affine simulations,
+and one-to-multiple (i.e., more than one tiepoints have the same left pix
+coordinates but different right coordinates) and multiple-to-one are 
+natural artefact of the matching step.
+
+A post-processing filtering step based on a local graph is available (See GTM).
+Once the tiepoints are found, a local analysis is carried on to find and
+remove outliers. The approach is based on the assumption that, locally, the
+parallax effect is smooth and a set of close points in one image should 
+corresponds to the associated (tiepoint-wise) points in the other image.
+This method is an implementation of the paper:
+"A robust Graph Transformation Matching for non-rigid registration"
+Image and Vision Computing 27(7):897-910. June 2009
+
+
+
+The program output a tiepoint file in XML format.
+
+
+IMAGE PAIRING STRATEGIES
+The input is a list of images that need to be tiepointed. There are different
+strategies available to "pair" image together. Strategies are set through
+PAIR_MATCH, REFIMAGE, IGNORE and IGNORE_INTRA.
+The default strategy is to tiepoints all images against all the others.
+PAIR_MATCH offers three kind of strategies that are related to the order of the
+images in the input list (see PAIR_AMTCH for more details).
+- PAIR_MATCH=0: all-vs-all (the default)
+- PAIR_MATCH > 0: "sliding window" with overlap. The value of PAIR_MATCH
+indicates the number of images before and after the current image that will be
+tiepointed together. For instance PAIR_MATCH=1, means that each group of images
+composed of the a given image, the one before and the after in the list will be 
+tiepointed together (i.e., (1,2), (1,2,3), (2,3,4), (3,4,5), etc...). If 
+PAIR_MATCH=2, then each group of images composed of the a given image, the two 
+before and the two after in the list will be tiepointed together (i.e., (1,2,3), 
+(1,2,3,4), (1,2,3,4,5), (2,3,4,5,6), etc...). 
+- PAIR_MATCH < 0: "sliding window" with NO overlap. The (absolute) value of 
+PAIR_MATCH indicates the number of images that will be tiepointed together. 
+For instance PAIR_MATCH=-1, means that a (1,2), (2,3), (3,4), (4,5), etc... will 
+be tiepointed. If PAIR_MATCH=-2, then
+(1,2,3), (3,4,5), (6,7,8) etc...
+
+Once the pair list is defined, it can be further refined using REFIMAGE, IGNORE
+and IGNORE_INTRA. It is likely that these parameters will be used with 
+PAIR_MATCH=0, but that is not a requirement.
+See definition of these parameters for further details. Here are a couple of
+use-cases that involves subgroup of images:
+Assume we have a list of input images 1,2,3,4,5,6,7,8,9,10: 
+PAIR_MATCH=0 REFIMAGE=9,10 will cause to tie point images 1,2,3,4,5,6,7,8 
+between each other and with 9 and with 10. But 9 and 10 won't be tiepointed
+between each other.
+
+PAIR_MATCH=0 REFIMAGE=9,10 -IGNORE_INTRA will cause to tie point images 
+1,2,3,4,5,6,7,8 with 9 and with 10 only. 
+
+
+.page
+
+
+Execution:
+---------
+
+$MARSLIB/marsautotie2 inputImagelist.lis outputTiePoints.tie
+Will launch the process using standard SIFT (not ASIFT) where all left keypoints
+will be matched to all right keypoints.
+
+$MARSLIB/marsautotie2 inputImagelist.lis outputTiePoints.tie NUMTILTS=3 
+EPIMAXDIST=20
+Will launch the process using ASIFT with 9 affine simulations (nb of 
+simulations is defined from numtilts, but is not equal to numtilts) and 
+epipolar constraint is to be enforced.
+
+.PAGE
+
+Parallel Processing
+-------------------
+This program has been parallelized using Open MP (OMP), which is built in to the
+g++ compiler. By default the number of threads used equals the number of cores 
+on the machine where the program is being run. 
+
+There are two locations where the parallelization occurs:
+- During the keypoint detection and description. Parallelization happen on the 
+number of affine simulations to carry. If no affine simulation is set up in the
+parameters, this step is not parallelelized.
+- During the matching of the keypoints. Again, the parallization is done on the
+number of affine simulations.
+
+In essence, the more affine transforms, the more parallelization. If the input 
+consists in only two images with no affine (i.e., regular SIFT), the process is
+essentially not parallelized.
+
+of threads can be controlled by setting the OMP_NUM_THREADS environment
+variable before running the program.  There are numerous other OMP variables
+that can be set; see the OMP documentation.  However, the number of threads
+is the only one that is likely to be useful in most cases.
+
+.page
+
+
+LICENSE:
+--------
+
+As mentionned earlier, this program uses third party open source implementation
+of 2 techniques that are patented. The following display the license and 
+disclaimer of the program used.
+
+**************************************************************
+
+Copyright (c) 2011, Guoshen Yu and Jean-Michel Morel
+All rights reserved.
+
+The source code files in this directory implement as tightly as 
+possible algorithms described in this IPOL article. They are made 
+available to the exclusive aim of serving as scientific tools enabling 
+the verification of the soundness and completeness of the algorithmic 
+descriptions.
+
+These source codes implement an algorithm possibly linked to the patent 
+[1][2]. Compiling or running this code may violate patents in certain 
+countries. For this reason, the use of the source files 
+- demo_ASIFT.cpp
+- compute_asift_keypoints.cpp
+- compute_asift_matches.cpp
+- demo_lib_sift.cpp
+may be restricted in certain countries to non profit research and non profit 
+educational purposes. In certain countries, redistribution or commercial 
+use of these source files may require the  consent of the patent owner. 
+
+[1] Jean-Michel Morel and Guoshen Yu,  Method and device for the invariant 
+affine recognition recognition of shapes (WO/2009/150361), patent pending.
+
+[2] David Lowe  "Method and apparatus for identifying scale invariant 
+features in an image and use of same for locating an object in an 
+image",  U.S. Patent 6,711,293.
+
+In short, be careful before you download, compile, use, modify, or 
+redistribute these source codes. The situation being different for every 
+country and changing over time, it is your responsibility to check that 
+you are not infringing a patent by using this source code. IPOL therefore 
+invites potential users to consult a patent lawyer. If and only if you are
+free from any patent restriction, then you can enjoy the BSD license terms.
+
+The source code in the subdirectory third_party comes from the Eigen 
+library, which is LGPL-licensed.
+(see http://www.gnu.org/copyleft/lesser.html)
+
+fproj.cpp, frot.cpp, orsa.cpp, libMatch, libNumerics
+copyright (C) 2007-2010, Lionel Moisan <Lionel.Moisan@parisdescartes.fr>,
+Universite Paris Descartes, distributed under the BSD license.
+
+With the exception of the files mentioned above, redistribution and use 
+in source and binary forms, with or without modification, are permitted
+provided that the following conditions are met: the rest of usual BSD 
+license follows.
+
+BSD LICENSE
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+  * Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+  * Redistributions in binary form must reproduce the above
+    copyright notice, this list of conditions and the following
+    disclaimer in the documentation and/or other materials provided
+    with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+HOLDER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+This license file must be retained with all copies of the software,
+including any modified or derivative versions.
+
+
+**************************************************************
+
+
+
+.page
+
+
+
+HISTORY:
+-------
+
+02-02-18  Initial marsautotie2. 
+
+COGNIZANT PROGRAMMER:  Francois Ayoub
+
+.LEVEL1
+.VARI INP
+Input image(s) or
+file list.
+
+.VARI OUT
+Output tiepoint file.
+
+.VARI NAVTABLE
+Corrected navigation
+filename.
+
+.VARI BAND
+The vicar image 
+band number. 
+Defaults to 1
+
+
+
+.VARI PAIR_MATCH
+Pairing strategy.
+Default is full combination
+
+.VARI REFIMAGE
+Reference images listing.
+refimage=-1 means no reference
+image.
+
+.VARI IGNORE
+List of images to ignore
+in the tiepointing.
+
+.VARI IGNORE_INTRA
+Forbids tiepointing between
+non-reference images
+
+.VARI NUMTILTS
+Number of tilts to
+simulate. 
+
+.VARI EPIMAXDIST
+Max distance (pix) to epiline
+to look for matches.
+
+.VARI POSMAXDIST
+Max distance (pix) to keypoint
+to look for matches.
+
+.VARI NBESTMATCHES
+Keep N best tilts/rot 
+for full resolution matching.
+
+.VARI CROSSCHECK 
+Whether or not to do a Left/Right
+Right/Left comparison. 
+
+.VARI MASK
+Whether or not to apply mask
+
+.VARI VALMASK
+pixel value flagged as mask
+
+.VARI DILATEMASK
+pixel number for mask
+dilation
+
+.VARI SEP_ANGLE
+Maximum difference look
+direction
+
+.VARI MAX_TIES
+Maximum tiepoints allowed
+per pair
+
+.VARI GTM
+Number of neighboor to 
+construct graph
+
+.VARI OCTAVE
+Number of SIFT octaves 
+to run
+
+.VARI SCALES
+Number of scales per
+octave to run
+
+.VARI INITSIGMA
+
+
+.VARI DOGTHRESHOLD
+Threshold to apply
+for DoG extrema filter
+
+.VARI EDGETHRESHOLD
+Threshold to apply to
+edgness of extrema
+
+.VARI BORDER
+Pixels to avoid
+on picture border.
+
+.VARI MATCHRATIO
+ratio threshold for
+successful match
+
+.VARI UPSAMPLE
+upsample input images
+for more tiepoints
+
+.VARI START_KEY
+Starting key number for
+tiepoint file (XML format
+only).
+
+.VARI FORMAT
+OLD or XML tiepoint
+file format.
+
+.VARI OMP_ON
+Turns on or off parallel
+processing (default: on)
+
+
+.VARI CONFIG_PATH
+Path used to find
+configuration/calibration
+files.
+
+.VARI POINT_METHOD
+Specifies a mission-
+specific pointing
+method to use
+
+.VARI MATCH_METHOD
+Specifies a method
+for pointing corrections.
+
+.VARI MATCH_TOL
+Tolerance value for
+matching pointing params
+in pointing corrections file.
+
+.VARI NOSITE
+Disables coordinate
+system sites.
+
+.VARI RSF
+Rover State File(s) to use.
+
+.VARI DEBUG_RSF
+Turns on debugging of RSF
+parameter.
+
+.VARI COORD
+Coordinate system to use.
+Ignored by marstie.
+
+.VARI COORD_INDEX
+Coordinate system index for
+some COORD/mission combos.
+Ignored by marstie.
+
+.VARI FIXED_SITE
+Which site is FIXED for
+rover missions.
+
+.LEVEL2
+.VARI INP
+There are two options for describing input images. 
+
+Either:
+List the image file names 
+
+Or:
+provide an ascii file with the file names listed, one per record.
+
+.VARI OUT
+Output tiepoint table.
+This is an ASCII table with a header, a record indicating the number of
+tiepoints, then a series of records, one per tiepoint.  Values in the record
+are:
+laft_image, right_image, left_sample, left_line, right_sample, right_line,
+corrected_sample, corrected_line, quality, interactive_flag
+
+.VARI NAVTABLE
+Corrected navigation filename.
+If marsnav was run on the input images it created a table of corrected
+pointing parameters. If you refer to this table using NAVTABLE it
+will override the pointing parameters (e.g. azimuth and elevation) in the
+picture labels, giving you a better registered mosaic.
+
+.VARI BAND
+The vicar image band number. Defaults to 1
+
+.VARI PAIR_MATCH
+This defines the image pairing strategy for tiepoints search.
+The default value (0) means that all images are going to be matched with all
+other images in the list. This is a pairwise combination among all the inputs.
+Two other pairing strategies are available depending on the value and sign of
+PAIR_MATCH.
+If PAIR_MATCH is strictly positive, then the value of PAIR_MATCH indicates, for any 
+image in the input list, the number of neighbooring images (before and after) 
+that it will be compared to. Neighbooring refers to position in the list. 
+For instance:
+If PAIR_MATCH=1: im1 will be compared to im2, im2 will be compared to (im1,
+im3), im3 will be compared to (im2, im4), etc.
+If PAIR_MATCH=2: im1 will be compared to (im2, im3), im2 will be compared to 
+(im1, im3, im4), im3 will be compared to (im1,im2,im4,im5), im4 will be
+compared to (im2,im3,im5,im6), etc. Think of it at a sliding window with 
+overlap.
+If PAIR_MATCH is strictly negative, the strategy will be to compare disconnected
+subgroup of images of size abs(PAIR_MATCH). For instance:
+If PAIR_MATCH=-1: im1 will be compared to im2, im3 will be compared to img4, img5
+will be compared to img6, etc.
+If PAIR_MATCH=-2: im1,im2,im3  will be compared to each other; im4,im5,im6 will be
+compared to each other; im7,im8,im9 will be compared to each other; etc. Think
+of it at a sliding window without overlap.
+
+.VARI REFIMAGE
+
+REFIMAGE, IGNORE, IGNORE_INTRA allows further strategies for the pairing of 
+images to be tiepointed set by PAIR_MATCH. It is expected that if REFIMAGE,
+IGNORE, IGNORE_INTRA are used then PAIR_MATCH is most likely to be set to 0, 
+but that is not a requirement.
+
+REFIMAGE specifies which image (if any) are reference images.
+
+References images are not tiepointed between each other, meaning that any pairs
+defined by PAIR_MATCH strategy that is made of two references will be deleted
+from the list of pair to be tiepointed.
+Any pairs defined by PAIR_MATCH that contains a reference and a non-reference 
+images are kept for tiepointing.
+
+REFIMAGE=-1 means no reference image.
+
+REFIMAGE can be a single image, or a list of images.  Each image in the list 
+will be a reference image.  This allows any arbitrary images to be selected
+as references.  If an image number is negative, it means all images from the 
+previous number through (the absolute value of) this one will be references.  
+For example a list:
+
+1,3,-6,8,11,-15
+
+will cause the following images to be reference images:
+
+1,3,4,5,6,8,11,12,13,14,15
+
+Numbering of images starts at 1.
+
+
+.VARI IGNORE
+Any image in the IGNORE list won't be considered for tiepointing. So, any pair
+of images defined by PAIR_MATCH that contains an images listed by IGNORE will
+be deleted from the list. Essentially it allows to "remove" an image from the
+list of input without modifying the INP file while keeping the image indexes
+in the output file.
+IGNORE can be a single image, or a list of images. See REFIMAGE for numbering
+scheme.
+
+.VARI IGNORE_INTRA
+This keyword will delete from the pair list any pairs that are made of two
+non-reference images (REFIMAGE). If REFIMAGE is not used, IGNORE_INTRA has
+no effect.
+
+
+
+.VARI NUMTILTS
+The number of tilts to simulate affine transformation between the two images.
+For each tilt, a number of rotations is defined such that the range of 
+possible affine transformation is reasonably well sampled. For instance, a
+tilt number of 5 will lead to 26 tilts/rotations pair. That is, 26 affine
+transforms will be simulated on both left and right images. Then, keypoints
+detection and matching on all possible pairwise combinations (i.e., 676) between
+these 26 transforms will be carried out. This can grow fast! See NBESTMATCHES
+for optimization.
+Note that in any case, matchings between the native (non-affine transformed)
+images is carried out. If NUMTILTS <=1, then no affine simulation is carried out
+and matching is done on native image only (i.e., SIFT instead of ASIFT).   
+
+.VARI EPIMAXEDIST
+Each keypoint in the left image will be match to a subset of keypoints in the
+right image that satisfy a proximity constraint to the epipolar line 
+corresponding to the left keypoint. EPIMAXEDIST defines the maximum distance
+(in pixel) between a right keypoint and the epipolar line for that keypoint to 
+be part of the subset of keypoints to be matched to the left keypoint.
+If EPIMAXDIST < 0, no gemometric constraints is applied. Default is -1.
+
+.VARI POSMAXDIST
+Each keypoint in the left image will be match to a subset of keypoints in the
+right image that satisfy a proximity constraint to the left keypoint location. 
+POSMAXDIST defines the maximum distance (in pixel) between a right keypoint and
+the position of that keypoint to be part of the subset of keypoints to be 
+matched to the left keypoint.
+This keyword is mostly usefull for images of the same size and for which a 
+feature in one image is expected to be roughly at the same location in the
+other image. It allows to reduce the chance for a feature to be matched to
+a similar-looking but unrelated one elsewhere in the image.
+If POSMAXDIST < 0, no gemometric constraints is applied. If POSMAXDIST and
+EPIMAXDIST are on, EPIMAXDIST has precedence. They cannot be combined. Setting
+POSMAXDIST while EPIMAXDIST is defined (>0) has no effect. Default is -1.
+
+
+.VARI NBESTMATCHES
+The number of affine simulations and matchings can grow fast with the number of
+tilts which can take a long time to process. If NBESTMATCHES is not null, a 
+first run on lowered resolution images will be carried out and the 
+NBESTMATCHES affine combinations leading to the most matches on low res images
+will be carried out on full resolution images. The observation is that on all
+the affine transform testes, only a handful will provides good matches. Affine
+transformation that are too far from the real ground situation do not provide
+matches. If NBESTMATCHES <= 0, then no low res process is done and all the affines
+simulations are carried out at full resolution. Default is 0.
+
+.VARI CROSSCHECK 
+If ON, once the matching is done between the left and right images, a new 
+matching is processed inverting the left and right images. Matches that are not 
+corresponding in both list (L/R R/L) are discarded from the ouput matches
+list. This a way to filter out some of the bad/weak matches.
+
+.VARI OCTAVE
+Defines the number of downscaling to apply to the images (by a factor of 2
+each time). An internal limit sets the minimal size of the downscaled
+image to approximately 12x12 pixel, whatever larger is the octave number
+input. The downscaling allows to simulate lower resolution image of the
+scene. Default is to go down to the limit (12x12).
+
+.VARI SCALES
+Number of blur passes to apply to each octave. The blurring is done through
+gaussian filtering simulating different zoom situation. Default is set to 3
+which is quite common in SIFT usage of SIFT.
+
+.VARI MATCHRATIO
+Ratio below which a match is not deemed reliable enough and discarded.
+During matching, a left keypoint is compared to a list of right keypoints. For
+each comparisons, the euclidean distance between the left keypoint description 
+and the right keypoint description is computed. The smaller the distance, the 
+better as that means that the left and right keypoints "look" similar. However,
+setting an absolute threshold on the distance to accept/reject a match is not 
+trivial to adjust. Instead, the ratio between the best and second-to-best 
+distance (i.e., the smallest and second-to-smallest distances) is computed. A 
+large ratio indicates that the best keypoint is significantly better than all 
+the other keypoints, which suggests that the match is correct.
+If the ratio is too low, then discrimination between the best and second-to-
+best cannot be done with confidence (too similar). The match is rejected and
+no tiepoint is created.
+
+.VARI UPSAMPLE
+It has been shown that upsampling the input image by a factor of 2 augments
+the number of keypoints detected. It comes at the cost of a longer processing
+time. The total number of OCTAVE includes the upsampled image.
+
+.VARI INITSIGMA
+At each octave, the image is blurred SCALES times with increasing blurring
+intensity. This parameter sets up the blurring intensity of the first scale.
+It must be set up according the the natural blur in the original input. It
+has been showed experimentally that for "normal" image, and INITSIGMA between
+1.2 and 1.8 is usually good. Default value is set up to 1.6. Augment INITSIGMA
+if the image is noisy (low pass filter equivalent).
+
+
+.VARI DOGTHRESHOLD
+A pixel is classified as a keypoint if it is the location of an extrema in the
+Difference Of Gaussian (DoG - This is the difference between the image at  
+two different scales). However, noise can be source of false extrema. To limit
+the false detection, the magnitude in the DoG has to be significant. This 
+parameter sets a threshold on the DoG below which the point is not classified 
+as a keypoint. The magnitude of the DoG depends on the number of scales. The 
+more scales, the smaller are DoG values. DOGTHREHOLD is the value of the 
+threshold corresponding to SCALES=3. It is set to 0.0133 (=0.04/3) 
+corresponding to a good compromise (experimentally defined and generally 
+accepted in the litterature - intial value from Lowe's paper). 
+If SCALES is changed to value different than default=3, then DOGTHRESHOLD will 
+be adjusted accordingly in the program. DOGTHRESHOLD can be modified by user, 
+but will still be considered the threshold for SCALES=3. A larger value
+imposes a more drastic contrast in the DoG, filtering out more bad keypoints, 
+but also removing good ones.
+
+.VARI EDGETHRESHOLD
+This parameters eliminates points identified as extrema and which lay on edges.
+An edges is not a good keypoint as its discrimination is not robust along the 
+edge. To filter out these points a Harris definition of a corner is used, by 
+looking at the ratio between the largest and smallest eigenvalues (largest and 
+smallest curvature) of the point surrounding. Default is set to 10, which means
+that if the ratio between the largest and smallest eigenvalues is larger than
+10, the point is deemed sitting on an edge and discarded. Larger value will 
+filter out more points (more conservative).
+
+.VARI BORDER
+The width of a border all around the image to avoid in selecting
+pixels for keypoints.
+
+.VARI MASK
+This keyword activate a masking/discarding step. If on, keypoints that are 
+found on, or near (see DILATEMASK) pixel with a specific value are rejected.
+Typically this is useful if there are areas of the image where we don't want
+keypoint to be selected. For instance, dark band, masked feature, dust spot
+on the lense, etc... If these areas are masked with a specific value (usually
+0) then all keypoints found on pixel with intensity=0 are discarded. This is 
+to avoid false matching between features that are not related with the scene.
+
+.VARI VALMASK
+The value of the pixel that will be flagged as mask. For instance, if 
+VALMASK is set to 0 (the default), then all keypoints found on pixel of value
+0 will be discarded. This keyword has no effect if MASK is turned OFF.
+
+.VARI DILATEMASK
+Because of the multi-scale approach of SIFT, a masked area can bias pixels
+that are nearby and not only pixel that are "on" the masked area. To also
+reject keypoints that are found in the direct vicinity of the masked pixel,
+the masked areas is "dilated" by DILATEMASK pixels. Default is 0, i.e., no
+dilation applied. This keyword has no effect if MASK is turned OFF.
+
+.VARI SEP_ANGLE
+Maximum difference (in degrees) between the look directions of the two 
+cameras. If the difference in look direction is larger, the pair is not going
+to be run for tiepoint matching. This avoid useless attempt at finding tie
+points between images that have look directions not converging.
+
+.VARI MAX_TIES
+The program, depending on the images, can return a huge amount of tiepoints per
+pair which may render the use of subsequent programs problematic (i.e., marstie
+that will take a huge time to load up all the tiepoints). This parameters limit
+the number of tiepoints to be saved in the output files. The program will find 
+all the tie points it can, but only MAX_TIES tiepoints randomly selected in the 
+list (for each pair) will be saved to file. Default is 0, which means no limit, 
+save them all.
+Note that a better approach would be to save the MAX_TIES tie points in such a
+way that they are spatially well spread. Or may be based on their confidence
+score. Experiment shows that random selection gives *about* good spatial spread.
+
+.VARI GTM
+By default GTM is set to 0, which means no graph filtering. 
+This post-process filter is applied to the set of tiepoints found. It 
+implements the paper:
+"A robust Graph Transformation Matching for non-rigid registration"
+Image and Vision Computing 27(7):897-910. June 2009 
+If GTM is set to a value > 0 then it activates the GTM filter and the
+value indicates the number of points of the local graphs.
+GTM relies on the hypothesis that the transformation that occurred between both
+images is locally reasonably smooth, such that neighbour points in the first 
+image should correspond to neighbours points in the second image. The number of 
+points considered to be in the neighborood is set with GTM parameter. The filter
+will check that hypothesis and iteratively remove points that do not satisfy it.
+This approach is very good at filtering out gross outliers. The larger the GTM
+value, the more constrained will be the graph, the more points will be removed 
+due to parallax non-smoothness. Early tests show that a GTM value of 3-4 gives
+a good trade off between filtering out outliers and removing too many good 
+points. A GTM value of 1 doesnt do anything and is equivalent to 0.
+
+
+
+.VARI START_KEY
+Starting key number for the tiepoint file (XML format only).  Tiepoint files
+contain a list of images, each of which is associated with an integer key.
+Setting START_KEY to some value allows tiepoint files to be merged easily,
+without the keys conflicting.  It is acceptable to have the same image in
+different sections of a merged file (with different keys); they are properly
+merged when read in.
+
+.VARI FORMAT
+There are two tiepoint file formats: "old" is the simple text-based list,
+as used for most of MER, while "xml" is an XML-based format that supports
+additional tiepoint types.  The FORMAT parameter controls which one to use.
+Over time the use of "old" should be phased out and eventually the FORMAT
+parameter will disappear.
+
+.VARI OMP_ON
+Turns on or off parallel processing.  The default is on.  The main help
+describes some environment variables that can further control parallel
+processing.  Note that this program uses standard OpenMP (which is built in
+to the gcc/g++ compilers), so further details can be found in the OpenMP
+documentation.
+
+.VARI CONFIG_PATH
+A colon-separated list of directories in which to look for configuration
+and calibration files.  Environment variables are allowed in the list
+(and may themselves contain colon-separated lists).  The directories are
+searched in order for each config/cal file when it is loaded.  This allows
+multiple projectes to be supported simultaneously, and allows the user to
+override any given config/cal file.  Note that the directory structure below
+the directories specified in this path must match what the project expects.
+For example, Mars 98 expects flat fields to be in a subdirectory named
+"flat_fields" while Mars Pathfinder expects them to be directly in the
+directory specified by the path (i.e. no intermediate subdirectories).
+
+.VARI POINT_METHOD
+Specifies a mission-specific pointing method to use.  Normally this
+parameter is not used, in which case the "default" pointing methods
+are used.  Some missions may have special, or alternate, pointing
+methods available, which are indicated by this string (for example,
+backlash models, using arm joint angles instead of x/y/z/az/el, etc).
+A substring search is used, so multiple methods (where that makes sense)
+can be specified by separating the keywords with commas.
+
+Note that nav files created using one pointing method will most likely
+not be compatible with a mosaic created using a different pointing method.
+
+The methods available vary per mission, but some methods available at
+the time of this writing are:
+
+.VARI MATCH_METHOD
+Specifies a method for pointing corrections.
+
+Loose method matches with pointing parameters of the image.
+Tight method matches with unique id of the image.
+
+.VARI MATCH_TOL
+Tolerance value for matching pointing parameters in the pointing corrections
+file.  Used if MATCH_METHOD=LOOSE
+Default value is pretty arbitrary, though seems to work well so far....
+
+.VARI NOSITE
+Disables all label-derived parameters to the Site mechanism which underlies
+coordinate systems.  This forces all sites to be identical, with all rotations
+and offsets set the same.  In the case of MPF or Mars 98, this disables
+the lander quaternion and offset (sets them to identity and 0, respectively).
+This option should not be used with images taken from different vantage
+points (e.g. the spacecraft moved, or mixing a lander and a rover) or
+invalid results will be obtained.  The use of this option invalidates the
+Fixed coordinate frame; any values reported in the Fixed frame will not
+correctly reflect the orientation of the lander/rover.
+
+Obviously, this option should be rarely used; it is intended for when the
+image labels defining the site are invalid or inconsistent.
+
+.VARI RSF
+Rover State File.  This is a list of filenames to load containing
+Rover State information.  These files contain position and orientation
+information for a rover (or other mobile spacecraft) at various sites.
+They are in XML format.  See the "Rover Motion Counter (RMC) Master File SIS"
+for details on these files.
+
+Rover State Files have a priority order.  The files listed first have
+the highest priority.
+
+Environment variables may be used in the list.
+
+For MER, if a directory is specified, then that directory is searched for
+RMC Master files and any found are loaded.  The directory structure and
+filename convention is covered in the RMC SIS.  The directory specified
+is the one containing "master", so if <dir> is the name specified in the
+RSF parameter, the following files will be searched for:
+
+<dir>/master/<mission>_Master.svf
+<dir>/master/<mission>_Site_<n>_Master.rvf
+
+The name of each file loaded is printed to the stdout log for reference.
+
+.VARI DEBUG_RSF
+If enabled, this causes the internal database of RMC locations to be
+printed out to the stdout log.  This is after the RSF files have been
+loaded and the coordinate systems read from the input label(s).
+
+.VARI COORD
+This parameter is ignored by marstie.  It is here for compatibility
+with subroutines used by other programs (see e.g. marsmap).
+
+.VARI COORD_INDEX
+This parameter is ignored by marstie.  It is here for compatibility
+with subroutines used by other programs (see e.g. marsmap).
+
+.VARI FIXED_SITE
+Specifies which major Site is the "Fixed" Site for this run.
+
+Historically, MPF and M98 had a single "Surface Fixed" frame which never
+moved, and which all other coordinate system frames were referenced to.
+With the advent of long-range rovers (such as MER and FIDO), that became
+insufficient.  The rover traverses far enough that errors in knowledge of
+coordinate system offset and orientation become unacceptable.
+
+For this reason, a system of major Sites was introduced.  Periodically
+during the mission, a Site frame is declared.  This then becomes the
+reference frame for all activities until the next Site is declared.
+References are kept local, and errors don't propogate across Sites.
+
+However, if images from more than one Site are combined together, the
+Site's must be placed relative to each other.  Therefore a single reference
+frame is still needed to combine different sites.
+
+The FIXED_SITE parameter controls which of the major Site frames is
+the reference ("fixed") site for this program run.  This fixed frame
+can vary in different program runs, but is constant throughout one
+execution.
+
+If not specified, FIXED_SITE defaults to the minimum Site number (i.e.
+lowest numbered, or earliest chronologically) used in all input images.
+Normally this default is sufficient; rarely must FIXED_SITE be specified.
+
+One or more Rover State Files must usually be specified in order to combine
+image from more than one Site.  These describe the relationship between
+sites.  See the RSF parameter.
+

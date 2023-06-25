@@ -1,0 +1,5 @@
+$ vpack marsdispcompare.com -mixed -
+	-s marsdispcompare.cc -
+	-i marsdispcompare.imake -
+	-p marsdispcompare.pdf
+$ Exit

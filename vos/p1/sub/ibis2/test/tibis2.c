@@ -3,6 +3,8 @@
  **          Uses new IBIS-2 Subroutine Library.
  **/
 
+#include <string.h>
+#include <stdio.h>
 #include "xvmaininc.h"
 #include "ftnbridge.h"
 #include "ibisfile.h"
@@ -697,7 +699,7 @@ list_file()
 			colm = scol + col+colnum;
 			status=IBISColumnGet( ibis, ICOLUMN_FORMAT, format+IFMT_SIZE*colm, colm );
 			if (status<0) goto failure;
-			status=IBISColumnGet( ibis, ICOLUMN_U_SIZE, colsize+colnum, colm, 0 );
+			status=IBISColumnGet( ibis, ICOLUMN_U_SIZE, colsize+colnum, colm );
 			if (status<0) goto failure;
 			
 			strcpy(grpelemt," -- ");

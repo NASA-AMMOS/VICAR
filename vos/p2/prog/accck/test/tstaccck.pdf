@@ -1,0 +1,18 @@
+procedure help=*
+
+parm img1 string default="../test_data/alcase2244m.img"
+parm img2 string default="../test_data/alcase1314s.img"
+
+body
+
+!  testing double run can relabel
+
+gtcopy &img1 xximg1
+accck xximg1 &img2 outfile=xxxplot labeladd=y
+accck xximg1 &img2 outfile=xxxplot labeladd=y
+
+label-list xximg1
+ush /bin/rm xximg1
+
+theend>
+end-proc

@@ -1,0 +1,75 @@
+                Version 5C/16C
+
+      ***********************************************************
+      *                                                         *
+      *                  Welcome to VICAR                       *
+      *                                                         *
+      *          VICAR Supervisor version 5C, TAE V5.3          *
+      *                 Distribution 29.0                       *
+      *                                                         *
+      *          #    #  #####   ###     ##    #####            *
+      *          #    #    #    #   #   #  #   #    #           *
+      *          #    #    #   #       #    #  #    #           *
+      *          #    #    #   #       ######  #####            *
+      *           #  #     #    #   #  #    #  #   #            *
+      *            ##    #####   ###   #    #  #    #           *
+      *                                                         *
+      *         Video Image Communication and Retrieval         *
+      *        and Image Based Information System (IBIS)        *
+      *            ** AFIDS Package Distribution **             *
+      *                                                         *
+      ***********************************************************
+
+  --- Type NUT for the New User Tutorial ---
+
+  --- Type MENU for a menu of available applications ---
+
+$R2LIB set to /data/afids5/vdev
+Disabling interrupts ...
+
+[TAE-CMDCNFLCT] New command conflicts with existing command 'cat=ush cat'.;
+ proc 'slogon', line 25
+[TAE-CMDCNFLCT] New command conflicts with existing command 'more=ush more'.;
+ proc 'slogon', line 26
+[TAE-CMDCNFLCT] New command conflicts with existing command 'pr=ush pr'.;
+ proc 'slogon', line 27
+[TAE-CMDCNFLCT] New command conflicts with existing command 'ls=ush ls'.;
+ proc 'slogon', line 28
+[TAE-CMDCNFLCT] New command conflicts with existing command 'showdisp=showdisp-s'.;
+ proc 'slogon', line 41
+[TAE-CMDCNFLCT] New command conflicts with existing command 'helpdisp=showdisp-h'.;
+ proc 'slogon', line 42
+                Version 5C/16C
+
+      ***********************************************************
+      *                                                         *
+      *                  Welcome to VICAR                       *
+      *                                                         *
+      *          VICAR Supervisor version 5C, TAE V5.3          *
+      *                 Distribution 29.0                       *
+      *                                                         *
+      *          #    #  #####   ###     ##    #####            *
+      *          #    #    #    #   #   #  #   #    #           *
+      *          #    #    #   #       #    #  #    #           *
+      *          #    #    #   #       ######  #####            *
+      *           #  #     #    #   #  #    #  #   #            *
+      *            ##    #####   ###   #    #  #    #           *
+      *                                                         *
+      *         Video Image Communication and Retrieval         *
+      *        and Image Based Information System (IBIS)        *
+      *            ** AFIDS Package Distribution **             *
+      *                                                         *
+      ***********************************************************
+
+  --- Type NUT for the New User Tutorial ---
+
+  --- Type MENU for a menu of available applications ---
+
+$R2LIB set to /data/afids5/vdev
+Disabling interrupts ...
+
+Beginning VICAR task gtcopy
+gtcopy version Thu Jan 10 2008
+[VIC2-GENERR] Exception in XVOPEN, processing file: ../regression_test/input_dataset/alcase2244m.img
+[VIC2-HOSTMSG]  No such file or directory
+ ** ABEND called **

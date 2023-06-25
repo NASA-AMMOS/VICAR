@@ -52,6 +52,7 @@ srchedge.c does the following:
 #include <string.h>
 #include "vicmain_c"
 #include "taeextproto.h"
+#include "zifmessage.h"
 
 #define PTDN 20000		/* Dn value of edge in output image out */
 
@@ -91,12 +92,12 @@ void main44()
   unsigned int skipns, skipnl, dark, darkskip;
   image_element_type  *imageptr, *smallimag;
   int count, def;
-  double angle;
+  double angle=0.0;
   unsigned int *x=NULL, *y=NULL;
   unsigned int *nx=NULL, *ny=NULL;
   unsigned int ntos=0, ston=0, wtoe=0, etow=0;
 
-  zvmessage("SRCHEDGE version 2019-06-14", "");
+  zifmessage("SRCHEDGE version 2021-11-12");
 
   /* fitpts, a function in dave3.h, output parameters */
   unsigned int fitpts_nndata=0;

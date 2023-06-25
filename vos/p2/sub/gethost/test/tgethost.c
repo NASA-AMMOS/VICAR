@@ -3,7 +3,7 @@
 
 /*  Program to test the GETHOST subroutine.  */
 
-main44()
+void main44(void)
 {
    char hostname[41], msg[81];
    int  length, status;
@@ -29,5 +29,4 @@ main44()
       zvmessage("   GETHOST cannot determine host name.", "");
 
    FTN_NAME(tgethostf)();
-   exit(0);
 }

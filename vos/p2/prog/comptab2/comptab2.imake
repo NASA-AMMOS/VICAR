@@ -1,0 +1,28 @@
+/***********************************************************************
+
+                     IMAKE FILE FOR PROGRAM comptab2
+
+   To Create the build file give the command:
+
+		$ vimake comptab2			(VMS)
+   or
+		% vimake comptab2			(Unix)
+
+
+************************************************************************/
+
+
+#define PROGRAM	comptab2
+
+#define MODULE_LIST comptab2.c
+
+#define MAIN_LANG_C
+#define R2LIB
+#define USES_ANSI_C
+
+#define LIB_CARTO
+#define LIB_RTL
+#define LIB_TAE
+#define LIB_P2SUB
+/* #define DEBUG */
+/************************* End of Imake file ***************************/

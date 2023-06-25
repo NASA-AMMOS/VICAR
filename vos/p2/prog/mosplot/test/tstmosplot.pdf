@@ -45,6 +45,8 @@ local path  type=string count=1
   refgbl  $echo
   refgbl  $SysChar
 body
+enable-log
+
 let _onfail="stop"
 let $echo="no"
 !check to see if mipl or cartlab for certain programs
@@ -144,4 +146,6 @@ end-if
 rm>
 ush rm path
 let $echo="no"
+
+disable-log
 end-proc

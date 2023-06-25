@@ -9,6 +9,9 @@
 #include "ibisfile.h"
 #include "ibiserrs.h"
 
+#include "zifmessage.h"
+#include "zmabend.h"
+
 #include "cartoStrUtils.h"
 #include "cartoMemUtils.h"
 /*#include "cartoVicarProtos.h"*/

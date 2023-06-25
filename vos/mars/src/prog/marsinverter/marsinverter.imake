@@ -1,0 +1,16 @@
+#define PROGRAM marsinverter
+
+#define MODULE_LIST marsinverter.cc
+
+#define MAIN_LANG_C_PLUS_PLUS
+#define USES_C_PLUS_PLUS
+
+#define MARSLIB
+
+#define LIB_TAE
+#define LIB_RTL
+#define LIB_P2SUB
+#define LIB_MARSSUB
+#define LIB_FORTRAN
+#define LIB_XERCES
+

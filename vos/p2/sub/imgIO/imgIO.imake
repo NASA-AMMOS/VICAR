@@ -1,0 +1,7 @@
+#define SUBROUTINE imgIO
+
+#define MODULE_LIST imgIO.cc
+
+#define USES_C_PLUS_PLUS
+#define STD_CPP_11
+#define P2_SUBLIB

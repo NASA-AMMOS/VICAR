@@ -1,0 +1,5 @@
+$ vpack marsfilter.com -mixed -
+	-s marsfilter.cc -
+	-i marsfilter.imake -
+	-p marsfilter.pdf
+$ Exit

@@ -16,6 +16,8 @@ SizeField    *savedAW,*savedIW;	/* saved access/image windows		*/
  * pan through an image, either on the display device or hitting the
  * file if necessary.
  */
+void UpdateRect();
+void EndUpdate();
 int jpan_do(env)
   VIDSEnvironment	*env;	/* The VIDS environment			*/
 {
@@ -402,7 +404,7 @@ int DoUpdate(env, imps, nimps, x, y)
  * the actual image file data, and loads whatever is necessary into the
  * image plane rect.
  */
-UpdateRect(env, imp, impRect,theFile,fileRect)
+void UpdateRect(env, imp, impRect,theFile,fileRect)
   VIDSEnvironment	*env;	/* environment block			*/
   int			imp;	/* imp to update			*/
   Rect		*impRect;	/* location on imp to be updated	*/
@@ -448,7 +450,7 @@ UpdateRect(env, imp, impRect,theFile,fileRect)
  * the plane to be contiguous, and resets the plane display window
  * to provide accepted view.
  */
-EndUpdate(env, imps, nPlanes, action)
+void EndUpdate(env, imps, nPlanes, action)
   VIDSEnvironment	*env;
   int			imps[];
   int			nPlanes;

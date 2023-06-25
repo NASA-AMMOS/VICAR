@@ -1,0 +1,139 @@
+process help=*
+PARM INP TYPE=STRING COUNT=1
+PARM OUT TYPE=STRING COUNT=1
+
+PARM NLW TYPE=INT COUNT=1 DEFAULT=5
+PARM NSW TYPE=INT COUNT=1 DEFUALT=5
+PARM BAYER TYPE=KEYWORD COUNT=(0:1) VALID=BAYER DEFAULT=--
+PARM NODATA TYPE=REAL COUNT=0:1 DEFAULT=--
+
+PARM ZERO TYPE=KEYWORD COUNT=(0:1) VALID=ZERO DEFAULT=--
+PARM NONAN TYPE=KEYWORD COUNT=(0:1) VALID=(NAN,NONAN) DEFAULT=--
+PARM MIN TYPE=REAL COUNT=(0:1) DEFAULT=--
+PARM MAX TYPE=REAL COUNT=(0:1) DEFAULT=--
+
+.TITLE
+VICAR program MEDFILL
+
+.HELP
+PURPOSE:
+
+MEDFILL fills holes in an image using a median filter of surrounding
+pixels.
+
+EXECUTION:
+
+The pixels to fill are controlled by MIN, MAX, ZERO, and NONAN.  Normally
+any pixels with a "NAN" value (for REAL images only) are filled; -nonan
+turns this off.  -zero says to fill any pixels with a zero value.  MIN and
+MAX specify the DN limits; anything outside this range ( <MIN or >MAX) will
+be filled.  Note that neighboring pixels in the window are ignored if they
+meet the fill criteria.  If there are no neighboring pixels with values, the
+pixel is replaced by the value in NODATA if that parameter is specified, or
+left alone if NODATA is not specifed.
+
+The fill window is set by NLW, NSW.  The default is 5x5, which means a 5x5
+box centered on the pixel.  The window sizes must be odd.
+
+If -BAYER is set, then it assumes the input image is a Bayer-pattern image,
+so it looks only at pixels with the same Bayer filter.  Practically speaking,
+this means the image index increments by 2 instead of 1 when filling the window.
+Note that the window size is unaffected, so a 5x5 window will actually look at
+just 8 pixels, indicated by X's below.
+
+X - X - X
+- - - - -
+X - O - X
+- - - - -
+X - X - X
+
+This means that a 3x3 window is essentially a no-op, as only the central pixel
+is considered.  A 7x7 window will be the same as 5x5, but 9x9 will add another
+set of pixels.  To avoid having to worry about Bayer cell orientation, the two
+Gren pixels are considered separately.
+
+If the window goes off the edge of the image, only the pixels in the image will
+be used - no reflection or extension is done.  If the image has a gradient, this
+could cause a bias on the edges.
+
+In order to accommodate floating-point pixels, the actual pixel values are
+gathered and sorted, rather than trying to use a histogram.
+
+Little consideration has been given to performance.
+
+HISTORY:
+2021-03-18 rgd	Initial version
+
+COGNIZANT PROGRAMMER: Bob Deen
+
+.LEVEL1
+.VARI INP
+Input image
+
+.VARI OUT
+Output image
+
+.VARI NLW
+Window height
+
+.VARI NSW
+Window width
+
+.VARI BAYER
+Turns on Bayer mode
+
+.VARI NODATA
+DN to replace with if no
+data in window
+
+.VARI ZERO
+Flag to replace zeros
+
+.VARI NONAN
+Flag to disable NAN replacement
+
+.VARI MIN
+Min value for good data
+
+.VAR MAX
+Max value for good data
+
+.LEVEL2
+
+.VARI INP
+Input image.  Can be byte, half, full, real, or doub.  Any number of bands.
+Each band is treated separately.
+
+.VARI OUT
+Output image.  Same format as the input.
+
+.VARI NLW
+Window height.  Must be odd.
+
+.VARI NSW
+Window width.  Must be odd.
+
+.VARI BAYER
+Turns on Bayer mode.  This causes every other pixel to be skipped in the
+window, so only pixels with the same Bayer filter are considered.  Assumes
+the input data is in Bayer format but it need not be; we are simply skipping
+every other pixel in this mode.
+
+.VARI NODATA
+DN used to replace a pixel if there is nothing left in the window.  This could
+happen if all the neighbors also meet the criteria for replacement.  If this
+parameter is not given, the pixel is left untouched if the window is empty.
+
+.VARI ZERO
+If this flag is turned on, any pixels with a value equal to 0 will be replaced.
+
+.VARI NONAN
+Normally (for float data), any pixel with a NaN value will be replaced.  Setting
+-NONAN disables this.  Has no effect for integer data types.
+
+.VARI MIN
+Min value for good data.  Any pixels less than this value will be replaced.
+
+.VAR MAX
+Max value for good data.  Any pixels greater than this value will be replaced.
+

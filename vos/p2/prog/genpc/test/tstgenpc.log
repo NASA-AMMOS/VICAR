@@ -1,0 +1,80 @@
+GENPC version 2021-05-24
+resetting pixdeg 1.080000000000e+05
+Beginning VICAR task gtgen
+GTGEN version 2019-09-05
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The file is a standalone VICAR GeoTIFF label
+A hypothetical 1000 x 2000 VICAR image will
+be used to illustrate the mapping of corner points.
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(0,0,0,-1.180000000000e+02,3.600000000000e+01,0.0)
+MODELPIXELSCALETAG=(0.0000092592593,0.0000092592593,0.0)
+GTMODELTYPEGEOKEY=2(ModelTypeGeographic)
+GEOGANGULARUNITSGEOKEY=9102(Angular_Degree)
+GEOGRAPHICTYPEGEOKEY=4326(GCS_WGS_84)
+GT
+The image raster is an 'area' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.5      0.5 -117.9999953704  35.99999537037
+       1.0   2000.0       1999.5      0.5 -117.9814861110  35.99999537037
+    1000.0      1.0          0.5    999.5 -117.9999953704  35.99074537033
+    1000.0   2000.0       1999.5    999.5 -117.9814861110  35.99074537033
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5          0.0      0.0 -118.0000000000  36.00000000000
+       0.5   2000.5       2000.0      0.0 -117.9814814814  36.00000000000
+    1000.5      0.5          0.0   1000.0 -118.0000000000  35.99074074070
+    1000.5   2000.5       2000.0   1000.0 -117.9814814814  35.99074074070
+The rotation of the image relative to an E-N geographic frame is:
+rotation 1
+123
+456
+789
+The scale units of the image are (ignoring sign):
+1 sample = 0.0000092592593 map units east
+1 line   = 0.0000092592593 map units north
+The scale fraction is 1 /      0.1
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)
+GENPC version 2021-05-24
+resetting pixdeg 1.800000000000e+03
+Beginning VICAR task gtgen
+GTGEN version 2019-09-05
+Beginning VICAR task gtlist
+gtlist version 2016-01-13
+VICAR GeoTIFF LABEL LIST
+The file is a standalone VICAR GeoTIFF label
+A hypothetical 1000 x 2000 VICAR image will
+be used to illustrate the mapping of corner points.
+The VICAR GeoTIFF label is:
+MODELTIEPOINTTAG=(0,0,0,-1.180000000000e+02,3.600000000000e+01,0.0)
+MODELPIXELSCALETAG=(0.0005555555556,0.0005555555556,0.0)
+GTMODELTYPEGEOKEY=2(ModelTypeGeographic)
+GEOGANGULARUNITSGEOKEY=9102(Angular_Degree)
+GEOGRAPHICTYPEGEOKEY=4326(GCS_WGS_84)
+GT
+The image raster is a 'point' or 'post' type
+The centers of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       1.0      1.0          0.0      0.0 -118.0000000000  36.00000000000
+       1.0   2000.0       1999.0      0.0 -116.8894444444  36.00000000000
+    1000.0      1.0          0.0    999.0 -118.0000000000  35.44499999996
+    1000.0   2000.0       1999.0    999.0 -116.8894444444  35.44499999996
+The outer corners of the corner pixels are:
+VICAR-line    -samp GeoTIFF-samp    -line            East           North
+       0.5      0.5         -0.5     -0.5 -118.0002777778  36.00027777778
+       0.5   2000.5       1999.5     -0.5 -116.8891666666  36.00027777778
+    1000.5      0.5         -0.5    999.5 -118.0002777778  35.44472222218
+    1000.5   2000.5       1999.5    999.5 -116.8891666666  35.44472222218
+The rotation of the image relative to an E-N geographic frame is:
+rotation 1
+123
+456
+789
+The scale units of the image are (ignoring sign):
+1 sample = 0.0005555555556 map units east
+1 line   = 0.0005555555556 map units north
+The scale fraction is 1 /      4.3
+(assuming mapunit = 1.000000 meters and the map is 10.000000 inches)

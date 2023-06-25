@@ -1,0 +1,5 @@
+$ vpack marscsv.com -mixed -
+	-s marscsv.cc -
+	-i marscsv.imake -
+	-p marscsv.pdf
+$ Exit

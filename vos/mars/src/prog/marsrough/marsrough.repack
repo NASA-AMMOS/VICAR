@@ -1,0 +1,5 @@
+$ vpack marsrough.com -mixed -
+	-s marsrough.cc xyz_uvw_to_roughness.h xyz_uvw_to_roughness.c -
+	-i marsrough.imake -
+	-p marsrough.pdf
+$ Exit

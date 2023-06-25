@@ -1,0 +1,61 @@
+/******************************************************************************
+/*
+/*                     IMAKE FILE FOR MODULE phx_lbl_routines
+/*
+/*   To Create the build file give the command:
+/*
+/*		$ vimake phx_lbl_routines			(VMS)
+/*   or
+/*		% vimake phx_lbl_routines			(Unix)
+/*
+/*****************************************************************************/
+
+/***  Define for whom this file exisits  ***/
+#define SUBROUTINE phx_lbl_routines		/* Only one of these */
+
+/***  List all modules which are used by locally by this module  ***/
+
+#define MODULE_LIST phx_lbl_articulation.c phx_lbl_coordinate.c \
+            phx_lbl_derived_geometry.c phx_lbl_compression.c \
+		    phx_lbl_instrument_state.c \
+            phx_lbl_image.c phx_lbl_telemetry.c phx_lbl_product_request.c
+
+#define MAIN_LANG_C
+
+#define USES_ANSI_C
+
+/***  Specify  Program or Subroutine specific DEFINES  ***/
+#ifdef PROGRAM
+#define R2LIB
+/*#define LIB_RTL*/
+/*#define LIB_TAE*/
+#define LIB_RTL_NOSHR
+#define LIB_TAE_NOSHR
+#define LIB_P2SUB
+#endif
+
+#ifdef SUBROUTINE
+#define MARS_SUBLIB
+#endif
+
+/***  Defines required for both Programs and Subroutines  ***/
+#define LIB_P2SUB
+
+/***  Local library definitions ...
+/***  ... must be commented out when delivered
+/***
+#define DEBUG
+#ifdef PROGRAM
+#define LIB_LOCAL
+#defint LOCAL_INCLUDE -I.
+#define LOCAL_LIBRARY sublib.a
+#endif
+
+/*#if VMS_OS
+#define LOCAL_LIBRARY test_lib.olb
+#else
+#define LOCAL_INCLUDE -I$(IncludePath)
+#define LOCAL_LIBRARY $(ObjectPath)/librts.a
+#endif*/
+/***  End of local library definitions  ***/
+/**********  End of phx_lbl_routines imake file  **********/

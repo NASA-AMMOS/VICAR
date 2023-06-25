@@ -1,0 +1,329 @@
+process help=*
+PARM INP TYPE=STRING COUNT=1
+PARM OUT TYPE=STRING COUNT=1
+PARM OUT_CM TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM NAVTABLE TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM POINT_METHOD TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM MATCH_METHOD TYPE=STRING COUNT=(0:1) VALID=("LOOSE", "TIGHT") +
+	DEFAULT=LOOSE
+PARM MATCH_TOL TYPE=REAL COUNT=1 DEFAULT=.002
+PARM NO_CM_XFER TYPE=KEYWORD VALID=NO_CM_XFER COUNT=0:1 DEFAULT=--
+
+PARM CM  TYPE=KEYWORD VALID=("CM", "NOCM")   DEFAULT="NOCM"
+PARM PM  TYPE=KEYWORD VALID=("PM", "NOPM")   DEFAULT="NOPM"
+PARM CS  TYPE=KEYWORD VALID=("CS", "NOCS")   DEFAULT="NOCS"
+PARM ALL TYPE=KEYWORD VALID=("ALL", "NOALL") DEFAULT="NOALL"
+
+PARM CHANGE_CM_CS TYPE=KEYWORD VALID=CHANGE_CM_CS COUNT=0:1 DEFAULT=--
+PARM CONFIG_PATH STRING DEFAULT="$MARS_CONFIG_PATH"
+
+PARM AZEL TYPE=KEYWORD VALID=("AZEL", "NO_AZEL") DEFAULT=NO_AZEL
+PARM ROVER_CS_NAME TYPE=STRING COUNT=0:1 DEFAULT=ROVER
+PARM SITE_CS_NAME TYPE=STRING COUNT=0:1 DEFAULT=SITE
+
+PARM RSF TYPE=STRING COUNT=0:100 DEFAULT=--
+PARM DEBUG_RSF TYPE=KEYWORD COUNT=0:1 VALID=DEBUG_RSF DEFAULT=--
+PARM COORD TYPE=KEYWORD VALID=("FIXED", "INSTRUMENT", "SITE", "ROVER", +
+        "LOCAL_LEVEL", "MCMF", "HELI_G") DEFAULT="FIXED"
+PARM COORD_INDEX TYPE=INTEGER COUNT=0:10 DEFAULT=--
+PARM FIXED_SITE TYPE=INTEGER COUNT=0:1 DEFAULT=--
+PARM FIXED_NAME TYPE=STRING COUNT=0:1 DEFAULT=--
+
+END-PROC
+
+.TITLE
+VICAR program MARSRELABEL.
+
+.HELP
+PURPOSE:
+To update certain Label Groups.  Currently support updating or adding
+Coordinate_Systems, Camera_Models and Pointing Models definitions
+
+This is currently a MER and MSL/M20 specific program, for coordinate frame
+updates.  Camera Model and Pointing Model updates are multimission.
+
+The output file will have the same image data as the input, only the label
+will be changed.
+
+Only single image input is supported which produces single output file.
+If the list of files is given as input, only the first file in the list
+will be used for processing, the rest will be descarded.
+
+Optionally, the camera model can be written to a separate file (in the
+format used by Todd Litwin's camera model programs).
+
+Also optionally, the instrument az/el in the ROVER and SITE derived geometry
+groups can be updated.
+
+EXECUTION:
+
+marsrelabel inp=input.img out=output.img -cm -pm
+
+
+.PAGE
+OPERATION:
+
+
+COGNIZANT PROGRAMMER:  Oleg Pariser
+
+HISTORY:
+  2003-10    Oleg Pariser - Initial version
+  2020-02-04 Walt Bunch - IDS-7928 - Switched to constant format string, removed unused variables, added test case.
+ 2020-10-13 rgd	Added support for changing cmod cs and FIXED_NAME
+ 2021-03-06 rgd	Added cm metadata transfer
+ 2021-05-05 rgd	Added -azel parameter
+
+.LEVEL1
+.VARI INP
+input image or
+file list.
+
+.VARI OUT
+Output image or
+file list.
+
+.VARI OUT_CM
+Optional camera model
+output filename.
+
+.VARI CM
+If set, updates Camera
+Model Label Property Group.
+
+.VARI PM
+If set, updates/writes
+Pointing Model into appropriate
+Label Property Group.
+
+.VARI CS
+If set, updates Coordinate
+Systems in appropriate
+Label Property Groups.
+
+.VARI ALL
+If set, equivalent to setting
+to update CM, PM and CS
+
+.VARI CHANGE_CM_CS
+Change the cmod coord sys to
+that in COORD.
+
+.VARI NO_CM_XFER
+Disable CM metadata transfer
+
+.VARI CONFIG_PATH
+Path used to find
+configuration/calibration
+files.
+
+.VARI AZEL
+Turns on az/el recomputation
+
+.VARI ROVER_CS_NAME
+Coord system name for
+rover frame for -azel
+
+.VARI SITE_CS_NAME
+Coord system name for
+site frame for -azel
+
+.VARI RSF
+Rover State File(s) to use.
+
+.VARI DEBUG_RSF
+Turns on debugging of RSF
+parameter.
+
+.VARI COORD
+Coordinate system to use.
+Not used by this program.
+
+.VARI COORD_INDEX
+Coordinate system index for
+some COORD/mission combos.
+Not used by this program.
+
+.VARI FIXED_SITE
+Which site is FIXED for
+rover missions.
+Not used by this program.
+
+.VARI FIXED_NAME
+Overrides what CS type is
+allowed for the FIXED frame
+
+.VARI NAVTABLE
+Corrected navigation
+filename.
+
+.VARI POINT_METHOD
+Specifies a mission-
+specific pointing
+method to use
+
+.VARI MATCH_METHOD
+Specifies a method
+for pointing corrections.
+
+.VARI MATCH_TOL
+Tolerance value for
+matching pointing params
+in pointing corrections file.
+
+.LEVEL2
+.VARI INP
+Input image.
+
+.VARI OUT
+Output image.
+
+.VARI OUT_CM
+Optional filename for the output camera model.  It will be written in a
+format compatible with Todd Litwin's library of CAHV camera model functions.
+
+.VARI CM
+If CM is set, Camera_Model property group gets updated using calibration
+camera models.  Based on label's info we point, scale, shift those calibration
+models exactly the same way flight software is doing it.
+
+.VARI PM
+If PM is set, Pointing_Model gets updated/created in the label 
+in the appropriate property group.
+
+.VARI CS
+If CS is set, coordinate system property labels gets updated.  There weren't be
+any changes, unless Rover State File is specified using RSF parameter.
+
+Note that only the mobility-related coordinate systems will be rewritten.
+This consists of Site, Local Level, and the equivalent of Rover frame for
+the given mission.  Other frames, such as arm, arm tool, mast, camera, etc.
+will not be updated, since there is no mechanism to change their value anyway.
+
+.VARI ALL
+Equivalent to setting to update CM,PM and CS
+
+.VARI CHANGE_CM_CS
+If set, causes the cmod to be expressed in the coordinate system specified in
+the COORD parameter, rather than the "natural" CS for the instrument. 
+Does nothing if -CM (or -ALL) is not also specified.
+
+.VARI NO_CM_XFER
+Normally, if -CM is specified to update the camera model, the camera model
+metadata (primarily MODEL_TRANSFORM_VECTOR and MODEL_TRANSFORM_QUATERNION)
+are transferred over from the input model.  If this flag is specified,
+this transfer is suppressed.
+
+.VARI CONFIG_PATH
+A colon-separated list of directories in which to look for configuration
+and calibration files.  Environment variables are allowed in the list
+(and may themselves contain colon-separated lists).  The directories are
+searched in order for each config/cal file when it is loaded.  This allows
+multiple projectes to be supported simultaneously, and allows the user to
+override any given config/cal file.  Note that the directory structure below
+the directories specified in this path must match what the project expects.
+For example, Mars 98 expects flat fields to be in a subdirectory named
+"flat_fields" while Mars Pathfinder expects them to be directly in the
+directory specified by the path (i.e. no intermediate subdirectories).
+
+.VARI AZEL
+Turns on az/el recomputation.  This computes, or re-computes, the
+INSTRUMENT_AZIMUTH and INSTRUMENT_ELEVATION labels in the ROVER_ and
+SITE_DERIVED_GEOMETRY groups based on the current camera model.  It is
+generally a good idea to update these fields if the cmod is changed.
+
+.VARI ROVER_CS_NAME
+Coordnate system name for rover frame for -azel.  Defaults to ROVER, which
+should be sufficient for most purposes.  Setting it to -- disables writing
+the rover values while still potentially writing site values.
+
+.VARI SITE_CS_NAME
+Coordnate system name for site frame for -azel.  Defaults to SITE, which
+should be sufficient for most purposes.  Setting it to -- disables writing
+the site values while still potentially writing rover values.
+
+.VARI RSF
+Rover State File.  This is a list of filenames to load containing
+Rover State information.  These files contain position and orientation
+information for a rover (or other mobile spacecraft) at various sites.
+They are in XML format.  See the "Rover Motion Counter (RMC) Master File SIS"
+for details on these files.
+
+Rover State Files have a priority order.  The files listed first have
+the highest priority.
+
+Environment variables may be used in the list.
+
+For MER, if a directory is specified, then that directory is searched for
+RMC Master files and any found are loaded.  The directory structure and
+filename convention is covered in the RMC SIS.  The directory specified
+is the one containing "master", so if <dir> is the name specified in the
+RSF parameter, the following files will be searched for:
+
+<dir>/master/<mission>_Master.svf
+<dir>/master/<mission>_Site_<n>_Master.rvf
+
+The name of each file loaded is printed to the stdout log for reference.
+
+.VARI DEBUG_RSF
+If enabled, this causes the internal database of RMC locations to be
+printed out to the stdout log.  This is after the RSF files have been
+loaded and the coordinate systems read from the input label(s).
+
+.VARI COORD
+This parameter is ignored by marsrad.  The parameter exists for
+compatibility with subroutines used by other programs (see e.g. marsmap).
+
+.VARI COORD_INDEX
+This parameter is ignored by marsrad.  The parameter exists for
+compatibility with subroutines used by other programs (see e.g. marsmap).
+
+.VARI FIXED_SITE
+This parameter is ignored by marsrad.  The parameter exists for
+compatibility with subroutines used by other programs (see e.g. marsmap).
+
+.VARI FIXED_NAME
+Overrides what CS type is allowed for the fixed frame.  Normally this is the
+lowest-numbered SITE_FRAME.  However, the PIG library actually looks for any
+CS with only one index as a potential fixed frame.  This causes issues with
+the M20 helicopter, where e.g. the HELI_G_FRAME also has only one index.  This
+parameter allows the user to force the fixed frame to SITE_FRAME.
+
+.VARI NAVTABLE
+Corrected navigation filename.
+If marsnav was run on the input images it created a table of corrected
+pointing parameters. If you refer to this table using NAVTABLE it
+will override the pointing parameters (e.g. azimuth and elevation) in the
+picture labels, giving you a better registered mosaic.
+
+.VARI POINT_METHOD
+Specifies a mission-specific pointing method to use.  Normally this
+parameter is not used, in which case the "default" pointing methods
+are used.  Some missions may have special, or alternate, pointing
+methods available, which are indicated by this string (for example,
+backlash models, using arm joint angles instead of x/y/z/az/el, etc).
+A substring search is used, so multiple methods (where that makes sense)
+can be specified by separating the keywords with commas.
+
+Note that nav files created using one pointing method will most likely
+not be compatible with a mosaic created using a different pointing method.
+
+The methods available vary per mission, but some methods available at
+the time of this writing are:
+
+BACKLASH : Mars 98 SSI only.  Selects a backlash pointing model,
+which adjusts the telemetered azimuth and elevation values based on
+knowledge of the camera's mechanical backlash and the direction the
+motor was travelling when the image was taken.
+
+.VARI MATCH_METHOD
+Specifies a method for pointing corrections.
+
+Loose method matches with pointing parameters of the image.
+Tight method matches with unique id of the image.
+
+.VARI MATCH_TOL
+Tolerance value for matching pointing parameters in the pointing corrections
+file.  Used if MATCH_METHOD=LOOSE
+Default value is pretty arbitrary, though seems to work well so far....
+
+

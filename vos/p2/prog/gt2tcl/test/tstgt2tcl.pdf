@@ -1,0 +1,106 @@
+procedure
+
+local s1 type=(string,90)
+local n1 type=int
+local r1 type=real
+! Oct 1, 2013 - RJB
+! TEST SCRIPT FOR FILE2TCL
+!
+! Vicar Programs:
+!       gtgen   
+! 
+! External programs
+!    <none>
+!
+! Parameters:
+!   <none>
+!
+! Requires NO external test data: 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+refgbl $echo
+body
+let _onfail="stop"
+let $echo="yes"
+
+enable-log
+
+gtgen out=xxxlab1 'tiecnvrt geotiff= +
+   ("ModelTiePointTag=(2,3,0,350807.4,5317081.3,123456789.123456789)", +
+          "ModelTiePointTag=(202,103,0,351807.4,5316081.3,0.0)", +
+          "ModelTiePointTag=(2,103,0,350807.4,5316081.3,0.0)", +
+          "GTRasterTypeGeoKey=2(RasterPixelIsPoint)")
+
+gt2tcl xxxlab1 val=s1 keyword=GTRASTERtypEGEOKEY vtype=0
+let $echo="no"
+write "GTRASTERtypEGEOKEY = &s1"
+write "Should be          = 2(RasterPixelIsPoint)"
+write ""
+let $echo="yes"
+
+gt2tcl xxxlab1 val=n1 keyword=GTrasTERTYPEGEOKEY vtype=4
+let $echo="no"
+write "GTrasTERTYPEGEOKEY = &n1"
+write "Should be          = 2"
+write ""
+let $echo="yes"
+   
+gt2tcl xxxlab1 val=s1 keyword=NeverFindThisKey vtype=0
+let $echo="no"
+write "NeverFindThisKey = &s1"
+write "Should be        = -999"
+write ""
+let $echo="yes"
+
+gt2tcl xxxlab1 val=s1 keyword=ModelTiePointTag vtype=0 sequence=6
+let $echo="no"
+write "ModelTiePointTag = &s1"
+write "Should be        = 123456789.123456789"
+write ""
+let $echo="yes"
+
+gt2tcl xxxlab1 val=r1 keyword=ModelTiePointTag vtype=8 sequence=6
+let $echo="no"
+write "ModelTiePointTag = &r1"
+write "Should be        = 1.234567891235e+08"
+write ""
+let $echo="yes"
+
+gt2tcl xxxlab1 val=s1 keyword=ModelTiePointTag vtype=0 sequence=7
+let $echo="no"
+write "ModelTiePointTag = &s1"
+write "Should be        = -999"
+write ""
+let $echo="yes"
+
+gt2tcl xxxlab1 val=r1 keyword=ModelTiePointTag vtype=8 sequence=7
+let $echo="no"
+write "ModelTiePointTag = &r1"
+write "Should be        = -9.990000000000e+02"
+write ""
+let $echo="yes"
+
+gtgen out=xxxlab2 'tiecnvrt +
+   geotiff=("ModelTiePointTag=(2,3,0,350807.4,5317081.3,0.0)", +
+          "ModelTiePointTag=(202,103,0,351807.4,5316081.3,0.0)", +
+          "ModelTiePointTag=(2,103,0,350807.4,5316081.3,0.0)", +
+          "GTRasterTypeGeoKey=2(RasterPixelIsPoint)", +
+          "GTRasterTypeGeoKey=1(RasterPixelIsArea)")
+
+  
+gt2tcl xxxlab2 val=s1 keyword=GTrasTERTYPEGEOKEY vtype=0 element=1
+let $echo="no"
+write "GTrasTERTYPEGEOKEY (element 1) = &s1"
+write "Should be                      = 2(RasterPixelIsPoint)"
+write ""
+let $echo="yes"
+   
+gt2tcl xxxlab2 val=s1 keyword=GTrasTERTYPEGEOKEY vtype=0 element=2
+let $echo="no"
+write "GTrasTERTYPEGEOKEY (element 2) =  &s1"
+write "Should be                      =  1(RasterPixelIsArea)"
+write ""
+
+disable-log
+
+end-proc

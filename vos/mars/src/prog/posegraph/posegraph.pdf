@@ -1,0 +1,866 @@
+process help=*
+PARM INP TYPE=STRING COUNT=(1:200)
+PARM OUT TYPE=STRING COUNT=1 
+PARM OUT_G2O TYPE=STRING COUNT=1 
+PARM IN_TPT TYPE=STRING COUNT=0:1 DEFAULT=--
+PARM NAVTABLE TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM FORMAT TYPE=STRING COUNT=(0:1) +
+  VALID=("XML","TXT") DEFAULT="XML"
+PARM OUT_SOLUTION_ID TYPE=STRING COUNT=0:1 DEFAULT=--
+PARM SOLUTION_ID TYPE=STRING COUNT=0:1 DEFAULT=--
+PARM SOLVER TYPE=STRING COUNT=1 DEFAULT="DENSE_NORMAL_CHOLESKY"
+PARM SUMMARY TYPE=KEYWORD COUNT=1 VALID=("NO_SUM","FULL_SUM","BRIEF_SUM")+
+            DEFAULT="FULL_SUM"
+PARM CM_ORI TYPE=KEYWORD COUNT=1 VALID=("CM_ORI", "NOCM_ORI") DEFAULT="NOCM_ORI"
+PARM REFIMAGE TYPE=INTEGER COUNT=(0:200) VALID=(-1000:1000) DEFAULT=--
+PARM UNTIL TYPE=KEYWORD COUNT=(0:1) +
+  VALID=("UNTIL","NULL") DEFAULT="NULL"
+PARM IGNORE TYPE=INTEGER COUNT=(0:200) VALID=(-1000:1000) DEFAULT=--
+PARM IGNORE_INTRA TYPE=KEYWORD COUNT=(0:1) VALID="IGNORE_INTRA" DEFAULT=--
+PARM START_KEY TYPE=INTEGER COUNT=1 DEFAULT=0
+PARM OMP_ON TYPE=KEYWORD VALID=(OMP_ON,OMP_OFF) DEFAULT=OMP_ON
+PARM CONFIG_PATH STRING DEFAULT="$MARS_CONFIG_PATH"
+PARM POINT_METHOD TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM RSF TYPE=STRING COUNT=0:100 DEFAULT=--
+PARM DEBUG_RSF TYPE=KEYWORD COUNT=0:1 VALID=DEBUG_RSF DEFAULT=--
+PARM COORD TYPE=KEYWORD VALID=("FIXED", "INSTRUMENT", "SITE", "ROVER", +
+        "LOCAL_LEVEL") DEFAULT="FIXED"
+PARM COORD_INDEX TYPE=INTEGER COUNT=0:10 DEFAULT=--
+PARM FIXED_SITE TYPE=INTEGER COUNT=0:1 DEFAULT=--
+PARM SAVE_CONNECT TYPE=KEYWORD COUNT=1 VALID=(SAVE_CONNECT, NOSAVE_CONNECT) +
+           DEFAULT="SAVE_CONNECT"
+PARM BEFORE_AFTER TYPE=KEYWORD COUNT=1 VALID=(BEFORE_AFTER, NOBEFORE_AFTER) +
+           DEFAULT="BEFORE_AFTER"
+PARM EDGE_DIST TYPE=REAL COUNT=1 DEFAULT=.05
+PARM USE_ESSENTIAL TYPE=KEYWORD COUNT=1 VALID=(USE_ESSENTIAL, NOUSE_ESSENTIAL) +
+           DEFAULT="NOUSE_ESSENTIAL"
+PARM MAX_RAND_NOISE TYPE=REAL COUNT=1 DEFAULT=.01
+PARM MAX_QUAT_ERROR TYPE=REAL COUNT=1 DEFAULT=.05
+PARM MAX_POS_ERROR TYPE=REAL COUNT=1 DEFAULT=.1
+
+!# parm inp(2-200) hints=default
+!# parm in_tpt file=vicar; direction=input
+!# parm out_tpt file=vicar; direction=output
+
+END-PROC
+
+.TITLE
+VICAR program POSEGRAPH.
+
+.HELP
+
+The posegraph program performs pose graph optimization, which estimates the 
+trajectory (collection of poses) from relative pose measurements. Input relative
+poses are first computed given a list of images or an initial set of pointing parameters and saved in g2o format, then optimized, and finally the output 
+corrected camera pointing is output as an XML file. The inputs and outputs are 
+very similar to those of marsnav2 bundle adjustment. The goal of this is that 
+the two programs can be used interchangeably for parameter optimization.
+
+Typically, pairs of frames with very short baselines tend to have very
+good feature tracking but the resulting XYZ points can have a large uncertainty.
+Inaccurate XYZ points can drive bundle adjustment towards a local minimum, and 
+fail in correctly optimizing the input camera pointings. On the other hand, very
+large baselines tend to have poorer feature tracking due to perspective 
+distortions and lighting changes, but tend to be better suited for triangulation
+of XYZ points. Having an alternative to bundle adjustment for cases where it 
+does not produce good results is important, since it optimizes parameters in a
+fundamentally different way. 
+ 
+
+PURPOSE:
+
+The general idea of graph optimization is to express the pose estimation problem 
+in structure-from-motion and SLAM in terms of a graph. Such a graph contains 
+both nodes (vertices) and constraints (edges). In this case, a pose is denoted 
+as a node, while observations between nodes, in this case relative orientation between cameras, are denoted as edges. The set of overlapping images are related 
+to each other by tiepoints (input). 
+
+The parameters and overall usage of POSEGRAPH is related to the MARSNAV2 and
+also KEYFRAME_SELECTION programs, and is expected to used in conjunction with 
+these. The overall goal of keyframe selection is to provide a set of frames 
+to marsnav2 which provide better results than the original list. 
+
+POSEGRAPH supports any mission, instrument, and camera model supported 
+by the Planetary Image Geometry (PIG) software suite.
+
+
+EXECUTION:
+
+posegraph inp=ascii_listoffiles out=updated_pointing.nav out_g20=relposes.g2o 		       in_tpt=images.tpt
+
+where ascii_listoffiles is a text file of image names and locations, one per 
+line, containing the list of filenames to select keyframes from.
+
+An input tiepoint list must be provided.
+
+Note: there are two tiepoint file formats; "old" is the text-based list,
+while "xml" is an XML-based format.  The format is auto-detected on read.
+Over time "old" should be phased out. Output tiepoint file (see OUT_TPT)
+is always in the new XML format. This can be converted back to the old 
+format if necessary using marstie.
+
+USAGE:
+It is important that all images be connected to at least one other via 
+tiepoints, and also strongly recommended that images be connected by 
+"tracks". A track is an extension of a traditional tiepoint. A tiepoint is an association of 2 observations from 2 images, a track is an association of N observations from N images. A tiepoint is therefore a 2-elements track. 
+All the observations of a given track "look" at the same ground location. 
+A track is therefore associated to one XYZ ground coordinates. 
+
+While posegraph does not currently deal with tracks directly, just tiepoints 
+between pairwise images, conceptually having long tracks spanning multiple 
+images manifests as a greater number of edges in the pose graph (more 
+constraints). The greater the number of constraints, the more likely the 
+optimization is to converge to an optimal solution, and not drift into local
+minima, much like traditional bundle adjustment, and the effect of individual 
+outliers is less likely to affect the outcome.  
+
+
+METHOD:
+
+Pose graph optimization problem is one example of a "simultaneous localization
+and mapping" (SLAM) problem. 
+
+Assume a rover has a state where a 3D vector represents the position and the orientation is represented as an Eigen quaternion, similarly to the pointings
+available from telemetry readings. The measurement of the 
+relative transform between the state at two timestamps is also assumed known or
+can be estimated from the epipolar geometry (fundamental and essential matrices)
+between pairs of views. Then, the residual implemented in the Ceres cost 
+function computes the error between the measurement and the predicted 
+measurement. Finally, the cost function needs to weight the residual by the uncertainty of the measurement. Hence, we pre-multiply the residual by the 
+inverse square root of the covariance matrix for the measurement.
+
+Eigen‘s geometry module is used with Ceres’ automatic differentiation 
+functionality. To represent the orientation, Eigen‘s quaternion uses the 
+Hamiltonian convention but has different element ordering as compared with 
+Ceres’ rotation representation. Specifically they differ by whether the scalar component q_w is first or last; the element order for Ceres‘s quaternion is 
+[q_w, q_x, q_y, q_z] where as Eigen’s quaternion is [q_x, q_y, q_z, q_w].
+ 
+This is the general set of steps:
+ 
+1) The tiepoint list is analyzed and a connectivity matrix is created such that
+every (i, j) entry provides the number of tiepoints for that specific pair.
+
+2) Given the above connectivity matrix and the tiepoints between frames,  fundamental matrices 'F' and essential matrices 'E' are computed between all available pairs if USE_ESSENTIAL is set; otherwise relative poses are computed directly between telemetry values for pairs of cameras and noise is added to 
+avoid getting stuck in the current solution. 
+
+The condition number of the data matrix for the fundamental matrix solve tends 
+to be very high for short baselines, which is undesirable, so this is also taken into account.
+
+Note that steps (3) and (4) below only apply if USE_ESSENTIAL is set.
+
+3) In case of "good" fundamental matrices, the corresponding essential matrix is
+computed from:
+
+	E = K^T*F*K
+
+where K is the 3x3 intrinsic parameter (calibration) matrix for the pinhole
+camera model. The K matrix has the following form, where fx and fy are the focal
+lenghts in the horizontal and vertical directions respectively, and similarly
+for the principal point (px, py):
+
+	K = [fx 0 px]
+		[0 fy py]
+		[0  0  1]
+
+It must be noted that many of the images used within VICAR are acquired by 
+fisheye lenses, where the mathematics for the fundamental matrix fall apart, as 
+the standard epipolar geometry between pairs of views is defined for pinhole cameras. However, the approximation is for the most part correct if we focus on tiepoints obtained near the centers of the images. Therefore, the EDGE_DIST parameter is used to "crop out" tiepoints that lie near the edges of images, and 
+the ones remaining are used in the computation of F and the epipolar geometry.   
+ 
+4) The Essential matrix for each pair is decomposed into a relative orientation 
+'R' and a relative translation 't' via its Singular Value Decomposition (SVD). A
+total of four valid answers are obtained, spanning R, -R, t, and -t. A 
+"cheirality" test is performed to figure out which option yields XYZ points in 
+front of the cameras. Once the correct (R, t) pair is obtained, the rotation R
+is converted to a Hamiltonian quaternion 'q', with coordinates [x, y, z, w]. The
+result is compared with the relative pose obtained from telemetry readings, and
+if it has very large errors, it is not taken into account as an edge in the 
+graph. 
+
+5) The quaternion, translation, and information matrix per pair (more on this 
+later) are placed on each line of the final g2o file. Pairwise relationships
+make up the nodes of the pose graph, while the vertices are the absolute 
+quaternion 'Q' and position 'p' of each camera, as determined from the pointing parameters. 
+
+Note that both a "poses_original.txt" and "poses_optimized.g2o" file are saved 
+in the current directory, as intermediate files, if the BEFORE_AFTER flag is 
+set.
+
+6) Once the updated pointing is obtained, it is saved to an XML file, similarly 
+to marsnav2.
+
+NOTES:
+
+Study the output log file, since it provides valuable information about
+the process, such as tiepoints connectivity, pairwise keyframe scores, 
+etc. 
+
+Any tiepoints containing an image listed in the IGNORE list will be removed from consideration.  This allows you to concentrate on certain images without being influenced by others. IGNORE accepts ranges of images.
+
+A note on the number of pointing parameters: posegraph EXPECTS seven pointing parameters, and won’t work if there is any other number since then a g2o file
+cannot be created unless there is a relative quaternion and 3D position 
+difference vector between two images. 
+
+A note on computing the information matrix: this matrix must be provided per 
+pairwise constraint, and is the inverse of the covariance matrix for the 
+relative pose measurement. Since there is no straightforward way to compute said
+covariance currently, this matrix is set to identity. 
+
+
+.page
+PARALLEL EXECUTION
+
+Part of this program has been parallelized using Open MP (OMP), which is built 
+into the g++ compiler.
+
+By default the number of threads used equals the number of cores on the machine
+where the program is being run. Parallel processing can be disabled via the 
+-OMP_OFF keyword.  The number of threads can be controlled by setting the 
+OMP_NUM_THREADS environment variable before running the program.  There are 
+numerous other OMP variables that can be set; see the OMP documentation.  
+However, the number of threads is the only one that is likely to be useful in 
+most cases.
+
+
+.PAGE
+TIEPOINT TYPES
+
+Not all formats are supported in posegraph. Only the Traditional (0), 
+fiducial (1), Z surface (8), Dynamic (9), and Miss (10) formats are currently 
+supported. Other types may be added later on. 
+
+IMPORTANT: Note that posegraph is only interested in the pixel 
+association, i.e., left line/sample and right line/sample. It does not use 
+other information (projected line/sample, z, for instance). In essence, 
+all tiepoints are seen as traditional tiepoints by posegraph. Because 
+of the nature of fundamental and homography matrix estimation, 
+posegraph cannot (currently) use FIDUCIAL tiepoints, though it can read 
+them in. The following specifies formats for each type of input tiepoint (xml). 
+
+0) Traditional
+
+    <tie type="0" left_key="1" right_key="2">
+      <left line="53.43125" samp="356.2353"/>
+      <projected line="634.3415" samp="43.43512"/>
+      <right line="634.4556" samp="44.43252"/>
+      <flags quality="0.85635" interactive="0"/>
+    </tie>
+
+1) Fiducial
+
+    <tie type="1" left_key="1">
+      <left line="326.32523" samp="21.43516"/>
+      <xyz x="0.43156" y="1.3455" z="-0.65425"/>
+      <flags quality="0.764626" interactive="1"/>
+    </tie>
+
+8) Z Surface
+
+    <tie type="8" left_key="1" right_key="2">
+      <left line="53.43125" samp="356.2353"/>
+      <projected line="634.3415" samp="43.43512"/>
+      <right line="634.4556" samp="44.43252"/>
+      <z z="-0.387"/>
+      <flags quality="0.85635" interactive="0"/>
+    </tie>
+
+
+9) Dynamic XYZ
+
+    <tie type="9" left_key="1" right_key="2">
+      <left line="53.43125" samp="356.2353"/>
+      <projected line="634.3415" samp="43.43512"/>
+      <right line="634.4556" samp="44.43252"/>
+      <flags quality="0.85635" interactive="0"/>
+    </tie>
+
+10) Miss Distance
+
+    <tie type="10" left_key="1" right_key="2">
+      <left line="53.43125" samp="356.2353"/>
+      <projected line="634.3415" samp="43.43512"/>
+      <right line="634.4556" samp="44.43252"/>
+      <flags quality="0.85635" interactive="0"/>
+    </tie>
+
+
+.page
+G2O FORMAT
+
+The g2o format is as follows:
+VERTEX_SE3:QUAT i x y z q_x q_y q_z q_w 
+EDGE_SE3:QUAT i j x y z q_x q_y q_z q_w info(x,y,z,phi_x,phi_y,phi_z)
+
+where 'info' is the information matrix that represents the confidence in 
+the measurement and it is the inverse of the covariance matrix. Hence, 
+it is symmetric and positive semi-definite. We typically only store the 
+upper-triangular block of the matrix in row-major order.
+
+The following is a portion of an example g2o file, where vertices and 
+edges can be distinguished:
+
+VERTEX_SE3:QUAT 1653 6.899 -3.660 -0.407 -0.0047 -0.0008 0.9995 0.0307 
+VERTEX_SE3:QUAT 1654 3.037 -2.465 -0.424 0.0074 -0.0044 0.9594 0.2819 
+VERTEX_SE3:QUAT 1655 0.241 0.770 -0.368 0.0021 0.0031 0.8534 0.5213 
+VERTEX_SE3:QUAT 1656 -0.926 4.586 -0.371 -0.0015 0.0010 0.7659 0.6429 
+VERTEX_SE3:QUAT 1657 -1.162 8.683 -0.387 0.0016 0.0031 0.7043 0.7099 
+VERTEX_SE3:QUAT 1658 -0.888 12.879 -0.360 0.0011 0.0069 0.6858 0.7278 
+VERTEX_SE3:QUAT 1659 -0.574 17.110 -0.377 0.0054 0.0107 0.6818 0.7314 
+VERTEX_SE3:QUAT 1660 -0.094 21.306 -0.408 0.0075 0.0146 0.7126 0.7014 
+EDGE_SE3:QUAT 0 1 4.154 -0.0665 0.0003 -0.0108 0.0087 -0.0019 0.9999
+1 0 0 0 0 0 1 0 0 0 0 1 0 0 0 8 0 0 8 0 8 
+EDGE_SE3:QUAT 1 2 4.1597 -0.0912 0.0567 0.0027 -0.0008 0.0036 0.1000
+1 0 0 0 0 0 1 0 0 0 0 1 0 0 0 18 0 0 18 0 18
+
+
+HISTORY:
+  2022-10-07 Mauricio Hess-Flores - Initial posegraph
+
+COGNIZANT PROGRAMMER:  Mauricio Hess-Flores
+
+.LEVEL1
+.VARI INP
+Input image(s) or
+file list.
+
+.VARI OUT
+Output nav file.
+
+.VARI OUT_G2O
+Output g2o file.
+
+.VARI IN_TPT
+Input tiepoint file.
+
+.VARI NAVTABLE
+Input navigation table.
+
+.VARI FORMAT
+Output format of nav file.
+if format=xml, 
+OUT_SOLUTION_ID is required.
+
+.VARI OUT_SOLUTION_ID
+Solution ID for OUTPUT
+nav file (required if
+XML format).
+
+.VARI SOLUTION_ID
+Solution ID for INPUT
+nav file, if needed.
+
+.VARI SOLVER
+Which solver to use 
+during the optimization.
+
+.VARI SUMMARY
+Which verbosity of 
+optimization report to
+display in stdout
+
+.VARI CM_ORI
+Save original camera model
+to nav file.
+
+.VARI REFIMAGE
+Reference image override.
+Can be a list of images.
+refimage=-1 means no reference
+image.
+
+.VARI UNTIL
+All images up to
+REFIMAGE(1) are reference
+images.
+
+.VARI IGNORE
+List of images to ignore
+in the tiepoint list.
+
+.VARI IGNORE_INTRA
+Causes intra-set overlaps
+(within the non-reference
+set) to be ignored.
+
+.VARI START_KEY
+Starting key number for
+tiepoint file (XML format
+only).
+
+.VARI OMP_ON
+Turns on or off parallel
+processing (multiple threads,
+single machine).  Default: on
+
+.VARI CONFIG_PATH
+Path used to find
+configuration/calibration
+files.
+
+.VARI POINT_METHOD
+Specifies a mission-
+specific pointing
+method to use.
+Ignored by posegraph,
+for now.
+
+.VARI RSF
+Rover State File(s) to use.
+Ignored by posegraph,
+for now.
+
+.VARI DEBUG_RSF
+Turns on debugging of RSF
+parameter.
+Ignored by posegraph,
+for now.
+
+.VARI COORD
+Coordinate system to use.
+Ignored by posegraph,
+for now.
+
+.VARI COORD_INDEX
+Coordinate system index for
+some COORD/mission combos.
+Ignored by posegraph,
+for now.
+
+.VARI FIXED_SITE
+Which site is FIXED for
+rover missions.
+Ignored by posegraph,
+for now.
+
+.VARI SAVE_CONNECT
+Save or not to .txt file
+the images connectivity matrix.
+
+.VARI BEFORE_AFTER
+Save or not to .txt files
+the pointings before and 
+after applying pose graph 
+optimization.
+
+.VARI EDGE_DIST 
+Percentage from all edges of 
+the image to discard matches
+from, to account for fisheye
+adverse effects on homography
+and fundamental matrix 
+computation. A value of 0.05
+corresponds to 5%, for 
+example.
+
+.VARI USE_ESSENTIAL
+Use or not the essential
+matrix decomposition to 
+compute relative poses.
+
+.VARI MAX_RAND_NOISE
+Percentage of random noise
+to add to relative telemetry
+values. A value of 0.01 
+corresponds to 1%, for 
+example.
+
+.VARI MAX_QUAT_ERROR 
+Maximum allowed error in 
+the quaternion components
+of the essential matrix 
+decomposition versus 
+relative telemetry 
+readings.
+
+.VARI MAX_POS_ERROR 
+Maximum allowed error in 
+the distance of the 
+essential matrix 
+decomposition versus 
+relative telemetry 
+readings.
+ 
+
+.LEVEL2
+.VARI INP
+There are two options for describing input images. 
+
+Either:
+List the image file names 
+
+Or:
+provide an ascii file with the file names listed, one per record.
+
+Note that normally only the label is used from the input images.  They
+are typically image files for convenience and compatibility with marstie et al.
+However, Dynamic XYZ tiepoints require the corresponding input file to be an
+XYZ image.
+
+.VARI OUT
+Output file containing the list of updated pointing parameters in XML format.
+
+.VARI OUT_G2O
+Output file containing the list of vertex and edge (relative pose) information, 
+in g2o format.
+
+.VARI IN_TPT
+The input tiepoint file, as generated by MARSAUTOTIE2 (or a previous run of
+MARSNAV).  This file must be specified.  It can be in either the old text
+format, or the new XML format (it detects this automatically).
+
+.VARI NAVTABLE
+The optional input navigation table.  If provided, this allows the user to
+provide an initial nav solution, which is then tweaked by the posegraph process.
+This allows a pointing solution created by other means, (such as MICA) or via
+an earlier marsnav run, to be adjusted.  This may be used to better globally
+distribute error or accomodate new tiepoints, among other things.
+
+Note that there is no guarantee the result will bear any resemblance to the
+input nav file.  It is merely a starting point, and posegraph may go off in a
+completely different direction.
+
+.VARI FORMAT
+The output format of navigation file.
+If format=TXT, then the output is an ASCII table with a header,
+then one record per input picture giving:
+Number of Parameters (N), N Original Parameters, N Corrected Parameters
+If images come from different instruments, the number of pointing parameters
+may be different for each one.  
+
+If format=XML, then the output is a xml file in following format:
+<?xml version="1.0" encoding="UTF-8"?>
+<pointing_correction ...>
+   ...
+  <priority>
+    <entry solution_id=.../> 
+  </priority>
+  <solution ...>
+    <image filter=... frame_id=... image_id=... instrument=...>
+       <original_parameters type=...>
+         <parameter id=... value=.../>
+       </original_parameters>
+    </image>
+    <pointing_parameters type=...>
+       <parameter id=... value=.../>
+    </pointing_parameters>
+    <camera_model type=...>
+       <parameter id=... type=... value=.../>
+       ...
+       <reference_frame name=... index=.../>
+    </camera_model>
+  </solution>
+  ...
+</pointing_correction>
+
+.VARI OUT_SOLUTION_ID
+Solution id for the OUTPUT navigation file in XML format.
+If solution id is missing when FORMAT=XML, then the output
+navigation file can not be created (therefore the parameter is required).
+
+.VARI SOLUTION_ID
+Specifies which solution ID to use for the INPUT nav file (if present).
+
+There are potentially many different definitions for the same coordinate
+system. These are identified via a unique Solution ID.  If this parameter
+is given, only the specified solution's definition is searched for.  Normally
+it is not used.
+
+.VARI SOLVER
+Tells Ceres which solver to use during the optimization. Ceres offers different
+approaches to solve for the pose graph optimization problem. The default is 
+DENSE_NORMAL_CHOLESKY, but these others are available: DENSE_QR, DENSE_SCHUR,
+and SPARSE_NORMAL_CHOLESKY.
+
+For more information, see ceres-solver.org
+
+.VARI SUMMARY
+Which type of Ceres optimization report to print in the stdout.
+- NO_SUM: Does not print any report from Ceres. This is not recommended as, at
+a mimimum, it should be checked if the optimization converged
+- BRIEF_SUM: A one-liner giving the convergence status, number of iterations 
+ran, and the initial and final cost (residual sums).
+- FULL_SUM: A several lines report display showing more information on the
+optimization process.
+
+DEFAULT is FULL_SUM.
+
+.VARI CM_ORI 
+If set (CM_ORI) the original camera model will be save to the nav file. The 
+original pointing is automatically saved, along with the new pointing 
+parameters. However, the new camera model is save to the nav file but not the
+original one. If CM_ORI is activated, the original camera model will also be
+saved.
+Note that this will only apply to xml output format, not to the old txt format.
+Default is not activated.
+
+.VARI REFIMAGE
+Specifies which image (if any) are reference images.
+
+Reference images are assumed to be correctly navigated and will not be
+adjusted.
+
+Defaults to the image with the greatest number of connected images once
+tiepoints have been culled to one per pair.
+
+REFIMAGE=-1 means no reference image.
+
+REFIMAGE can be a single image, or a list of images.  Each image in the
+list will be a reference image.  (see also UNTIL).  This allows any arbitrary
+images to be selected as references.  If an image number is negative, it means
+all images from the previous number through (the absolute value of) this one 
+will be references.  For example a list:
+
+1,3,-6,8,11,-15
+
+will cause the following images to be reference imgaes:
+
+1,3,4,5,6,8,11,12,13,14,15
+
+Numbering of images starts at 1.
+
+.VARI UNTIL
+Means that all images from 1 to the first value of REFIMAGE inclusive are
+treated as reference images.  The pointing of these will not change.  Any
+additional images listed in REFIMAGE will also be reference images.
+
+The functionality of this parameter has been subsumed by the negative number
+feature of REFIMAGE.  For example, REF=5 -UNTIL is the same as REF=\(1,-5\).
+
+.VARI IGNORE
+Specifies a list of images that will be ignored.  Tiepoints containing this
+image will be ignored and excluded from consideration (but see IGNORE_INTRA).
+This has two purposes.  First, for very large tiepoint files, when adjusting
+only a few images (via REFIMAGE), the presence of spurious tiepoints can be a
+significant performance drain.  Second, this allows you to exclude a tiepoint
+that is known to be problematic.  This might occur, for example, when matching
+a foreground mastcam image to a background navcam image - even though the
+foreground to background connections are correct, they may pull the foreground
+solution out of alignment.
+
+Ignored tiepoints still appear in the output tiepoint file (if one is written).
+
+Ignored images should always be reference images (although this is not checked
+nor enforced).  A non-reference (active) image cannot be adjusted if all
+tiepoints containing that image are removed.
+
+Like REFIMAGE, IGNORE accepts negative numbers to indicate ranges.  So a value
+of 4,-7 means 4,5,6,7 are all ignored.  See REFIMAGE for more examples.
+
+.VARI IGNORE_INTRA
+This flag causes all tiepoints between non-reference (active) images to be
+ignored.  Only tiepoints between non-reference and reference images will be
+considered.
+
+The use case for this is as follows:  Say you are insetting images (e.g.
+mastcam on MSL) into a background (e.g. navcam) mosaic that has already been
+tiepointed and nav'd.  You want to coregister the images to the background.
+This flag allows you to use autotie to get a complete set of tiepoints but
+then only use the ones tying the foreground to the background.  This is
+beneficial because the normal autotie modes will create many more overlap
+ties than full-image ties, making the overlap ties overwhelm the full-image
+ties.  Since you want the full-image ties, this flag lets you ignore the
+overlap ties.
+
+.VARI START_KEY
+Starting key number for the tiepoint file (XML format only).  Tiepoint files
+contain a list of images, each of which is associated with an integer key.
+Setting START_KEY to some value allows tiepoint files to be merged easily,
+without the keys conflicting.  It is acceptable to have the same image in
+different sections of a merged file (with different keys); they are properly
+merged when read in.
+
+.VARI OMP_ON
+Turns on or off parallel processing using OMP, which uses multiple cores on
+a single host machine.  The default is on.  The main help describes some
+environment variables that can further control parallel processing.  Note
+that this program uses standard OpenMP (which is built in to the gcc/g++
+compilers), so further details can be found in the OpenMP documentation.
+
+.VARI CONFIG_PATH
+A colon-separated list of directories in which to look for configuration
+and calibration files.  Environment variables are allowed in the list
+(and may themselves contain colon-separated lists).  The directories are
+searched in order for each config/cal file when it is loaded.  This allows
+multiple projectes to be supported simultaneously, and allows the user to
+override any given config/cal file.  Note that the directory structure below
+the directories specified in this path must match what the project expects.
+For example, Mars 98 expects flat fields to be in a subdirectory named
+"flat_fields" while Mars Pathfinder expects them to be directly in the
+directory specified by the path (i.e. no intermediate subdirectories).
+
+.VARI POINT_METHOD
+Specifies a mission-specific pointing method to use.  Normally this
+parameter is not used, in which case the "default" pointing methods
+are used.  Some missions may have special, or alternate, pointing
+methods available, which are indicated by this string (for example,
+backlash models, using arm joint angles instead of x/y/z/az/el, etc).
+A substring search is used, so multiple methods (where that makes sense)
+can be specified by separating the keywords with commas.
+
+The methods available vary per mission, but some methods available at
+the time of this writing are:
+
+BACKLASH : Mars 98 SSI only.  Selects a backlash pointing model,
+which adjusts the telemetered azimuth and elevation values based on
+knowledge of the camera's mechanical backlash and the direction the
+motor was travelling when the image was taken.
+
+NOTE: This parameter is currently ignored by posegraph, but
+kept for compatibility with other programs and potential future use.
+
+.VARI RSF
+Rover State File.  This is a list of filenames to load containing
+Rover State information.  These files contain position and orientation
+information for a rover (or other mobile spacecraft) at various sites.
+They are in XML format.  See the "Rover Motion Counter (RMC) Master File SIS"
+for details on these files.
+
+Rover State Files have a priority order.  The files listed first have
+the highest priority.
+
+Environment variables may be used in the list.
+
+For MER, if a directory is specified, then that directory is searched for
+RMC Master files and any found are loaded.  The directory structure and
+filename convention is covered in the RMC SIS.  The directory specified
+is the one containing "master", so if <dir> is the name specified in the
+RSF parameter, the following files will be searched for:
+
+<dir>/master/<mission>_Master.svf
+<dir>/master/<mission>_Site_<n>_Master.rvf
+
+The name of each file loaded is printed to the stdout log for reference.
+
+.VARI DEBUG_RSF
+If enabled, this causes the internal database of RMC locations to be
+printed out to the stdout log.  This is after the RSF files have been
+loaded and the coordinate systems read from the input label(s).
+
+NOTE: This parameter is currently ignored by posegraph, but
+kept for compatibility with other programs and potential future use.
+
+.VARI COORD
+NOTE: This parameter is currently ignored by posegraph, but
+kept for compatibility with other programs and potential future use.
+
+.VARI COORD_INDEX
+NOTE: This parameter is currently ignored by posegraph, but
+kept for compatibility with other programs and potential future use.
+
+.VARI FIXED_SITE
+Specifies which major Site is the "Fixed" Site for this run.
+
+Historically, MPF and M98 had a single "Surface Fixed" frame which never
+moved, and which all other coordinate system frames were referenced to.
+With the advent of long-range rovers (such as MER and FIDO), that became
+insufficient.  The rover traverses far enough that errors in knowledge of
+coordinate system offset and orientation become unacceptable.
+
+For this reason, a system of major Sites was introduced.  Periodically
+during the mission, a Site frame is declared.  This then becomes the
+reference frame for all activities until the next Site is declared.
+References are kept local, and errors don't propogate across Sites.
+
+However, if images from more than one Site are combined together, the
+Site's must be placed relative to each other.  Therefore a single reference
+frame is still needed to combine different sites.
+
+The FIXED_SITE parameter controls which of the major Site frames is
+the reference ("fixed") site for this program run.  This fixed frame
+can vary in different program runs, but is constant throughout one
+execution.
+
+If not specified, FIXED_SITE defaults to the minimum Site number (i.e.
+lowest numbered, or earliest chronologically) used in all input images.
+Normally this default is sufficient; rarely must FIXED_SITE be specified.
+
+One or more Rover State Files must usually be specified in order to combine
+image from more than one Site.  These describe the relationship between
+sites.  See the RSF parameter.
+
+NOTE: This parameter is currently ignored by posegraph, but
+kept for compatibility with other programs and potential future use.
+
+.VARI SAVE_CONNECT
+If ON, the connectivity matrix of the images will be printed to a txt file.
+The connectivity matrix shows the connection of the images between each other
+trough the number of tiepoints each pair shares. 
+
+An example of a printed out connectivity matrix for 10 images is:
+
+0: 0 615 6 5 5 4 7 3 3 0 
+1: 0 0 614 3 2 5 2 6 5 6 
+2: 0 0 0 292 2 1 3 1 1 2 
+3: 0 0 0 0 676 3 3 5 4 2 
+4: 0 0 0 0 0 677 2 7 3 2 
+5: 0 0 0 0 0 0 441 4 0 4 
+6: 0 0 0 0 0 0 0 772 1 1 
+7: 0 0 0 0 0 0 0 0 502 2 
+8: 0 0 0 0 0 0 0 0 0 568 
+9: 0 0 0 0 0 0 0 0 0 0 
+
+NOTE: This matrix is symmetric, so only the upper-triangular portion should be
+interpreted. Eventually, the format will be replaced to match the DISP_CONNECT
+parameter from marsnav2:
+
+0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19
+0  .  1  .  .  .  .  .  .  .  .  .  .  .  .  .  2  .  .  .
+1     3  1  .  .  .  .  .  .  .  .  .  .  .  1  1  1  .  .
+2        5  1  .  .  .  .  .  .  1  1  1  .  1  1  1  .  1
+3           1  .  .  .  .  .  .  2  4  1  .  .  2  9  .  .
+4              4  1  .  .  .  .  9 10  .  .  .  1  1  2  5
+5                 3  1  .  1  1  5  .  .  .  .  1  3  2  .
+6                    1  .  .  .  .  .  .  .  .  .  2  .  .
+7                       .  .  1  .  .  .  .  .  .  .  .  .
+8                          .  .  .  .  .  .  .  .  .  .  .
+9                             1  .  1  .  .  .  .  .  .  .
+10                               7  1  .  .  .  .  1  .  .
+11                                  8  .  .  .  1  .  .  .
+12                                     8  .  .  2  6  1  .
+13                                        1  .  .  1  .  .
+14                                           .  .  .  .  .
+15                                              5  1  .  .
+16                                                 7  1  .
+17                                                    .  .
+18                                                       7
+19 
+
+Obviously, if the number of image is large, the printing of the connectivity
+matrix will pose problem. In such case, the printing could be disabled
+(NOSAVE_CONNECT). 
+
+.VARI BEFORE_AFTER
+If ON, saves the before and after pointings to files named respectively 'poses_original.txt' and 'poses_optimized.txt'. These can be used to analyze 
+and/or plot the pointings before and after applying pose graph optimization. The
+pointings are saved in the following order to follow the Ceres convention, which
+differs from the standard (S, V1, V2, V3, X, Y, Z) pointing ordering:
+	X Y Z V1 V2 V3 S
+
+.VARI EDGE_DIST 
+Percentage from all edges of the image to discard matches from, to account for 
+fisheye lens adverse effects on homography and fundamental matrix computation.
+Most computer vision algorithms from estimating these 3x3 matrices assume the 
+pinhole camera model, for which fisheye lenses with CAHVORE parameters result in
+inaccurate estimates. Eventually, fisheye-specific methods may be incorporated.
+The default value is set to 0.05; larger values can result in a greatly-reduced
+number of matches available for fundamental matrix computation.
+
+.VARI USE_ESSENTIAL
+If ON, the essential matrix decomposition is used to compute relative poses. If 
+not set, relative poses are computed directly between telemetry values for pairs of cameras and noise is added to avoid getting stuck in the current solution. 
+
+.VARI MAX_RAND_NOISE
+Corresponds to the percentage of random noise to add to relative telemetry
+values. The amount of noise is relative to the baseline for positional 
+differences, so a value of 0.01 corresponds to 1% of the baseline, for 
+example. For quaternions, it corresponds to a percentage of the maximum
+value for each component, which is 1.0.
+
+.VARI MAX_QUAT_ERROR 
+Maximum allowed error in the quaternion components of the essential matrix 
+decomposition versus relative telemetry readings.
+
+.VARI MAX_POS_ERROR 
+Maximum allowed error in the distance of the essential matrix decomposition 
+versus relative telemetry readings.
+

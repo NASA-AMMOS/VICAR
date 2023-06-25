@@ -1,0 +1,21 @@
+procedure
+parm inp string
+
+local vec string
+local fmt string
+body
+
+let vec = "&inp" // ".accplot"
+
+lab2tcl &inp v1=fmt keyword=format 'system
+write "fmt &fmt"
+if (fmt="BYTE")
+   copy inp=&inp out=xxxhypchk
+else
+   f2 inp=&inp out=xxxhypchk fun="in1*.022" format=byte
+end-if
+
+xvd (&vec,xxxhypchk,xxxhypchk)
+    
+theend>
+end-proc

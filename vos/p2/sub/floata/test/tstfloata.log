@@ -1,0 +1,19 @@
+WRITE "TEST MODULE FLOATA"
+TEST MODULE FLOATA
+tfloata
+Beginning VICAR task tfloata
+**BEGIN TEST FOR MODULE FLOATA
+
+FLOATA should generate 0.0 50.0 100.0 150.0 200.0
+
+
+   0.0  50.0 100.0 150.0 200.0
+
+   0.0  50.0 100.0 150.0 200.0
+
+   0.0  50.0 100.0 150.0 200.0
+Test the C interface
+Output from zfloata = 5.000000   255.000000
+Correct values are   5.0   255.0
+**END   TEST FOR MODULE FLOATA
+disable-log

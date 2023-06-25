@@ -1,0 +1,172 @@
+procedure			!TSTfitsout.pdf
+local   afidsroot   type=string count=1
+local   aftestdata  type=string count=1
+
+! Aug 22, 2013 - RJB
+! TEST SCRIPT FOR FITSOUT
+! tests BYTE, HALF, FULL, REAL images
+!   and ibis TABULAR files
+!
+! Vicar Programs:
+!       translog label-list fitsin list gen typetext 
+!
+! External programs
+!   <none> 
+!
+! Parameters:
+!   <none>
+!
+! Requires external test data: 
+! Uses cartlab or mipl dependent pointers
+!
+!   Cartlab defines env var $AFIDS_ROOT, mipl doesn't
+!   The test data in cartlab is on /raid1/test_data 
+!   but in other facilities it might be somewhere else. 
+!   
+!   To facilitate this test you can define an
+!   environment variable $AFIDS_TESTDATA to point to
+!   that data. The cartlab system does not. In the git archive
+!   on pistol there is softlink to the test data in vdev that
+!   allows this test to pass 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+refgbl $echo
+body
+let _onfail="stop"
+let $echo="yes"
+
+enable-log
+
+!check to see if mipl or cartlab for certain programs
+!cartlab defines env var $AFIDS_ROOT, mipl doesm't
+translog INP=AFIDS_ROOT TRANS=afidsroot
+translog INP=AFIDS_TESTDATA TRANS=aftestdata
+if (afidsroot = "")
+!MIPL
+    ush ln -fs . nn
+else
+!CARTLAB
+    if (aftestdata = "")
+        ush ln -fs ../test_data/vicar_test_images/testdata/neat nn
+    else
+        ush ln -fs $AFIDS_TESTDATA/vicar_test_images/testdata/neat nn
+    end-if
+end-if
+let _onfail="goto rm"
+!  
+! test 8-bit integer Galileo image
+!  
+label-list nn/globe.red 'nousrtim
+fitsout INP=nn/globe.red
+fitsout INP=nn/globe.red history=tasks
+fitsout INP=nn/globe.red history=nohistory
+fitsout nn/globe.red glober.fits
+fitsin glober.fits
+fitsout nn/globe.red glober.fits history=tasks
+fitsin glober.fits
+fitsout nn/globe.red glober.fits history=nohistory
+fitsin glober.fits
+fitsout nn/globe.red header=glober.hdr
+fitsin glober.fits
+typetext glober.hdr
+fitsout nn/globe.red header=glober.hdr history=tasks
+fitsin glober.fits
+typetext  glober.hdr
+fitsout nn/globe.red header=glober.hdr history=nohistory
+fitsin glober.fits
+typetext glober.hdr
+!
+! gen 8, 16 and 32 bit data
+!
+gen gen8.256 nl=256 ns=256 format=byte
+gen gen16.256 nl=256 ns=256 format=half linc=100.0 sinc=100.0
+gen gen32.256 nl=256 ns=256 format=full linc=2000. sinc=2000. 
+!
+! test 8-bit integer data
+!
+fitsout gen8.256 gen8.fits
+fitsin gen8.fits gen8.out
+list gen8.256 sl=1 ss=1 nl=10 ns=10 'nousrtim
+list gen8.out sl=1 ss=1 nl=10 ns=10 'nousrtim
+list gen8.256 sl=200 ss=200 nl=10 ns=10 'nousrtim
+list gen8.out sl=200 ss=200 nl=10 ns=10 'nousrtim
+!
+! test 16-bit integer data
+!
+fitsout gen16.256 gen16.fits
+fitsin gen16.fits gen16.out
+list gen16.256 sl=1 ss=1 nl=10 ns=10 'nousrtim
+list gen16.out sl=1 ss=1 nl=10 ns=10 'nousrtim
+list gen16.256 sl=200 ss=200 nl=10 ns=10 'nousrtim
+list gen16.out sl=200 ss=200 nl=10 ns=10 'nousrtim
+fitsout gen16.256 gen16.fits8 outdata=8
+fitsin gen16.fits8 gen16.out8
+list gen16.out8 sl=1 ss=1 nl=10 ns=10 'nousrtim
+list gen16.out8 sl=247 ss=247 nl=10 ns=10 'nousrtim
+!
+! test 32-bit integer data
+!
+fitsout gen32.256 gen32.fits
+fitsin gen32.fits gen32.out
+list gen32.256 sl=1 ss=1 nl=10 ns=10 'nousrtim
+list gen32.out sl=1 ss=1 nl=10 ns=10 'nousrtim
+list gen32.256 sl=200 ss=200 nl=10 ns=10 'nousrtim
+list gen32.out sl=200 ss=200 nl=10 ns=10 'nousrtim
+fitsout gen32.256 gen32.fits8 outdata=8
+fitsin gen32.fits8 gen32.out8
+list gen32.out8 sl=1 ss=1 nl=10 ns=10 'nousrtim
+list gen32.out8 sl=247 ss=247 nl=10 ns=10 'nousrtim
+fitsout gen32.256 gen32.fits16 outdata=16
+fitsin gen32.fits16 gen32.out16
+list gen32.out16 sl=1 ss=1 nl=10 ns=10 'nousrtim
+list gen32.out16 sl=247 ss=247 nl=10 ns=10 'nousrtim
+fitsin gen32.fits16 gen32.out32 data=true
+list gen32.out32 sl=1 ss=1 nl=10 ns=10 'nousrtim
+list gen32.out32 sl=247 ss=247 nl=10 ns=10 'nousrtim
+!
+! gen multiband data for 8, 16 and 32 bit integers
+!
+gen gen8b3.256 nl=256 ns=256 nb=3 format=byte
+gen gen16b3.256 nl=256 ns=256 nb=3 format=half linc=100.0 sinc=100.0 +
+	binc=50.
+gen gen32b3.256 nl=256 ns=256 nb=3 format=full linc=2000. sinc=2000. +
+	binc=2500.
+!
+! test 8-bit multiband integer data
+!
+fitsout gen8b3.256 gen8b3.fits
+fitsin gen8b3.fits gen8b3.out
+list gen8b3.out sl=1 ss=1 nl=10 ns=10 'nousrtim
+list gen8b3.out sl=247 ss=247 nl=10 ns=10 'nousrtim
+!
+! test 16-bit multiband integer data
+!
+fitsout gen16b3.256 gen16b3.fits
+fitsin gen16b3.fits gen16b3.out
+list gen16b3.out sl=1 ss=1 nl=10 ns=10 'nousrtim
+list gen16b3.out sl=247 ss=247 nl=10 ns=10 'nousrtim
+!
+! test 32-bit multiband integer data
+!
+fitsout gen32b3.256 gen32b3.fits
+fitsin gen32b3.fits gen32b3.out
+list gen32b3.out sl=1 ss=1 nl=10 ns=10 'nousrtim
+list gen32b3.out sl=247 ss=247 nl=10 ns=10 'nousrtim
+!
+! test old VICAR labels from 1984
+!
+fitsout nn/io.grn iogrn.fits
+fitsin iogrn.fits io.out
+list io.out sl=1 ss=1 nl=10 ns=10 'nousrtim
+list io.out sl=247 ss=247 nl=10 ns=10 'nousrtim
+
+rm>
+ush rm -f nn
+ush rm -f gen16.256 gen16b3.256 gen16b3.fits gen16b3.out gen16.fits gen16.fits8 gen16.out gen16.out8 gen32.256 
+ush rm -f gen32b3.256 gen32b3.fits gen32b3.out gen32.fits gen32.fits16 gen32.fits8 gen32.out gen32.out16 
+ush rm -f gen32.out32 gen32.out8 gen8.256 gen8b3.256 gen8b3.fits gen8b3.out gen8.fits gen8.out
+ush rm -f glober.fits glober.hdr iogrn.fits io.out
+
+let $echo="yes"
+
+disable-log
+end-proc

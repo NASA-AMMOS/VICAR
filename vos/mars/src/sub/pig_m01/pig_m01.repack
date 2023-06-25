@@ -1,0 +1,4 @@
+$ vpack pig_m01.com -mixed -
+	-s PigM01.cc PigPointM01Pancam.cc -
+	-i pig_m01.imake
+$ Exit

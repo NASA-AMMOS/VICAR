@@ -1,0 +1,1475 @@
+process help=*
+PARM INP TYPE=STRING COUNT=(1:200)
+PARM OUT TYPE=STRING COUNT=1 
+PARM IN_TPT TYPE=STRING COUNT=0:1 DEFAULT=--
+PARM OUT_TPT TYPE=STRING COUNT=1 DEFAULT="tptlist.tpt"
+PARM NAVTABLE TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM FORMAT TYPE=STRING COUNT=(0:1) +
+  VALID=("XML","TXT") DEFAULT="XML"
+PARM OUT_SOLUTION_ID TYPE=STRING COUNT=0:1 DEFAULT=--
+PARM SOLUTION_ID TYPE=STRING COUNT=0:1 DEFAULT=--
+PARM REFIMAGE TYPE=INTEGER COUNT=(0:200) VALID=(-1000:1000) DEFAULT=--
+PARM UNTIL TYPE=KEYWORD COUNT=(0:1) +
+  VALID=("UNTIL","NULL") DEFAULT="NULL"
+PARM IGNORE TYPE=INTEGER COUNT=(0:200) VALID=(-1000:1000) DEFAULT=--
+PARM IGNORE_INTRA TYPE=KEYWORD COUNT=(0:1) VALID="IGNORE_INTRA" DEFAULT=--
+PARM ERROR TYPE=REAL COUNT=(0:1) VALID=(0.:1000.) DEFAULT=7.0
+PARM DO_POINTING TYPE=KEYWORD COUNT=1 VALID=("DO_POINTING","NO_POINTING") +
+		DEFAULT="DO_POINTING"
+PARM DO_XYZ TYPE=KEYWORD COUNT=1 VALID=("DO_XYZ","NO_XYZ") +
+		DEFAULT="DO_XYZ"
+PARM DO_LOCATION TYPE=INTEGER COUNT=(0:400) DEFAULT=--
+PARM DO_ORIENTATION TYPE=INTEGER COUNT=(0:400) DEFAULT=--
+PARM REMOVE TYPE=KEYWORD COUNT=1 VALID=("REMOVE","NOREMOVE") DEFAULT="NOREMOVE"
+PARM MAX_RESIDUAL TYPE=REAL COUNT=1 DEFAULT=0.0
+PARM MAX_REMOVE TYPE=INTEGER COUNT=1 DEFAULT=0
+PARM START_KEY TYPE=INTEGER COUNT=1 DEFAULT=0
+PARM PARALLEL_LIMIT TYPE=REAL COUNT=1 DEFAULT=0.9999
+PARM TRACK_REMOVE TYPE=INTEGER COUNT=(0:200) VALID=(-200:200) DEFAULT=--
+
+PARM OMP_ON TYPE=KEYWORD VALID=(OMP_ON,OMP_OFF) DEFAULT=OMP_ON
+
+PARM CONFIG_PATH STRING DEFAULT="$MARS_CONFIG_PATH"
+PARM POINT_METHOD TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM MATCH_METHOD TYPE=STRING COUNT=(0:1) VALID=("LOOSE", "TIGHT") +
+	DEFAULT=LOOSE
+PARM MATCH_TOL TYPE=REAL COUNT=1 DEFAULT=.002
+
+PARM RSF TYPE=STRING COUNT=0:100 DEFAULT=--
+PARM DEBUG_RSF TYPE=KEYWORD COUNT=0:1 VALID=DEBUG_RSF DEFAULT=--
+PARM COORD TYPE=KEYWORD VALID=("FIXED", "INSTRUMENT", "SITE", "ROVER", +
+        "LOCAL_LEVEL","HELI_G_FRAME", "HELI_M_FRAME") DEFAULT="FIXED"
+PARM COORD_INDEX TYPE=INTEGER COUNT=0:10 DEFAULT=--
+PARM FIXED_SITE TYPE=INTEGER COUNT=0:1 DEFAULT=--
+
+PARM DO_FILTER TYPE=KEYWORD VALID=("DO_FILTER", "NO_FILTER")+
+           DEFAULT="DO_FILTER"
+PARM DISP_CONNECT TYPE=KEYWORD COUNT=1 VALID=(DISP_CONNECT, NODISP_CONNECT) +
+           DEFAULT="DISP_CONNECT"
+PARM LOSS_FUNCTION TYPE=STRING COUNT=1 +
+         VALID=("TRIVIALLOSS","HUBERLOSS","CAUCHYLOSS") +
+         DEFAULT="TRIVIALLOSS"
+PARM BOUNDS_POINT TYPE=REAL COUNT=1 VALID=(0:1000) DEFAULT=0
+PARM BOUNDS_SITE TYPE=REAL COUNT=1 VALID=(0:1000) DEFAULT=0
+PARM SOLVER TYPE=STRING COUNT=1 DEFAULT="DENSE_SCHUR"
+PARM SUMMARY TYPE=KEYWORD COUNT=1 VALID=("NO_SUM","FULL_SUM","BRIEF_SUM")+
+            DEFAULT="FULL_SUM"
+PARM RESIDUAL_DISP TYPE=INTEGER COUNT=1 DEFAULT=10 
+PARM APPLY_LOSS_OFF TYPE=KEYWORD COUNT=1 VALID=("APPLY_LOSS","NOAPPLY_LOSS")+
+            DEFAULT="APPLY_LOSS"
+PARM ITER_DISP TYPE=KEYWORD COUNT=1 VALID=("ITER_DISP","NOITER_DISP")+
+            DEFAULT="NOITER_DISP"
+PARM ITER_MAX TYPE=integer COUNT=1 DEFAULT=50
+PARM HIST_BIN TYPE=INTEGER COUNT=1 DEFAULT=100
+
+PARM OPTI_FIDUCIAL TYPE=KEYWORD COUNT=1 VALID=("OPTI_FIDUCIAL", "NOPTI_FIDUCIAL")+
+                    DEFAULT="NOPTI_FIDUCIAL"
+PARM FID_REMOVE TYPE=KEYWORD COUNT=1 VALID=("FID_REMOVE", "NO_FID_REMOVE") +
+                DEFAULT="NO_FID_REMOVE"
+PARM INERTIA TYPE=REAL COUNT=1 DEFAULT=0
+PARM OUT_BAD TYPE=STRING COUNT=0:1 DEFAULT=-- 
+
+PARM TP_TYPE TYPE=KEYWORD COUNT=1 VALID=("EXT_TP", "STD_TP") DEFAULT="STD_TP"
+PARM CM_ORI TYPE=KEYWORD COUNT=1 VALID=("CM_ORI", "NOCM_ORI") DEFAULT="NOCM_ORI"
+
+PARM VISRES TYPE=KEYWORD COUNT=1 VALID=("NOVISRES", "VISRES") DEFAULT="NOVISRES"
+PARM SCALE_RES TYPE=REAL COUNT=1 DEFAULT=1
+
+PARM POINT_ERR TYPE=REAL COUNT=(0:10) DEFAULT=--
+
+PARM DO_MVT TYPE=KEYWORD COUNT=1 VALID=("DO_MVT","NO_MVT") +
+		DEFAULT="NO_MVT"
+PARM DO_TRIOPT TYPE=KEYWORD COUNT=1 VALID=("DO_TRIOPT","NO_TRIOPT") +
+		DEFAULT="NO_TRIOPT"
+PARM MVT_ERR_MAX TYPE=REAL COUNT=1 DEFAULT=1
+PARM CONDNUM_MAX TYPE=REAL COUNT=1 DEFAULT=1000
+PARM DRIFT_THRESH TYPE=REAL COUNT=1 DEFAULT=10.0
+PARM DO_BBOXCHECK TYPE=KEYWORD COUNT=1 VALID=("DO_BBOXCHECK","NO_BBOXCHECK") +
+		DEFAULT="NO_BBOXCHECK"
+
+
+!# parm inp(2-200) hints=default
+!# parm in_tpt file=vicar; direction=input
+!# parm out_tpt file=vicar; direction=output
+
+END-PROC
+
+.TITLE
+VICAR program MARSNAV2.
+
+.HELP
+
+Marsnav2 is an alternative to Marsnav and not a replacement. Some of the 
+parameters used in marsnav are not really usefull in marsnav2, at least in the
+context of a full Bundle Adjustment. Some of them are however still available
+in marsnav2. 
+
+PURPOSE:
+To do a Bundle Adjustment (BA) on a set of overlapping images. The set of 
+overlapping images are related to each other by tiepoints (input). The BA
+adjusts the pointing parameters of the images as well as the ground coordinates
+of the locations imaged by the tiepoints. The adjusted pointing parameters are 
+recorded in .nav file (output).
+
+This program is closely related to the MARSNAV program. Inputs and outputs 
+parameters and formats are kept as similar as possible. The main differences 
+between MARSNAV and MARSNAV2 are:
+- Implementation of a full Bundle Adjustment (simultaneous pointings and
+ground points adjustment)
+- Replacement of Simplex algorithm by a solver more appropriate to BA
+situation (Google Ceres Solver external library)
+
+MARSNAV2 supports any mission, instrument, and camera model supported by the
+Planetary Image Geometry (Pig) software suite.
+
+
+EXECUTION:
+There are two ways to present input images:
+
+marsnav2 inp=(a.img,b.img,c.img,...) out=navtable.nav in_tpt=images.tpt
+or
+marsnav2 inp=ascii_listoffiles out=navtable.nav in_tpt=images.tpt
+
+where ascii_listoffiles is a text file created by Sybase or an editor,
+containing the list of filenames to include in the mosaic, one per record.
+Up to 200 input images can be listed.
+
+An input tiepoint list must be provided.
+
+Note: there are two tiepoint file formats; "old" is the text-based list,
+while "xml" is an XML-based format.  The format is auto-detected on read.
+Over time "old" should be phased out. Output tiepoint file (see OUT_TPT)
+is always in the new XML format. This can be converted back to the old 
+format if necessary using marstie.
+
+USAGE:
+It is important that all images be connected to each other via tiepoints. It
+is also strongly recommended that images be connected by "tracks". A track is an
+extension of a traditional tiepoint. A tiepoint is an association of 2 
+observations from 2 images, a track is an association of N observations from N 
+images. A tiepoint is therefore a 2-elements track. All the observations of a
+given track "look" at the same ground location. A track is therefore associated
+to one XYZ ground coordinates. Large tracks bring strong constraints on the BA 
+and are therefore recommended. By construction, the maximum number of 
+observations contained in a track is equal to the number of image in the 
+project.
+It is also important to make sure that images or block of images are not 
+disconnected from each other, otherwise significant mis-alignement can occur
+between the blocks. 
+
+
+METHOD:
+
+1) The tiepoint list is analyzed and the pairwise relation of the input 
+tiepoints is changed to regroup all observations that are looking at the 
+same ground point into tracks. Unless the user analyzes the tiepoint
+file, the tracks structure is not readily apparent from a tiepoint file. 
+To identify the tracks, the Union-Find algorithm (also called Disjoint-Set) is 
+run. In case there is no N-elements tracks, then the tracks list is equivalent 
+to the initial tiepoint list.
+
+2) Once the tracks are defined, the ground coordinates (XYZ) of each track is
+computed from triangulation and based on the initial pointing of the cameras.
+For N-elements tracks, there are two ways of computing the XYZ value for each: 1) via pairwise two-view triangulation, in which XYZs from all the pairwise combination are computed and
+weighted-averaged. The "weight" is inversely proportional to the miss distance
+of the triangulation, i.e., to the distance between the rays, as they usually 
+do not intersect perfectly. The larger the distance, the less confidence is 
+brought to the ground point. 2) via true multi-view triangulation, where a linear system is formed from the track information and solved via Singular Value Decomposition (SVD) to obtain a best-fit XYZ point. This method is in general more accurate than the pairwise two-view method described above, but fails from mathematical degeneracies with very small baselines. Therefore, if the multi-view method is selected, both pairwise and multi-view methods are applied, and whichever result provides a smaller average miss distance is taken. This is more time-consuming in the triangulation stage, but more accurate points in this stage typically result in faster BA runs, with fewer iterations and with a lower probability of getting stuck in bad local minima. Regardless of the triangulation method applied, an option exists to further improve the point via the method of "angular triangulation". This method involves computing, for each camera, the angle formed by the ray from the camera center and through the current pixel position with respect to the ray from camera center to the evaluated XYZ position. The sum of angles across all cameras should ideally be zero, but due to errors, it will be higher and the goal is to optimize the angular cost function to find an XYZ position which minimizes this error. In most cases, this will produce a more accurate XYZ, with a lower miss distance. In case the error actually increases during optimization, the initial point is kept as the final result.  
+
+3) The BA structure is build (i.e., the association of observations (pixel),
+ground point (XYZ), and pointing/sites parameters) and passed to the solver
+along with any user defined constraints (reference images, parameter bounds,
+etc). Solving for a BA mathematically reduces to a Non-Linear Least Square 
+optimization (NLLS). These type of optmizations can only find local optimum and 
+thus require the initial conditions to be close to the real solution. It is 
+assumed that initial pointing parameters are good enough.
+For each observed pixel in the tracks list, the corresponding ground point (XYZ)
+is projected on the image (based on XYZ coordinates and pointing parameters). 
+The location of the projected pixel is compared to the location of the observed
+pixel. The difference is called a residual. In an error-free situation, the 
+projected- and observed- locations would be identical. But, of course, they are 
+not identical in real cases, because of errors in XYZ, pointing, and observed 
+pixels. The difference in location (the residual) is squared and all residuals
+(from all the observed pixels) are summed to form the "cost". The NNLS 
+optimization will adjust the pointing parameters and the XYZs such that the cost
+is minimized.
+
+4) Once the optimization is complete there are few options available, depending 
+on the user inputs. The options are very similar to MARSNAV apart from the 
+absence of INTERACTIVE mode and RECYCLE. If the user did not ask to remove bad 
+residual observations (NOREMOVE), the BA process exits and results are saved. 
+If REMOVE, then the residuals are checked against ERROR. The worst observation 
+is deleted from the track and steps 2 and 3 are reiterated. This continues until
+the residuals falls into line, we exceed MAX_REMOVE iterations, or until we run 
+out of observations (but a perfect (albeit nonsensical) match should always be 
+available with only a 2-elements track).
+If MAX_RESIDUAL is set, the above is modified slightly.  At each step, instead
+of deleting the worst tiepoint, any tiepoints whose residual is above the
+threshold are deleted.
+
+5) Save the final nav file (main objective of the program).
+Also, an output tiepoint file is always generated. The name is specified with 
+OUT_TPT parameter, which defaults to "tptlist.tpt". However, because the 
+structure of the pairwise tie points from the original files is lost when 
+building the tracks, we reconstruct an artificial tie points file that 
+represents the tracks. To do that, observations from the same tracks are 
+re-paired. For instance, if one track has 4 observations 1,2,3,4, we are making 
+the following pairs (1,2), (2,3), and (3,4). Note that for tracks with more 
+than 2 observations, there is no guarantee that a specific tie point in the 
+tiepoints input file will be re-paired in the output tiepoint file.
+For further insight into the navigation problem, extended tiepoints information
+can be saved in the output tiepoint. See TP_TYPE for more details.
+
+
+MOST NOTABLE CHANGE WITH MARSNAV:
+
+The simplex algorithm used in MARSNAV is replaced by a more robust, 
+sparse-efficient NLLS optmization solver. The simplex is a very efficient 
+algorithm when the number of variables to optimize is small. It has been showed 
+that its performance degrades quickly beyond 3-4 parameters. Given that a 
+multi-images bundle adjustment can have hundreds of parameters, a more adequate 
+solver was needed. The Levenberg-Marquardt algorithm is used instead.
+
+The output tiepoint file is different than the input tiepoint file. First, the
+pairing of points (to reconstruct artificial tiepoint) is arbitrarily set by the 
+program and depends on the track structure. That means that the original pairing
+of the tiepoints is lost and new pairing will occur. Second, the output tiepoint
+type is forced to TRADITIONAL. This is the consequence of the current existing 
+list of tiepoints types that do not currently have an adequate format to 
+represent tracks. A new format to account for track should be implemented in the
+future.
+
+Marsnav2 does not support surface definition. The XYZ ground coordinates of the
+surface points imaged by the tiepoints are defined by the program. The 
+DO_XYZ keyword in marsnav2 means to adjust or not the intial XYZ coordinates 
+estimates of the ground points based on original pointing parameters.
+
+The optimization is based on the pixel residuals, equivalent to 
+TRAD_MODE=TRADITIONAL in marsnav, and does not have MISS_DISTANCE or BOTH 
+options as marsnav did. In essence, the miss distance is incorporated into the 
+problem in the form of XYZ parameters.
+
+
+
+NOTES:
+
+Study the printout. It tells you a lot about what happened.
+
+One or more images can be designated as "Reference" images.  These
+images are "fixed" in that their pointing parameters are not allowed to
+change.  This "anchor" can keep the pointings from drifting too far off of 
+initial pointings. This is true of course only if all images are "connected" to
+reference images through tiepoints.  Without a reference, the overall
+mosaic is unconstrained and could drift around significantly 
+(but see BOUNDS_POINTS and BOUNDS_SITE).
+With a reference, there is still no absolute certainty of pointing, but at
+least the results will be close to what the "actual" absolute pointing should
+be.  If the reference image is known to be correctly pointed in absolute
+terms, then the rest of the pointing adjustments made by this program will
+come close to the same absolute accuracy - but even this is not guaranteed.
+
+The Reference image is automatically selected as the "most connected" image, 
+deduced from the input tiepoints file,unless overridden by REFIMAGE.  
+REFIMAGE=-1 will turn off all reference images.  REFIMAGE is a list, allowing 
+you to specify a number of reference images if needed.
+
+In order to accommodate large numbers of reference images, REFIMAGE accepts
+negative numbers to represent a range,  For example, the sequence 5,-8 says
+that 5,6,7,8 are references.  This shorthand is more convenient than the old
+UNTIL parameter.  See the help for REFIMAGE.
+
+A somewhat related concept is the IGNORE list.  Any tiepoints containing an
+image listed in the IGNORE list will be removed from consideration.  This
+allows you to concentrate on certain images without being influenced by others. 
+IGNORE accepts ranges, like REFIMAGE does.
+
+
+.page
+PARALLEL EXECUTION
+
+Part of this program has been parallelized using Open MP (OMP), which is built 
+into the g++ compiler.
+
+By default the number of threads used equals the number of cores on the machine
+where the program is being run. Parallel processing can be disabled via the 
+-OMP_OFF keyword.  The number of threads can be controlled by setting the 
+OMP_NUM_THREADS environment variable before running the program.  There are 
+numerous other OMP variables that can be set; see the OMP documentation.  
+However, the number of threads is the only one that is likely to be useful in 
+most cases.
+
+Step 2 hasn't been parallelized due to the complexity to parallelize the 
+Union-Find algorithm. There exists parallelized version of the algorithm, but 
+the non-parallelized application of the Union-Find algorithm does not appear to 
+be a limiting factor in the overall program efficiency. Disclaimer: Tests so 
+far have been run on ~200k tiepoints and ~20 images.
+
+Step 3 is parallelized because 1) it is trivial to do so, and 2) because the 
+amount of ground points coordinates computation can grow very large due to the
+combinatorial factor (a N-elements track will cause ~N^2 triangulation).
+
+Step 4 is "half" parallelized. Ceres solver has two multithreading options. 
+One for computing the residuals and jacobian for a given parameter set, and one 
+for solving the linearized system. The parallelization of the former is 
+currently not possible beacuse of racing conditions due to the way marsnav2
+manages the pointings (pointers to PIG objects). However, the parallelization
+can be (and is if OMP_ON) turned on for the later.
+
+
+
+.PAGE
+TIEPOINT TYPES
+
+The "xml" tiepoint file format implements 10 different types of tiepoints.
+Each includes different information, and should be used in different
+situations.  They are numbered according to the "type" field in the XML file.
+Marsnav.pdf includes a snippet of XML as an example of the formats.
+Not all the formats are supported in marnav2. Only the Traditional (0), 
+fiducial (1), Z surface (8), Dynamic (9), and Miss (10) formats are currently 
+supported. Other types may be added later on. Snippet of XML formats of the 
+supported types are shown below.
+
+IMPORTANT: Note that, except for FIDUCIAL, marsnav2 is only interested in the 
+pixel association, i.e., left line/sample and right line/sample. Marsnav2 does
+not use other information (projected line/sample, z, for instance). In essence, 
+all tiepoints are seen as traditional tiepoints by marsnav2.
+The output tiepoint file written by marsnav2 sets all the tiepoints (except 
+FIDUCIAL) to traditional, and sets "projected" values identical to right 
+line/sample.
+
+VERY IMPORTANT: If using FIDUCIAL tiepoints, the corresponding CS of the 
+XYZ coordinates of the fiducial points must be set in the XML field
+REFERENCE_FRAME. Usually it is ROVER CS, but not necessarily.
+
+0) Traditional
+
+    <tie type="0" left_key="1" right_key="2">
+      <left line="53.43125" samp="356.2353"/>
+      <projected line="634.3415" samp="43.43512"/>
+      <right line="634.4556" samp="44.43252"/>
+      <flags quality="0.85635" interactive="0"/>
+    </tie>
+
+1) Fiducial
+
+    <tie type="1" left_key="1">
+      <left line="326.32523" samp="21.43516"/>
+      <xyz x="0.43156" y="1.3455" z="-0.65425"/>
+      <flags quality="0.764626" interactive="1"/>
+    </tie>
+
+8) Z Surface
+
+    <tie type="8" left_key="1" right_key="2">
+      <left line="53.43125" samp="356.2353"/>
+      <projected line="634.3415" samp="43.43512"/>
+      <right line="634.4556" samp="44.43252"/>
+      <z z="-0.387"/>
+      <flags quality="0.85635" interactive="0"/>
+    </tie>
+
+
+9) Dynamic XYZ
+
+    <tie type="9" left_key="1" right_key="2">
+      <left line="53.43125" samp="356.2353"/>
+      <projected line="634.3415" samp="43.43512"/>
+      <right line="634.4556" samp="44.43252"/>
+      <flags quality="0.85635" interactive="0"/>
+    </tie>
+
+
+10) Miss Distance
+
+    <tie type="10" left_key="1" right_key="2">
+      <left line="53.43125" samp="356.2353"/>
+      <projected line="634.3415" samp="43.43512"/>
+      <right line="634.4556" samp="44.43252"/>
+      <flags quality="0.85635" interactive="0"/>
+    </tie>
+
+
+.page
+
+HISTORY:
+  2017-06-01 Francois Ayoub - Initial marnav2 based on marsnav
+  2017-08-01 Francois Ayoub - Adding Fiducial points and INERTIA
+  2019-10-24 Walt Bunch - IDS-7926 - initialized some variables; cleaned up some 
+-Wall warnings.
+  2022-09-30 Mauricio Hess-Flores - IDS-9556 - Adding multi-view triangulation infrastructure
+
+COGNIZANT PROGRAMMER:  Francois Ayoub
+
+.LEVEL1
+.VARI INP
+Input image(s) or
+file list.
+
+.VARI OUT
+Output navigation
+table.
+
+.VARI IN_TPT
+Input tiepoint file.
+
+.VARI OUT_TPT
+Output tiepoint file.
+
+.VARI NAVTABLE
+Input navigation table.
+
+.VARI FORMAT
+Output format of nav file.
+if format=xml, 
+OUT_SOLUTION_ID is required.
+
+.VARI OUT_SOLUTION_ID
+Solution ID for OUTPUT
+nav file (required if
+XML format).
+
+.VARI SOLUTION_ID
+Solution ID for INPUT
+nav file, if needed.
+
+.VARI REFIMAGE
+Reference image override.
+Can be a list of images.
+refimage=-1 means no reference
+image.
+
+.VARI UNTIL
+All images up to
+REFIMAGE(1) are reference
+images.
+
+.VARI IGNORE
+List of images to ignore
+in the tiepoint list.
+
+.VARI IGNORE_INTRA
+Causes intra-set overlaps
+(within the non-reference
+set) to be ignored.
+
+.VARI ERROR
+Final permitted
+pixel tiepoint
+residual.
+
+.VARI DO_POINTING
+Whether or not to
+adjust pointing
+
+.VARI DO_XYZ
+Whether or not to
+adjust ground points
+
+.VARI DO_LOCATION
+Which locations to
+adjust (see level 2)
+
+.VARI DO_ORIENTATION
+Which orientations to
+adjust (see level 2)
+
+.VARI REMOVE
+Whether or not to
+remove bad tiepoints
+in batch mode
+
+.VARI MAX_RESIDUAL
+Threshold above which
+tiepoints will be removed.
+
+.VARI MAX_REMOVE
+Max number of loops for
+removing tiepoints.
+
+.VARI START_KEY
+Starting key number for
+tiepoint file (XML format
+only).
+
+.VARI PARALLEL_LIMIT
+Sets limit for rays being
+considered parallel for
+miss-distance tiepoints.
+
+.VARI TRACK_REMOVE
+Tracks size to not consider
+in the bundle adjustment
+
+.VARI OMP_ON
+Turns on or off parallel
+processing (multiple threads,
+single machine).  Default: on
+
+.VARI CONFIG_PATH
+Path used to find
+configuration/calibration
+files.
+
+.VARI POINT_METHOD
+Specifies a mission-
+specific pointing
+method to use
+
+.VARI MATCH_METHOD
+Specifies a method
+for pointing corrections.
+
+.VARI MATCH_TOL
+Tolerance value for
+matching pointing params
+in pointing corrections file.
+
+.VARI RSF
+Rover State File(s) to use.
+
+.VARI DEBUG_RSF
+Turns on debugging of RSF
+parameter.
+
+.VARI COORD
+Coordinate system to use.
+Ignored by marsnav, except
+for final surface model.
+
+.VARI COORD_INDEX
+Coordinate system index for
+some COORD/mission combos.
+Ignored by marsnav.
+
+.VARI FIXED_SITE
+Which site is FIXED for
+rover missions.
+
+.VARI DO_FILTER
+Filter or not the track
+list for corrupted track.
+Default ON
+
+.VARI DISP_CONNECT
+Display or not in the stdout
+the images connectivity matrix.
+
+.VARI LOSS_FUNCTION
+Which loss function to
+apply to the residual
+during optimization.
+
+.VARI BOUNDS_POINT
+Multiplicative scalar to
+force pointings solution in 
+range defined by err*scalar.
+
+.VARI BOUNDS_SITE
+Multiplicative scalar to
+force sites solution in 
+range defined by err*scalar.
+
+.VARI SOLVER
+Which solver to use 
+during the optimization.
+
+.VARI SUMMARY
+Which verbosity of 
+optimization report to
+display in stdout
+
+.VARI RESIDUAL_DISP
+How many residuals to 
+display in the stdout
+
+.VARI APPLY_LOSS_OFF
+Apply or not the loss 
+function for residuals
+display.
+
+.VARI ITER_DISP 
+Display or not info
+on each solver iteration
+
+.VARI ITER_MAX
+Maximum number of solver
+iterations
+
+.VARI HIST_BIN
+Number of bin for residual
+histogram display
+
+.VARI OPTI_FIDUCIAL
+Whether of not optimize
+fiducial points
+
+.VARI FID_REMOVE
+Remove fiducial with
+high residuals
+
+.VARI INERTIA
+Activate and scale a
+Normal Prior constraint
+on pointing parameters
+
+.VARI OUT_BAD
+Save tiepoints with given
+error to file
+
+.VARI TP_TYPE
+Save extended tiepoints info
+in the output tie point file
+
+.VARI CM_ORI
+Save original camera model
+to nav file
+
+.VARI VISRES
+Activate visual tp residual
+
+.VARI SCALE_RES
+Scale residual vector length
+
+.VARI POINT_ERR
+Manual change of pointing
+error
+
+.VARI DO_MVT
+Whether or not to
+perform multi-view
+triangulation of XYZ 
+points
+
+.VARI DO_TRIOPT
+Whether or not to
+perform angular
+optimization of 
+XYZ points
+
+.VARI MVT_ERR_MAX
+Maximum allowed 
+triangulation error
+as a percentage of 
+the XYZ's distance
+from the origin
+
+.VARI CONDNUM_MAX
+Maximum allowed
+condition number
+for multi-view
+triangulation
+data matrices
+
+.VARI DRIFT_THRESH
+Maximum allowed drift
+of an XYZ point during
+optimization, expressed 
+as a multiple of its 
+initial Euclidean 
+distance from origin 
+
+.VARI DO_BBOXCHECK
+Check if an optimized
+point falls outside the 
+bounding box created by
+all pairwise midpoint
+estimtes
+
+.LEVEL2
+.VARI INP
+There are two options for describing input images. 
+
+Either:
+List the image file names 
+
+Or:
+provide an ascii file with the file names listed, one per record.
+
+Note that normally only the label is used from the input images.  They
+are typically image files for convenience and compatibility with marstie et al.
+However, Dynamic XYZ tiepoints require the corresponding input file to be an
+XYZ image.
+
+.VARI OUT
+Output navigation table, containing the updated pointing and surface model
+information.  It should also contain rover localization if used, but this is
+not yet implemented.
+
+This is either an XML file, or an ASCII table, depending on the value of
+FORMAT.
+
+.VARI IN_TPT
+The input tiepoint file, as generated by MARSTIE (or a previous run of
+MARSNAV).  This file must be specified.  It can be in either the old text
+format, or the new XML format (it detects this automatically).
+
+.VARI OUT_TPT
+The output tiepoint file, which holds changes to the tiepoints made by either
+batch or interactive editing modes of MARSNAV.  This file is always written
+in the new XML tiepoint format.  It can be converted to the old format using
+marstie.
+
+.VARI NAVTABLE
+The optional input navigation table.  If provided, this allows the user to
+provide an initial nav solution, which is then tweaked by the marsnav process.
+This allows a pointing solution created by other means, (such as MICA) or via
+an earlier marsnav run, to be adjusted.  This may be used to better globally
+distribute error or accomodate new tiepoints, among other things.
+
+Note that there is no guarantee the result will bear any resemblance to the
+input nav file.  It is merely a starting point, and marsnav may go off in a
+completely different direction.
+
+.VARI FORMAT
+The output format of navigation file.
+If format=TXT, then the output is an ASCII table with a header,
+then one record per input picture giving:
+Number of Parameters (N), N Original Parameters, N Corrected Parameters
+If images come from different instruments, the number of pointing parameters
+may be different for each one.  
+
+If format=XML, then the output is a xml file in following format:
+<?xml version="1.0" encoding="UTF-8"?>
+<pointing_correction ...>
+   ...
+  <priority>
+    <entry solution_id=.../> 
+  </priority>
+  <solution ...>
+    <image filter=... frame_id=... image_id=... instrument=...>
+       <original_parameters type=...>
+         <parameter id=... value=.../>
+       </original_parameters>
+    </image>
+    <pointing_parameters type=...>
+       <parameter id=... value=.../>
+    </pointing_parameters>
+    <camera_model type=...>
+       <parameter id=... type=... value=.../>
+       ...
+       <reference_frame name=... index=.../>
+    </camera_model>
+  </solution>
+  ...
+</pointing_correction>
+
+.VARI OUT_SOLUTION_ID
+Solution id for the OUTPUT navigation file in XML format.
+If solution id is missing when FORMAT=XML, then the output
+navigation file can not be created (therefore the parameter is required).
+
+.VARI SOLUTION_ID
+Specifies which solution ID to use for the INPUT nav file (if present).
+
+There are potentially many different definitions for the same coordinate
+system. These are identified via a unique Solution ID.  If this parameter
+is given, only the specified solution's definition is searched for.  Normally
+it is not used.
+
+
+.VARI REFIMAGE
+Specifies which image (if any) are reference images.
+
+Reference images are assumed to be correctly navigated and will not be
+adjusted.
+
+Defaults to the image with the greatest number of connected images once
+tiepoints have been culled to one per pair.
+
+REFIMAGE=-1 means no reference image.
+
+REFIMAGE can be a single image, or a list of images.  Each image in the
+list will be a reference image.  (see also UNTIL).  This allows any arbitrary
+images to be selected as references.  If an image number is negative, it means
+all images from the previous number through (the absolute value of) this one 
+will be references.  For example a list:
+
+1,3,-6,8,11,-15
+
+will cause the following images to be reference imgaes:
+
+1,3,4,5,6,8,11,12,13,14,15
+
+Numbering of images starts at 1.
+
+.VARI UNTIL
+Means that all images from 1 to the first value of REFIMAGE inclusive are
+treated as reference images.  The pointing of these will not change.  Any
+additional images listed in REFIMAGE will also be reference images.
+
+The functionality of this parameter has been subsumed by the negative number
+feature of REFIMAGE.  For example, REF=5 -UNTIL is the same as REF=\(1,-5\).
+
+.VARI IGNORE
+Specifies a list of images that will be ignored.  Tiepoints containing this
+image will be ignored and excluded from consideration (but see IGNORE_INTRA).
+This has two purposes.  First, for very large tiepoint files, when adjusting
+only a few images (via REFIMAGE), the presence of spurious tiepoints can be a
+significant performance drain.  Second, this allows you to exclude a tiepoint
+that is known to be problematic.  This might occur, for example, when matching
+a foreground mastcam image to a background navcam image - even though the
+foreground to background connections are correct, they may pull the foreground
+solution out of alignment.
+
+Ignored tiepoints still appear in the output tiepoint file (if one is written).
+
+Ignored images should always be reference images (although this is not checked
+nor enforced).  A non-reference (active) image cannot be adjusted if all
+tiepoints containing that image are removed.
+
+Like REFIMAGE, IGNORE accepts negative numbers to indicate ranges.  So a value
+of 4,-7 means 4,5,6,7 are all ignored.  See REFIMAGE for more examples.
+
+.VARI IGNORE_INTRA
+This flag causes all tiepoints between non-reference (active) images to be
+ignored.  Only tiepoints between non-reference and reference images will be
+considered.
+
+The use case for this is as follows:  Say you are insetting images (e.g.
+mastcam on MSL) into a background (e.g. navcam) mosaic that has already been
+tiepointed and nav'd.  You want to coregister the images to the background.
+This flag allows you to use autotie to get a complete set of tiepoints but
+then only use the ones tying the foreground to the background.  This is
+beneficial because the normal autotie modes will create many more overlap
+ties than full-image ties, making the overlap ties overwhelm the full-image
+ties.  Since you want the full-image ties, this flag lets you ignore the
+overlap ties.
+
+.VARI ERROR
+The final pixel tiepoint residual error that is permitted. Points exceeding 
+this residual are candidates for removal if REMOVE is on. Default is 7 pixels.
+
+.VARI DO_POINTING
+This keyword specifies whether or not pointing should be adjusted.  It defaults
+to on.  You may wish to turn off pointing correction if you were only interested
+in a surface model or localization adjustment.  Note that a nav file is still 
+written even if NO_POINTING is on; it simply specifies no adjustment.
+
+.VARI DO_LOCATION
+Specifies which rover locations are to be adjusted.  This changes the XYZ
+location of the rover only; it does NOT adjust the rover orientation (see
+DO_ORIENTATION).
+
+When marsnav runs, it prints out a list of all sites used by the input files.
+Note that a "site" in this sense is any rover position, NOT just formally a
+Site frame.  This list is indexed by a single number (counting 0 to n).
+DO_LOCATION is a list of these numbers specifying which of the locations to
+adjust.  These are not Site indexes (e.g. as defined by MER); they are
+indexes into the printed-out table.  Note that this means you must normally
+run marsnav once to get this table printed, kill it, and rerun with
+DO_LOCATION specified.
+
+For example, if the following is printed:
+
+List of Sites used by input files:
+  Site 0,'MER_ROVER: (11,55,73,367,167)',count=9. Adj loc=0,ori=0. match loc=-1,ori=-1
+  Site 1,'MER_ROVER: (11,55,111,396,291)',count=7. Adj loc=0,ori=0. match loc=-1,ori=-1
+  Site 2,'MER_ROVER: (11,55,119,403,291)',count=23. Adj loc=0,ori=0. match loc=-1,ori=-1
+  Site 3,'MER_ROVER: (11,59,0,0,0)',count=42. Adj loc=0,ori=0. match loc=-1,ori=-1
+
+it says that 9 images use the "MER_ROVER: (11,55,73,367,167)" position, which
+is called 0 in marsnav.  42 use "MER_ROVER: (11,59,0,0,0)", which is called
+3, and so on.  If you wanted to adjust the last two locations, you would give
+DO_LOCATION=(2,3).  Check to make sure the appropriate "adj loc" values change
+to 1.
+
+Ignore match loc at the moment.  Eventually the plan is to allow sites to
+be glued together such that one value changes both, but this is not yet
+implemented.
+
+*IMPORTANT*  The results of the localization are printed to stdout.
+These results are NOT written into an RMC file. They should be, but 
+implementation time during ops did not allow for this.  So, you must create an 
+RMC file by hand, and cut-and-paste the printed values into it. The XYZ and 
+quaternion are conveniently formatted for cut-and-paste into an RMC file.
+
+Note:  in some cases you may want to take the resulting XYZ value and use
+it as a Site vector (SVF file) rather than a Rover vector (RVF).  However,
+any simultaneous adjustment of positions within the same site would have to
+be adjusted to account for the site offset.  Position 0 is by definition at
+offset (0,0,0) to the Site, so any adjustment of Position 0 really needs to
+be a Site update.  But that adjustment would not be reflected in the other
+positions within the site so the value would have to be subtracted from the
+other calculated positions in order to maintain consistency.
+
+
+.VARI DO_ORIENTATION
+Specifies which rover orientations are to be adjusted.  This changes the
+Euler angles (and thus the quaternion) of the rover only; it does NOT
+adjust the rover location (see DO_LOCATION).
+
+When marsnav runs, it prints out a list of all sites used by the input files.
+Note that a "site" in this sense is any rover position, NOT just formally a
+Site frame.  This list is indexed by a single number (counting 0 to n).
+DO_ORIENTATION is a list of these numbers specifying which of the orientations
+to adjust.  These are not Site indexes (e.g. as defined by MER); they are
+indexes into the printed-out table.  Note that this means you must normally
+run marsnav once to get this table printed, kill it, and rerun with
+DO_ORIENTATION specified.
+
+For example, if the following is printed:
+
+List of Sites used by input files:
+  Site 0,'MER_ROVER: (11,55,73,367,167)',count=9. Adj loc=0,ori=0. match loc=-1,ori=-1
+  Site 1,'MER_ROVER: (11,55,111,396,291)',count=7. Adj loc=0,ori=0. match loc=-1,ori=-1
+  Site 2,'MER_ROVER: (11,55,119,403,291)',count=23. Adj loc=0,ori=0. match loc=-1,ori=-1
+  Site 3,'MER_ROVER: (11,59,0,0,0)',count=42. Adj loc=0,ori=0. match loc=-1,ori=-1
+
+it says that 9 images use the "MER_ROVER: (11,55,73,367,167)" position, which
+is called 0 in marsnav.  42 use "MER_ROVER: (11,59,0,0,0)", which is called
+3, and so on.  If you wanted to adjust the second and fourth orientations,
+you would give DO_ORIENTATIONS=(1,3).  Check to make sure the appropriate
+"adj ori" values change to 1.
+
+Ignore match ori at the moment.  Eventually the plan is to allow sites to
+be glued together such that one value changes both, but this is not yet
+implemented.
+
+*IMPORTANT*  The results of the localization are printed to stdout. These 
+results are NOT written into an RMC file.  They should be, but implementation 
+time during ops did not allow for this.  So, you must create an RMC file by 
+hand, and cut-and-paste the printed values into it. The XYZ and quaternion are 
+conveniently formatted for cut-and-paste into an RMC file.
+
+
+.VARI REMOVE
+If NOREMOVE is specified, the program will not remove the worst tiepoint
+in batch mode.  Instead, it will simply exit with the current solution.  
+The default is NOREMOVE.
+
+This mode can be helpful when all tiepoints are known to be good.
+
+.VARI MAX_RESIDUAL
+Specifies a threshold for residuals.  Any tiepoint above this residual will be
+removed during the editing process.
+
+.VARI MAX_REMOVE
+Specifies a maximum number of loops for the remove-tiepoint process.
+When tiepoints are removed, the whole solution is restarted from the
+beginning (so as to not be influenced by the now-gone tiepoints).  If
+MAX_REMOVE is specified, it sets a limit on the number of times this
+restart can happen, independent of whether the other loop termination
+criteria (error or max residual) are reached.
+
+.VARI START_KEY
+Starting key number for the tiepoint file (XML format only).  Tiepoint files
+contain a list of images, each of which is associated with an integer key.
+Setting START_KEY to some value allows tiepoint files to be merged easily,
+without the keys conflicting.  It is acceptable to have the same image in
+different sections of a merged file (with different keys); they are properly
+merged when read in.
+
+.VARI PARALLEL_LIMIT
+When computing XYZ from triangulation of tiepoints, it is possible to get 
+tiepoints whose rays are very close to parallel (e.g. distant tiepoints, 
+near the horizon). XYZ becomes very sensitive to noise when the rays are very 
+close to parallel.  This parameter sets a limit on how close to parallel rays 
+can be and still be considered; those tiepoints that exceed this threshold are
+ignored.  The value is specified as the dot product of the two vectors, in
+other words the cosine of the angle between them.  The default is 0.9999.
+
+.VARI TRACK_REMOVE
+Defines the list of track sizes that will be removed and not considered 
+during the bundle. Tracks can be of size 1 (for a fiducial) to N (N being the 
+number of input images) maximum. Usually the most numerous track size is 2, 
+which corresponds to a regular tiepoints. There are situations, mostly for
+experimentations, when one would like to do a bundle with tracks of a certain
+size. For instance, if the number of 2-elements tracks is disproportionally 
+large compared to 3-elements+ tracks, we might want to check the contribution
+of the smaller track groups by removing all 2-elements tracks from the bundle
+
+Like REFIMAGE, TRACK_REMOVE accepts negative numbers to indicate ranges.  So a 
+value of 4,-7 means tracks of size 4,5,6,7 are all ignored.  See REFIMAGE for 
+more examples. A value of 0 has no effect.
+  
+.VARI OMP_ON
+Turns on or off parallel processing using OMP, which uses multiple cores on
+a single host machine.  The default is on.  The main help describes some
+environment variables that can further control parallel processing.  Note
+that this program uses standard OpenMP (which is built in to the gcc/g++
+compilers), so further details can be found in the OpenMP documentation.
+
+.VARI CONFIG_PATH
+A colon-separated list of directories in which to look for configuration
+and calibration files.  Environment variables are allowed in the list
+(and may themselves contain colon-separated lists).  The directories are
+searched in order for each config/cal file when it is loaded.  This allows
+multiple projectes to be supported simultaneously, and allows the user to
+override any given config/cal file.  Note that the directory structure below
+the directories specified in this path must match what the project expects.
+For example, Mars 98 expects flat fields to be in a subdirectory named
+"flat_fields" while Mars Pathfinder expects them to be directly in the
+directory specified by the path (i.e. no intermediate subdirectories).
+
+.VARI POINT_METHOD
+Specifies a mission-specific pointing method to use.  Normally this
+parameter is not used, in which case the "default" pointing methods
+are used.  Some missions may have special, or alternate, pointing
+methods available, which are indicated by this string (for example,
+backlash models, using arm joint angles instead of x/y/z/az/el, etc).
+A substring search is used, so multiple methods (where that makes sense)
+can be specified by separating the keywords with commas.
+
+The methods available vary per mission, but some methods available at
+the time of this writing are:
+
+BACKLASH : Mars 98 SSI only.  Selects a backlash pointing model,
+which adjusts the telemetered azimuth and elevation values based on
+knowledge of the camera's mechanical backlash and the direction the
+motor was travelling when the image was taken.
+
+.VARI MATCH_METHOD
+Specifies a method for reading the nav file.
+
+Loose method matches with pointing parameters of the image.
+Tight method matches with unique id of the image.
+
+Applies only to an input nav file, if given (not to the output nav file).
+
+.VARI MATCH_TOL
+Tolerance value for matching pointing parameters in the pointing corrections file.
+Used if MATCH_METHOD=LOOSE
+Default value is pretty arbitrary, though seems to work well so far....
+
+.VARI RSF
+Rover State File.  This is a list of filenames to load containing
+Rover State information.  These files contain position and orientation
+information for a rover (or other mobile spacecraft) at various sites.
+They are in XML format.  See the "Rover Motion Counter (RMC) Master File SIS"
+for details on these files.
+
+Rover State Files have a priority order.  The files listed first have
+the highest priority.
+
+Environment variables may be used in the list.
+
+For MER, if a directory is specified, then that directory is searched for
+RMC Master files and any found are loaded.  The directory structure and
+filename convention is covered in the RMC SIS.  The directory specified
+is the one containing "master", so if <dir> is the name specified in the
+RSF parameter, the following files will be searched for:
+
+<dir>/master/<mission>_Master.svf
+<dir>/master/<mission>_Site_<n>_Master.rvf
+
+The name of each file loaded is printed to the stdout log for reference.
+
+.VARI DEBUG_RSF
+If enabled, this causes the internal database of RMC locations to be
+printed out to the stdout log.  This is after the RSF files have been
+loaded and the coordinate systems read from the input label(s).
+
+.VARI COORD
+This parameter is ignored by marsnav, except for one place.  It is
+here for compatibility with subroutines used by other programs (see
+e.g. marsmap).
+
+.VARI COORD_INDEX
+This parameter is ignored by marsnav (except in one case; see COORD).  It
+is here for compatibility with subroutines used by other programs (see
+e.g. marsmap).
+
+.VARI FIXED_SITE
+Specifies which major Site is the "Fixed" Site for this run.
+
+Historically, MPF and M98 had a single "Surface Fixed" frame which never
+moved, and which all other coordinate system frames were referenced to.
+With the advent of long-range rovers (such as MER and FIDO), that became
+insufficient.  The rover traverses far enough that errors in knowledge of
+coordinate system offset and orientation become unacceptable.
+
+For this reason, a system of major Sites was introduced.  Periodically
+during the mission, a Site frame is declared.  This then becomes the
+reference frame for all activities until the next Site is declared.
+References are kept local, and errors don't propogate across Sites.
+
+However, if images from more than one Site are combined together, the
+Site's must be placed relative to each other.  Therefore a single reference
+frame is still needed to combine different sites.
+
+The FIXED_SITE parameter controls which of the major Site frames is
+the reference ("fixed") site for this program run.  This fixed frame
+can vary in different program runs, but is constant throughout one
+execution.
+
+If not specified, FIXED_SITE defaults to the minimum Site number (i.e.
+lowest numbered, or earliest chronologically) used in all input images.
+Normally this default is sufficient; rarely must FIXED_SITE be specified.
+
+One or more Rover State Files must usually be specified in order to combine
+image from more than one Site.  These describe the relationship between
+sites.  See the RSF parameter.
+
+
+.VARI DO_FILTER
+Specify if the tracks are to be filtered or not before being used in the 
+optimization process.
+The Union-Find algorithm analyzes a list of pairwise relation (tiepoints) to 
+return a list of tracks that group together all the observations (pixel)
+"looking" at the same ground point. Because tie-points may contains erroneous 
+pairing, some tracks might be corrupted. A corrupted track for instance is a 
+track that contains two observations from the same image, i.e., two points in 
+the same image that "look" at the same ground point.
+If DO_FILTER, the track list is analysed for such corruption. There 
+are algorithms (e.g.,Gomory-Hu tree analysis) that prune the track from bad 
+observations. However, for now, if a track contains two points from  the 
+same image (corruption), the track is deleted.
+Note that the current approach does not remove all bad tracks. For instance,
+a track with erroneous observations that are not connected to other 
+observations belonging to the same image will go undetected.
+Default is ON.
+
+
+
+.VARI DISP_CONNECT
+If ON, the connectivity matrix of the images will be printed to the stdout.
+The connectivity matrix shows the connection of the images between each other
+trough the tiepoints (or more precisely, through the tracks). The connectivity
+is inferred from the track list once it's been filtered (see DO_FILTER), 
+such that the matrix really respresent the connectivity that goes into the 
+optimization process. This is a visually convenient way to estimate if the 
+images are sufficiantly and well connected.
+
+An example of a printed out connectivity matrix for a BA on 20 images is:
+
+0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19
+0  .  1  .  .  .  .  .  .  .  .  .  .  .  .  .  2  .  .  .
+1     3  1  .  .  .  .  .  .  .  .  .  .  .  1  1  1  .  .
+2        5  1  .  .  .  .  .  .  1  1  1  .  1  1  1  .  1
+3           1  .  .  .  .  .  .  2  4  1  .  .  2  9  .  .
+4              4  1  .  .  .  .  9 10  .  .  .  1  1  2  5
+5                 3  1  .  1  1  5  .  .  .  .  1  3  2  .
+6                    1  .  .  .  .  .  .  .  .  .  2  .  .
+7                       .  .  1  .  .  .  .  .  .  .  .  .
+8                          .  .  .  .  .  .  .  .  .  .  .
+9                             1  .  1  .  .  .  .  .  .  .
+10                               7  1  .  .  .  .  1  .  .
+11                                  8  .  .  .  1  .  .  .
+12                                     8  .  .  2  6  1  .
+13                                        1  .  .  1  .  .
+14                                           .  .  .  .  .
+15                                              5  1  .  .
+16                                                 7  1  .
+17                                                    .  .
+18                                                       7
+19 
+ 
+A dot (".") indicates no connection between the two images. A number 
+indicates the number of connections between the two images, i.e., the number of
+tracks containing both images.
+For instance, we can see that image 0 is connected to image 2 and 16 only. 
+Image 0 and image 2 have 1 connection, while image 0 and image 16 have 2
+connections. We don't necessarily have the details of the connection, i.e., 
+Image 0 for instance may be represented in a total of 3 tracks 
+((0,2), (0,16), (0,16)) or 2 tracks ((0,2,16), (0,16)).
+We can also see that image 8 is not connected to any image, which is not
+recommended. Image 14 is only connected to image 13 trough 1 track. It's not
+much and indicate where to add tiepoints if doing so.
+
+Obviously, if the number of image is large, the printing of the connectivity
+matrix will pose problem. In such case, the printing could be disabled
+(NODISP_CONNECT). Note that information on disconnected block of images
+is still printed in the stdout if NODISP_CONNECT.
+
+
+.VARI LOSS_FUNCTION
+The BA reduces to a Least Square sum minimization. The *values* that are 
+squared and summed are the residuals. The underlying assumption for this 
+problem layout is that the residuals distribution is more or less gaussian. 
+This is generally true if the residuals are due to the standard errors, i.e.,
+a combination of instrument errors and, most importantly, the standard tiepoints
+error (e.g., correlation precision, manual selection precision, keypoint feature
+selection precision). Usually tiepoints errors are "standard" - close to the 
+pixel or at most few pixels. However, it happens (not so infrequently), that 
+tiepoints may be completely bogus (correlation outlier, user misinterpretation, 
+similar keypoint signatures) - tens, if not hundreds of pixels off. In that 
+case, the squared residual will be very large, causing the entire solution to 
+be being pulled away from the optimum.
+To account for this, it is important to minimize the effect of spurious 
+observations in the optimization process. It is done with a loss function.
+A loss function is a function that is applied to the residual and which 
+reduces the actual residual value, before being summed. The higher the residual,
+the larger the reduction. For small residuals the loss function is close to the 
+identity function to avoid changing *good* residuals.
+There are three loss functions available:
+- Trivial Loss: f(x)=x   Identity function, so no change in the residual. This 
+is the default.
+- Huber Loss: f(x) = x  if x<1
+              f(x) = 2 sqrt(x) - 1  if x>1
+- Cauchy loss: f(x) = log(1+x)
+The residual reduction is strongest with Cauchy and null with Trivial. Huber
+reduction is intermediate.
+
+Note: More loss functions are available in Ceres (see documentation at
+ceres-solver.org), and could be easily implemented if needed.
+
+
+.VARI BOUNDS_POINT
+This is a multiplicative coefficient to apply to the pointing parameters
+estimated error (retrieved from getPointingErrorEstimate) to bound the 
+pointing solution within a range. Pointing authorized range is set to:
+initial value - error*bounds_point <---> initial value + error*bounds_point
+Default is 0 in which case the pointings are not limited at all.
+
+
+.VARI BOUNDS_SITE
+Similar to BOUNDS_POINT except it is applied to Site (orientation and location)
+parameters. Note that the same coefficient is applied to both orientation
+and location parameters.
+
+
+.VARI SOLVER
+Tells Ceres which solver to use during the optimization. Ceres offers different
+approaches to solve for the Non-Linear Least Square optimization problem. In 
+our context of BA, it is most likely that we'll only use either:
+- DENSE_QR: Meant for small BA, with few images and a few thousands residuals and
+dense connectivity preferably. If the BA problem is too large, it will crash.
+- DENSE_SCHUR: Meant for large BA problem with relatively dense connectivity. It
+will also work for small BA and/or sparse connectivity. For large and sparse
+BA there are more efficient (memory management and time processing) algorithms
+but they do require additional librairies (cf SuiteSparse, CXSparse, or 
+EigenSparse in Ceres install doc).
+Default is DENSE_SCHUR.
+
+For more information, see ceres-solver.org
+
+
+
+.VARI SUMMARY
+Which type of Ceres optimization report to print in the stdout.
+- NO_SUM: Does not print any report from Ceres. This is not recommended as, at
+a mimimum, it should be checked if the optimization converged
+- BRIEF_SUM: A one-liner giving the convergence status, number of iterations 
+ran, and the initial and final cost (residual sums).
+- FULL_SUM: A several lines report display showing more information on the
+optimization process.
+
+DEFAULT is FULL_SUM.
+
+
+.VARI RESIDUAL_DISP
+Number of residuals to print in the stdout at the end of the optimization.
+Residuals are ordered from worst to best. RESIDUAL_DISP is the number of the
+first worst residuals to print. For each residual the image ID and sample/line
+of the observation is also printed.
+For instance, if RESIDUAL_DISP=10, then the 10 worst residuals are printed.
+If RESIDUAL_DISP=0, none are printed. If RESIDUAL_DISP is negative, then all
+the residuals are printed.
+
+Residual values are in pixel, that is the distance, in pixel, between the
+observation pixel location and the projected pixel location.
+
+If REMOVE is on, then the residuals are printed at each iteration of 
+REMOVE.
+
+Default is 10.
+ 
+
+.VARI APPLY_LOSS_OFF
+This keyword allows to apply (or not) the loss function when computing the
+residuals *for display only*. The loss function is automatically applied
+during the optimization, irrespective of this parameter. However, when the 
+optimization is over, the residuals are printed on the stdout 
+(if RESIDUAL_DISP != 0), and the user has the possibility to apply the loss
+function to the displayed residual. If turned off, the printed residuals are
+the unmodified distance between the observation pixel location and the 
+projected pixel location. If turned on, the printed residual is modified by
+the loss function. This is, in essence, the residuals as seen by the solver. 
+This can be usefull to estimate the relative contributions of each residuals
+in driving the solution.
+
+Default is ON.
+
+.VARI ITER_DISP 
+This keyword, when on, will display on the stdout an informative line
+at each iteration of the solver.
+
+.VARI ITER_MAX
+Maximum number of iteration the solver can take before ending the process.
+Ideally you'd want the convergence criteria to be reached before the maximum
+number of iterations
+
+.VARI HIST_BIN
+When positive, the residual histogram pre and post bundle will be displayed.
+The value of HIST_BIN indicates the number of bin of the histogram. The range
+between 0 and the largest residual are divided by HIST_BIN, which defines the
+bin size. If HIST_BIN <= 0, then no display of the residual histogram. 
+Note: Because of implementation structure, if OUT_BAD is used, then HIST_BIN
+is automatically activated if disabled (<=0), and set to default value.
+
+.VARI OPTI_FIDUCIAL
+Normally, and this is the default, fiducial points are ground control points
+which are not optimized during the bundle adjustment, i.e., fiducial XYZ are 
+not modified and are considered "truth". If set, this keyword allows for the 
+fiducial coordinates (XYZ) to be optimized during the bundle adjustment, 
+similar to other tie-points. Normally this should not happen, unless there is
+a low confidence in the fiducial point selection.
+
+.VARI FID_REMOVE
+This keyword controls if fiducial points are to be treated similarly to regular
+tiepoints in case the REMOVE keyword is on. When FID_REMOVE is activated, if a 
+fiducial is a candidate for removal, the fiducial will be removed. Otherwise,
+all fiducial are kept and removal is applied to the next, non-fiducial, worst
+residual point.
+
+.VARI INERTIA
+This keyword activates a Normal Prior constraint on the pointing parameters. The
+objective is to add a penalty during the optimization for solutions (i.e. new 
+pointings) that are far from the initial pointings. This is to avoid drift and 
+unrealistic solutions.
+It is assumed that the pointings distribution follows a bell-shaped curve, 
+centered at the real and correct pointings. The *width* of the bell-shaped curve
+is given by the error estimates of the pointings, which are retrived from the 
+PigPointing objects.
+Note, that this is a strong assumption. There are other possible and plausible
+distributions (uniform, sine distribution (oscillating), etc...) which should be
+considered depending on the hardware and in-situ conditions.
+By default INERTIA is 0, which means no penalty applied. Negative numbers do not
+have an effect. If INERTIA is set to a positive value, it will activate the 
+penalty and the value of INERTIA will scale the pointing error accordingly. So
+if INERTIA is set to 1, then penalty is applied without scaling the  measurement
+error obtained from PigPointing objects. If INERTIA is set to 2, then penalty is
+applied, and measurement errors are divided by 2, i.e., it increases the 
+penalty. Conversely, if INERTIA is set to less than 1, then a weaker *stay in
+place* constraint is imposed.
+WARNING: It is never a good thing to over/under estimate the error of a variable
+in any least square optimization. Attention should be paid to the value used for
+INERTIA (which implies that attention should be paid to the error returned by 
+the PigPointing object). Normally, if errors were estimated properly, we should 
+not need a scaling factor.
+
+.VARI OUT_BAD
+If supplied, all the tiepoints whose residuals (pre-bundle) are greater than 
+ERROR will be outputed in a tiepoint files. This could be useful to check for
+gross outliers. Or if these bad tie points are actually good, then it may 
+indicates either/both seriously wrong initial pointing or geometry ill 
+constrained (e.g., almost // viewing angles). Note that the tiepoints, because 
+they will be reconstructed from the tracks, might not corresponds to the input 
+tie points. For instance, if in the input tiepoints we have a pair of tie 
+points img1->img2 and img1->img3 (with same x,y for img1), then a track 1->2->3
+is constructed but the output tiepoint file will contain 1->2 and 2->3 
+tiepoints.
+
+Note that the bundle is not carried out if that parameter is used. The program
+exits once the bad tiepoint file is written.
+
+
+.VARI TP_TYPE
+If activated (EXT_TP), the output tiepoint file will contain the reconstructed 
+(from tracks) tiepoints with added information about the navigation process. 
+When the output tiepoint file is constructed, only two types of tiepoints are 
+available: FIDUCIAL and TRADITIONAL. If TP_TYPE is activated, the following 
+information is added to each tiepoint description in the file:
+- Residual reprojection (line, sample) of the points BEFORE bundle adjustment.
+- Residual reprojection (line, sample) of the points AFTER bundle adjustment.
+- Miss distance of tie points rays (not documented for now)
+- XYZ ground point (from triangulation of initial tiepoints) BEFORE bundle 
+adjustment
+- XYZ ground point (from bundle adjustment)) AFTER bundle adjustment
+If a tie points has the BEFORE information but the AFTER information is 0, this
+means that the corresponding point (left or right) was a point that was active
+before the start of the bundle adjustment, but which has been removed during 
+the process (-REMOVE) and therefore does not have an AFTER residual information.
+
+.VARI CM_ORI 
+If set (CM_ORI) the original camera model will be save to the nav file. The 
+original pointing is automatically saved, along with the new pointing 
+parameters. However, the new camera model is save to the nav file but not the
+original one. If CM_ORI is activated, the original camera model will also be
+saved.
+Note that this will only apply to xml output format, not to the old txt format.
+Default is not activated.
+
+
+.VARI VISRES
+If activated, the program will save the input images with overlay of the tie
+points residual. The overlaid images have .RES as extension and are saved in
+the local directory. 
+The tiepoint location is displayed as cross while the residual is displayed
+as a vector, whose origin is at the cross. The length of the vector is in pixel
+which can be scaled up/down with SCALE_RES. The different color meanings are:
+- Green vectors indicate tie points residuals AFTER the process. These are the 
+residuals that we are left with once the adjustment is done. Tiepoints that 
+don't have a green vector are tiepoints that were not part of the final bundle 
+adjustment loop. Depending on the user parameters, the bundle can be applied 
+several times with outliers removed between iterations. The green vectors are 
+residual of tie points that were part of the last iteration. If the residual is 
+less that a pixel, the center of the tiepoint cross will be green.
+- Blue vectors indicates tie points residuals BEFORE the process. Tiepoints that
+don't have a blue vector (and don't have a green vector) are tie points that 
+were removed from the input list because of some issue (see next colors).
+- Red crosses indicate tie points that are part of the first solution, that is
+that are part of the first bundle iteration. Some of them may be removed from 
+the solution at some iterations, the only way to know which one is by the 
+lack of green vector.
+- Black crosses indicate tie points that were removed entirely from the process 
+because they belong to a track whose length has be explicitly forbidden by the 
+user (TACK_REMOVE).
+- Cyan crosses indicate tie points that were removed entirely from the process
+because of poor triangulation (parallel viewing vector, XYZ behind camera)
+- Orange crosses indicate tie points that were removed because they belonged to
+a corrupted track.
+
+
+.VARI SCALE_RES
+Scale residual vector length on the visual overlaid image. The length of the
+displayed vector is in pixel. So if a tiepoint has a residual of 2 pixels, the
+length of the vector will be of 2 pixels. That length can be scaled up/down
+with this parameter. SCALE_RES=2 will increase the size of the residual vectors
+by 2, while SCALE_RES=0.5 will decrease it by a factor of 2.
+
+
+.VARI POINT_ERR
+This is hopefully a temporary hack.
+By default, the pointing errors of a camera is read by the PIG library from some
+calibration files. These errors are used by the bundle to constraint the 
+solution (c.f. INERTIA). A bit of flexibility is allowed using the INERTIA 
+parameter to scale up/down the errors retrieved from the calibration file. 
+However, it's a unique scalar applied to all pointing errors.
+This parameter allows to overwrite the errors read from the calibration file 
+and manually input the pointing errors. By "error", we mean the std deviation
+of the expected pointing. It was born from the need to manually change the 
+pointing error when processing Ingenuity imagery, which didn't have valid 
+pointing errors in the calibration file.
+Beware when using this parameters, it hasn't been foolproofed and has limited
+capabilities. In particular, the BA can be run with different cameras, each 
+having a different set of pointing variables (7dof, 6dof, 2dof...). This 
+parameter will apply the error values to ALL images, without paying attention to
+their dof. For instance, if 7dof error values (usually quat + pos) are entered,
+all 7 will be applied to 7dof images (so far, so good), but the first 2 values 
+(i.e., the first 2 quaterions error values) will be applied to 2dof (azimuth, 
+elevation) images if any. Similarly, if 5 values are entered, 7dof images will 
+have only the first 5 values updated. This does not make sense at all! 
+So, really, as of now, only consistent type of camera is recommended.
+To know how pointing parameters are ordered and their nominal errors, look at 
+the command output of marsnav2, they are printed out for convenience (look for 
+"Nominal Pointing Errors"). 
+
+.VARI DO_MVT
+This keyword activates multi-view triangulation of XYZ points, as opposed to an 
+average of pairwise triangulations from all possible pairs. A linear system is created from the camera pointing and pixel information for each, and solved via SVD to obtain the best-fit XYZ point for each. This method is in general more accurate than the pairwise two-view method, but fails from mathematical degeneracies with very small baselines. Therefore, if the multi-view method is selected, both pairwise and multi-view methods are applied, and whichever result provides a smaller average miss distance is taken. This is more time-consuming in the triangulation stage, but more accurate points in this stage typically result in faster BA runs, with fewer iterations and with a lower probability of getting stuck in bad local minima. 
+ - The linear method is described in detail here:
+    // https://www.crewes.org/Documents/ResearchReports/2010/CRR201032.pdf
+ - The corresponding method is implemented in the 'xvector_multiview' subroutine
+
+.VARI DO_TRIOPT
+This keyword activates angular optimization of computed XYZ points.
+ This method involves computing, for each camera, the angle formed by the ray from the camera center and through the current pixel position with respect to the ray from camera center to the evaluated XYZ position. The sum of angles across all cameras should ideally be zero, but due to errors, it will be higher and the goal is to optimize the angular cost function to find an XYZ position which minimizes this error. In most cases, this will produce a more accurate XYZ, with a lower miss distance. In case the error actually increases during optimization, the initial point is kept as the final result.  
+ - The corresponding method is implemented in the 'xvector_optimize' subroutine
+
+.VARI MVT_ERR_MAX
+Maximum allowed triangulation error in multi-view triangulation. This is set as a percentage of the Euclidean distance sqrt(X^2+Y^2+Z^2) from the origin, for example a value of "1" corresponds to 1% of this distance. This cap on error allows to filter out mathematically-degenerate linear triangulations.
+
+.VARI CONDNUM_MAX
+Maximum allowed condition number for multi-view triangulation data matrices. The condition number of a matrix is a relative measure of how much output noise is amplified relative to the input. This is especially useful in the short-baseline scenario, where small miss distances and/or reprojection errors are obtained but the XYZ point is actually very far off in the view direction, since this correlates very well with near-singular data matrices (whose condition numbers are very high). Experiments show that a value of 1000 works well in most cases.
+
+.VARI DRIFT_THRESH
+Maximum allowed drift of an XYZ point during optimization, expressed as a multiple of its initial Euclidean distance from the origin. If the final point drifted 
+very far from the initial, it likely fell into a bad local minima, or was 
+ill-posed to begin with, usually due to short baselines. This usually leads to 
+very large coordinates, which this simple check can be used to detect.
+
+.VARI DO_BBOXCHECK
+Check if an optimized point falls outside the bounding box created by
+all pairwise midpoint estimates. If so, the point likely drifted during 
+optimization and setting this flag allows for it to be discarded.

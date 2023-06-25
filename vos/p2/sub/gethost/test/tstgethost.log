@@ -1,0 +1,7 @@
+Beginning VICAR task tgethost
+Testing GETHOST subroutine C interface
+   Full Host Name = mipldevlinux7
+   Truncated Host Name = mipl
+Testing GETHOST FORTRAN interface
+   Full Host Name = mipldevlinux7
+   Truncated Host Name = mipl

@@ -9,13 +9,13 @@ enable-log
 
 write "This is the test file for Program VISIS2"
 
-ush cp /project/test_work/testdata/gll/g7jnfeap4101a.3 edr_file
-ush cp /project/test_work/testdata/gll/g7jnfeap4101a.aacs aacs_file
-ush cp /project/test_work/testdata/gll/nims98a_gs4_ref_g1_01.tab CAL_FILE
-ush cp /project/spice/ops/sun-solr/s980326b.bsp spk_file
-ush cp /project/test_work/testdata/gll/nims_ikernel_mab.dat ik_file
-ush cp /project/test_work/testdata/gll/nims_solar.dat sol_file
-ush cp /project/test_work/testdata/gll/boom_obscuration.nim dbm_file
+ush cp data/s980326b.bsp.dat spk_file
+ush cp data/boom_obscuration.nim dbm_file
+ush cp data/g7jnfeap4101a.3.vic edr_file
+ush cp data/g7jnfeap4101a.aacs aacs_file
+ush cp data/nims98a_gs4_ref_g1_01.tab CAL_FILE
+ush cp data/nims_ikernel_mab.dat ik_file
+ush cp data/nims_solar.dat sol_file
 
 NIMSCMM2 edr=edr_file +
         cube=G7JNFEAP4101A.CUB 'NOCAL +
@@ -55,6 +55,7 @@ ush rm ik_file
 ush rm dbm_file
 ush rm sol_file
 ush rm CAL_FILE
+ush rm G7JNFEAP4101A.COC G7JNFEAP4101A.CUB G7JNFEAP4101A.QUB tst1.h2d WTFIL
 
 disable-log
 

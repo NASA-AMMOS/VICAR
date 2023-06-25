@@ -10,22 +10,25 @@ enable-log
 
 gen a 200 300 'byte
 crosshair a loc=(100 80) height=8 dn=5
-list a sl=90 ss=70 nl=20 ns=20
+list a sl=90 ss=70 nl=20 ns=20 'nousrtim
 
 ! Test non-byte and color
 
 gen a 150 320 3 'half binc=100
 crosshair a loc=(20 50) height=5 dn=(100,200,300)
-list a sl=12 ss=42 nl=15 ns=15 nb=3
+list a sl=12 ss=42 nl=15 ns=15 nb=3 'nousrtim
 
 ! Test real and carrying forward of last DN value
 ! (bands 3 and 4 should also be 2.5)
 
 gen a 100 120 4 'real binc=100
 crosshair a loc=(30 60) height=3 dn=(1.5,2.5)
-list a sl=25 ss=55 nl=10 ns=10 nb=4
+list a sl=25 ss=55 nl=10 ns=10 nb=4 'nousrtim
 
 disable-log
+
+ush rm a
+
 end-proc
 
 

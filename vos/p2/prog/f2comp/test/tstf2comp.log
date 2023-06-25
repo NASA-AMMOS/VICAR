@@ -1,0 +1,266 @@
+let $autousage="none"
+gen im1 nl=4 ns=4 format="comp" linc=.2 sinc=1.9
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+gen im2 nl=3 ns=5 format="comp" linc=.8 sinc=2.9
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+list im1 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   COMP     samples are interpreted as COMPLEX  data
+ Task:GEN       User:          Date_Time:                        
+     Samp                         1                       2                       3                       4
+   Line
+      1       0.000E+00   0.000E+00   1.900E+00   1.000E+00   3.800E+00   2.000E+00   5.700E+00   3.000E+00
+      2       2.000E-01   1.000E+00   2.100E+00   2.000E+00   4.000E+00   3.000E+00   5.900E+00   4.000E+00
+      3       4.000E-01   2.000E+00   2.300E+00   3.000E+00   4.200E+00   4.000E+00   6.100E+00   5.000E+00
+      4       6.000E-01   3.000E+00   2.500E+00   4.000E+00   4.400E+00   5.000E+00   6.300E+00   6.000E+00
+list im2 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   COMP     samples are interpreted as COMPLEX  data
+ Task:GEN       User:          Date_Time:                        
+     Samp                         1                       2                       3                       4                       5
+   Line
+      1       0.000E+00   0.000E+00   2.900E+00   1.000E+00   5.800E+00   2.000E+00   8.700E+00   3.000E+00   1.160E+01   4.000E+00
+      2       8.000E-01   1.000E+00   3.700E+00   2.000E+00   6.600E+00   3.000E+00   9.500E+00   4.000E+00   1.240E+01   5.000E+00
+      3       1.600E+00   2.000E+00   4.500E+00   3.000E+00   7.400E+00   4.000E+00   1.030E+01   5.000E+00   1.320E+01   6.000E+00
+f2comp inp=(im1, im2) out=im3 op=ADD
+Beginning VICAR task f2comp
+F2COMP version 2019-08-22
+list im3 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   COMP     samples are interpreted as COMPLEX  data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2COMP    User:          Date_Time:                        
+     Samp                         1                       2                       3                       4
+   Line
+      1       0.000E+00   0.000E+00   4.800E+00   2.000E+00   9.600E+00   4.000E+00   1.440E+01   6.000E+00
+      2       1.000E+00   2.000E+00   5.800E+00   4.000E+00   1.060E+01   6.000E+00   1.540E+01   8.000E+00
+      3       2.000E+00   4.000E+00   6.800E+00   6.000E+00   1.160E+01   8.000E+00   1.640E+01   1.000E+01
+f2comp inp=(im1, im2) out=im3 ss=1 ns=3 sl=1 nl=3 op=SUB
+Beginning VICAR task f2comp
+F2COMP version 2019-08-22
+list im3 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   COMP     samples are interpreted as COMPLEX  data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2COMP    User:          Date_Time:                        
+     Samp                         1                       2                       3
+   Line
+      1       0.000E+00   0.000E+00  -1.000E+00   0.000E+00  -2.000E+00   0.000E+00
+      2      -6.000E-01   0.000E+00  -1.600E+00   0.000E+00  -2.600E+00   0.000E+00
+      3      -1.200E+00   0.000E+00  -2.200E+00   0.000E+00  -3.200E+00   0.000E+00
+f2comp inp=(im1, im2) out=im3 ss=3 ns=1 sl=1 nl=2 op=MULT
+Beginning VICAR task f2comp
+F2COMP version 2019-08-22
+list im3 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   COMP     samples are interpreted as COMPLEX  data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2COMP    User:          Date_Time:                        
+     Samp                         1
+   Line
+      1       1.804E+01   1.920E+01
+      2       1.740E+01   3.180E+01
+f2comp inp=(im1, im2) out=im3 size=(1,1,3,4) op=DIV
+Beginning VICAR task f2comp
+F2COMP version 2019-08-22
+list im3 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   COMP     samples are interpreted as COMPLEX  data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2COMP    User:          Date_Time:                        
+     Samp                         1                       2                       3                       4
+   Line
+      1       0.000E+00   0.000E+00   6.918E-01   1.063E-01   6.918E-01   1.063E-01   6.918E-01   1.063E-01
+      2       7.073E-01   3.659E-01   6.653E-01   1.809E-01   6.735E-01   1.484E-01   6.781E-01   1.355E-01
+      3       7.073E-01   3.659E-01   6.615E-01   2.256E-01   6.653E-01   1.809E-01   6.700E-01   1.602E-01
+f2comp inp=im1 out=im3 op=CABS
+Beginning VICAR task f2comp
+F2COMP version 2019-08-22
+list im3 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2COMP    User:          Date_Time:                        
+     Samp             1           2           3           4
+   Line
+      1       0.000E+00   2.147E+00   4.294E+00   6.441E+00
+      2       1.020E+00   2.900E+00   5.000E+00   7.128E+00
+      3       2.040E+00   3.780E+00   5.800E+00   7.887E+00
+      4       3.059E+00   4.717E+00   6.660E+00   8.700E+00
+f2comp inp=im1 out=im3 op=CONJ
+Beginning VICAR task f2comp
+F2COMP version 2019-08-22
+list im3 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   COMP     samples are interpreted as COMPLEX  data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2COMP    User:          Date_Time:                        
+     Samp                         1                       2                       3                       4
+   Line
+      1       0.000E+00  -0.000E+00   1.900E+00  -1.000E+00   3.800E+00  -2.000E+00   5.700E+00  -3.000E+00
+      2       2.000E-01  -1.000E+00   2.100E+00  -2.000E+00   4.000E+00  -3.000E+00   5.900E+00  -4.000E+00
+      3       4.000E-01  -2.000E+00   2.300E+00  -3.000E+00   4.200E+00  -4.000E+00   6.100E+00  -5.000E+00
+      4       6.000E-01  -3.000E+00   2.500E+00  -4.000E+00   4.400E+00  -5.000E+00   6.300E+00  -6.000E+00
+gen im3 nl=4 ns=4 format="real" linc=.2 sinc=1.9
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+gen im4 nl=3 ns=5 format="real" linc=.8 sinc=2.9
+Beginning VICAR task gen
+GEN Version 2019-05-28
+GEN task completed
+list im3 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+     Samp             1           2           3           4
+   Line
+      1       0.000E+00   1.900E+00   3.800E+00   5.700E+00
+      2       2.000E-01   2.100E+00   4.000E+00   5.900E+00
+      3       4.000E-01   2.300E+00   4.200E+00   6.100E+00
+      4       6.000E-01   2.500E+00   4.400E+00   6.300E+00
+list im4 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+     Samp             1           2           3           4           5
+   Line
+      1       0.000E+00   2.900E+00   5.800E+00   8.700E+00   1.160E+01
+      2       8.000E-01   3.700E+00   6.600E+00   9.500E+00   1.240E+01
+      3       1.600E+00   4.500E+00   7.400E+00   1.030E+01   1.320E+01
+f2comp inp=(im1, im3) out=im5 op=DIV 'SCALAR
+Beginning VICAR task f2comp
+F2COMP version 2019-08-22
+list im5 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   COMP     samples are interpreted as COMPLEX  data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2COMP    User:          Date_Time:                        
+     Samp                         1                       2                       3                       4
+   Line
+      1            -NAN        -NAN   1.000E+00   5.263E-01   1.000E+00   5.263E-01   1.000E+00   5.263E-01
+      2       1.000E+00   5.000E+00   1.000E+00   9.524E-01   1.000E+00   7.500E-01   1.000E+00   6.780E-01
+      3       1.000E+00   5.000E+00   1.000E+00   1.304E+00   1.000E+00   9.524E-01   1.000E+00   8.197E-01
+      4       1.000E+00   5.000E+00   1.000E+00   1.600E+00   1.000E+00   1.136E+00   1.000E+00   9.524E-01
+f2comp inp=(im1, im3) out=im5 op=MULT 'SCALAR
+Beginning VICAR task f2comp
+F2COMP version 2019-08-22
+list im5 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   COMP     samples are interpreted as COMPLEX  data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2COMP    User:          Date_Time:                        
+     Samp                         1                       2                       3                       4
+   Line
+      1       0.000E+00   0.000E+00   3.610E+00   1.900E+00   1.444E+01   7.600E+00   3.249E+01   1.710E+01
+      2       4.000E-02   2.000E-01   4.410E+00   4.200E+00   1.600E+01   1.200E+01   3.481E+01   2.360E+01
+      3       1.600E-01   8.000E-01   5.290E+00   6.900E+00   1.764E+01   1.680E+01   3.721E+01   3.050E+01
+      4       3.600E-01   1.800E+00   6.250E+00   1.000E+01   1.936E+01   2.200E+01   3.969E+01   3.780E+01
+f2comp inp=(im3, im4) out=im5 op=COMP
+Beginning VICAR task f2comp
+F2COMP version 2019-08-22
+list im5 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   COMP     samples are interpreted as COMPLEX  data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2COMP    User:          Date_Time:                        
+     Samp                         1                       2                       3                       4
+   Line
+      1       0.000E+00   0.000E+00   1.900E+00   2.900E+00   3.800E+00   5.800E+00   5.700E+00   8.700E+00
+      2       2.000E-01   8.000E-01   2.100E+00   3.700E+00   4.000E+00   6.600E+00   5.900E+00   9.500E+00
+      3       4.000E-01   1.600E+00   2.300E+00   4.500E+00   4.200E+00   7.400E+00   6.100E+00   1.030E+01
+f2comp inp=(im3) out=im5 op=REAL2COMPREAL
+Beginning VICAR task f2comp
+F2COMP version 2019-08-22
+list im5 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   COMP     samples are interpreted as COMPLEX  data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2COMP    User:          Date_Time:                        
+     Samp                         1                       2                       3                       4
+   Line
+      1       0.000E+00   0.000E+00   1.900E+00   0.000E+00   3.800E+00   0.000E+00   5.700E+00   0.000E+00
+      2       2.000E-01   0.000E+00   2.100E+00   0.000E+00   4.000E+00   0.000E+00   5.900E+00   0.000E+00
+      3       4.000E-01   0.000E+00   2.300E+00   0.000E+00   4.200E+00   0.000E+00   6.100E+00   0.000E+00
+      4       6.000E-01   0.000E+00   2.500E+00   0.000E+00   4.400E+00   0.000E+00   6.300E+00   0.000E+00
+f2comp inp=(im3) out=im5 op=REAL2COMPIMAG
+Beginning VICAR task f2comp
+F2COMP version 2019-08-22
+list im5 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   COMP     samples are interpreted as COMPLEX  data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2COMP    User:          Date_Time:                        
+     Samp                         1                       2                       3                       4
+   Line
+      1       0.000E+00   0.000E+00   0.000E+00   1.900E+00   0.000E+00   3.800E+00   0.000E+00   5.700E+00
+      2       0.000E+00   2.000E-01   0.000E+00   2.100E+00   0.000E+00   4.000E+00   0.000E+00   5.900E+00
+      3       0.000E+00   4.000E-01   0.000E+00   2.300E+00   0.000E+00   4.200E+00   0.000E+00   6.100E+00
+      4       0.000E+00   6.000E-01   0.000E+00   2.500E+00   0.000E+00   4.400E+00   0.000E+00   6.300E+00
+f2comp inp=(im1) out=im5 op=COMP2REAL
+Beginning VICAR task f2comp
+F2COMP version 2019-08-22
+list im5 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2COMP    User:          Date_Time:                        
+     Samp             1           2           3           4
+   Line
+      1       0.000E+00   1.900E+00   3.800E+00   5.700E+00
+      2       2.000E-01   2.100E+00   4.000E+00   5.900E+00
+      3       4.000E-01   2.300E+00   4.200E+00   6.100E+00
+      4       6.000E-01   2.500E+00   4.400E+00   6.300E+00
+f2comp inp=(im1) out=im5 op=COMP2IMAG
+Beginning VICAR task f2comp
+F2COMP version 2019-08-22
+list im5 'nousrtim
+Beginning VICAR task list
+list version 2017-03-29
+
+   REAL     samples are interpreted as  REAL*4  data
+ Task:GEN       User:          Date_Time:                        
+ Task:F2COMP    User:          Date_Time:                        
+     Samp             1           2           3           4
+   Line
+      1       0.000E+00   1.000E+00   2.000E+00   3.000E+00
+      2       1.000E+00   2.000E+00   3.000E+00   4.000E+00
+      3       2.000E+00   3.000E+00   4.000E+00   5.000E+00
+      4       3.000E+00   4.000E+00   5.000E+00   6.000E+00
+disable-log

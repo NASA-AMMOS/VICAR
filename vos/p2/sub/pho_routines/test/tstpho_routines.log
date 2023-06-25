@@ -1,0 +1,5 @@
+Beginning VICAR task txpho_routines
+ program PHO_TEST
+
+[TAE-PRCSTRM] Abnormal process termination; process status code = 11.;
+ proc 'tstpho_routines', line 92

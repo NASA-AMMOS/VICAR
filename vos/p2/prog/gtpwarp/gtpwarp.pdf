@@ -1,0 +1,442 @@
+procedure help=*
+parm inp type=(string,99) count=1
+parm out type=(string,99) count=1
+parm ref type=(string,99) count=1
+parm ref_res type=(string,99) count=1 default=""
+parm typref type=keyword count=(0:1) valid=(coverref,coverinp) +
+     default=coverref
+parm interp type=keyword count=(0:1) valid=(noin,bilin) +
+     default=bilin
+parm nah type=int count=1 default=100
+parm nav type=int count=1 default=100
+parm gorewid type=int count=1 default=2
+parm fftsize type=int count=1 default=64 valid=32:1024
+parm fftgrid type=int count=2 default=(16,16) valid=2:64
+parm magnify type=real count=1 default=1.0 valid=(0.0:5000.0)
+parm magmin type=real count=1 default=1.0 valid=(0.0:5000.0)
+parm toler type=real count=1 default=3.0 valid=(0.0:20.0)
+parm polyfit type=string count=(0:1) default="" +
+   VALID=("","LINEAR","KEYSTONE","QUAD","CUBIC")
+parm accplot type=(string,99) count=(0:1) default=""
+parm gridout type=(string,99) count=(0:1) default=""
+parm accoff type=(string,4) count=(0:1) valid=(n,y) default=n
+parm itie type=real count=(0:6) default=--
+parm reftie type=real count=(0:6) default=--
+parm autofit type=int default=14 valid=(0:500)
+parm redo type=int default=36 valid=(0:999)
+parm ffthalf type=int default=1 valid=(0:2)
+parm seed type=int default=19364793
+parm seq type=string default="qq"
+parm echo type=(string,4) count=1 valid=("no","yes") default="yes"
+parm wmask type=string count=1 valid=("n","y") default="y"
+parm thr_res type=real count=1 default=10.0
+parm ref_lowres type=string count=1 valid=("n","y") default="n"
+
+local nl int
+local ns int
+local fft1 int
+local fft2 int
+local minsrch int
+local bigtoler real
+local imag int
+local fftgrid1 int
+local fftgrid2 int
+
+local l1 real
+local s1 real
+local l2 real
+local s2 real
+local l3 real
+local s3 real
+local l4 real
+local s4 real
+
+local magshrk string
+
+local xqxqgrid1 string
+local xqxqgrid2 string
+local xqxqgrid3 string
+local xqxqgrid4 string
+local img1 string
+local img2 string
+local ref_resf string
+
+refgbl $echo
+local version (string,10)
+local org (string,10)
+body
+!let _onfail="continue"
+let version="ibis-2"
+let org="column"
+
+let $echo="&echo"
+
+
+!  GTPWARP HANDYPROC
+
+write "GTPWARP version 2016-AUG-20"
+
+let imag = $fix(magnify)
+let fft1 = fftsize*imag
+let fft2 = fft1/2                 !note this for future version, alz
+let bigtoler = toler*4.0
+let fftgrid1 = fftgrid(1)
+let fftgrid2 = fftgrid(2)
+
+let xqxqgrid1 = "xqxqgrid1&seq"
+let xqxqgrid2 = "xqxqgrid2&seq"
+let xqxqgrid3 = "xqxqgrid3&seq"
+let xqxqgrid4 = "xqxqgrid4&seq"
+
+!  do the picmtch5
+
+if (ref_lowres="n")
+   let img1="&inp"
+   let img2="&ref"
+else
+   let img1="&ref"
+   let img2="&inp"
+end-if
+if (ref_res="")
+   let ref_resf=ref
+else
+   let ref_resf=ref_res
+end-if
+
+imcorner (&img1,&img2) line1=l1 samp1=s1 line2=l2 samp2=s2 +
+      line3=l3 samp3=s3 line4=l4 samp4=s4 inside=0              !note, alz
+gengrid2 out=&xqxqgrid1 ncol=21 nah=&fftgrid1 nav=&fftgrid2 +
+     l1=&l1 s1=&s1 l2=&l2 s2=&s2 l3=&l3 s3=&s3 l4=&l4 s4=&s4
+
+mf3 &xqxqgrid1 f="c11=@rand" seed=&seed
+sort &xqxqgrid1 sortcol=11
+
+if (magmin<magnify)
+   let magshrk="y"
+else
+   let magshrk="n"
+end-if
+
+if (itie=--)
+   picmtch5 (&img1,&img2,&xqxqgrid1) fftsize=&fftsize search=&fftsize +
+     minsrch=&fftsize magnify=(&magnify,&magnify) +
+     pred=linear autofit=&autofit redo=&redo magmin=(&magmin,&magmin) +
+     magshrk=&magshrk ffthalf=&ffthalf thr_res=&thr_res
+else
+   picmtch5 (&img1,&img2,&xqxqgrid1) fftsize=&fftsize search=&fftsize +
+     minsrch=&fftsize magnify=(&magnify,&magnify) +
+     pred=linear autofit=&autofit redo=&redo magmin=(&magmin,&magmin) +
+     magshrk=&magshrk ffthalf=&ffthalf +
+     itie=&itie +
+     otie=&reftie thr_res=&thr_res
+end-if
+! Swap if necessary so columns 3,4 are for inp and 6,7 are for ref
+if (ref_lowres="y")
+   mf3 &xqxqgrid1 func="c14=c3$c15=c4"
+   mf3 &xqxqgrid1 func="c3=c6$c4=c7$c6=c14$c7=c15"
+end-if
+rowop2 &xqxqgrid1 &xqxqgrid2 keycol=9 range=(-100000,-1) 'delete
+
+!  calculate the distortion (oldline,oldsamp)
+
+gtproj2 (&xqxqgrid2,&inp,&ref_resf) incol=(3,4) outcol=(14,15) 'image
+
+!  apply very tolerant ibislsq to remove very bad picmtchs
+
+mf3 &xqxqgrid2 func="c5=1.0$c19=c3*c3$c20=c3*c4$c21=c4*c4"
+ibislsq2 &xqxqgrid2 indcol=(3,4,5,19,20,21)  depcol=6 rescol=16
+ibislsq2 &xqxqgrid2 indcol=(3,4,5,19,20,21)  depcol=7 rescol=17
+mf3 &xqxqgrid2 func="c18=@sqrt(c16*c16+c17*c17)"
+rowop2 &xqxqgrid2 &xqxqgrid3 keycol=18 range=(0.0,&bigtoler) 'select
+
+!  apply stricter ibislsq to remove picmtchs above toler parameter
+
+mf3 &xqxqgrid3 func="c5=1.0$c19=c3*c3$c20=c3*c4$c21=c4*c4"
+ibislsq2 &xqxqgrid3 indcol=(3,4,5,19,20,21)  depcol=6 rescol=16
+ibislsq2 &xqxqgrid3 indcol=(3,4,5,19,20,21)  depcol=7 rescol=17
+mf3 &xqxqgrid3 func="c18=@sqrt(c16*c16+c17*c17)"
+rowop2 &xqxqgrid3 &xqxqgrid4 keycol=18 range=(0.0,&toler) 'select
+
+! If necessary, convert tiepoint from pixels in ref file to higher resolution
+! ref_resf
+if (ref_lowres="y")
+  pixmap (&xqxqgrid4,&ref) mapcols=(16,17) pixcols=(6,7) 'pixtomap
+  pixmap (&xqxqgrid4,&ref_resf) mapcols=(16,17) pixcols=(6,7) 'maptopix
+end-if
+
+!  apply gtwarpxd
+
+if ("&typref"="coverinp")
+   gtwarpxd inp=&inp out=&out seq=&seq ref=&ref_resf 'coverinp interp=&interp +
+        nah=&nah nav=&nav gorewid=&gorewid gridout="&gridout" +
+        distort=(&xqxqgrid4,,,,) dcols=(6,7,14,15) polyfit=("&polyfit",,,,) +
+        echo=&echo
+else
+   gtwarpxd inp=&inp out=&out seq=&seq ref=&ref_resf 'coverref interp=&interp +
+        nah=&nah nav=&nav gridout="&gridout" +
+        distort=(&xqxqgrid4,,,,) dcols=(6,7,14,15) polyfit=("&polyfit",,,,) +
+        echo=&echo
+end-if
+
+if (accoff="n")
+   accck &out &ref outfile="&accplot" fftsize=&fftsize outnl=1200 +
+   remap=n seq=&seq echo=&echo wmask=&wmask
+end-if
+
+end-proc
+.TITLE
+GTPWARP - Picmatch and Warp an image to a new map projection using GeoTIFF labels.
+.HELP
+PURPOSE
+     GTPWARP acts like GTWARP or GTWARPXD in that it converts an input
+     image to an output image, matching the mapping of a reference
+     image.  Consider the following four cases:
+     
+        input                 reference               use
+       
+     1. GeoTIFF label exact   GeoTIFF label exact     GTWARP
+     2. GeoTIFF label approx  GeoTIFF label exact     GTPWARP or GTWARPXD
+     3. GeoTIFF label exact   GeoTIFF label approx    GTPWARP or GTWARPXD
+     4. GeoTIFF label approx  GeoTIFF label approx    GTPWARP or GTWARPXD
+     
+     For cases 2 through 4, GTPWARP is highly automatic, but will
+     depend upon PICMTCH5 being able to do a good enough correlation
+     to give the desired result.  GTWARPXD is more general purpose,
+     but the user has to come up with a tiepoint data set.
+     
+     GTPWARP reads the GeoTIFF label of a "master" or "reference" image,
+     then reads the GeoTIFF label of the input image.  It calculates
+     a set of GEOMV parameters from these.  Then it applies PICMTCH5 to
+     the input and reference to get a mesh of matching points that
+     specify the deviation of the mappings due to inaccuracy in the
+     mappings.  Both the deviations and the mapping are input to routine
+     GTWARPXD to warp the input to the output giving an accurate match
+     to the "reference" image.
+     
+     1.  The keyword 'coverinp causes the procedure to map all of the
+     input image to an output image that will just contain it.   The
+     keyword gorewid allows the user to specify a zero-filled margin
+     to make the output a little larger (or negative trims smaller).
+	
+     2.  The keyword 'coverref causes the procedure to map the input
+     image to an output image that exactly matches the "reference" image.
+     Some parts of the input can be lost, or huge areas of zero-fill
+     could be added to make the images match.  The gorewid keyword has
+     no effect in this case.
+
+    Note that if the resolution of the reference image is much lower than
+    the input image, you should specify ref_lowres=y. This will
+    swap the order of images in picmtch5 which leads to better matches.
+	   
+CALL
+     gtpwarp INPUT OUTPUT REF '(QUALIFIERS) PARAMS
+  WHERE:
+     INPUT          is the input data set (must have a GeoTIFF label).
+     OUTPUT         is the output data set (will have a GeoTIFF label).
+     REF            is the reference data set (must have a GeoTIFF label).
+     QUALIFIERS     consist of any of the following keywords:
+          COVERINP         smallest output that covers the input geographic area
+          COVERREF         output exactly matches the reference image.
+     PARAMS         interp,nah,nav,gorewid, fftsize.
+
+  
+OPERATION
+
+The program calls PICMTCH5 to create a deviation data set
+PERFORMANCE
+
+see PICMTCH5 and GTWARPXD.
+
+.PAGE
+Restrictions
+------------
+
+The input and reference images must have GeoTIFF labels.
+
+
+.PAGE
+Original Programmer: A. L. Zobrist, 10 Dec, 2000
+Last Update:         A. L. Zobrist, 4 Sep, 2007     Additional parameters for Tom
+Current Cognizant Programmer: A. L. Zobrist
+
+HISTORY
+  2021-05-24 WLB - Migrated from AFIDS
+
+.LEVEL1
+.VARI INP
+Input file name with GeoTIFF
+label
+.VARI OUT
+Output file name
+.VARI REF
+Reference file name with GeoTIFF
+label
+.VARI REF_RES
+Reference file name with GeoTIFF
+label to resample to. This can be
+ref at a different resolution (e.g., using
+gtsize), useful when we want to match using
+one resolution but resample the input file to
+a different resolution.
+.VARI TYPREF
+'COVERINP - output minimally
+  covers the input data
+'COVERREF - output matches the
+  ref image exactly
+.VARI NAH
+Number of grid cells horiz.
+.VARI NAV
+Number of grid cells vert.
+.VARI INTERP
+interpolation options
+Valid: NOIN,ZNOIN,BILIN
+.VARI GOREWID
+Added width of gores for
+'coverinp case only
+.VARI FFTSIZE
+FFT window size
+.VARI FFTGRID
+how many fft points, nah x nav
+.VARI MAGNIFY
+enlarge footprint of fft
+window by this factor
+.VARI POLYFIT
+if given, overrides triangu-
+lation surface fit with poly-
+nomial fit (see tieconv)
+.VARI ACCPLOT 
+if given, the accuracy plot
+image will have this name, 
+otherwise no plot output
+for no plot calculation
+.VARI ACCOFF 
+set to "y" to turn off accuracy
+.VARI GRIDOUT
+name of file to save warp grid
+.VARI MAGMIN
+minimum magnifier as corr-
+elation proceeds
+.VARI FFTHALF
+0 = no halving of fftsize near
+    edge
+1 = single halving of fftsize
+    near edge
+2 = double halving of fftsize
+    near edge
+.VARI AUTOFIT
+Sets the FITMIN threshold auto-
+matically using the first n
+correlations (see help 2)
+.VARI REDO
+At the end of processing, this
+number of points will be redone
+.VARI ITIE
+Control points in first image,
+only if map labels not used
+.VARI REFTIE
+Control points in second image,
+only if map labels not used
+.VARI SEED
+seed for randomizing picmtch5
+grid
+.VARI wmask
+If n skip using the watermask in accck
+.VARI ref_lowres
+If y, then switch the order of matching
+in picmtch5 to give better results
+.VARI thr_res
+Prevents offset correlations
+(further than this value from
+the predicted location) from
+entering into the model fit of
+image 1 to image 2
+.LEVEL2
+.VARI INP
+Input file name.  This parameter is input as:
+     INP=innam
+where "innam" is the input file name.
+.VARI OUT
+Output file name. This parameter is input as:
+     OUT=outnam
+where:
+"outnam" is the output file name.VARI OUT
+.VARI REF
+reference file name. This parameter is input as:
+     REF=refnam
+where:
+"refnam" is the reference file name.
+
+This is a VICAR image that has a GeoTIFF label to specify a mapping.
+It could be an image of a geographic area, or it could be a single 
+pixel image that serves as the holder of the GeoTIFF mapping information
+only.  In the latter case only the 'coverinp case would make sense.
+.VARI INTERP
+This parameter has three valid keyword values: NOIN and BILIN.
+
+NOIN means no interpolation.   The default method (used when neither keyword 
+is specified) for computing the
+DN values of the output picture is to use a bi-linear interpolation
+on the four nearest neighbors in the input picture.  With NOIN, the
+value of the nearest point is simply used.
+For example, say a point in the output picture was determined
+to have come from point (R,P) in the input picture.  Since R and P
+are real values, we must somehow calculate a DN value for that
+point.  Take IR and IP as the truncated values.  We then have
+          VAL1                                 VAL2
+           *                                    *
+         (IR,IP)                              (IR,IP+1)
+                     POINT
+                       *
+                     (R,P)
+          VAL3                                 VAL4
+           *                                    *
+         (IR+1,IP)                           (IR+1,IP+1)
+Here, POINT is the result of a bilinear interpolation using
+VAL1, VAL2, VAL3, and VAL4.
+If NOIN is specified, then POINT would be VAL1, the nearest
+neighbor.
+
+ZNOIN specifies that a four-point interpolation is done except
+when one or more of the points used has a value equal to zero. 
+In that case the nearest method is used.
+This allows preparation of sharp edges (no interpolation rolloff)
+for mosaicking.
+
+.VARI TYPREF
+     1.  The keyword 'coverinp causes the procedure to map all of the
+     input image to an output image that will just contain it.   The
+     keyword gorewid allows the user to specify a zero-filled margin
+     to make the output a little larger (or negative trims smaller).
+	
+     2.  The keyword 'coverref causes the procedure to map the input
+     image to an output image that exactly matches the "reference" image.
+     Some parts of the input can be lost, or huge areas of zero-fill
+     could be added to make the images match.  The gorewid keyword has
+     no effect in this case.
+	   
+.VARI GOREWID
+Added width of gores for 'coverinp case only.  This number of pixel
+columns or rows is added to all four sides.  Zero fill is used.
+.VARI FFTSIZE
+The size of the FFT used in PICMTCH5.  See that program.
+.VARI POLYFIT
+Use this if both inputs are "smooth" and a polynomial surface fit
+will improve over the finite element fit.  Another good reason for 
+using a polynomial is that the picmatch points are sometimes in
+error and this will tend to ignore the errors in favor of the
+general trend.
+.VARI GRIDOUT
+the warp grid can be used to warp a parallel image file
+.VARI AUTOFIT
+The value of this parameter (n) tells the routine to use the first n
+correlations to set the threshold.  It will be the value for which
+1/2 of n are above threshold and 1/2 n are below.  No values are 
+allowed into the fit until these n points determine the threshold.
+Then the convergence is held for the next set of n points while the
+fit is being refined.  This whole procedure is to prevent a misleading
+fit on the first point from sending the whole fitting process in the
+wrong direction.
+
+The user provided fitmin will be ignored, it is set by the process 
+just outlined.
+.END

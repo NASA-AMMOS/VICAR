@@ -203,7 +203,7 @@ class SimpleImage {
 	/** Free the storage.  If size is -1, we don't own the memory. */
 	void free() {
 	    if (_data != NULL && _total_size != -1)
-		delete _data;
+		delete [] _data;
 	    _data = NULL;
 	}
 

@@ -1,0 +1,204 @@
+
+\^NET(XX)\^
+
+\^NAME\^
+	net - C++ encapsulation of PVM multiprocessor library (vesa)
+
+\^SYNOPSIS\^
+	\^#include "/ware/proj/development/include/net/net_lib.h"\^
+
+\^DESCRIPTION\^
+	\^net_lib\^ provides a C++ library of encapsulated \^PVM\^ library routines
+	to aid the user in developing distributed applications using PVM's
+	paradigm of a network of heterogeneous workstations.  Familiarity 
+	with PVM and its methodology is assumed in this page.  The library
+	allows the user to access parent and child tasks and pass messages
+	through objects instantiated in the application.  The underlying PVM
+	network may be automatically started and each user has control of
+	which hosts in the network to use.
+
+	The paradigm for the network library classes is the use of objects
+	to represent the other tasks on the network as well as the hosts
+	on the network and a higher level class representing the entire
+	network.  Tasks may be either executable files or UNIX commands
+	or shell scripts.  Tasks may be associated into pools for more
+	automatic distribution over the network.  Individual tasks may
+	be run on an individual host or the network which automatically
+	determines the host to run on.  Pools of tasks may only be run
+	on the network.  Pools may be created as user-defined sub-
+	divisions of a problem or the network can create pools with one
+	task per host or cpu.  Thus a problem can be subdivided to match
+	the processing space available or to match characteristics of the
+	problem space.
+
+\^NOTES\^
+	An application may only instantiate a single PVM network at a time.
+	PVM does not support the use of multiple daemons on a single host for
+	an individual user.  Multiple, disjoint nets are possible but, as the
+	local host is always included in the network, the user must login to
+	a host outside of the current net to instantiate the second net.
+	Instantiating multiple network objects within a single application will
+	actually use the same network.  Spawning separate sets of child tasks
+	on the two network objects should work and message passing should work
+	as long as the user does not use any raw PVM calls.  However, they may
+	not and there is no benefit in multiple network objects.  Caveat Emptor.
+
+	It is the user's responsibility to ensure that the environment
+	variables are set to reference the PVM root directory and specify
+	the local machine architecture.  This is done in the .cshrc file.
+	The user sets the PVM_ROOT variable appropriately, currently
+	/ware/proj/etc/pvm3 in the DIAL, then pvmgetarch is used to set
+	PVM_ARCH.  The following code fragment accomplishes these tasks
+	and may be included into the user's .cshrc file.
+
+	setenv PVM_ROOT /ware/proj/etc/pvm3
+	#
+	# append this file to your .cshrc to set path according to machine type.
+	# you may wish to use this for your own programs (edit the last part to
+	# point to a different directory f.e. ~/bin/_$PVM_ARCH.
+	#
+	if (! $?PVM_ROOT) then
+        	if (-d ~/pvm3) then
+                	setenv PVM_ROOT ~/pvm3
+        	else
+                	echo "Warning - PVM_ROOT not defined"
+                	echo "To use PVM, define PVM_ROOT and rerun your .cshrc"
+        	endif
+	endif
+	if ($?PVM_ROOT) then
+        	setenv PVM_ARCH `$PVM_ROOT/lib/pvmgetarch`
+        	setenv ARCH `$PVM_ROOT/lib/ourgetarch`
+	#
+	# uncomment one of the following lines if you want the PVM commands 
+	# directory to be added to your shell path.
+	#
+        	set path=($path $PVM_ROOT/lib/$PVM_ARCH)  # arch-specific
+        	set path=($path $PVM_ROOT/lib)            # generic
+	#
+	# uncomment the following line if you want the PVM executable directory
+	# to be added to your shell path.
+	#
+        	set path=($path $PVM_ROOT/bin/$PVM_ARCH)
+	endif
+
+
+	It is the user's responsibility to ensure that the specified
+	executables are compiled and available for the various machine
+	architectures on the active net.  PVM provides a subdirectory for
+	these executables which distinguishes them by machine type and also
+	avoids the requirement of specifying full pathnames.  The sub-
+	directory names are of the form $PVM_ROOT/bin/$PVM_ARCH and each 
+	contains executables for the specified architecture.
+
+\^THE HOSTFILE\^
+	The hostfile describes to pvm and the network library which hosts
+	to include in the network.  When PVM starts up under the network
+	library, a daemon will be run on each host in the appropriate 
+	hostfile.  The network library first checks to see if PVM is
+	already running.  If so, it attaches to it and uses it in its
+	current configuration.  If not, it checks for a file in the
+	current working directory named .hostfile.  If it exists, it is
+	used as the hostfile.  If not, the default system hostfile
+	$PVM_ROOT/hostfile, is used.  The system hostfile may be copied
+	to the user's area, renamed to .hostfile, and edited to fit the
+	user's needs.
+
+	The host file also contains other information about the hosts which 
+	is documented in the PVM user manual.  The format for the host file 
+	is a single line per host, beginning with the host name followed 
+	by options.  For example:
+
+	#SGI machines
+	#cassis dx=/ware/proj/etc/pvm3/lib/pvmd sp=1025
+	fa      dx=/ware/proj/etc/pvm3/lib/pvmd sp=1025
+	twist   dx=/ware/proj/etc/pvm3/lib/pvmd sp=1025
+	zest    dx=/ware/proj/etc/pvm3/lib/pvmd sp=1025
+	crystal dx=/ware/proj/etc/pvm3/lib/pvmd sp=1025
+	styx    dx=/ware/proj/etc/pvm3/lib/pvmd sp=1025
+	lux     dx=/ware/proj/etc/pvm3/lib/pvmd sp=1026
+	
+	#Solbourne machines
+	&lava   dx=/ware/proj/etc/pvm3/lib/pvmd sp=1030
+	&spirit dx=/ware/proj/etc/pvm3/lib/pvmd sp=1030
+	&shield dx=/ware/proj/etc/pvm3/lib/pvmd sp=1030
+
+	A # as the first character indicates a comment.  A & as the first
+	character indicates a host which will not start automatically but
+	which may be added later.  The dx= option indicates the directory
+	and file of the PVM demon executable.  This is optional as PVM
+	will default to $PVM_ROOT/lib/pvmd.  Note that this executable is
+	only a shell script which runs $PVM_ROOT/lib/$PVM_ARCH/pvmd3.  It
+	hopes that $PVM_ROOT is set but will automatically determine the
+	value of $PVM_ARCH using pvmgetarch.  The sp= option is a speed
+	value for PVM to use in distributing tasks.  These values range
+	from 1 to 1000000 in PVM.  Net_lib enhances the speed values to
+	include the number of cpus on a host.  The low order ten bits
+	(speed & 0x3ff) indicate the number of cpus and the remainder is
+	the speed value used by PVM.  Note that PVM defaults the speed
+	value to 1000 which would suggest 1000 cpus with zero speed.
+	These values default to one cpu with speed 1000.
+
+	In the above example, the Solbourne hosts (lava, spirit, and
+	shield) have 6 cpus, a speed of 1024, and will not be
+	automatically started.  lux has 2 cpus, a speed of 1024, and will
+	autostart.  The remaining hosts have one cpu, a speed of 1024,
+	and autostart.  cassis is commented out and will have no effect
+	on the network.  It is still possible to add cassis (and other
+	hosts which are not in the host file) but the options, including
+	speed, will take on default values rather than being set from the
+	file.
+
+\^INPUT/OUTPUT\^
+	I/O to PVM tasks is difficult.  Output to stderr from all spawned
+	tasks goes to a file in the /tmp directory named pvml.`uid`.
+	Output to stdout can be redirected within PVM and seems to get
+	lost or maybe it sometimes goes to /tmp/pvml.`uid` also.  Input
+	from the keyboard or mouse goes somewhere.  I/O to and from files
+	generally requires FULL pathnames on all filenames as the child
+	tasks actually run with the current working directory being the
+	user's home directory.  Paths must be to NFS-mounted filesystems
+	which are accessible to all hosts in the PVM network.
+
+	A convenience script is available, named pvmlog, which will cat
+	the user's current log file.
+
+\^ENVIRONMENT VARIABLES\^
+	PVM_ROOT		PVM root directory
+		normally /ware/proj/etc/pvm3
+	PVM_ARCH		local machine architecture
+		may be SUN4, SGI5, SGIMP, etc. set by pvmgetarch
+
+\^BUGS\^
+	Use of the encapsulated library allows use of direct PVM calls.  Use
+	of direct PVM calls, bypassing the instantiated objects, may conflict
+	with certain modes of operation.  However, tests for status probably
+	will not and many other types of calls may be safe.  Caveat Emptor.
+
+	As of version 3.3.3 of PVM, installed as of 5/9/95, the use of the
+	SGIMP architecture type could cause errors in message passing.
+	This problem has been avoided by modifying the system pvmgetarch
+	script to return SGI5 instead of SGIMP.  This should have no
+	effect on users except that making executables under the SGIMP
+	architecture is more difficult.  Another kluge has been to have
+	the system pvmgetarchscript to return SGI5 instead of SGI6 on the
+	machines with Irix 6.2 installed.  This makes it work on those
+	machines even though PVM 3.3.3 was not designed to use 6.2.
+
+\^FILES\^
+	/ware/proj/development/include/net/net_lib.h	include file
+	/ware/proj/development/lib/sgi/lib_network.a	sgi library
+	/ware/proj/development/lib/sun4/lib_network.a	sun4 library
+	/usr/catman/local/cat1/net_lib.z		these man pages
+	/ware/proj/etc/pvm3/include/pvm3.h		pvm include file
+	/ware/proj/etc/pvm3/lib/$PVM_ARCH/libpvm3.a	pvm library
+	/ware/proj/etc/pvm3/hostfile			default hostfile
+	./.hostfile					override hostfile
+
+\^SEE ALSO\^
+	pvm, pvm_intro, net_lib
+
+\^AUTHOR\^
+	John Wright (john.r.wright@jpl.nasa.gov)
+
+
+

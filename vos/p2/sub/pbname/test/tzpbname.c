@@ -2,6 +2,7 @@
    of PBNAME, ZPbname.c    
 */
 
+#include <stdio.h>
 #include "xvmaininc.h"
 #include "ftnbridge.h"
 void FTN_NAME(tzpbname) ()

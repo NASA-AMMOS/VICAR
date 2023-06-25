@@ -1,0 +1,5 @@
+$ vpack marstiexyz.com -mixed -
+	-s marstiexyz.cc -
+	-i marstiexyz.imake -
+	-p marstiexyz.pdf
+$ Exit

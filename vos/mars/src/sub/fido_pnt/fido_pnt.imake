@@ -1,0 +1,9 @@
+#define SUBROUTINE fido_pnt
+
+#define MODULE_LIST fido_kinem.c cmod_xform.c
+
+#define MARS_SUBLIB
+
+#define USES_ANSI_C
+
+#define LIB_P2SUB

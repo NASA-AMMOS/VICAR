@@ -1,0 +1,5 @@
+$ vpack marstie.com -mixed -
+	-s marstie.cc -
+	-i marstie.imake -
+	-p marstie.pdf
+$ Exit

@@ -1,0 +1,62 @@
+procedure
+parm inp type=(string,99)
+parm out type=(string,99)
+parm cols type=int count=5
+parm auxmap type=(string,99) default=""
+
+local watermask type=(string,99)
+local afidsvdevdata type=(string,99)
+local v2data type=(string,99)
+
+local clon type=int
+local clat type=int
+local cline type=int
+local csamp type=int
+local czval type=int
+
+local water type=int
+
+body
+write "WATERMASK version 2021-06-11"
+
+translog AFIDS_VDEV_DATA afidsvdevdata
+translog V2DATA v2data
+if (afidsvdevdata = "")
+    ! MIPL
+    let watermask = "&v2data/p2/world_30as_lwm.img"
+else
+    ! AFIDS
+    let watermask = "&afidsvdevdata/world_30as_lwm.img"
+end-if
+
+write "using watermask &watermask"
+
+file2tcl &watermask val=water
+if (water=0)
+   ibis-copy &inp &out
+   write "MSG: NO WATER MASK AVAILABLE, CONTINUING WITHOUT IT"
+   goto theend
+end-if
+
+let clon = cols(1)
+let clat = cols(2)
+let cline = cols(3)
+let csamp = cols(4)
+let czval = cols(5)
+
+!the following needed if clon,clat not in watermask map coord
+if (auxmap<>"")
+   gtproj2 (&inp,&auxmap,&watermask) incol=(&clon,&clat) +
+       outcol=(&cline,&csamp) 'tec
+   mf3 &inp f="c&clon=c&cline"
+   mf3 &inp f="c&clat=c&csamp"
+end-if
+pixmap (&inp,&watermask) mapcols=(&clon,&clat) +
+   pixcols=(&cline,&csamp) 'maptopix
+getzval (&watermask,&inp) cols=(&cline,&csamp,&czval) win=3
+
+rowop2 &inp &out keycol=&czval range=(1.0,1.0) prec=0.5 'select
+
+theend>
+
+end-proc

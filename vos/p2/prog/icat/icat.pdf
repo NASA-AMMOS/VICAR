@@ -1,0 +1,54 @@
+PROCESS		HELP=*
+PARM INP     TYPE=(STRING,99) COUNT=2
+PARM OUT     TYPE=(STRING,99) COUNT=1
+PARM MODE    TYPE=KEYWORD VALID=(H,V)  DEFAULT=V
+END-PROC
+.TITLE
+VICAR/IBIS Program icat: cat 2 files vertically or horizontally
+.HELP
+PURPOSE
+
+This is a quick and dirty replacement for ibis-cat which didn't work 
+for long files possibly because of a long ascii column.  It cats the
+two input files into the output.  The concatenation can be horizontal
+or vertical using the keywords 'H or 'V.
+
+For the vertical concatenation, the files must have the same columns
+and column types.  For horizontal concatenation, the columns of the
+second file are placed after the columns of the first.  If one file is
+longer, zero or blank fill is added.
+
+TAE COMMAND LINE FORMAT
+
+	icat inp=(A,B) out=C 'h
+or
+	icat inp=(A,B) out=C 'v
+
+
+.PAGE
+OPERATION
+
+RESTRICTIONS
+
+For the vertical concatenation, the files must have the same columns
+and column types.
+
+	WRITTEN BY		A. L. Zobrist		10 Aug 2003
+	LAST CHANGE BY		A. L. Zobrist		26 Sep 2003
+	COGNIZANT PROGRAMMER	A. L. Zobrist
+
+REVISIONS
+  2008-01-03 WLB Switched to USES_ANSI_C AND LIB_CARTO; misc cleanup  
+  2015-11-05 WLB Migrated to MIPL
+
+
+.LEVEL1
+.VARIABLE INP
+Two IBIS files, which are concat-
+enated vertically to the output.
+.VARIABLE OUT
+The concatenated IBIS file.
+.VARIABLE MODE
+V - vertical mode
+H - horizontal mode
+.END

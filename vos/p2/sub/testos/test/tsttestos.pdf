@@ -8,5 +8,7 @@ let $autousage = "no"
 ! test for subroutine TESTOS
 ! ON VMS THIS SHOULD SAY THIS IS VMS, ON UNIX IT SHOULD SAY UNIX:
 !  THUS THE TEST LOGS SHOULD BE DIFFERENT ON VMS AND UNIX.
+enable-log
 ttestos
+disable-log
 end-proc
