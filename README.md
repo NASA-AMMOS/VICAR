@@ -24,94 +24,31 @@ This release includes:
 - Pre-built binaries for 64-bit Linux (Red Hat 8.7) and Mac OS X 64-bit. 
 - All of VISOR (in $MARSLIB), 109 application programs
 - 88 new application programs: 
-accck
-asc2tcl
-astroref
-bowtie
-calfit
-compject
-comptab2
-comptab
-concompi
-concomp
-cutquad
-demfix
-deriv
-detrend
-detstat
-difnear
-ephref
-f2comp
-featherw
-fft2005
-fitg
-fitsout
-gengrid2
-gengrid
-genpc
-getpoint
-getzval
-grid3pt
-gridavg
-gridck
-gridcomp
-gt2tcl
-gtcomp
-gtcopy
-gtcrop
-gtdel
-gtgenup
-gtoffset
-gtp
-gtpwarp
-gtrot
-gtsize
-gtstat
-gtwarp
-gtwarpxd
-gtwrpsub
-ibis2asc
-ibis2img
-ibis2rpc
-ibisclst
-ibislsq2
-ibislsql
-ibisnlsq
-ibisx
-icat
-idgen
-ifthen
-ilist
-imcorner
-imgsum
-immerge
-imsplit
-medfill
-moore
-mos_l2_dem
-mvecall
-nacma
-norangle
-obj2gltf
-obj2plane
-picmtch4
-plab2tcl
-polygeov
-rastovec
-rowop2
-rpc2grid
-rpc2ibis
-rpcscal
-rpcwarpm
-rpcwarp
-sdsems
-surffit
-tcl2file
-tcl2tcl
-testtrnscol2
-trnscol2
-vextract2
-watermask    
+
+| executables |  |  |  |
+| - | - | - | - |
+| accck | asc2tcl | astroref | bowtie |
+| calfit | compject | comptab2 | comptab |
+| concompi | concomp | cutquad | demfix |
+| deriv | detrend | detstat | difnear |
+| ephref | f2comp | featherw | fft2005 |
+| fitg | fitsout | gengrid2 | gengrid |
+| genpc | getpoint | getzval | grid3pt |
+| gridavg | gridck | gridcomp | gt2tcl |
+| gtcomp | gtcopy | gtcrop | gtdel |
+| gtgenup | gtoffset | gtp | gtpwarp |
+| gtrot | gtsize | gtstat | gtwarp |
+| gtwarpxd | gtwrpsub | ibis2asc | ibis2img |
+| ibis2rpc | ibisclst | ibislsq2 | ibislsql |
+| ibisnlsq | ibisx | icat | idgen |
+| ifthen | ilist | imcorner | imgsum |
+| immerge | imsplit | medfill | moore |
+| mos_l2_dem | mvecall | nacma | norangle |
+| obj2gltf | obj2plane | picmtch4 | plab2tcl |
+| polygeov | rastovec | rowop2 | rpc2grid |
+| rpc2ibis | rpcscal | rpcwarpm | rpcwarp |
+| sdsems | surffit | tcl2file | tcl2tcl |
+| testtrnscol2 | trnscol2 | vextract2 | watermask |
 
 - 20 anomalies, 11 new capabilities, 222 bug fixes/improvements. For release notes, [click here](vos/docsource/vicar/VOS5-Release-Notes.pdf).
 
@@ -128,18 +65,20 @@ For VISOR, you will also need the calibration directory for the mission(s) you w
 
 ### Source Code
 
-* GitHub: [https://github.com/NASA-AMMOS/VICAR](https://github.com/NASA-AMMOS/VICAR]
-* Main VICAR source code:  [Click to download](https://github.com/NASA-AMMOS/VICAR/tarball/master)
+* GitHub: [https://github.com/NASA-AMMOS/VICAR](https://github.com/NASA-AMMOS/VICAR)
+* Main VICAR source code:  [Click to download](https://github.com/NASA-AMMOS/VICAR/tarball/master)  
+
+**NOTE:** Due to the size of some included files, GitHub users will need to [install Git LFS](https://docs.github.com/en/repositories/working-with-files/managing-large-files/installing-git-large-file-storage) before [cloning](https://docs.github.com/en/get-started/using-git/getting-changes-from-a-remote-repository#cloning-a-repository) and/or [pulling](https://docs.github.com/en/get-started/using-git/getting-changes-from-a-remote-repository#pulling-changes-from-a-remote-repository) the repository.
 
 ### Pre-built Binaries
 
-* Pre-built VICAR binaries are available for Linux (64-bit) and MacOS (x86, 64 bit) [https://github.com/NASA-AMMOS/VICAR/releases](here).
+* Pre-built VICAR binaries are available for Linux (64-bit) and MacOS (x86, 64 bit) [here](https://github.com/NASA-AMMOS/VICAR/releases).
 
 ### Externals
 
-* Linux 64-bit externals:  [Click to download](http://www-mipl.jpl.nasa.gov/vicar_os/v5.0/vicar_open_ext_x86-64-linx_5.0.tar.gz)
-* Mac OS X externals:  [Click to download](http://www-mipl.jpl.nasa.gov/vicar_os/v5.0/vicar_open_ext_mac64-osx_5.0.tar.gz)
-* All externals (don't get unless you know you need this): [Click to download](http://www-mipl.jpl.nasa.gov/vicar_os/v5.0/vicar_open_ext_5.0.tar.gz)
+* Linux 64-bit externals:  [Click to download](https://github.com/NASA-AMMOS/VICAR/releases/download/5.0/vicar_open_ext_x86-64-linx_5.0.tar.gz)
+* Mac OS X externals:  [Click to download](https://github.com/NASA-AMMOS/VICAR/releases/download/5.0/vicar_open_ext_mac64-osx_5.0.tar.gz)
+* All externals (don't get unless you know you need this): [Click to download](https://github.com/NASA-AMMOS/VICAR/releases/download/5.0/vicar_open_ext_5.0.tar.gz)
 
 ### VISOR Calibration files
 
@@ -167,7 +106,7 @@ The Installation Guide is useful for prebuilt binaries and critical if you want 
 
 If you want to use the VISOR Mars programs, first review the VICAR Quick-Start Guide and then the VISOR User Guide:
 
-* [VISOR User Guide](XXXX)
+* [VISOR User Guide](vos/docsource/vicar/VISORUserGuide_v1_0.pdf)
 
 Other less commonly referenced documents:
 * [VICAR File Format](https://www-mipl.jpl.nasa.gov/external/VICAR_file_fmt.pdf)
