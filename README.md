@@ -82,17 +82,17 @@ For VISOR, you will also need the calibration directory for the mission(s) you w
 
 ### VISOR Calibration files
 
-* [Mars 2020, Perseverence and Ingenuity](http://www-mipl.jpl.nasa.gov/vicar_os/v5.0/visor/calibration_per_project/visor_calibration_20230608_m20.tar.gz)
-* [Mars Science Laboratory (MSL), Curiosity](http://www-mipl.jpl.nasa.gov/vicar_os/v5.0/visor/calibration_per_project/visor_calibration_20230608_msl.tar.gz)
-* [InSight lander](http://www-mipl.jpl.nasa.gov/vicar_os/v5.0/visor/calibration_per_project/visor_calibration_20230608_nsyt.tar.gz)
-* [Mars Exploration Rover (MER), Spirit and Opportunity](http://www-mipl.jpl.nasa.gov/vicar_os/v5.0/visor/calibration_per_project/visor_calibration_20230608_mer.tar.gz)
-* [Phoenix lander](http://www-mipl.jpl.nasa.gov/vicar_os/v5.0/visor/calibration_per_project/visor_calibration_20230608_phx.tar.gz)
-* [MSAM (Mastcam Stereo Analysis and Mosaics), a PDART task for MSL-Mastcam data](http://www-mipl.jpl.nasa.gov/vicar_os/v5.0/visor/calibration_per_project/visor_calibration_20230608_msam.tar.gz)
-* [All calibration files in one tarball (4.6 GB)](http://www-mipl.jpl.nasa.gov/vicar_os/v5.0/visor/visor_calibration_20230608_all.tar.gz)
+* [Mars 2020, Perseverence and Ingenuity](https://www-mipl.jpl.nasa.gov/vicar_os/v5.0/visor/calibration_per_project/visor_calibration_20230608_m20.tar.gz)
+* [Mars Science Laboratory (MSL), Curiosity](https://www-mipl.jpl.nasa.gov/vicar_os/v5.0/visor/calibration_per_project/visor_calibration_20230608_msl.tar.gz)
+* [InSight lander](https://www-mipl.jpl.nasa.gov/vicar_os/v5.0/visor/calibration_per_project/visor_calibration_20230608_nsyt.tar.gz)
+* [Mars Exploration Rover (MER), Spirit and Opportunity](https://www-mipl.jpl.nasa.gov/vicar_os/v5.0/visor/calibration_per_project/visor_calibration_20230608_mer.tar.gz)
+* [Phoenix lander](https://www-mipl.jpl.nasa.gov/vicar_os/v5.0/visor/calibration_per_project/visor_calibration_20230608_phx.tar.gz)
+* [MSAM (Mastcam Stereo Analysis and Mosaics), a PDART task for MSL-Mastcam data](https://www-mipl.jpl.nasa.gov/vicar_os/v5.0/visor/calibration_per_project/visor_calibration_20230608_msam.tar.gz)
+* [All calibration files in one tarball (4.6 GB)](https://www-mipl.jpl.nasa.gov/vicar_os/v5.0/visor/visor_calibration_20230608_all.tar.gz)
 
 ### VISOR Sample Data
 
-* [VISOR Sample Data for User Guide](http://www-mipl.jpl.nasa.gov/vicar_os/v5.0/visor/visor_sample_data_20230614.tar.gz)
+* [VISOR Sample Data for User Guide](https://www-mipl.jpl.nasa.gov/vicar_os/v5.0/visor/visor_sample_data_20230614.tar.gz)
 
 # Getting Started and Documentation
 
