@@ -92,7 +92,7 @@ For VISOR, you will also need the calibration directory for the mission(s) you w
 
 ### VISOR Sample Data
 
-* [VISOR Sample Data for User Guide](https://www-mipl.jpl.nasa.gov/vicar_os/v5.0/visor/visor_sample_data_20230614.tar.gz)
+* [VISOR Sample Data for User Guide](https://www-mipl.jpl.nasa.gov/vicar_os/v5.0/visor/visor_sample_data_20230623.tar.gz)
 
 # Getting Started and Documentation
 
@@ -114,12 +114,14 @@ Other less commonly referenced documents:
 * [Building and Delivering VICAR Applications](https://www-mipl.jpl.nasa.gov/buildapps/)
 * [VRDI User's Reference Guide (mostly obsolete)](https://www-mipl.jpl.nasa.gov/vrdi/vrdi.html)
 
-# VICAR Discussion Forum
+# VICAR Discussion Forums
 
-We have set up a [VICAR Open Source Google group](https://groups.google.com/forum/#!forum/vicar-open-source/), where you can find notifications of new releases, bug reports, and general discussion. You can join the group [here](https://groups.google.com/forum/#!forum/vicar-open-source/join).
+We've set up online groups to help users collaborate and interact on VICAR-related subjects, where you can find notifications of new releases, view bug reports and participate in general discussions:
+* The [VICAR Open Source Google group](https://groups.google.com/forum/#!forum/vicar-open-source/) can be joined [here](https://groups.google.com/forum/#!forum/vicar-open-source/join).
+* A **#vicar** channel is available in the [OpenPlanetary Slack workspace](http://openplanetary.slack.com/) ([join here](https://www.openplanetary.org/join))
 
-Questions:  vicar_help@jpl.nasa.gov
+Questions: [vicar_help@jpl.nasa.gov](mailto:vicar_help@jpl.nasa.gov)
 
 # Modifying VICAR/VISOR
 
-One of the prime purposes of Open Source is to solicit contributions from the community, and we welcome such contributions.  However, at the current time, this git repo is read-only.  At some point in the future, we hope to make this easier, but for now, send any changes to vicar_help@jpl.nasa.gov and we can discuss them.  Since this software is used as part of surface operations for these missions, we must carefully vet any changes, which is the primary reason for this.  Getting more contributions from the community will help make the case for improved governance here.
+One of the prime purposes of Open Source is to solicit contributions from the community, and we welcome such contributions.  However, at the current time, this git repo is read-only.  At some point in the future, we hope to make this easier, but for now, send any changes to [vicar_help@jpl.nasa.gov](mailto:vicar_help@jpl.nasa.gov) and we can discuss them.  Since this software is used as part of surface operations for these missions, we must carefully vet any changes, which is the primary reason for this.  Getting more contributions from the community will help make the case for improved governance here.
