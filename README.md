@@ -78,7 +78,6 @@ For VISOR, you will also need the calibration directory for the mission(s) you w
 
 * Linux 64-bit externals:  [Click to download](https://github.com/NASA-AMMOS/VICAR/releases/download/5.0/vicar_open_ext_x86-64-linx_5.0.tar.gz)
 * Mac OS X externals:  [Click to download](https://github.com/NASA-AMMOS/VICAR/releases/download/5.0/vicar_open_ext_mac64-osx_5.0.tar.gz)
-* All externals (don't get unless you know you need this): [Click to download](https://github.com/NASA-AMMOS/VICAR/releases/download/5.0/vicar_open_ext_5.0.tar.gz)
 
 ### VISOR Calibration files
 
