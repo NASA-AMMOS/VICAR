@@ -95,6 +95,8 @@ For VISOR, you will also need the calibration directory for the mission(s) you w
 
 # Getting Started and Documentation
 
+The [VICAR/VISOR Wiki](https://github.com/NASA-AMMOS/VICAR/wiki/VICAR-VISOR-Notes) is the most up-to-date resource for late-breaking changes and other application notes. [Up-to-date Labelocity guidance](https://github.com/NASA-AMMOS/VICAR/wiki/Labelocity-Notes) is also provided.
+
 For any use of VICAR (including VISOR and AFIDS), we recommend the Quick-Start Guide:
 
 * [VICAR Quick-Start Guide](vos/docsource/vicar/VICAR_guide_5.0.pdf).
