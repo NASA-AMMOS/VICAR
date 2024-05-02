@@ -80,7 +80,7 @@ For VISOR, you will also need the calibration directory for the mission(s) you w
 * Mac OS X externals:  [Click to download](https://github.com/NASA-AMMOS/VICAR/releases/download/5.0/vicar_open_ext_mac64-osx_5.0.tar.gz)
 
 ### VISOR Calibration files
-
+Note, M20 calibration files were split to allow for Github hosting limits.  Files must be combined before expanding the package.
 * [Mars 2020, Perseverence and Ingenuity - Part 1](https://github.com/NASA-AMMOS/VICAR/releases/download/5.0/visor_calibration_20230608_m20.tar.gzaa)
 * [Mars 2020, Perseverence and Ingenuity - Part 2](https://github.com/NASA-AMMOS/VICAR/releases/download/5.0/visor_calibration_20230608_m20.tar.gzab)
 * [Mars Science Laboratory (MSL), Curiosity](https://github.com/NASA-AMMOS/VICAR/releases/download/5.0/visor_calibration_20230608_msl.tar.gz)
