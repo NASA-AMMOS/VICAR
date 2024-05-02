@@ -81,17 +81,17 @@ For VISOR, you will also need the calibration directory for the mission(s) you w
 
 ### VISOR Calibration files
 
-* [Mars 2020, Perseverence and Ingenuity](https://www-mipl.jpl.nasa.gov/vicar_os/v5.0/visor/calibration_per_project/visor_calibration_20230608_m20.tar.gz)
-* [Mars Science Laboratory (MSL), Curiosity](https://www-mipl.jpl.nasa.gov/vicar_os/v5.0/visor/calibration_per_project/visor_calibration_20230608_msl.tar.gz)
-* [InSight lander](https://www-mipl.jpl.nasa.gov/vicar_os/v5.0/visor/calibration_per_project/visor_calibration_20230608_nsyt.tar.gz)
-* [Mars Exploration Rover (MER), Spirit and Opportunity](https://www-mipl.jpl.nasa.gov/vicar_os/v5.0/visor/calibration_per_project/visor_calibration_20230608_mer.tar.gz)
-* [Phoenix lander](https://www-mipl.jpl.nasa.gov/vicar_os/v5.0/visor/calibration_per_project/visor_calibration_20230608_phx.tar.gz)
-* [MSAM (Mastcam Stereo Analysis and Mosaics), a PDART task for MSL-Mastcam data](https://www-mipl.jpl.nasa.gov/vicar_os/v5.0/visor/calibration_per_project/visor_calibration_20230608_msam.tar.gz)
-* [All calibration files in one tarball (4.6 GB)](https://www-mipl.jpl.nasa.gov/vicar_os/v5.0/visor/visor_calibration_20230608_all.tar.gz)
+* [Mars 2020, Perseverence and Ingenuity - Part 1](https://github.com/NASA-AMMOS/VICAR/releases/download/5.0/visor_calibration_20230608_m20.tar.gzaa)
+* [Mars 2020, Perseverence and Ingenuity - Part 2](https://github.com/NASA-AMMOS/VICAR/releases/download/5.0/visor_calibration_20230608_m20.tar.gzab)
+* [Mars Science Laboratory (MSL), Curiosity](https://github.com/NASA-AMMOS/VICAR/releases/download/5.0/visor_calibration_20230608_msl.tar.gz)
+* [InSight lander](https://github.com/NASA-AMMOS/VICAR/releases/download/5.0/visor_calibration_20230608_nsyt.tar.gz)
+* [Mars Exploration Rover (MER), Spirit and Opportunity](https://github.com/NASA-AMMOS/VICAR/releases/download/5.0/visor_calibration_20230608_mer.tar.gz)
+* [Phoenix lander](https://github.com/NASA-AMMOS/VICAR/releases/download/5.0/visor_calibration_20230608_phx.tar.gz)
+* [MSAM (Mastcam Stereo Analysis and Mosaics), a PDART task for MSL-Mastcam data](https://github.com/NASA-AMMOS/VICAR/releases/download/5.0/visor_calibration_20230608_msam.tar.gz)
 
 ### VISOR Sample Data
 
-* [VISOR Sample Data for User Guide](https://www-mipl.jpl.nasa.gov/vicar_os/v5.0/visor/visor_sample_data_20230623.tar.gz)
+* [VISOR Sample Data for User Guide](https://github.com/NASA-AMMOS/VICAR/releases/download/5.0/visor_sample_data_20230623.tar.gz)
 
 # Getting Started and Documentation
 
