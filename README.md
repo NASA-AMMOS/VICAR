@@ -1,7 +1,7 @@
 # VICAR
-[VICAR, which stands for Video Image Communication And Retrieval,](https://www.hou.usra.edu/meetings/planetdata2015/pdf/7059.pdf) is a general purpose image processing software system that has been developed since 1966 to digitally process multi-dimensional imaging data.
+[VICAR, which stands for Video Image Communication And Retrieval](https://www.hou.usra.edu/meetings/planetdata2015/pdf/7059.pdf), is a general purpose image processing software system that has been developed since 1966 to digitally process multi-dimensional imaging data.
 
-The VICAR core contains a large number of multimission application programs and utilities.  The general VICAR web page is [https://www-mipl.jpl.nasa.gov/vicar.html](https://www-mipl.jpl.nasa.gov/vicar.html).
+The VICAR core contains a large number of multimission application programs and utilities.  Documentation for VICAR can be found at [https://nasa-ammos.github.io/VICAR-DOCS/](https://nasa-ammos.github.io/VICAR-DOCS/).
 
 Also included in the VICAR Open Source delivery are the following major subsystems:
 
@@ -110,10 +110,10 @@ If you want to use the VISOR Mars programs, first review the VICAR Quick-Start G
 * [VISOR User Guide](vos/docsource/vicar/VISORUserGuide_v1_0.pdf)
 
 Other less commonly referenced documents:
-* [VICAR File Format](https://www-mipl.jpl.nasa.gov/external/VICAR_file_fmt.pdf)
-* [VICAR Porting Guide](https://www-mipl.jpl.nasa.gov/portguide/portguide.html)
-* [Building and Delivering VICAR Applications](https://www-mipl.jpl.nasa.gov/buildapps/)
-* [VRDI User's Reference Guide (mostly obsolete)](https://www-mipl.jpl.nasa.gov/vrdi/vrdi.html)
+* [VICAR File Format](https://nasa-ammos.github.io/VICAR-DOCS/external/VICAR_file_fmt.pdf)
+* [VICAR Porting Guide](https://nasa-ammos.github.io/VICAR-DOCS/portguide/portguide.html)
+* [Building and Delivering VICAR Applications](https://nasa-ammos.github.io/VICAR-DOCS/buildapps/)
+* [VRDI User's Reference Guide (mostly obsolete)](https://nasa-ammos.github.io/VICAR-DOCS/vrdi/vrdi.html)
 
 # VICAR Discussion Forums
 
