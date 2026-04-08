@@ -1,0 +1,625 @@
+name: Build VICAR
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - develop
+      - 'feature/**'
+      - 'release/**'
+  pull_request:
+    branches:
+      - main
+      - master
+      - develop
+  schedule:
+    # Weekly build every Sunday at midnight UTC
+    - cron: '0 0 * * 0'
+  workflow_dispatch:
+    inputs:
+      external_version:
+        description: 'VICAR externals version to use'
+        required: false
+        default: '5.0'
+      enable_debug:
+        description: 'Enable debug output'
+        required: false
+        type: boolean
+        default: false
+
+env:
+  V2TOP: ${{ github.workspace }}/vos
+  VICSYS: DEVELOPMENT
+  GIT_LFS_SKIP_SMUDGE: 1
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  build-vicar:
+    name: Build VICAR on ${{ matrix.config.name }}
+    runs-on: ${{ matrix.config.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - name: "Linux x86_64 (RHEL 8)"
+            runner: ubuntu-latest
+            arch: x86-64-linx
+            container: rockylinux:8
+            external_name: vicar_open_ext_x86-64-linx_5.0.tar.gz
+            use_container: true
+          # Disabled until mac64-osx externals are published
+          # - name: "macOS arm64 (Apple Silicon)"
+          #   runner: macos-15  # Apple Silicon - macOS 15 (arm64), same as macos-latest
+          #   arch: mac64-osx
+          #   external_name: vicar_open_ext_mac64-osx_5.0.tar.gz
+          #   use_container: false
+    
+    container: ${{ matrix.config.use_container && matrix.config.container || null }}
+    
+    steps:
+      - name: Install Git and basic tools (Linux)
+        if: matrix.config.use_container
+        run: |
+          dnf -y install git git-lfs curl wget
+          
+          # Configure git for container environment
+          git config --global --add safe.directory '*'
+          git config --global user.email "vicar-build@github-actions"
+          git config --global user.name "VICAR Build"
+      
+      - name: Install dependencies (macOS)
+        if: ${{ !matrix.config.use_container }}
+        run: |
+          # Install Homebrew packages
+          # Note: openjdk@8 is no longer available on macOS 15, using openjdk@11 instead
+          brew install git-lfs tcsh gcc gfortran openjdk@11
+          
+          # Configure git
+          git config --global user.email "vicar-build@github-actions"
+          git config --global user.name "VICAR Build"
+      
+      - name: Checkout repository
+        shell: bash
+        run: |
+          # Manual git clone to avoid submodule issues
+          cd $GITHUB_WORKSPACE
+          
+          # Clone the repository
+          if [ -n "${GITHUB_HEAD_REF}" ]; then
+            # Pull request - use the head ref
+            git clone --depth 1 --branch ${GITHUB_HEAD_REF} \
+              https://github.com/${GITHUB_REPOSITORY}.git repo
+          elif [ "${GITHUB_REF#refs/heads/}" != "${GITHUB_REF}" ]; then
+            # Branch push
+            git clone --depth 1 --branch ${GITHUB_REF#refs/heads/} \
+              https://github.com/${GITHUB_REPOSITORY}.git repo
+          else
+            # Tag or other ref
+            git clone --depth 1 \
+              https://github.com/${GITHUB_REPOSITORY}.git repo
+          fi
+          
+          # Move contents to workspace root
+          shopt -s dotglob
+          mv repo/* . 2>/dev/null || true
+          rm -rf repo
+          
+          # Remove submodule configuration to prevent issues
+          rm -f .gitmodules
+          git config --local --remove-section submodule.vos/vicar_gdalplugin 2>/dev/null || true
+          
+          # Verify checkout
+          if [ ! -d "vos" ]; then
+            echo "ERROR: vos directory not found!"
+            exit 1
+          fi
+          
+          echo "Repository cloned successfully"
+          ls -la
+      
+      - name: Pull LFS files (if needed)
+        shell: bash
+        run: |
+          cd $GITHUB_WORKSPACE
+          if [ -d ".git" ]; then
+            git lfs install 2>/dev/null || true
+            git lfs pull 2>/dev/null || echo "LFS pull skipped or had issues, continuing..."
+          fi
+      
+      - name: Install system dependencies (Linux)
+        if: matrix.config.use_container
+        run: |
+          # Enable PowerTools and EPEL repositories for additional development packages
+          dnf install -y dnf-plugins-core epel-release
+          dnf config-manager --set-enabled powertools
+          
+          # Install dependencies
+          dnf -y install \
+              sudo \
+              rpm-build \
+              rsync \
+              tcsh \
+              cpp \
+              gcc-c++ \
+              gcc-gfortran \
+              perl \
+              imake \
+              make \
+              cmake \
+              libtool \
+              jasper-devel \
+              automake \
+              libcurl-devel \
+              postgresql-devel \
+              unixODBC-devel \
+              pcre-devel \
+              libpng-devel \
+              libtiff-devel \
+              libjpeg-turbo-devel \
+              java-1.8.0-openjdk-devel \
+              libX11-devel \
+              libXt-devel \
+              libXmu-devel \
+              libXp-devel \
+              libXpm-devel \
+              libXext-devel \
+              motif-devel \
+              ncurses-devel \
+              mesa-libGL-devel \
+              mesa-libGLU-devel \
+              libtirpc-devel \
+              tcl-devel \
+              sqlite-devel \
+              jbigkit-libs \
+              patch \
+              expat-devel \
+              libbsd-devel \
+              tbb-devel \
+              krb5-devel \
+              libcom_err-devel \
+              systemd-devel \
+              libxml2-devel \
+              openssl-libs
+          dnf clean all
+          rm -rf /var/cache/dnf
+      
+      - name: Setup VICAR environment (Linux)
+        if: matrix.config.use_container
+        run: |
+          # Create symlinks for libraries
+          ln -sf /lib64/libtcl8.6.so /lib64/libtcl.so
+          ln -sf /lib64/libtk8.6.so /lib64/libtk.so
+          ln -sf /lib64/libcrypto.so.1.1.1k /lib64/libcrypto.so || \
+            ln -sf /lib64/libcrypto.so.3 /lib64/libcrypto.so
+          ln -s /usr/lib/jvm/java-openjdk /usr/java
+          
+          # Setup shell
+          rm -f /bin/csh && ln -s /bin/tcsh /bin/csh
+          ln -s /usr/include/tirpc/rpc/rpc.h /usr/include/rpc/rpc.h
+          
+          # The checkout action puts files in $GITHUB_WORKSPACE
+          # We need to set up V2TOP to point to the vos directory
+          echo "GITHUB_WORKSPACE is: $GITHUB_WORKSPACE"
+          ls -la $GITHUB_WORKSPACE
+          
+          # Verify vos directory exists
+          if [ ! -d "$GITHUB_WORKSPACE/vos" ]; then
+            echo "ERROR: vos directory not found in workspace!"
+            exit 1
+          fi
+          
+          # Set permissions
+          chmod -R +rw $GITHUB_WORKSPACE
+          chmod -R +X $GITHUB_WORKSPACE
+      
+      - name: Setup VICAR environment (macOS)
+        if: ${{ !matrix.config.use_container }}
+        shell: bash
+        run: |
+          # Create symlinks for Java (using openjdk@11 instead of openjdk@8)
+          sudo ln -sfn /opt/homebrew/opt/openjdk@11/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-11.jdk || \
+            sudo ln -sfn /usr/local/opt/openjdk@11/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-11.jdk
+          
+          # Verify vos directory exists
+          if [ ! -d "$GITHUB_WORKSPACE/vos" ]; then
+            echo "ERROR: vos directory not found in workspace!"
+            exit 1
+          fi
+          
+          echo "macOS environment ready"
+          ls -la $GITHUB_WORKSPACE
+      
+      - name: Download VICAR externals
+        shell: bash
+        env:
+          EXTERNAL_VERSION: ${{ github.event.inputs.external_version || '5.0' }}
+          EXTERNAL_FILE: ${{ matrix.config.external_name }}
+        run: |
+          # Download externals to parent directory of vos (where build_open_vicar.csh expects them)
+          cd $GITHUB_WORKSPACE
+          
+          echo "Downloading VICAR externals: ${EXTERNAL_FILE}..."
+          curl -L -o externals.tar.gz \
+            https://github.com/NASA-AMMOS/VICAR/releases/download/${EXTERNAL_VERSION}/${EXTERNAL_FILE}
+          
+          echo "Extracting externals..."
+          tar -zxf externals.tar.gz
+          rm externals.tar.gz
+          
+          # Rename extracted directory to 'external' (build expects this name)
+          # The tarball extracts to a versioned directory name
+          EXTRACTED_DIR=$(ls -d vicar_open_ext_* 2>/dev/null | head -1)
+          if [ -n "$EXTRACTED_DIR" ] && [ -d "$EXTRACTED_DIR" ]; then
+            mv "$EXTRACTED_DIR" external
+            echo "Renamed $EXTRACTED_DIR to external"
+          fi
+          
+          echo "Externals extracted successfully"
+          echo "Contents of workspace:"
+          ls -la $GITHUB_WORKSPACE
+          
+          # Verify external directory exists
+          if [ -d "$GITHUB_WORKSPACE/external" ]; then
+            echo "✓ External directory found"
+            echo "Contents of external/:"
+            ls -la $GITHUB_WORKSPACE/external | head -20
+          else
+            echo "✗ ERROR: external directory not found after extraction"
+            exit 1
+          fi
+      
+      - name: Enable debug mode
+        if: ${{ github.event.inputs.enable_debug == 'true' }}
+        shell: bash
+        run: |
+          echo "Debug mode enabled"
+          set -x
+      
+      - name: Pre-build verification
+        shell: bash
+        run: |
+          echo "=== Pre-build Verification ==="
+          echo "V2TOP: $V2TOP"
+          echo "GITHUB_WORKSPACE: $GITHUB_WORKSPACE"
+          echo ""
+          echo "V2TOP contents:"
+          ls -la $V2TOP || echo "V2TOP directory not accessible"
+          echo ""
+          echo "Parent directory (should contain external/):"
+          ls -la $(dirname $V2TOP) || echo "Parent directory not accessible"
+          echo ""
+          echo "Checking for required files in V2TOP:"
+          [ -f "$V2TOP/build_open_vicar.csh" ] && echo "✓ build_open_vicar.csh found" || echo "✗ build_open_vicar.csh NOT found"
+          [ -f "$V2TOP/vicset1.source" ] && echo "✓ vicset1.source found" || echo "✗ vicset1.source NOT found"
+          [ -d "$V2TOP/util" ] && echo "✓ util/ directory found" || echo "✗ util/ directory NOT found"
+          echo ""
+          echo "Checking for externals:"
+          if [ -d "$(dirname $V2TOP)/external" ]; then
+            echo "✓ external/ directory found"
+            ls -la $(dirname $V2TOP)/external | head -10
+          else
+            echo "✗ external/ directory NOT found - build may fail"
+            echo "Contents of parent directory:"
+            ls -la $(dirname $V2TOP)
+          fi
+      
+      - name: Build VICAR
+        shell: bash
+        working-directory: ${{ github.workspace }}/vos
+        run: |
+          # Make scripts executable
+          chmod +x util/*.csh
+          chmod +x *.csh
+          
+          # Run the open source build script
+          echo "Starting VICAR build at $(date)"
+          echo "V2TOP is: $V2TOP"
+          echo "Current directory: $(pwd)"
+          ls -la
+          
+          # Run build with error checking
+          if tcsh build_open_vicar.csh; then
+            echo "Build completed successfully at $(date)"
+          else
+            echo "ERROR: Build failed with exit code $?"
+            echo "Checking for build logs..."
+            ls -la *.log 2>/dev/null || echo "No log files found"
+            exit 1
+          fi
+        timeout-minutes: 180
+      
+      - name: Check build logs for errors
+        if: always()
+        shell: bash
+        working-directory: ${{ github.workspace }}/vos
+        run: |
+          echo "=== Checking build logs for errors ==="
+          
+          # Function to check a log file
+          check_log() {
+            local logfile=$1
+            if [ -f "$logfile" ]; then
+              echo ""
+              echo "=== $logfile ==="
+              if grep -i "error\|fatal\|fail" "$logfile" | head -20; then
+                echo "Found potential issues in $logfile"
+              else
+                echo "No critical errors found in $logfile"
+              fi
+            else
+              echo "$logfile not found"
+            fi
+          }
+          
+          # Check all build logs
+          check_log "build_tae53_x86-64-linx.log"
+          check_log "fetch_tae53.log"
+          check_log "build_opens1_x86-64-linx.log"
+          check_log "build_java.log"
+          check_log "build_opens2_x86-64-linx.log"
+      
+      - name: Create build summary
+        if: always()
+        shell: bash
+        working-directory: ${{ github.workspace }}/vos
+        run: |
+          set +e  # Don't exit on errors in summary
+          echo "=== VICAR Build Summary ===" > build_summary.txt
+          echo "Build Date: $(date)" >> build_summary.txt
+          echo "Branch: $GITHUB_REF_NAME" >> build_summary.txt
+          echo "Commit: $GITHUB_SHA" >> build_summary.txt
+          echo "Workflow: $GITHUB_WORKFLOW" >> build_summary.txt
+          echo "Run Number: $GITHUB_RUN_NUMBER" >> build_summary.txt
+          echo "Architecture: ${{ matrix.config.arch }}" >> build_summary.txt
+          echo "" >> build_summary.txt
+          
+          # Check if key directories were created
+          echo "=== Build Artifacts Check ===" >> build_summary.txt
+          ARCH="${{ matrix.config.arch }}"
+          TOTAL_FILES=0
+          
+          # Count files in all lib directories
+          for dir in p1/lib/$ARCH p2/lib/$ARCH p3/lib/$ARCH mars/lib/$ARCH gui/lib/$ARCH vids/lib/$ARCH vrdi/lib/$ARCH lib/$ARCH olb/$ARCH tae53/lib; do
+            if [ -d "$dir" ]; then
+              COUNT=$(find "$dir" -type f 2>/dev/null | wc -l)
+              TOTAL_FILES=$((TOTAL_FILES + COUNT))
+              if [ $COUNT -gt 0 ]; then
+                echo "✓ $dir found with $COUNT files" >> build_summary.txt
+              fi
+            fi
+          done
+          
+          # Check for crumbs binaries
+          if [ -d "crumbs/bin/$ARCH" ]; then
+            CRUMBS_COUNT=$(find "crumbs/bin/$ARCH" -type f 2>/dev/null | wc -l)
+            TOTAL_FILES=$((TOTAL_FILES + CRUMBS_COUNT))
+            if [ $CRUMBS_COUNT -gt 0 ]; then
+              echo "✓ crumbs/bin/$ARCH found with $CRUMBS_COUNT files" >> build_summary.txt
+            fi
+          fi
+          
+          echo "" >> build_summary.txt
+          echo "Total build artifacts: $TOTAL_FILES files" >> build_summary.txt
+          
+          echo "" >> build_summary.txt
+          echo "=== Sample Build Outputs ===" >> build_summary.txt
+          if [ -d "p2/lib/$ARCH" ]; then
+            echo "Sample files from p2/lib/$ARCH:" >> build_summary.txt
+            find "p2/lib/$ARCH" -type f 2>/dev/null | head -10 >> build_summary.txt
+          fi
+          
+          echo "" >> build_summary.txt
+          echo "=== Disk Usage ===" >> build_summary.txt
+          du -sh $GITHUB_WORKSPACE 2>/dev/null >> build_summary.txt || echo "Could not determine disk usage"
+          
+          echo "" >> build_summary.txt
+          echo "=== Build Status ===" >> build_summary.txt
+          if [ $TOTAL_FILES -gt 100 ]; then
+            echo "✓ BUILD SUCCESSFUL" >> build_summary.txt
+            echo "  $TOTAL_FILES artifacts created" >> build_summary.txt
+          elif [ $TOTAL_FILES -gt 0 ]; then
+            echo "⚠ BUILD PARTIALLY SUCCESSFUL" >> build_summary.txt
+            echo "  $TOTAL_FILES artifacts created (expected more)" >> build_summary.txt
+          else
+            echo "✗ BUILD FAILED" >> build_summary.txt
+            echo "  No artifacts found" >> build_summary.txt
+          fi
+          
+          cat build_summary.txt
+          set -e
+      
+      - name: Upload build logs
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: vicar-build-logs-${{ matrix.config.arch }}
+          path: |
+            ${{ github.workspace }}/vos/build_*.log
+            ${{ github.workspace }}/vos/fetch_*.log
+            ${{ github.workspace }}/vos/build_summary.txt
+            ${{ github.workspace }}/vos/LOG
+          retention-days: 30
+          if-no-files-found: warn
+      
+      - name: Verify build artifacts before upload
+        if: success()
+        shell: bash
+        working-directory: ${{ github.workspace }}/vos
+        run: |
+          set +e  # Don't exit on SIGPIPE
+          echo "=== Verifying Build Artifacts ==="
+          echo ""
+          echo "Checking for built files in architecture-specific directories..."
+          echo ""
+          
+          ARCH="${{ matrix.config.arch }}"
+          TOTAL_FILES=0
+          
+          # Function to check directory and count files
+          check_dir() {
+            local dir=$1
+            if [ -d "$dir" ]; then
+              local count=$(find "$dir" -type f 2>/dev/null | wc -l)
+              echo "✓ $dir exists with $count files"
+              TOTAL_FILES=$((TOTAL_FILES + count))
+              if [ $count -gt 0 ] && [ $count -le 10 ]; then
+                echo "  Sample files:"
+                find "$dir" -type f 2>/dev/null | head -5 || true
+              elif [ $count -gt 10 ]; then
+                echo "  Sample files (showing 5 of $count):"
+                find "$dir" -type f 2>/dev/null | head -5 || true
+              fi
+            else
+              echo "✗ $dir does not exist"
+            fi
+            echo ""
+          }
+          
+          # Check all expected directories
+          check_dir "p1/lib/$ARCH"
+          check_dir "p2/lib/$ARCH"
+          check_dir "p3/lib/$ARCH"
+          check_dir "mars/lib/$ARCH"
+          check_dir "gui/lib/$ARCH"
+          check_dir "vids/lib/$ARCH"
+          check_dir "vrdi/lib/$ARCH"
+          check_dir "crumbs/bin/$ARCH"
+          check_dir "tae53/lib"
+          check_dir "lib/$ARCH"
+          check_dir "olb/$ARCH"
+          
+          echo "=== Summary ==="
+          echo "Total files found: $TOTAL_FILES"
+          
+          if [ $TOTAL_FILES -eq 0 ]; then
+            echo "ERROR: No build artifacts found!"
+            echo ""
+            echo "Checking alternative locations..."
+            echo "Contents of vos/:"
+            ls -la .
+            echo ""
+            echo "Looking for any .a, .so, or executable files:"
+            find . -type f \( -name "*.a" -o -name "*.so" -o -perm -111 \) 2>/dev/null | head -20 || true
+            exit 1
+          fi
+          
+          set -e  # Re-enable exit on error
+      
+      - name: Upload build artifacts (binaries)
+        if: success()
+        uses: actions/upload-artifact@v5
+        with:
+          name: vicar-binaries-${{ matrix.config.arch }}
+          path: |
+            vos/p1/lib/${{ matrix.config.arch }}/**
+            vos/p2/lib/${{ matrix.config.arch }}/**
+            vos/p3/lib/${{ matrix.config.arch }}/**
+            vos/mars/lib/${{ matrix.config.arch }}/**
+            vos/gui/lib/${{ matrix.config.arch }}/**
+            vos/vids/lib/${{ matrix.config.arch }}/**
+            vos/vrdi/lib/${{ matrix.config.arch }}/**
+            vos/crumbs/bin/${{ matrix.config.arch }}/**
+            vos/tae53/lib/**
+            vos/lib/${{ matrix.config.arch }}/**
+            vos/olb/${{ matrix.config.arch }}/**
+          retention-days: 7
+          if-no-files-found: error
+      
+      - name: Generate build status badge data
+        if: always()
+        run: |
+          # Create a simple status file that can be used for badges
+          mkdir -p /tmp/badge
+          if [ "${{ job.status }}" = "success" ]; then
+            echo "passing" > /tmp/badge/status.txt
+          else
+            echo "failing" > /tmp/badge/status.txt
+          fi
+          echo "Build completed with status: $(cat /tmp/badge/status.txt)"
+
+  # Optional: Test job that runs after successful build
+  test-vicar:
+    name: Test VICAR Installation
+    needs: build-vicar
+    runs-on: ubuntu-latest
+    if: false  # Set to true to enable testing
+    container:
+      # Rocky Linux 8 (same as build job)
+      image: rockylinux:8
+      options: --privileged
+    
+    steps:
+      - name: Install basic tools
+        run: |
+          dnf -y install git curl tcsh
+      
+      - name: Checkout repository
+        uses: actions/checkout@v5
+      
+      - name: Download build artifacts
+        uses: actions/download-artifact@v5
+        with:
+          name: vicar-binaries-x86-64-linx
+          path: ${{ github.workspace }}/vos/
+      
+      - name: Setup environment
+        run: |
+          # Setup environment for testing
+          ln -s /bin/tcsh /bin/csh
+          chmod -R +x ${{ github.workspace }}/vos/bin/
+      
+      - name: Run basic VICAR tests
+        working-directory: ${{ github.workspace }}/vos
+        run: |
+          # Source VICAR environment
+          export V2TOP=${{ github.workspace }}/vos
+          export VICSYS=DEVELOPMENT
+          
+          # Create vicset1.csh for PROJ_OS
+          chmod +x util/*.csh
+          util/process_project_file.csh vicset1.source PROJ_OS > vicset1.csh
+          
+          # Test environment setup
+          source vicset1.csh
+          source vicset2.csh
+          
+          echo "VICAR environment setup complete"
+          echo "V2TOP: $V2TOP"
+          echo "VICCPU: $VICCPU"
+          
+          # Add more specific tests here as needed
+          # Example: test if a VICAR program runs
+          # $V2BIN/list --help || echo "list command not available"
+
+  # Job to create a release on successful build (only for tags)
+  create-release:
+    name: Create Release
+    needs: build-vicar
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+      
+      - name: Download build artifacts
+        uses: actions/download-artifact@v5
+        with:
+          pattern: vicar-binaries-*
+          path: ./vicar-binaries
+          merge-multiple: true
+      
+      - name: Create release archive
+        run: |
+          cd vicar-binaries
+          tar -czf ../vicar-build-${{ github.ref_name }}.tar.gz .
+          cd ..
+      
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            vicar-build-${{ github.ref_name }}.tar.gz
+          draft: true
+          generate_release_notes: true
